@@ -124,7 +124,7 @@ namespace CrashEdit
         [ExternalTexture(0,1)]
         private static Bitmap pickupboxtexture = null;
 
-        [Resource("UnknownBoxTexture")]
+        [Resource("POWBoxTexture")]
         [ExternalTexture(1,1)]
         private static Bitmap powboxtexture = null;
 
@@ -172,7 +172,7 @@ namespace CrashEdit
         [ExternalTexture(2,2)]
         private static Bitmap timeboxtoptexture = null;
 
-        [Resource("UnknownBoxTexture")]
+        [Resource("IronContinueBoxTexture")]
         [ExternalTexture(6,2)]
         private static Bitmap ironcontinueboxtexture = null;
 
@@ -256,6 +256,24 @@ namespace CrashEdit
         [Resource("UnknownPickupTexture")]
         [ExternalTexture(4,4,2,1)]
         private static Bitmap fruittawna = null;
+
+        [Resource("SteelPickupBoxTexture")]
+        private static Bitmap steelpickupboxtexture = null;
+
+        [Resource("SteelFruitBoxTexture")]
+        private static Bitmap steelfruitboxtexture = null;
+
+        [Resource("SwitchOFFBoxTexture")]
+        private static Bitmap switchoffboxtexture = null;
+
+        [Resource("SwitchONBoxTexture")]
+        private static Bitmap switchonboxtexture = null;
+
+        [Resource("SwitchGhostBoxTexture")]
+        private static Bitmap switchghostboxtexture = null;
+
+        [Resource("SwitchGreenBoxTexture")]
+        private static Bitmap switchgreenboxtexture = null;
 
         static OldResources()
         {
@@ -366,6 +384,12 @@ namespace CrashEdit
         public static Bitmap CortexTexture => fruitcortex;
         public static Bitmap BrioTexture => fruitbrio;
         public static Bitmap TawnaTexture => fruittawna;
+        public static Bitmap SteelPickupBoxTexture => steelpickupboxtexture;
+        public static Bitmap SteelFruitBoxTexture => steelfruitboxtexture;
+        public static Bitmap SwitchOFFBoxTexture => switchoffboxtexture;
+        public static Bitmap SwitchONBoxTexture => switchonboxtexture;
+        public static Bitmap SwitchGhostBoxTexture => switchghostboxtexture;
+        public static Bitmap SwitchGreenBoxTexture => switchgreenboxtexture;
 
         [AttributeUsage(AttributeTargets.Field)]
         private class ResourceAttribute : Attribute

@@ -268,4 +268,28 @@
   <data name="YellowBuckle" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\objects_012_yellow.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="IronContinueBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\IronContinueBoxTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="POWBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\POWBoxTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SteelFruitBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\SteelFruitBoxTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SteelPickupBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\SteelPickupBoxTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SwitchGhostBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\SwitchGhostBoxTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SwitchGreenBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\SwitchGreenBoxTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SwitchOFFBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\SwitchOFFBoxTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SwitchONBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\SwitchONBoxTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

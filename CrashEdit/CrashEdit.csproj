@@ -426,6 +426,7 @@
     <Content Include="Resources\Images\Thing.gif" />
     <Content Include="Resources\Images\WhiteJournal.gif" />
     <Content Include="Resources\Images\YellowJournal.gif" />
+    <None Include="Resources\IronContinueBoxTexture.png" />
     <Content Include="Resources\objects_006.gif" />
     <Content Include="Resources\objects_006_red.gif" />
     <Content Include="Resources\objects_006_yellow.gif" />
@@ -453,6 +454,13 @@
     <Content Include="Resources\People_020_code.gif" />
     <Content Include="Resources\People_020_cyan.gif" />
     <Content Include="Resources\People_020_red.gif" />
+    <None Include="Resources\POWBoxTexture.png" />
+    <None Include="Resources\SteelFruitBoxTexture.png" />
+    <None Include="Resources\SteelPickupBoxTexture.png" />
+    <None Include="Resources\SwitchGreenBoxTexture.png" />
+    <None Include="Resources\SwitchGhostBoxTexture.png" />
+    <None Include="Resources\SwitchOFFBoxTexture.png" />
+    <None Include="Resources\SwitchONBoxTexture.png" />
     <Content Include="Resources\Textures\ActivatorBox.png" />
     <Content Include="Resources\Textures\Apple.png" />
     <Content Include="Resources\Textures\AppleBox.png" />
