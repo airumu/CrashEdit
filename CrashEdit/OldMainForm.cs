@@ -764,7 +764,7 @@ namespace CrashEdit
             }
             if (Settings.Default.PatchNSDSavesNSF)
             {
-                if (MessageBox.Show("Are you sure you want to overwrite the NSD file?\n\nEIDs will be swapped if NSD hash map is not in correct order,\nand all loadlists will be sorted according to the NSD.\n\nNSF file will be saved automatically.", Resources.Save_ConfirmationPrompt, MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (MessageBox.Show("Are you sure you want to overwrite the NSD file?\n\nEIDs will be swapped if NSD hash map is not in correct order,\nand all loadlists will be sorted according to the NSD.\n\nThe NSF file will be saved automatically.", Resources.Save_ConfirmationPrompt, MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     File.WriteAllBytes(path, nsd.Save());
                     foreach (Chunk chunk in nsf.Chunks)
