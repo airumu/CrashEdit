@@ -787,6 +787,7 @@ namespace CrashEdit
                                         values.Sort(delegate (int a, int b) {
                                             return eids.IndexOf(a) - eids.IndexOf(b);
                                         });
+                                        if (Settings.Default.DeleteInvalidEntries) values.RemoveAll(eid => nsf.FindEID<IEntry>(eid) == null);
                                     }
                                 }
                                 if (ent.LoadListB != null)
@@ -797,6 +798,7 @@ namespace CrashEdit
                                         values.Sort(delegate (int a, int b) {
                                             return eids.IndexOf(a) - eids.IndexOf(b);
                                         });
+                                        if (Settings.Default.DeleteInvalidEntries) values.RemoveAll(eid => nsf.FindEID<IEntry>(eid) == null);
                                     }
                                 }
                             }
