@@ -442,6 +442,7 @@
     <Content Include="Resources\objects_020.gif" />
     <Content Include="Resources\objects_028.gif" />
     <Content Include="Resources\objects_029.gif" />
+    <None Include="Resources\objects_029_2.gif" />
     <Content Include="Resources\objects_036.gif" />
     <Content Include="Resources\objects_037.gif" />
     <Content Include="Resources\objects_053_blue.gif" />
@@ -461,6 +462,7 @@
     <None Include="Resources\SwitchGhostBoxTexture.png" />
     <None Include="Resources\SwitchOFFBoxTexture.png" />
     <None Include="Resources\SwitchONBoxTexture.png" />
+    <None Include="Resources\SaveImage2.gif" />
     <Content Include="Resources\Textures\ActivatorBox.png" />
     <Content Include="Resources\Textures\Apple.png" />
     <Content Include="Resources\Textures\AppleBox.png" />

@@ -50,6 +50,9 @@ namespace CrashEdit
         [Resource("SaveImage")]
         private static Image saveimage = null;
 
+        [Resource("SaveImage2")]
+        private static Image saveimage2 = null;
+
         [Resource("SpeakerImage")]
         private static Image speakerimage = null;
 
@@ -328,6 +331,7 @@ namespace CrashEdit
         public static Image MusicYellowImage => musicyellowimage;
         public static Image OpenImage => openimage;
         public static Image SaveImage => saveimage;
+        public static Image SaveImage2 => saveimage2;
         public static Image SpeakerImage => speakerimage;
         public static Image ThingImage => thingimage;
         public static Image BlueJournalImage => bluejournalimage;
