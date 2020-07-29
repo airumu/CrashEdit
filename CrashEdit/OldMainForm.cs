@@ -762,8 +762,53 @@ namespace CrashEdit
                                 ++nsd.EntityCount;
                 }
             }
-
-            if (MessageBox.Show("Are you sure you want to overwrite the NSD file?\n\nIf NSD hash map is not in correct order, EIDs will be swapped.\nAll loadlists will be sorted according to the NSD.", "Save Confirmation Prompt", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (Settings.Default.PatchNSDSavesNSF)
+            {
+                if (MessageBox.Show("Are you sure you want to overwrite the NSD file?\n\nEIDs will be swapped if NSD hash map is not in correct order,\nand all loadlists will be sorted according to the NSD.\n\nNSF file will be saved automatically.", Resources.Save_ConfirmationPrompt, MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    File.WriteAllBytes(path, nsd.Save());
+                    foreach (Chunk chunk in nsf.Chunks)
+                    {
+                        if (!(chunk is EntryChunk))
+                            continue;
+                        foreach (Entry entry in ((EntryChunk)chunk).Entries)
+                        {
+                            if (entry is ZoneEntry zone)
+                            {
+                                foreach (Entity ent in zone.Entities)
+                                {
+                                    if (ent.LoadListA != null)
+                                    {
+                                        foreach (EntityPropertyRow<int> row in ent.LoadListA.Rows)
+                                        {
+                                            List<int> values = (List<int>)row.Values;
+                                            values.Sort(delegate (int a, int b)
+                                            {
+                                                return eids.IndexOf(a) - eids.IndexOf(b);
+                                            });
+                                            if (Settings.Default.DeleteInvalidEntries) values.RemoveAll(eid => nsf.FindEID<IEntry>(eid) == null);
+                                        }
+                                    }
+                                    if (ent.LoadListB != null)
+                                    {
+                                        foreach (EntityPropertyRow<int> row in ent.LoadListB.Rows)
+                                        {
+                                            List<int> values = (List<int>)row.Values;
+                                            values.Sort(delegate (int a, int b)
+                                            {
+                                                return eids.IndexOf(a) - eids.IndexOf(b);
+                                            });
+                                            if (Settings.Default.DeleteInvalidEntries) values.RemoveAll(eid => nsf.FindEID<IEntry>(eid) == null);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    SaveNSF(true);
+                }
+            }
+            else if (MessageBox.Show("Are you sure you want to overwrite the NSD file?\n\nIf NSD hash map is not in correct order, EIDs will be swapped.\nAll loadlists will be sorted according to the NSD.", Resources.Save_ConfirmationPrompt, MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 File.WriteAllBytes(path, nsd.Save());
                 /*}
@@ -784,7 +829,8 @@ namespace CrashEdit
                                     foreach (EntityPropertyRow<int> row in ent.LoadListA.Rows)
                                     {
                                         List<int> values = (List<int>)row.Values;
-                                        values.Sort(delegate (int a, int b) {
+                                        values.Sort(delegate (int a, int b)
+                                        {
                                             return eids.IndexOf(a) - eids.IndexOf(b);
                                         });
                                         if (Settings.Default.DeleteInvalidEntries) values.RemoveAll(eid => nsf.FindEID<IEntry>(eid) == null);
@@ -795,7 +841,8 @@ namespace CrashEdit
                                     foreach (EntityPropertyRow<int> row in ent.LoadListB.Rows)
                                     {
                                         List<int> values = (List<int>)row.Values;
-                                        values.Sort(delegate (int a, int b) {
+                                        values.Sort(delegate (int a, int b)
+                                        {
                                             return eids.IndexOf(a) - eids.IndexOf(b);
                                         });
                                         if (Settings.Default.DeleteInvalidEntries) values.RemoveAll(eid => nsf.FindEID<IEntry>(eid) == null);

@@ -142,5 +142,20 @@ namespace CrashEdit.Properties {
                 this["AnimGridLen"] = value;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool PatchNSDSavesNSF
+        {
+            get
+            {
+                return ((bool)(this["PatchNSDSavesNSF"]));
+            }
+            set
+            {
+                this["PatchNSDSavesNSF"] = value;
+            }
+        }
     }
 }

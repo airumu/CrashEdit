@@ -48,6 +48,7 @@
             this.numAnimGrid = new System.Windows.Forms.NumericUpDown();
             this.lblAnimGrid = new System.Windows.Forms.Label();
             this.chkAnimGrid = new System.Windows.Forms.CheckBox();
+            this.chkPatchNSDSavesNSF = new System.Windows.Forms.CheckBox();
             this.fraLang.SuspendLayout();
             this.fraSize.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numH)).BeginInit();
@@ -79,7 +80,7 @@
             // 
             // cmdReset
             // 
-            this.cmdReset.Location = new System.Drawing.Point(3, 212);
+            this.cmdReset.Location = new System.Drawing.Point(3, 231);
             this.cmdReset.Name = "cmdReset";
             this.cmdReset.Size = new System.Drawing.Size(100, 21);
             this.cmdReset.TabIndex = 1;
@@ -195,7 +196,7 @@
             this.chkUseAnimLinks.AutoSize = true;
             this.chkUseAnimLinks.Checked = true;
             this.chkUseAnimLinks.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkUseAnimLinks.Location = new System.Drawing.Point(3, 191);
+            this.chkUseAnimLinks.Location = new System.Drawing.Point(3, 213);
             this.chkUseAnimLinks.Name = "chkUseAnimLinks";
             this.chkUseAnimLinks.Size = new System.Drawing.Size(253, 16);
             this.chkUseAnimLinks.TabIndex = 3;
@@ -303,11 +304,25 @@
             this.chkAnimGrid.UseVisualStyleBackColor = true;
             this.chkAnimGrid.CheckedChanged += new System.EventHandler(this.chkAnimGrid_CheckedChanged);
             // 
+            // chkPatchNSDSavesNSF
+            // 
+            this.chkPatchNSDSavesNSF.AutoSize = true;
+            this.chkPatchNSDSavesNSF.Checked = true;
+            this.chkPatchNSDSavesNSF.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkPatchNSDSavesNSF.Location = new System.Drawing.Point(3, 191);
+            this.chkPatchNSDSavesNSF.Name = "chkPatchNSDSavesNSF";
+            this.chkPatchNSDSavesNSF.Size = new System.Drawing.Size(285, 16);
+            this.chkPatchNSDSavesNSF.TabIndex = 8;
+            this.chkPatchNSDSavesNSF.Text = "(Patch NSD) Always save NSF after NSD patching";
+            this.chkPatchNSDSavesNSF.UseVisualStyleBackColor = true;
+            this.chkPatchNSDSavesNSF.CheckedChanged += new System.EventHandler(this.chkPatchNSDSavesNSF_CheckedChanged);
+            // 
             // ConfigEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.Controls.Add(this.chkPatchNSDSavesNSF);
             this.Controls.Add(this.fraAnimGrid);
             this.Controls.Add(this.chkDeleteInvalidEntries);
             this.Controls.Add(this.chkUseAnimLinks);
@@ -357,5 +372,6 @@
         private System.Windows.Forms.Label lblAnimGrid;
         private System.Windows.Forms.CheckBox chkAnimGrid;
         private System.Windows.Forms.Button cmdClearCol;
+        private System.Windows.Forms.CheckBox chkPatchNSDSavesNSF;
     }
 }
