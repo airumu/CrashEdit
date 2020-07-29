@@ -437,7 +437,7 @@
     <value>Animation Viewer World Grid</value>
   </data>
   <data name="Config_fraClearCol" xml:space="preserve">
-    <value>Clear Color</value>
+    <value>Background Color</value>
   </data>
   <data name="Config_fraSize" xml:space="preserve">
     <value>Default Window Size</value>

@@ -91,6 +91,12 @@ namespace CrashEdit
             }
         }
 
+        private void cmdClearCol_Click(object sender, EventArgs e)
+        {
+            picClearCol.BackColor = Settings.Default.ClearColor = System.Drawing.Color.Black;
+            Settings.Default.Save();
+        }
+
         private void chkDeleteInvalidEntries_CheckedChanged(object sender, EventArgs e)
         {
             Settings.Default.DeleteInvalidEntries = chkDeleteInvalidEntries.Checked;
@@ -107,6 +113,11 @@ namespace CrashEdit
         {
             Settings.Default.AnimGridLen = (int)numAnimGrid.Value;
             Settings.Default.Save();
+        }
+
+        private void ConfigEditor_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -42,11 +42,12 @@
             this.cdlClearCol = new System.Windows.Forms.ColorDialog();
             this.fraClearCol = new System.Windows.Forms.GroupBox();
             this.picClearCol = new System.Windows.Forms.PictureBox();
+            this.cmdClearCol = new System.Windows.Forms.Button();
             this.chkDeleteInvalidEntries = new System.Windows.Forms.CheckBox();
             this.fraAnimGrid = new System.Windows.Forms.GroupBox();
-            this.chkAnimGrid = new System.Windows.Forms.CheckBox();
-            this.lblAnimGrid = new System.Windows.Forms.Label();
             this.numAnimGrid = new System.Windows.Forms.NumericUpDown();
+            this.lblAnimGrid = new System.Windows.Forms.Label();
+            this.chkAnimGrid = new System.Windows.Forms.CheckBox();
             this.fraLang.SuspendLayout();
             this.fraSize.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numH)).BeginInit();
@@ -61,9 +62,9 @@
             // 
             this.dpdLang.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.dpdLang.FormattingEnabled = true;
-            this.dpdLang.Location = new System.Drawing.Point(6, 19);
+            this.dpdLang.Location = new System.Drawing.Point(6, 18);
             this.dpdLang.Name = "dpdLang";
-            this.dpdLang.Size = new System.Drawing.Size(175, 21);
+            this.dpdLang.Size = new System.Drawing.Size(175, 20);
             this.dpdLang.TabIndex = 0;
             // 
             // fraLang
@@ -71,16 +72,16 @@
             this.fraLang.Controls.Add(this.dpdLang);
             this.fraLang.Location = new System.Drawing.Point(3, 3);
             this.fraLang.Name = "fraLang";
-            this.fraLang.Size = new System.Drawing.Size(187, 49);
+            this.fraLang.Size = new System.Drawing.Size(187, 45);
             this.fraLang.TabIndex = 1;
             this.fraLang.TabStop = false;
             this.fraLang.Text = "Language (requires restart)";
             // 
             // cmdReset
             // 
-            this.cmdReset.Location = new System.Drawing.Point(3, 230);
+            this.cmdReset.Location = new System.Drawing.Point(3, 212);
             this.cmdReset.Name = "cmdReset";
-            this.cmdReset.Size = new System.Drawing.Size(100, 23);
+            this.cmdReset.Size = new System.Drawing.Size(100, 21);
             this.cmdReset.TabIndex = 1;
             this.cmdReset.Text = "Reset Settings";
             this.cmdReset.UseVisualStyleBackColor = true;
@@ -92,9 +93,9 @@
             this.fraSize.Controls.Add(this.lblW);
             this.fraSize.Controls.Add(this.numH);
             this.fraSize.Controls.Add(this.numW);
-            this.fraSize.Location = new System.Drawing.Point(3, 58);
+            this.fraSize.Location = new System.Drawing.Point(3, 54);
             this.fraSize.Name = "fraSize";
-            this.fraSize.Size = new System.Drawing.Size(131, 74);
+            this.fraSize.Size = new System.Drawing.Size(131, 68);
             this.fraSize.TabIndex = 1;
             this.fraSize.TabStop = false;
             this.fraSize.Text = "Default Window Size";
@@ -102,24 +103,24 @@
             // lblH
             // 
             this.lblH.AutoSize = true;
-            this.lblH.Location = new System.Drawing.Point(6, 47);
+            this.lblH.Location = new System.Drawing.Point(6, 43);
             this.lblH.Name = "lblH";
-            this.lblH.Size = new System.Drawing.Size(38, 13);
+            this.lblH.Size = new System.Drawing.Size(38, 12);
             this.lblH.TabIndex = 3;
             this.lblH.Text = "Height";
             // 
             // lblW
             // 
             this.lblW.AutoSize = true;
-            this.lblW.Location = new System.Drawing.Point(6, 21);
+            this.lblW.Location = new System.Drawing.Point(6, 19);
             this.lblW.Name = "lblW";
-            this.lblW.Size = new System.Drawing.Size(35, 13);
+            this.lblW.Size = new System.Drawing.Size(33, 12);
             this.lblW.TabIndex = 2;
             this.lblW.Text = "Width";
             // 
             // numH
             // 
-            this.numH.Location = new System.Drawing.Point(50, 45);
+            this.numH.Location = new System.Drawing.Point(50, 42);
             this.numH.Maximum = new decimal(new int[] {
             4096,
             0,
@@ -131,7 +132,7 @@
             0,
             0});
             this.numH.Name = "numH";
-            this.numH.Size = new System.Drawing.Size(75, 20);
+            this.numH.Size = new System.Drawing.Size(75, 19);
             this.numH.TabIndex = 1;
             this.numH.Value = new decimal(new int[] {
             480,
@@ -142,7 +143,7 @@
             // 
             // numW
             // 
-            this.numW.Location = new System.Drawing.Point(50, 19);
+            this.numW.Location = new System.Drawing.Point(50, 18);
             this.numW.Maximum = new decimal(new int[] {
             8192,
             0,
@@ -154,7 +155,7 @@
             0,
             0});
             this.numW.Name = "numW";
-            this.numW.Size = new System.Drawing.Size(75, 20);
+            this.numW.Size = new System.Drawing.Size(75, 19);
             this.numW.TabIndex = 0;
             this.numW.Value = new decimal(new int[] {
             640,
@@ -168,9 +169,9 @@
             this.chkNormalDisplay.AutoSize = true;
             this.chkNormalDisplay.Checked = true;
             this.chkNormalDisplay.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkNormalDisplay.Location = new System.Drawing.Point(3, 138);
+            this.chkNormalDisplay.Location = new System.Drawing.Point(3, 127);
             this.chkNormalDisplay.Name = "chkNormalDisplay";
-            this.chkNormalDisplay.Size = new System.Drawing.Size(99, 17);
+            this.chkNormalDisplay.Size = new System.Drawing.Size(106, 16);
             this.chkNormalDisplay.TabIndex = 0;
             this.chkNormalDisplay.Text = "Display normals";
             this.chkNormalDisplay.UseVisualStyleBackColor = true;
@@ -181,9 +182,9 @@
             this.chkCollisionDisplay.AutoSize = true;
             this.chkCollisionDisplay.Checked = true;
             this.chkCollisionDisplay.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkCollisionDisplay.Location = new System.Drawing.Point(3, 161);
+            this.chkCollisionDisplay.Location = new System.Drawing.Point(3, 149);
             this.chkCollisionDisplay.Name = "chkCollisionDisplay";
-            this.chkCollisionDisplay.Size = new System.Drawing.Size(178, 17);
+            this.chkCollisionDisplay.Size = new System.Drawing.Size(196, 16);
             this.chkCollisionDisplay.TabIndex = 2;
             this.chkCollisionDisplay.Text = "Display frame collision by default";
             this.chkCollisionDisplay.UseVisualStyleBackColor = true;
@@ -194,9 +195,9 @@
             this.chkUseAnimLinks.AutoSize = true;
             this.chkUseAnimLinks.Checked = true;
             this.chkUseAnimLinks.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkUseAnimLinks.Location = new System.Drawing.Point(3, 207);
+            this.chkUseAnimLinks.Location = new System.Drawing.Point(3, 191);
             this.chkUseAnimLinks.Name = "chkUseAnimLinks";
-            this.chkUseAnimLinks.Size = new System.Drawing.Size(231, 17);
+            this.chkUseAnimLinks.Size = new System.Drawing.Size(253, 16);
             this.chkUseAnimLinks.TabIndex = 3;
             this.chkUseAnimLinks.Text = "(Crash 3) Used saved animation-model links";
             this.chkUseAnimLinks.UseVisualStyleBackColor = true;
@@ -211,31 +212,42 @@
             // fraClearCol
             // 
             this.fraClearCol.Controls.Add(this.picClearCol);
-            this.fraClearCol.Location = new System.Drawing.Point(140, 58);
+            this.fraClearCol.Controls.Add(this.cmdClearCol);
+            this.fraClearCol.Location = new System.Drawing.Point(140, 54);
             this.fraClearCol.Name = "fraClearCol";
-            this.fraClearCol.Size = new System.Drawing.Size(72, 74);
+            this.fraClearCol.Size = new System.Drawing.Size(128, 68);
             this.fraClearCol.TabIndex = 4;
             this.fraClearCol.TabStop = false;
-            this.fraClearCol.Text = "Clear Color";
+            this.fraClearCol.Text = "Color";
             // 
             // picClearCol
             // 
             this.picClearCol.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.picClearCol.Location = new System.Drawing.Point(6, 19);
+            this.picClearCol.Location = new System.Drawing.Point(6, 18);
             this.picClearCol.Name = "picClearCol";
-            this.picClearCol.Size = new System.Drawing.Size(60, 49);
+            this.picClearCol.Size = new System.Drawing.Size(60, 45);
             this.picClearCol.TabIndex = 0;
             this.picClearCol.TabStop = false;
             this.picClearCol.Click += new System.EventHandler(this.pictureBox1_Click);
+            // 
+            // cmdClearCol
+            // 
+            this.cmdClearCol.Location = new System.Drawing.Point(73, 39);
+            this.cmdClearCol.Name = "cmdClearCol";
+            this.cmdClearCol.Size = new System.Drawing.Size(49, 24);
+            this.cmdClearCol.TabIndex = 7;
+            this.cmdClearCol.Text = "Reset";
+            this.cmdClearCol.UseVisualStyleBackColor = true;
+            this.cmdClearCol.Click += new System.EventHandler(this.cmdClearCol_Click);
             // 
             // chkDeleteInvalidEntries
             // 
             this.chkDeleteInvalidEntries.AutoSize = true;
             this.chkDeleteInvalidEntries.Checked = true;
             this.chkDeleteInvalidEntries.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkDeleteInvalidEntries.Location = new System.Drawing.Point(3, 184);
+            this.chkDeleteInvalidEntries.Location = new System.Drawing.Point(3, 170);
             this.chkDeleteInvalidEntries.Name = "chkDeleteInvalidEntries";
-            this.chkDeleteInvalidEntries.Size = new System.Drawing.Size(280, 17);
+            this.chkDeleteInvalidEntries.Size = new System.Drawing.Size(311, 16);
             this.chkDeleteInvalidEntries.TabIndex = 5;
             this.chkDeleteInvalidEntries.Text = "(Patch NSD) Delete non-existent entries from load lists";
             this.chkDeleteInvalidEntries.UseVisualStyleBackColor = true;
@@ -246,43 +258,23 @@
             this.fraAnimGrid.Controls.Add(this.numAnimGrid);
             this.fraAnimGrid.Controls.Add(this.lblAnimGrid);
             this.fraAnimGrid.Controls.Add(this.chkAnimGrid);
-            this.fraAnimGrid.Location = new System.Drawing.Point(219, 58);
+            this.fraAnimGrid.Location = new System.Drawing.Point(275, 54);
             this.fraAnimGrid.Name = "fraAnimGrid";
-            this.fraAnimGrid.Size = new System.Drawing.Size(184, 74);
+            this.fraAnimGrid.Size = new System.Drawing.Size(184, 68);
             this.fraAnimGrid.TabIndex = 6;
             this.fraAnimGrid.TabStop = false;
             this.fraAnimGrid.Text = "Animation Viewer World Grid";
             // 
-            // chkAnimGrid
-            // 
-            this.chkAnimGrid.AutoSize = true;
-            this.chkAnimGrid.Location = new System.Drawing.Point(6, 19);
-            this.chkAnimGrid.Name = "chkAnimGrid";
-            this.chkAnimGrid.Size = new System.Drawing.Size(65, 17);
-            this.chkAnimGrid.TabIndex = 0;
-            this.chkAnimGrid.Text = "Enabled";
-            this.chkAnimGrid.UseVisualStyleBackColor = true;
-            this.chkAnimGrid.CheckedChanged += new System.EventHandler(this.chkAnimGrid_CheckedChanged);
-            // 
-            // lblAnimGrid
-            // 
-            this.lblAnimGrid.AutoSize = true;
-            this.lblAnimGrid.Location = new System.Drawing.Point(7, 46);
-            this.lblAnimGrid.Name = "lblAnimGrid";
-            this.lblAnimGrid.Size = new System.Drawing.Size(43, 13);
-            this.lblAnimGrid.TabIndex = 1;
-            this.lblAnimGrid.Text = "Amount";
-            // 
             // numAnimGrid
             // 
-            this.numAnimGrid.Location = new System.Drawing.Point(56, 42);
+            this.numAnimGrid.Location = new System.Drawing.Point(56, 39);
             this.numAnimGrid.Maximum = new decimal(new int[] {
             32767,
             0,
             0,
             0});
             this.numAnimGrid.Name = "numAnimGrid";
-            this.numAnimGrid.Size = new System.Drawing.Size(80, 20);
+            this.numAnimGrid.Size = new System.Drawing.Size(80, 19);
             this.numAnimGrid.TabIndex = 2;
             this.numAnimGrid.Value = new decimal(new int[] {
             4,
@@ -291,22 +283,43 @@
             0});
             this.numAnimGrid.ValueChanged += new System.EventHandler(this.numAnimGrid_ValueChanged);
             // 
+            // lblAnimGrid
+            // 
+            this.lblAnimGrid.AutoSize = true;
+            this.lblAnimGrid.Location = new System.Drawing.Point(7, 42);
+            this.lblAnimGrid.Name = "lblAnimGrid";
+            this.lblAnimGrid.Size = new System.Drawing.Size(44, 12);
+            this.lblAnimGrid.TabIndex = 1;
+            this.lblAnimGrid.Text = "Amount";
+            // 
+            // chkAnimGrid
+            // 
+            this.chkAnimGrid.AutoSize = true;
+            this.chkAnimGrid.Location = new System.Drawing.Point(6, 18);
+            this.chkAnimGrid.Name = "chkAnimGrid";
+            this.chkAnimGrid.Size = new System.Drawing.Size(64, 16);
+            this.chkAnimGrid.TabIndex = 0;
+            this.chkAnimGrid.Text = "Enabled";
+            this.chkAnimGrid.UseVisualStyleBackColor = true;
+            this.chkAnimGrid.CheckedChanged += new System.EventHandler(this.chkAnimGrid_CheckedChanged);
+            // 
             // ConfigEditor
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.Controls.Add(this.fraAnimGrid);
             this.Controls.Add(this.chkDeleteInvalidEntries);
-            this.Controls.Add(this.fraClearCol);
             this.Controls.Add(this.chkUseAnimLinks);
             this.Controls.Add(this.chkCollisionDisplay);
             this.Controls.Add(this.chkNormalDisplay);
             this.Controls.Add(this.fraSize);
             this.Controls.Add(this.cmdReset);
             this.Controls.Add(this.fraLang);
+            this.Controls.Add(this.fraClearCol);
             this.Name = "ConfigEditor";
-            this.Size = new System.Drawing.Size(433, 288);
+            this.Size = new System.Drawing.Size(474, 266);
+            this.Load += new System.EventHandler(this.ConfigEditor_Load);
             this.fraLang.ResumeLayout(false);
             this.fraSize.ResumeLayout(false);
             this.fraSize.PerformLayout();
@@ -343,5 +356,6 @@
         private System.Windows.Forms.NumericUpDown numAnimGrid;
         private System.Windows.Forms.Label lblAnimGrid;
         private System.Windows.Forms.CheckBox chkAnimGrid;
+        private System.Windows.Forms.Button cmdClearCol;
     }
 }

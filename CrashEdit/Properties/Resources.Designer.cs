@@ -182,7 +182,7 @@ namespace CrashEdit.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Clear Color.
+        ///   Looks up a localized string similar to Background Color.
         /// </summary>
         internal static string Config_fraClearCol {
             get {
