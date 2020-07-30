@@ -261,21 +261,27 @@ namespace CrashEdit
         private static Bitmap fruittawna = null;
 
         [Resource("SteelPickupBoxTexture")]
+        [ExternalTexture(0, 5)]
         private static Bitmap steelpickupboxtexture = null;
 
         [Resource("SteelFruitBoxTexture")]
+        [ExternalTexture(1, 5)]
         private static Bitmap steelfruitboxtexture = null;
 
         [Resource("SwitchOFFBoxTexture")]
+        [ExternalTexture(2, 5)]
         private static Bitmap switchoffboxtexture = null;
 
         [Resource("SwitchONBoxTexture")]
+        [ExternalTexture(3, 5)]
         private static Bitmap switchonboxtexture = null;
 
         [Resource("SwitchGhostBoxTexture")]
+        [ExternalTexture(4, 5)]
         private static Bitmap switchghostboxtexture = null;
 
         [Resource("SwitchGreenBoxTexture")]
+        [ExternalTexture(5, 5)]
         private static Bitmap switchgreenboxtexture = null;
 
         static OldResources()

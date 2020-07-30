@@ -222,6 +222,9 @@ namespace CrashEdit
                                         case 18: // nitro
                                         case 20: // auto empty
                                         case 21: // empty 2
+                                        case 23: // steel
+                                        case 27: // steel pickup
+                                        case 26: // steel fruit
                                             boxcount++;
                                             break;
                                         default:
@@ -256,6 +259,7 @@ namespace CrashEdit
                                         case 18: // nitro
                                         case 20: // auto empty
                                         case 21: // empty 2
+                                        case 23: // steel
                                         case 25: // slot
                                             boxcount++;
                                             break;
