@@ -49,6 +49,7 @@
             this.lblAnimGrid = new System.Windows.Forms.Label();
             this.chkAnimGrid = new System.Windows.Forms.CheckBox();
             this.chkPatchNSDSavesNSF = new System.Windows.Forms.CheckBox();
+            this.chkOldPatchNSD = new System.Windows.Forms.CheckBox();
             this.fraLang.SuspendLayout();
             this.fraSize.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numH)).BeginInit();
@@ -80,7 +81,7 @@
             // 
             // cmdReset
             // 
-            this.cmdReset.Location = new System.Drawing.Point(3, 231);
+            this.cmdReset.Location = new System.Drawing.Point(3, 252);
             this.cmdReset.Name = "cmdReset";
             this.cmdReset.Size = new System.Drawing.Size(100, 21);
             this.cmdReset.TabIndex = 1;
@@ -196,7 +197,7 @@
             this.chkUseAnimLinks.AutoSize = true;
             this.chkUseAnimLinks.Checked = true;
             this.chkUseAnimLinks.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkUseAnimLinks.Location = new System.Drawing.Point(3, 213);
+            this.chkUseAnimLinks.Location = new System.Drawing.Point(3, 234);
             this.chkUseAnimLinks.Name = "chkUseAnimLinks";
             this.chkUseAnimLinks.Size = new System.Drawing.Size(253, 16);
             this.chkUseAnimLinks.TabIndex = 3;
@@ -219,7 +220,7 @@
             this.fraClearCol.Size = new System.Drawing.Size(128, 68);
             this.fraClearCol.TabIndex = 4;
             this.fraClearCol.TabStop = false;
-            this.fraClearCol.Text = "Color";
+            this.fraClearCol.Text = "Background Color";
             // 
             // picClearCol
             // 
@@ -317,11 +318,26 @@
             this.chkPatchNSDSavesNSF.UseVisualStyleBackColor = true;
             this.chkPatchNSDSavesNSF.CheckedChanged += new System.EventHandler(this.chkPatchNSDSavesNSF_CheckedChanged);
             // 
+            // chkOldPatchNSD
+            // 
+            this.chkOldPatchNSD.AutoSize = true;
+            this.chkOldPatchNSD.Checked = true;
+            this.chkOldPatchNSD.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkOldPatchNSD.ForeColor = System.Drawing.Color.OrangeRed;
+            this.chkOldPatchNSD.Location = new System.Drawing.Point(3, 213);
+            this.chkOldPatchNSD.Name = "chkOldPatchNSD";
+            this.chkOldPatchNSD.Size = new System.Drawing.Size(332, 16);
+            this.chkOldPatchNSD.TabIndex = 9;
+            this.chkOldPatchNSD.Text = "(Patch NSD) Use old NSD patching from CrashEdit v0.2.49.0";
+            this.chkOldPatchNSD.UseVisualStyleBackColor = true;
+            this.chkOldPatchNSD.CheckedChanged += new System.EventHandler(this.ChkOldPatchNSD_CheckedChanged);
+            // 
             // ConfigEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.Controls.Add(this.chkOldPatchNSD);
             this.Controls.Add(this.chkPatchNSDSavesNSF);
             this.Controls.Add(this.fraAnimGrid);
             this.Controls.Add(this.chkDeleteInvalidEntries);
@@ -333,7 +349,7 @@
             this.Controls.Add(this.fraLang);
             this.Controls.Add(this.fraClearCol);
             this.Name = "ConfigEditor";
-            this.Size = new System.Drawing.Size(474, 266);
+            this.Size = new System.Drawing.Size(474, 287);
             this.Load += new System.EventHandler(this.ConfigEditor_Load);
             this.fraLang.ResumeLayout(false);
             this.fraSize.ResumeLayout(false);
@@ -373,5 +389,6 @@
         private System.Windows.Forms.CheckBox chkAnimGrid;
         private System.Windows.Forms.Button cmdClearCol;
         private System.Windows.Forms.CheckBox chkPatchNSDSavesNSF;
+        private System.Windows.Forms.CheckBox chkOldPatchNSD;
     }
 }

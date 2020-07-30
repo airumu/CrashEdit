@@ -736,4 +736,7 @@
   <data name="Config_chkPatchNSDSavesNSF" xml:space="preserve">
     <value>(Patch NSD) Always save NSF after NSD patching</value>
   </data>
+  <data name="Config_chkOldPatchNSD" xml:space="preserve">
+    <value>(Patch NSD) Use old NSD patching from CrashEdit v0.2.49.0</value>
+  </data>
 </root>

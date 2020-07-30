@@ -38,6 +38,9 @@ namespace CrashEdit
             chkDeleteInvalidEntries.Text = Resources.Config_chkDeleteInvalidEntries;
             chkUseAnimLinks.Text = Resources.Config_chkUseAnimLinks;
             chkPatchNSDSavesNSF.Text = Resources.Config_chkPatchNSDSavesNSF;
+            chkPatchNSDSavesNSF.Checked = Settings.Default.PatchNSDSavesNSF;
+            chkOldPatchNSD.Text = Resources.Config_chkOldPatchNSD;
+            chkOldPatchNSD.Checked = Settings.Default.OldPatchNSD;
             cmdReset.Text = Resources.Config_cmdReset;
         }
 
@@ -124,6 +127,12 @@ namespace CrashEdit
         private void chkPatchNSDSavesNSF_CheckedChanged(object sender, EventArgs e)
         {
             Settings.Default.PatchNSDSavesNSF = chkPatchNSDSavesNSF.Checked;
+            Settings.Default.Save();
+        }
+
+        private void ChkOldPatchNSD_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.OldPatchNSD = chkOldPatchNSD.Checked;
             Settings.Default.Save();
         }
     }
