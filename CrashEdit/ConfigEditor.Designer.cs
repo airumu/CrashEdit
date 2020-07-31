@@ -28,28 +28,28 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.dpdLang = new System.Windows.Forms.ComboBox();
+            this.dpdLang = new DarkUI.Controls.DarkComboBox();
             this.fraLang = new System.Windows.Forms.GroupBox();
-            this.cmdReset = new System.Windows.Forms.Button();
+            this.cmdReset = new DarkUI.Controls.DarkButton();
             this.fraSize = new System.Windows.Forms.GroupBox();
             this.lblH = new System.Windows.Forms.Label();
             this.lblW = new System.Windows.Forms.Label();
-            this.numH = new System.Windows.Forms.NumericUpDown();
-            this.numW = new System.Windows.Forms.NumericUpDown();
-            this.chkNormalDisplay = new System.Windows.Forms.CheckBox();
-            this.chkCollisionDisplay = new System.Windows.Forms.CheckBox();
-            this.chkUseAnimLinks = new System.Windows.Forms.CheckBox();
+            this.numH = new DarkUI.Controls.DarkNumericUpDown();
+            this.numW = new DarkUI.Controls.DarkNumericUpDown();
+            this.chkNormalDisplay = new DarkUI.Controls.DarkCheckBox();
+            this.chkCollisionDisplay = new DarkUI.Controls.DarkCheckBox();
+            this.chkUseAnimLinks = new DarkUI.Controls.DarkCheckBox();
             this.cdlClearCol = new System.Windows.Forms.ColorDialog();
             this.fraClearCol = new System.Windows.Forms.GroupBox();
             this.picClearCol = new System.Windows.Forms.PictureBox();
-            this.cmdClearCol = new System.Windows.Forms.Button();
-            this.chkDeleteInvalidEntries = new System.Windows.Forms.CheckBox();
+            this.cmdClearCol = new DarkUI.Controls.DarkButton();
+            this.chkDeleteInvalidEntries = new DarkUI.Controls.DarkCheckBox();
             this.fraAnimGrid = new System.Windows.Forms.GroupBox();
-            this.numAnimGrid = new System.Windows.Forms.NumericUpDown();
+            this.numAnimGrid = new DarkUI.Controls.DarkNumericUpDown();
             this.lblAnimGrid = new System.Windows.Forms.Label();
-            this.chkAnimGrid = new System.Windows.Forms.CheckBox();
-            this.chkPatchNSDSavesNSF = new System.Windows.Forms.CheckBox();
-            this.chkOldPatchNSD = new System.Windows.Forms.CheckBox();
+            this.chkAnimGrid = new DarkUI.Controls.DarkCheckBox();
+            this.chkPatchNSDSavesNSF = new DarkUI.Controls.DarkCheckBox();
+            this.chkOldPatchNSD = new DarkUI.Controls.DarkCheckBox();
             this.fraLang.SuspendLayout();
             this.fraSize.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numH)).BeginInit();
@@ -62,7 +62,8 @@
             // 
             // dpdLang
             // 
-            this.dpdLang.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.dpdLang.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.dpdLang.Font = new System.Drawing.Font("MS UI Gothic", 9F);
             this.dpdLang.FormattingEnabled = true;
             this.dpdLang.Location = new System.Drawing.Point(6, 18);
             this.dpdLang.Name = "dpdLang";
@@ -71,7 +72,9 @@
             // 
             // fraLang
             // 
+            this.fraLang.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
             this.fraLang.Controls.Add(this.dpdLang);
+            this.fraLang.ForeColor = System.Drawing.SystemColors.Window;
             this.fraLang.Location = new System.Drawing.Point(3, 3);
             this.fraLang.Name = "fraLang";
             this.fraLang.Size = new System.Drawing.Size(187, 45);
@@ -81,20 +84,22 @@
             // 
             // cmdReset
             // 
-            this.cmdReset.Location = new System.Drawing.Point(3, 252);
+            this.cmdReset.Location = new System.Drawing.Point(3, 256);
             this.cmdReset.Name = "cmdReset";
+            this.cmdReset.Padding = new System.Windows.Forms.Padding(5);
             this.cmdReset.Size = new System.Drawing.Size(100, 21);
             this.cmdReset.TabIndex = 1;
             this.cmdReset.Text = "Reset Settings";
-            this.cmdReset.UseVisualStyleBackColor = true;
             this.cmdReset.Click += new System.EventHandler(this.cmdReset_Click);
             // 
             // fraSize
             // 
+            this.fraSize.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
             this.fraSize.Controls.Add(this.lblH);
             this.fraSize.Controls.Add(this.lblW);
             this.fraSize.Controls.Add(this.numH);
             this.fraSize.Controls.Add(this.numW);
+            this.fraSize.ForeColor = System.Drawing.SystemColors.Window;
             this.fraSize.Location = new System.Drawing.Point(3, 54);
             this.fraSize.Name = "fraSize";
             this.fraSize.Size = new System.Drawing.Size(131, 68);
@@ -176,7 +181,6 @@
             this.chkNormalDisplay.Size = new System.Drawing.Size(106, 16);
             this.chkNormalDisplay.TabIndex = 0;
             this.chkNormalDisplay.Text = "Display normals";
-            this.chkNormalDisplay.UseVisualStyleBackColor = true;
             this.chkNormalDisplay.CheckedChanged += new System.EventHandler(this.chkNormalDisplay_CheckedChanged);
             // 
             // chkCollisionDisplay
@@ -189,7 +193,6 @@
             this.chkCollisionDisplay.Size = new System.Drawing.Size(196, 16);
             this.chkCollisionDisplay.TabIndex = 2;
             this.chkCollisionDisplay.Text = "Display frame collision by default";
-            this.chkCollisionDisplay.UseVisualStyleBackColor = true;
             this.chkCollisionDisplay.CheckedChanged += new System.EventHandler(this.chkCollisionDisplay_CheckedChanged);
             // 
             // chkUseAnimLinks
@@ -202,7 +205,6 @@
             this.chkUseAnimLinks.Size = new System.Drawing.Size(253, 16);
             this.chkUseAnimLinks.TabIndex = 3;
             this.chkUseAnimLinks.Text = "(Crash 3) Used saved animation-model links";
-            this.chkUseAnimLinks.UseVisualStyleBackColor = true;
             this.chkUseAnimLinks.CheckedChanged += new System.EventHandler(this.chkUseAnimLinks_CheckedChanged);
             // 
             // cdlClearCol
@@ -213,8 +215,10 @@
             // 
             // fraClearCol
             // 
+            this.fraClearCol.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
             this.fraClearCol.Controls.Add(this.picClearCol);
             this.fraClearCol.Controls.Add(this.cmdClearCol);
+            this.fraClearCol.ForeColor = System.Drawing.SystemColors.Window;
             this.fraClearCol.Location = new System.Drawing.Point(140, 54);
             this.fraClearCol.Name = "fraClearCol";
             this.fraClearCol.Size = new System.Drawing.Size(128, 68);
@@ -235,14 +239,13 @@
             // cmdClearCol
             // 
             this.cmdClearCol.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.cmdClearCol.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmdClearCol.ForeColor = System.Drawing.SystemColors.MenuText;
             this.cmdClearCol.Location = new System.Drawing.Point(73, 39);
             this.cmdClearCol.Name = "cmdClearCol";
+            this.cmdClearCol.Padding = new System.Windows.Forms.Padding(5);
             this.cmdClearCol.Size = new System.Drawing.Size(49, 24);
             this.cmdClearCol.TabIndex = 7;
             this.cmdClearCol.Text = "Reset";
-            this.cmdClearCol.UseVisualStyleBackColor = false;
             this.cmdClearCol.Click += new System.EventHandler(this.cmdClearCol_Click);
             // 
             // chkDeleteInvalidEntries
@@ -255,14 +258,15 @@
             this.chkDeleteInvalidEntries.Size = new System.Drawing.Size(311, 16);
             this.chkDeleteInvalidEntries.TabIndex = 5;
             this.chkDeleteInvalidEntries.Text = "(Patch NSD) Delete non-existent entries from load lists";
-            this.chkDeleteInvalidEntries.UseVisualStyleBackColor = true;
             this.chkDeleteInvalidEntries.CheckedChanged += new System.EventHandler(this.chkDeleteInvalidEntries_CheckedChanged);
             // 
             // fraAnimGrid
             // 
+            this.fraAnimGrid.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
             this.fraAnimGrid.Controls.Add(this.numAnimGrid);
             this.fraAnimGrid.Controls.Add(this.lblAnimGrid);
             this.fraAnimGrid.Controls.Add(this.chkAnimGrid);
+            this.fraAnimGrid.ForeColor = System.Drawing.SystemColors.Window;
             this.fraAnimGrid.Location = new System.Drawing.Point(275, 54);
             this.fraAnimGrid.Name = "fraAnimGrid";
             this.fraAnimGrid.Size = new System.Drawing.Size(184, 68);
@@ -305,7 +309,6 @@
             this.chkAnimGrid.Size = new System.Drawing.Size(64, 16);
             this.chkAnimGrid.TabIndex = 0;
             this.chkAnimGrid.Text = "Enabled";
-            this.chkAnimGrid.UseVisualStyleBackColor = true;
             this.chkAnimGrid.CheckedChanged += new System.EventHandler(this.chkAnimGrid_CheckedChanged);
             // 
             // chkPatchNSDSavesNSF
@@ -318,7 +321,6 @@
             this.chkPatchNSDSavesNSF.Size = new System.Drawing.Size(285, 16);
             this.chkPatchNSDSavesNSF.TabIndex = 8;
             this.chkPatchNSDSavesNSF.Text = "(Patch NSD) Always save NSF after NSD patching";
-            this.chkPatchNSDSavesNSF.UseVisualStyleBackColor = true;
             this.chkPatchNSDSavesNSF.CheckedChanged += new System.EventHandler(this.chkPatchNSDSavesNSF_CheckedChanged);
             // 
             // chkOldPatchNSD
@@ -332,14 +334,13 @@
             this.chkOldPatchNSD.Size = new System.Drawing.Size(332, 16);
             this.chkOldPatchNSD.TabIndex = 9;
             this.chkOldPatchNSD.Text = "(Patch NSD) Use old NSD patching from CrashEdit v0.2.49.0";
-            this.chkOldPatchNSD.UseVisualStyleBackColor = true;
             this.chkOldPatchNSD.CheckedChanged += new System.EventHandler(this.ChkOldPatchNSD_CheckedChanged);
             // 
             // ConfigEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.Controls.Add(this.chkOldPatchNSD);
             this.Controls.Add(this.chkPatchNSDSavesNSF);
             this.Controls.Add(this.fraAnimGrid);
@@ -351,6 +352,7 @@
             this.Controls.Add(this.cmdReset);
             this.Controls.Add(this.fraLang);
             this.Controls.Add(this.fraClearCol);
+            this.ForeColor = System.Drawing.SystemColors.Window;
             this.Name = "ConfigEditor";
             this.Size = new System.Drawing.Size(474, 287);
             this.Load += new System.EventHandler(this.ConfigEditor_Load);
@@ -371,27 +373,27 @@
 
         #endregion
 
-        private System.Windows.Forms.ComboBox dpdLang;
+        private DarkUI.Controls.DarkComboBox dpdLang;
         private System.Windows.Forms.GroupBox fraLang;
-        private System.Windows.Forms.Button cmdReset;
+        private DarkUI.Controls.DarkButton cmdReset;
         private System.Windows.Forms.GroupBox fraSize;
         private System.Windows.Forms.Label lblH;
         private System.Windows.Forms.Label lblW;
-        private System.Windows.Forms.NumericUpDown numH;
-        private System.Windows.Forms.NumericUpDown numW;
-        private System.Windows.Forms.CheckBox chkNormalDisplay;
-        private System.Windows.Forms.CheckBox chkCollisionDisplay;
-        private System.Windows.Forms.CheckBox chkUseAnimLinks;
+        private DarkUI.Controls.DarkNumericUpDown numH;
+        private DarkUI.Controls.DarkNumericUpDown numW;
+        private DarkUI.Controls.DarkCheckBox chkNormalDisplay;
+        private DarkUI.Controls.DarkCheckBox chkCollisionDisplay;
+        private DarkUI.Controls.DarkCheckBox chkUseAnimLinks;
         private System.Windows.Forms.ColorDialog cdlClearCol;
         private System.Windows.Forms.GroupBox fraClearCol;
         private System.Windows.Forms.PictureBox picClearCol;
-        private System.Windows.Forms.CheckBox chkDeleteInvalidEntries;
+        private DarkUI.Controls.DarkCheckBox chkDeleteInvalidEntries;
         private System.Windows.Forms.GroupBox fraAnimGrid;
-        private System.Windows.Forms.NumericUpDown numAnimGrid;
+        private DarkUI.Controls.DarkNumericUpDown numAnimGrid;
         private System.Windows.Forms.Label lblAnimGrid;
-        private System.Windows.Forms.CheckBox chkAnimGrid;
-        private System.Windows.Forms.Button cmdClearCol;
-        private System.Windows.Forms.CheckBox chkPatchNSDSavesNSF;
-        private System.Windows.Forms.CheckBox chkOldPatchNSD;
+        private DarkUI.Controls.DarkCheckBox chkAnimGrid;
+        private DarkUI.Controls.DarkButton cmdClearCol;
+        private DarkUI.Controls.DarkCheckBox chkPatchNSDSavesNSF;
+        private DarkUI.Controls.DarkCheckBox chkOldPatchNSD;
     }
 }
