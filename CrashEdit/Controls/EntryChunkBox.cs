@@ -33,6 +33,8 @@ namespace CrashEdit
             lstEntryList.Items.Clear();
             foreach (Entry entry in controller.EntryChunk.Entries)
             {
+                lstEntryList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+                lstEntryList.ForeColor = System.Drawing.SystemColors.Control;
                 var this_size = Aligner.Align(entry.Save().Length, controller.EntryChunk.Alignment);
                 lstEntryList.Items.Add(string.Format("{0}: {1} bytes", entry.EName, this_size));
                 totalsize += this_size;
