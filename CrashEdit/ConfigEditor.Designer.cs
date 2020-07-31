@@ -234,12 +234,15 @@
             // 
             // cmdClearCol
             // 
+            this.cmdClearCol.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.cmdClearCol.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmdClearCol.ForeColor = System.Drawing.SystemColors.MenuText;
             this.cmdClearCol.Location = new System.Drawing.Point(73, 39);
             this.cmdClearCol.Name = "cmdClearCol";
             this.cmdClearCol.Size = new System.Drawing.Size(49, 24);
             this.cmdClearCol.TabIndex = 7;
             this.cmdClearCol.Text = "Reset";
-            this.cmdClearCol.UseVisualStyleBackColor = true;
+            this.cmdClearCol.UseVisualStyleBackColor = false;
             this.cmdClearCol.Click += new System.EventHandler(this.cmdClearCol_Click);
             // 
             // chkDeleteInvalidEntries

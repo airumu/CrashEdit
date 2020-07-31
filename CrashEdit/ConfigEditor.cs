@@ -1,6 +1,7 @@
 ﻿using CrashEdit.Properties;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace CrashEdit
@@ -95,10 +96,25 @@ namespace CrashEdit
             }
         }
 
+        private void cmdClearCol_EnabledChanged(object sender, EventArgs e)
+        {
+            if (cmdClearCol.Enabled)
+            {
+                cmdClearCol.BackColor = Color.Black;
+            }
+            else
+            {
+                cmdClearCol.BackColor = Color.White;
+            }
+        }
+
         private void cmdClearCol_Click(object sender, EventArgs e)
         {
             picClearCol.BackColor = Settings.Default.ClearColor = System.Drawing.Color.Black;
             Settings.Default.Save();
+            cmdClearCol.Enabled = false;
+            //背景色を灰色にしない
+            cmdClearCol.BackColor = cmdClearCol.BackColor;
         }
 
         private void chkDeleteInvalidEntries_CheckedChanged(object sender, EventArgs e)

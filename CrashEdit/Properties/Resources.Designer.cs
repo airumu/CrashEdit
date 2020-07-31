@@ -668,7 +668,7 @@ namespace CrashEdit.Properties {
         }
         
         /// <summary>
-        ///   DDA Death/1-Up Count に類似しているローカライズされた文字列を検索します。
+        ///   DDA Death Count に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string EntityBox_FraDDASettings {
             get {
