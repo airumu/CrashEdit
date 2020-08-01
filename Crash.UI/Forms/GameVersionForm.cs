@@ -1,9 +1,10 @@
 using System;
 using System.Windows.Forms;
+using DarkUI.Forms;
 
 namespace Crash.UI
 {
-    public partial class GameVersionForm : Form
+    public partial class GameVersionForm : DarkForm
     {
         public GameVersionForm()
         {

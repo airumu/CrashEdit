@@ -129,6 +129,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="DarkUI">
+      <HintPath>..\..\..\..\..\Downloads\DarkUI-master\DarkUI-master\DarkUI\bin\Debug\DarkUI.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
