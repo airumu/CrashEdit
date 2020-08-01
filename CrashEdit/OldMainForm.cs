@@ -11,10 +11,13 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Threading.Tasks;
 using CrashEdit.Properties;
+using DarkUI.Controls;
+using DarkUI.Forms;
+using System.Drawing;
 
 namespace CrashEdit
 {
-    public sealed class OldMainForm : Form
+    public sealed class OldMainForm : DarkForm
     {
         private static ImageList imglist;
 
@@ -37,7 +40,7 @@ namespace CrashEdit
             }
         }
 
-        private ToolStrip tsToolbar;
+        private DarkToolStrip tsToolbar;
         private ToolStripButton tbbOpen;
         private ToolStripButton tbbSave;
         private ToolStripButton tbbPatchNSD;
@@ -52,7 +55,7 @@ namespace CrashEdit
         private ToolStripMenuItem tbxConvertVAB;
         private ToolStripDropDownButton tbbExtra;
         private ToolStripButton tbbPlay;
-        private TabControl tbcTabs;
+        private VisualStudioTabControl.VisualStudioTabControl tbcTabs;
         private GameVersionForm dlgGameVersion;
         private ToolStripButton tbbPAL;
 
@@ -70,8 +73,12 @@ namespace CrashEdit
                 Text = Resources.Toolbar_Open,
                 ImageKey = "tb_open",
                 TextImageRelation = TextImageRelation.ImageAboveText
-            };
+        };
             tbbOpen.Click += new EventHandler(tbbOpen_Click);
+            tbbOpen.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            tbbOpen.ForeColor = SystemColors.Control;
+            tbbOpen.Size = new System.Drawing.Size(48, 40);
+
 
             tbbSave = new ToolStripButton
             {
@@ -80,6 +87,9 @@ namespace CrashEdit
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
             tbbSave.Click += new EventHandler(tbbSave_Click);
+            tbbSave.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            tbbSave.ForeColor = SystemColors.Control;
+            tbbSave.Size = new System.Drawing.Size(48, 40);
 
             tbbPatchNSD = new ToolStripButton
             {
@@ -88,6 +98,9 @@ namespace CrashEdit
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
             tbbPatchNSD.Click += new EventHandler(tbbPatchNSD_Click);
+            tbbPatchNSD.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            tbbPatchNSD.ForeColor = SystemColors.Control;
+            tbbPatchNSD.Size = new System.Drawing.Size(64, 40);
 
             tbbClose = new ToolStripButton
             {
@@ -96,6 +109,9 @@ namespace CrashEdit
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
             tbbClose.Click += new EventHandler(tbbClose_Click);
+            tbbClose.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            tbbClose.ForeColor = SystemColors.Control;
+            tbbClose.Size = new System.Drawing.Size(48, 40);
 
             tbbFind = new ToolStripButton
             {
@@ -104,6 +120,9 @@ namespace CrashEdit
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
             tbbFind.Click += new EventHandler(tbbFind_Click);
+            tbbFind.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            tbbFind.ForeColor = SystemColors.Control;
+            tbbFind.Size = new System.Drawing.Size(48, 40);
 
             tbbFindNext = new ToolStripButton
             {
@@ -112,34 +131,48 @@ namespace CrashEdit
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
             tbbFindNext.Click += new EventHandler(tbbFindNext_Click);
+            tbbFindNext.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            tbbFindNext.ForeColor = SystemColors.Control;
+            tbbFindNext.Size = new System.Drawing.Size(64, 40);
 
             tbxMakeBIN = new ToolStripMenuItem();
             tbxMakeBIN.Text = Properties.Resources.OldMainForm_tbxMakeBIN;
             tbxMakeBIN.Click += new EventHandler(tbxMakeBIN_Click);
+            tbxMakeBIN.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            tbxMakeBIN.ForeColor = SystemColors.Control;
 
             tbxMakeBINUSA = new ToolStripMenuItem();
             tbxMakeBINUSA.Text = Properties.Resources.OldMainForm_tbxMakeBINUSA;
             tbxMakeBINUSA.Click += new EventHandler(tbxMakeBIN_Click);
+            tbxMakeBINUSA.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            tbxMakeBINUSA.ForeColor = SystemColors.Control;
 
             tbxMakeBINEUR = new ToolStripMenuItem();
             tbxMakeBINEUR.Text = Properties.Resources.OldMainForm_tbxMakeBINEUR;
             tbxMakeBINEUR.Click += new EventHandler(tbxMakeBIN_Click);
+            tbxMakeBINEUR.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            tbxMakeBINEUR.ForeColor = SystemColors.Control;
 
             tbxMakeBINJAP = new ToolStripMenuItem();
             tbxMakeBINJAP.Text = Properties.Resources.OldMainForm_tbxMakeBINJAP;
             tbxMakeBINJAP.Click += new EventHandler(tbxMakeBIN_Click);
+            tbxMakeBINJAP.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            tbxMakeBINJAP.ForeColor = SystemColors.Control;
 
             tbxConvertVHVB = new ToolStripMenuItem();
             tbxConvertVHVB.Text = Properties.Resources.OldMainForm_tbxConvertVHVB;
             tbxConvertVHVB.Click += new EventHandler(tbxConvertVHVB_Click);
+            tbxConvertVHVB.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            tbxConvertVHVB.ForeColor = SystemColors.Control;
 
             tbxConvertVAB = new ToolStripMenuItem();
             tbxConvertVAB.Text = Properties.Resources.OldMainForm_tbxConvertVAB;
             tbxConvertVAB.Click += new EventHandler(tbxConvertVAB_Click);
+            tbxConvertVAB.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            tbxConvertVAB.ForeColor = SystemColors.Control;
 
             tbbExtra = new ToolStripDropDownButton();
             tbbExtra.Text = Properties.Resources.OldMainForm_tbbExtra;
-            tbbExtra.DropDown = new ToolStripDropDown { LayoutStyle = ToolStripLayoutStyle.VerticalStackWithOverflow };
             tbbExtra.DropDown.Items.Add(tbxMakeBIN);
             tbbExtra.DropDown.Items.Add(tbxMakeBINUSA);
             tbbExtra.DropDown.Items.Add(tbxMakeBINEUR);
@@ -147,6 +180,7 @@ namespace CrashEdit
             tbbExtra.DropDown.Items.Add("-");
             tbbExtra.DropDown.Items.Add(tbxConvertVHVB);
             tbbExtra.DropDown.Items.Add(tbxConvertVAB);
+            tbbExtra.Size = new System.Drawing.Size(48, 40);
 
             tbbPAL = new ToolStripButton
             {
@@ -156,6 +190,7 @@ namespace CrashEdit
                 CheckOnClick = true
             };
             tbbPAL.Click += new EventHandler(tbbPAL_Click);
+            tbbPAL.Size = new System.Drawing.Size(40, 40);
 
             tbbPlay = new ToolStripButton
             {
@@ -163,12 +198,14 @@ namespace CrashEdit
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
             tbbPlay.Click += new EventHandler(tbbPlay_Click);
+            tbbPlay.Size = new System.Drawing.Size(40, 40);
 
-            tsToolbar = new ToolStrip
+            tsToolbar = new DarkToolStrip
             {
                 Dock = DockStyle.Top,
                 ImageList = imglist
             };
+            tsToolbar.Size = new System.Drawing.Size(747, 40);
             tsToolbar.Items.Add(tbbOpen);
             tsToolbar.Items.Add(tbbSave);
             tsToolbar.Items.Add(tbbPatchNSD);
@@ -182,11 +219,13 @@ namespace CrashEdit
             tsToolbar.Items.Add(new ToolStripSeparator());
             tsToolbar.Items.Add(tbbPlay);
 
-            tbcTabs = new TabControl
+            tbcTabs = new VisualStudioTabControl.VisualStudioTabControl
             {
                 Dock = DockStyle.Fill
             };
             tbcTabs.SelectedIndexChanged += tbcTabs_SelectedIndexChanged;
+            tbcTabs.Padding = new System.Drawing.Point(0, 3);
+            tbcTabs.Font = new System.Drawing.Font("MS UI Gothic", 9F);
 
             TabPage configtab = new TabPage("CrashEdit")
             {
@@ -239,7 +278,7 @@ namespace CrashEdit
 
             var nsfFilenameBase = Path.GetFileName(nsfFilename);
             if (nsfFilenameBase.Length != 12) {
-                MessageBox.Show(string.Format(Resources.Playtest_Error1, nsfFilename), Resources.Playtest_Title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                DarkMessageBox.ShowError(string.Format(Resources.Playtest_Error1, nsfFilename), Resources.Playtest_Title);
                 return;
             }
             var levelID = int.Parse(nsfFilenameBase.Substring(6, 2), System.Globalization.NumberStyles.HexNumber);
@@ -257,12 +296,12 @@ namespace CrashEdit
             }
             else
             {
-                MessageBox.Show(string.Format(Resources.Playtest_Error2, nsfFilename), Resources.Playtest_Title, MessageBoxButtons.OK,MessageBoxIcon.Error);
+                DarkMessageBox.ShowError(string.Format(Resources.Playtest_Error2, nsfFilename), Resources.Playtest_Title);
                 return;
             }
 
             if (!File.Exists(nsdFilename)) {
-                MessageBox.Show(string.Format(Resources.Playtest_Error3, nsdFilename), Resources.Playtest_Title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                DarkMessageBox.ShowError(string.Format(Resources.Playtest_Error3, nsdFilename), Resources.Playtest_Title);
                 return;
             }
 
@@ -275,7 +314,7 @@ namespace CrashEdit
                 }
             }
             if (exeFilename == null) {
-                MessageBox.Show(Resources.Playtest_Error4, Resources.Playtest_Title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                DarkMessageBox.ShowError(Resources.Playtest_Error4, Resources.Playtest_Title);
                 return;
             }
 
@@ -433,22 +472,22 @@ namespace CrashEdit
             try
             {
                 byte[] nsfdata = nsf.Save();
-                if (ignore_warnings ? true : MessageBox.Show(Resources.SaveNSF, Resources.Save_ConfirmationPrompt, MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (ignore_warnings ? true : DarkMessageBox.ShowInformation(Resources.SaveNSF, Resources.Save_ConfirmationPrompt, DarkDialogButton.YesNo) == DialogResult.Yes)
                 {
                     File.WriteAllBytes(filename,nsfdata);
                 }
             }
             catch (PackingException ex)
             {
-                MessageBox.Show(string.Format(Resources.SaveNSF_Error1, Entry.EIDToEName(ex.EID)), Resources.SaveNSF_Title, MessageBoxButtons.OK,MessageBoxIcon.Error);
+                DarkMessageBox.ShowError(string.Format(Resources.SaveNSF_Error1, Entry.EIDToEName(ex.EID)), Resources.SaveNSF_Title);
             }
             catch (IOException ex)
             {
-                MessageBox.Show(Resources.SaveNSF_Error2 + ex.Message, Resources.SaveNSF_Title, MessageBoxButtons.OK,MessageBoxIcon.Error);
+                DarkMessageBox.ShowError(Resources.SaveNSF_Error2 + ex.Message, Resources.SaveNSF_Title);
             }
             catch (UnauthorizedAccessException ex)
             {
-                MessageBox.Show(Resources.SaveNSF_Error3 + ex.Message, Resources.SaveNSF_Title, MessageBoxButtons.OK,MessageBoxIcon.Error);
+                DarkMessageBox.ShowError(Resources.SaveNSF_Error3 + ex.Message, Resources.SaveNSF_Title);
             }
         }
 
@@ -469,7 +508,7 @@ namespace CrashEdit
                 }
                 else
                 {
-                    MessageBox.Show(string.Format(Resources.PatchNSD_Error1, filename), Resources.PatchNSD_Title1, MessageBoxButtons.OK,MessageBoxIcon.Error);
+                    DarkMessageBox.ShowError(string.Format(Resources.PatchNSD_Error1, filename), Resources.PatchNSD_Title1);
                     return;
                 }
                 NSFBox nsfbox = (NSFBox)tbcTabs.SelectedTab.Tag;
@@ -523,7 +562,7 @@ namespace CrashEdit
                         }
                         break;
                     default:
-                        if (!ignore_warnings) MessageBox.Show(Resources.PatchNSD_Error2, Resources.PatchNSD_Title1, MessageBoxButtons.OK);
+                        if (!ignore_warnings) DarkMessageBox.ShowError(Resources.PatchNSD_Error2, Resources.PatchNSD_Title1);
                         return;
                 }
                 nsfc.Node.TreeView.BeginUpdate();
@@ -561,7 +600,7 @@ namespace CrashEdit
                     }
                 }
                 nsfc.Node.TreeView.EndUpdate();
-                if (ignore_warnings ? true : (order_updated && MessageBox.Show(Resources.PatchNSD3, Resources.PatchNSD_Title1, MessageBoxButtons.YesNo) == DialogResult.Yes))
+                if (ignore_warnings ? true : (order_updated && DarkMessageBox.ShowInformation(Resources.PatchNSD3, Resources.PatchNSD_Title1, DarkDialogButton.YesNo) == DialogResult.Yes))
                 {
                     SaveNSF(true);
                 }
@@ -637,7 +676,7 @@ namespace CrashEdit
                     question += eid + "\n";
                 }
                 question += "\nDo you want to add these to the end of the NSD's entry index?";
-                if (MessageBox.Show(question, "Patch NSD - New EID's", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (DarkMessageBox.ShowInformation(question, "Patch NSD - New EID's", DarkDialogButton.YesNo) == DialogResult.Yes)
                 {
                     foreach (KeyValuePair<int, int> kvp in newindex)
                     {
@@ -692,7 +731,7 @@ namespace CrashEdit
 
             if (Settings.Default.PatchNSDSavesNSF)
             {
-                if (MessageBox.Show("Are you sure you want to overwrite the NSD file?\n\nEIDs will be swapped if NSD hash map is not in correct order,\nand all loadlists will be sorted according to the NSD.\n\nThe NSF file will be saved automatically.", Resources.Save_ConfirmationPrompt, MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (DarkMessageBox.ShowInformation("Are you sure you want to overwrite the NSD file?\n\nEIDs will be swapped if NSD hash map is not in correct order,\nand all loadlists will be sorted according to the NSD.\n\nThe NSF file will be saved automatically.", Resources.Save_ConfirmationPrompt, DarkDialogButton.YesNo) == DialogResult.Yes)
                 {
                     File.WriteAllBytes(path, nsd.Save());
                     foreach (Chunk chunk in nsf.Chunks)
@@ -734,7 +773,7 @@ namespace CrashEdit
                     SaveNSF(true);
                 }
             }
-            else if (MessageBox.Show("Are you sure you want to overwrite the NSD file?\n\nEIDs will be swapped if NSD hash map is not in correct order,\nand all loadlists will be sorted according to the NSD.\n\nThe NSF file will be saved automatically.", Resources.Save_ConfirmationPrompt, MessageBoxButtons.YesNo) == DialogResult.Yes)
+            else if (DarkMessageBox.ShowInformation("Are you sure you want to overwrite the NSD file?\n\nEIDs will be swapped if NSD hash map is not in correct order,\nand all loadlists will be sorted according to the NSD.\n\nThe NSF file will be saved automatically.", Resources.Save_ConfirmationPrompt, DarkDialogButton.YesNo) == DialogResult.Yes)
             {
                 File.WriteAllBytes(path, nsd.Save());
                 foreach (Chunk chunk in nsf.Chunks)
@@ -842,7 +881,7 @@ namespace CrashEdit
                     question += eid + "\n";
                 }
                 question += "\nDo you want to add these to the end of the NSD's entry index?";
-                if (MessageBox.Show(question, "Patch NSD - New EID's", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (DarkMessageBox.ShowInformation(question, "Patch NSD - New EID's", DarkDialogButton.YesNo) == DialogResult.Yes)
                 {
                     foreach (KeyValuePair<int, int> kvp in newindex)
                     {
@@ -897,7 +936,7 @@ namespace CrashEdit
             }
             if (Settings.Default.PatchNSDSavesNSF)
             {
-                if (MessageBox.Show("Are you sure you want to overwrite the NSD file?\n\nEIDs will be swapped if NSD hash map is not in correct order,\nand all loadlists will be sorted according to the NSD.\n\nThe NSF file will be saved automatically.", Resources.Save_ConfirmationPrompt, MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (DarkMessageBox.ShowInformation("Are you sure you want to overwrite the NSD file?\n\nEIDs will be swapped if NSD hash map is not in correct order,\nand all loadlists will be sorted according to the NSD.\n\nThe NSF file will be saved automatically.", Resources.Save_ConfirmationPrompt, DarkDialogButton.YesNo) == DialogResult.Yes)
                 {
                     File.WriteAllBytes(path, nsd.Save());
                     foreach (Chunk chunk in nsf.Chunks)
@@ -941,7 +980,7 @@ namespace CrashEdit
                     SaveNSF(true);
                 }
             }
-            else if (MessageBox.Show("Are you sure you want to overwrite the NSD file?\n\nIf NSD hash map is not in correct order, EIDs will be swapped.\nAll loadlists will be sorted according to the NSD.", Resources.Save_ConfirmationPrompt, MessageBoxButtons.YesNo) == DialogResult.Yes)
+            else if (DarkMessageBox.ShowInformation("Are you sure you want to overwrite the NSD file?\n\nIf NSD hash map is not in correct order, EIDs will be swapped.\nAll loadlists will be sorted according to the NSD.", Resources.Save_ConfirmationPrompt, DarkDialogButton.YesNo) == DialogResult.Yes)
             {
                 File.WriteAllBytes(path, nsd.Save());
                 /*}
@@ -995,7 +1034,7 @@ namespace CrashEdit
             nsd.HashKeyMap = indexdata.Item1;
             nsd.Index = indexdata.Item2;
             PatchNSDGoolMap(nsd.GOOLMap, nsf);
-            if (ignore_warnings ? true : MessageBox.Show(Resources.PatchNSD1, Resources.Save_ConfirmationPrompt, MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (ignore_warnings ? true : DarkMessageBox.ShowInformation(Resources.PatchNSD1, Resources.Save_ConfirmationPrompt, DarkDialogButton.YesNo) == DialogResult.Yes)
             {
                 File.WriteAllBytes(path, nsd.Save());
             }
@@ -1007,7 +1046,7 @@ namespace CrashEdit
             var indexdata = nsf.MakeNSDIndex();
             nsd.HashKeyMap = indexdata.Item1;
             nsd.Index = indexdata.Item2;
-            if (ignore_warnings ? true : MessageBox.Show(Resources.PatchNSD1, Resources.Save_ConfirmationPrompt, MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (ignore_warnings ? true : DarkMessageBox.ShowInformation(Resources.PatchNSD1, Resources.Save_ConfirmationPrompt, DarkDialogButton.YesNo) == DialogResult.Yes)
             {
                 File.WriteAllBytes(path, nsd.Save());
             }
@@ -1051,7 +1090,7 @@ namespace CrashEdit
                 nsfdata = null;
             }
             byte[] olddata = File.ReadAllBytes(filename);
-            if (nsfdata == null || (nsfdata.Length == olddata.Length && nsfdata.SequenceEqual(olddata)) || MessageBox.Show(Resources.CloseNSF, Resources.Close_ConfirmationPrompt, MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (nsfdata == null || (nsfdata.Length == olddata.Length && nsfdata.SequenceEqual(olddata)) || DarkMessageBox.ShowWarning(Resources.CloseNSF, Resources.Close_ConfirmationPrompt, DarkDialogButton.YesNo) == DialogResult.Yes)
             {
                 TabPage tab = tbcTabs.SelectedTab;
                 if (tab != null)
@@ -1102,12 +1141,12 @@ namespace CrashEdit
 
             if (dlgMakeBINDir.ShowDialog(this) != DialogResult.OK)
                 return;
-
+            
             string cnffile = Path.Combine(dlgMakeBINDir.SelectedPath, "SYSTEM.CNF");
             string exefile = Path.Combine(dlgMakeBINDir.SelectedPath, "PSX.EXE");
 
             if (!File.Exists(cnffile) && !File.Exists(exefile)) {
-                if (MessageBox.Show(Resources.MakeBIN1, Resources.MakeBIN_Title, MessageBoxButtons.YesNo, MessageBoxIcon.Stop) != DialogResult.Yes)
+                if (DarkMessageBox.ShowWarning(Resources.MakeBIN1, Resources.MakeBIN_Title, DarkDialogButton.YesNo) != DialogResult.Yes)
                     return;
             }
 
@@ -1251,6 +1290,18 @@ namespace CrashEdit
                 configtab.Tag = new ConfigEditor() { Dock = DockStyle.Fill };
                 configtab.Controls.Add((ConfigEditor)configtab.Tag);
             }
+        }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // OldMainForm
+            // 
+            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Name = "OldMainForm";
+            this.ResumeLayout(false);
+
         }
     }
 }
