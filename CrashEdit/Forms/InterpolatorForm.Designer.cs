@@ -28,32 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.cmdCancel = new System.Windows.Forms.Button();
-            this.cmdOK = new System.Windows.Forms.Button();
-            this.dpdFunc = new System.Windows.Forms.ComboBox();
-            this.lblX = new System.Windows.Forms.Label();
-            this.lblY = new System.Windows.Forms.Label();
-            this.lblZ = new System.Windows.Forms.Label();
-            this.numX = new System.Windows.Forms.NumericUpDown();
-            this.numY = new System.Windows.Forms.NumericUpDown();
-            this.numZ = new System.Windows.Forms.NumericUpDown();
-            this.lblAverage = new System.Windows.Forms.Label();
+            this.cmdCancel = new DarkUI.Controls.DarkButton();
+            this.cmdOK = new DarkUI.Controls.DarkButton();
+            this.dpdFunc = new DarkUI.Controls.DarkComboBox();
+            this.lblX = new DarkUI.Controls.DarkLabel();
+            this.lblY = new DarkUI.Controls.DarkLabel();
+            this.lblZ = new DarkUI.Controls.DarkLabel();
+            this.numX = new DarkUI.Controls.DarkNumericUpDown();
+            this.numY = new DarkUI.Controls.DarkNumericUpDown();
+            this.numZ = new DarkUI.Controls.DarkNumericUpDown();
+            this.lblAverage = new DarkUI.Controls.DarkLabel();
             this.fraFunction = new System.Windows.Forms.GroupBox();
             this.fraPosition = new System.Windows.Forms.GroupBox();
-            this.lblPosition = new System.Windows.Forms.Label();
-            this.cmdNext = new System.Windows.Forms.Button();
-            this.cmdPrev = new System.Windows.Forms.Button();
-            this.cmdLast = new System.Windows.Forms.Button();
-            this.cmdFirst = new System.Windows.Forms.Button();
+            this.lblPosition = new DarkUI.Controls.DarkLabel();
+            this.cmdNext = new DarkUI.Controls.DarkButton();
+            this.cmdPrev = new DarkUI.Controls.DarkButton();
+            this.cmdLast = new DarkUI.Controls.DarkButton();
+            this.cmdFirst = new DarkUI.Controls.DarkButton();
             this.fraBound = new System.Windows.Forms.GroupBox();
-            this.numEnd = new System.Windows.Forms.NumericUpDown();
-            this.numStart = new System.Windows.Forms.NumericUpDown();
+            this.numEnd = new DarkUI.Controls.DarkNumericUpDown();
+            this.numStart = new DarkUI.Controls.DarkNumericUpDown();
             this.fraAmount = new System.Windows.Forms.GroupBox();
-            this.numAmount = new System.Windows.Forms.NumericUpDown();
+            this.numAmount = new DarkUI.Controls.DarkNumericUpDown();
             this.fraTension = new System.Windows.Forms.GroupBox();
-            this.numTension = new System.Windows.Forms.NumericUpDown();
+            this.numTension = new DarkUI.Controls.DarkNumericUpDown();
             this.fraOrder = new System.Windows.Forms.GroupBox();
-            this.numOrder = new System.Windows.Forms.NumericUpDown();
+            this.numOrder = new DarkUI.Controls.DarkNumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.numX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numZ)).BeginInit();
@@ -74,64 +74,67 @@
             // 
             this.cmdCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cmdCancel.Location = new System.Drawing.Point(194, 265);
+            this.cmdCancel.Location = new System.Drawing.Point(194, 245);
             this.cmdCancel.Name = "cmdCancel";
-            this.cmdCancel.Size = new System.Drawing.Size(75, 23);
+            this.cmdCancel.Padding = new System.Windows.Forms.Padding(5);
+            this.cmdCancel.Size = new System.Drawing.Size(75, 21);
             this.cmdCancel.TabIndex = 3;
             this.cmdCancel.Text = "Cancel";
-            this.cmdCancel.UseVisualStyleBackColor = true;
             this.cmdCancel.Click += new System.EventHandler(this.cmdCancel_Click);
             // 
             // cmdOK
             // 
             this.cmdOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmdOK.Location = new System.Drawing.Point(113, 265);
+            this.cmdOK.Location = new System.Drawing.Point(113, 245);
             this.cmdOK.Name = "cmdOK";
-            this.cmdOK.Size = new System.Drawing.Size(75, 23);
+            this.cmdOK.Padding = new System.Windows.Forms.Padding(5);
+            this.cmdOK.Size = new System.Drawing.Size(75, 21);
             this.cmdOK.TabIndex = 4;
             this.cmdOK.Text = "Interpolate!";
-            this.cmdOK.UseVisualStyleBackColor = true;
             this.cmdOK.Click += new System.EventHandler(this.cmdOK_Click);
             // 
             // dpdFunc
             // 
-            this.dpdFunc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.dpdFunc.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
             this.dpdFunc.FormattingEnabled = true;
-            this.dpdFunc.Location = new System.Drawing.Point(6, 19);
+            this.dpdFunc.Location = new System.Drawing.Point(6, 18);
             this.dpdFunc.Name = "dpdFunc";
-            this.dpdFunc.Size = new System.Drawing.Size(121, 21);
+            this.dpdFunc.Size = new System.Drawing.Size(121, 20);
             this.dpdFunc.TabIndex = 5;
             // 
             // lblX
             // 
             this.lblX.AutoSize = true;
-            this.lblX.Location = new System.Drawing.Point(6, 35);
+            this.lblX.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblX.Location = new System.Drawing.Point(6, 32);
             this.lblX.Name = "lblX";
-            this.lblX.Size = new System.Drawing.Size(14, 13);
+            this.lblX.Size = new System.Drawing.Size(12, 12);
             this.lblX.TabIndex = 0;
             this.lblX.Text = "X";
             // 
             // lblY
             // 
             this.lblY.AutoSize = true;
-            this.lblY.Location = new System.Drawing.Point(6, 61);
+            this.lblY.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblY.Location = new System.Drawing.Point(6, 56);
             this.lblY.Name = "lblY";
-            this.lblY.Size = new System.Drawing.Size(14, 13);
+            this.lblY.Size = new System.Drawing.Size(12, 12);
             this.lblY.TabIndex = 1;
             this.lblY.Text = "Y";
             // 
             // lblZ
             // 
             this.lblZ.AutoSize = true;
-            this.lblZ.Location = new System.Drawing.Point(6, 87);
+            this.lblZ.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblZ.Location = new System.Drawing.Point(6, 80);
             this.lblZ.Name = "lblZ";
-            this.lblZ.Size = new System.Drawing.Size(14, 13);
+            this.lblZ.Size = new System.Drawing.Size(12, 12);
             this.lblZ.TabIndex = 2;
             this.lblZ.Text = "Z";
             // 
             // numX
             // 
-            this.numX.Location = new System.Drawing.Point(26, 33);
+            this.numX.Location = new System.Drawing.Point(26, 30);
             this.numX.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -144,12 +147,12 @@
             -2147483648});
             this.numX.Name = "numX";
             this.numX.ReadOnly = true;
-            this.numX.Size = new System.Drawing.Size(86, 20);
+            this.numX.Size = new System.Drawing.Size(86, 19);
             this.numX.TabIndex = 3;
             // 
             // numY
             // 
-            this.numY.Location = new System.Drawing.Point(26, 59);
+            this.numY.Location = new System.Drawing.Point(26, 54);
             this.numY.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -162,12 +165,12 @@
             -2147483648});
             this.numY.Name = "numY";
             this.numY.ReadOnly = true;
-            this.numY.Size = new System.Drawing.Size(86, 20);
+            this.numY.Size = new System.Drawing.Size(86, 19);
             this.numY.TabIndex = 4;
             // 
             // numZ
             // 
-            this.numZ.Location = new System.Drawing.Point(26, 85);
+            this.numZ.Location = new System.Drawing.Point(26, 78);
             this.numZ.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -180,34 +183,36 @@
             -2147483648});
             this.numZ.Name = "numZ";
             this.numZ.ReadOnly = true;
-            this.numZ.Size = new System.Drawing.Size(86, 20);
+            this.numZ.Size = new System.Drawing.Size(86, 19);
             this.numZ.TabIndex = 5;
             // 
             // lblAverage
             // 
             this.lblAverage.AutoSize = true;
-            this.lblAverage.Location = new System.Drawing.Point(12, 245);
+            this.lblAverage.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblAverage.Location = new System.Drawing.Point(12, 226);
             this.lblAverage.Name = "lblAverage";
-            this.lblAverage.Size = new System.Drawing.Size(128, 13);
+            this.lblAverage.Size = new System.Drawing.Size(138, 12);
             this.lblAverage.TabIndex = 11;
             this.lblAverage.Text = "Average Point Distance: -";
             // 
             // fraFunction
             // 
-            this.fraFunction.AutoSize = true;
             this.fraFunction.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.fraFunction.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(38)))));
             this.fraFunction.Controls.Add(this.dpdFunc);
-            this.fraFunction.Location = new System.Drawing.Point(136, 60);
+            this.fraFunction.ForeColor = System.Drawing.SystemColors.Control;
+            this.fraFunction.Location = new System.Drawing.Point(136, 55);
             this.fraFunction.Name = "fraFunction";
-            this.fraFunction.Size = new System.Drawing.Size(133, 59);
+            this.fraFunction.Size = new System.Drawing.Size(133, 48);
             this.fraFunction.TabIndex = 0;
             this.fraFunction.TabStop = false;
             this.fraFunction.Text = "Progress Function";
             // 
             // fraPosition
             // 
-            this.fraPosition.AutoSize = true;
             this.fraPosition.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.fraPosition.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(38)))));
             this.fraPosition.Controls.Add(this.lblPosition);
             this.fraPosition.Controls.Add(this.cmdNext);
             this.fraPosition.Controls.Add(this.lblX);
@@ -219,9 +224,10 @@
             this.fraPosition.Controls.Add(this.numX);
             this.fraPosition.Controls.Add(this.numZ);
             this.fraPosition.Controls.Add(this.numY);
-            this.fraPosition.Location = new System.Drawing.Point(12, 12);
+            this.fraPosition.ForeColor = System.Drawing.SystemColors.Control;
+            this.fraPosition.Location = new System.Drawing.Point(12, 11);
             this.fraPosition.Name = "fraPosition";
-            this.fraPosition.Size = new System.Drawing.Size(118, 182);
+            this.fraPosition.Size = new System.Drawing.Size(118, 168);
             this.fraPosition.TabIndex = 6;
             this.fraPosition.TabStop = false;
             this.fraPosition.Text = "Positions";
@@ -229,74 +235,77 @@
             // lblPosition
             // 
             this.lblPosition.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPosition.Location = new System.Drawing.Point(6, 16);
+            this.lblPosition.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblPosition.Location = new System.Drawing.Point(6, 15);
             this.lblPosition.Name = "lblPosition";
-            this.lblPosition.Size = new System.Drawing.Size(106, 14);
+            this.lblPosition.Size = new System.Drawing.Size(106, 13);
             this.lblPosition.TabIndex = 6;
             this.lblPosition.Text = "?? / ??";
             this.lblPosition.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // cmdNext
             // 
-            this.cmdNext.Location = new System.Drawing.Point(62, 111);
+            this.cmdNext.Location = new System.Drawing.Point(62, 103);
             this.cmdNext.Name = "cmdNext";
-            this.cmdNext.Size = new System.Drawing.Size(50, 23);
+            this.cmdNext.Padding = new System.Windows.Forms.Padding(5);
+            this.cmdNext.Size = new System.Drawing.Size(50, 21);
             this.cmdNext.TabIndex = 0;
             this.cmdNext.Text = "Next";
-            this.cmdNext.UseVisualStyleBackColor = true;
             this.cmdNext.Click += new System.EventHandler(this.cmdNext_Click);
             // 
             // cmdPrev
             // 
-            this.cmdPrev.Location = new System.Drawing.Point(6, 111);
+            this.cmdPrev.Location = new System.Drawing.Point(6, 103);
             this.cmdPrev.Name = "cmdPrev";
-            this.cmdPrev.Size = new System.Drawing.Size(50, 23);
+            this.cmdPrev.Padding = new System.Windows.Forms.Padding(5);
+            this.cmdPrev.Size = new System.Drawing.Size(50, 21);
             this.cmdPrev.TabIndex = 1;
             this.cmdPrev.Text = "Prev";
-            this.cmdPrev.UseVisualStyleBackColor = true;
             this.cmdPrev.Click += new System.EventHandler(this.cmdPrev_Click);
             // 
             // cmdLast
             // 
-            this.cmdLast.Location = new System.Drawing.Point(62, 140);
+            this.cmdLast.Location = new System.Drawing.Point(62, 141);
             this.cmdLast.Name = "cmdLast";
-            this.cmdLast.Size = new System.Drawing.Size(50, 23);
+            this.cmdLast.Padding = new System.Windows.Forms.Padding(5);
+            this.cmdLast.Size = new System.Drawing.Size(50, 21);
             this.cmdLast.TabIndex = 3;
             this.cmdLast.Text = "Last";
-            this.cmdLast.UseVisualStyleBackColor = true;
             this.cmdLast.Click += new System.EventHandler(this.cmdLast_Click);
             // 
             // cmdFirst
             // 
-            this.cmdFirst.Location = new System.Drawing.Point(6, 140);
+            this.cmdFirst.Location = new System.Drawing.Point(6, 141);
             this.cmdFirst.Name = "cmdFirst";
-            this.cmdFirst.Size = new System.Drawing.Size(50, 23);
+            this.cmdFirst.Padding = new System.Windows.Forms.Padding(5);
+            this.cmdFirst.Size = new System.Drawing.Size(50, 21);
             this.cmdFirst.TabIndex = 2;
             this.cmdFirst.Text = "First";
-            this.cmdFirst.UseVisualStyleBackColor = true;
             this.cmdFirst.Click += new System.EventHandler(this.cmdFirst_Click);
             // 
             // fraBound
             // 
+            this.fraBound.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(38)))));
             this.fraBound.Controls.Add(this.numEnd);
             this.fraBound.Controls.Add(this.numStart);
-            this.fraBound.Location = new System.Drawing.Point(136, 12);
+            this.fraBound.ForeColor = System.Drawing.SystemColors.Control;
+            this.fraBound.Location = new System.Drawing.Point(136, 11);
             this.fraBound.Name = "fraBound";
-            this.fraBound.Size = new System.Drawing.Size(133, 42);
+            this.fraBound.Size = new System.Drawing.Size(133, 39);
             this.fraBound.TabIndex = 12;
             this.fraBound.TabStop = false;
             this.fraBound.Text = "Start/End Position";
             // 
             // numEnd
             // 
-            this.numEnd.Location = new System.Drawing.Point(69, 16);
+            this.numEnd.Location = new System.Drawing.Point(69, 14);
             this.numEnd.Minimum = new decimal(new int[] {
             2,
             0,
             0,
             0});
             this.numEnd.Name = "numEnd";
-            this.numEnd.Size = new System.Drawing.Size(60, 20);
+            this.numEnd.Size = new System.Drawing.Size(60, 19);
             this.numEnd.TabIndex = 1;
             this.numEnd.Value = new decimal(new int[] {
             2,
@@ -307,14 +316,14 @@
             // 
             // numStart
             // 
-            this.numStart.Location = new System.Drawing.Point(3, 16);
+            this.numStart.Location = new System.Drawing.Point(3, 14);
             this.numStart.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
             this.numStart.Name = "numStart";
-            this.numStart.Size = new System.Drawing.Size(60, 20);
+            this.numStart.Size = new System.Drawing.Size(60, 19);
             this.numStart.TabIndex = 0;
             this.numStart.Value = new decimal(new int[] {
             1,
@@ -325,17 +334,19 @@
             // 
             // fraAmount
             // 
+            this.fraAmount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(38)))));
             this.fraAmount.Controls.Add(this.numAmount);
-            this.fraAmount.Location = new System.Drawing.Point(12, 200);
+            this.fraAmount.ForeColor = System.Drawing.SystemColors.Control;
+            this.fraAmount.Location = new System.Drawing.Point(12, 185);
             this.fraAmount.Name = "fraAmount";
-            this.fraAmount.Size = new System.Drawing.Size(73, 42);
+            this.fraAmount.Size = new System.Drawing.Size(73, 39);
             this.fraAmount.TabIndex = 13;
             this.fraAmount.TabStop = false;
             this.fraAmount.Text = "Amount";
             // 
             // numAmount
             // 
-            this.numAmount.Location = new System.Drawing.Point(3, 16);
+            this.numAmount.Location = new System.Drawing.Point(6, 14);
             this.numAmount.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -347,7 +358,7 @@
             0,
             0});
             this.numAmount.Name = "numAmount";
-            this.numAmount.Size = new System.Drawing.Size(60, 20);
+            this.numAmount.Size = new System.Drawing.Size(61, 19);
             this.numAmount.TabIndex = 0;
             this.numAmount.Value = new decimal(new int[] {
             1,
@@ -358,10 +369,12 @@
             // 
             // fraTension
             // 
+            this.fraTension.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(38)))));
             this.fraTension.Controls.Add(this.numTension);
-            this.fraTension.Location = new System.Drawing.Point(136, 125);
+            this.fraTension.ForeColor = System.Drawing.SystemColors.Control;
+            this.fraTension.Location = new System.Drawing.Point(136, 109);
             this.fraTension.Name = "fraTension";
-            this.fraTension.Size = new System.Drawing.Size(133, 45);
+            this.fraTension.Size = new System.Drawing.Size(133, 42);
             this.fraTension.TabIndex = 14;
             this.fraTension.TabStop = false;
             this.fraTension.Text = "Tension";
@@ -374,14 +387,14 @@
             0,
             0,
             65536});
-            this.numTension.Location = new System.Drawing.Point(6, 19);
+            this.numTension.Location = new System.Drawing.Point(6, 17);
             this.numTension.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             131072});
             this.numTension.Name = "numTension";
-            this.numTension.Size = new System.Drawing.Size(121, 20);
+            this.numTension.Size = new System.Drawing.Size(121, 19);
             this.numTension.TabIndex = 0;
             this.numTension.Value = new decimal(new int[] {
             2,
@@ -392,10 +405,12 @@
             // 
             // fraOrder
             // 
+            this.fraOrder.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(38)))));
             this.fraOrder.Controls.Add(this.numOrder);
-            this.fraOrder.Location = new System.Drawing.Point(136, 176);
+            this.fraOrder.ForeColor = System.Drawing.SystemColors.Control;
+            this.fraOrder.Location = new System.Drawing.Point(136, 157);
             this.fraOrder.Name = "fraOrder";
-            this.fraOrder.Size = new System.Drawing.Size(133, 45);
+            this.fraOrder.Size = new System.Drawing.Size(133, 42);
             this.fraOrder.TabIndex = 15;
             this.fraOrder.TabStop = false;
             this.fraOrder.Text = "Order";
@@ -408,7 +423,7 @@
             0,
             0,
             65536});
-            this.numOrder.Location = new System.Drawing.Point(6, 19);
+            this.numOrder.Location = new System.Drawing.Point(6, 17);
             this.numOrder.Maximum = new decimal(new int[] {
             16,
             0,
@@ -420,7 +435,7 @@
             0,
             0});
             this.numOrder.Name = "numOrder";
-            this.numOrder.Size = new System.Drawing.Size(121, 20);
+            this.numOrder.Size = new System.Drawing.Size(121, 19);
             this.numOrder.TabIndex = 0;
             this.numOrder.Value = new decimal(new int[] {
             1,
@@ -431,11 +446,12 @@
             // 
             // InterpolatorForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(281, 298);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.ClientSize = new System.Drawing.Size(281, 275);
             this.Controls.Add(this.fraOrder);
             this.Controls.Add(this.fraTension);
             this.Controls.Add(this.lblAverage);
@@ -445,6 +461,7 @@
             this.Controls.Add(this.fraPosition);
             this.Controls.Add(this.cmdOK);
             this.Controls.Add(this.cmdCancel);
+            this.ForeColor = System.Drawing.SystemColors.Control;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "InterpolatorForm";
             this.Text = "Interpolate Path";
@@ -470,31 +487,31 @@
 
         #endregion
 
-        private System.Windows.Forms.Button cmdCancel;
-        private System.Windows.Forms.Button cmdOK;
-        private System.Windows.Forms.ComboBox dpdFunc;
-        private System.Windows.Forms.Label lblX;
-        private System.Windows.Forms.Label lblY;
-        private System.Windows.Forms.Label lblZ;
-        private System.Windows.Forms.NumericUpDown numX;
-        private System.Windows.Forms.NumericUpDown numY;
-        private System.Windows.Forms.NumericUpDown numZ;
-        private System.Windows.Forms.Label lblAverage;
+        private DarkUI.Controls.DarkButton cmdCancel;
+        private DarkUI.Controls.DarkButton cmdOK;
+        private DarkUI.Controls.DarkComboBox dpdFunc;
+        private DarkUI.Controls.DarkLabel lblX;
+        private DarkUI.Controls.DarkLabel lblY;
+        private DarkUI.Controls.DarkLabel lblZ;
+        private DarkUI.Controls.DarkNumericUpDown numX;
+        private DarkUI.Controls.DarkNumericUpDown numY;
+        private DarkUI.Controls.DarkNumericUpDown numZ;
+        private DarkUI.Controls.DarkLabel lblAverage;
         private System.Windows.Forms.GroupBox fraFunction;
         private System.Windows.Forms.GroupBox fraPosition;
-        private System.Windows.Forms.Button cmdLast;
-        private System.Windows.Forms.Button cmdFirst;
-        private System.Windows.Forms.Button cmdPrev;
-        private System.Windows.Forms.Button cmdNext;
-        private System.Windows.Forms.Label lblPosition;
+        private DarkUI.Controls.DarkButton cmdLast;
+        private DarkUI.Controls.DarkButton cmdFirst;
+        private DarkUI.Controls.DarkButton cmdPrev;
+        private DarkUI.Controls.DarkButton cmdNext;
+        private DarkUI.Controls.DarkLabel lblPosition;
         private System.Windows.Forms.GroupBox fraBound;
-        private System.Windows.Forms.NumericUpDown numEnd;
-        private System.Windows.Forms.NumericUpDown numStart;
+        private DarkUI.Controls.DarkNumericUpDown numEnd;
+        private DarkUI.Controls.DarkNumericUpDown numStart;
         private System.Windows.Forms.GroupBox fraAmount;
-        private System.Windows.Forms.NumericUpDown numAmount;
+        private DarkUI.Controls.DarkNumericUpDown numAmount;
         private System.Windows.Forms.GroupBox fraTension;
-        private System.Windows.Forms.NumericUpDown numTension;
+        private DarkUI.Controls.DarkNumericUpDown numTension;
         private System.Windows.Forms.GroupBox fraOrder;
-        private System.Windows.Forms.NumericUpDown numOrder;
+        private DarkUI.Controls.DarkNumericUpDown numOrder;
     }
 }
