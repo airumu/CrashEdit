@@ -2,10 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using DarkUI.Forms;
 
 namespace CrashEdit
 {
-    public partial class NewEntryForm : Form
+    public partial class NewEntryForm : DarkForm
     {
         private const string EntryTypeUnprocessed = "Unprocessed";
         private const string EntryTypeZone = "Zone (T7 ZDAT)";
