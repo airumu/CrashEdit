@@ -311,7 +311,7 @@ namespace CrashEdit
                     }
                 }
             }
-            Form frm = new Form() { Text = "Loading...", Width = 480, Height = 360 };
+            Form frm = new DarkUI.Forms.DarkForm() { Text = "Loading...", Width = 480, Height = 360 };
             frm.Show();
             OldSceneryEntryViewer viewer = new OldSceneryEntryViewer(sceneryentries,sortedtexturechunks.ToArray()) { Dock = DockStyle.Fill };
             frm.Controls.Add(viewer);
@@ -341,7 +341,7 @@ namespace CrashEdit
                     }
                 }
             }
-            Form frm = new Form() { Text = "Loading...", Width = 480, Height = 360 };
+            Form frm = new DarkUI.Forms.DarkForm() { Text = "Loading...", Width = 480, Height = 360 };
             frm.Show();
             SceneryEntryViewer viewer = new SceneryEntryViewer(sceneryentries,sortedtexturechunks.ToArray()) { Dock = DockStyle.Fill };
             frm.Controls.Add(viewer);
@@ -371,7 +371,7 @@ namespace CrashEdit
                     }
                 }
             }
-            Form frm = new Form() { Text = "Loading...", Width = 480, Height = 360 };
+            Form frm = new DarkUI.Forms.DarkForm() { Text = "Loading...", Width = 480, Height = 360 };
             frm.Show();
             NewSceneryEntryViewer viewer = new NewSceneryEntryViewer(sceneryentries,sortedtexturechunks.ToArray()) { Dock = DockStyle.Fill };
             frm.Controls.Add(viewer);
@@ -383,7 +383,7 @@ namespace CrashEdit
             byte[][] datas = FileUtil.OpenFiles(FileFilters.Any);
             if (datas == null)
                 return;
-            bool process = MessageBox.Show("Do you want to process the imported chunks?", "Import Chunk", MessageBoxButtons.YesNo) == DialogResult.Yes;
+            bool process = DarkUI.Forms.DarkMessageBox.ShowInformation("Do you want to process the imported chunks?", "Import Chunk", DarkUI.Forms.DarkDialogButton.YesNo) == DialogResult.Yes;
             foreach (var data in datas)
             {
                 try
