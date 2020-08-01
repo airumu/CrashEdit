@@ -2,7 +2,9 @@ using Crash;
 using System;
 using System.IO;
 using System.Media;
+using System.Drawing;
 using System.Windows.Forms;
+using DarkUI.Controls;
 
 namespace CrashEdit
 {
@@ -15,10 +17,10 @@ namespace CrashEdit
         private ToolStrip tsToolbar;
         private ToolStripButton tbbExport;
         private TableLayoutPanel pnOptions;
-        private Button cmdPlay;
-        private Button cmdExport;
+        private DarkButton cmdPlay;
+        private DarkButton cmdExport;
         private TrackBar trkSampleRate;
-        private Label lblSampleRate;
+        private DarkLabel lblSampleRate;
 
         public SoundBox(SampleSet samples)
         {
@@ -33,6 +35,9 @@ namespace CrashEdit
             tsToolbar = new ToolStrip();
             tsToolbar.Dock = DockStyle.Top;
             tsToolbar.Items.Add(tbbExport);
+            tsToolbar.LayoutStyle = ToolStripLayoutStyle.Flow;
+            tsToolbar.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            tsToolbar.ForeColor = SystemColors.Control;
 
             trkSampleRate = new TrackBar()
             {
@@ -40,8 +45,9 @@ namespace CrashEdit
                 Maximum = 16 * 256,
                 TickFrequency = 128,
                 Value = 1024,
-                Dock = DockStyle.Fill
-            };
+                Dock = DockStyle.Fill,
+                BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))))
+        };
             trkSampleRate.ValueChanged += (object sender, EventArgs e) => {
                 int smpe = (int)(trkSampleRate.Value / 256.0 * (11025 / 4.0));
                 cmdPlay.Text = string.Format("Play ({0}Hz)", smpe);
@@ -50,17 +56,17 @@ namespace CrashEdit
             };
 
             int smp = (int)(trkSampleRate.Value / 256.0 * (11025 / 4.0));
-            cmdPlay = new Button();
+            cmdPlay = new DarkUI.Controls.DarkButton();
             cmdPlay.Dock = DockStyle.Fill;
             cmdPlay.Text = string.Format("Play ({0}Hz)", smp);
             cmdPlay.Click += new EventHandler(cmdPlay_Click);
 
-            cmdExport = new Button();
+            cmdExport = new DarkUI.Controls.DarkButton();
             cmdExport.Dock = DockStyle.Fill;
             cmdExport.Text = string.Format("Export ({0}Hz)", smp);
             cmdExport.Click += new EventHandler(cmdExport_Click);
 
-            lblSampleRate = new Label()
+            lblSampleRate = new DarkLabel()
             {
                 Text = string.Format("Sample Rate: {0:0.000}", trkSampleRate.Value / 256.0),
                 TextAlign = System.Drawing.ContentAlignment.TopRight,
@@ -79,6 +85,8 @@ namespace CrashEdit
             pnOptions.Controls.Add(cmdExport,1,0);
             pnOptions.Controls.Add(trkSampleRate,1,1);
             pnOptions.Controls.Add(lblSampleRate,0,1);
+            pnOptions.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            pnOptions.ForeColor = SystemColors.Control;
 
             Controls.Add(pnOptions);
             Controls.Add(tsToolbar);
