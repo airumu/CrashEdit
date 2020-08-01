@@ -28,12 +28,31 @@ namespace CrashEdit
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EntityBox));
+            this.cmdInsertVictim = new DarkUI.Controls.DarkButton();
+            this.tbcTabs = new VisualStudioTabControl.VisualStudioTabControl();
+            this.tabGeneral = new System.Windows.Forms.TabPage();
+            this.fraName = new System.Windows.Forms.GroupBox();
+            this.txtName = new DarkUI.Controls.DarkTextBox();
+            this.chkName = new DarkUI.Controls.DarkCheckBox();
+            this.fraType = new System.Windows.Forms.GroupBox();
             this.chkType = new DarkUI.Controls.DarkCheckBox();
             this.numType = new DarkUI.Controls.DarkNumericUpDown();
-            this.fraType = new System.Windows.Forms.GroupBox();
             this.fraSubtype = new System.Windows.Forms.GroupBox();
             this.chkSubtype = new DarkUI.Controls.DarkCheckBox();
             this.numSubtype = new DarkUI.Controls.DarkNumericUpDown();
+            this.fraSettings = new System.Windows.Forms.GroupBox();
+            this.chkSettingHex = new DarkUI.Controls.DarkCheckBox();
+            this.numSettingC = new DarkUI.Controls.DarkNumericUpDown();
+            this.lblSettingIndex = new DarkUI.Controls.DarkLabel();
+            this.cmdNextSetting = new DarkUI.Controls.DarkButton();
+            this.cmdPreviousSetting = new DarkUI.Controls.DarkButton();
+            this.cmdAddSetting = new DarkUI.Controls.DarkButton();
+            this.cmdRemoveSetting = new DarkUI.Controls.DarkButton();
+            this.lblSettingB = new DarkUI.Controls.DarkLabel();
+            this.lblSettingA = new DarkUI.Controls.DarkLabel();
+            this.numSettingB = new DarkUI.Controls.DarkNumericUpDown();
+            this.numSettingA = new DarkUI.Controls.DarkNumericUpDown();
             this.fraPosition = new System.Windows.Forms.GroupBox();
             this.cmdAppendPosition = new DarkUI.Controls.DarkButton();
             this.cmdNextPosition = new DarkUI.Controls.DarkButton();
@@ -48,29 +67,11 @@ namespace CrashEdit
             this.numZ = new DarkUI.Controls.DarkNumericUpDown();
             this.numY = new DarkUI.Controls.DarkNumericUpDown();
             this.numX = new DarkUI.Controls.DarkNumericUpDown();
-            this.cmdInsertVictim = new DarkUI.Controls.DarkButton();
             this.fraID = new System.Windows.Forms.GroupBox();
             this.numID = new DarkUI.Controls.DarkNumericUpDown();
             this.chkID = new DarkUI.Controls.DarkCheckBox();
             this.chkID2 = new DarkUI.Controls.DarkCheckBox();
             this.numID2 = new DarkUI.Controls.DarkNumericUpDown();
-            this.fraSettings = new System.Windows.Forms.GroupBox();
-            this.chkSettingHex = new DarkUI.Controls.DarkCheckBox();
-            this.numSettingC = new DarkUI.Controls.DarkNumericUpDown();
-            this.lblSettingIndex = new DarkUI.Controls.DarkLabel();
-            this.cmdNextSetting = new DarkUI.Controls.DarkButton();
-            this.cmdPreviousSetting = new DarkUI.Controls.DarkButton();
-            this.cmdAddSetting = new DarkUI.Controls.DarkButton();
-            this.cmdRemoveSetting = new DarkUI.Controls.DarkButton();
-            this.lblSettingB = new DarkUI.Controls.DarkLabel();
-            this.lblSettingA = new DarkUI.Controls.DarkLabel();
-            this.numSettingB = new DarkUI.Controls.DarkNumericUpDown();
-            this.numSettingA = new DarkUI.Controls.DarkNumericUpDown();
-            this.fraName = new System.Windows.Forms.GroupBox();
-            this.txtName = new DarkUI.Controls.DarkTextBox();
-            this.chkName = new DarkUI.Controls.DarkCheckBox();
-            this.tbcTabs = new System.Windows.Forms.TabControl();
-            this.tabGeneral = new System.Windows.Forms.TabPage();
             this.tabSpecial = new System.Windows.Forms.TabPage();
             this.fraZMod = new System.Windows.Forms.GroupBox();
             this.chkZMod = new DarkUI.Controls.DarkCheckBox();
@@ -233,10 +234,27 @@ namespace CrashEdit
             this.cmdNextEntityA = new DarkUI.Controls.DarkButton();
             this.cmdPrevRowDrawA = new DarkUI.Controls.DarkButton();
             this.cmdNextRowDrawA = new DarkUI.Controls.DarkButton();
-            ((System.ComponentModel.ISupportInitialize)(this.numType)).BeginInit();
+            this.darkToolStrip = new DarkUI.Controls.DarkToolStrip();
+            this.tsbGeneral = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbSpecial = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbCamera = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbLoadLists = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbDrawLists = new System.Windows.Forms.ToolStripButton();
+            this.tbcTabs.SuspendLayout();
+            this.tabGeneral.SuspendLayout();
+            this.fraName.SuspendLayout();
             this.fraType.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numType)).BeginInit();
             this.fraSubtype.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numSubtype)).BeginInit();
+            this.fraSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numSettingC)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numSettingB)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numSettingA)).BeginInit();
             this.fraPosition.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numZ)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numY)).BeginInit();
@@ -244,13 +262,6 @@ namespace CrashEdit
             this.fraID.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numID)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numID2)).BeginInit();
-            this.fraSettings.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numSettingC)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numSettingB)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numSettingA)).BeginInit();
-            this.fraName.SuspendLayout();
-            this.tbcTabs.SuspendLayout();
-            this.tabGeneral.SuspendLayout();
             this.tabSpecial.SuspendLayout();
             this.fraZMod.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numZMod)).BeginInit();
@@ -308,30 +319,86 @@ namespace CrashEdit
             ((System.ComponentModel.ISupportInitialize)(this.numMetavalueDrawA)).BeginInit();
             this.fraEntityA.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numEntityA)).BeginInit();
+            this.darkToolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
-            // chkType
+            // cmdInsertVictim
             // 
-            this.chkType.AutoSize = true;
-            this.chkType.Location = new System.Drawing.Point(6, 18);
-            this.chkType.Name = "chkType";
-            this.chkType.Size = new System.Drawing.Size(64, 16);
-            this.chkType.TabIndex = 0;
-            this.chkType.Text = "Enabled";
-            this.chkType.CheckedChanged += new System.EventHandler(this.chkType_CheckedChanged);
+            this.cmdInsertVictim.Location = new System.Drawing.Point(72, 95);
+            this.cmdInsertVictim.Name = "cmdInsertVictim";
+            this.cmdInsertVictim.Padding = new System.Windows.Forms.Padding(5);
+            this.cmdInsertVictim.Size = new System.Drawing.Size(57, 21);
+            this.cmdInsertVictim.TabIndex = 6;
+            this.cmdInsertVictim.Text = "Insert";
+            this.cmdInsertVictim.Click += new System.EventHandler(this.cmdInsertVictim_Click);
             // 
-            // numType
+            // tbcTabs
             // 
-            this.numType.Location = new System.Drawing.Point(6, 39);
-            this.numType.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numType.Name = "numType";
-            this.numType.Size = new System.Drawing.Size(120, 19);
-            this.numType.TabIndex = 1;
-            this.numType.ValueChanged += new System.EventHandler(this.numType_ValueChanged);
+            this.tbcTabs.AllowDrop = true;
+            this.tbcTabs.Controls.Add(this.tabGeneral);
+            this.tbcTabs.Controls.Add(this.tabSpecial);
+            this.tbcTabs.Controls.Add(this.tabCamera);
+            this.tbcTabs.Controls.Add(this.tabLoadLists);
+            this.tbcTabs.Controls.Add(this.tabDrawLists);
+            this.tbcTabs.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.tbcTabs.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.tbcTabs.Location = new System.Drawing.Point(0, 0);
+            this.tbcTabs.Name = "tbcTabs";
+            this.tbcTabs.Padding = new System.Drawing.Point(0, 3);
+            this.tbcTabs.SelectedIndex = 0;
+            this.tbcTabs.Size = new System.Drawing.Size(2000, 1696);
+            this.tbcTabs.TabIndex = 7;
+            // 
+            // tabGeneral
+            // 
+            this.tabGeneral.AutoScroll = true;
+            this.tabGeneral.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.tabGeneral.Controls.Add(this.fraName);
+            this.tabGeneral.Controls.Add(this.fraType);
+            this.tabGeneral.Controls.Add(this.fraSubtype);
+            this.tabGeneral.Controls.Add(this.fraSettings);
+            this.tabGeneral.Controls.Add(this.fraPosition);
+            this.tabGeneral.Controls.Add(this.fraID);
+            this.tabGeneral.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.tabGeneral.Location = new System.Drawing.Point(4, 28);
+            this.tabGeneral.Name = "tabGeneral";
+            this.tabGeneral.Size = new System.Drawing.Size(1992, 1664);
+            this.tabGeneral.TabIndex = 0;
+            this.tabGeneral.Text = "General";
+            // 
+            // fraName
+            // 
+            this.fraName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.fraName.Controls.Add(this.txtName);
+            this.fraName.Controls.Add(this.chkName);
+            this.fraName.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraName.Location = new System.Drawing.Point(3, 3);
+            this.fraName.Name = "fraName";
+            this.fraName.Size = new System.Drawing.Size(232, 74);
+            this.fraName.TabIndex = 0;
+            this.fraName.TabStop = false;
+            this.fraName.Text = "Name";
+            // 
+            // txtName
+            // 
+            this.txtName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(55)))), ((int)(((byte)(60)))));
+            this.txtName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.txtName.Location = new System.Drawing.Point(6, 43);
+            this.txtName.Name = "txtName";
+            this.txtName.Size = new System.Drawing.Size(218, 23);
+            this.txtName.TabIndex = 6;
+            this.txtName.TextChanged += new System.EventHandler(this.txtName_TextChanged);
+            // 
+            // chkName
+            // 
+            this.chkName.AutoSize = true;
+            this.chkName.Location = new System.Drawing.Point(6, 18);
+            this.chkName.Name = "chkName";
+            this.chkName.Size = new System.Drawing.Size(68, 19);
+            this.chkName.TabIndex = 2;
+            this.chkName.Text = "Enabled";
+            this.chkName.CheckedChanged += new System.EventHandler(this.chkName_CheckedChanged);
             // 
             // fraType
             // 
@@ -339,12 +406,35 @@ namespace CrashEdit
             this.fraType.Controls.Add(this.chkType);
             this.fraType.Controls.Add(this.numType);
             this.fraType.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraType.Location = new System.Drawing.Point(241, 117);
+            this.fraType.Location = new System.Drawing.Point(241, 125);
             this.fraType.Name = "fraType";
-            this.fraType.Size = new System.Drawing.Size(132, 66);
+            this.fraType.Size = new System.Drawing.Size(132, 74);
             this.fraType.TabIndex = 4;
             this.fraType.TabStop = false;
             this.fraType.Text = "Type";
+            // 
+            // chkType
+            // 
+            this.chkType.AutoSize = true;
+            this.chkType.Location = new System.Drawing.Point(6, 18);
+            this.chkType.Name = "chkType";
+            this.chkType.Size = new System.Drawing.Size(68, 19);
+            this.chkType.TabIndex = 0;
+            this.chkType.Text = "Enabled";
+            this.chkType.CheckedChanged += new System.EventHandler(this.chkType_CheckedChanged);
+            // 
+            // numType
+            // 
+            this.numType.Location = new System.Drawing.Point(6, 43);
+            this.numType.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.numType.Name = "numType";
+            this.numType.Size = new System.Drawing.Size(120, 23);
+            this.numType.TabIndex = 1;
+            this.numType.ValueChanged += new System.EventHandler(this.numType_ValueChanged);
             // 
             // fraSubtype
             // 
@@ -352,9 +442,9 @@ namespace CrashEdit
             this.fraSubtype.Controls.Add(this.chkSubtype);
             this.fraSubtype.Controls.Add(this.numSubtype);
             this.fraSubtype.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraSubtype.Location = new System.Drawing.Point(241, 189);
+            this.fraSubtype.Location = new System.Drawing.Point(241, 205);
             this.fraSubtype.Name = "fraSubtype";
-            this.fraSubtype.Size = new System.Drawing.Size(132, 66);
+            this.fraSubtype.Size = new System.Drawing.Size(132, 74);
             this.fraSubtype.TabIndex = 5;
             this.fraSubtype.TabStop = false;
             this.fraSubtype.Text = "Subtype";
@@ -364,14 +454,14 @@ namespace CrashEdit
             this.chkSubtype.AutoSize = true;
             this.chkSubtype.Location = new System.Drawing.Point(6, 18);
             this.chkSubtype.Name = "chkSubtype";
-            this.chkSubtype.Size = new System.Drawing.Size(64, 16);
+            this.chkSubtype.Size = new System.Drawing.Size(68, 19);
             this.chkSubtype.TabIndex = 0;
             this.chkSubtype.Text = "Enabled";
             this.chkSubtype.CheckedChanged += new System.EventHandler(this.chkSubtype_CheckedChanged);
             // 
             // numSubtype
             // 
-            this.numSubtype.Location = new System.Drawing.Point(6, 39);
+            this.numSubtype.Location = new System.Drawing.Point(6, 43);
             this.numSubtype.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -383,285 +473,9 @@ namespace CrashEdit
             0,
             -2147483648});
             this.numSubtype.Name = "numSubtype";
-            this.numSubtype.Size = new System.Drawing.Size(120, 19);
+            this.numSubtype.Size = new System.Drawing.Size(120, 23);
             this.numSubtype.TabIndex = 1;
             this.numSubtype.ValueChanged += new System.EventHandler(this.numSubtype_ValueChanged);
-            // 
-            // fraPosition
-            // 
-            this.fraPosition.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
-            this.fraPosition.Controls.Add(this.cmdAppendPosition);
-            this.fraPosition.Controls.Add(this.cmdNextPosition);
-            this.fraPosition.Controls.Add(this.cmdPreviousPosition);
-            this.fraPosition.Controls.Add(this.cmdInterpolate);
-            this.fraPosition.Controls.Add(this.lblPositionIndex);
-            this.fraPosition.Controls.Add(this.cmdInsertPosition);
-            this.fraPosition.Controls.Add(this.lblZ);
-            this.fraPosition.Controls.Add(this.cmdRemovePosition);
-            this.fraPosition.Controls.Add(this.lblY);
-            this.fraPosition.Controls.Add(this.lblX);
-            this.fraPosition.Controls.Add(this.numZ);
-            this.fraPosition.Controls.Add(this.numY);
-            this.fraPosition.Controls.Add(this.numX);
-            this.fraPosition.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraPosition.Location = new System.Drawing.Point(3, 73);
-            this.fraPosition.Name = "fraPosition";
-            this.fraPosition.Size = new System.Drawing.Size(232, 155);
-            this.fraPosition.TabIndex = 1;
-            this.fraPosition.TabStop = false;
-            this.fraPosition.Text = "Position(s)";
-            // 
-            // cmdAppendPosition
-            // 
-            this.cmdAppendPosition.Location = new System.Drawing.Point(149, 45);
-            this.cmdAppendPosition.Name = "cmdAppendPosition";
-            this.cmdAppendPosition.Padding = new System.Windows.Forms.Padding(5);
-            this.cmdAppendPosition.Size = new System.Drawing.Size(75, 23);
-            this.cmdAppendPosition.TabIndex = 6;
-            this.cmdAppendPosition.Text = "Append";
-            this.cmdAppendPosition.Click += new System.EventHandler(this.cmdAppendPosition_Click);
-            // 
-            // cmdNextPosition
-            // 
-            this.cmdNextPosition.Location = new System.Drawing.Point(159, 16);
-            this.cmdNextPosition.Name = "cmdNextPosition";
-            this.cmdNextPosition.Padding = new System.Windows.Forms.Padding(5);
-            this.cmdNextPosition.Size = new System.Drawing.Size(65, 23);
-            this.cmdNextPosition.TabIndex = 6;
-            this.cmdNextPosition.Text = "Next";
-            this.cmdNextPosition.Click += new System.EventHandler(this.cmdNextPosition_Click);
-            // 
-            // cmdPreviousPosition
-            // 
-            this.cmdPreviousPosition.Location = new System.Drawing.Point(88, 16);
-            this.cmdPreviousPosition.Name = "cmdPreviousPosition";
-            this.cmdPreviousPosition.Padding = new System.Windows.Forms.Padding(5);
-            this.cmdPreviousPosition.Size = new System.Drawing.Size(65, 23);
-            this.cmdPreviousPosition.TabIndex = 6;
-            this.cmdPreviousPosition.Text = "Previous";
-            this.cmdPreviousPosition.Click += new System.EventHandler(this.cmdPreviousPosition_Click);
-            // 
-            // cmdInterpolate
-            // 
-            this.cmdInterpolate.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.cmdInterpolate.Location = new System.Drawing.Point(26, 121);
-            this.cmdInterpolate.Name = "cmdInterpolate";
-            this.cmdInterpolate.Padding = new System.Windows.Forms.Padding(5);
-            this.cmdInterpolate.Size = new System.Drawing.Size(79, 23);
-            this.cmdInterpolate.TabIndex = 8;
-            this.cmdInterpolate.Text = "Interpolate";
-            this.cmdInterpolate.Click += new System.EventHandler(this.cmdInterpolate_Click);
-            // 
-            // lblPositionIndex
-            // 
-            this.lblPositionIndex.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPositionIndex.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.lblPositionIndex.Location = new System.Drawing.Point(6, 18);
-            this.lblPositionIndex.Name = "lblPositionIndex";
-            this.lblPositionIndex.Size = new System.Drawing.Size(76, 21);
-            this.lblPositionIndex.TabIndex = 5;
-            this.lblPositionIndex.Text = "?? / ??";
-            this.lblPositionIndex.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // cmdInsertPosition
-            // 
-            this.cmdInsertPosition.Location = new System.Drawing.Point(149, 74);
-            this.cmdInsertPosition.Name = "cmdInsertPosition";
-            this.cmdInsertPosition.Padding = new System.Windows.Forms.Padding(5);
-            this.cmdInsertPosition.Size = new System.Drawing.Size(75, 21);
-            this.cmdInsertPosition.TabIndex = 6;
-            this.cmdInsertPosition.Text = "Insert";
-            this.cmdInsertPosition.Click += new System.EventHandler(this.cmdInsertPosition_Click);
-            // 
-            // lblZ
-            // 
-            this.lblZ.AutoSize = true;
-            this.lblZ.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.lblZ.Location = new System.Drawing.Point(6, 98);
-            this.lblZ.Name = "lblZ";
-            this.lblZ.Size = new System.Drawing.Size(12, 12);
-            this.lblZ.TabIndex = 5;
-            this.lblZ.Text = "Z";
-            // 
-            // cmdRemovePosition
-            // 
-            this.cmdRemovePosition.Location = new System.Drawing.Point(149, 101);
-            this.cmdRemovePosition.Name = "cmdRemovePosition";
-            this.cmdRemovePosition.Padding = new System.Windows.Forms.Padding(5);
-            this.cmdRemovePosition.Size = new System.Drawing.Size(75, 21);
-            this.cmdRemovePosition.TabIndex = 7;
-            this.cmdRemovePosition.Text = "Remove";
-            this.cmdRemovePosition.Click += new System.EventHandler(this.cmdRemovePosition_Click);
-            // 
-            // lblY
-            // 
-            this.lblY.AutoSize = true;
-            this.lblY.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.lblY.Location = new System.Drawing.Point(6, 74);
-            this.lblY.Name = "lblY";
-            this.lblY.Size = new System.Drawing.Size(12, 12);
-            this.lblY.TabIndex = 4;
-            this.lblY.Text = "Y";
-            // 
-            // lblX
-            // 
-            this.lblX.AutoSize = true;
-            this.lblX.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.lblX.Location = new System.Drawing.Point(6, 50);
-            this.lblX.Name = "lblX";
-            this.lblX.Size = new System.Drawing.Size(12, 12);
-            this.lblX.TabIndex = 3;
-            this.lblX.Text = "X";
-            // 
-            // numZ
-            // 
-            this.numZ.Increment = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            this.numZ.Location = new System.Drawing.Point(26, 96);
-            this.numZ.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numZ.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numZ.Name = "numZ";
-            this.numZ.Size = new System.Drawing.Size(86, 19);
-            this.numZ.TabIndex = 4;
-            this.numZ.ValueChanged += new System.EventHandler(this.numZ_ValueChanged);
-            // 
-            // numY
-            // 
-            this.numY.Increment = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            this.numY.Location = new System.Drawing.Point(26, 72);
-            this.numY.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numY.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numY.Name = "numY";
-            this.numY.Size = new System.Drawing.Size(86, 19);
-            this.numY.TabIndex = 3;
-            this.numY.ValueChanged += new System.EventHandler(this.numY_ValueChanged);
-            // 
-            // numX
-            // 
-            this.numX.Increment = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            this.numX.Location = new System.Drawing.Point(26, 48);
-            this.numX.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numX.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numX.Name = "numX";
-            this.numX.Size = new System.Drawing.Size(86, 19);
-            this.numX.TabIndex = 2;
-            this.numX.ValueChanged += new System.EventHandler(this.numX_ValueChanged);
-            // 
-            // cmdInsertVictim
-            // 
-            this.cmdInsertVictim.Location = new System.Drawing.Point(68, 89);
-            this.cmdInsertVictim.Name = "cmdInsertVictim";
-            this.cmdInsertVictim.Padding = new System.Windows.Forms.Padding(5);
-            this.cmdInsertVictim.Size = new System.Drawing.Size(58, 21);
-            this.cmdInsertVictim.TabIndex = 6;
-            this.cmdInsertVictim.Text = "Insert";
-            this.cmdInsertVictim.Click += new System.EventHandler(this.cmdInsertVictim_Click);
-            // 
-            // fraID
-            // 
-            this.fraID.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
-            this.fraID.Controls.Add(this.numID);
-            this.fraID.Controls.Add(this.chkID);
-            this.fraID.Controls.Add(this.chkID2);
-            this.fraID.Controls.Add(this.numID2);
-            this.fraID.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraID.Location = new System.Drawing.Point(241, 3);
-            this.fraID.Name = "fraID";
-            this.fraID.Size = new System.Drawing.Size(132, 111);
-            this.fraID.TabIndex = 3;
-            this.fraID.TabStop = false;
-            this.fraID.Text = "ID";
-            // 
-            // numID
-            // 
-            this.numID.Location = new System.Drawing.Point(6, 39);
-            this.numID.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
-            this.numID.Minimum = new decimal(new int[] {
-            -2147483648,
-            0,
-            0,
-            -2147483648});
-            this.numID.Name = "numID";
-            this.numID.Size = new System.Drawing.Size(120, 19);
-            this.numID.TabIndex = 6;
-            this.numID.ValueChanged += new System.EventHandler(this.numID_ValueChanged);
-            // 
-            // chkID
-            // 
-            this.chkID.AutoSize = true;
-            this.chkID.Location = new System.Drawing.Point(6, 18);
-            this.chkID.Name = "chkID";
-            this.chkID.Size = new System.Drawing.Size(64, 16);
-            this.chkID.TabIndex = 4;
-            this.chkID.Text = "Enabled";
-            this.chkID.CheckedChanged += new System.EventHandler(this.chkID_CheckedChanged);
-            // 
-            // chkID2
-            // 
-            this.chkID2.AutoSize = true;
-            this.chkID2.Location = new System.Drawing.Point(6, 63);
-            this.chkID2.Name = "chkID2";
-            this.chkID2.Size = new System.Drawing.Size(64, 16);
-            this.chkID2.TabIndex = 2;
-            this.chkID2.Text = "Enabled";
-            this.chkID2.CheckedChanged += new System.EventHandler(this.chkID2_CheckedChanged);
-            // 
-            // numID2
-            // 
-            this.numID2.Location = new System.Drawing.Point(6, 84);
-            this.numID2.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
-            this.numID2.Minimum = new decimal(new int[] {
-            -2147483648,
-            0,
-            0,
-            -2147483648});
-            this.numID2.Name = "numID2";
-            this.numID2.Size = new System.Drawing.Size(120, 19);
-            this.numID2.TabIndex = 3;
-            this.numID2.ValueChanged += new System.EventHandler(this.numID2_ValueChanged);
             // 
             // fraSettings
             // 
@@ -678,9 +492,9 @@ namespace CrashEdit
             this.fraSettings.Controls.Add(this.numSettingB);
             this.fraSettings.Controls.Add(this.numSettingA);
             this.fraSettings.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraSettings.Location = new System.Drawing.Point(3, 233);
+            this.fraSettings.Location = new System.Drawing.Point(3, 241);
             this.fraSettings.Name = "fraSettings";
-            this.fraSettings.Size = new System.Drawing.Size(232, 120);
+            this.fraSettings.Size = new System.Drawing.Size(232, 132);
             this.fraSettings.TabIndex = 2;
             this.fraSettings.TabStop = false;
             this.fraSettings.Text = "Argument(s)";
@@ -690,9 +504,9 @@ namespace CrashEdit
             this.chkSettingHex.AutoSize = true;
             this.chkSettingHex.Checked = true;
             this.chkSettingHex.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkSettingHex.Location = new System.Drawing.Point(118, 97);
+            this.chkSettingHex.Location = new System.Drawing.Point(118, 102);
             this.chkSettingHex.Name = "chkSettingHex";
-            this.chkSettingHex.Size = new System.Drawing.Size(44, 16);
+            this.chkSettingHex.Size = new System.Drawing.Size(47, 19);
             this.chkSettingHex.TabIndex = 8;
             this.chkSettingHex.Text = "Hex";
             this.chkSettingHex.CheckedChanged += new System.EventHandler(this.chkSettingHex_CheckedChanged);
@@ -700,7 +514,7 @@ namespace CrashEdit
             // numSettingC
             // 
             this.numSettingC.Hexadecimal = true;
-            this.numSettingC.Location = new System.Drawing.Point(6, 96);
+            this.numSettingC.Location = new System.Drawing.Point(6, 101);
             this.numSettingC.Maximum = new decimal(new int[] {
             -1,
             2147483647,
@@ -712,7 +526,7 @@ namespace CrashEdit
             0,
             -2147483648});
             this.numSettingC.Name = "numSettingC";
-            this.numSettingC.Size = new System.Drawing.Size(106, 19);
+            this.numSettingC.Size = new System.Drawing.Size(106, 23);
             this.numSettingC.TabIndex = 7;
             this.numSettingC.ValueChanged += new System.EventHandler(this.numSettingC_ValueChanged);
             // 
@@ -773,7 +587,7 @@ namespace CrashEdit
             this.lblSettingB.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblSettingB.Location = new System.Drawing.Point(6, 74);
             this.lblSettingB.Name = "lblSettingB";
-            this.lblSettingB.Size = new System.Drawing.Size(13, 12);
+            this.lblSettingB.Size = new System.Drawing.Size(14, 15);
             this.lblSettingB.TabIndex = 4;
             this.lblSettingB.Text = "B";
             // 
@@ -783,7 +597,7 @@ namespace CrashEdit
             this.lblSettingA.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblSettingA.Location = new System.Drawing.Point(6, 50);
             this.lblSettingA.Name = "lblSettingA";
-            this.lblSettingA.Size = new System.Drawing.Size(13, 12);
+            this.lblSettingA.Size = new System.Drawing.Size(15, 15);
             this.lblSettingA.TabIndex = 3;
             this.lblSettingA.Text = "A";
             // 
@@ -801,7 +615,7 @@ namespace CrashEdit
             0,
             -2147483648});
             this.numSettingB.Name = "numSettingB";
-            this.numSettingB.Size = new System.Drawing.Size(86, 19);
+            this.numSettingB.Size = new System.Drawing.Size(86, 23);
             this.numSettingB.TabIndex = 3;
             this.numSettingB.ValueChanged += new System.EventHandler(this.numSettingB_ValueChanged);
             // 
@@ -814,75 +628,275 @@ namespace CrashEdit
             0,
             0});
             this.numSettingA.Name = "numSettingA";
-            this.numSettingA.Size = new System.Drawing.Size(86, 19);
+            this.numSettingA.Size = new System.Drawing.Size(86, 23);
             this.numSettingA.TabIndex = 2;
             this.numSettingA.ValueChanged += new System.EventHandler(this.numSettingA_ValueChanged);
             // 
-            // fraName
+            // fraPosition
             // 
-            this.fraName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
-            this.fraName.Controls.Add(this.txtName);
-            this.fraName.Controls.Add(this.chkName);
-            this.fraName.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraName.Location = new System.Drawing.Point(3, 3);
-            this.fraName.Name = "fraName";
-            this.fraName.Size = new System.Drawing.Size(232, 66);
-            this.fraName.TabIndex = 0;
-            this.fraName.TabStop = false;
-            this.fraName.Text = "Name";
+            this.fraPosition.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.fraPosition.Controls.Add(this.cmdAppendPosition);
+            this.fraPosition.Controls.Add(this.cmdNextPosition);
+            this.fraPosition.Controls.Add(this.cmdPreviousPosition);
+            this.fraPosition.Controls.Add(this.cmdInterpolate);
+            this.fraPosition.Controls.Add(this.lblPositionIndex);
+            this.fraPosition.Controls.Add(this.cmdInsertPosition);
+            this.fraPosition.Controls.Add(this.lblZ);
+            this.fraPosition.Controls.Add(this.cmdRemovePosition);
+            this.fraPosition.Controls.Add(this.lblY);
+            this.fraPosition.Controls.Add(this.lblX);
+            this.fraPosition.Controls.Add(this.numZ);
+            this.fraPosition.Controls.Add(this.numY);
+            this.fraPosition.Controls.Add(this.numX);
+            this.fraPosition.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraPosition.Location = new System.Drawing.Point(3, 81);
+            this.fraPosition.Name = "fraPosition";
+            this.fraPosition.Size = new System.Drawing.Size(232, 155);
+            this.fraPosition.TabIndex = 1;
+            this.fraPosition.TabStop = false;
+            this.fraPosition.Text = "Position(s)";
             // 
-            // txtName
+            // cmdAppendPosition
             // 
-            this.txtName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(55)))), ((int)(((byte)(60)))));
-            this.txtName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.txtName.Location = new System.Drawing.Point(6, 39);
-            this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(218, 19);
-            this.txtName.TabIndex = 6;
-            this.txtName.TextChanged += new System.EventHandler(this.txtName_TextChanged);
+            this.cmdAppendPosition.Location = new System.Drawing.Point(149, 45);
+            this.cmdAppendPosition.Name = "cmdAppendPosition";
+            this.cmdAppendPosition.Padding = new System.Windows.Forms.Padding(5);
+            this.cmdAppendPosition.Size = new System.Drawing.Size(75, 23);
+            this.cmdAppendPosition.TabIndex = 6;
+            this.cmdAppendPosition.Text = "Append";
+            this.cmdAppendPosition.Click += new System.EventHandler(this.cmdAppendPosition_Click);
             // 
-            // chkName
+            // cmdNextPosition
             // 
-            this.chkName.AutoSize = true;
-            this.chkName.Location = new System.Drawing.Point(6, 18);
-            this.chkName.Name = "chkName";
-            this.chkName.Size = new System.Drawing.Size(64, 16);
-            this.chkName.TabIndex = 2;
-            this.chkName.Text = "Enabled";
-            this.chkName.CheckedChanged += new System.EventHandler(this.chkName_CheckedChanged);
+            this.cmdNextPosition.Location = new System.Drawing.Point(159, 16);
+            this.cmdNextPosition.Name = "cmdNextPosition";
+            this.cmdNextPosition.Padding = new System.Windows.Forms.Padding(5);
+            this.cmdNextPosition.Size = new System.Drawing.Size(65, 23);
+            this.cmdNextPosition.TabIndex = 6;
+            this.cmdNextPosition.Text = "Next";
+            this.cmdNextPosition.Click += new System.EventHandler(this.cmdNextPosition_Click);
             // 
-            // tbcTabs
+            // cmdPreviousPosition
             // 
-            this.tbcTabs.Controls.Add(this.tabGeneral);
-            this.tbcTabs.Controls.Add(this.tabSpecial);
-            this.tbcTabs.Controls.Add(this.tabCamera);
-            this.tbcTabs.Controls.Add(this.tabLoadLists);
-            this.tbcTabs.Controls.Add(this.tabDrawLists);
-            this.tbcTabs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbcTabs.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.tbcTabs.Location = new System.Drawing.Point(0, 0);
-            this.tbcTabs.Name = "tbcTabs";
-            this.tbcTabs.SelectedIndex = 0;
-            this.tbcTabs.Size = new System.Drawing.Size(500, 425);
-            this.tbcTabs.TabIndex = 7;
+            this.cmdPreviousPosition.Location = new System.Drawing.Point(88, 16);
+            this.cmdPreviousPosition.Name = "cmdPreviousPosition";
+            this.cmdPreviousPosition.Padding = new System.Windows.Forms.Padding(5);
+            this.cmdPreviousPosition.Size = new System.Drawing.Size(65, 23);
+            this.cmdPreviousPosition.TabIndex = 6;
+            this.cmdPreviousPosition.Text = "Previous";
+            this.cmdPreviousPosition.Click += new System.EventHandler(this.cmdPreviousPosition_Click);
             // 
-            // tabGeneral
+            // cmdInterpolate
             // 
-            this.tabGeneral.AutoScroll = true;
-            this.tabGeneral.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.tabGeneral.Controls.Add(this.fraName);
-            this.tabGeneral.Controls.Add(this.fraType);
-            this.tabGeneral.Controls.Add(this.fraSubtype);
-            this.tabGeneral.Controls.Add(this.fraSettings);
-            this.tabGeneral.Controls.Add(this.fraPosition);
-            this.tabGeneral.Controls.Add(this.fraID);
-            this.tabGeneral.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.tabGeneral.Location = new System.Drawing.Point(4, 22);
-            this.tabGeneral.Name = "tabGeneral";
-            this.tabGeneral.Size = new System.Drawing.Size(492, 399);
-            this.tabGeneral.TabIndex = 0;
-            this.tabGeneral.Text = "General";
+            this.cmdInterpolate.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.cmdInterpolate.Location = new System.Drawing.Point(26, 125);
+            this.cmdInterpolate.Name = "cmdInterpolate";
+            this.cmdInterpolate.Padding = new System.Windows.Forms.Padding(5);
+            this.cmdInterpolate.Size = new System.Drawing.Size(79, 23);
+            this.cmdInterpolate.TabIndex = 8;
+            this.cmdInterpolate.Text = "Interpolate";
+            this.cmdInterpolate.Click += new System.EventHandler(this.cmdInterpolate_Click);
+            // 
+            // lblPositionIndex
+            // 
+            this.lblPositionIndex.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPositionIndex.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblPositionIndex.Location = new System.Drawing.Point(6, 18);
+            this.lblPositionIndex.Name = "lblPositionIndex";
+            this.lblPositionIndex.Size = new System.Drawing.Size(76, 21);
+            this.lblPositionIndex.TabIndex = 5;
+            this.lblPositionIndex.Text = "?? / ??";
+            this.lblPositionIndex.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // cmdInsertPosition
+            // 
+            this.cmdInsertPosition.Location = new System.Drawing.Point(149, 74);
+            this.cmdInsertPosition.Name = "cmdInsertPosition";
+            this.cmdInsertPosition.Padding = new System.Windows.Forms.Padding(5);
+            this.cmdInsertPosition.Size = new System.Drawing.Size(75, 21);
+            this.cmdInsertPosition.TabIndex = 6;
+            this.cmdInsertPosition.Text = "Insert";
+            this.cmdInsertPosition.Click += new System.EventHandler(this.cmdInsertPosition_Click);
+            // 
+            // lblZ
+            // 
+            this.lblZ.AutoSize = true;
+            this.lblZ.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblZ.Location = new System.Drawing.Point(6, 98);
+            this.lblZ.Name = "lblZ";
+            this.lblZ.Size = new System.Drawing.Size(14, 15);
+            this.lblZ.TabIndex = 5;
+            this.lblZ.Text = "Z";
+            // 
+            // cmdRemovePosition
+            // 
+            this.cmdRemovePosition.Location = new System.Drawing.Point(149, 101);
+            this.cmdRemovePosition.Name = "cmdRemovePosition";
+            this.cmdRemovePosition.Padding = new System.Windows.Forms.Padding(5);
+            this.cmdRemovePosition.Size = new System.Drawing.Size(75, 21);
+            this.cmdRemovePosition.TabIndex = 7;
+            this.cmdRemovePosition.Text = "Remove";
+            this.cmdRemovePosition.Click += new System.EventHandler(this.cmdRemovePosition_Click);
+            // 
+            // lblY
+            // 
+            this.lblY.AutoSize = true;
+            this.lblY.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblY.Location = new System.Drawing.Point(6, 74);
+            this.lblY.Name = "lblY";
+            this.lblY.Size = new System.Drawing.Size(14, 15);
+            this.lblY.TabIndex = 4;
+            this.lblY.Text = "Y";
+            // 
+            // lblX
+            // 
+            this.lblX.AutoSize = true;
+            this.lblX.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblX.Location = new System.Drawing.Point(6, 50);
+            this.lblX.Name = "lblX";
+            this.lblX.Size = new System.Drawing.Size(14, 15);
+            this.lblX.TabIndex = 3;
+            this.lblX.Text = "X";
+            // 
+            // numZ
+            // 
+            this.numZ.Increment = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.numZ.Location = new System.Drawing.Point(26, 96);
+            this.numZ.Maximum = new decimal(new int[] {
+            32767,
+            0,
+            0,
+            0});
+            this.numZ.Minimum = new decimal(new int[] {
+            32768,
+            0,
+            0,
+            -2147483648});
+            this.numZ.Name = "numZ";
+            this.numZ.Size = new System.Drawing.Size(86, 23);
+            this.numZ.TabIndex = 4;
+            this.numZ.ValueChanged += new System.EventHandler(this.numZ_ValueChanged);
+            // 
+            // numY
+            // 
+            this.numY.Increment = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.numY.Location = new System.Drawing.Point(26, 72);
+            this.numY.Maximum = new decimal(new int[] {
+            32767,
+            0,
+            0,
+            0});
+            this.numY.Minimum = new decimal(new int[] {
+            32768,
+            0,
+            0,
+            -2147483648});
+            this.numY.Name = "numY";
+            this.numY.Size = new System.Drawing.Size(86, 23);
+            this.numY.TabIndex = 3;
+            this.numY.ValueChanged += new System.EventHandler(this.numY_ValueChanged);
+            // 
+            // numX
+            // 
+            this.numX.Increment = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.numX.Location = new System.Drawing.Point(26, 48);
+            this.numX.Maximum = new decimal(new int[] {
+            32767,
+            0,
+            0,
+            0});
+            this.numX.Minimum = new decimal(new int[] {
+            32768,
+            0,
+            0,
+            -2147483648});
+            this.numX.Name = "numX";
+            this.numX.Size = new System.Drawing.Size(86, 23);
+            this.numX.TabIndex = 2;
+            this.numX.ValueChanged += new System.EventHandler(this.numX_ValueChanged);
+            // 
+            // fraID
+            // 
+            this.fraID.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.fraID.Controls.Add(this.numID);
+            this.fraID.Controls.Add(this.chkID);
+            this.fraID.Controls.Add(this.chkID2);
+            this.fraID.Controls.Add(this.numID2);
+            this.fraID.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraID.Location = new System.Drawing.Point(241, 3);
+            this.fraID.Name = "fraID";
+            this.fraID.Size = new System.Drawing.Size(132, 119);
+            this.fraID.TabIndex = 3;
+            this.fraID.TabStop = false;
+            this.fraID.Text = "ID";
+            // 
+            // numID
+            // 
+            this.numID.Location = new System.Drawing.Point(6, 39);
+            this.numID.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
+            this.numID.Minimum = new decimal(new int[] {
+            -2147483648,
+            0,
+            0,
+            -2147483648});
+            this.numID.Name = "numID";
+            this.numID.Size = new System.Drawing.Size(120, 23);
+            this.numID.TabIndex = 6;
+            this.numID.ValueChanged += new System.EventHandler(this.numID_ValueChanged);
+            // 
+            // chkID
+            // 
+            this.chkID.AutoSize = true;
+            this.chkID.Location = new System.Drawing.Point(6, 18);
+            this.chkID.Name = "chkID";
+            this.chkID.Size = new System.Drawing.Size(68, 19);
+            this.chkID.TabIndex = 4;
+            this.chkID.Text = "Enabled";
+            this.chkID.CheckedChanged += new System.EventHandler(this.chkID_CheckedChanged);
+            // 
+            // chkID2
+            // 
+            this.chkID2.AutoSize = true;
+            this.chkID2.Location = new System.Drawing.Point(6, 68);
+            this.chkID2.Name = "chkID2";
+            this.chkID2.Size = new System.Drawing.Size(68, 19);
+            this.chkID2.TabIndex = 2;
+            this.chkID2.Text = "Enabled";
+            this.chkID2.CheckedChanged += new System.EventHandler(this.chkID2_CheckedChanged);
+            // 
+            // numID2
+            // 
+            this.numID2.Location = new System.Drawing.Point(6, 89);
+            this.numID2.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
+            this.numID2.Minimum = new decimal(new int[] {
+            -2147483648,
+            0,
+            0,
+            -2147483648});
+            this.numID2.Name = "numID2";
+            this.numID2.Size = new System.Drawing.Size(120, 23);
+            this.numID2.TabIndex = 3;
+            this.numID2.ValueChanged += new System.EventHandler(this.numID2_ValueChanged);
             // 
             // tabSpecial
             // 
@@ -897,9 +911,9 @@ namespace CrashEdit
             this.tabSpecial.Controls.Add(this.fraBoxCount);
             this.tabSpecial.Controls.Add(this.fraVictims);
             this.tabSpecial.ForeColor = System.Drawing.SystemColors.Window;
-            this.tabSpecial.Location = new System.Drawing.Point(4, 22);
+            this.tabSpecial.Location = new System.Drawing.Point(4, 28);
             this.tabSpecial.Name = "tabSpecial";
-            this.tabSpecial.Size = new System.Drawing.Size(492, 399);
+            this.tabSpecial.Size = new System.Drawing.Size(1992, 1664);
             this.tabSpecial.TabIndex = 1;
             this.tabSpecial.Text = "Special";
             this.tabSpecial.Enter += new System.EventHandler(this.tabSpecial_Enter);
@@ -910,9 +924,9 @@ namespace CrashEdit
             this.fraZMod.Controls.Add(this.chkZMod);
             this.fraZMod.Controls.Add(this.numZMod);
             this.fraZMod.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraZMod.Location = new System.Drawing.Point(3, 221);
+            this.fraZMod.Location = new System.Drawing.Point(3, 237);
             this.fraZMod.Name = "fraZMod";
-            this.fraZMod.Size = new System.Drawing.Size(120, 65);
+            this.fraZMod.Size = new System.Drawing.Size(120, 73);
             this.fraZMod.TabIndex = 11;
             this.fraZMod.TabStop = false;
             this.fraZMod.Text = "Depth Modifier";
@@ -920,16 +934,16 @@ namespace CrashEdit
             // chkZMod
             // 
             this.chkZMod.AutoSize = true;
-            this.chkZMod.Location = new System.Drawing.Point(6, 18);
+            this.chkZMod.Location = new System.Drawing.Point(6, 19);
             this.chkZMod.Name = "chkZMod";
-            this.chkZMod.Size = new System.Drawing.Size(64, 16);
+            this.chkZMod.Size = new System.Drawing.Size(68, 19);
             this.chkZMod.TabIndex = 0;
             this.chkZMod.Text = "Enabled";
             this.chkZMod.CheckedChanged += new System.EventHandler(this.chkZMod_CheckedChanged);
             // 
             // numZMod
             // 
-            this.numZMod.Location = new System.Drawing.Point(6, 39);
+            this.numZMod.Location = new System.Drawing.Point(6, 44);
             this.numZMod.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -941,7 +955,7 @@ namespace CrashEdit
             0,
             -2147483648});
             this.numZMod.Name = "numZMod";
-            this.numZMod.Size = new System.Drawing.Size(108, 19);
+            this.numZMod.Size = new System.Drawing.Size(108, 23);
             this.numZMod.TabIndex = 1;
             this.numZMod.ValueChanged += new System.EventHandler(this.numZMod_ValueChanged);
             // 
@@ -951,9 +965,9 @@ namespace CrashEdit
             this.fraTTReward.Controls.Add(this.chkTTReward);
             this.fraTTReward.Controls.Add(this.numTTReward);
             this.fraTTReward.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraTTReward.Location = new System.Drawing.Point(255, 221);
+            this.fraTTReward.Location = new System.Drawing.Point(255, 237);
             this.fraTTReward.Name = "fraTTReward";
-            this.fraTTReward.Size = new System.Drawing.Size(120, 65);
+            this.fraTTReward.Size = new System.Drawing.Size(120, 73);
             this.fraTTReward.TabIndex = 12;
             this.fraTTReward.TabStop = false;
             this.fraTTReward.Text = "Time Trial Reward";
@@ -961,16 +975,16 @@ namespace CrashEdit
             // chkTTReward
             // 
             this.chkTTReward.AutoSize = true;
-            this.chkTTReward.Location = new System.Drawing.Point(6, 18);
+            this.chkTTReward.Location = new System.Drawing.Point(6, 19);
             this.chkTTReward.Name = "chkTTReward";
-            this.chkTTReward.Size = new System.Drawing.Size(64, 16);
+            this.chkTTReward.Size = new System.Drawing.Size(68, 19);
             this.chkTTReward.TabIndex = 0;
             this.chkTTReward.Text = "Enabled";
             this.chkTTReward.CheckedChanged += new System.EventHandler(this.chkTTReward_CheckedChanged);
             // 
             // numTTReward
             // 
-            this.numTTReward.Location = new System.Drawing.Point(6, 39);
+            this.numTTReward.Location = new System.Drawing.Point(6, 44);
             this.numTTReward.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -982,7 +996,7 @@ namespace CrashEdit
             0,
             -2147483648});
             this.numTTReward.Name = "numTTReward";
-            this.numTTReward.Size = new System.Drawing.Size(108, 19);
+            this.numTTReward.Size = new System.Drawing.Size(108, 23);
             this.numTTReward.TabIndex = 1;
             this.numTTReward.ValueChanged += new System.EventHandler(this.numTTReward_ValueChanged);
             // 
@@ -992,9 +1006,9 @@ namespace CrashEdit
             this.fraOtherSettings.Controls.Add(this.chkOtherSettings);
             this.fraOtherSettings.Controls.Add(this.numOtherSettings);
             this.fraOtherSettings.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraOtherSettings.Location = new System.Drawing.Point(255, 150);
+            this.fraOtherSettings.Location = new System.Drawing.Point(255, 158);
             this.fraOtherSettings.Name = "fraOtherSettings";
-            this.fraOtherSettings.Size = new System.Drawing.Size(120, 65);
+            this.fraOtherSettings.Size = new System.Drawing.Size(120, 73);
             this.fraOtherSettings.TabIndex = 10;
             this.fraOtherSettings.TabStop = false;
             this.fraOtherSettings.Text = "Other Settings";
@@ -1002,16 +1016,16 @@ namespace CrashEdit
             // chkOtherSettings
             // 
             this.chkOtherSettings.AutoSize = true;
-            this.chkOtherSettings.Location = new System.Drawing.Point(6, 18);
+            this.chkOtherSettings.Location = new System.Drawing.Point(6, 22);
             this.chkOtherSettings.Name = "chkOtherSettings";
-            this.chkOtherSettings.Size = new System.Drawing.Size(64, 16);
+            this.chkOtherSettings.Size = new System.Drawing.Size(68, 19);
             this.chkOtherSettings.TabIndex = 0;
             this.chkOtherSettings.Text = "Enabled";
             this.chkOtherSettings.CheckedChanged += new System.EventHandler(this.chkOtherSettings_CheckedChanged);
             // 
             // numOtherSettings
             // 
-            this.numOtherSettings.Location = new System.Drawing.Point(6, 39);
+            this.numOtherSettings.Location = new System.Drawing.Point(6, 44);
             this.numOtherSettings.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -1023,7 +1037,7 @@ namespace CrashEdit
             0,
             -2147483648});
             this.numOtherSettings.Name = "numOtherSettings";
-            this.numOtherSettings.Size = new System.Drawing.Size(108, 19);
+            this.numOtherSettings.Size = new System.Drawing.Size(108, 23);
             this.numOtherSettings.TabIndex = 1;
             this.numOtherSettings.ValueChanged += new System.EventHandler(this.numOtherSettings_ValueChanged);
             // 
@@ -1033,9 +1047,9 @@ namespace CrashEdit
             this.fraScaling.Controls.Add(this.chkScaling);
             this.fraScaling.Controls.Add(this.numScaling);
             this.fraScaling.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraScaling.Location = new System.Drawing.Point(129, 221);
+            this.fraScaling.Location = new System.Drawing.Point(129, 237);
             this.fraScaling.Name = "fraScaling";
-            this.fraScaling.Size = new System.Drawing.Size(120, 65);
+            this.fraScaling.Size = new System.Drawing.Size(120, 73);
             this.fraScaling.TabIndex = 11;
             this.fraScaling.TabStop = false;
             this.fraScaling.Text = "Scale Modifier";
@@ -1043,16 +1057,16 @@ namespace CrashEdit
             // chkScaling
             // 
             this.chkScaling.AutoSize = true;
-            this.chkScaling.Location = new System.Drawing.Point(6, 18);
+            this.chkScaling.Location = new System.Drawing.Point(6, 19);
             this.chkScaling.Name = "chkScaling";
-            this.chkScaling.Size = new System.Drawing.Size(64, 16);
+            this.chkScaling.Size = new System.Drawing.Size(68, 19);
             this.chkScaling.TabIndex = 0;
             this.chkScaling.Text = "Enabled";
             this.chkScaling.CheckedChanged += new System.EventHandler(this.chkScaling_CheckedChanged);
             // 
             // numScaling
             // 
-            this.numScaling.Location = new System.Drawing.Point(6, 39);
+            this.numScaling.Location = new System.Drawing.Point(6, 44);
             this.numScaling.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -1064,7 +1078,7 @@ namespace CrashEdit
             0,
             -2147483648});
             this.numScaling.Name = "numScaling";
-            this.numScaling.Size = new System.Drawing.Size(108, 19);
+            this.numScaling.Size = new System.Drawing.Size(108, 23);
             this.numScaling.TabIndex = 1;
             this.numScaling.ValueChanged += new System.EventHandler(this.numScaling_ValueChanged);
             // 
@@ -1074,9 +1088,9 @@ namespace CrashEdit
             this.fraDDASection.Controls.Add(this.chkDDASection);
             this.fraDDASection.Controls.Add(this.numDDASection);
             this.fraDDASection.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraDDASection.Location = new System.Drawing.Point(3, 150);
+            this.fraDDASection.Location = new System.Drawing.Point(3, 158);
             this.fraDDASection.Name = "fraDDASection";
-            this.fraDDASection.Size = new System.Drawing.Size(120, 65);
+            this.fraDDASection.Size = new System.Drawing.Size(120, 73);
             this.fraDDASection.TabIndex = 10;
             this.fraDDASection.TabStop = false;
             this.fraDDASection.Text = "DDA Section";
@@ -1084,16 +1098,16 @@ namespace CrashEdit
             // chkDDASection
             // 
             this.chkDDASection.AutoSize = true;
-            this.chkDDASection.Location = new System.Drawing.Point(6, 18);
+            this.chkDDASection.Location = new System.Drawing.Point(6, 22);
             this.chkDDASection.Name = "chkDDASection";
-            this.chkDDASection.Size = new System.Drawing.Size(64, 16);
+            this.chkDDASection.Size = new System.Drawing.Size(68, 19);
             this.chkDDASection.TabIndex = 0;
             this.chkDDASection.Text = "Enabled";
             this.chkDDASection.CheckedChanged += new System.EventHandler(this.chkDDASection_CheckedChanged);
             // 
             // numDDASection
             // 
-            this.numDDASection.Location = new System.Drawing.Point(6, 39);
+            this.numDDASection.Location = new System.Drawing.Point(6, 44);
             this.numDDASection.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -1105,7 +1119,7 @@ namespace CrashEdit
             0,
             -2147483648});
             this.numDDASection.Name = "numDDASection";
-            this.numDDASection.Size = new System.Drawing.Size(108, 19);
+            this.numDDASection.Size = new System.Drawing.Size(108, 23);
             this.numDDASection.TabIndex = 1;
             this.numDDASection.ValueChanged += new System.EventHandler(this.numDDASection_ValueChanged);
             // 
@@ -1115,9 +1129,9 @@ namespace CrashEdit
             this.fraDDASettings.Controls.Add(this.chkDDASettings);
             this.fraDDASettings.Controls.Add(this.numDDASettings);
             this.fraDDASettings.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraDDASettings.Location = new System.Drawing.Point(129, 150);
+            this.fraDDASettings.Location = new System.Drawing.Point(129, 158);
             this.fraDDASettings.Name = "fraDDASettings";
-            this.fraDDASettings.Size = new System.Drawing.Size(120, 65);
+            this.fraDDASettings.Size = new System.Drawing.Size(120, 73);
             this.fraDDASettings.TabIndex = 9;
             this.fraDDASettings.TabStop = false;
             this.fraDDASettings.Text = "DDA Death Count";
@@ -1125,16 +1139,16 @@ namespace CrashEdit
             // chkDDASettings
             // 
             this.chkDDASettings.AutoSize = true;
-            this.chkDDASettings.Location = new System.Drawing.Point(6, 18);
+            this.chkDDASettings.Location = new System.Drawing.Point(6, 22);
             this.chkDDASettings.Name = "chkDDASettings";
-            this.chkDDASettings.Size = new System.Drawing.Size(64, 16);
+            this.chkDDASettings.Size = new System.Drawing.Size(68, 19);
             this.chkDDASettings.TabIndex = 0;
             this.chkDDASettings.Text = "Enabled";
             this.chkDDASettings.CheckedChanged += new System.EventHandler(this.chkDDASettings_CheckedChanged);
             // 
             // numDDASettings
             // 
-            this.numDDASettings.Location = new System.Drawing.Point(6, 39);
+            this.numDDASettings.Location = new System.Drawing.Point(6, 44);
             this.numDDASettings.Maximum = new decimal(new int[] {
             8388607,
             0,
@@ -1146,7 +1160,7 @@ namespace CrashEdit
             0,
             -2147483648});
             this.numDDASettings.Name = "numDDASettings";
-            this.numDDASettings.Size = new System.Drawing.Size(108, 19);
+            this.numDDASettings.Size = new System.Drawing.Size(108, 23);
             this.numDDASettings.TabIndex = 1;
             this.numDDASettings.ValueChanged += new System.EventHandler(this.numDDASettings_ValueChanged);
             // 
@@ -1158,9 +1172,9 @@ namespace CrashEdit
             this.fraBoxCount.Controls.Add(this.chkBoxCount);
             this.fraBoxCount.Controls.Add(this.numBoxCount);
             this.fraBoxCount.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraBoxCount.Location = new System.Drawing.Point(141, 3);
+            this.fraBoxCount.Location = new System.Drawing.Point(149, 3);
             this.fraBoxCount.Name = "fraBoxCount";
-            this.fraBoxCount.Size = new System.Drawing.Size(132, 110);
+            this.fraBoxCount.Size = new System.Drawing.Size(140, 126);
             this.fraBoxCount.TabIndex = 8;
             this.fraBoxCount.TabStop = false;
             this.fraBoxCount.Text = "Box Count";
@@ -1168,16 +1182,16 @@ namespace CrashEdit
             // chkBonusBoxCount
             // 
             this.chkBonusBoxCount.AutoSize = true;
-            this.chkBonusBoxCount.Location = new System.Drawing.Point(6, 63);
+            this.chkBonusBoxCount.Location = new System.Drawing.Point(6, 70);
             this.chkBonusBoxCount.Name = "chkBonusBoxCount";
-            this.chkBonusBoxCount.Size = new System.Drawing.Size(108, 16);
+            this.chkBonusBoxCount.Size = new System.Drawing.Size(112, 19);
             this.chkBonusBoxCount.TabIndex = 2;
             this.chkBonusBoxCount.Text = "Enabled (Bonus)";
             this.chkBonusBoxCount.CheckedChanged += new System.EventHandler(this.chkBonusBoxCount_CheckedChanged);
             // 
             // numBonusBoxCount
             // 
-            this.numBonusBoxCount.Location = new System.Drawing.Point(6, 84);
+            this.numBonusBoxCount.Location = new System.Drawing.Point(6, 95);
             this.numBonusBoxCount.Maximum = new decimal(new int[] {
             8388607,
             0,
@@ -1189,23 +1203,23 @@ namespace CrashEdit
             0,
             -2147483648});
             this.numBonusBoxCount.Name = "numBonusBoxCount";
-            this.numBonusBoxCount.Size = new System.Drawing.Size(120, 19);
+            this.numBonusBoxCount.Size = new System.Drawing.Size(120, 23);
             this.numBonusBoxCount.TabIndex = 3;
             this.numBonusBoxCount.ValueChanged += new System.EventHandler(this.numBonusBoxCount_ValueChanged);
             // 
             // chkBoxCount
             // 
             this.chkBoxCount.AutoSize = true;
-            this.chkBoxCount.Location = new System.Drawing.Point(6, 18);
+            this.chkBoxCount.Location = new System.Drawing.Point(6, 20);
             this.chkBoxCount.Name = "chkBoxCount";
-            this.chkBoxCount.Size = new System.Drawing.Size(64, 16);
+            this.chkBoxCount.Size = new System.Drawing.Size(68, 19);
             this.chkBoxCount.TabIndex = 0;
             this.chkBoxCount.Text = "Enabled";
             this.chkBoxCount.CheckedChanged += new System.EventHandler(this.chkBoxCount_CheckedChanged);
             // 
             // numBoxCount
             // 
-            this.numBoxCount.Location = new System.Drawing.Point(6, 39);
+            this.numBoxCount.Location = new System.Drawing.Point(6, 43);
             this.numBoxCount.Maximum = new decimal(new int[] {
             8388607,
             0,
@@ -1217,7 +1231,7 @@ namespace CrashEdit
             0,
             -2147483648});
             this.numBoxCount.Name = "numBoxCount";
-            this.numBoxCount.Size = new System.Drawing.Size(120, 19);
+            this.numBoxCount.Size = new System.Drawing.Size(120, 23);
             this.numBoxCount.TabIndex = 1;
             this.numBoxCount.ValueChanged += new System.EventHandler(this.numBoxCount_ValueChanged);
             // 
@@ -1234,14 +1248,14 @@ namespace CrashEdit
             this.fraVictims.ForeColor = System.Drawing.SystemColors.Window;
             this.fraVictims.Location = new System.Drawing.Point(3, 3);
             this.fraVictims.Name = "fraVictims";
-            this.fraVictims.Size = new System.Drawing.Size(132, 142);
+            this.fraVictims.Size = new System.Drawing.Size(140, 150);
             this.fraVictims.TabIndex = 7;
             this.fraVictims.TabStop = false;
             this.fraVictims.Text = "Victims";
             // 
             // cmdClearAllVictims
             // 
-            this.cmdClearAllVictims.Location = new System.Drawing.Point(6, 115);
+            this.cmdClearAllVictims.Location = new System.Drawing.Point(9, 123);
             this.cmdClearAllVictims.Name = "cmdClearAllVictims";
             this.cmdClearAllVictims.Padding = new System.Windows.Forms.Padding(5);
             this.cmdClearAllVictims.Size = new System.Drawing.Size(120, 21);
@@ -1251,30 +1265,30 @@ namespace CrashEdit
             // 
             // numVictimID
             // 
-            this.numVictimID.Location = new System.Drawing.Point(6, 66);
+            this.numVictimID.Location = new System.Drawing.Point(9, 66);
             this.numVictimID.Maximum = new decimal(new int[] {
             65535,
             0,
             0,
             0});
             this.numVictimID.Name = "numVictimID";
-            this.numVictimID.Size = new System.Drawing.Size(120, 19);
+            this.numVictimID.Size = new System.Drawing.Size(120, 23);
             this.numVictimID.TabIndex = 2;
             this.numVictimID.ValueChanged += new System.EventHandler(this.numVictimID_ValueChanged);
             // 
             // cmdRemoveVictim
             // 
-            this.cmdRemoveVictim.Location = new System.Drawing.Point(6, 89);
+            this.cmdRemoveVictim.Location = new System.Drawing.Point(9, 95);
             this.cmdRemoveVictim.Name = "cmdRemoveVictim";
             this.cmdRemoveVictim.Padding = new System.Windows.Forms.Padding(5);
-            this.cmdRemoveVictim.Size = new System.Drawing.Size(58, 21);
+            this.cmdRemoveVictim.Size = new System.Drawing.Size(57, 21);
             this.cmdRemoveVictim.TabIndex = 4;
             this.cmdRemoveVictim.Text = "Remove";
             this.cmdRemoveVictim.Click += new System.EventHandler(this.cmdRemoveVictim_Click);
             // 
             // cmdNextVictim
             // 
-            this.cmdNextVictim.Location = new System.Drawing.Point(68, 18);
+            this.cmdNextVictim.Location = new System.Drawing.Point(73, 18);
             this.cmdNextVictim.Name = "cmdNextVictim";
             this.cmdNextVictim.Padding = new System.Windows.Forms.Padding(5);
             this.cmdNextVictim.Size = new System.Drawing.Size(61, 21);
@@ -1284,7 +1298,7 @@ namespace CrashEdit
             // 
             // cmdPreviousVictim
             // 
-            this.cmdPreviousVictim.Location = new System.Drawing.Point(3, 18);
+            this.cmdPreviousVictim.Location = new System.Drawing.Point(6, 18);
             this.cmdPreviousVictim.Name = "cmdPreviousVictim";
             this.cmdPreviousVictim.Padding = new System.Windows.Forms.Padding(5);
             this.cmdPreviousVictim.Size = new System.Drawing.Size(61, 21);
@@ -1296,7 +1310,7 @@ namespace CrashEdit
             // 
             this.lblVictimIndex.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblVictimIndex.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.lblVictimIndex.Location = new System.Drawing.Point(6, 42);
+            this.lblVictimIndex.Location = new System.Drawing.Point(9, 42);
             this.lblVictimIndex.Name = "lblVictimIndex";
             this.lblVictimIndex.Size = new System.Drawing.Size(120, 21);
             this.lblVictimIndex.TabIndex = 7;
@@ -1314,10 +1328,10 @@ namespace CrashEdit
             this.tabCamera.Controls.Add(this.fraCameraIndex);
             this.tabCamera.Controls.Add(this.fraSLST);
             this.tabCamera.ForeColor = System.Drawing.SystemColors.Window;
-            this.tabCamera.Location = new System.Drawing.Point(4, 22);
+            this.tabCamera.Location = new System.Drawing.Point(4, 28);
             this.tabCamera.Name = "tabCamera";
             this.tabCamera.Padding = new System.Windows.Forms.Padding(3);
-            this.tabCamera.Size = new System.Drawing.Size(492, 399);
+            this.tabCamera.Size = new System.Drawing.Size(1992, 1664);
             this.tabCamera.TabIndex = 2;
             this.tabCamera.Text = "Camera";
             this.tabCamera.Enter += new System.EventHandler(this.tabCamera_Enter);
@@ -1334,9 +1348,9 @@ namespace CrashEdit
             this.fraFOV.Controls.Add(this.cmdPrevFOVFrame);
             this.fraFOV.Controls.Add(this.cmdNextFOVFrame);
             this.fraFOV.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraFOV.Location = new System.Drawing.Point(289, 86);
+            this.fraFOV.Location = new System.Drawing.Point(289, 90);
             this.fraFOV.Name = "fraFOV";
-            this.fraFOV.Size = new System.Drawing.Size(151, 246);
+            this.fraFOV.Size = new System.Drawing.Size(151, 250);
             this.fraFOV.TabIndex = 21;
             this.fraFOV.TabStop = false;
             this.fraFOV.Text = "Field-of-View Timeline";
@@ -1347,13 +1361,13 @@ namespace CrashEdit
             this.lblFOVPosition.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblFOVPosition.Location = new System.Drawing.Point(6, 67);
             this.lblFOVPosition.Name = "lblFOVPosition";
-            this.lblFOVPosition.Size = new System.Drawing.Size(46, 12);
+            this.lblFOVPosition.Size = new System.Drawing.Size(50, 15);
             this.lblFOVPosition.TabIndex = 20;
             this.lblFOVPosition.Text = "Position";
             // 
             // cmdRemoveFOVFrame
             // 
-            this.cmdRemoveFOVFrame.Location = new System.Drawing.Point(7, 90);
+            this.cmdRemoveFOVFrame.Location = new System.Drawing.Point(6, 95);
             this.cmdRemoveFOVFrame.Name = "cmdRemoveFOVFrame";
             this.cmdRemoveFOVFrame.Padding = new System.Windows.Forms.Padding(5);
             this.cmdRemoveFOVFrame.Size = new System.Drawing.Size(66, 21);
@@ -1363,7 +1377,7 @@ namespace CrashEdit
             // 
             // cmdInsertFOVFrame
             // 
-            this.cmdInsertFOVFrame.Location = new System.Drawing.Point(79, 90);
+            this.cmdInsertFOVFrame.Location = new System.Drawing.Point(78, 95);
             this.cmdInsertFOVFrame.Name = "cmdInsertFOVFrame";
             this.cmdInsertFOVFrame.Padding = new System.Windows.Forms.Padding(5);
             this.cmdInsertFOVFrame.Size = new System.Drawing.Size(66, 21);
@@ -1385,7 +1399,7 @@ namespace CrashEdit
             0,
             -2147483648});
             this.numFOVPosition.Name = "numFOVPosition";
-            this.numFOVPosition.Size = new System.Drawing.Size(68, 19);
+            this.numFOVPosition.Size = new System.Drawing.Size(68, 23);
             this.numFOVPosition.TabIndex = 19;
             this.numFOVPosition.ValueChanged += new System.EventHandler(this.numFOVPosition_ValueChanged);
             // 
@@ -1410,9 +1424,9 @@ namespace CrashEdit
             this.fraFOVFrame.Controls.Add(this.lblFOV);
             this.fraFOVFrame.Controls.Add(this.numFOV);
             this.fraFOVFrame.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraFOVFrame.Location = new System.Drawing.Point(6, 116);
+            this.fraFOVFrame.Location = new System.Drawing.Point(6, 122);
             this.fraFOVFrame.Name = "fraFOVFrame";
-            this.fraFOVFrame.Size = new System.Drawing.Size(139, 118);
+            this.fraFOVFrame.Size = new System.Drawing.Size(139, 122);
             this.fraFOVFrame.TabIndex = 15;
             this.fraFOVFrame.TabStop = false;
             this.fraFOVFrame.Text = "Field-of-View";
@@ -1474,7 +1488,7 @@ namespace CrashEdit
             this.lblFOV.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblFOV.Location = new System.Drawing.Point(6, 93);
             this.lblFOV.Name = "lblFOV";
-            this.lblFOV.Size = new System.Drawing.Size(28, 12);
+            this.lblFOV.Size = new System.Drawing.Size(29, 15);
             this.lblFOV.TabIndex = 39;
             this.lblFOV.Text = "FOV";
             // 
@@ -1487,7 +1501,7 @@ namespace CrashEdit
             0,
             0});
             this.numFOV.Name = "numFOV";
-            this.numFOV.Size = new System.Drawing.Size(93, 19);
+            this.numFOV.Size = new System.Drawing.Size(93, 23);
             this.numFOV.TabIndex = 38;
             this.numFOV.ValueChanged += new System.EventHandler(this.numFOV_ValueChanged);
             // 
@@ -1523,9 +1537,9 @@ namespace CrashEdit
             this.fraNeighbor.Controls.Add(this.cmdPrevNeighbor);
             this.fraNeighbor.Controls.Add(this.cmdNextNeighbor);
             this.fraNeighbor.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraNeighbor.Location = new System.Drawing.Point(132, 86);
+            this.fraNeighbor.Location = new System.Drawing.Point(132, 90);
             this.fraNeighbor.Name = "fraNeighbor";
-            this.fraNeighbor.Size = new System.Drawing.Size(151, 309);
+            this.fraNeighbor.Size = new System.Drawing.Size(151, 317);
             this.fraNeighbor.TabIndex = 8;
             this.fraNeighbor.TabStop = false;
             this.fraNeighbor.Text = "Neighbors";
@@ -1536,13 +1550,13 @@ namespace CrashEdit
             this.lblNeighborPosition.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblNeighborPosition.Location = new System.Drawing.Point(6, 67);
             this.lblNeighborPosition.Name = "lblNeighborPosition";
-            this.lblNeighborPosition.Size = new System.Drawing.Size(46, 12);
+            this.lblNeighborPosition.Size = new System.Drawing.Size(50, 15);
             this.lblNeighborPosition.TabIndex = 20;
             this.lblNeighborPosition.Text = "Position";
             // 
             // cmdRemoveNeighbor
             // 
-            this.cmdRemoveNeighbor.Location = new System.Drawing.Point(7, 90);
+            this.cmdRemoveNeighbor.Location = new System.Drawing.Point(7, 94);
             this.cmdRemoveNeighbor.Name = "cmdRemoveNeighbor";
             this.cmdRemoveNeighbor.Padding = new System.Windows.Forms.Padding(5);
             this.cmdRemoveNeighbor.Size = new System.Drawing.Size(66, 21);
@@ -1552,7 +1566,7 @@ namespace CrashEdit
             // 
             // cmdInsertNeighbor
             // 
-            this.cmdInsertNeighbor.Location = new System.Drawing.Point(79, 90);
+            this.cmdInsertNeighbor.Location = new System.Drawing.Point(79, 94);
             this.cmdInsertNeighbor.Name = "cmdInsertNeighbor";
             this.cmdInsertNeighbor.Padding = new System.Windows.Forms.Padding(5);
             this.cmdInsertNeighbor.Size = new System.Drawing.Size(66, 21);
@@ -1574,7 +1588,7 @@ namespace CrashEdit
             0,
             -2147483648});
             this.numNeighborPosition.Name = "numNeighborPosition";
-            this.numNeighborPosition.Size = new System.Drawing.Size(68, 19);
+            this.numNeighborPosition.Size = new System.Drawing.Size(68, 23);
             this.numNeighborPosition.TabIndex = 19;
             this.numNeighborPosition.ValueChanged += new System.EventHandler(this.numNeighborPosition_ValueChanged);
             // 
@@ -1605,9 +1619,9 @@ namespace CrashEdit
             this.fraNeighborSetting.Controls.Add(this.numNeighborCamera);
             this.fraNeighborSetting.Controls.Add(this.numNeighborZone);
             this.fraNeighborSetting.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraNeighborSetting.Location = new System.Drawing.Point(6, 116);
+            this.fraNeighborSetting.Location = new System.Drawing.Point(6, 120);
             this.fraNeighborSetting.Name = "fraNeighborSetting";
-            this.fraNeighborSetting.Size = new System.Drawing.Size(139, 187);
+            this.fraNeighborSetting.Size = new System.Drawing.Size(139, 191);
             this.fraNeighborSetting.TabIndex = 15;
             this.fraNeighborSetting.TabStop = false;
             this.fraNeighborSetting.Text = "Neighbor";
@@ -1669,7 +1683,7 @@ namespace CrashEdit
             this.lblNeighborLink.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblNeighborLink.Location = new System.Drawing.Point(6, 165);
             this.lblNeighborLink.Name = "lblNeighborLink";
-            this.lblNeighborLink.Size = new System.Drawing.Size(55, 12);
+            this.lblNeighborLink.Size = new System.Drawing.Size(56, 15);
             this.lblNeighborLink.TabIndex = 45;
             this.lblNeighborLink.Text = "Link Type";
             // 
@@ -1679,7 +1693,7 @@ namespace CrashEdit
             this.lblNeighborFlag.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblNeighborFlag.Location = new System.Drawing.Point(6, 93);
             this.lblNeighborFlag.Name = "lblNeighborFlag";
-            this.lblNeighborFlag.Size = new System.Drawing.Size(27, 12);
+            this.lblNeighborFlag.Size = new System.Drawing.Size(29, 15);
             this.lblNeighborFlag.TabIndex = 39;
             this.lblNeighborFlag.Text = "Flag";
             // 
@@ -1692,7 +1706,7 @@ namespace CrashEdit
             0,
             0});
             this.numNeighborFlag.Name = "numNeighborFlag";
-            this.numNeighborFlag.Size = new System.Drawing.Size(60, 19);
+            this.numNeighborFlag.Size = new System.Drawing.Size(60, 23);
             this.numNeighborFlag.TabIndex = 38;
             this.numNeighborFlag.ValueChanged += new System.EventHandler(this.numNeighborFlag_ValueChanged);
             // 
@@ -1702,7 +1716,7 @@ namespace CrashEdit
             this.lblNeighborCamera.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblNeighborCamera.Location = new System.Drawing.Point(6, 117);
             this.lblNeighborCamera.Name = "lblNeighborCamera";
-            this.lblNeighborCamera.Size = new System.Drawing.Size(61, 12);
+            this.lblNeighborCamera.Size = new System.Drawing.Size(67, 15);
             this.lblNeighborCamera.TabIndex = 44;
             this.lblNeighborCamera.Text = "Cam. Index";
             // 
@@ -1712,7 +1726,7 @@ namespace CrashEdit
             this.lblNeighborZone.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblNeighborZone.Location = new System.Drawing.Point(6, 141);
             this.lblNeighborZone.Name = "lblNeighborZone";
-            this.lblNeighborZone.Size = new System.Drawing.Size(61, 12);
+            this.lblNeighborZone.Size = new System.Drawing.Size(66, 15);
             this.lblNeighborZone.TabIndex = 41;
             this.lblNeighborZone.Text = "Zone Index";
             // 
@@ -1725,7 +1739,7 @@ namespace CrashEdit
             0,
             0});
             this.numNeighborLink.Name = "numNeighborLink";
-            this.numNeighborLink.Size = new System.Drawing.Size(60, 19);
+            this.numNeighborLink.Size = new System.Drawing.Size(60, 23);
             this.numNeighborLink.TabIndex = 43;
             this.numNeighborLink.ValueChanged += new System.EventHandler(this.numNeighborLink_ValueChanged);
             // 
@@ -1738,7 +1752,7 @@ namespace CrashEdit
             0,
             0});
             this.numNeighborCamera.Name = "numNeighborCamera";
-            this.numNeighborCamera.Size = new System.Drawing.Size(60, 19);
+            this.numNeighborCamera.Size = new System.Drawing.Size(60, 23);
             this.numNeighborCamera.TabIndex = 40;
             this.numNeighborCamera.ValueChanged += new System.EventHandler(this.numNeighborCamera_ValueChanged);
             // 
@@ -1751,7 +1765,7 @@ namespace CrashEdit
             0,
             0});
             this.numNeighborZone.Name = "numNeighborZone";
-            this.numNeighborZone.Size = new System.Drawing.Size(60, 19);
+            this.numNeighborZone.Size = new System.Drawing.Size(60, 23);
             this.numNeighborZone.TabIndex = 42;
             this.numNeighborZone.ValueChanged += new System.EventHandler(this.numNeighborZone_ValueChanged);
             // 
@@ -1781,9 +1795,9 @@ namespace CrashEdit
             this.fraAvgDist.Controls.Add(this.chkAvgDist);
             this.fraAvgDist.Controls.Add(this.numAvgDist);
             this.fraAvgDist.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraAvgDist.Location = new System.Drawing.Point(6, 158);
+            this.fraAvgDist.Location = new System.Drawing.Point(6, 162);
             this.fraAvgDist.Name = "fraAvgDist";
-            this.fraAvgDist.Size = new System.Drawing.Size(120, 66);
+            this.fraAvgDist.Size = new System.Drawing.Size(120, 70);
             this.fraAvgDist.TabIndex = 7;
             this.fraAvgDist.TabStop = false;
             this.fraAvgDist.Text = "Point Distance";
@@ -1793,7 +1807,7 @@ namespace CrashEdit
             this.chkAvgDist.AutoSize = true;
             this.chkAvgDist.Location = new System.Drawing.Point(6, 18);
             this.chkAvgDist.Name = "chkAvgDist";
-            this.chkAvgDist.Size = new System.Drawing.Size(64, 16);
+            this.chkAvgDist.Size = new System.Drawing.Size(68, 19);
             this.chkAvgDist.TabIndex = 0;
             this.chkAvgDist.Text = "Enabled";
             this.chkAvgDist.CheckedChanged += new System.EventHandler(this.chkAvgDist_CheckedChanged);
@@ -1812,7 +1826,7 @@ namespace CrashEdit
             0,
             -2147483648});
             this.numAvgDist.Name = "numAvgDist";
-            this.numAvgDist.Size = new System.Drawing.Size(108, 19);
+            this.numAvgDist.Size = new System.Drawing.Size(108, 23);
             this.numAvgDist.TabIndex = 1;
             this.numAvgDist.ValueChanged += new System.EventHandler(this.numAvgDist_ValueChanged);
             // 
@@ -1823,9 +1837,9 @@ namespace CrashEdit
             this.fraMode.Controls.Add(this.numMode);
             this.fraMode.Enabled = false;
             this.fraMode.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraMode.Location = new System.Drawing.Point(6, 86);
+            this.fraMode.Location = new System.Drawing.Point(6, 90);
             this.fraMode.Name = "fraMode";
-            this.fraMode.Size = new System.Drawing.Size(120, 66);
+            this.fraMode.Size = new System.Drawing.Size(120, 70);
             this.fraMode.TabIndex = 6;
             this.fraMode.TabStop = false;
             this.fraMode.Text = "Camera Mode";
@@ -1835,7 +1849,7 @@ namespace CrashEdit
             this.chkMode.AutoSize = true;
             this.chkMode.Location = new System.Drawing.Point(6, 18);
             this.chkMode.Name = "chkMode";
-            this.chkMode.Size = new System.Drawing.Size(64, 16);
+            this.chkMode.Size = new System.Drawing.Size(68, 19);
             this.chkMode.TabIndex = 0;
             this.chkMode.Text = "Enabled";
             this.chkMode.CheckedChanged += new System.EventHandler(this.chkMode_CheckedChanged);
@@ -1849,7 +1863,7 @@ namespace CrashEdit
             0,
             0});
             this.numMode.Name = "numMode";
-            this.numMode.Size = new System.Drawing.Size(108, 19);
+            this.numMode.Size = new System.Drawing.Size(108, 23);
             this.numMode.TabIndex = 1;
             this.numMode.ValueChanged += new System.EventHandler(this.numMode_ValueChanged);
             // 
@@ -1859,9 +1873,9 @@ namespace CrashEdit
             this.fraCameraSubIndex.Controls.Add(this.chkCameraSubIndex);
             this.fraCameraSubIndex.Controls.Add(this.numCameraSubIndex);
             this.fraCameraSubIndex.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraCameraSubIndex.Location = new System.Drawing.Point(6, 302);
+            this.fraCameraSubIndex.Location = new System.Drawing.Point(6, 306);
             this.fraCameraSubIndex.Name = "fraCameraSubIndex";
-            this.fraCameraSubIndex.Size = new System.Drawing.Size(120, 66);
+            this.fraCameraSubIndex.Size = new System.Drawing.Size(120, 70);
             this.fraCameraSubIndex.TabIndex = 6;
             this.fraCameraSubIndex.TabStop = false;
             this.fraCameraSubIndex.Text = "Camera Subindex";
@@ -1872,7 +1886,7 @@ namespace CrashEdit
             this.chkCameraSubIndex.AutoSize = true;
             this.chkCameraSubIndex.Location = new System.Drawing.Point(6, 18);
             this.chkCameraSubIndex.Name = "chkCameraSubIndex";
-            this.chkCameraSubIndex.Size = new System.Drawing.Size(64, 16);
+            this.chkCameraSubIndex.Size = new System.Drawing.Size(68, 19);
             this.chkCameraSubIndex.TabIndex = 0;
             this.chkCameraSubIndex.Text = "Enabled";
             this.chkCameraSubIndex.CheckedChanged += new System.EventHandler(this.chkCameraSubIndex_CheckedChanged);
@@ -1891,7 +1905,7 @@ namespace CrashEdit
             0,
             -2147483648});
             this.numCameraSubIndex.Name = "numCameraSubIndex";
-            this.numCameraSubIndex.Size = new System.Drawing.Size(108, 19);
+            this.numCameraSubIndex.Size = new System.Drawing.Size(108, 23);
             this.numCameraSubIndex.TabIndex = 1;
             this.numCameraSubIndex.ValueChanged += new System.EventHandler(this.numCameraSubIndex_ValueChanged);
             // 
@@ -1901,10 +1915,10 @@ namespace CrashEdit
             this.fraCameraIndex.Controls.Add(this.chkCameraIndex);
             this.fraCameraIndex.Controls.Add(this.numCameraIndex);
             this.fraCameraIndex.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraCameraIndex.Location = new System.Drawing.Point(6, 230);
+            this.fraCameraIndex.Location = new System.Drawing.Point(6, 234);
             this.fraCameraIndex.Name = "fraCameraIndex";
             this.fraCameraIndex.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.fraCameraIndex.Size = new System.Drawing.Size(120, 66);
+            this.fraCameraIndex.Size = new System.Drawing.Size(120, 70);
             this.fraCameraIndex.TabIndex = 5;
             this.fraCameraIndex.TabStop = false;
             this.fraCameraIndex.Text = "Camera Index";
@@ -1914,7 +1928,7 @@ namespace CrashEdit
             this.chkCameraIndex.AutoSize = true;
             this.chkCameraIndex.Location = new System.Drawing.Point(6, 18);
             this.chkCameraIndex.Name = "chkCameraIndex";
-            this.chkCameraIndex.Size = new System.Drawing.Size(64, 16);
+            this.chkCameraIndex.Size = new System.Drawing.Size(68, 19);
             this.chkCameraIndex.TabIndex = 0;
             this.chkCameraIndex.Text = "Enabled";
             this.chkCameraIndex.CheckedChanged += new System.EventHandler(this.chkCameraIndex_CheckedChanged);
@@ -1933,7 +1947,7 @@ namespace CrashEdit
             0,
             -2147483648});
             this.numCameraIndex.Name = "numCameraIndex";
-            this.numCameraIndex.Size = new System.Drawing.Size(108, 19);
+            this.numCameraIndex.Size = new System.Drawing.Size(108, 23);
             this.numCameraIndex.TabIndex = 1;
             this.numCameraIndex.ValueChanged += new System.EventHandler(this.numCameraIndex_ValueChanged);
             // 
@@ -1948,7 +1962,7 @@ namespace CrashEdit
             this.fraSLST.ForeColor = System.Drawing.SystemColors.Window;
             this.fraSLST.Location = new System.Drawing.Point(6, 6);
             this.fraSLST.Name = "fraSLST";
-            this.fraSLST.Size = new System.Drawing.Size(205, 76);
+            this.fraSLST.Size = new System.Drawing.Size(204, 84);
             this.fraSLST.TabIndex = 1;
             this.fraSLST.TabStop = false;
             this.fraSLST.Text = "Sort List";
@@ -1959,7 +1973,7 @@ namespace CrashEdit
             this.lblEIDErr1.ForeColor = System.Drawing.Color.Red;
             this.lblEIDErr1.Location = new System.Drawing.Point(74, 42);
             this.lblEIDErr1.Name = "lblEIDErr1";
-            this.lblEIDErr1.Size = new System.Drawing.Size(125, 12);
+            this.lblEIDErr1.Size = new System.Drawing.Size(124, 15);
             this.lblEIDErr1.TabIndex = 2;
             this.lblEIDErr1.Text = "EID ERROR WARNING!";
             // 
@@ -1971,7 +1985,7 @@ namespace CrashEdit
             this.txtSLST.Location = new System.Drawing.Point(6, 39);
             this.txtSLST.MaxLength = 5;
             this.txtSLST.Name = "txtSLST";
-            this.txtSLST.Size = new System.Drawing.Size(62, 19);
+            this.txtSLST.Size = new System.Drawing.Size(62, 23);
             this.txtSLST.TabIndex = 1;
             this.txtSLST.Text = "NONE!";
             this.txtSLST.TextChanged += new System.EventHandler(this.txtSLST_TextChanged);
@@ -1981,7 +1995,7 @@ namespace CrashEdit
             this.chkSLST.AutoSize = true;
             this.chkSLST.Location = new System.Drawing.Point(6, 18);
             this.chkSLST.Name = "chkSLST";
-            this.chkSLST.Size = new System.Drawing.Size(64, 16);
+            this.chkSLST.Size = new System.Drawing.Size(68, 19);
             this.chkSLST.TabIndex = 0;
             this.chkSLST.Text = "Enabled";
             this.chkSLST.CheckedChanged += new System.EventHandler(this.chkSLST_CheckedChanged);
@@ -1995,10 +2009,10 @@ namespace CrashEdit
             this.tabLoadLists.Controls.Add(this.lblEIDErrA);
             this.tabLoadLists.Controls.Add(this.fraLoadListA);
             this.tabLoadLists.ForeColor = System.Drawing.SystemColors.Window;
-            this.tabLoadLists.Location = new System.Drawing.Point(4, 22);
+            this.tabLoadLists.Location = new System.Drawing.Point(4, 28);
             this.tabLoadLists.Name = "tabLoadLists";
             this.tabLoadLists.Padding = new System.Windows.Forms.Padding(3);
-            this.tabLoadLists.Size = new System.Drawing.Size(492, 399);
+            this.tabLoadLists.Size = new System.Drawing.Size(1992, 1664);
             this.tabLoadLists.TabIndex = 2;
             this.tabLoadLists.Text = "Load Lists";
             this.tabLoadLists.Enter += new System.EventHandler(this.tabLoadLists_Enter);
@@ -2007,9 +2021,9 @@ namespace CrashEdit
             // 
             this.lblEIDErrB.AutoSize = true;
             this.lblEIDErrB.ForeColor = System.Drawing.Color.Red;
-            this.lblEIDErrB.Location = new System.Drawing.Point(158, 277);
+            this.lblEIDErrB.Location = new System.Drawing.Point(158, 297);
             this.lblEIDErrB.Name = "lblEIDErrB";
-            this.lblEIDErrB.Size = new System.Drawing.Size(125, 12);
+            this.lblEIDErrB.Size = new System.Drawing.Size(124, 15);
             this.lblEIDErrB.TabIndex = 23;
             this.lblEIDErrB.Text = "EID ERROR WARNING!";
             // 
@@ -2022,7 +2036,7 @@ namespace CrashEdit
             this.fraLoadListPayload.Controls.Add(this.lblPayloadPosition);
             this.fraLoadListPayload.Controls.Add(this.numPayloadPosition);
             this.fraLoadListPayload.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraLoadListPayload.Location = new System.Drawing.Point(6, 292);
+            this.fraLoadListPayload.Location = new System.Drawing.Point(6, 316);
             this.fraLoadListPayload.Name = "fraLoadListPayload";
             this.fraLoadListPayload.Size = new System.Drawing.Size(231, 101);
             this.fraLoadListPayload.TabIndex = 22;
@@ -2035,7 +2049,7 @@ namespace CrashEdit
             this.lblPayload.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblPayload.Location = new System.Drawing.Point(6, 74);
             this.lblPayload.Name = "lblPayload";
-            this.lblPayload.Size = new System.Drawing.Size(150, 12);
+            this.lblPayload.Size = new System.Drawing.Size(155, 15);
             this.lblPayload.TabIndex = 24;
             this.lblPayload.Text = "Payload is ?? normal chunks";
             this.lblPayload.Visible = false;
@@ -2052,7 +2066,7 @@ namespace CrashEdit
             // 
             // cmdPayload
             // 
-            this.cmdPayload.Location = new System.Drawing.Point(130, 42);
+            this.cmdPayload.Location = new System.Drawing.Point(130, 45);
             this.cmdPayload.Name = "cmdPayload";
             this.cmdPayload.Padding = new System.Windows.Forms.Padding(5);
             this.cmdPayload.Size = new System.Drawing.Size(93, 21);
@@ -2066,7 +2080,7 @@ namespace CrashEdit
             this.lblPayloadPosition.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblPayloadPosition.Location = new System.Drawing.Point(6, 46);
             this.lblPayloadPosition.Name = "lblPayloadPosition";
-            this.lblPayloadPosition.Size = new System.Drawing.Size(46, 12);
+            this.lblPayloadPosition.Size = new System.Drawing.Size(50, 15);
             this.lblPayloadPosition.TabIndex = 22;
             this.lblPayloadPosition.Text = "Position";
             // 
@@ -2079,7 +2093,7 @@ namespace CrashEdit
             0,
             0});
             this.numPayloadPosition.Name = "numPayloadPosition";
-            this.numPayloadPosition.Size = new System.Drawing.Size(68, 19);
+            this.numPayloadPosition.Size = new System.Drawing.Size(68, 23);
             this.numPayloadPosition.TabIndex = 21;
             // 
             // fraLoadListB
@@ -2096,7 +2110,7 @@ namespace CrashEdit
             this.fraLoadListB.ForeColor = System.Drawing.SystemColors.Window;
             this.fraLoadListB.Location = new System.Drawing.Point(155, 6);
             this.fraLoadListB.Name = "fraLoadListB";
-            this.fraLoadListB.Size = new System.Drawing.Size(143, 269);
+            this.fraLoadListB.Size = new System.Drawing.Size(143, 285);
             this.fraLoadListB.TabIndex = 21;
             this.fraLoadListB.TabStop = false;
             this.fraLoadListB.Text = "Load List B";
@@ -2107,13 +2121,13 @@ namespace CrashEdit
             this.lblMetavalueLoadB.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblMetavalueLoadB.Location = new System.Drawing.Point(6, 69);
             this.lblMetavalueLoadB.Name = "lblMetavalueLoadB";
-            this.lblMetavalueLoadB.Size = new System.Drawing.Size(46, 12);
+            this.lblMetavalueLoadB.Size = new System.Drawing.Size(50, 15);
             this.lblMetavalueLoadB.TabIndex = 20;
             this.lblMetavalueLoadB.Text = "Position";
             // 
             // cmdRemoveRowB
             // 
-            this.cmdRemoveRowB.Location = new System.Drawing.Point(6, 91);
+            this.cmdRemoveRowB.Location = new System.Drawing.Point(6, 96);
             this.cmdRemoveRowB.Name = "cmdRemoveRowB";
             this.cmdRemoveRowB.Padding = new System.Windows.Forms.Padding(5);
             this.cmdRemoveRowB.Size = new System.Drawing.Size(64, 21);
@@ -2123,7 +2137,7 @@ namespace CrashEdit
             // 
             // cmdInsertRowB
             // 
-            this.cmdInsertRowB.Location = new System.Drawing.Point(74, 91);
+            this.cmdInsertRowB.Location = new System.Drawing.Point(74, 96);
             this.cmdInsertRowB.Name = "cmdInsertRowB";
             this.cmdInsertRowB.Padding = new System.Windows.Forms.Padding(5);
             this.cmdInsertRowB.Size = new System.Drawing.Size(63, 21);
@@ -2140,7 +2154,7 @@ namespace CrashEdit
             0,
             0});
             this.numMetavalueLoadB.Name = "numMetavalueLoadB";
-            this.numMetavalueLoadB.Size = new System.Drawing.Size(68, 19);
+            this.numMetavalueLoadB.Size = new System.Drawing.Size(68, 23);
             this.numMetavalueLoadB.TabIndex = 19;
             this.numMetavalueLoadB.ValueChanged += new System.EventHandler(this.numMetavalueLoadB_ValueChanged);
             // 
@@ -2167,7 +2181,7 @@ namespace CrashEdit
             this.fraEIDB.ForeColor = System.Drawing.SystemColors.Window;
             this.fraEIDB.Location = new System.Drawing.Point(6, 122);
             this.fraEIDB.Name = "fraEIDB";
-            this.fraEIDB.Size = new System.Drawing.Size(131, 141);
+            this.fraEIDB.Size = new System.Drawing.Size(131, 157);
             this.fraEIDB.TabIndex = 15;
             this.fraEIDB.TabStop = false;
             this.fraEIDB.Text = "Entries";
@@ -2177,10 +2191,10 @@ namespace CrashEdit
             this.txtEIDB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(55)))), ((int)(((byte)(60)))));
             this.txtEIDB.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtEIDB.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.txtEIDB.Location = new System.Drawing.Point(7, 65);
+            this.txtEIDB.Location = new System.Drawing.Point(5, 66);
             this.txtEIDB.MaxLength = 5;
             this.txtEIDB.Name = "txtEIDB";
-            this.txtEIDB.Size = new System.Drawing.Size(118, 19);
+            this.txtEIDB.Size = new System.Drawing.Size(121, 23);
             this.txtEIDB.TabIndex = 15;
             this.txtEIDB.TextChanged += new System.EventHandler(this.txtEIDB_TextChanged);
             this.txtEIDB.LostFocus += new System.EventHandler(this.txtEIDB_LostFocus);
@@ -2189,7 +2203,7 @@ namespace CrashEdit
             // 
             this.lblEIDIndexB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblEIDIndexB.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.lblEIDIndexB.Location = new System.Drawing.Point(7, 42);
+            this.lblEIDIndexB.Location = new System.Drawing.Point(6, 42);
             this.lblEIDIndexB.Name = "lblEIDIndexB";
             this.lblEIDIndexB.Size = new System.Drawing.Size(116, 21);
             this.lblEIDIndexB.TabIndex = 14;
@@ -2198,20 +2212,20 @@ namespace CrashEdit
             // 
             // cmdAppendEIDB
             // 
-            this.cmdAppendEIDB.Location = new System.Drawing.Point(6, 115);
+            this.cmdAppendEIDB.Location = new System.Drawing.Point(5, 126);
             this.cmdAppendEIDB.Name = "cmdAppendEIDB";
             this.cmdAppendEIDB.Padding = new System.Windows.Forms.Padding(5);
-            this.cmdAppendEIDB.Size = new System.Drawing.Size(120, 21);
+            this.cmdAppendEIDB.Size = new System.Drawing.Size(121, 25);
             this.cmdAppendEIDB.TabIndex = 12;
             this.cmdAppendEIDB.Text = "Append";
             this.cmdAppendEIDB.Click += new System.EventHandler(this.cmdAppendEIDB_Click);
             // 
             // cmdRemoveEIDB
             // 
-            this.cmdRemoveEIDB.Location = new System.Drawing.Point(6, 89);
+            this.cmdRemoveEIDB.Location = new System.Drawing.Point(5, 95);
             this.cmdRemoveEIDB.Name = "cmdRemoveEIDB";
             this.cmdRemoveEIDB.Padding = new System.Windows.Forms.Padding(5);
-            this.cmdRemoveEIDB.Size = new System.Drawing.Size(58, 21);
+            this.cmdRemoveEIDB.Size = new System.Drawing.Size(59, 25);
             this.cmdRemoveEIDB.TabIndex = 11;
             this.cmdRemoveEIDB.Text = "Remove";
             this.cmdRemoveEIDB.Click += new System.EventHandler(this.cmdRemoveEIDB_Click);
@@ -2228,10 +2242,10 @@ namespace CrashEdit
             // 
             // cmdInsertEIDB
             // 
-            this.cmdInsertEIDB.Location = new System.Drawing.Point(68, 89);
+            this.cmdInsertEIDB.Location = new System.Drawing.Point(68, 95);
             this.cmdInsertEIDB.Name = "cmdInsertEIDB";
             this.cmdInsertEIDB.Padding = new System.Windows.Forms.Padding(5);
-            this.cmdInsertEIDB.Size = new System.Drawing.Size(58, 21);
+            this.cmdInsertEIDB.Size = new System.Drawing.Size(58, 25);
             this.cmdInsertEIDB.TabIndex = 13;
             this.cmdInsertEIDB.Text = "Insert";
             this.cmdInsertEIDB.Click += new System.EventHandler(this.cmdInsertEIDB_Click);
@@ -2241,7 +2255,7 @@ namespace CrashEdit
             this.cmdNextEIDB.Location = new System.Drawing.Point(68, 18);
             this.cmdNextEIDB.Name = "cmdNextEIDB";
             this.cmdNextEIDB.Padding = new System.Windows.Forms.Padding(5);
-            this.cmdNextEIDB.Size = new System.Drawing.Size(61, 21);
+            this.cmdNextEIDB.Size = new System.Drawing.Size(60, 21);
             this.cmdNextEIDB.TabIndex = 9;
             this.cmdNextEIDB.Text = "Next";
             this.cmdNextEIDB.Click += new System.EventHandler(this.cmdNextEIDB_Click);
@@ -2270,9 +2284,9 @@ namespace CrashEdit
             // 
             this.lblEIDErrA.AutoSize = true;
             this.lblEIDErrA.ForeColor = System.Drawing.Color.Red;
-            this.lblEIDErrA.Location = new System.Drawing.Point(9, 277);
+            this.lblEIDErrA.Location = new System.Drawing.Point(9, 297);
             this.lblEIDErrA.Name = "lblEIDErrA";
-            this.lblEIDErrA.Size = new System.Drawing.Size(125, 12);
+            this.lblEIDErrA.Size = new System.Drawing.Size(124, 15);
             this.lblEIDErrA.TabIndex = 4;
             this.lblEIDErrA.Text = "EID ERROR WARNING!";
             // 
@@ -2290,7 +2304,7 @@ namespace CrashEdit
             this.fraLoadListA.ForeColor = System.Drawing.SystemColors.Window;
             this.fraLoadListA.Location = new System.Drawing.Point(6, 6);
             this.fraLoadListA.Name = "fraLoadListA";
-            this.fraLoadListA.Size = new System.Drawing.Size(143, 269);
+            this.fraLoadListA.Size = new System.Drawing.Size(143, 285);
             this.fraLoadListA.TabIndex = 0;
             this.fraLoadListA.TabStop = false;
             this.fraLoadListA.Text = "Load List A";
@@ -2301,13 +2315,13 @@ namespace CrashEdit
             this.lblMetavalueLoadA.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblMetavalueLoadA.Location = new System.Drawing.Point(6, 69);
             this.lblMetavalueLoadA.Name = "lblMetavalueLoadA";
-            this.lblMetavalueLoadA.Size = new System.Drawing.Size(46, 12);
+            this.lblMetavalueLoadA.Size = new System.Drawing.Size(50, 15);
             this.lblMetavalueLoadA.TabIndex = 20;
             this.lblMetavalueLoadA.Text = "Position";
             // 
             // cmdRemoveRowA
             // 
-            this.cmdRemoveRowA.Location = new System.Drawing.Point(6, 91);
+            this.cmdRemoveRowA.Location = new System.Drawing.Point(6, 96);
             this.cmdRemoveRowA.Name = "cmdRemoveRowA";
             this.cmdRemoveRowA.Padding = new System.Windows.Forms.Padding(5);
             this.cmdRemoveRowA.Size = new System.Drawing.Size(64, 21);
@@ -2317,7 +2331,7 @@ namespace CrashEdit
             // 
             // cmdInsertRowA
             // 
-            this.cmdInsertRowA.Location = new System.Drawing.Point(74, 91);
+            this.cmdInsertRowA.Location = new System.Drawing.Point(74, 96);
             this.cmdInsertRowA.Name = "cmdInsertRowA";
             this.cmdInsertRowA.Padding = new System.Windows.Forms.Padding(5);
             this.cmdInsertRowA.Size = new System.Drawing.Size(63, 21);
@@ -2334,7 +2348,7 @@ namespace CrashEdit
             0,
             0});
             this.numMetavalueLoadA.Name = "numMetavalueLoadA";
-            this.numMetavalueLoadA.Size = new System.Drawing.Size(68, 19);
+            this.numMetavalueLoadA.Size = new System.Drawing.Size(68, 23);
             this.numMetavalueLoadA.TabIndex = 19;
             this.numMetavalueLoadA.ValueChanged += new System.EventHandler(this.numMetavalueLoadA_ValueChanged);
             // 
@@ -2361,7 +2375,7 @@ namespace CrashEdit
             this.fraEIDA.ForeColor = System.Drawing.SystemColors.Window;
             this.fraEIDA.Location = new System.Drawing.Point(6, 122);
             this.fraEIDA.Name = "fraEIDA";
-            this.fraEIDA.Size = new System.Drawing.Size(131, 141);
+            this.fraEIDA.Size = new System.Drawing.Size(131, 157);
             this.fraEIDA.TabIndex = 15;
             this.fraEIDA.TabStop = false;
             this.fraEIDA.Text = "Entries";
@@ -2371,10 +2385,10 @@ namespace CrashEdit
             this.txtEIDA.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(55)))), ((int)(((byte)(60)))));
             this.txtEIDA.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtEIDA.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.txtEIDA.Location = new System.Drawing.Point(7, 65);
+            this.txtEIDA.Location = new System.Drawing.Point(5, 66);
             this.txtEIDA.MaxLength = 5;
             this.txtEIDA.Name = "txtEIDA";
-            this.txtEIDA.Size = new System.Drawing.Size(118, 19);
+            this.txtEIDA.Size = new System.Drawing.Size(121, 23);
             this.txtEIDA.TabIndex = 15;
             this.txtEIDA.TextChanged += new System.EventHandler(this.txtEIDA_TextChanged);
             this.txtEIDA.LostFocus += new System.EventHandler(this.txtEIDA_LostFocus);
@@ -2392,20 +2406,20 @@ namespace CrashEdit
             // 
             // cmdAppendEIDA
             // 
-            this.cmdAppendEIDA.Location = new System.Drawing.Point(6, 115);
+            this.cmdAppendEIDA.Location = new System.Drawing.Point(5, 126);
             this.cmdAppendEIDA.Name = "cmdAppendEIDA";
             this.cmdAppendEIDA.Padding = new System.Windows.Forms.Padding(5);
-            this.cmdAppendEIDA.Size = new System.Drawing.Size(120, 21);
+            this.cmdAppendEIDA.Size = new System.Drawing.Size(121, 25);
             this.cmdAppendEIDA.TabIndex = 12;
             this.cmdAppendEIDA.Text = "Append";
             this.cmdAppendEIDA.Click += new System.EventHandler(this.cmdAppendEIDA_Click);
             // 
             // cmdRemoveEIDA
             // 
-            this.cmdRemoveEIDA.Location = new System.Drawing.Point(6, 89);
+            this.cmdRemoveEIDA.Location = new System.Drawing.Point(5, 95);
             this.cmdRemoveEIDA.Name = "cmdRemoveEIDA";
             this.cmdRemoveEIDA.Padding = new System.Windows.Forms.Padding(5);
-            this.cmdRemoveEIDA.Size = new System.Drawing.Size(58, 21);
+            this.cmdRemoveEIDA.Size = new System.Drawing.Size(59, 25);
             this.cmdRemoveEIDA.TabIndex = 11;
             this.cmdRemoveEIDA.Text = "Remove";
             this.cmdRemoveEIDA.Click += new System.EventHandler(this.cmdRemoveEIDA_Click);
@@ -2422,10 +2436,10 @@ namespace CrashEdit
             // 
             // cmdInsertEIDA
             // 
-            this.cmdInsertEIDA.Location = new System.Drawing.Point(68, 89);
+            this.cmdInsertEIDA.Location = new System.Drawing.Point(68, 95);
             this.cmdInsertEIDA.Name = "cmdInsertEIDA";
             this.cmdInsertEIDA.Padding = new System.Windows.Forms.Padding(5);
-            this.cmdInsertEIDA.Size = new System.Drawing.Size(58, 21);
+            this.cmdInsertEIDA.Size = new System.Drawing.Size(58, 25);
             this.cmdInsertEIDA.TabIndex = 13;
             this.cmdInsertEIDA.Text = "Insert";
             this.cmdInsertEIDA.Click += new System.EventHandler(this.cmdInsertEIDA_Click);
@@ -2435,7 +2449,7 @@ namespace CrashEdit
             this.cmdNextEIDA.Location = new System.Drawing.Point(68, 18);
             this.cmdNextEIDA.Name = "cmdNextEIDA";
             this.cmdNextEIDA.Padding = new System.Windows.Forms.Padding(5);
-            this.cmdNextEIDA.Size = new System.Drawing.Size(61, 21);
+            this.cmdNextEIDA.Size = new System.Drawing.Size(60, 21);
             this.cmdNextEIDA.TabIndex = 9;
             this.cmdNextEIDA.Text = "Next";
             this.cmdNextEIDA.Click += new System.EventHandler(this.cmdNextEIDA_Click);
@@ -2466,10 +2480,10 @@ namespace CrashEdit
             this.tabDrawLists.Controls.Add(this.fraDrawListB);
             this.tabDrawLists.Controls.Add(this.fraDrawListA);
             this.tabDrawLists.ForeColor = System.Drawing.SystemColors.Window;
-            this.tabDrawLists.Location = new System.Drawing.Point(4, 22);
+            this.tabDrawLists.Location = new System.Drawing.Point(4, 28);
             this.tabDrawLists.Name = "tabDrawLists";
             this.tabDrawLists.Padding = new System.Windows.Forms.Padding(3);
-            this.tabDrawLists.Size = new System.Drawing.Size(492, 399);
+            this.tabDrawLists.Size = new System.Drawing.Size(1992, 1664);
             this.tabDrawLists.TabIndex = 3;
             this.tabDrawLists.Text = "Draw Lists";
             this.tabDrawLists.Enter += new System.EventHandler(this.tabDrawLists_Enter);
@@ -2488,7 +2502,7 @@ namespace CrashEdit
             this.fraDrawListB.ForeColor = System.Drawing.SystemColors.Window;
             this.fraDrawListB.Location = new System.Drawing.Point(155, 6);
             this.fraDrawListB.Name = "fraDrawListB";
-            this.fraDrawListB.Size = new System.Drawing.Size(143, 269);
+            this.fraDrawListB.Size = new System.Drawing.Size(143, 285);
             this.fraDrawListB.TabIndex = 21;
             this.fraDrawListB.TabStop = false;
             this.fraDrawListB.Text = "Draw List B";
@@ -2499,13 +2513,13 @@ namespace CrashEdit
             this.lblMetavalueDrawB.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblMetavalueDrawB.Location = new System.Drawing.Point(6, 69);
             this.lblMetavalueDrawB.Name = "lblMetavalueDrawB";
-            this.lblMetavalueDrawB.Size = new System.Drawing.Size(46, 12);
+            this.lblMetavalueDrawB.Size = new System.Drawing.Size(50, 15);
             this.lblMetavalueDrawB.TabIndex = 20;
             this.lblMetavalueDrawB.Text = "Position";
             // 
             // cmdRemoveRowDrawB
             // 
-            this.cmdRemoveRowDrawB.Location = new System.Drawing.Point(6, 91);
+            this.cmdRemoveRowDrawB.Location = new System.Drawing.Point(6, 96);
             this.cmdRemoveRowDrawB.Name = "cmdRemoveRowDrawB";
             this.cmdRemoveRowDrawB.Padding = new System.Windows.Forms.Padding(5);
             this.cmdRemoveRowDrawB.Size = new System.Drawing.Size(64, 21);
@@ -2515,7 +2529,7 @@ namespace CrashEdit
             // 
             // cmdInsertRowDrawB
             // 
-            this.cmdInsertRowDrawB.Location = new System.Drawing.Point(74, 91);
+            this.cmdInsertRowDrawB.Location = new System.Drawing.Point(74, 96);
             this.cmdInsertRowDrawB.Name = "cmdInsertRowDrawB";
             this.cmdInsertRowDrawB.Padding = new System.Windows.Forms.Padding(5);
             this.cmdInsertRowDrawB.Size = new System.Drawing.Size(63, 21);
@@ -2537,7 +2551,7 @@ namespace CrashEdit
             0,
             -2147483648});
             this.numMetavalueDrawB.Name = "numMetavalueDrawB";
-            this.numMetavalueDrawB.Size = new System.Drawing.Size(68, 19);
+            this.numMetavalueDrawB.Size = new System.Drawing.Size(68, 23);
             this.numMetavalueDrawB.TabIndex = 19;
             this.numMetavalueDrawB.ValueChanged += new System.EventHandler(this.numMetavalueDrawB_ValueChanged);
             // 
@@ -2565,7 +2579,7 @@ namespace CrashEdit
             this.fraEntityB.ForeColor = System.Drawing.SystemColors.Window;
             this.fraEntityB.Location = new System.Drawing.Point(6, 122);
             this.fraEntityB.Name = "fraEntityB";
-            this.fraEntityB.Size = new System.Drawing.Size(131, 141);
+            this.fraEntityB.Size = new System.Drawing.Size(131, 157);
             this.fraEntityB.TabIndex = 15;
             this.fraEntityB.TabStop = false;
             this.fraEntityB.Text = "Entities";
@@ -2576,7 +2590,7 @@ namespace CrashEdit
             this.lblEntityB.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblEntityB.Location = new System.Drawing.Point(7, 68);
             this.lblEntityB.Name = "lblEntityB";
-            this.lblEntityB.Size = new System.Drawing.Size(16, 12);
+            this.lblEntityB.Size = new System.Drawing.Size(18, 15);
             this.lblEntityB.TabIndex = 22;
             this.lblEntityB.Text = "ID";
             // 
@@ -2594,7 +2608,7 @@ namespace CrashEdit
             0,
             -2147483648});
             this.numEntityB.Name = "numEntityB";
-            this.numEntityB.Size = new System.Drawing.Size(99, 19);
+            this.numEntityB.Size = new System.Drawing.Size(99, 23);
             this.numEntityB.TabIndex = 21;
             this.numEntityB.ValueChanged += new System.EventHandler(this.numEntityB_ValueChanged);
             // 
@@ -2611,20 +2625,20 @@ namespace CrashEdit
             // 
             // cmdAppendEntityB
             // 
-            this.cmdAppendEntityB.Location = new System.Drawing.Point(6, 115);
+            this.cmdAppendEntityB.Location = new System.Drawing.Point(5, 126);
             this.cmdAppendEntityB.Name = "cmdAppendEntityB";
             this.cmdAppendEntityB.Padding = new System.Windows.Forms.Padding(5);
-            this.cmdAppendEntityB.Size = new System.Drawing.Size(120, 21);
+            this.cmdAppendEntityB.Size = new System.Drawing.Size(121, 25);
             this.cmdAppendEntityB.TabIndex = 12;
             this.cmdAppendEntityB.Text = "Append";
             this.cmdAppendEntityB.Click += new System.EventHandler(this.cmdAppendEntityB_Click);
             // 
             // cmdRemoveEntityB
             // 
-            this.cmdRemoveEntityB.Location = new System.Drawing.Point(6, 89);
+            this.cmdRemoveEntityB.Location = new System.Drawing.Point(5, 95);
             this.cmdRemoveEntityB.Name = "cmdRemoveEntityB";
             this.cmdRemoveEntityB.Padding = new System.Windows.Forms.Padding(5);
-            this.cmdRemoveEntityB.Size = new System.Drawing.Size(58, 21);
+            this.cmdRemoveEntityB.Size = new System.Drawing.Size(59, 25);
             this.cmdRemoveEntityB.TabIndex = 11;
             this.cmdRemoveEntityB.Text = "Remove";
             this.cmdRemoveEntityB.Click += new System.EventHandler(this.cmdRemoveEntityB_Click);
@@ -2641,10 +2655,10 @@ namespace CrashEdit
             // 
             // cmdInsertEntityB
             // 
-            this.cmdInsertEntityB.Location = new System.Drawing.Point(68, 89);
+            this.cmdInsertEntityB.Location = new System.Drawing.Point(68, 95);
             this.cmdInsertEntityB.Name = "cmdInsertEntityB";
             this.cmdInsertEntityB.Padding = new System.Windows.Forms.Padding(5);
-            this.cmdInsertEntityB.Size = new System.Drawing.Size(58, 21);
+            this.cmdInsertEntityB.Size = new System.Drawing.Size(58, 25);
             this.cmdInsertEntityB.TabIndex = 13;
             this.cmdInsertEntityB.Text = "Insert";
             this.cmdInsertEntityB.Click += new System.EventHandler(this.cmdInsertEntityB_Click);
@@ -2693,7 +2707,7 @@ namespace CrashEdit
             this.fraDrawListA.ForeColor = System.Drawing.SystemColors.Window;
             this.fraDrawListA.Location = new System.Drawing.Point(6, 6);
             this.fraDrawListA.Name = "fraDrawListA";
-            this.fraDrawListA.Size = new System.Drawing.Size(143, 269);
+            this.fraDrawListA.Size = new System.Drawing.Size(143, 285);
             this.fraDrawListA.TabIndex = 1;
             this.fraDrawListA.TabStop = false;
             this.fraDrawListA.Text = "Draw List A";
@@ -2704,13 +2718,13 @@ namespace CrashEdit
             this.lblMetavalueDrawA.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblMetavalueDrawA.Location = new System.Drawing.Point(6, 69);
             this.lblMetavalueDrawA.Name = "lblMetavalueDrawA";
-            this.lblMetavalueDrawA.Size = new System.Drawing.Size(46, 12);
+            this.lblMetavalueDrawA.Size = new System.Drawing.Size(50, 15);
             this.lblMetavalueDrawA.TabIndex = 20;
             this.lblMetavalueDrawA.Text = "Position";
             // 
             // cmdRemoveRowDrawA
             // 
-            this.cmdRemoveRowDrawA.Location = new System.Drawing.Point(6, 91);
+            this.cmdRemoveRowDrawA.Location = new System.Drawing.Point(6, 96);
             this.cmdRemoveRowDrawA.Name = "cmdRemoveRowDrawA";
             this.cmdRemoveRowDrawA.Padding = new System.Windows.Forms.Padding(5);
             this.cmdRemoveRowDrawA.Size = new System.Drawing.Size(64, 21);
@@ -2720,7 +2734,7 @@ namespace CrashEdit
             // 
             // cmdInsertRowDrawA
             // 
-            this.cmdInsertRowDrawA.Location = new System.Drawing.Point(74, 91);
+            this.cmdInsertRowDrawA.Location = new System.Drawing.Point(74, 96);
             this.cmdInsertRowDrawA.Name = "cmdInsertRowDrawA";
             this.cmdInsertRowDrawA.Padding = new System.Windows.Forms.Padding(5);
             this.cmdInsertRowDrawA.Size = new System.Drawing.Size(63, 21);
@@ -2742,7 +2756,7 @@ namespace CrashEdit
             0,
             -2147483648});
             this.numMetavalueDrawA.Name = "numMetavalueDrawA";
-            this.numMetavalueDrawA.Size = new System.Drawing.Size(68, 19);
+            this.numMetavalueDrawA.Size = new System.Drawing.Size(68, 23);
             this.numMetavalueDrawA.TabIndex = 19;
             this.numMetavalueDrawA.ValueChanged += new System.EventHandler(this.numMetavalueDrawA_ValueChanged);
             // 
@@ -2770,7 +2784,7 @@ namespace CrashEdit
             this.fraEntityA.ForeColor = System.Drawing.SystemColors.Window;
             this.fraEntityA.Location = new System.Drawing.Point(6, 122);
             this.fraEntityA.Name = "fraEntityA";
-            this.fraEntityA.Size = new System.Drawing.Size(131, 141);
+            this.fraEntityA.Size = new System.Drawing.Size(131, 157);
             this.fraEntityA.TabIndex = 15;
             this.fraEntityA.TabStop = false;
             this.fraEntityA.Text = "Entities";
@@ -2781,7 +2795,7 @@ namespace CrashEdit
             this.lblEntityA.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblEntityA.Location = new System.Drawing.Point(7, 68);
             this.lblEntityA.Name = "lblEntityA";
-            this.lblEntityA.Size = new System.Drawing.Size(16, 12);
+            this.lblEntityA.Size = new System.Drawing.Size(18, 15);
             this.lblEntityA.TabIndex = 22;
             this.lblEntityA.Text = "ID";
             // 
@@ -2799,7 +2813,7 @@ namespace CrashEdit
             0,
             -2147483648});
             this.numEntityA.Name = "numEntityA";
-            this.numEntityA.Size = new System.Drawing.Size(99, 19);
+            this.numEntityA.Size = new System.Drawing.Size(99, 23);
             this.numEntityA.TabIndex = 21;
             this.numEntityA.ValueChanged += new System.EventHandler(this.numEntityA_ValueChanged);
             // 
@@ -2816,40 +2830,40 @@ namespace CrashEdit
             // 
             // cmdAppendEntityA
             // 
-            this.cmdAppendEntityA.Location = new System.Drawing.Point(6, 115);
+            this.cmdAppendEntityA.Location = new System.Drawing.Point(5, 126);
             this.cmdAppendEntityA.Name = "cmdAppendEntityA";
             this.cmdAppendEntityA.Padding = new System.Windows.Forms.Padding(5);
-            this.cmdAppendEntityA.Size = new System.Drawing.Size(120, 21);
+            this.cmdAppendEntityA.Size = new System.Drawing.Size(121, 25);
             this.cmdAppendEntityA.TabIndex = 12;
             this.cmdAppendEntityA.Text = "Append";
             this.cmdAppendEntityA.Click += new System.EventHandler(this.cmdAppendEntityA_Click);
             // 
             // cmdRemoveEntityA
             // 
-            this.cmdRemoveEntityA.Location = new System.Drawing.Point(6, 89);
+            this.cmdRemoveEntityA.Location = new System.Drawing.Point(5, 95);
             this.cmdRemoveEntityA.Name = "cmdRemoveEntityA";
             this.cmdRemoveEntityA.Padding = new System.Windows.Forms.Padding(5);
-            this.cmdRemoveEntityA.Size = new System.Drawing.Size(58, 21);
+            this.cmdRemoveEntityA.Size = new System.Drawing.Size(59, 25);
             this.cmdRemoveEntityA.TabIndex = 11;
             this.cmdRemoveEntityA.Text = "Remove";
             this.cmdRemoveEntityA.Click += new System.EventHandler(this.cmdRemoveEntityA_Click);
             // 
             // cmdPrevEntityA
             // 
-            this.cmdPrevEntityA.Location = new System.Drawing.Point(2, 18);
+            this.cmdPrevEntityA.Location = new System.Drawing.Point(3, 18);
             this.cmdPrevEntityA.Name = "cmdPrevEntityA";
             this.cmdPrevEntityA.Padding = new System.Windows.Forms.Padding(5);
-            this.cmdPrevEntityA.Size = new System.Drawing.Size(62, 21);
+            this.cmdPrevEntityA.Size = new System.Drawing.Size(61, 21);
             this.cmdPrevEntityA.TabIndex = 8;
             this.cmdPrevEntityA.Text = "Previous";
             this.cmdPrevEntityA.Click += new System.EventHandler(this.cmdPrevEntityA_Click);
             // 
             // cmdInsertEntityA
             // 
-            this.cmdInsertEntityA.Location = new System.Drawing.Point(68, 89);
+            this.cmdInsertEntityA.Location = new System.Drawing.Point(68, 95);
             this.cmdInsertEntityA.Name = "cmdInsertEntityA";
             this.cmdInsertEntityA.Padding = new System.Windows.Forms.Padding(5);
-            this.cmdInsertEntityA.Size = new System.Drawing.Size(58, 21);
+            this.cmdInsertEntityA.Size = new System.Drawing.Size(58, 25);
             this.cmdInsertEntityA.TabIndex = 13;
             this.cmdInsertEntityA.Text = "Insert";
             this.cmdInsertEntityA.Click += new System.EventHandler(this.cmdInsertEntityA_Click);
@@ -2859,7 +2873,7 @@ namespace CrashEdit
             this.cmdNextEntityA.Location = new System.Drawing.Point(68, 18);
             this.cmdNextEntityA.Name = "cmdNextEntityA";
             this.cmdNextEntityA.Padding = new System.Windows.Forms.Padding(5);
-            this.cmdNextEntityA.Size = new System.Drawing.Size(61, 21);
+            this.cmdNextEntityA.Size = new System.Drawing.Size(60, 21);
             this.cmdNextEntityA.TabIndex = 9;
             this.cmdNextEntityA.Text = "Next";
             this.cmdNextEntityA.Click += new System.EventHandler(this.cmdNextEntityA_Click);
@@ -2884,19 +2898,151 @@ namespace CrashEdit
             this.cmdNextRowDrawA.Text = "Next";
             this.cmdNextRowDrawA.Click += new System.EventHandler(this.cmdNextRowDrawA_Click);
             // 
+            // darkToolStrip
+            // 
+            this.darkToolStrip.AutoSize = false;
+            this.darkToolStrip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.darkToolStrip.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.darkToolStrip.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.darkToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.darkToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsbGeneral,
+            this.toolStripSeparator1,
+            this.tsbSpecial,
+            this.toolStripSeparator2,
+            this.tsbCamera,
+            this.toolStripSeparator3,
+            this.tsbLoadLists,
+            this.toolStripSeparator4,
+            this.tsbDrawLists});
+            this.darkToolStrip.Location = new System.Drawing.Point(0, 403);
+            this.darkToolStrip.Name = "darkToolStrip";
+            this.darkToolStrip.Padding = new System.Windows.Forms.Padding(5, 0, 1, 0);
+            this.darkToolStrip.Size = new System.Drawing.Size(500, 22);
+            this.darkToolStrip.TabIndex = 6;
+            this.darkToolStrip.Text = "darkToolStrip";
+            this.darkToolStrip.Visible = false;
+            // 
+            // tsbGeneral
+            // 
+            this.tsbGeneral.AutoToolTip = false;
+            this.tsbGeneral.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.tsbGeneral.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbGeneral.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.tsbGeneral.Image = ((System.Drawing.Image)(resources.GetObject("tsbGeneral.Image")));
+            this.tsbGeneral.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbGeneral.Name = "tsbGeneral";
+            this.tsbGeneral.Size = new System.Drawing.Size(51, 19);
+            this.tsbGeneral.Text = "General";
+            this.tsbGeneral.Click += new System.EventHandler(this.tsbGeneral_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.toolStripSeparator1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.toolStripSeparator1.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 22);
+            // 
+            // tsbSpecial
+            // 
+            this.tsbSpecial.AutoToolTip = false;
+            this.tsbSpecial.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.tsbSpecial.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbSpecial.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.tsbSpecial.Image = ((System.Drawing.Image)(resources.GetObject("tsbSpecial.Image")));
+            this.tsbSpecial.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbSpecial.Name = "tsbSpecial";
+            this.tsbSpecial.Size = new System.Drawing.Size(24, 24);
+            this.tsbSpecial.Text = "Special";
+            this.tsbSpecial.Click += new System.EventHandler(this.tsbSpecial_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.toolStripSeparator2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.toolStripSeparator2.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 22);
+            // 
+            // tsbCamera
+            // 
+            this.tsbCamera.AutoToolTip = false;
+            this.tsbCamera.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.tsbCamera.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbCamera.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.tsbCamera.Image = ((System.Drawing.Image)(resources.GetObject("tsbCamera.Image")));
+            this.tsbCamera.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbCamera.Name = "tsbCamera";
+            this.tsbCamera.Size = new System.Drawing.Size(24, 24);
+            this.tsbCamera.Text = "Camera";
+            this.tsbCamera.Click += new System.EventHandler(this.tsbCamera_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.toolStripSeparator3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.toolStripSeparator3.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 22);
+            // 
+            // tsbLoadLists
+            // 
+            this.tsbLoadLists.AutoToolTip = false;
+            this.tsbLoadLists.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.tsbLoadLists.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbLoadLists.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.tsbLoadLists.Image = ((System.Drawing.Image)(resources.GetObject("tsbLoadLists.Image")));
+            this.tsbLoadLists.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbLoadLists.Name = "tsbLoadLists";
+            this.tsbLoadLists.Size = new System.Drawing.Size(24, 24);
+            this.tsbLoadLists.Text = "Load Lists";
+            this.tsbLoadLists.Click += new System.EventHandler(this.tsbLoadLists_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.toolStripSeparator4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.toolStripSeparator4.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 22);
+            // 
+            // tsbDrawLists
+            // 
+            this.tsbDrawLists.AutoToolTip = false;
+            this.tsbDrawLists.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.tsbDrawLists.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbDrawLists.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.tsbDrawLists.Image = ((System.Drawing.Image)(resources.GetObject("tsbDrawLists.Image")));
+            this.tsbDrawLists.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbDrawLists.Name = "tsbDrawLists";
+            this.tsbDrawLists.Size = new System.Drawing.Size(24, 24);
+            this.tsbDrawLists.Text = "Draw Lists";
+            this.tsbDrawLists.Click += new System.EventHandler(this.tsbDrawLists_Click);
+            // 
             // EntityBox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.darkToolStrip);
             this.Controls.Add(this.tbcTabs);
             this.Name = "EntityBox";
             this.Size = new System.Drawing.Size(500, 425);
-            ((System.ComponentModel.ISupportInitialize)(this.numType)).EndInit();
+            this.tbcTabs.ResumeLayout(false);
+            this.tabGeneral.ResumeLayout(false);
+            this.fraName.ResumeLayout(false);
+            this.fraName.PerformLayout();
             this.fraType.ResumeLayout(false);
             this.fraType.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numType)).EndInit();
             this.fraSubtype.ResumeLayout(false);
             this.fraSubtype.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numSubtype)).EndInit();
+            this.fraSettings.ResumeLayout(false);
+            this.fraSettings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numSettingC)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numSettingB)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numSettingA)).EndInit();
             this.fraPosition.ResumeLayout(false);
             this.fraPosition.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numZ)).EndInit();
@@ -2906,15 +3052,6 @@ namespace CrashEdit
             this.fraID.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numID)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numID2)).EndInit();
-            this.fraSettings.ResumeLayout(false);
-            this.fraSettings.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numSettingC)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numSettingB)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numSettingA)).EndInit();
-            this.fraName.ResumeLayout(false);
-            this.fraName.PerformLayout();
-            this.tbcTabs.ResumeLayout(false);
-            this.tabGeneral.ResumeLayout(false);
             this.tabSpecial.ResumeLayout(false);
             this.fraZMod.ResumeLayout(false);
             this.fraZMod.PerformLayout();
@@ -2999,46 +3136,16 @@ namespace CrashEdit
             this.fraEntityA.ResumeLayout(false);
             this.fraEntityA.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numEntityA)).EndInit();
+            this.darkToolStrip.ResumeLayout(false);
+            this.darkToolStrip.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private DarkUI.Controls.DarkCheckBox chkType;
-        private DarkUI.Controls.DarkNumericUpDown numType;
-        private System.Windows.Forms.GroupBox fraType;
-        private System.Windows.Forms.GroupBox fraSubtype;
-        private DarkUI.Controls.DarkCheckBox chkSubtype;
-        private DarkUI.Controls.DarkNumericUpDown numSubtype;
-        private System.Windows.Forms.GroupBox fraPosition;
-        private DarkUI.Controls.DarkLabel lblZ;
-        private DarkUI.Controls.DarkLabel lblY;
-        private DarkUI.Controls.DarkLabel lblX;
-        private DarkUI.Controls.DarkNumericUpDown numZ;
-        private DarkUI.Controls.DarkNumericUpDown numY;
-        private DarkUI.Controls.DarkNumericUpDown numX;
-        private DarkUI.Controls.DarkButton cmdInsertPosition;
         private DarkUI.Controls.DarkButton cmdInsertVictim;
-        private DarkUI.Controls.DarkButton cmdRemovePosition;
-        private DarkUI.Controls.DarkLabel lblPositionIndex;
         private DarkUI.Controls.DarkLabel lblVictimIndex;
-        private System.Windows.Forms.GroupBox fraID;
-        private DarkUI.Controls.DarkCheckBox chkID2;
-        private DarkUI.Controls.DarkNumericUpDown numID2;
-        private System.Windows.Forms.GroupBox fraSettings;
-        private DarkUI.Controls.DarkLabel lblSettingIndex;
-        private DarkUI.Controls.DarkButton cmdNextSetting;
-        private DarkUI.Controls.DarkButton cmdPreviousSetting;
-        private DarkUI.Controls.DarkButton cmdAddSetting;
-        private DarkUI.Controls.DarkButton cmdRemoveSetting;
-        private DarkUI.Controls.DarkLabel lblSettingB;
-        private DarkUI.Controls.DarkLabel lblSettingA;
-        private DarkUI.Controls.DarkNumericUpDown numSettingB;
-        private DarkUI.Controls.DarkNumericUpDown numSettingA;
-        private System.Windows.Forms.GroupBox fraName;
-        private System.Windows.Forms.TabControl tbcTabs;
-        private System.Windows.Forms.TabPage tabGeneral;
+        private VisualStudioTabControl.VisualStudioTabControl tbcTabs;
         private System.Windows.Forms.TabPage tabSpecial;
         private System.Windows.Forms.GroupBox fraVictims;
         private DarkUI.Controls.DarkNumericUpDown numVictimID;
@@ -3143,10 +3250,7 @@ namespace CrashEdit
         private DarkUI.Controls.DarkLabel lblPayloadPosition;
         private DarkUI.Controls.DarkNumericUpDown numPayloadPosition;
         private DarkUI.Controls.DarkLabel lblPayload;
-        private DarkUI.Controls.DarkNumericUpDown numSettingC;
-        private DarkUI.Controls.DarkCheckBox chkSettingHex;
         private DarkUI.Controls.DarkLabel lblEIDErrB;
-        private DarkUI.Controls.DarkButton cmdInterpolate;
         private System.Windows.Forms.GroupBox fraTTReward;
         private DarkUI.Controls.DarkCheckBox chkTTReward;
         private DarkUI.Controls.DarkNumericUpDown numTTReward;
@@ -3203,12 +3307,56 @@ namespace CrashEdit
         private DarkUI.Controls.DarkNumericUpDown numFOV;
         private DarkUI.Controls.DarkButton cmdPrevFOVFrame;
         private DarkUI.Controls.DarkButton cmdNextFOVFrame;
-        private DarkUI.Controls.DarkCheckBox chkID;
-        private DarkUI.Controls.DarkCheckBox chkName;
+        private DarkUI.Controls.DarkToolStrip darkToolStrip;
+        private System.Windows.Forms.ToolStripButton tsbGeneral;
+        private System.Windows.Forms.ToolStripButton tsbSpecial;
+        private System.Windows.Forms.ToolStripButton tsbCamera;
+        private System.Windows.Forms.ToolStripButton tsbLoadLists;
+        private System.Windows.Forms.ToolStripButton tsbDrawLists;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.TabPage tabGeneral;
+        private System.Windows.Forms.GroupBox fraName;
         private DarkUI.Controls.DarkTextBox txtName;
+        private DarkUI.Controls.DarkCheckBox chkName;
+        private System.Windows.Forms.GroupBox fraType;
+        private DarkUI.Controls.DarkCheckBox chkType;
+        private DarkUI.Controls.DarkNumericUpDown numType;
+        private System.Windows.Forms.GroupBox fraSubtype;
+        private DarkUI.Controls.DarkCheckBox chkSubtype;
+        private DarkUI.Controls.DarkNumericUpDown numSubtype;
+        private System.Windows.Forms.GroupBox fraSettings;
+        private DarkUI.Controls.DarkCheckBox chkSettingHex;
+        private DarkUI.Controls.DarkNumericUpDown numSettingC;
+        private DarkUI.Controls.DarkLabel lblSettingIndex;
+        private DarkUI.Controls.DarkButton cmdNextSetting;
+        private DarkUI.Controls.DarkButton cmdPreviousSetting;
+        private DarkUI.Controls.DarkButton cmdAddSetting;
+        private DarkUI.Controls.DarkButton cmdRemoveSetting;
+        private DarkUI.Controls.DarkLabel lblSettingB;
+        private DarkUI.Controls.DarkLabel lblSettingA;
+        private DarkUI.Controls.DarkNumericUpDown numSettingB;
+        private DarkUI.Controls.DarkNumericUpDown numSettingA;
+        private System.Windows.Forms.GroupBox fraPosition;
         private DarkUI.Controls.DarkButton cmdAppendPosition;
         private DarkUI.Controls.DarkButton cmdNextPosition;
         private DarkUI.Controls.DarkButton cmdPreviousPosition;
+        private DarkUI.Controls.DarkButton cmdInterpolate;
+        private DarkUI.Controls.DarkLabel lblPositionIndex;
+        private DarkUI.Controls.DarkButton cmdInsertPosition;
+        private DarkUI.Controls.DarkLabel lblZ;
+        private DarkUI.Controls.DarkButton cmdRemovePosition;
+        private DarkUI.Controls.DarkLabel lblY;
+        private DarkUI.Controls.DarkLabel lblX;
+        private DarkUI.Controls.DarkNumericUpDown numZ;
+        private DarkUI.Controls.DarkNumericUpDown numY;
+        private DarkUI.Controls.DarkNumericUpDown numX;
+        private System.Windows.Forms.GroupBox fraID;
         private DarkUI.Controls.DarkNumericUpDown numID;
+        private DarkUI.Controls.DarkCheckBox chkID;
+        private DarkUI.Controls.DarkCheckBox chkID2;
+        private DarkUI.Controls.DarkNumericUpDown numID2;
     }
 }

@@ -2183,5 +2183,30 @@ namespace CrashEdit
         {
             entity.FOV.Rows[fovframeindex].Values[fovindex] = new EntityVictim((short)numFOV.Value);
         }
+
+        private void tsbGeneral_Click(object sender, EventArgs e)
+        {
+            tbcTabs.SelectedIndex = 0;
+        }
+
+        private void tsbSpecial_Click(object sender, EventArgs e)
+        {
+            tbcTabs.SelectedIndex = 1;
+        }
+
+        private void tsbCamera_Click(object sender, EventArgs e)
+        {
+            tbcTabs.SelectedIndex = 2;
+        }
+
+        private void tsbLoadLists_Click(object sender, EventArgs e)
+        {
+            tbcTabs.SelectedIndex = 3;
+        }
+
+        private void tsbDrawLists_Click(object sender, EventArgs e)
+        {
+            tbcTabs.SelectedIndex = 4;
+        }
     }
 }
