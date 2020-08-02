@@ -1,4 +1,5 @@
 using Crash;
+using DarkUI.Controls;
 
 namespace CrashEdit
 {
@@ -31,124 +32,121 @@ namespace CrashEdit
         /// </summary>
         private void InitializeComponent()
         {
-            this.lblTitle = new System.Windows.Forms.Label();
-            this.lblMessage = new System.Windows.Forms.Label();
+            this.lblTitle = new DarkUI.Controls.DarkLabel();
+            this.lblMessage = new DarkUI.Controls.DarkLabel();
             this.pnOptions = new System.Windows.Forms.Panel();
-            this.optIgnore = new System.Windows.Forms.RadioButton();
-            this.optIgnoreAll = new System.Windows.Forms.RadioButton();
-            this.optSkip = new System.Windows.Forms.RadioButton();
-            this.optAbort = new System.Windows.Forms.RadioButton();
-            this.optBreak = new System.Windows.Forms.RadioButton();
-            this.cmdOK = new System.Windows.Forms.Button();
+            this.optIgnore = new DarkUI.Controls.DarkRadioButton();
+            this.optIgnoreAll = new DarkUI.Controls.DarkRadioButton();
+            this.optSkip = new DarkUI.Controls.DarkRadioButton();
+            this.optAbort = new DarkUI.Controls.DarkRadioButton();
+            this.optBreak = new DarkUI.Controls.DarkRadioButton();
+            this.cmdOK = new DarkUI.Controls.DarkButton();
             this.pnOptions.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblTitle
             // 
-            this.lblTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblTitle.Font = new System.Drawing.Font("Microsoft Sans Serif",15.75F,System.Drawing.FontStyle.Regular,System.Drawing.GraphicsUnit.Point,((byte)(0)));
-            this.lblTitle.Location = new System.Drawing.Point(12,9);
+            this.lblTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblTitle.Location = new System.Drawing.Point(12, 8);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(390,32);
+            this.lblTitle.Size = new System.Drawing.Size(406, 30);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "An error occurred.";
             // 
             // lblMessage
             // 
-            this.lblMessage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblMessage.Location = new System.Drawing.Point(12,41);
+            this.lblMessage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblMessage.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblMessage.Location = new System.Drawing.Point(12, 38);
             this.lblMessage.Name = "lblMessage";
-            this.lblMessage.Size = new System.Drawing.Size(390,40);
+            this.lblMessage.Size = new System.Drawing.Size(406, 37);
             this.lblMessage.TabIndex = 1;
             this.lblMessage.Text = "<MESSAGE>";
             this.lblMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // pnOptions
             // 
-            this.pnOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnOptions.Controls.Add(this.optIgnore);
             this.pnOptions.Controls.Add(this.optIgnoreAll);
             this.pnOptions.Controls.Add(this.optSkip);
             this.pnOptions.Controls.Add(this.optAbort);
             this.pnOptions.Controls.Add(this.optBreak);
-            this.pnOptions.Location = new System.Drawing.Point(12,84);
+            this.pnOptions.Location = new System.Drawing.Point(12, 78);
             this.pnOptions.Name = "pnOptions";
-            this.pnOptions.Size = new System.Drawing.Size(390,122);
+            this.pnOptions.Size = new System.Drawing.Size(406, 109);
             this.pnOptions.TabIndex = 2;
             // 
             // optIgnore
             // 
             this.optIgnore.AutoSize = true;
-            this.optIgnore.Location = new System.Drawing.Point(5,49);
+            this.optIgnore.Location = new System.Drawing.Point(5, 45);
             this.optIgnore.Name = "optIgnore";
-            this.optIgnore.Size = new System.Drawing.Size(204,17);
+            this.optIgnore.Size = new System.Drawing.Size(215, 16);
             this.optIgnore.TabIndex = 3;
             this.optIgnore.Text = "Ignore the error and continue anyway.";
-            this.optIgnore.UseVisualStyleBackColor = true;
+            // 
+            // optIgnoreAll
+            // 
+            this.optIgnoreAll.AutoSize = true;
+            this.optIgnoreAll.Location = new System.Drawing.Point(5, 66);
+            this.optIgnoreAll.Name = "optIgnoreAll";
+            this.optIgnoreAll.Size = new System.Drawing.Size(254, 16);
+            this.optIgnoreAll.TabIndex = 3;
+            this.optIgnoreAll.Text = "Ignore the error and all others for this object.";
             // 
             // optSkip
             // 
             this.optSkip.AutoSize = true;
-            this.optSkip.Location = new System.Drawing.Point(5,26);
+            this.optSkip.Location = new System.Drawing.Point(5, 24);
             this.optSkip.Name = "optSkip";
-            this.optSkip.Size = new System.Drawing.Size(212,17);
+            this.optSkip.Size = new System.Drawing.Size(226, 16);
             this.optSkip.TabIndex = 2;
             this.optSkip.Text = "Skip this object, leaving it unprocessed.";
-            this.optSkip.UseVisualStyleBackColor = true;
             // 
             // optAbort
             // 
             this.optAbort.AutoSize = true;
             this.optAbort.Checked = true;
-            this.optAbort.Location = new System.Drawing.Point(5,3);
+            this.optAbort.Location = new System.Drawing.Point(5, 3);
             this.optAbort.Name = "optAbort";
-            this.optAbort.Size = new System.Drawing.Size(119,17);
+            this.optAbort.Size = new System.Drawing.Size(127, 16);
             this.optAbort.TabIndex = 1;
             this.optAbort.TabStop = true;
             this.optAbort.Text = "Abort this operation.";
-            this.optAbort.UseVisualStyleBackColor = true;
             // 
             // optBreak
             // 
             this.optBreak.AutoSize = true;
-            this.optBreak.Location = new System.Drawing.Point(5,95);
+            this.optBreak.Location = new System.Drawing.Point(5, 88);
             this.optBreak.Name = "optBreak";
-            this.optBreak.Size = new System.Drawing.Size(209,17);
+            this.optBreak.Size = new System.Drawing.Size(225, 16);
             this.optBreak.TabIndex = 0;
             this.optBreak.Text = "Break out to a debugger. (Experts only)";
-            this.optBreak.UseVisualStyleBackColor = true;
-            // 
-            // optIgnoreAll
-            // 
-            this.optIgnoreAll.AutoSize = true;
-            this.optIgnoreAll.Location = new System.Drawing.Point(5,72);
-            this.optIgnoreAll.Name = "optIgnoreAll";
-            this.optIgnoreAll.Size = new System.Drawing.Size(204,17);
-            this.optIgnoreAll.TabIndex = 3;
-            this.optIgnoreAll.Text = "Ignore the error and all others for this object.";
-            this.optIgnoreAll.UseVisualStyleBackColor = true;
             // 
             // cmdOK
             // 
             this.cmdOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmdOK.Location = new System.Drawing.Point(327,219);
+            this.cmdOK.Location = new System.Drawing.Point(343, 189);
             this.cmdOK.Name = "cmdOK";
-            this.cmdOK.Size = new System.Drawing.Size(75,23);
+            this.cmdOK.Padding = new System.Windows.Forms.Padding(5);
+            this.cmdOK.Size = new System.Drawing.Size(75, 21);
             this.cmdOK.TabIndex = 3;
             this.cmdOK.Text = "OK";
-            this.cmdOK.UseVisualStyleBackColor = true;
             this.cmdOK.Click += new System.EventHandler(this.cmdOK_Click);
             // 
             // ErrorReporter
             // 
             this.AcceptButton = this.cmdOK;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F,13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(414,254);
+            this.ClientSize = new System.Drawing.Size(430, 222);
             this.ControlBox = false;
             this.Controls.Add(this.cmdOK);
             this.Controls.Add(this.pnOptions);
@@ -169,14 +167,14 @@ namespace CrashEdit
 
         #endregion
 
-        private System.Windows.Forms.Label lblTitle;
-        private System.Windows.Forms.Label lblMessage;
+        private DarkLabel lblTitle;
+        private DarkLabel lblMessage;
         private System.Windows.Forms.Panel pnOptions;
-        private System.Windows.Forms.RadioButton optSkip;
-        private System.Windows.Forms.RadioButton optAbort;
-        private System.Windows.Forms.RadioButton optBreak;
-        private System.Windows.Forms.RadioButton optIgnore;
-        private System.Windows.Forms.RadioButton optIgnoreAll;
-        private System.Windows.Forms.Button cmdOK;
+        private DarkRadioButton optSkip;
+        private DarkRadioButton optAbort;
+        private DarkRadioButton optBreak;
+        private DarkRadioButton optIgnore;
+        private DarkRadioButton optIgnoreAll;
+        private DarkButton cmdOK;
     }
 }

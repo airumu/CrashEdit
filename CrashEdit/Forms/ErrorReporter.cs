@@ -1,10 +1,11 @@
 using Crash;
 using System;
 using System.Windows.Forms;
+using DarkUI.Forms;
 
 namespace CrashEdit
 {
-    public partial class ErrorReporter : Form
+    public partial class ErrorReporter : DarkForm
     {
         private IWin32Window owner = null;
 
