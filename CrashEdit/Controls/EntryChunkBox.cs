@@ -1,5 +1,6 @@
 using Crash;
 using System.Windows.Forms;
+using DarkUI.Controls;
 
 namespace CrashEdit
 {
@@ -9,13 +10,13 @@ namespace CrashEdit
 
         private int totalsize;
 
-        private ListBox lstEntryList;
+        private DarkListView lstEntryList;
 
         public EntryChunkBox(EntryChunkController controller)
         {
             this.controller = controller;
 
-            lstEntryList = new ListBox { Dock = DockStyle.Fill };
+            lstEntryList = new DarkUI.Controls.DarkListView { Dock = DockStyle.Fill };
 
             Controls.Add(lstEntryList);
             
@@ -35,11 +36,14 @@ namespace CrashEdit
             {
                 lstEntryList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
                 lstEntryList.ForeColor = System.Drawing.SystemColors.Control;
+                this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
                 var this_size = Aligner.Align(entry.Save().Length, controller.EntryChunk.Alignment);
-                lstEntryList.Items.Add(string.Format("{0}: {1} bytes", entry.EName, this_size));
+                var item = new DarkListItem(string.Format("{0}: {1} bytes", entry.EName, this_size));
+                lstEntryList.Items.Add(item);
                 totalsize += this_size;
             }
-            lstEntryList.Items.Add(string.Format("Total size: {2} entries, {0} bytes ({1} remaining)", totalsize + 16 + ((controller.EntryChunk.Entries.Count + 1) * 4), Chunk.Length - (totalsize + 16 + ((controller.EntryChunk.Entries.Count + 1) * 4)), controller.EntryChunk.Entries.Count));
+            var item2 = new DarkListItem(string.Format("Total size: {2} entries, {0} bytes ({1} remaining)", totalsize + 16 + ((controller.EntryChunk.Entries.Count + 1) * 4), Chunk.Length - (totalsize + 16 + ((controller.EntryChunk.Entries.Count + 1) * 4)), controller.EntryChunk.Entries.Count));
+            lstEntryList.Items.Add(item2);
         }
 
         protected override void Dispose(bool disposing)
