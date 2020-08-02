@@ -1,5 +1,6 @@
 using System;
 using System.Windows.Forms;
+using DarkUI.Controls;
 
 namespace CrashEdit
 {
@@ -8,7 +9,7 @@ namespace CrashEdit
         private byte[] data;
         private bool saving;
 
-        private ToolStrip tsToolbar;
+        private DarkToolStrip tsToolbar;
         private ToolStripButton tbbExport;
         private HexBox hbData;
 
@@ -20,8 +21,9 @@ namespace CrashEdit
             tbbExport = new ToolStripButton();
             tbbExport.Text = "Export";
             tbbExport.Click += new EventHandler(tbbExport_Click);
+            tbbExport.Size = new System.Drawing.Size(48, 23);
 
-            tsToolbar = new ToolStrip();
+            tsToolbar = new DarkToolStrip();
             tsToolbar.Dock = DockStyle.Top;
             tsToolbar.Items.Add(tbbExport);
 
