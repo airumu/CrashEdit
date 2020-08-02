@@ -166,5 +166,17 @@ namespace CrashEdit.Properties {
                 this["OldPatchNSD"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool PAL {
+            get {
+                return ((bool)(this["PAL"]));
+            }
+            set {
+                this["PAL"] = value;
+            }
+        }
     }
 }

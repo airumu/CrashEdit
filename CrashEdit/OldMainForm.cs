@@ -70,7 +70,7 @@ namespace CrashEdit
         private FolderBrowserDialog dlgMakeBINDir = new FolderBrowserDialog();
         private SaveFileDialog dlgMakeBINFile = new SaveFileDialog();
 
-        private static bool PAL = false;
+        private static bool PAL = Settings.Default.PAL;
         private const int RateNTSC = 30;
         private const int RatePAL = 25;
 
@@ -200,7 +200,7 @@ namespace CrashEdit
             {
                 Text = "PAL",
                 TextImageRelation = TextImageRelation.ImageAboveText,
-                Checked = false,
+                Checked = Settings.Default.PAL,
                 CheckOnClick = true
             };
             tbbPAL.Click += new EventHandler(tbbPAL_Click);
@@ -350,6 +350,8 @@ namespace CrashEdit
         void tbbPAL_Click(object sender, EventArgs e)
         {
             PAL = tbbPAL.Checked;
+            Settings.Default.PAL = tbbPAL.Checked;
+            Settings.Default.Save();
         }
 
         void tbbPlay_Click(object sender, EventArgs e)
