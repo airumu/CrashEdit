@@ -54,6 +54,7 @@ namespace CrashEdit
                 picture.DoubleClick += new EventHandler(OpenViewer);
                 TabPage page = new TabPage("Monochrome 8");
                 page.Controls.Add(picture);
+                page.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
                 tbcTabs.TabPages.Add(page);
             }
             {
@@ -83,6 +84,7 @@ namespace CrashEdit
                 picture.DoubleClick += new EventHandler(OpenViewer);
                 TabPage page = new TabPage("BGR555");
                 page.Controls.Add(picture);
+                page.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
                 tbcTabs.TabPages.Add(page);
                 tbcTabs.SelectedTab = page;
             }
