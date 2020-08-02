@@ -28,28 +28,28 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.dpdLang = new DarkUI.Controls.DarkComboBox();
             this.fraLang = new System.Windows.Forms.GroupBox();
-            this.cmdReset = new DarkUI.Controls.DarkButton();
+            this.dpdLang = new DarkUI.Controls.DarkComboBox();
             this.fraSize = new System.Windows.Forms.GroupBox();
             this.lblH = new System.Windows.Forms.Label();
             this.lblW = new System.Windows.Forms.Label();
             this.numH = new DarkUI.Controls.DarkNumericUpDown();
             this.numW = new DarkUI.Controls.DarkNumericUpDown();
-            this.chkNormalDisplay = new DarkUI.Controls.DarkCheckBox();
-            this.chkCollisionDisplay = new DarkUI.Controls.DarkCheckBox();
-            this.chkUseAnimLinks = new DarkUI.Controls.DarkCheckBox();
             this.cdlClearCol = new System.Windows.Forms.ColorDialog();
             this.fraClearCol = new System.Windows.Forms.GroupBox();
             this.picClearCol = new System.Windows.Forms.PictureBox();
             this.cmdClearCol = new DarkUI.Controls.DarkButton();
-            this.chkDeleteInvalidEntries = new DarkUI.Controls.DarkCheckBox();
             this.fraAnimGrid = new System.Windows.Forms.GroupBox();
             this.numAnimGrid = new DarkUI.Controls.DarkNumericUpDown();
             this.lblAnimGrid = new System.Windows.Forms.Label();
             this.chkAnimGrid = new DarkUI.Controls.DarkCheckBox();
-            this.chkPatchNSDSavesNSF = new DarkUI.Controls.DarkCheckBox();
             this.chkOldPatchNSD = new DarkUI.Controls.DarkCheckBox();
+            this.chkPatchNSDSavesNSF = new DarkUI.Controls.DarkCheckBox();
+            this.chkDeleteInvalidEntries = new DarkUI.Controls.DarkCheckBox();
+            this.chkUseAnimLinks = new DarkUI.Controls.DarkCheckBox();
+            this.chkCollisionDisplay = new DarkUI.Controls.DarkCheckBox();
+            this.chkNormalDisplay = new DarkUI.Controls.DarkCheckBox();
+            this.cmdReset = new DarkUI.Controls.DarkButton();
             this.fraLang.SuspendLayout();
             this.fraSize.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numH)).BeginInit();
@@ -59,16 +59,6 @@
             this.fraAnimGrid.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numAnimGrid)).BeginInit();
             this.SuspendLayout();
-            // 
-            // dpdLang
-            // 
-            this.dpdLang.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.dpdLang.Font = new System.Drawing.Font("MS UI Gothic", 9F);
-            this.dpdLang.FormattingEnabled = true;
-            this.dpdLang.Location = new System.Drawing.Point(6, 18);
-            this.dpdLang.Name = "dpdLang";
-            this.dpdLang.Size = new System.Drawing.Size(175, 20);
-            this.dpdLang.TabIndex = 0;
             // 
             // fraLang
             // 
@@ -82,15 +72,15 @@
             this.fraLang.TabStop = false;
             this.fraLang.Text = "Language (requires restart)";
             // 
-            // cmdReset
+            // dpdLang
             // 
-            this.cmdReset.Location = new System.Drawing.Point(3, 256);
-            this.cmdReset.Name = "cmdReset";
-            this.cmdReset.Padding = new System.Windows.Forms.Padding(5);
-            this.cmdReset.Size = new System.Drawing.Size(100, 21);
-            this.cmdReset.TabIndex = 1;
-            this.cmdReset.Text = "Reset Settings";
-            this.cmdReset.Click += new System.EventHandler(this.cmdReset_Click);
+            this.dpdLang.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.dpdLang.Font = new System.Drawing.Font("MS UI Gothic", 9F);
+            this.dpdLang.FormattingEnabled = true;
+            this.dpdLang.Location = new System.Drawing.Point(6, 18);
+            this.dpdLang.Name = "dpdLang";
+            this.dpdLang.Size = new System.Drawing.Size(175, 20);
+            this.dpdLang.TabIndex = 0;
             // 
             // fraSize
             // 
@@ -171,42 +161,6 @@
             0});
             this.numW.ValueChanged += new System.EventHandler(this.numW_ValueChanged);
             // 
-            // chkNormalDisplay
-            // 
-            this.chkNormalDisplay.AutoSize = true;
-            this.chkNormalDisplay.Checked = true;
-            this.chkNormalDisplay.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkNormalDisplay.Location = new System.Drawing.Point(3, 127);
-            this.chkNormalDisplay.Name = "chkNormalDisplay";
-            this.chkNormalDisplay.Size = new System.Drawing.Size(106, 16);
-            this.chkNormalDisplay.TabIndex = 0;
-            this.chkNormalDisplay.Text = "Display normals";
-            this.chkNormalDisplay.CheckedChanged += new System.EventHandler(this.chkNormalDisplay_CheckedChanged);
-            // 
-            // chkCollisionDisplay
-            // 
-            this.chkCollisionDisplay.AutoSize = true;
-            this.chkCollisionDisplay.Checked = true;
-            this.chkCollisionDisplay.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkCollisionDisplay.Location = new System.Drawing.Point(3, 149);
-            this.chkCollisionDisplay.Name = "chkCollisionDisplay";
-            this.chkCollisionDisplay.Size = new System.Drawing.Size(196, 16);
-            this.chkCollisionDisplay.TabIndex = 2;
-            this.chkCollisionDisplay.Text = "Display frame collision by default";
-            this.chkCollisionDisplay.CheckedChanged += new System.EventHandler(this.chkCollisionDisplay_CheckedChanged);
-            // 
-            // chkUseAnimLinks
-            // 
-            this.chkUseAnimLinks.AutoSize = true;
-            this.chkUseAnimLinks.Checked = true;
-            this.chkUseAnimLinks.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkUseAnimLinks.Location = new System.Drawing.Point(3, 234);
-            this.chkUseAnimLinks.Name = "chkUseAnimLinks";
-            this.chkUseAnimLinks.Size = new System.Drawing.Size(253, 16);
-            this.chkUseAnimLinks.TabIndex = 3;
-            this.chkUseAnimLinks.Text = "(Crash 3) Used saved animation-model links";
-            this.chkUseAnimLinks.CheckedChanged += new System.EventHandler(this.chkUseAnimLinks_CheckedChanged);
-            // 
             // cdlClearCol
             // 
             this.cdlClearCol.AnyColor = true;
@@ -247,18 +201,6 @@
             this.cmdClearCol.TabIndex = 7;
             this.cmdClearCol.Text = "Reset";
             this.cmdClearCol.Click += new System.EventHandler(this.cmdClearCol_Click);
-            // 
-            // chkDeleteInvalidEntries
-            // 
-            this.chkDeleteInvalidEntries.AutoSize = true;
-            this.chkDeleteInvalidEntries.Checked = true;
-            this.chkDeleteInvalidEntries.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkDeleteInvalidEntries.Location = new System.Drawing.Point(3, 170);
-            this.chkDeleteInvalidEntries.Name = "chkDeleteInvalidEntries";
-            this.chkDeleteInvalidEntries.Size = new System.Drawing.Size(311, 16);
-            this.chkDeleteInvalidEntries.TabIndex = 5;
-            this.chkDeleteInvalidEntries.Text = "(Patch NSD) Delete non-existent entries from load lists";
-            this.chkDeleteInvalidEntries.CheckedChanged += new System.EventHandler(this.chkDeleteInvalidEntries_CheckedChanged);
             // 
             // fraAnimGrid
             // 
@@ -311,30 +253,88 @@
             this.chkAnimGrid.Text = "Enabled";
             this.chkAnimGrid.CheckedChanged += new System.EventHandler(this.chkAnimGrid_CheckedChanged);
             // 
+            // chkOldPatchNSD
+            // 
+            this.chkOldPatchNSD.AutoSize = true;
+            this.chkOldPatchNSD.Checked = true;
+            this.chkOldPatchNSD.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkOldPatchNSD.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.chkOldPatchNSD.Location = new System.Drawing.Point(4, 192);
+            this.chkOldPatchNSD.Name = "chkOldPatchNSD";
+            this.chkOldPatchNSD.Size = new System.Drawing.Size(332, 16);
+            this.chkOldPatchNSD.TabIndex = 9;
+            this.chkOldPatchNSD.Text = "(Patch NSD) Use old NSD patching from CrashEdit v0.2.49.0";
+            this.chkOldPatchNSD.CheckedChanged += new System.EventHandler(this.ChkOldPatchNSD_CheckedChanged);
+            // 
             // chkPatchNSDSavesNSF
             // 
             this.chkPatchNSDSavesNSF.AutoSize = true;
             this.chkPatchNSDSavesNSF.Checked = true;
             this.chkPatchNSDSavesNSF.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkPatchNSDSavesNSF.Location = new System.Drawing.Point(3, 191);
+            this.chkPatchNSDSavesNSF.Location = new System.Drawing.Point(3, 213);
             this.chkPatchNSDSavesNSF.Name = "chkPatchNSDSavesNSF";
             this.chkPatchNSDSavesNSF.Size = new System.Drawing.Size(285, 16);
             this.chkPatchNSDSavesNSF.TabIndex = 8;
             this.chkPatchNSDSavesNSF.Text = "(Patch NSD) Always save NSF after NSD patching";
             this.chkPatchNSDSavesNSF.CheckedChanged += new System.EventHandler(this.chkPatchNSDSavesNSF_CheckedChanged);
             // 
-            // chkOldPatchNSD
+            // chkDeleteInvalidEntries
             // 
-            this.chkOldPatchNSD.AutoSize = true;
-            this.chkOldPatchNSD.Checked = true;
-            this.chkOldPatchNSD.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkOldPatchNSD.ForeColor = System.Drawing.Color.OrangeRed;
-            this.chkOldPatchNSD.Location = new System.Drawing.Point(3, 213);
-            this.chkOldPatchNSD.Name = "chkOldPatchNSD";
-            this.chkOldPatchNSD.Size = new System.Drawing.Size(332, 16);
-            this.chkOldPatchNSD.TabIndex = 9;
-            this.chkOldPatchNSD.Text = "(Patch NSD) Use old NSD patching from CrashEdit v0.2.49.0";
-            this.chkOldPatchNSD.CheckedChanged += new System.EventHandler(this.ChkOldPatchNSD_CheckedChanged);
+            this.chkDeleteInvalidEntries.AutoSize = true;
+            this.chkDeleteInvalidEntries.Checked = true;
+            this.chkDeleteInvalidEntries.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkDeleteInvalidEntries.Location = new System.Drawing.Point(4, 171);
+            this.chkDeleteInvalidEntries.Name = "chkDeleteInvalidEntries";
+            this.chkDeleteInvalidEntries.Size = new System.Drawing.Size(311, 16);
+            this.chkDeleteInvalidEntries.TabIndex = 5;
+            this.chkDeleteInvalidEntries.Text = "(Patch NSD) Delete non-existent entries from load lists";
+            this.chkDeleteInvalidEntries.CheckedChanged += new System.EventHandler(this.chkDeleteInvalidEntries_CheckedChanged);
+            // 
+            // chkUseAnimLinks
+            // 
+            this.chkUseAnimLinks.AutoSize = true;
+            this.chkUseAnimLinks.Checked = true;
+            this.chkUseAnimLinks.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkUseAnimLinks.Location = new System.Drawing.Point(3, 234);
+            this.chkUseAnimLinks.Name = "chkUseAnimLinks";
+            this.chkUseAnimLinks.Size = new System.Drawing.Size(253, 16);
+            this.chkUseAnimLinks.TabIndex = 3;
+            this.chkUseAnimLinks.Text = "(Crash 3) Used saved animation-model links";
+            this.chkUseAnimLinks.CheckedChanged += new System.EventHandler(this.chkUseAnimLinks_CheckedChanged);
+            // 
+            // chkCollisionDisplay
+            // 
+            this.chkCollisionDisplay.AutoSize = true;
+            this.chkCollisionDisplay.Checked = true;
+            this.chkCollisionDisplay.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkCollisionDisplay.Location = new System.Drawing.Point(4, 150);
+            this.chkCollisionDisplay.Name = "chkCollisionDisplay";
+            this.chkCollisionDisplay.Size = new System.Drawing.Size(196, 16);
+            this.chkCollisionDisplay.TabIndex = 2;
+            this.chkCollisionDisplay.Text = "Display frame collision by default";
+            this.chkCollisionDisplay.CheckedChanged += new System.EventHandler(this.chkCollisionDisplay_CheckedChanged);
+            // 
+            // chkNormalDisplay
+            // 
+            this.chkNormalDisplay.AutoSize = true;
+            this.chkNormalDisplay.Checked = true;
+            this.chkNormalDisplay.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkNormalDisplay.Location = new System.Drawing.Point(4, 128);
+            this.chkNormalDisplay.Name = "chkNormalDisplay";
+            this.chkNormalDisplay.Size = new System.Drawing.Size(106, 16);
+            this.chkNormalDisplay.TabIndex = 0;
+            this.chkNormalDisplay.Text = "Display normals";
+            this.chkNormalDisplay.CheckedChanged += new System.EventHandler(this.chkNormalDisplay_CheckedChanged);
+            // 
+            // cmdReset
+            // 
+            this.cmdReset.Location = new System.Drawing.Point(3, 256);
+            this.cmdReset.Name = "cmdReset";
+            this.cmdReset.Padding = new System.Windows.Forms.Padding(5);
+            this.cmdReset.Size = new System.Drawing.Size(100, 21);
+            this.cmdReset.TabIndex = 1;
+            this.cmdReset.Text = "Reset Settings";
+            this.cmdReset.Click += new System.EventHandler(this.cmdReset_Click);
             // 
             // ConfigEditor
             // 
@@ -355,7 +355,6 @@
             this.ForeColor = System.Drawing.SystemColors.Window;
             this.Name = "ConfigEditor";
             this.Size = new System.Drawing.Size(474, 287);
-            this.Load += new System.EventHandler(this.ConfigEditor_Load);
             this.fraLang.ResumeLayout(false);
             this.fraSize.ResumeLayout(false);
             this.fraSize.PerformLayout();

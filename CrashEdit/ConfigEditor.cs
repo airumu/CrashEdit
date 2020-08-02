@@ -135,11 +135,6 @@ namespace CrashEdit
             Settings.Default.Save();
         }
 
-        private void ConfigEditor_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void chkPatchNSDSavesNSF_CheckedChanged(object sender, EventArgs e)
         {
             Settings.Default.PatchNSDSavesNSF = chkPatchNSDSavesNSF.Checked;

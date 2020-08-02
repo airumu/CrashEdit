@@ -92,7 +92,7 @@ namespace CrashEdit
             tbbSave = new ToolStripButton
             {
                 Text = Resources.Toolbar_Save,
-                ToolTipText = "Save (Ctrl+S)",
+                ToolTipText = "Save (Ctrl+Shift+S)",
                 ImageKey = "tb_save",
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
@@ -104,7 +104,7 @@ namespace CrashEdit
             tbbPatchNSD = new ToolStripButton
             {
                 Text = Resources.Toolbar_PatchNSD,
-                ToolTipText = "Patch NSD (Ctrl+Shift+S)",
+                ToolTipText = "Patch NSD (Ctrl+S)",
                 ImageKey = "tb_patchnsd",
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
@@ -308,10 +308,10 @@ namespace CrashEdit
             mnuOpen.ShortcutKeys = Keys.Control | Keys.O;
 
             mnuSave.Click += new EventHandler(tbbSave_Click);
-            mnuSave.ShortcutKeys = Keys.Control | Keys.S;
+            mnuSave.ShortcutKeys = Keys.Control | Keys.Shift | Keys.S;
 
             mnuPatchNSD.Click += new EventHandler(tbbPatchNSD_Click);
-            mnuPatchNSD.ShortcutKeys = Keys.Control | Keys.Shift | Keys.S;
+            mnuPatchNSD.ShortcutKeys = Keys.Control | Keys.S;
 
             mnuClose.Click += new EventHandler(tbbClose_Click);
             mnuClose.ShortcutKeys = Keys.Control | Keys.C;
