@@ -205,7 +205,8 @@ namespace CrashEdit
                 Dock = DockStyle.Top,
                 ImageList = imglist
             };
-            tsToolbar.Size = new System.Drawing.Size(747, 40);
+            tsToolbar.Size = new Size(747, 40);
+            tsToolbar.GripStyle = ToolStripGripStyle.Hidden;
             tsToolbar.Items.Add(tbbOpen);
             tsToolbar.Items.Add(tbbSave);
             tsToolbar.Items.Add(tbbPatchNSD);
