@@ -1,5 +1,6 @@
 using Crash;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace CrashEdit
 {
@@ -14,6 +15,8 @@ namespace CrashEdit
                 Dock = DockStyle.Fill
             };
             int interruptcount = BitConv.FromInt32(goolentry.Header,16);
+            lstCode.BackColor = Color.FromArgb(35, 35, 35);
+            lstCode.ForeColor = Color.FromArgb(200, 200, 200);
             lstCode.Items.Add($"Type: {BitConv.FromInt32(goolentry.Header,0)}");
             lstCode.Items.Add($"Category: {BitConv.FromInt32(goolentry.Header,4) / 0x100}");
             lstCode.Items.Add($"Format: {goolentry.Format}");
