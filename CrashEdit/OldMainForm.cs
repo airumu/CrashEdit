@@ -40,6 +40,14 @@ namespace CrashEdit
             }
         }
 
+        private DarkMenuStrip msMenu;
+        private ToolStripMenuItem mnuOpen;
+        private ToolStripMenuItem mnuSave;
+        private ToolStripMenuItem mnuPatchNSD;
+        private ToolStripMenuItem mnuClose;
+        private ToolStripMenuItem mnuFind;
+        private ToolStripMenuItem mnuFindNext;
+        private ToolStripMenuItem mnuPlay;
         private DarkToolStrip tsToolbar;
         private ToolStripButton tbbOpen;
         private ToolStripButton tbbSave;
@@ -71,9 +79,10 @@ namespace CrashEdit
             tbbOpen = new ToolStripButton
             {
                 Text = Resources.Toolbar_Open,
+                ToolTipText = "Open (Ctrl+O)",
                 ImageKey = "tb_open",
                 TextImageRelation = TextImageRelation.ImageAboveText
-        };
+            };
             tbbOpen.Click += new EventHandler(tbbOpen_Click);
             tbbOpen.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             tbbOpen.ForeColor = SystemColors.Control;
@@ -83,6 +92,7 @@ namespace CrashEdit
             tbbSave = new ToolStripButton
             {
                 Text = Resources.Toolbar_Save,
+                ToolTipText = "Save (Ctrl+S)",
                 ImageKey = "tb_save",
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
@@ -94,6 +104,7 @@ namespace CrashEdit
             tbbPatchNSD = new ToolStripButton
             {
                 Text = Resources.Toolbar_PatchNSD,
+                ToolTipText = "Patch NSD (Ctrl+Shift+S)",
                 ImageKey = "tb_patchnsd",
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
@@ -105,6 +116,7 @@ namespace CrashEdit
             tbbClose = new ToolStripButton
             {
                 Text = Resources.Toolbar_Close,
+                ToolTipText = "Close (Ctrl+C)",
                 ImageKey = "tb_close",
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
@@ -116,6 +128,7 @@ namespace CrashEdit
             tbbFind = new ToolStripButton
             {
                 Text = Resources.Toolbar_Find,
+                ToolTipText = "Find (Ctrl+F)",
                 ImageKey = "tb_find",
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
@@ -127,6 +140,7 @@ namespace CrashEdit
             tbbFindNext = new ToolStripButton
             {
                 Text = Resources.Toolbar_FindNext,
+                ToolTipText = "Find Next (F3)",
                 ImageKey = "tb_findnext",
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
@@ -195,6 +209,7 @@ namespace CrashEdit
             tbbPlay = new ToolStripButton
             {
                 Text = "Play",
+                ToolTipText = "Play (Ctrl+P)",
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
             tbbPlay.Click += new EventHandler(tbbPlay_Click);
@@ -240,12 +255,83 @@ namespace CrashEdit
 
             dlgGameVersion = new GameVersionForm();
 
+            msMenu = new DarkMenuStrip
+            {
+            };
+
+            mnuOpen = new ToolStripMenuItem
+            {
+                Text = Resources.Toolbar_Open
+            };
+
+            mnuSave = new ToolStripMenuItem
+            {
+                Text = Resources.Toolbar_Save
+            };
+
+            mnuPatchNSD = new ToolStripMenuItem
+            {
+                Text = Resources.Toolbar_PatchNSD
+            };
+
+            mnuClose = new ToolStripMenuItem
+            {
+                Text = Resources.Toolbar_Close
+            };
+
+            mnuFind = new ToolStripMenuItem
+            {
+                Text = Resources.Toolbar_Find
+            };
+
+            mnuFindNext = new ToolStripMenuItem
+            {
+                Text = Resources.Toolbar_FindNext
+            };
+
+            mnuPlay = new ToolStripMenuItem
+            {
+                Text = "Play"
+            };
+
+            msMenu.Visible = false;
+            msMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            mnuOpen,
+            mnuSave,
+            mnuPatchNSD,
+            mnuClose,
+            mnuFind,
+            mnuFindNext,
+            mnuPlay});
+
+            mnuOpen.Click += new EventHandler(tbbOpen_Click);
+            mnuOpen.ShortcutKeys = Keys.Control | Keys.O;
+
+            mnuSave.Click += new EventHandler(tbbSave_Click);
+            mnuSave.ShortcutKeys = Keys.Control | Keys.S;
+
+            mnuPatchNSD.Click += new EventHandler(tbbPatchNSD_Click);
+            mnuPatchNSD.ShortcutKeys = Keys.Control | Keys.Shift | Keys.S;
+
+            mnuClose.Click += new EventHandler(tbbClose_Click);
+            mnuClose.ShortcutKeys = Keys.Control | Keys.C;
+
+            mnuFind.Click += new EventHandler(tbbFind_Click);
+            mnuFind.ShortcutKeys = Keys.Control | Keys.F;
+
+            mnuFindNext.Click += new EventHandler(tbbFindNext_Click);
+            mnuFindNext.ShortcutKeys = Keys.F3;
+
+            mnuPlay.Click += new EventHandler(tbbPlay_Click);
+            mnuPlay.ShortcutKeys = Keys.Control | Keys.P;
+
             Icon = OldResources.CBHacksIcon;
             Width = Settings.Default.DefaultFormW;
             Height = Settings.Default.DefaultFormH;
             Text = $"CrashEdit v{Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
             Controls.Add(tbcTabs);
             Controls.Add(tsToolbar);
+            Controls.Add(msMenu);
 
             dlgMakeBINFile.Filter = "Playstation Disc Images (*.bin)|*.bin";
         }
