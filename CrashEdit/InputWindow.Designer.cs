@@ -28,9 +28,9 @@ namespace CrashEdit
         /// </summary>
         private void InitializeComponent()
         {
-            this.txtInput = new System.Windows.Forms.TextBox();
-            this.cmdCancel = new System.Windows.Forms.Button();
-            this.cmdOK = new System.Windows.Forms.Button();
+            this.txtInput = new DarkUI.Controls.DarkTextBox();
+            this.cmdCancel = new DarkUI.Controls.DarkButton();
+            this.cmdOK = new DarkUI.Controls.DarkButton();
             this.SuspendLayout();
             // 
             // txtInput
@@ -51,7 +51,6 @@ namespace CrashEdit
             this.cmdCancel.Size = new System.Drawing.Size(75,23);
             this.cmdCancel.TabIndex = 1;
             this.cmdCancel.Text = "Cancel";
-            this.cmdCancel.UseVisualStyleBackColor = true;
             this.cmdCancel.Click += new System.EventHandler(this.cmdCancel_Click);
             // 
             // cmdOK
@@ -62,7 +61,6 @@ namespace CrashEdit
             this.cmdOK.Size = new System.Drawing.Size(75,23);
             this.cmdOK.TabIndex = 2;
             this.cmdOK.Text = "OK";
-            this.cmdOK.UseVisualStyleBackColor = true;
             this.cmdOK.Click += new System.EventHandler(this.cmdOK_Click);
             // 
             // InputWindow
@@ -86,8 +84,8 @@ namespace CrashEdit
 
         #endregion
 
-        private System.Windows.Forms.TextBox txtInput;
-        private System.Windows.Forms.Button cmdCancel;
-        private System.Windows.Forms.Button cmdOK;
+        private DarkUI.Controls.DarkTextBox txtInput;
+        private DarkUI.Controls.DarkButton cmdCancel;
+        private DarkUI.Controls.DarkButton cmdOK;
     }
 }

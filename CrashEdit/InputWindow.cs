@@ -1,9 +1,10 @@
 using System;
 using System.Windows.Forms;
+using DarkUI.Forms;
 
 namespace CrashEdit
 {
-    public partial class InputWindow : Form
+    public partial class InputWindow : DarkForm
     {
         public InputWindow()
         {
