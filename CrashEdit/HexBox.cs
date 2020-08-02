@@ -339,16 +339,16 @@ namespace CrashEdit
         {
             base.OnPaint(e);
             Brush borderbrush = Brushes.Black;
-            Brush brush = Brushes.Navy;
-            Brush backbrush = Brushes.White;
-            Brush hibackbrush = Brushes.LightGreen;
-            Brush bithibackbrush = Brushes.LightCoral;
+            Brush brush = Brushes.MediumBlue;
+            Brush backbrush = Brushes.LightGray;
+            Brush hibackbrush = Brushes.MediumAquamarine;
+            Brush bithibackbrush = Brushes.DodgerBlue;
             Brush selbrush = Brushes.White;
-            Brush selbackbrush = Brushes.Navy;
-            Brush deadselbackbrush = Brushes.DarkGray;
+            Brush selbackbrush = Brushes.MidnightBlue;
+            Brush deadselbackbrush = Brushes.Gray;
             Brush inputselbackbrush = Brushes.Red;
-            Brush eidbackbrush = Brushes.Chocolate;
-            Brush voidbrush = Brushes.DarkMagenta;
+            Brush eidbackbrush = Brushes.SteelBlue;
+            Brush voidbrush = Brushes.Indigo;
             Font font = new Font(FontFamily.GenericMonospace,8);
             Font selfont = new Font(FontFamily.GenericMonospace,10);
             StringFormat format = new StringFormat();
