@@ -17,8 +17,9 @@ namespace CrashEdit
         public TextureChunkBox(TextureChunk chunk)
         {
             texturechunk = chunk;
-            tbcTabs = new TabControl();
+            tbcTabs = new VisualStudioTabControl.VisualStudioTabControl();
             tbcTabs.Dock = DockStyle.Fill;
+            tbcTabs.Padding = new System.Drawing.Point(0, 3);
             {
                 MysteryBox mystery = new MysteryBox(chunk.Data);
                 mystery.Dock = DockStyle.Fill;
