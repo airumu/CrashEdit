@@ -17,7 +17,7 @@ namespace CrashEdit
             int interruptcount = BitConv.FromInt32(goolentry.Header,16);
             lstCode.BackColor = Color.FromArgb(36, 41, 46);
             lstCode.ForeColor = Color.FromArgb(220, 220, 220);
-            lstCode.Font = new Font("Arial", 9F);
+            lstCode.Font = new Font("MS UI Gothic", 9F);
             lstCode.Items.Add($"Type: {BitConv.FromInt32(goolentry.Header,0)}");
             lstCode.Items.Add($"Category: {BitConv.FromInt32(goolentry.Header,4) / 0x100}");
             lstCode.Items.Add($"Format: {goolentry.Format}");
