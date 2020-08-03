@@ -145,7 +145,8 @@
     <value>Deprocess Entry "{0}"</value>
   </data>
   <data name="GameVersionForm_Message" xml:space="preserve">
-    <value>Select a game version from the list below. NTSC-U, NTSC-J, and PAL are all supported.</value>
+    <value>Select a game version from the list below.
+NTSC-U, NTSC-J, and PAL are all supported.</value>
   </data>
   <data name="GameVersionForm_Prerelease" xml:space="preserve">
     <value>Prerelease Versions</value>

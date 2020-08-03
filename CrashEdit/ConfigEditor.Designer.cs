@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.fraLang = new System.Windows.Forms.GroupBox();
-            this.dpdLang = new DarkUI.Controls.DarkComboBox();
+            this.dpdLang = new MetroFramework.Controls.MetroComboBox();
             this.fraSize = new System.Windows.Forms.GroupBox();
             this.lblH = new System.Windows.Forms.Label();
             this.lblW = new System.Windows.Forms.Label();
@@ -42,14 +42,14 @@
             this.fraAnimGrid = new System.Windows.Forms.GroupBox();
             this.numAnimGrid = new DarkUI.Controls.DarkNumericUpDown();
             this.lblAnimGrid = new System.Windows.Forms.Label();
-            this.chkAnimGrid = new DarkUI.Controls.DarkCheckBox();
-            this.chkOldPatchNSD = new DarkUI.Controls.DarkCheckBox();
-            this.chkPatchNSDSavesNSF = new DarkUI.Controls.DarkCheckBox();
-            this.chkDeleteInvalidEntries = new DarkUI.Controls.DarkCheckBox();
-            this.chkUseAnimLinks = new DarkUI.Controls.DarkCheckBox();
-            this.chkCollisionDisplay = new DarkUI.Controls.DarkCheckBox();
-            this.chkNormalDisplay = new DarkUI.Controls.DarkCheckBox();
-            this.cmdReset = new DarkUI.Controls.DarkButton();
+            this.chkAnimGrid = new MetroFramework.Controls.MetroCheckBox();
+            this.chkOldPatchNSD = new MetroFramework.Controls.MetroCheckBox();
+            this.chkPatchNSDSavesNSF = new MetroFramework.Controls.MetroCheckBox();
+            this.chkDeleteInvalidEntries = new MetroFramework.Controls.MetroCheckBox();
+            this.chkUseAnimLinks = new MetroFramework.Controls.MetroCheckBox();
+            this.chkCollisionDisplay = new MetroFramework.Controls.MetroCheckBox();
+            this.chkNormalDisplay = new MetroFramework.Controls.MetroCheckBox();
+            this.cmdReset = new MetroFramework.Controls.MetroButton();
             this.fraLang.SuspendLayout();
             this.fraSize.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numH)).BeginInit();
@@ -64,23 +64,31 @@
             // 
             this.fraLang.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
             this.fraLang.Controls.Add(this.dpdLang);
+            this.fraLang.Font = new System.Drawing.Font("Arial", 9F);
             this.fraLang.ForeColor = System.Drawing.SystemColors.Window;
             this.fraLang.Location = new System.Drawing.Point(3, 3);
             this.fraLang.Name = "fraLang";
-            this.fraLang.Size = new System.Drawing.Size(187, 45);
+            this.fraLang.Size = new System.Drawing.Size(187, 49);
             this.fraLang.TabIndex = 1;
             this.fraLang.TabStop = false;
             this.fraLang.Text = "Language (requires restart)";
             // 
             // dpdLang
             // 
-            this.dpdLang.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.dpdLang.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(55)))), ((int)(((byte)(60)))));
             this.dpdLang.Font = new System.Drawing.Font("MS UI Gothic", 9F);
+            this.dpdLang.FontSize = MetroFramework.MetroComboBoxSize.Small;
             this.dpdLang.FormattingEnabled = true;
+            this.dpdLang.IntegralHeight = false;
+            this.dpdLang.ItemHeight = 19;
             this.dpdLang.Location = new System.Drawing.Point(6, 18);
             this.dpdLang.Name = "dpdLang";
-            this.dpdLang.Size = new System.Drawing.Size(175, 20);
+            this.dpdLang.Size = new System.Drawing.Size(175, 25);
+            this.dpdLang.Style = MetroFramework.MetroColorStyle.Blue;
             this.dpdLang.TabIndex = 0;
+            this.dpdLang.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.dpdLang.UseCustomBackColor = true;
+            this.dpdLang.UseSelectable = true;
             // 
             // fraSize
             // 
@@ -89,29 +97,28 @@
             this.fraSize.Controls.Add(this.lblW);
             this.fraSize.Controls.Add(this.numH);
             this.fraSize.Controls.Add(this.numW);
+            this.fraSize.Font = new System.Drawing.Font("Arial", 9F);
             this.fraSize.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraSize.Location = new System.Drawing.Point(3, 54);
+            this.fraSize.Location = new System.Drawing.Point(3, 58);
             this.fraSize.Name = "fraSize";
-            this.fraSize.Size = new System.Drawing.Size(131, 68);
+            this.fraSize.Size = new System.Drawing.Size(135, 68);
             this.fraSize.TabIndex = 1;
             this.fraSize.TabStop = false;
             this.fraSize.Text = "Default Window Size";
             // 
             // lblH
             // 
-            this.lblH.AutoSize = true;
-            this.lblH.Location = new System.Drawing.Point(6, 43);
+            this.lblH.Location = new System.Drawing.Point(6, 45);
             this.lblH.Name = "lblH";
-            this.lblH.Size = new System.Drawing.Size(38, 12);
+            this.lblH.Size = new System.Drawing.Size(44, 15);
             this.lblH.TabIndex = 3;
             this.lblH.Text = "Height";
             // 
             // lblW
             // 
-            this.lblW.AutoSize = true;
-            this.lblW.Location = new System.Drawing.Point(6, 19);
+            this.lblW.Location = new System.Drawing.Point(6, 20);
             this.lblW.Name = "lblW";
-            this.lblW.Size = new System.Drawing.Size(33, 12);
+            this.lblW.Size = new System.Drawing.Size(38, 15);
             this.lblW.TabIndex = 2;
             this.lblW.Text = "Width";
             // 
@@ -129,7 +136,7 @@
             0,
             0});
             this.numH.Name = "numH";
-            this.numH.Size = new System.Drawing.Size(75, 19);
+            this.numH.Size = new System.Drawing.Size(75, 21);
             this.numH.TabIndex = 1;
             this.numH.Value = new decimal(new int[] {
             480,
@@ -152,7 +159,7 @@
             0,
             0});
             this.numW.Name = "numW";
-            this.numW.Size = new System.Drawing.Size(75, 19);
+            this.numW.Size = new System.Drawing.Size(75, 21);
             this.numW.TabIndex = 0;
             this.numW.Value = new decimal(new int[] {
             640,
@@ -172,8 +179,9 @@
             this.fraClearCol.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
             this.fraClearCol.Controls.Add(this.picClearCol);
             this.fraClearCol.Controls.Add(this.cmdClearCol);
+            this.fraClearCol.Font = new System.Drawing.Font("Arial", 9F);
             this.fraClearCol.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraClearCol.Location = new System.Drawing.Point(140, 54);
+            this.fraClearCol.Location = new System.Drawing.Point(144, 58);
             this.fraClearCol.Name = "fraClearCol";
             this.fraClearCol.Size = new System.Drawing.Size(128, 68);
             this.fraClearCol.TabIndex = 4;
@@ -208,24 +216,25 @@
             this.fraAnimGrid.Controls.Add(this.numAnimGrid);
             this.fraAnimGrid.Controls.Add(this.lblAnimGrid);
             this.fraAnimGrid.Controls.Add(this.chkAnimGrid);
+            this.fraAnimGrid.Font = new System.Drawing.Font("Arial", 9F);
             this.fraAnimGrid.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraAnimGrid.Location = new System.Drawing.Point(275, 54);
+            this.fraAnimGrid.Location = new System.Drawing.Point(279, 58);
             this.fraAnimGrid.Name = "fraAnimGrid";
-            this.fraAnimGrid.Size = new System.Drawing.Size(184, 68);
+            this.fraAnimGrid.Size = new System.Drawing.Size(156, 68);
             this.fraAnimGrid.TabIndex = 6;
             this.fraAnimGrid.TabStop = false;
             this.fraAnimGrid.Text = "Animation Viewer World Grid";
             // 
             // numAnimGrid
             // 
-            this.numAnimGrid.Location = new System.Drawing.Point(56, 39);
+            this.numAnimGrid.Location = new System.Drawing.Point(62, 39);
             this.numAnimGrid.Maximum = new decimal(new int[] {
             32767,
             0,
             0,
             0});
             this.numAnimGrid.Name = "numAnimGrid";
-            this.numAnimGrid.Size = new System.Drawing.Size(80, 19);
+            this.numAnimGrid.Size = new System.Drawing.Size(88, 21);
             this.numAnimGrid.TabIndex = 2;
             this.numAnimGrid.Value = new decimal(new int[] {
             4,
@@ -239,31 +248,38 @@
             this.lblAnimGrid.AutoSize = true;
             this.lblAnimGrid.Location = new System.Drawing.Point(7, 42);
             this.lblAnimGrid.Name = "lblAnimGrid";
-            this.lblAnimGrid.Size = new System.Drawing.Size(44, 12);
+            this.lblAnimGrid.Size = new System.Drawing.Size(49, 15);
             this.lblAnimGrid.TabIndex = 1;
             this.lblAnimGrid.Text = "Amount";
             // 
             // chkAnimGrid
             // 
             this.chkAnimGrid.AutoSize = true;
-            this.chkAnimGrid.Location = new System.Drawing.Point(6, 18);
+            this.chkAnimGrid.Checked = true;
+            this.chkAnimGrid.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkAnimGrid.Location = new System.Drawing.Point(10, 20);
             this.chkAnimGrid.Name = "chkAnimGrid";
-            this.chkAnimGrid.Size = new System.Drawing.Size(64, 16);
+            this.chkAnimGrid.Size = new System.Drawing.Size(65, 15);
             this.chkAnimGrid.TabIndex = 0;
             this.chkAnimGrid.Text = "Enabled";
+            this.chkAnimGrid.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.chkAnimGrid.UseCustomBackColor = true;
+            this.chkAnimGrid.UseSelectable = true;
             this.chkAnimGrid.CheckedChanged += new System.EventHandler(this.chkAnimGrid_CheckedChanged);
             // 
             // chkOldPatchNSD
             // 
             this.chkOldPatchNSD.AutoSize = true;
-            this.chkOldPatchNSD.Checked = true;
-            this.chkOldPatchNSD.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkOldPatchNSD.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.chkOldPatchNSD.Location = new System.Drawing.Point(4, 192);
+            this.chkOldPatchNSD.ForeColor = System.Drawing.Color.MediumSpringGreen;
+            this.chkOldPatchNSD.Location = new System.Drawing.Point(4, 196);
             this.chkOldPatchNSD.Name = "chkOldPatchNSD";
-            this.chkOldPatchNSD.Size = new System.Drawing.Size(332, 16);
+            this.chkOldPatchNSD.Size = new System.Drawing.Size(335, 15);
             this.chkOldPatchNSD.TabIndex = 9;
             this.chkOldPatchNSD.Text = "(Patch NSD) Use old NSD patching from CrashEdit v0.2.49.0";
+            this.chkOldPatchNSD.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.chkOldPatchNSD.UseCustomBackColor = true;
+            this.chkOldPatchNSD.UseCustomForeColor = true;
+            this.chkOldPatchNSD.UseSelectable = true;
             this.chkOldPatchNSD.CheckedChanged += new System.EventHandler(this.ChkOldPatchNSD_CheckedChanged);
             // 
             // chkPatchNSDSavesNSF
@@ -271,23 +287,28 @@
             this.chkPatchNSDSavesNSF.AutoSize = true;
             this.chkPatchNSDSavesNSF.Checked = true;
             this.chkPatchNSDSavesNSF.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkPatchNSDSavesNSF.Location = new System.Drawing.Point(3, 213);
+            this.chkPatchNSDSavesNSF.ForeColor = System.Drawing.SystemColors.Control;
+            this.chkPatchNSDSavesNSF.Location = new System.Drawing.Point(3, 217);
             this.chkPatchNSDSavesNSF.Name = "chkPatchNSDSavesNSF";
-            this.chkPatchNSDSavesNSF.Size = new System.Drawing.Size(285, 16);
+            this.chkPatchNSDSavesNSF.Size = new System.Drawing.Size(280, 15);
             this.chkPatchNSDSavesNSF.TabIndex = 8;
             this.chkPatchNSDSavesNSF.Text = "(Patch NSD) Always save NSF after NSD patching";
+            this.chkPatchNSDSavesNSF.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.chkPatchNSDSavesNSF.UseCustomBackColor = true;
+            this.chkPatchNSDSavesNSF.UseSelectable = true;
             this.chkPatchNSDSavesNSF.CheckedChanged += new System.EventHandler(this.chkPatchNSDSavesNSF_CheckedChanged);
             // 
             // chkDeleteInvalidEntries
             // 
             this.chkDeleteInvalidEntries.AutoSize = true;
-            this.chkDeleteInvalidEntries.Checked = true;
-            this.chkDeleteInvalidEntries.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkDeleteInvalidEntries.Location = new System.Drawing.Point(4, 171);
+            this.chkDeleteInvalidEntries.Location = new System.Drawing.Point(4, 175);
             this.chkDeleteInvalidEntries.Name = "chkDeleteInvalidEntries";
-            this.chkDeleteInvalidEntries.Size = new System.Drawing.Size(311, 16);
+            this.chkDeleteInvalidEntries.Size = new System.Drawing.Size(309, 15);
             this.chkDeleteInvalidEntries.TabIndex = 5;
             this.chkDeleteInvalidEntries.Text = "(Patch NSD) Delete non-existent entries from load lists";
+            this.chkDeleteInvalidEntries.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.chkDeleteInvalidEntries.UseCustomBackColor = true;
+            this.chkDeleteInvalidEntries.UseSelectable = true;
             this.chkDeleteInvalidEntries.CheckedChanged += new System.EventHandler(this.chkDeleteInvalidEntries_CheckedChanged);
             // 
             // chkUseAnimLinks
@@ -295,45 +316,58 @@
             this.chkUseAnimLinks.AutoSize = true;
             this.chkUseAnimLinks.Checked = true;
             this.chkUseAnimLinks.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkUseAnimLinks.Location = new System.Drawing.Point(3, 234);
+            this.chkUseAnimLinks.Location = new System.Drawing.Point(3, 238);
             this.chkUseAnimLinks.Name = "chkUseAnimLinks";
-            this.chkUseAnimLinks.Size = new System.Drawing.Size(253, 16);
+            this.chkUseAnimLinks.Size = new System.Drawing.Size(255, 15);
             this.chkUseAnimLinks.TabIndex = 3;
             this.chkUseAnimLinks.Text = "(Crash 3) Used saved animation-model links";
+            this.chkUseAnimLinks.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.chkUseAnimLinks.UseCustomBackColor = true;
+            this.chkUseAnimLinks.UseSelectable = true;
             this.chkUseAnimLinks.CheckedChanged += new System.EventHandler(this.chkUseAnimLinks_CheckedChanged);
             // 
             // chkCollisionDisplay
             // 
             this.chkCollisionDisplay.AutoSize = true;
-            this.chkCollisionDisplay.Checked = true;
-            this.chkCollisionDisplay.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkCollisionDisplay.Location = new System.Drawing.Point(4, 150);
+            this.chkCollisionDisplay.Location = new System.Drawing.Point(4, 154);
             this.chkCollisionDisplay.Name = "chkCollisionDisplay";
-            this.chkCollisionDisplay.Size = new System.Drawing.Size(196, 16);
+            this.chkCollisionDisplay.Size = new System.Drawing.Size(198, 15);
             this.chkCollisionDisplay.TabIndex = 2;
             this.chkCollisionDisplay.Text = "Display frame collision by default";
+            this.chkCollisionDisplay.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.chkCollisionDisplay.UseCustomBackColor = true;
+            this.chkCollisionDisplay.UseSelectable = true;
             this.chkCollisionDisplay.CheckedChanged += new System.EventHandler(this.chkCollisionDisplay_CheckedChanged);
             // 
             // chkNormalDisplay
             // 
             this.chkNormalDisplay.AutoSize = true;
-            this.chkNormalDisplay.Checked = true;
-            this.chkNormalDisplay.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkNormalDisplay.Location = new System.Drawing.Point(4, 128);
+            this.chkNormalDisplay.ForeColor = System.Drawing.Color.Gainsboro;
+            this.chkNormalDisplay.Location = new System.Drawing.Point(4, 132);
             this.chkNormalDisplay.Name = "chkNormalDisplay";
-            this.chkNormalDisplay.Size = new System.Drawing.Size(106, 16);
+            this.chkNormalDisplay.Size = new System.Drawing.Size(107, 15);
             this.chkNormalDisplay.TabIndex = 0;
             this.chkNormalDisplay.Text = "Display normals";
+            this.chkNormalDisplay.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.chkNormalDisplay.UseCustomBackColor = true;
+            this.chkNormalDisplay.UseSelectable = true;
             this.chkNormalDisplay.CheckedChanged += new System.EventHandler(this.chkNormalDisplay_CheckedChanged);
             // 
             // cmdReset
             // 
-            this.cmdReset.Location = new System.Drawing.Point(3, 256);
+            this.cmdReset.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.cmdReset.FontSize = MetroFramework.MetroButtonSize.Medium;
+            this.cmdReset.FontWeight = MetroFramework.MetroButtonWeight.Regular;
+            this.cmdReset.ForeColor = System.Drawing.Color.Cyan;
+            this.cmdReset.Location = new System.Drawing.Point(3, 259);
             this.cmdReset.Name = "cmdReset";
-            this.cmdReset.Padding = new System.Windows.Forms.Padding(5);
-            this.cmdReset.Size = new System.Drawing.Size(100, 21);
-            this.cmdReset.TabIndex = 1;
+            this.cmdReset.Size = new System.Drawing.Size(99, 23);
+            this.cmdReset.TabIndex = 10;
             this.cmdReset.Text = "Reset Settings";
+            this.cmdReset.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.cmdReset.UseCustomBackColor = true;
+            this.cmdReset.UseCustomForeColor = true;
+            this.cmdReset.UseSelectable = true;
             this.cmdReset.Click += new System.EventHandler(this.cmdReset_Click);
             // 
             // ConfigEditor
@@ -341,6 +375,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.Controls.Add(this.cmdReset);
             this.Controls.Add(this.chkOldPatchNSD);
             this.Controls.Add(this.chkPatchNSDSavesNSF);
             this.Controls.Add(this.fraAnimGrid);
@@ -349,7 +384,6 @@
             this.Controls.Add(this.chkCollisionDisplay);
             this.Controls.Add(this.chkNormalDisplay);
             this.Controls.Add(this.fraSize);
-            this.Controls.Add(this.cmdReset);
             this.Controls.Add(this.fraLang);
             this.Controls.Add(this.fraClearCol);
             this.ForeColor = System.Drawing.SystemColors.Window;
@@ -357,7 +391,6 @@
             this.Size = new System.Drawing.Size(474, 287);
             this.fraLang.ResumeLayout(false);
             this.fraSize.ResumeLayout(false);
-            this.fraSize.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numH)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numW)).EndInit();
             this.fraClearCol.ResumeLayout(false);
@@ -372,27 +405,27 @@
 
         #endregion
 
-        private DarkUI.Controls.DarkComboBox dpdLang;
+        private MetroFramework.Controls.MetroComboBox dpdLang;
         private System.Windows.Forms.GroupBox fraLang;
-        private DarkUI.Controls.DarkButton cmdReset;
         private System.Windows.Forms.GroupBox fraSize;
         private System.Windows.Forms.Label lblH;
         private System.Windows.Forms.Label lblW;
         private DarkUI.Controls.DarkNumericUpDown numH;
         private DarkUI.Controls.DarkNumericUpDown numW;
-        private DarkUI.Controls.DarkCheckBox chkNormalDisplay;
-        private DarkUI.Controls.DarkCheckBox chkCollisionDisplay;
-        private DarkUI.Controls.DarkCheckBox chkUseAnimLinks;
+        private MetroFramework.Controls.MetroCheckBox chkNormalDisplay;
+        private MetroFramework.Controls.MetroCheckBox chkCollisionDisplay;
+        private MetroFramework.Controls.MetroCheckBox chkUseAnimLinks;
         private System.Windows.Forms.ColorDialog cdlClearCol;
         private System.Windows.Forms.GroupBox fraClearCol;
         private System.Windows.Forms.PictureBox picClearCol;
-        private DarkUI.Controls.DarkCheckBox chkDeleteInvalidEntries;
+        private MetroFramework.Controls.MetroCheckBox chkDeleteInvalidEntries;
         private System.Windows.Forms.GroupBox fraAnimGrid;
         private DarkUI.Controls.DarkNumericUpDown numAnimGrid;
         private System.Windows.Forms.Label lblAnimGrid;
-        private DarkUI.Controls.DarkCheckBox chkAnimGrid;
+        private MetroFramework.Controls.MetroCheckBox chkAnimGrid;
         private DarkUI.Controls.DarkButton cmdClearCol;
-        private DarkUI.Controls.DarkCheckBox chkPatchNSDSavesNSF;
-        private DarkUI.Controls.DarkCheckBox chkOldPatchNSD;
+        private MetroFramework.Controls.MetroCheckBox chkPatchNSDSavesNSF;
+        private MetroFramework.Controls.MetroCheckBox chkOldPatchNSD;
+        private MetroFramework.Controls.MetroButton cmdReset;
     }
 }

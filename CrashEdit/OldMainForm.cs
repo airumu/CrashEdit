@@ -14,6 +14,7 @@ using CrashEdit.Properties;
 using DarkUI.Controls;
 using DarkUI.Forms;
 using System.Drawing;
+using MetroFramework.Controls;
 
 namespace CrashEdit
 {
@@ -63,7 +64,7 @@ namespace CrashEdit
         private ToolStripMenuItem tbxConvertVAB;
         private ToolStripDropDownButton tbbExtra;
         private ToolStripButton tbbPlay;
-        private VisualStudioTabControl.VisualStudioTabControl tbcTabs;
+        private MetroTabControl tbcTabs;
         private GameVersionForm dlgGameVersion;
         private ToolStripButton tbbPAL;
 
@@ -86,8 +87,7 @@ namespace CrashEdit
             tbbOpen.Click += new EventHandler(tbbOpen_Click);
             tbbOpen.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             tbbOpen.ForeColor = SystemColors.Control;
-            tbbOpen.Size = new System.Drawing.Size(48, 40);
-
+            tbbOpen.Size = new Size(48, 40);
 
             tbbSave = new ToolStripButton
             {
@@ -99,7 +99,7 @@ namespace CrashEdit
             tbbSave.Click += new EventHandler(tbbSave_Click);
             tbbSave.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             tbbSave.ForeColor = SystemColors.Control;
-            tbbSave.Size = new System.Drawing.Size(48, 40);
+            tbbSave.Size = new Size(48, 40);
 
             tbbPatchNSD = new ToolStripButton
             {
@@ -111,7 +111,7 @@ namespace CrashEdit
             tbbPatchNSD.Click += new EventHandler(tbbPatchNSD_Click);
             tbbPatchNSD.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             tbbPatchNSD.ForeColor = SystemColors.Control;
-            tbbPatchNSD.Size = new System.Drawing.Size(64, 40);
+            tbbPatchNSD.Size = new Size(64, 40);
 
             tbbClose = new ToolStripButton
             {
@@ -123,7 +123,7 @@ namespace CrashEdit
             tbbClose.Click += new EventHandler(tbbClose_Click);
             tbbClose.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             tbbClose.ForeColor = SystemColors.Control;
-            tbbClose.Size = new System.Drawing.Size(48, 40);
+            tbbClose.Size = new Size(48, 40);
 
             tbbFind = new ToolStripButton
             {
@@ -135,7 +135,7 @@ namespace CrashEdit
             tbbFind.Click += new EventHandler(tbbFind_Click);
             tbbFind.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             tbbFind.ForeColor = SystemColors.Control;
-            tbbFind.Size = new System.Drawing.Size(48, 40);
+            tbbFind.Size = new Size(48, 40);
 
             tbbFindNext = new ToolStripButton
             {
@@ -147,7 +147,7 @@ namespace CrashEdit
             tbbFindNext.Click += new EventHandler(tbbFindNext_Click);
             tbbFindNext.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             tbbFindNext.ForeColor = SystemColors.Control;
-            tbbFindNext.Size = new System.Drawing.Size(64, 40);
+            tbbFindNext.Size = new Size(64, 40);
 
             tbxMakeBIN = new ToolStripMenuItem();
             tbxMakeBIN.Text = Properties.Resources.OldMainForm_tbxMakeBIN;
@@ -194,7 +194,7 @@ namespace CrashEdit
             tbbExtra.DropDown.Items.Add("-");
             tbbExtra.DropDown.Items.Add(tbxConvertVHVB);
             tbbExtra.DropDown.Items.Add(tbxConvertVAB);
-            tbbExtra.Size = new System.Drawing.Size(48, 40);
+            tbbExtra.Size = new Size(56, 40);
 
             tbbPAL = new ToolStripButton
             {
@@ -204,7 +204,7 @@ namespace CrashEdit
                 CheckOnClick = true
             };
             tbbPAL.Click += new EventHandler(tbbPAL_Click);
-            tbbPAL.Size = new System.Drawing.Size(40, 40);
+            tbbPAL.Size = new Size(40, 40);
 
             tbbPlay = new ToolStripButton
             {
@@ -213,7 +213,7 @@ namespace CrashEdit
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
             tbbPlay.Click += new EventHandler(tbbPlay_Click);
-            tbbPlay.Size = new System.Drawing.Size(40, 40);
+            tbbPlay.Size = new Size(40, 40);
 
             tsToolbar = new DarkToolStrip
             {
@@ -234,14 +234,18 @@ namespace CrashEdit
             tsToolbar.Items.Add(tbbPAL);
             tsToolbar.Items.Add(new ToolStripSeparator());
             tsToolbar.Items.Add(tbbPlay);
+            tsToolbar.Font = new Font("Arial", 9F);
 
-            tbcTabs = new VisualStudioTabControl.VisualStudioTabControl
+            tbcTabs = new MetroTabControl
             {
                 Dock = DockStyle.Fill
             };
             tbcTabs.SelectedIndexChanged += tbcTabs_SelectedIndexChanged;
-            tbcTabs.Padding = new System.Drawing.Point(0, 3);
-            tbcTabs.Font = new System.Drawing.Font("MS UI Gothic", 9F);
+            tbcTabs.FontSize = MetroFramework.MetroTabControlSize.Small;
+            tbcTabs.FontWeight = MetroFramework.MetroTabControlWeight.Regular;
+            tbcTabs.Style = MetroFramework.MetroColorStyle.Blue;
+            tbcTabs.Theme = MetroFramework.MetroThemeStyle.Dark;
+            tbcTabs.Font = new Font("Arial", 9F);
 
             TabPage configtab = new TabPage("CrashEdit")
             {
@@ -295,6 +299,7 @@ namespace CrashEdit
             };
 
             msMenu.Visible = false;
+            msMenu.Font = new Font("Arial", 9F);
             msMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             mnuOpen,
             mnuSave,
@@ -1388,6 +1393,7 @@ namespace CrashEdit
             // OldMainForm
             // 
             this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Font = new System.Drawing.Font("Arial", 9F);
             this.Name = "OldMainForm";
             this.ResumeLayout(false);
 

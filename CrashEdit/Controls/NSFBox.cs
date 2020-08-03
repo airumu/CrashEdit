@@ -62,6 +62,7 @@ namespace CrashEdit
                 HideSelection = false,
                 SelectedNode = NSFController.Node,
                 AllowDrop = true,
+                Font = new Font("Arial", 9F),
                 BackColor = Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(38)))), ((int)(((byte)(38))))),
                 ForeColor = Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))))
             };

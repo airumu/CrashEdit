@@ -321,6 +321,15 @@
     <Reference Include="DarkUI">
       <HintPath>D:\DarkUI-master\Example\bin\Debug\DarkUI.dll</HintPath>
     </Reference>
+    <Reference Include="MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="MetroFramework.Design, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="MetroFramework.Fonts, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.Fonts.dll</HintPath>
+    </Reference>
     <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\OpenTK.dll</HintPath>
@@ -338,10 +347,6 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="VisualStudioTabControl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Downloads\VisualStudioTabControl\VisualStudioTabControl\Tester\bin\Debug\VisualStudioTabControl.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ConfigEditor.resx">
@@ -349,6 +354,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Crash3AnimationSelector.resx">
       <DependentUpon>Crash3AnimationSelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\NSFBox.resx">
+      <DependentUpon>NSFBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\OldFrameBox.resx">
       <DependentUpon>OldFrameBox.cs</DependentUpon>
@@ -399,6 +407,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="OldMainForm.resx">
+      <DependentUpon>OldMainForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="OldResources.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -433,6 +444,7 @@
     <Content Include="Resources\Images\Thing.gif" />
     <Content Include="Resources\Images\WhiteJournal.gif" />
     <Content Include="Resources\Images\YellowJournal.gif" />
+    <None Include="packages.config" />
     <None Include="Resources\Textures\IronContinueBoxTexture.png" />
     <Content Include="Resources\objects_006.gif" />
     <Content Include="Resources\objects_006_red.gif" />

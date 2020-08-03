@@ -3,12 +3,13 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
+using MetroFramework.Controls;
 
 namespace CrashEdit
 {
     public sealed class TextureChunkBox : UserControl
     {
-        private TabControl tbcTabs;
+        private MetroTabControl tbcTabs;
 
         private TextureViewer frmViewer = null;
 
@@ -17,9 +18,12 @@ namespace CrashEdit
         public TextureChunkBox(TextureChunk chunk)
         {
             texturechunk = chunk;
-            tbcTabs = new VisualStudioTabControl.VisualStudioTabControl();
+            tbcTabs = new MetroTabControl();
+            tbcTabs.FontSize = MetroFramework.MetroTabControlSize.Medium;
+            tbcTabs.FontWeight = MetroFramework.MetroTabControlWeight.Regular;
+            tbcTabs.Style = MetroFramework.MetroColorStyle.Teal;
+            tbcTabs.Theme = MetroFramework.MetroThemeStyle.Dark;
             tbcTabs.Dock = DockStyle.Fill;
-            tbcTabs.Padding = new System.Drawing.Point(0, 3);
             {
                 MysteryBox mystery = new MysteryBox(chunk.Data);
                 mystery.Dock = DockStyle.Fill;

@@ -42,7 +42,6 @@ namespace CrashEdit
             chkPatchNSDSavesNSF.Checked = Settings.Default.PatchNSDSavesNSF;
             chkOldPatchNSD.Text = Resources.Config_chkOldPatchNSD;
             chkOldPatchNSD.Checked = Settings.Default.OldPatchNSD;
-            cmdReset.Text = Resources.Config_cmdReset;
         }
 
         private void dpdLang_SelectedIndexChanged(object sender, EventArgs e)

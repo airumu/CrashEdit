@@ -63,8 +63,9 @@ namespace CrashEdit
         {
             Label label = new Label
             {
-                BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30))))),
-                ForeColor = System.Drawing.SystemColors.Control,
+                BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30))))),
+                ForeColor = SystemColors.Control,
+                Font = new Font("Arial", 9F),
                 TextAlign = ContentAlignment.MiddleCenter,
                 Text = "No options available"
             };

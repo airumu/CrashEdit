@@ -87,6 +87,7 @@ namespace CrashEdit
             pnOptions.Controls.Add(lblSampleRate,0,1);
             pnOptions.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             pnOptions.ForeColor = SystemColors.Control;
+            pnOptions.Font = new Font("Arial", 9F);
 
             Controls.Add(pnOptions);
             Controls.Add(tsToolbar);

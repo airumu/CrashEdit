@@ -1,4 +1,5 @@
 using Crash;
+using DarkUI.Forms;
 using System;
 using System.Windows.Forms;
 
@@ -43,11 +44,11 @@ namespace CrashEdit
             int correct_checksum = Chunk.CalculateChecksum(TextureChunk.Data);
             if (current_checksum == correct_checksum)
             {
-                MessageBox.Show("Checksum was already correct.");
+                DarkMessageBox.ShowInformation("Checksum was already correct.", "Recalculate Checksum");
                 return;
             }
             BitConv.ToInt32(TextureChunk.Data, 12, correct_checksum);
-            MessageBox.Show("Checksum was incorrect and has been corrected.");
+            DarkMessageBox.ShowInformation("Checksum was incorrect and has been corrected.", "Recalculate Checksum");
         }
 
         private void Menu_Rename_Entry()
