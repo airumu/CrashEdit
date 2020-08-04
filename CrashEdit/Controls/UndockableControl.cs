@@ -1,3 +1,4 @@
+using DarkUI.Forms;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -36,7 +37,7 @@ namespace CrashEdit
                 case Keys.D:
                     if (form == null)
                     {
-                        form = new Form
+                        form = new DarkForm
                         {
                             Text = "Undocked Control",
                             Width = Width,

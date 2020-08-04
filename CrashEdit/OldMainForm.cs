@@ -85,8 +85,6 @@ namespace CrashEdit
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
             tbbOpen.Click += new EventHandler(tbbOpen_Click);
-            tbbOpen.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            tbbOpen.ForeColor = SystemColors.Control;
             tbbOpen.Size = new Size(48, 40);
 
             tbbSave = new ToolStripButton
@@ -97,8 +95,6 @@ namespace CrashEdit
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
             tbbSave.Click += new EventHandler(tbbSave_Click);
-            tbbSave.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            tbbSave.ForeColor = SystemColors.Control;
             tbbSave.Size = new Size(48, 40);
 
             tbbPatchNSD = new ToolStripButton
@@ -109,20 +105,16 @@ namespace CrashEdit
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
             tbbPatchNSD.Click += new EventHandler(tbbPatchNSD_Click);
-            tbbPatchNSD.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            tbbPatchNSD.ForeColor = SystemColors.Control;
             tbbPatchNSD.Size = new Size(64, 40);
 
             tbbClose = new ToolStripButton
             {
                 Text = Resources.Toolbar_Close,
-                ToolTipText = "Close (Ctrl+C)",
+                ToolTipText = "Close (Ctrl+Shift+C)",
                 ImageKey = "tb_close",
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
             tbbClose.Click += new EventHandler(tbbClose_Click);
-            tbbClose.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            tbbClose.ForeColor = SystemColors.Control;
             tbbClose.Size = new Size(48, 40);
 
             tbbFind = new ToolStripButton
@@ -133,8 +125,6 @@ namespace CrashEdit
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
             tbbFind.Click += new EventHandler(tbbFind_Click);
-            tbbFind.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            tbbFind.ForeColor = SystemColors.Control;
             tbbFind.Size = new Size(48, 40);
 
             tbbFindNext = new ToolStripButton
@@ -145,48 +135,48 @@ namespace CrashEdit
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
             tbbFindNext.Click += new EventHandler(tbbFindNext_Click);
-            tbbFindNext.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            tbbFindNext.ForeColor = SystemColors.Control;
             tbbFindNext.Size = new Size(64, 40);
+            tbbFindNext.BackColor = Color.FromArgb(30, 30, 30);
+            tbbFindNext.ForeColor = SystemColors.Control;
 
             tbxMakeBIN = new ToolStripMenuItem();
-            tbxMakeBIN.Text = Properties.Resources.OldMainForm_tbxMakeBIN;
+            tbxMakeBIN.Text = Resources.OldMainForm_tbxMakeBIN;
             tbxMakeBIN.Click += new EventHandler(tbxMakeBIN_Click);
-            tbxMakeBIN.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            tbxMakeBIN.BackColor = Color.FromArgb(30, 30, 30);
             tbxMakeBIN.ForeColor = SystemColors.Control;
 
             tbxMakeBINUSA = new ToolStripMenuItem();
-            tbxMakeBINUSA.Text = Properties.Resources.OldMainForm_tbxMakeBINUSA;
+            tbxMakeBINUSA.Text = Resources.OldMainForm_tbxMakeBINUSA;
             tbxMakeBINUSA.Click += new EventHandler(tbxMakeBIN_Click);
-            tbxMakeBINUSA.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            tbxMakeBINUSA.BackColor = Color.FromArgb(30, 30, 30);
             tbxMakeBINUSA.ForeColor = SystemColors.Control;
 
             tbxMakeBINEUR = new ToolStripMenuItem();
-            tbxMakeBINEUR.Text = Properties.Resources.OldMainForm_tbxMakeBINEUR;
+            tbxMakeBINEUR.Text = Resources.OldMainForm_tbxMakeBINEUR;
             tbxMakeBINEUR.Click += new EventHandler(tbxMakeBIN_Click);
-            tbxMakeBINEUR.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            tbxMakeBINEUR.BackColor = Color.FromArgb(30, 30, 30);
             tbxMakeBINEUR.ForeColor = SystemColors.Control;
 
             tbxMakeBINJAP = new ToolStripMenuItem();
-            tbxMakeBINJAP.Text = Properties.Resources.OldMainForm_tbxMakeBINJAP;
+            tbxMakeBINJAP.Text = Resources.OldMainForm_tbxMakeBINJAP;
             tbxMakeBINJAP.Click += new EventHandler(tbxMakeBIN_Click);
-            tbxMakeBINJAP.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            tbxMakeBINJAP.BackColor = Color.FromArgb(30, 30, 30);
             tbxMakeBINJAP.ForeColor = SystemColors.Control;
 
             tbxConvertVHVB = new ToolStripMenuItem();
-            tbxConvertVHVB.Text = Properties.Resources.OldMainForm_tbxConvertVHVB;
+            tbxConvertVHVB.Text = Resources.OldMainForm_tbxConvertVHVB;
             tbxConvertVHVB.Click += new EventHandler(tbxConvertVHVB_Click);
-            tbxConvertVHVB.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            tbxConvertVHVB.BackColor = Color.FromArgb(30, 30, 30);
             tbxConvertVHVB.ForeColor = SystemColors.Control;
 
             tbxConvertVAB = new ToolStripMenuItem();
-            tbxConvertVAB.Text = Properties.Resources.OldMainForm_tbxConvertVAB;
+            tbxConvertVAB.Text = Resources.OldMainForm_tbxConvertVAB;
             tbxConvertVAB.Click += new EventHandler(tbxConvertVAB_Click);
-            tbxConvertVAB.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            tbxConvertVAB.BackColor = Color.FromArgb(30, 30, 30);
             tbxConvertVAB.ForeColor = SystemColors.Control;
 
             tbbExtra = new ToolStripDropDownButton();
-            tbbExtra.Text = Properties.Resources.OldMainForm_tbbExtra;
+            tbbExtra.Text = Resources.OldMainForm_tbbExtra;
             tbbExtra.DropDown.Items.Add(tbxMakeBIN);
             tbbExtra.DropDown.Items.Add(tbxMakeBINUSA);
             tbbExtra.DropDown.Items.Add(tbxMakeBINEUR);
@@ -209,7 +199,7 @@ namespace CrashEdit
             tbbPlay = new ToolStripButton
             {
                 Text = "Play",
-                ToolTipText = "Play (Ctrl+P)",
+                ToolTipText = "Play (F1)",
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
             tbbPlay.Click += new EventHandler(tbbPlay_Click);
@@ -319,7 +309,7 @@ namespace CrashEdit
             mnuPatchNSD.ShortcutKeys = Keys.Control | Keys.S;
 
             mnuClose.Click += new EventHandler(tbbClose_Click);
-            mnuClose.ShortcutKeys = Keys.Control | Keys.C;
+            mnuClose.ShortcutKeys = Keys.Control | Keys.Shift | Keys.C;
 
             mnuFind.Click += new EventHandler(tbbFind_Click);
             mnuFind.ShortcutKeys = Keys.Control | Keys.F;
@@ -328,7 +318,7 @@ namespace CrashEdit
             mnuFindNext.ShortcutKeys = Keys.F3;
 
             mnuPlay.Click += new EventHandler(tbbPlay_Click);
-            mnuPlay.ShortcutKeys = Keys.Control | Keys.P;
+            mnuPlay.ShortcutKeys = Keys.F1;
 
             Icon = OldResources.CBHacksIcon;
             Width = Settings.Default.DefaultFormW;
