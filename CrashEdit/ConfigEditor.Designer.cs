@@ -50,6 +50,7 @@
             this.chkCollisionDisplay = new MetroFramework.Controls.MetroCheckBox();
             this.chkNormalDisplay = new MetroFramework.Controls.MetroCheckBox();
             this.cmdReset = new MetroFramework.Controls.MetroButton();
+            this.chkDetailedCollision = new MetroFramework.Controls.MetroCheckBox();
             this.fraLang.SuspendLayout();
             this.fraSize.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numH)).BeginInit();
@@ -271,7 +272,7 @@
             // 
             this.chkOldPatchNSD.AutoSize = true;
             this.chkOldPatchNSD.ForeColor = System.Drawing.Color.MediumSpringGreen;
-            this.chkOldPatchNSD.Location = new System.Drawing.Point(4, 196);
+            this.chkOldPatchNSD.Location = new System.Drawing.Point(4, 217);
             this.chkOldPatchNSD.Name = "chkOldPatchNSD";
             this.chkOldPatchNSD.Size = new System.Drawing.Size(335, 15);
             this.chkOldPatchNSD.TabIndex = 9;
@@ -288,7 +289,7 @@
             this.chkPatchNSDSavesNSF.Checked = true;
             this.chkPatchNSDSavesNSF.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkPatchNSDSavesNSF.ForeColor = System.Drawing.SystemColors.Control;
-            this.chkPatchNSDSavesNSF.Location = new System.Drawing.Point(3, 217);
+            this.chkPatchNSDSavesNSF.Location = new System.Drawing.Point(4, 238);
             this.chkPatchNSDSavesNSF.Name = "chkPatchNSDSavesNSF";
             this.chkPatchNSDSavesNSF.Size = new System.Drawing.Size(280, 15);
             this.chkPatchNSDSavesNSF.TabIndex = 8;
@@ -301,7 +302,7 @@
             // chkDeleteInvalidEntries
             // 
             this.chkDeleteInvalidEntries.AutoSize = true;
-            this.chkDeleteInvalidEntries.Location = new System.Drawing.Point(4, 175);
+            this.chkDeleteInvalidEntries.Location = new System.Drawing.Point(4, 196);
             this.chkDeleteInvalidEntries.Name = "chkDeleteInvalidEntries";
             this.chkDeleteInvalidEntries.Size = new System.Drawing.Size(309, 15);
             this.chkDeleteInvalidEntries.TabIndex = 5;
@@ -316,7 +317,7 @@
             this.chkUseAnimLinks.AutoSize = true;
             this.chkUseAnimLinks.Checked = true;
             this.chkUseAnimLinks.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkUseAnimLinks.Location = new System.Drawing.Point(3, 238);
+            this.chkUseAnimLinks.Location = new System.Drawing.Point(4, 259);
             this.chkUseAnimLinks.Name = "chkUseAnimLinks";
             this.chkUseAnimLinks.Size = new System.Drawing.Size(255, 15);
             this.chkUseAnimLinks.TabIndex = 3;
@@ -359,7 +360,7 @@
             this.cmdReset.FontSize = MetroFramework.MetroButtonSize.Medium;
             this.cmdReset.FontWeight = MetroFramework.MetroButtonWeight.Regular;
             this.cmdReset.ForeColor = System.Drawing.Color.Cyan;
-            this.cmdReset.Location = new System.Drawing.Point(3, 259);
+            this.cmdReset.Location = new System.Drawing.Point(12, 280);
             this.cmdReset.Name = "cmdReset";
             this.cmdReset.Size = new System.Drawing.Size(99, 23);
             this.cmdReset.TabIndex = 10;
@@ -370,11 +371,27 @@
             this.cmdReset.UseSelectable = true;
             this.cmdReset.Click += new System.EventHandler(this.cmdReset_Click);
             // 
+            // chkDetailedCollision
+            // 
+            this.chkDetailedCollision.AutoSize = true;
+            this.chkDetailedCollision.Checked = true;
+            this.chkDetailedCollision.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkDetailedCollision.Location = new System.Drawing.Point(4, 175);
+            this.chkDetailedCollision.Name = "chkDetailedCollision";
+            this.chkDetailedCollision.Size = new System.Drawing.Size(179, 15);
+            this.chkDetailedCollision.TabIndex = 11;
+            this.chkDetailedCollision.Text = "Display detailed collision type";
+            this.chkDetailedCollision.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.chkDetailedCollision.UseCustomBackColor = true;
+            this.chkDetailedCollision.UseSelectable = true;
+            this.chkDetailedCollision.CheckedChanged += new System.EventHandler(this.ChkDetailedCollision_CheckedChanged);
+            // 
             // ConfigEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.Controls.Add(this.chkDetailedCollision);
             this.Controls.Add(this.cmdReset);
             this.Controls.Add(this.chkOldPatchNSD);
             this.Controls.Add(this.chkPatchNSDSavesNSF);
@@ -388,7 +405,7 @@
             this.Controls.Add(this.fraClearCol);
             this.ForeColor = System.Drawing.SystemColors.Window;
             this.Name = "ConfigEditor";
-            this.Size = new System.Drawing.Size(474, 287);
+            this.Size = new System.Drawing.Size(747, 560);
             this.fraLang.ResumeLayout(false);
             this.fraSize.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numH)).EndInit();
@@ -427,5 +444,6 @@
         private MetroFramework.Controls.MetroCheckBox chkPatchNSDSavesNSF;
         private MetroFramework.Controls.MetroCheckBox chkOldPatchNSD;
         private MetroFramework.Controls.MetroButton cmdReset;
+        private MetroFramework.Controls.MetroCheckBox chkDetailedCollision;
     }
 }

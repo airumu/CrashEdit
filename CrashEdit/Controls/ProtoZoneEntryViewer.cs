@@ -177,7 +177,14 @@ namespace CrashEdit
                 foreach (KeyValuePair<short,Color> color in octreevalues)
                 {
                     ListViewItem lsi = new ListViewItem();
-                    lsi.Text = string.Format("{2:X2}:{1:X2}:{0:X1}",color.Key >> 1 & 0x7,color.Key >> 4 & 0x3F,color.Key >> 10 & 0x3F);
+                    if (Properties.Settings.Default.DetailedCollision)
+                    {
+                        lsi.Text = string.Format("{2:X2}:{1:X2}:{0:X1}", color.Key >> 1 & 0x7, color.Key >> 4 & 0x3F, color.Key >> 10 & 0x3F);
+                    }
+                    else
+                    {
+                        lsi.Text = color.Key.ToString("X4");
+                    }
                     lsi.BackColor = color.Value;
                     lsi.ForeColor = color.Value.GetBrightness() >= 0.5 ? Color.Black : Color.White;
                     lsi.Tag = color.Key;

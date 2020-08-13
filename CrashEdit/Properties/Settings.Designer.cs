@@ -178,5 +178,17 @@ namespace CrashEdit.Properties {
                 this["PAL"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool DetailedCollision {
+            get {
+                return ((bool)(this["DetailedCollision"]));
+            }
+            set {
+                this["DetailedCollision"] = value;
+            }
+        }
     }
 }
