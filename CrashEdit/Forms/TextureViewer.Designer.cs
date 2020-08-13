@@ -384,7 +384,7 @@
             this.C1dpdBlend.Name = "C1dpdBlend";
             this.C1dpdBlend.Size = new System.Drawing.Size(118, 25);
             this.C1dpdBlend.TabIndex = 0;
-            this.C1dpdBlend.SelectedIndex = 0;
+            this.C1dpdBlend.SelectedIndex = 3;
             // 
             // groupBox1
             // 
@@ -663,7 +663,7 @@
             this.C2dpdBlend.Name = "C2dpdBlend";
             this.C2dpdBlend.Size = new System.Drawing.Size(118, 25);
             this.C2dpdBlend.TabIndex = 0;
-            this.C2dpdBlend.SelectedIndex = 0;
+            this.C2dpdBlend.SelectedIndex = 3;
             // 
             // groupBox10
             // 
