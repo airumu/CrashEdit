@@ -2942,7 +2942,6 @@ namespace CrashEdit
             this.tsbGeneral.Name = "tsbGeneral";
             this.tsbGeneral.Size = new System.Drawing.Size(51, 19);
             this.tsbGeneral.Text = "General";
-            this.tsbGeneral.Click += new System.EventHandler(this.tsbGeneral_Click);
             // 
             // toolStripSeparator1
             // 
@@ -2963,7 +2962,6 @@ namespace CrashEdit
             this.tsbSpecial.Name = "tsbSpecial";
             this.tsbSpecial.Size = new System.Drawing.Size(24, 24);
             this.tsbSpecial.Text = "Special";
-            this.tsbSpecial.Click += new System.EventHandler(this.tsbSpecial_Click);
             // 
             // toolStripSeparator2
             // 
@@ -2984,7 +2982,6 @@ namespace CrashEdit
             this.tsbCamera.Name = "tsbCamera";
             this.tsbCamera.Size = new System.Drawing.Size(24, 24);
             this.tsbCamera.Text = "Camera";
-            this.tsbCamera.Click += new System.EventHandler(this.tsbCamera_Click);
             // 
             // toolStripSeparator3
             // 
@@ -3005,7 +3002,6 @@ namespace CrashEdit
             this.tsbLoadLists.Name = "tsbLoadLists";
             this.tsbLoadLists.Size = new System.Drawing.Size(24, 24);
             this.tsbLoadLists.Text = "Load Lists";
-            this.tsbLoadLists.Click += new System.EventHandler(this.tsbLoadLists_Click);
             // 
             // toolStripSeparator4
             // 
@@ -3026,7 +3022,6 @@ namespace CrashEdit
             this.tsbDrawLists.Name = "tsbDrawLists";
             this.tsbDrawLists.Size = new System.Drawing.Size(24, 24);
             this.tsbDrawLists.Text = "Draw Lists";
-            this.tsbDrawLists.Click += new System.EventHandler(this.tsbDrawLists_Click);
             // 
             // EntityBox
             // 

@@ -719,7 +719,7 @@ namespace Crash.UI.Properties {
         }
         
         /// <summary>
-        ///   Process Entry に類似しているローカライズされた文字列を検索します。
+        ///   Process Entry &quot;{0}&quot; に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string UnprocessedEntryController_AcProcess {
             get {

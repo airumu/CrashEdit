@@ -290,267 +290,6 @@ namespace CrashEdit.Properties {
         }
         
         /// <summary>
-        ///   Clear All に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string Entirybox_cmdClearAllVictims {
-            get {
-                return ResourceManager.GetString("Entirybox_cmdClearAllVictims", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Verify List Integrity に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string Entirybox_cmdLoadListVerify {
-            get {
-                return ResourceManager.GetString("Entirybox_cmdLoadListVerify", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Check Payload に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string Entirybox_cmdPayload {
-            get {
-                return ResourceManager.GetString("Entirybox_cmdPayload", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Camera Index に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string Entirybox_fraCameraIndex {
-            get {
-                return ResourceManager.GetString("Entirybox_fraCameraIndex", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Camera SubIndex に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string Entirybox_fraCameraSubIndex {
-            get {
-                return ResourceManager.GetString("Entirybox_fraCameraSubIndex", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Draw List A に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string Entirybox_fraDrawListA {
-            get {
-                return ResourceManager.GetString("Entirybox_fraDrawListA", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Draw List B に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string Entirybox_fraDrawListB {
-            get {
-                return ResourceManager.GetString("Entirybox_fraDrawListB", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Entries に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string Entirybox_fraEIDA {
-            get {
-                return ResourceManager.GetString("Entirybox_fraEIDA", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Entries に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string Entirybox_fraEIDB {
-            get {
-                return ResourceManager.GetString("Entirybox_fraEIDB", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Entities に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string Entirybox_fraEntityA {
-            get {
-                return ResourceManager.GetString("Entirybox_fraEntityA", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Entities に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string Entirybox_fraEntityB {
-            get {
-                return ResourceManager.GetString("Entirybox_fraEntityB", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Field-of-View Timeline に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string Entirybox_fraFOV {
-            get {
-                return ResourceManager.GetString("Entirybox_fraFOV", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Field-of-View に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string Entirybox_fraFOVFrame {
-            get {
-                return ResourceManager.GetString("Entirybox_fraFOVFrame", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Load List A に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string Entirybox_fraLoadListA {
-            get {
-                return ResourceManager.GetString("Entirybox_fraLoadListA", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Load List B に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string Entirybox_fraLoadListB {
-            get {
-                return ResourceManager.GetString("Entirybox_fraLoadListB", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Verify Load Lists に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string Entirybox_fraLoadListPayload {
-            get {
-                return ResourceManager.GetString("Entirybox_fraLoadListPayload", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Neighbors に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string Entirybox_fraNeighbor {
-            get {
-                return ResourceManager.GetString("Entirybox_fraNeighbor", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Neighbor に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string Entirybox_fraNeighborSetting {
-            get {
-                return ResourceManager.GetString("Entirybox_fraNeighborSetting", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Position に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string Entirybox_lblFOVPosition {
-            get {
-                return ResourceManager.GetString("Entirybox_lblFOVPosition", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Position に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string Entirybox_lblMetavalueDrawA {
-            get {
-                return ResourceManager.GetString("Entirybox_lblMetavalueDrawA", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Position に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string Entirybox_lblMetavalueDrawB {
-            get {
-                return ResourceManager.GetString("Entirybox_lblMetavalueDrawB", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Position に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string Entirybox_lblMetavalueLoadA {
-            get {
-                return ResourceManager.GetString("Entirybox_lblMetavalueLoadA", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Position に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string Entirybox_lblMetavalueLoadB {
-            get {
-                return ResourceManager.GetString("Entirybox_lblMetavalueLoadB", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Cam. Index に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string Entirybox_lblNeighborCamera {
-            get {
-                return ResourceManager.GetString("Entirybox_lblNeighborCamera", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Flag に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string Entirybox_lblNeighborFlag {
-            get {
-                return ResourceManager.GetString("Entirybox_lblNeighborFlag", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Link Type に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string Entirybox_lblNeighborLink {
-            get {
-                return ResourceManager.GetString("Entirybox_lblNeighborLink", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Position に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string Entirybox_lblNeighborPosition {
-            get {
-                return ResourceManager.GetString("Entirybox_lblNeighborPosition", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Zone Index に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string Entirybox_lblNeighborZone {
-            get {
-                return ResourceManager.GetString("Entirybox_lblNeighborZone", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Position に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string Entirybox_lblPayloadPosition {
-            get {
-                return ResourceManager.GetString("Entirybox_lblPayloadPosition", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Enabled (Bonus) に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string EntityBox_ChkBonusBoxCount {
@@ -596,6 +335,15 @@ namespace CrashEdit.Properties {
         }
         
         /// <summary>
+        ///   Clear All に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_cmdClearAllVictims {
+            get {
+                return ResourceManager.GetString("EntityBox_cmdClearAllVictims", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Insert に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string EntityBox_CmdInsert {
@@ -614,11 +362,29 @@ namespace CrashEdit.Properties {
         }
         
         /// <summary>
+        ///   Verify List Integrity に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_cmdLoadListVerify {
+            get {
+                return ResourceManager.GetString("EntityBox_cmdLoadListVerify", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Next に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string EntityBox_CmdNext {
             get {
                 return ResourceManager.GetString("EntityBox_CmdNext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Check Payload に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_cmdPayload {
+            get {
+                return ResourceManager.GetString("EntityBox_cmdPayload", resourceCulture);
             }
         }
         
@@ -659,6 +425,24 @@ namespace CrashEdit.Properties {
         }
         
         /// <summary>
+        ///   Camera Index に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_fraCameraIndex {
+            get {
+                return ResourceManager.GetString("EntityBox_fraCameraIndex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Camera SubIndex に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_fraCameraSubIndex {
+            get {
+                return ResourceManager.GetString("EntityBox_fraCameraSubIndex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   DDA Section に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string EntityBox_FraDDASection {
@@ -677,11 +461,110 @@ namespace CrashEdit.Properties {
         }
         
         /// <summary>
+        ///   Draw List A に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_fraDrawListA {
+            get {
+                return ResourceManager.GetString("EntityBox_fraDrawListA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Draw List B に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_fraDrawListB {
+            get {
+                return ResourceManager.GetString("EntityBox_fraDrawListB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Entries に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_fraEIDA {
+            get {
+                return ResourceManager.GetString("EntityBox_fraEIDA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Entries に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_fraEIDB {
+            get {
+                return ResourceManager.GetString("EntityBox_fraEIDB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Entities に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_fraEntityA {
+            get {
+                return ResourceManager.GetString("EntityBox_fraEntityA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Entities に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_fraEntityB {
+            get {
+                return ResourceManager.GetString("EntityBox_fraEntityB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Field-of-View Timeline に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_fraFOV {
+            get {
+                return ResourceManager.GetString("EntityBox_fraFOV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Field-of-View に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_fraFOVFrame {
+            get {
+                return ResourceManager.GetString("EntityBox_fraFOVFrame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   ID に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string EntityBox_FraID {
             get {
                 return ResourceManager.GetString("EntityBox_FraID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Load List A に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_fraLoadListA {
+            get {
+                return ResourceManager.GetString("EntityBox_fraLoadListA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Load List B に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_fraLoadListB {
+            get {
+                return ResourceManager.GetString("EntityBox_fraLoadListB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Verify Load Lists に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_fraLoadListPayload {
+            get {
+                return ResourceManager.GetString("EntityBox_fraLoadListPayload", resourceCulture);
             }
         }
         
@@ -700,6 +583,24 @@ namespace CrashEdit.Properties {
         internal static string EntityBox_FraName {
             get {
                 return ResourceManager.GetString("EntityBox_FraName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Neighbors に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_fraNeighbor {
+            get {
+                return ResourceManager.GetString("EntityBox_fraNeighbor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Neighbor に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_fraNeighborSetting {
+            get {
+                return ResourceManager.GetString("EntityBox_fraNeighborSetting", resourceCulture);
             }
         }
         
@@ -790,6 +691,105 @@ namespace CrashEdit.Properties {
         internal static string EntityBox_FraZMod {
             get {
                 return ResourceManager.GetString("EntityBox_FraZMod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Position に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_lblFOVPosition {
+            get {
+                return ResourceManager.GetString("EntityBox_lblFOVPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Position に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_lblMetavalueDrawA {
+            get {
+                return ResourceManager.GetString("EntityBox_lblMetavalueDrawA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Position に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_lblMetavalueDrawB {
+            get {
+                return ResourceManager.GetString("EntityBox_lblMetavalueDrawB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Position に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_lblMetavalueLoadA {
+            get {
+                return ResourceManager.GetString("EntityBox_lblMetavalueLoadA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Position に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_lblMetavalueLoadB {
+            get {
+                return ResourceManager.GetString("EntityBox_lblMetavalueLoadB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cam. Index に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_lblNeighborCamera {
+            get {
+                return ResourceManager.GetString("EntityBox_lblNeighborCamera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Flag に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_lblNeighborFlag {
+            get {
+                return ResourceManager.GetString("EntityBox_lblNeighborFlag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Link Type に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_lblNeighborLink {
+            get {
+                return ResourceManager.GetString("EntityBox_lblNeighborLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Position に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_lblNeighborPosition {
+            get {
+                return ResourceManager.GetString("EntityBox_lblNeighborPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Zone Index に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_lblNeighborZone {
+            get {
+                return ResourceManager.GetString("EntityBox_lblNeighborZone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Position に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_lblPayloadPosition {
+            get {
+                return ResourceManager.GetString("EntityBox_lblPayloadPosition", resourceCulture);
             }
         }
         

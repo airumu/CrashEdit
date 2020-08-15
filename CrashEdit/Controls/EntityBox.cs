@@ -112,37 +112,37 @@ namespace CrashEdit
             fraScaling.Text = Resources.EntityBox_FraScaling;
             fraTTReward.Text = Resources.EntityBox_FraTTReward;
             fraSLST.Text = Resources.EntityBox_FraSLST;
-            cmdClearAllVictims.Text = Properties.Resources.Entirybox_cmdClearAllVictims;
+            cmdClearAllVictims.Text = Properties.Resources.EntityBox_cmdClearAllVictims;
             fraMode.Text = Resources.EntityBox_FraMode;
             fraAvgDist.Text = Properties.Resources.EntityBox_fraAvgDist;
-            fraCameraIndex.Text = Properties.Resources.Entirybox_fraCameraIndex;
-            fraCameraSubIndex.Text = Properties.Resources.Entirybox_fraCameraSubIndex;
-            fraNeighbor.Text = Properties.Resources.Entirybox_fraNeighbor;
-            lblNeighborPosition.Text = Properties.Resources.Entirybox_lblNeighborPosition;
-            fraNeighborSetting.Text = Properties.Resources.Entirybox_fraNeighborSetting;
-            lblNeighborCamera.Text = Properties.Resources.Entirybox_lblNeighborCamera;
-            lblNeighborFlag.Text = Properties.Resources.Entirybox_lblNeighborFlag;
-            lblNeighborLink.Text = Properties.Resources.Entirybox_lblNeighborLink;
-            lblNeighborZone.Text = Properties.Resources.Entirybox_lblNeighborZone;
-            fraFOV.Text = Properties.Resources.Entirybox_fraFOV;
-            lblFOVPosition.Text = Properties.Resources.Entirybox_lblFOVPosition;
-            fraFOVFrame.Text = Properties.Resources.Entirybox_fraFOVFrame;
-            fraLoadListA.Text = Properties.Resources.Entirybox_fraLoadListA;
-            fraLoadListB.Text = Properties.Resources.Entirybox_fraLoadListB;
-            lblMetavalueLoadA.Text = Properties.Resources.Entirybox_lblMetavalueLoadA;
-            lblMetavalueLoadB.Text = Properties.Resources.Entirybox_lblMetavalueLoadB;
-            fraEIDA.Text = Properties.Resources.Entirybox_fraEIDA;
-            fraEIDB.Text = Properties.Resources.Entirybox_fraEIDB;
-            fraLoadListPayload.Text = Properties.Resources.Entirybox_fraLoadListPayload;
-            cmdLoadListVerify.Text = Properties.Resources.Entirybox_cmdLoadListVerify;
-            lblPayloadPosition.Text = Properties.Resources.Entirybox_lblPayloadPosition;
-            cmdPayload.Text = Properties.Resources.Entirybox_cmdPayload;
-            fraDrawListA.Text = Properties.Resources.Entirybox_fraDrawListA;
-            fraDrawListB.Text = Properties.Resources.Entirybox_fraDrawListB;
-            lblMetavalueDrawA.Text = Properties.Resources.Entirybox_lblMetavalueDrawA;
-            lblMetavalueDrawB.Text = Properties.Resources.Entirybox_lblMetavalueDrawB;
-            fraEntityA.Text = Properties.Resources.Entirybox_fraEntityA;
-            fraEntityB.Text = Properties.Resources.Entirybox_fraEntityB;
+            fraCameraIndex.Text = Properties.Resources.EntityBox_fraCameraIndex;
+            fraCameraSubIndex.Text = Properties.Resources.EntityBox_fraCameraSubIndex;
+            fraNeighbor.Text = Properties.Resources.EntityBox_fraNeighbor;
+            lblNeighborPosition.Text = Properties.Resources.EntityBox_lblNeighborPosition;
+            fraNeighborSetting.Text = Properties.Resources.EntityBox_fraNeighborSetting;
+            lblNeighborCamera.Text = Properties.Resources.EntityBox_lblNeighborCamera;
+            lblNeighborFlag.Text = Properties.Resources.EntityBox_lblNeighborFlag;
+            lblNeighborLink.Text = Properties.Resources.EntityBox_lblNeighborLink;
+            lblNeighborZone.Text = Properties.Resources.EntityBox_lblNeighborZone;
+            fraFOV.Text = Properties.Resources.EntityBox_fraFOV;
+            lblFOVPosition.Text = Properties.Resources.EntityBox_lblFOVPosition;
+            fraFOVFrame.Text = Properties.Resources.EntityBox_fraFOVFrame;
+            fraLoadListA.Text = Properties.Resources.EntityBox_fraLoadListA;
+            fraLoadListB.Text = Properties.Resources.EntityBox_fraLoadListB;
+            lblMetavalueLoadA.Text = Properties.Resources.EntityBox_lblMetavalueLoadA;
+            lblMetavalueLoadB.Text = Properties.Resources.EntityBox_lblMetavalueLoadB;
+            fraEIDA.Text = Properties.Resources.EntityBox_fraEIDA;
+            fraEIDB.Text = Properties.Resources.EntityBox_fraEIDB;
+            fraLoadListPayload.Text = Properties.Resources.EntityBox_fraLoadListPayload;
+            cmdLoadListVerify.Text = Properties.Resources.EntityBox_cmdLoadListVerify;
+            lblPayloadPosition.Text = Properties.Resources.EntityBox_lblPayloadPosition;
+            cmdPayload.Text = Properties.Resources.EntityBox_cmdPayload;
+            fraDrawListA.Text = Properties.Resources.EntityBox_fraDrawListA;
+            fraDrawListB.Text = Properties.Resources.EntityBox_fraDrawListB;
+            lblMetavalueDrawA.Text = Properties.Resources.EntityBox_lblMetavalueDrawA;
+            lblMetavalueDrawB.Text = Properties.Resources.EntityBox_lblMetavalueDrawB;
+            fraEntityA.Text = Properties.Resources.EntityBox_fraEntityA;
+            fraEntityB.Text = Properties.Resources.EntityBox_fraEntityB;
             chkSettingHex_CheckedChanged(null, null);
         }
 
@@ -2183,31 +2183,6 @@ namespace CrashEdit
         private void numFOV_ValueChanged(object sender, EventArgs e)
         {
             entity.FOV.Rows[fovframeindex].Values[fovindex] = new EntityVictim((short)numFOV.Value);
-        }
-
-        private void tsbGeneral_Click(object sender, EventArgs e)
-        {
-            tbcTabs.SelectedIndex = 0;
-        }
-
-        private void tsbSpecial_Click(object sender, EventArgs e)
-        {
-            tbcTabs.SelectedIndex = 1;
-        }
-
-        private void tsbCamera_Click(object sender, EventArgs e)
-        {
-            tbcTabs.SelectedIndex = 2;
-        }
-
-        private void tsbLoadLists_Click(object sender, EventArgs e)
-        {
-            tbcTabs.SelectedIndex = 3;
-        }
-
-        private void tsbDrawLists_Click(object sender, EventArgs e)
-        {
-            tbcTabs.SelectedIndex = 4;
         }
     }
 }
