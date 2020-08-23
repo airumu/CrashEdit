@@ -1186,7 +1186,6 @@ namespace CrashEdit
                 if (tab != null)
                 {
                     tbcTabs.TabPages.Remove(tab);
-                    tab.Dispose();
                 }
             }
         }
