@@ -12,7 +12,7 @@ namespace Crash
         protected const string NullFormat = "000001111101";
         protected const int NullRef = 0xBE0;
         protected const int DoubleStackRef = 0xBF0;
-        
+
         private Dictionary<char, GOOLArgument> args;
 
         public abstract string Name { get; }
@@ -25,7 +25,7 @@ namespace Crash
         public int Opcode => Value >> 24 & 0xFF;
         public IDictionary<char, GOOLArgument> Args => args;
 
-        public GOOLInstruction(int value,GOOLEntry gool)
+        public GOOLInstruction(int value, GOOLEntry gool)
         {
             GOOL = gool;
             Value = value;
@@ -186,12 +186,6 @@ namespace Crash
             return finalargs;
         }
 
-        internal bool IntIsEID(int v)
-        {
-            int lastc = v >> 1 & 0x3F;
-            return lastc <= 0x3D && lastc >= 0x24 && (v & 1) == 1 && v >= 0x2000000;
-        }
-
         private string GetRefVal(int val)
         {
             if ((val & 0x800) == 0)
@@ -202,7 +196,7 @@ namespace Crash
                     if (GOOL.Format == 1 && off < GOOL.Data.Length) // external GOOL entries will logically not have local data...
                     {
                         int cval = GOOL.Data[off];
-                        if (IntIsEID(cval))
+                        if (off < GOOL.EntryCount)
                             return $"({Entry.EIDToEName(cval)})";
                         else
                             return $"({cval.TransformedString()})";
@@ -212,7 +206,7 @@ namespace Crash
                         if (GOOL.ParentGOOL != null && GOOL.Format == 0 && off < GOOL.ParentGOOL.Data.Length)
                         {
                             int cval = GOOL.ParentGOOL.Data[off];
-                            if (IntIsEID(cval))
+                            if (off < GOOL.EntryCount)
                                 return $"({Entry.EIDToEName(cval)})";
                             else
                                 return $"({cval.TransformedString()})";
@@ -226,7 +220,7 @@ namespace Crash
                     if (GOOL.Format == 0 && off < GOOL.Data.Length) // local GOOL entries will logically not have external data...
                     {
                         int cval = GOOL.Data[off];
-                        if (IntIsEID(cval))
+                        if (off < GOOL.EntryCount)
                             return $"({Entry.EIDToEName(cval)})";
                         else
                             return $"({cval.TransformedString()})";
@@ -249,7 +243,7 @@ namespace Crash
                 }
                 if ((val & 0x80) == 0)
                 {
-                    int n = BitConv.SignExtendInt32(val,7);
+                    int n = BitConv.SignExtendInt32(val, 7);
                     return string.Format("{0}[{1}]", n >= 0 ? "stack" : "arg", (n < 0 ? -n - 1 : n).TransformedString());
                 }
                 if (val != 0xBE0)
@@ -283,7 +277,7 @@ namespace Crash
         {
             if ((val & 0x400) == 0)
             {
-                int n = BitConv.SignExtendInt32(val,7);
+                int n = BitConv.SignExtendInt32(val, 7);
                 return string.Format("{0}[{1}]", n >= 0 ? "stack" : "arg", (n < 0 ? -n - 1 : n).TransformedString());
             }
             else
