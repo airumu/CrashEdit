@@ -42,6 +42,7 @@ namespace CrashEdit
             chkPatchNSDSavesNSF.Checked = Settings.Default.PatchNSDSavesNSF;
             chkOldPatchNSD.Text = Resources.Config_chkOldPatchNSD;
             chkOldPatchNSD.Checked = Settings.Default.OldPatchNSD;
+            chkDetailedCollision.Checked = Settings.Default.DetailedCollision;
         }
 
         private void dpdLang_SelectedIndexChanged(object sender, EventArgs e)
@@ -140,13 +141,13 @@ namespace CrashEdit
             Settings.Default.Save();
         }
 
-        private void ChkOldPatchNSD_CheckedChanged(object sender, EventArgs e)
+        private void chkOldPatchNSD_CheckedChanged(object sender, EventArgs e)
         {
             Settings.Default.OldPatchNSD = chkOldPatchNSD.Checked;
             Settings.Default.Save();
         }
 
-        private void ChkDetailedCollision_CheckedChanged(object sender, EventArgs e)
+        private void chkDetailedCollision_CheckedChanged(object sender, EventArgs e)
         {
             Settings.Default.DetailedCollision = chkDetailedCollision.Checked;
             Settings.Default.Save();

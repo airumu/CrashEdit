@@ -281,7 +281,7 @@
             this.chkOldPatchNSD.UseCustomBackColor = true;
             this.chkOldPatchNSD.UseCustomForeColor = true;
             this.chkOldPatchNSD.UseSelectable = true;
-            this.chkOldPatchNSD.CheckedChanged += new System.EventHandler(this.ChkOldPatchNSD_CheckedChanged);
+            this.chkOldPatchNSD.CheckedChanged += new System.EventHandler(this.chkOldPatchNSD_CheckedChanged);
             // 
             // chkPatchNSDSavesNSF
             // 
@@ -384,7 +384,7 @@
             this.chkDetailedCollision.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.chkDetailedCollision.UseCustomBackColor = true;
             this.chkDetailedCollision.UseSelectable = true;
-            this.chkDetailedCollision.CheckedChanged += new System.EventHandler(this.ChkDetailedCollision_CheckedChanged);
+            this.chkDetailedCollision.CheckedChanged += new System.EventHandler(this.chkDetailedCollision_CheckedChanged);
             // 
             // ConfigEditor
             // 
