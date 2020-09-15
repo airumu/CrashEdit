@@ -556,7 +556,6 @@ namespace CrashEdit
             this.lblSLST.Size = new System.Drawing.Size(137, 15);
             this.lblSLST.TabIndex = 1;
             this.lblSLST.Text = "EID ERROR WARNING!";
-            this.lblSLST.Click += new System.EventHandler(this.LblSLST_Click);
             // 
             // txtSLST
             // 
@@ -1415,7 +1414,6 @@ namespace CrashEdit
             this.fraCount.TabIndex = 22;
             this.fraCount.TabStop = false;
             this.fraCount.Text = "Count";
-            this.fraCount.Enter += new System.EventHandler(this.FraCount_Enter);
             // 
             // numNeighborCount
             // 

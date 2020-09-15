@@ -163,7 +163,6 @@ namespace CrashEdit
             this.fraPosition.TabIndex = 1;
             this.fraPosition.TabStop = false;
             this.fraPosition.Text = "Position(s)";
-            this.fraPosition.Enter += new System.EventHandler(this.FraPosition_Enter);
             // 
             // cmdInterpolate
             // 
@@ -346,7 +345,6 @@ namespace CrashEdit
             this.fraID.TabIndex = 3;
             this.fraID.TabStop = false;
             this.fraID.Text = "ID";
-            this.fraID.Enter += new System.EventHandler(this.FraID_Enter);
             // 
             // numID
             // 
