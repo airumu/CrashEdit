@@ -136,7 +136,7 @@ namespace CrashEdit
         }
 
         protected virtual float NearPlane => 100;
-        protected virtual float FarPlane => 400 * 800;
+        protected virtual float FarPlane => 400 * 1000;
         protected virtual int CameraRangeMargin => 0;
         protected virtual int CameraRangeMinimum => 5;
 
@@ -158,7 +158,7 @@ namespace CrashEdit
             GL.AlphaFunc(AlphaFunction.Greater, 0);
             // Lighting settings. Lighting must be enabled for them to take effect, logically
             GL.Light(LightName.Light0, LightParameter.Position, new float[] { 0, 0, 0, 1 });
-            GL.Light(LightName.Light0, LightParameter.Ambient, new float[] { 0.2f, 0.2f, 0.2f, 1 }); // set some minimum light parameters so less shading doesn't make things too dark
+            GL.Light(LightName.Light0, LightParameter.Ambient, new float[] { 0.1f, 0.1f, 0.1f, 1 }); // set some minimum light parameters so less shading doesn't make things too dark
             GL.Light(LightName.Light0, LightParameter.ConstantAttenuation, 1.25F); // reduce direct light intensity
             GL.LightModel(LightModelParameter.LightModelTwoSide, 1);
             GL.Enable(EnableCap.Light0);
@@ -336,7 +336,7 @@ namespace CrashEdit
             range = Math.Max(CameraRangeMinimum, (int)(Math.Sqrt(Math.Pow(maxx - midx, 2) + Math.Pow(maxy - midy, 2) + Math.Pow(maxz - midz, 2)) * 1.15));
             range += CameraRangeMargin;
             rotx = 0;
-            roty = 15;
+            roty = 0;
             fullrange = range;
             Invalidate();
         }

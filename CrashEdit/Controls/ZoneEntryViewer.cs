@@ -67,23 +67,13 @@ namespace CrashEdit
                 yield return new Position(x2 + xoffset, y2 + yoffset, z2 + zoffset);
                 foreach (Entity entity in entry.Entities)
                 {
-                    if (entity.ID != null)
+                    if (entry.Entities.IndexOf(entity) % 3 == 0 || entity.ID != null)
                     {
                         foreach (EntityPosition position in entity.Positions)
                         {
-                            int x = (position.X << 2) + xoffset;
-                            int y = (position.Y << 2) + yoffset;
-                            int z = (position.Z << 2) + zoffset;
-                            yield return new Position(x, y, z);
-                        }
-                    }
-                    else if (entry.Entities.IndexOf(entity) % 3 == 0 || entity.ID != null)
-                    {
-                        foreach (EntityPosition position in entity.Positions)
-                        {
-                            int x = (position.X) + xoffset;
-                            int y = (position.Y) + yoffset;
-                            int z = (position.Z) + zoffset;
+                            int x = position.X + xoffset;
+                            int y = position.Y + yoffset;
+                            int z = position.Z + zoffset;
                             yield return new Position(x, y, z);
                         }
                     }
@@ -251,6 +241,25 @@ namespace CrashEdit
                     {
                         GL.CallList(octreedisplaylist);
                     }
+                    GL.Color3(Color.Cyan);
+                    GL.Begin(PrimitiveType.LineStrip);
+                    GL.Vertex3(0, 0, 0);
+                    GL.Vertex3(x2, 0, 0);
+                    GL.Vertex3(x2, y2, 0);
+                    GL.Vertex3(0, y2, 0);
+                    GL.Vertex3(0, 0, 0);
+                    GL.Vertex3(0, 0, z2);
+                    GL.Vertex3(x2, 0, z2);
+                    GL.Vertex3(x2, y2, z2);
+                    GL.Vertex3(0, y2, z2);
+                    GL.Vertex3(0, 0, z2);
+                    GL.Vertex3(x2, 0, z2);
+                    GL.Vertex3(x2, 0, 0);
+                    GL.Vertex3(x2, y2, 0);
+                    GL.Vertex3(x2, y2, z2);
+                    GL.Vertex3(0, y2, z2);
+                    GL.Vertex3(0, y2, 0);
+                    GL.End();
                     GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
                     GL.Enable(EnableCap.PolygonStipple);
                 }
