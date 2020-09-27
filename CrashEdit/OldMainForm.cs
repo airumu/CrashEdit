@@ -1320,7 +1320,7 @@ namespace CrashEdit
             string exefile = Path.Combine(dlgMakeBINDir.SelectedPath, "PSX.EXE");
 
             if (!File.Exists(cnffile) && !File.Exists(exefile)) {
-                if (DarkMessageBox.ShowWarning(Resources.MakeBIN1, Resources.MakeBIN_Title, DarkDialogButton.YesNo) != DialogResult.Yes)
+                if (DarkMessageBox.ShowWarning(Resources.MakeBIN_NoSystemFiles, Resources.MakeBIN_Title, DarkDialogButton.YesNo) != DialogResult.Yes)
                     return;
             }
 
@@ -1335,7 +1335,7 @@ namespace CrashEdit
                 ISO2PSX.Run(iso, bin);
             }
 
-            log.AppendLine(Resources.MakeBIN2);
+            log.AppendLine(Resources.MakeBIN_NoRegOK);
             log.AppendLine();
 
             string cueFilename = Path.ChangeExtension(dlgMakeBINFile.FileName, ".cue");
@@ -1346,14 +1346,14 @@ namespace CrashEdit
                         cue.WriteLine("  TRACK 01 MODE2/2352");
                         cue.WriteLine("    INDEX 01 00:00:00");
                     }
-                    log.AppendLine(Resources.MakeBin3);
+                    log.AppendLine(Resources.MakeBIN_CueSuccess);
                     log.AppendLine();
                 } catch (IOException ex) {
-                    log.AppendLine(string.Format(Resources.MakeBin4, ex));
+                    log.AppendLine(string.Format(Resources.MakeBIN_CueFail, ex));
                     log.AppendLine();
                 }
             } else {
-                log.AppendLine(Resources.MakeBin5);
+                log.AppendLine(Resources.MakeBIN_CueExists);
                 log.AppendLine();
             }
 
@@ -1370,20 +1370,20 @@ namespace CrashEdit
                 return;
             }
 
-            log.AppendLine(Resources.MakeBin_DRNSF1);
+            log.AppendLine(Resources.MakeBIN_DRNSF_Launch);
             try {
                 if (ExternalTool.Invoke("drnsf", $"{imprintOpt} -- \"{dlgMakeBINFile.FileName}\"") != 0) {
-                    log.AppendLine(Resources.MakeBin_DRNSF2);
+                    log.AppendLine(Resources.MakeBIN_DRNSF_Error);
                     log.AppendLine();
                 } else {
-                    log.AppendLine(Resources.MakeBin_DRNSF3);
+                    log.AppendLine(Resources.MakeBIN_DRNSF_Success);
                     log.AppendLine();
                 }
             } catch (FileNotFoundException) {
-                log.AppendLine(Resources.MakeBin_DRNSF4);
+                log.AppendLine(Resources.MakeBIN_DRNSF_Unavailable);
                 log.AppendLine();
             } catch (Exception ex) {
-                log.AppendLine(string.Format(Resources.MakeBin_DRNSF5, ex));
+                log.AppendLine(string.Format(Resources.MakeBIN_DRNSF_Fail, ex));
                 log.AppendLine();
             }
             log.Append(Resources.Done);
