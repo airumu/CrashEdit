@@ -1,16 +1,19 @@
 using Crash;
 using Crash.UI;
+using CrashEdit.Forms;
+using CrashEdit.Properties;
 using DiscUtils.Iso9660;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
 using System.Threading.Tasks;
-using CrashEdit.Properties;
+using System.Windows.Forms;
 using DarkUI.Controls;
 using DarkUI.Forms;
 using System.Drawing;
@@ -70,6 +73,9 @@ namespace CrashEdit
 
         private FolderBrowserDialog dlgMakeBINDir = new FolderBrowserDialog();
         private SaveFileDialog dlgMakeBINFile = new SaveFileDialog();
+
+        private BackgroundWorker bgwMakeBIN;
+        private ProgressBarForm dlgProgress;
 
         private static bool PAL = Settings.Default.PAL;
         private const int RateNTSC = 30;
@@ -319,6 +325,16 @@ namespace CrashEdit
 
             mnuPlay.Click += new EventHandler(tbbPlay_Click);
             mnuPlay.ShortcutKeys = Keys.F1;
+
+            bgwMakeBIN = new BackgroundWorker()
+            {
+                WorkerReportsProgress = true,
+                WorkerSupportsCancellation = false
+            };
+            bgwMakeBIN.DoWork += new DoWorkEventHandler(bgwMakeBIN_DoWork);
+            bgwMakeBIN.ProgressChanged += new ProgressChangedEventHandler(bgwMakeBIN_ProgressChanged);
+            bgwMakeBIN.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bgwMakeBIN_RunWorkerCompleted);
+            dlgProgress = null;
 
             Icon = OldResources.CBHacksIcon;
             Width = Settings.Default.DefaultFormW;
@@ -1309,9 +1325,27 @@ namespace CrashEdit
             }
         }
 
+        private void bgwMakeBIN_DoWork(object sender, DoWorkEventArgs e)
+        {
+            using (FileStream output = new FileStream(dlgMakeBINFile.FileName, FileMode.Create, FileAccess.Write))
+            using (Stream input = ((CDBuilder)e.Argument).Build())
+            {
+                ISO2PSX.Run(input, output, bgwMakeBIN);
+            }
+        }
+
+        private void bgwMakeBIN_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            dlgProgress.ProgressBar.Value = e.ProgressPercentage;
+        }
+
+        private void bgwMakeBIN_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            dlgProgress.Close();
+        }
+
         void tbxMakeBIN_Click(object sender,EventArgs e)
         {
-            var log = new StringBuilder();
 
             if (dlgMakeBINDir.ShowDialog(this) != DialogResult.OK)
                 return;
@@ -1330,11 +1364,17 @@ namespace CrashEdit
             var fs = new CDBuilder();
             AddDirectoryToISO(fs, "", new DirectoryInfo(dlgMakeBINDir.SelectedPath));
 
-            using (var bin = new FileStream(dlgMakeBINFile.FileName, FileMode.Create, FileAccess.Write))
-            using (var iso = fs.Build()) {
-                ISO2PSX.Run(iso, bin);
+            using (dlgProgress = new ProgressBarForm())
+            {
+                dlgProgress.ProgressBar.ForeColor = Color.Red;
+                dlgProgress.ProgressBar.Style = ProgressBarStyle.Blocks;
+                dlgProgress.ProgressBar.Value = 0;
+                dlgProgress.Text = "Making BIN...";
+                bgwMakeBIN.RunWorkerAsync(fs);
+                dlgProgress.ShowDialog(this);
             }
 
+            var log = new StringBuilder();
             log.AppendLine(Resources.MakeBIN_NoRegOK);
             log.AppendLine();
 

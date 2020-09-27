@@ -1,5 +1,6 @@
 using Crash;
 using System;
+using System.ComponentModel;
 using System.IO;
 
 namespace CrashEdit
@@ -10,21 +11,28 @@ namespace CrashEdit
         private static byte[] eccFTable = new byte[256];
         private static byte[] eccBTable = new byte[256];
 
-        static ISO2PSX() {
-            for (int i = 0; i < 256; i++) {
+        static ISO2PSX()
+        {
+            for (int i = 0; i < 256; i++)
+            {
                 uint edc = (uint)i;
-                for (int ii = 0; ii < 8; ii++) {
-                    if ((edc & 1) != 0) {
+                for (int ii = 0; ii < 8; ii++)
+                {
+                    if ((edc & 1) != 0)
+                    {
                         edc >>= 1;
                         edc ^= 0xD8018001U;
-                    } else {
+                    }
+                    else
+                    {
                         edc >>= 1;
                     }
                 }
                 edcTable[i] = edc;
 
                 byte m = (byte)(i << 1);
-                if ((i & 0x80) != 0) {
+                if ((i & 0x80) != 0)
+                {
                     m ^= 0x1D;
                 }
                 eccFTable[i] = m;
@@ -35,7 +43,8 @@ namespace CrashEdit
         private static void DoEDC(byte[] buffer)
         {
             uint edc = 0;
-            for (int i = 0x18; i < 0x818; i++) {
+            for (int i = 0x18; i < 0x818; i++)
+            {
                 edc = (edc >> 8) ^ edcTable[(edc & 0xFF) ^ buffer[i]];
             }
             BitConv.ToInt32(buffer, 0x818, (int)edc);
@@ -46,11 +55,13 @@ namespace CrashEdit
             int addrMode = BitConv.FromInt32(buffer, 12);
             BitConv.ToInt32(buffer, 12, 0);
 
-            for (int major = 0; major < majorCount; major++) {
+            for (int major = 0; major < majorCount; major++)
+            {
                 byte eccA = 0;
                 byte eccB = 0;
 
-                for (int minor = 0; minor < minorCount; minor++) {
+                for (int minor = 0; minor < minorCount; minor++)
+                {
                     byte v = buffer[0xC + ((major >> 1) * majorMul + (major & 1) + minor * minorInc) % (majorCount * minorCount)];
                     eccA = eccFTable[eccA ^ v];
                     eccB ^= v;
@@ -64,7 +75,7 @@ namespace CrashEdit
             BitConv.ToInt32(buffer, 12, addrMode);
         }
 
-        public static void Run(Stream input, Stream output)
+        public static void Run(Stream input, Stream output, BackgroundWorker backgroundworker = null)
         {
             byte[] buffer = new byte[2352];
             buffer[0x0] = 0;
@@ -88,7 +99,7 @@ namespace CrashEdit
                 buffer[0xC] = (byte)((minutes / 10 * 16) | (minutes % 10));
                 buffer[0xD] = (byte)((seconds / 10 * 16) | (seconds % 10));
                 buffer[0xE] = (byte)((frames / 10 * 16) | (frames % 10));
-                int length = input.Read(buffer,24,2048);
+                int length = input.Read(buffer, 24, 2048);
                 if (length == 0)
                     break;
                 if (length < 2048)
@@ -109,7 +120,9 @@ namespace CrashEdit
                     minutes++;
                     seconds = 0;
                 }
-                output.Write(buffer,0,2352);
+                output.Write(buffer, 0, 2352);
+                if (backgroundworker != null)
+                    backgroundworker.ReportProgress((int)(input.Position * 100 / input.Length));
             }
         }
     }
