@@ -1412,7 +1412,7 @@ namespace CrashEdit
                 imprintOpt = ":cdxa-imprint --psx-scei";
             } else {
                 log.Append(Resources.Done);
-                MessageBox.Show(log.ToString());
+                DarkMessageBox.ShowInformation(log.ToString(), "Make BIN");
                 return;
             }
 
@@ -1433,7 +1433,7 @@ namespace CrashEdit
                 log.AppendLine();
             }
             log.Append(Resources.Done);
-            MessageBox.Show(log.ToString());
+            DarkMessageBox.ShowInformation(log.ToString(), "Make BIN");
         }
 
         void tbxConvertVHVB_Click(object sender,EventArgs e)

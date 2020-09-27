@@ -1,6 +1,7 @@
 using Crash;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using DarkUI.Forms;
 
 namespace CrashEdit
 {
@@ -42,7 +43,7 @@ namespace CrashEdit
 
         private void Menu_Export_OBJ()
         {
-            if (MessageBox.Show("Exporting to OBJ is experimental.\nTexture information will not be exported.\n\nContinue anyway?","Export as OBJ",MessageBoxButtons.YesNo) != DialogResult.Yes)
+            if (DarkMessageBox.ShowWarning("Exporting to OBJ is experimental.\nTexture information will not be exported.\n\nContinue anyway?","Export as OBJ") != DialogResult.Yes)
             {
                 return;
             }
@@ -51,7 +52,7 @@ namespace CrashEdit
 
         private void Menu_Export_COLLADA()
         {
-            if (MessageBox.Show("Exporting to COLLADA is experimental.\nTexture information will not be exported.\n\nContinue anyway?","Export as COLLADA",MessageBoxButtons.YesNo) != DialogResult.Yes)
+            if (DarkMessageBox.ShowWarning("Exporting to COLLADA is experimental.\nTexture information will not be exported.\n\nContinue anyway?","Export as COLLADA") != DialogResult.Yes)
             {
                 return;
             }
