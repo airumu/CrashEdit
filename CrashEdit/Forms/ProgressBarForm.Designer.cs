@@ -28,22 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.uxProgress = new System.Windows.Forms.ProgressBar();
+            this.uxProgress = new MetroFramework.Controls.MetroProgressBar();
             this.SuspendLayout();
             // 
             // uxProgress
             // 
-            this.uxProgress.Location = new System.Drawing.Point(12, 12);
+            this.uxProgress.Location = new System.Drawing.Point(12, 11);
             this.uxProgress.Name = "uxProgress";
-            this.uxProgress.Size = new System.Drawing.Size(373, 23);
+            this.uxProgress.Size = new System.Drawing.Size(373, 21);
+            this.uxProgress.Style = MetroFramework.MetroColorStyle.Blue;
             this.uxProgress.TabIndex = 0;
+            this.uxProgress.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.uxProgress.UseWaitCursor = true;
             // 
             // ProgressBarForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(397, 47);
+            this.ClientSize = new System.Drawing.Size(397, 43);
             this.ControlBox = false;
             this.Controls.Add(this.uxProgress);
             this.MaximizeBox = false;
@@ -58,6 +60,6 @@
 
         #endregion
 
-        private System.Windows.Forms.ProgressBar uxProgress;
+        private MetroFramework.Controls.MetroProgressBar uxProgress;
     }
 }

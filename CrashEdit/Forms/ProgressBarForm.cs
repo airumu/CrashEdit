@@ -2,7 +2,7 @@
 
 namespace CrashEdit.Forms
 {
-    public partial class ProgressBarForm : Form
+    public partial class ProgressBarForm : DarkUI.Forms.DarkForm
     {
         public ProgressBarForm()
         {
