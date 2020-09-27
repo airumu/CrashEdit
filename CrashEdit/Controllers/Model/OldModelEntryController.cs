@@ -1,4 +1,5 @@
 using Crash;
+using DarkUI.Controls;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -26,7 +27,7 @@ namespace CrashEdit
 
         protected override Control CreateEditor()
         {
-            return new Label { Text = string.Format("Polygon count: {0}", BitConv.FromInt32(OldModelEntry.Info, 0)), TextAlign = ContentAlignment.MiddleCenter };
+            return new DarkLabel { Text = string.Format("Polygon count: {0}", BitConv.FromInt32(OldModelEntry.Info, 0)), TextAlign = ContentAlignment.MiddleCenter, Font = new System.Drawing.Font("Arial", 9F) };
         }
 
         public OldModelEntry OldModelEntry { get; }

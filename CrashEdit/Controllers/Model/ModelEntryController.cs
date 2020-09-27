@@ -54,7 +54,7 @@ namespace CrashEdit
                     bits += 1+pos.YBits;
                     bits += 1+pos.ZBits;
                 }
-                return new DarkLabel { Text = string.Format("Polygon count: {0}\nVertex count: {1}\nCompression ratio: {2:0.0}%",ModelEntry.PolyCount,ModelEntry.VertexCount,(double)bits/totalbits * 100.0), TextAlign = ContentAlignment.MiddleCenter, Font = new System.Drawing.Font("Arial", 9F)  };
+                return new DarkLabel { Text = string.Format("Polygon count: {0}\nVertex count: {1}\nCompression ratio: {2:0.0}% ({3}/{4})", ModelEntry.PolyCount,ModelEntry.VertexCount,(double)bits/totalbits * 100.0, bits, totalbits), TextAlign = ContentAlignment.MiddleCenter, Font = new System.Drawing.Font("Arial", 9F)  };
             }
         }
 
