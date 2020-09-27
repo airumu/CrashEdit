@@ -71,7 +71,6 @@
     </Compile>
     <Compile Include="Controllers\Animation\ColoredAnimationEntryController.cs" />
     <Compile Include="Controllers\Animation\ColoredFrameController.cs" />
-    <Compile Include="Controllers\CommonZoneEntryViewer.cs" />
     <Compile Include="Controllers\GOOL\GOOLEntryController.cs" />
     <Compile Include="Controllers\Image\ImageEntryController.cs" />
     <Compile Include="Controllers\Map\MapEntryController.cs" />
