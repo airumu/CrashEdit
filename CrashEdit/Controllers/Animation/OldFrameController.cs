@@ -1,6 +1,7 @@
 using Crash;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using MetroFramework.Controls;
 
 namespace CrashEdit
 {
@@ -39,7 +40,14 @@ namespace CrashEdit
 
         protected override Control CreateEditor()
         {
-            TabControl tbcTabs = new TabControl() { Dock = DockStyle.Fill };
+            MetroTabControl tbcTabs = new MetroTabControl() {
+            Dock = DockStyle.Fill,
+            FontSize = MetroFramework.MetroTabControlSize.Medium,
+            FontWeight = MetroFramework.MetroTabControlWeight.Regular,
+            Style = MetroFramework.MetroColorStyle.Teal,
+            Theme = MetroFramework.MetroThemeStyle.Dark
+            };
+
             EntryController entry = OldAnimationEntryController != null ? (EntryController)OldAnimationEntryController : (EntryController)ProtoAnimationEntryController;
             OldModelEntry modelentry = entry.EntryChunkController.NSFController.NSF.FindEID<OldModelEntry>(OldFrame.ModelEID);
 
