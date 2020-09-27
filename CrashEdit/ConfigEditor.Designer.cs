@@ -51,6 +51,8 @@
             this.chkNormalDisplay = new MetroFramework.Controls.MetroCheckBox();
             this.cmdReset = new MetroFramework.Controls.MetroButton();
             this.chkDetailedCollision = new MetroFramework.Controls.MetroCheckBox();
+            this.tglKeyBinds = new MetroFramework.Controls.MetroToggle();
+            this.fraKeyBinds = new System.Windows.Forms.GroupBox();
             this.fraLang.SuspendLayout();
             this.fraSize.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numH)).BeginInit();
@@ -59,6 +61,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.picClearCol)).BeginInit();
             this.fraAnimGrid.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numAnimGrid)).BeginInit();
+            this.fraKeyBinds.SuspendLayout();
             this.SuspendLayout();
             // 
             // fraLang
@@ -379,11 +382,40 @@
             this.chkDetailedCollision.UseSelectable = true;
             this.chkDetailedCollision.CheckedChanged += new System.EventHandler(this.chkDetailedCollision_CheckedChanged);
             // 
+            // tglKeyBinds
+            // 
+            this.tglKeyBinds.AutoSize = true;
+            this.tglKeyBinds.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(30)))));
+            this.tglKeyBinds.Location = new System.Drawing.Point(8, 20);
+            this.tglKeyBinds.Name = "tglKeyBinds";
+            this.tglKeyBinds.Size = new System.Drawing.Size(80, 19);
+            this.tglKeyBinds.Style = MetroFramework.MetroColorStyle.Blue;
+            this.tglKeyBinds.TabIndex = 12;
+            this.tglKeyBinds.Text = "Off";
+            this.tglKeyBinds.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.tglKeyBinds.UseCustomBackColor = true;
+            this.tglKeyBinds.UseSelectable = true;
+            this.tglKeyBinds.CheckedChanged += new System.EventHandler(this.TglKeyBinds_CheckedChanged);
+            // 
+            // fraKeyBinds
+            // 
+            this.fraKeyBinds.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.fraKeyBinds.Controls.Add(this.tglKeyBinds);
+            this.fraKeyBinds.Font = new System.Drawing.Font("Arial", 9F);
+            this.fraKeyBinds.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraKeyBinds.Location = new System.Drawing.Point(196, 3);
+            this.fraKeyBinds.Name = "fraKeyBinds";
+            this.fraKeyBinds.Size = new System.Drawing.Size(117, 49);
+            this.fraKeyBinds.TabIndex = 13;
+            this.fraKeyBinds.TabStop = false;
+            this.fraKeyBinds.Text = "Change Key Binding";
+            // 
             // ConfigEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.Controls.Add(this.fraKeyBinds);
             this.Controls.Add(this.chkDetailedCollision);
             this.Controls.Add(this.cmdReset);
             this.Controls.Add(this.chkOldPatchNSD);
@@ -408,6 +440,8 @@
             this.fraAnimGrid.ResumeLayout(false);
             this.fraAnimGrid.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numAnimGrid)).EndInit();
+            this.fraKeyBinds.ResumeLayout(false);
+            this.fraKeyBinds.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -437,5 +471,7 @@
         private MetroFramework.Controls.MetroCheckBox chkOldPatchNSD;
         private MetroFramework.Controls.MetroButton cmdReset;
         private MetroFramework.Controls.MetroCheckBox chkDetailedCollision;
+        private MetroFramework.Controls.MetroToggle tglKeyBinds;
+        private System.Windows.Forms.GroupBox fraKeyBinds;
     }
 }

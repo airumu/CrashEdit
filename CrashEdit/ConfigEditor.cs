@@ -43,6 +43,7 @@ namespace CrashEdit
             chkOldPatchNSD.Text = Resources.Config_chkOldPatchNSD;
             chkOldPatchNSD.Checked = Settings.Default.OldPatchNSD;
             chkDetailedCollision.Checked = Settings.Default.DetailedCollision;
+            tglKeyBinds.Checked = Settings.Default.NewKeyBinds;
         }
 
         private void dpdLang_SelectedIndexChanged(object sender, EventArgs e)
@@ -156,6 +157,12 @@ namespace CrashEdit
         private void chkDetailedCollision_CheckedChanged(object sender, EventArgs e)
         {
             Settings.Default.DetailedCollision = chkDetailedCollision.Checked;
+            Settings.Default.Save();
+        }
+
+        private void TglKeyBinds_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.NewKeyBinds = tglKeyBinds.Checked;
             Settings.Default.Save();
         }
     }

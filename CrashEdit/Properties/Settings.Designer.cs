@@ -202,5 +202,17 @@ namespace CrashEdit.Properties {
                 this["UpgradeSettings"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool NewKeyBinds {
+            get {
+                return ((bool)(this["NewKeyBinds"]));
+            }
+            set {
+                this["NewKeyBinds"] = value;
+            }
+        }
     }
 }

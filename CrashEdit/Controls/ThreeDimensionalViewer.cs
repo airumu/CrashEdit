@@ -224,16 +224,33 @@ namespace CrashEdit
 
         protected override bool IsInputKey(Keys keyData)
         {
-            switch (keyData)
+            if (Settings.Default.NewKeyBinds)
             {
-                case Keys.Up:
-                case Keys.Down:
-                case Keys.Left:
-                case Keys.Right:
-                case Keys.A:
-                case Keys.Z:
-                case Keys.R:
-                    return true;
+                switch (keyData)
+                {
+                    case Keys.W:
+                    case Keys.S:
+                    case Keys.A:
+                    case Keys.D:
+                    case Keys.Space:
+                    case Keys.ShiftKey:
+                    case Keys.R:
+                        return true;
+                }
+            }
+            else
+            {
+                switch (keyData)
+                {
+                    case Keys.Up:
+                    case Keys.Down:
+                    case Keys.Left:
+                    case Keys.Right:
+                    case Keys.A:
+                    case Keys.Z:
+                    case Keys.R:
+                        return true;
+                }
             }
             return base.IsInputKey(keyData);
         }
@@ -241,55 +258,112 @@ namespace CrashEdit
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
-            switch (e.KeyCode)
+            if (Settings.Default.NewKeyBinds)
             {
-                case Keys.Up:
-                    keyup = true;
-                    break;
-                case Keys.Down:
-                    keydown = true;
-                    break;
-                case Keys.Left:
-                    keyleft = true;
-                    break;
-                case Keys.Right:
-                    keyright = true;
-                    break;
-                case Keys.A:
-                    keya = true;
-                    break;
-                case Keys.Z:
-                    keyz = true;
-                    break;
-                case Keys.R:
-                    ResetCamera();
-                    break;
+                switch (e.KeyCode)
+                {
+                    case Keys.W:
+                        keyup = true;
+                        break;
+                    case Keys.S:
+                        keydown = true;
+                        break;
+                    case Keys.A:
+                        keyleft = true;
+                        break;
+                    case Keys.D:
+                        keyright = true;
+                        break;
+                    case Keys.Space:
+                        keya = true;
+                        break;
+                    case Keys.ShiftKey:
+                        keyz = true;
+                        break;
+                    case Keys.R:
+                        ResetCamera();
+                        break;
+                }
+            }
+            else
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.Up:
+                        keyup = true;
+                        break;
+                    case Keys.Down:
+                        keydown = true;
+                        break;
+                    case Keys.Left:
+                        keyleft = true;
+                        break;
+                    case Keys.Right:
+                        keyright = true;
+                        break;
+                    case Keys.A:
+                        keya = true;
+                        break;
+                    case Keys.Z:
+                        keyz = true;
+                        break;
+                    case Keys.R:
+                        ResetCamera();
+                        break;
+                }
             }
         }
 
         protected override void OnKeyUp(KeyEventArgs e)
         {
             base.OnKeyUp(e);
-            switch (e.KeyCode)
+            if (Settings.Default.NewKeyBinds)
             {
-                case Keys.Up:
-                    keyup = false;
-                    break;
-                case Keys.Down:
-                    keydown = false;
-                    break;
-                case Keys.Left:
-                    keyleft = false;
-                    break;
-                case Keys.Right:
-                    keyright = false;
-                    break;
-                case Keys.A:
-                    keya = false;
-                    break;
-                case Keys.Z:
-                    keyz = false;
-                    break;
+                switch (e.KeyCode)
+                {
+                    case Keys.W:
+                        keyup = false;
+                        break;
+                    case Keys.S:
+                        keydown = false;
+                        break;
+                    case Keys.A:
+                        keyleft = false;
+                        break;
+                    case Keys.D:
+                        keyright = false;
+                        break;
+                    case Keys.Space:
+                        keya = false;
+                        break;
+                    case Keys.ShiftKey:
+                        keyz = false;
+                        break;
+                }
+            }
+            else
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.Up:
+                        keyup = false;
+                        break;
+                    case Keys.Down:
+                        keydown = false;
+                        break;
+                    case Keys.Left:
+                        keyleft = false;
+                        break;
+                    case Keys.Right:
+                        keyright = false;
+                        break;
+                    case Keys.A:
+                        keya = false;
+                        break;
+                    case Keys.Z:
+                        keyz = false;
+                        break;
+                }
             }
         }
 
