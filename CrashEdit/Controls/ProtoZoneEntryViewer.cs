@@ -254,6 +254,25 @@ namespace CrashEdit
                     {
                         GL.CallList(octreedisplaylist);
                     }
+                    GL.Color3(Color.Cyan);
+                    GL.Begin(PrimitiveType.LineStrip);
+                    GL.Vertex3(0, 0, 0);
+                    GL.Vertex3(x2, 0, 0);
+                    GL.Vertex3(x2, y2, 0);
+                    GL.Vertex3(0, y2, 0);
+                    GL.Vertex3(0, 0, 0);
+                    GL.Vertex3(0, 0, z2);
+                    GL.Vertex3(x2, 0, z2);
+                    GL.Vertex3(x2, y2, z2);
+                    GL.Vertex3(0, y2, z2);
+                    GL.Vertex3(0, 0, z2);
+                    GL.Vertex3(x2, 0, z2);
+                    GL.Vertex3(x2, 0, 0);
+                    GL.Vertex3(x2, y2, 0);
+                    GL.Vertex3(x2, y2, z2);
+                    GL.Vertex3(0, y2, z2);
+                    GL.Vertex3(0, y2, 0);
+                    GL.End();
                     GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
                 }
                 GL.Enable(EnableCap.PolygonStipple);
