@@ -20,8 +20,8 @@
     <Setting Name="UseAnimLinks" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="ClearColor" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">6, 6, 6</Value>
+    <Setting Name="ClearColorRGB" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">-16382458</Value>
     </Setting>
     <Setting Name="DeleteInvalidEntries" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -42,6 +42,9 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="DetailedCollision" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="UpgradeSettings" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>

@@ -22,7 +22,7 @@ namespace CrashEdit
             chkNormalDisplay.Checked = Settings.Default.DisplayNormals;
             chkCollisionDisplay.Checked = Settings.Default.DisplayFrameCollision;
             chkUseAnimLinks.Checked = Settings.Default.UseAnimLinks;
-            picClearCol.BackColor = Settings.Default.ClearColor;
+            cdlClearCol.Color = picClearCol.BackColor = System.Drawing.Color.FromArgb(Settings.Default.ClearColorRGB);
             chkDeleteInvalidEntries.Checked = Settings.Default.DeleteInvalidEntries;
             chkAnimGrid.Checked = Settings.Default.DisplayAnimGrid;
             numAnimGrid.Value = Settings.Default.AnimGridLen;
@@ -91,7 +91,8 @@ namespace CrashEdit
         {
             if (cdlClearCol.ShowDialog(this) == DialogResult.OK)
             {
-                picClearCol.BackColor = Settings.Default.ClearColor = cdlClearCol.Color;
+                Settings.Default.ClearColorRGB = cdlClearCol.Color.ToArgb();
+                picClearCol.BackColor = Color.FromArgb(Settings.Default.ClearColorRGB);
                 Settings.Default.Save();
             }
         }
@@ -110,11 +111,16 @@ namespace CrashEdit
 
         private void cmdClearCol_Click(object sender, EventArgs e)
         {
-            picClearCol.BackColor = Settings.Default.ClearColor = System.Drawing.Color.Black;
-            Settings.Default.Save();
-            cmdClearCol.Enabled = false;
+            Settings.Default.ClearColorRGB = cdlClearCol.Color.ToArgb();
+            cdlClearCol.Color = picClearCol.BackColor = Color.Black;
+
+            cmdClearCol.Enabled = true;
             //背景色を灰色にしない
             cmdClearCol.BackColor = cmdClearCol.BackColor;
+
+            Settings.Default.ClearColorRGB = cdlClearCol.Color.ToArgb();
+            cdlClearCol.Color = picClearCol.BackColor = Color.Black;
+            Settings.Default.Save();
         }
 
         private void chkDeleteInvalidEntries_CheckedChanged(object sender, EventArgs e)

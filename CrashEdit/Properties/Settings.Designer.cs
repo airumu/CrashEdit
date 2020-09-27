@@ -97,13 +97,13 @@ namespace CrashEdit.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("6, 6, 6")]
-        public global::System.Drawing.Color ClearColor {
+        [global::System.Configuration.DefaultSettingValueAttribute("-16382458")]
+        public int ClearColorRGB {
             get {
-                return ((global::System.Drawing.Color)(this["ClearColor"]));
+                return ((int)(this["ClearColorRGB"]));
             }
             set {
-                this["ClearColor"] = value;
+                this["ClearColorRGB"] = value;
             }
         }
         
@@ -188,6 +188,18 @@ namespace CrashEdit.Properties {
             }
             set {
                 this["DetailedCollision"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool UpgradeSettings {
+            get {
+                return ((bool)(this["UpgradeSettings"]));
+            }
+            set {
+                this["UpgradeSettings"] = value;
             }
         }
     }
