@@ -1327,6 +1327,7 @@ namespace CrashEdit
 
         private void bgwMakeBIN_DoWork(object sender, DoWorkEventArgs e)
         {
+            while (!dlgProgress.IsShown) ;
             using (FileStream output = new FileStream(dlgMakeBINFile.FileName, FileMode.Create, FileAccess.Write))
             using (Stream input = ((CDBuilder)e.Argument).Build())
             {
