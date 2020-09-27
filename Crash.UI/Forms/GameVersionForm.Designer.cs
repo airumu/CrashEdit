@@ -84,7 +84,7 @@
             this.cmdCrash3.Padding = new System.Windows.Forms.Padding(6);
             this.cmdCrash3.Size = new System.Drawing.Size(362, 42);
             this.cmdCrash3.TabIndex = 4;
-            this.cmdCrash3.Text = "Crash Bandicoot 3: Warped\r\nクラッシュバンディクー　3:　ブッとび！　世界一周";
+            this.cmdCrash3.Text = "Crash Bandicoot: Warped\r\nクラッシュバンディクー　3:　ブッとび！　世界一周";
             this.cmdCrash3.Click += new System.EventHandler(this.cmdCrash3_Click);
             // 
             // cmdCrash2
@@ -181,7 +181,7 @@
             this.cmdCrash1BetaMAR08.Padding = new System.Windows.Forms.Padding(6);
             this.cmdCrash1BetaMAR08.Size = new System.Drawing.Size(362, 42);
             this.cmdCrash1BetaMAR08.TabIndex = 6;
-            this.cmdCrash1BetaMAR08.Text = "Crash Bandicoot\r\n\"Prototype\" (March 8,1996)";
+            this.cmdCrash1BetaMAR08.Text = "Crash Bandicoot\r\n\"Prototype\" (April 8,1996)";
             this.cmdCrash1BetaMAR08.Click += new System.EventHandler(this.cmdCrash1BetaMAR08_Click);
             // 
             // cmdCancel
