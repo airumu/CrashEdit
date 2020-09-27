@@ -547,7 +547,75 @@ namespace CrashEdit
             {
                 string filename = tbcTabs.SelectedTab.Text;
                 NSFBox nsfbox = (NSFBox)tbcTabs.SelectedTab.Tag;
-                SaveNSF(filename,nsfbox.NSF,ignore_warnings);
+                NSF nsf = nsfbox.NSF;
+                switch (nsfbox.NSFController.GameVersion)
+                {
+                    case GameVersion.Crash1:
+                        foreach (Chunk chunk in nsf.Chunks)
+                        {
+                            if (chunk is EntryChunk entrychunk)
+                            {
+                                foreach (Entry entry in entrychunk.Entries)
+                                {
+                                    if (entry is OldZoneEntry zone)
+                                    {
+                                        foreach (OldEntity entity in zone.Entities)
+                                        {
+                                            if (entity.ID >= 0x130)
+                                            {
+                                                DarkMessageBox.ShowWarning(string.Format("An entity (ID {0}) exceeds maximum ID of 303.", entity.ID), "Entity ID Error");
+                                            }
+                                            else if (entity.ID <= 0)
+                                            {
+                                                DarkMessageBox.ShowWarning(string.Format("An entity has invalid ID {0}.", entity.ID), "Entity ID Error");
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    case GameVersion.Crash2:
+                        foreach (Chunk chunk in nsf.Chunks)
+                        {
+                            if (chunk is EntryChunk entrychunk)
+                            {
+                                foreach (Entry entry in entrychunk.Entries)
+                                {
+                                    if (entry is ZoneEntry zone)
+                                    {
+                                        foreach (Entity entity in zone.Entities)
+                                        {
+                                            if ((entity.ID != null && entity.ID >= 0x400) || (entity.AlternateID != null && entity.AlternateID >= 0x400))
+                                            {
+                                                if (entity.Name != null)
+                                                {
+                                                    DarkMessageBox.ShowWarning(string.Format("Entity {0} (ID {1}) exceeds maximum ID of 1023.", entity.Name, entity.ID != null ? entity.ID : entity.AlternateID), "Entity ID Error");
+                                                }
+                                                else
+                                                {
+                                                    DarkMessageBox.ShowWarning(string.Format("An entity (ID {0}) exceeds maximum ID of 1023.", entity.ID != null ? entity.ID : entity.AlternateID), "Entity ID Error");
+                                                }
+                                            }
+                                            else if ((entity.ID != null && entity.ID <= 0) || (entity.AlternateID != null && entity.AlternateID <= 0))
+                                            {
+                                                if (entity.Name != null)
+                                                {
+                                                    DarkMessageBox.ShowWarning(string.Format("Entity {0} has invalid ID {1}.", entity.Name, entity.ID != null ? entity.ID : entity.AlternateID), "Entity ID Error");
+                                                }
+                                                else
+                                                {
+                                                    DarkMessageBox.ShowWarning(string.Format("An entity has invalid ID {0}.", entity.ID != null ? entity.ID : entity.AlternateID), "Entity ID Error");
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                }
+                SaveNSF(filename, nsf, ignore_warnings);
             }
         }
 
@@ -668,6 +736,10 @@ namespace CrashEdit
                             {
                                 for (i = 0; i < nodes.Length; ++i)
                                 {
+                                    if (nodes[i].IsSelected)
+                                    {
+                                        nodes[i].TreeView.SelectedNode = nodes[i].Parent;
+                                    }
                                     if (nodes[i].Tag != null)
                                     {
                                         if (nodes[i].Tag is Controller t)
