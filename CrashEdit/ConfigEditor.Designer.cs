@@ -270,9 +270,8 @@
             // 
             // chkOldPatchNSD
             // 
-            this.chkOldPatchNSD.AutoSize = true;
             this.chkOldPatchNSD.ForeColor = System.Drawing.Color.MediumSpringGreen;
-            this.chkOldPatchNSD.Location = new System.Drawing.Point(4, 217);
+            this.chkOldPatchNSD.Location = new System.Drawing.Point(4, 259);
             this.chkOldPatchNSD.Name = "chkOldPatchNSD";
             this.chkOldPatchNSD.Size = new System.Drawing.Size(335, 15);
             this.chkOldPatchNSD.TabIndex = 9;
@@ -285,7 +284,6 @@
             // 
             // chkPatchNSDSavesNSF
             // 
-            this.chkPatchNSDSavesNSF.AutoSize = true;
             this.chkPatchNSDSavesNSF.Checked = true;
             this.chkPatchNSDSavesNSF.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkPatchNSDSavesNSF.ForeColor = System.Drawing.SystemColors.Control;
@@ -301,8 +299,7 @@
             // 
             // chkDeleteInvalidEntries
             // 
-            this.chkDeleteInvalidEntries.AutoSize = true;
-            this.chkDeleteInvalidEntries.Location = new System.Drawing.Point(4, 196);
+            this.chkDeleteInvalidEntries.Location = new System.Drawing.Point(4, 217);
             this.chkDeleteInvalidEntries.Name = "chkDeleteInvalidEntries";
             this.chkDeleteInvalidEntries.Size = new System.Drawing.Size(309, 15);
             this.chkDeleteInvalidEntries.TabIndex = 5;
@@ -314,10 +311,9 @@
             // 
             // chkUseAnimLinks
             // 
-            this.chkUseAnimLinks.AutoSize = true;
             this.chkUseAnimLinks.Checked = true;
             this.chkUseAnimLinks.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkUseAnimLinks.Location = new System.Drawing.Point(4, 259);
+            this.chkUseAnimLinks.Location = new System.Drawing.Point(4, 196);
             this.chkUseAnimLinks.Name = "chkUseAnimLinks";
             this.chkUseAnimLinks.Size = new System.Drawing.Size(255, 15);
             this.chkUseAnimLinks.TabIndex = 3;
@@ -329,7 +325,6 @@
             // 
             // chkCollisionDisplay
             // 
-            this.chkCollisionDisplay.AutoSize = true;
             this.chkCollisionDisplay.Location = new System.Drawing.Point(4, 154);
             this.chkCollisionDisplay.Name = "chkCollisionDisplay";
             this.chkCollisionDisplay.Size = new System.Drawing.Size(198, 15);
@@ -342,7 +337,6 @@
             // 
             // chkNormalDisplay
             // 
-            this.chkNormalDisplay.AutoSize = true;
             this.chkNormalDisplay.ForeColor = System.Drawing.Color.Gainsboro;
             this.chkNormalDisplay.Location = new System.Drawing.Point(4, 132);
             this.chkNormalDisplay.Name = "chkNormalDisplay";
@@ -373,14 +367,13 @@
             // 
             // chkDetailedCollision
             // 
-            this.chkDetailedCollision.AutoSize = true;
             this.chkDetailedCollision.Checked = true;
             this.chkDetailedCollision.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkDetailedCollision.Location = new System.Drawing.Point(4, 175);
             this.chkDetailedCollision.Name = "chkDetailedCollision";
-            this.chkDetailedCollision.Size = new System.Drawing.Size(179, 15);
+            this.chkDetailedCollision.Size = new System.Drawing.Size(186, 15);
             this.chkDetailedCollision.TabIndex = 11;
-            this.chkDetailedCollision.Text = "Display detailed collision type";
+            this.chkDetailedCollision.Text = "Display detailed collision types";
             this.chkDetailedCollision.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.chkDetailedCollision.UseCustomBackColor = true;
             this.chkDetailedCollision.UseSelectable = true;
@@ -416,7 +409,6 @@
             this.fraAnimGrid.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numAnimGrid)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
