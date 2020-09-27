@@ -739,4 +739,7 @@
   <data name="Config_chkOldPatchNSD" xml:space="preserve">
     <value>(Patch NSD) Use old NSD patching from CrashEdit v0.2.49.0</value>
   </data>
+  <data name="MakeBIN_Making" xml:space="preserve">
+    <value>Making BIN...</value>
+  </data>
 </root>

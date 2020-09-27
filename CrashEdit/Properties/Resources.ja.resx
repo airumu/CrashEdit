@@ -701,7 +701,7 @@
     <value>CUE ファイルは既に存在するため、変更されません。</value>
   </data>
   <data name="MakeBIN_DRNSF_Launch" xml:space="preserve">
-    <value>選択されたリージョンを適用するためDRNSFを起動しています．．．</value>
+    <value>選択されたリージョンを適用するためDRNSFを起動しています…</value>
   </data>
   <data name="MakeBIN_DRNSF_Error" xml:space="preserve">
     <value>DRNSFがエラーを返しました。リージョンは適用されていません。</value>
@@ -732,5 +732,8 @@
   </data>
   <data name="Playtest_Title" xml:space="preserve">
     <value>プレイテスト</value>
+  </data>
+  <data name="MakeBIN_Making" xml:space="preserve">
+    <value>BIN を作成中…</value>
   </data>
 </root>

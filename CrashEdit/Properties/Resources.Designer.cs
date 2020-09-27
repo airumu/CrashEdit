@@ -1100,6 +1100,15 @@ namespace CrashEdit.Properties {
         }
         
         /// <summary>
+        ///   Making BIN... に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MakeBIN_Making {
+            get {
+                return ResourceManager.GetString("MakeBIN_Making", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Created BIN file without region OK. に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string MakeBIN_NoRegOK {
