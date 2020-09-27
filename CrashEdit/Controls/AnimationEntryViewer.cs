@@ -28,7 +28,7 @@ namespace CrashEdit
         private bool interp_startend = false;
         private int cullmode = 0;
 
-        public AnimationEntryViewer(Frame frame,ModelEntry model,TextureChunk[] texturechunks)
+        public AnimationEntryViewer(Frame frame, ModelEntry model, TextureChunk[] texturechunks)
         {
             collision_enabled = Settings.Default.DisplayFrameCollision;
             frames = new List<Frame>();
@@ -43,7 +43,7 @@ namespace CrashEdit
             InitTextures(1);
         }
 
-        public AnimationEntryViewer(IEnumerable<Frame> frames,ModelEntry model,TextureChunk[] texturechunks)
+        public AnimationEntryViewer(IEnumerable<Frame> frames, ModelEntry model, TextureChunk[] texturechunks)
         {
             collision_enabled = Settings.Default.DisplayFrameCollision;
             this.frames = new List<Frame>();
@@ -71,7 +71,7 @@ namespace CrashEdit
                 Interval = 1000 / OldMainForm.GetRate() / 2 / (interp / 2),
                 Enabled = true
             };
-            animatetimer.Tick += delegate (object sender,EventArgs e)
+            animatetimer.Tick += delegate (object sender, EventArgs e)
             {
                 animatetimer.Interval = 1000 / OldMainForm.GetRate() / 2 / (interp / 2);
                 ++interi;
@@ -84,28 +84,36 @@ namespace CrashEdit
             };
         }
 
-        private int MinScale => model != null ? Math.Min(BitConv.FromInt32(model.Info, 8), Math.Min(BitConv.FromInt32(model.Info, 0), BitConv.FromInt32(model.Info, 4))) : 0x640;
-        private int MaxScale => model != null ? Math.Max(BitConv.FromInt32(model.Info, 8), Math.Max(BitConv.FromInt32(model.Info, 0), BitConv.FromInt32(model.Info, 4))) : 0x640;
-
-        protected override int CameraRangeMargin => 256;
-        protected override float ScaleFactor => 12;
-        protected override float FarPlane => (float)MaxScale/MinScale*256*16;
-        protected override float NearPlane => (float)MaxScale/MinScale*2;
+        protected override int CameraRangeMargin => 400;
+        protected override float NearPlane => 40;
+        protected override float FarPlane => 400 * 200;
 
         protected override IEnumerable<IPosition> CorePositions
         {
             get
             {
-                var vec = model != null ? new Vector3(BitConv.FromInt32(model.Info,0),BitConv.FromInt32(model.Info,4),BitConv.FromInt32(model.Info,8))/MinScale : new Vector3(1,1,1);
+                int mdlX = 0x1000;
+                int mdlY = 0x1000;
+                int mdlZ = 0x1000;
+                if (model != null)
+                {
+                    mdlX = model.ScaleX;
+                    mdlY = model.ScaleY;
+                    mdlZ = model.ScaleZ;
+                }
+                yield return new Position(0, 0, 0);
                 foreach (Frame frame in frames)
                 {
                     foreach (FrameVertex vertex in frame.Vertices)
                     {
-                        float f = frame.IsNew ? 4.0f * 8 : 4.0f;
-                        float x = (vertex.X + frame.XOffset / f) * vec.X;
-                        float y = (vertex.Z + frame.YOffset / f) * vec.Y;
-                        float z = (vertex.Y + frame.ZOffset / f) * vec.Z;
-                        yield return new Position(x,y,z);
+                        int s = frame.IsNew ? 32 : 4;
+                        int x = vertex.X + frame.XOffset / s;
+                        int y = vertex.Z + frame.YOffset / s;
+                        int z = vertex.Y + frame.ZOffset / s;
+                        x = x * mdlX >> 10;
+                        y = y * mdlY >> 10;
+                        z = z * mdlZ >> 10;
+                        yield return new Position(x, y, z);
                     }
                 }
             }
@@ -136,7 +144,7 @@ namespace CrashEdit
             }
             else
             {
-                RenderFrame(frames[frameid], frames[frameid+1]);
+                RenderFrame(frames[frameid], frames[frameid + 1]);
             }
             if (normals_enabled)
             {
@@ -197,39 +205,36 @@ namespace CrashEdit
         private void RenderFrame(Frame f1, Frame f2 = null)
         {
             //LoadTexture(OldResources.PointTexture);
-            //RenderPoints(f2);
+            //RenderPoints(f1,f2);
             if (model != null)
             {
                 if (Settings.Default.DisplayAnimGrid)
                 {
-                    GL.PushMatrix();
-                    GL.Scale(new Vector3((f1.IsNew ? 0.5F : 4F) * 102400 / MinScale));
                     GL.Begin(PrimitiveType.Lines);
                     GL.Color3(Color.Red);
-                    GL.Vertex3(-0.5F, 0, 0);
-                    GL.Vertex3(+0.5F, 0, 0);
+                    GL.Vertex3(-200, 0, 0);
+                    GL.Vertex3(+200, 0, 0);
                     GL.Color3(Color.Green);
-                    GL.Vertex3(0, -0.5F, 0);
-                    GL.Vertex3(0, +0.5F, 0);
+                    GL.Vertex3(0, -200, 0);
+                    GL.Vertex3(0, +200, 0);
                     GL.Color3(Color.Blue);
-                    GL.Vertex3(0, 0, -0.5F);
-                    GL.Vertex3(0, 0, +0.5F);
+                    GL.Vertex3(0, 0, -200);
+                    GL.Vertex3(0, 0, +200);
                     GL.Color3(Color.Gray);
                     int gridamt = Settings.Default.AnimGridLen;
-                    float gridlen = 1.0F * gridamt - 0.5F;
+                    int gridlen = 400 * gridamt - 200;
                     for (int i = 0; i < gridamt; ++i)
                     {
-                        GL.Vertex3(+0.5F + i * 1F, 0, +gridlen);
-                        GL.Vertex3(+0.5F + i * 1F, 0, -gridlen);
-                        GL.Vertex3(-0.5F - i * 1F, 0, +gridlen);
-                        GL.Vertex3(-0.5F - i * 1F, 0, -gridlen);
-                        GL.Vertex3(+gridlen, 0, +0.5F + i * 1F);
-                        GL.Vertex3(-gridlen, 0, +0.5F + i * 1F);
-                        GL.Vertex3(+gridlen, 0, -0.5F - i * 1F);
-                        GL.Vertex3(-gridlen, 0, -0.5F - i * 1F);
+                        GL.Vertex3(+200 + i * 400, 0, +gridlen);
+                        GL.Vertex3(+200 + i * 400, 0, -gridlen);
+                        GL.Vertex3(-200 - i * 400, 0, +gridlen);
+                        GL.Vertex3(-200 - i * 400, 0, -gridlen);
+                        GL.Vertex3(+gridlen, 0, +200 + i * 400);
+                        GL.Vertex3(-gridlen, 0, +200 + i * 400);
+                        GL.Vertex3(+gridlen, 0, -200 - i * 400);
+                        GL.Vertex3(-gridlen, 0, -200 - i * 400);
                     }
                     GL.End();
-                    GL.PopMatrix();
                 }
                 if (cullmode < 2)
                 {
@@ -241,7 +246,6 @@ namespace CrashEdit
                 else
                     GL.Disable(EnableCap.Texture2D);
                 GL.PushMatrix();
-                GL.Scale(new Vector3(BitConv.FromInt32(model.Info,0),BitConv.FromInt32(model.Info,4),BitConv.FromInt32(model.Info,8))/MinScale);
                 double[] uvs = new double[6];
                 foreach (ModelTransformedTriangle tri in model.Triangles)
                 {
@@ -276,7 +280,7 @@ namespace CrashEdit
                         }
                         else
                         {
-                            BindTexture(0,tex);
+                            BindTexture(0, tex);
                             var t = model.Textures[tex];
                             switch (tri.Type)
                             {
@@ -309,14 +313,14 @@ namespace CrashEdit
                         {
                             SceneryColor c = model.Colors[tri.Color[j]];
                             if (!normals_enabled)
-                                GL.Color3(c.Red,c.Green,c.Blue);
+                                GL.Color3(c.Red, c.Green, c.Blue);
                             else
                             {
-                                var normal = new Vector3d((sbyte)c.Red / 127.0,(sbyte)c.Green / 127.0,(sbyte)c.Blue / 127.0);
+                                var normal = new Vector3d((sbyte)c.Red / 127.0, (sbyte)c.Green / 127.0, (sbyte)c.Blue / 127.0);
                                 GL.Normal3(normal);
                             }
                             GL.TexCoord2(uvs[2 * j + 0], uvs[2 * j + 1]);
-                            RenderVertex(f1,f2,tri.Vertex[j] + f1.SpecialVertexCount);
+                            RenderVertex(f1, f2, tri.Vertex[j] + f1.SpecialVertexCount);
                         }
                     }
                     if ((tri.Subtype == 0 || tri.Subtype == 2) || ((tri.Subtype == 3) ^ tri.Type == 2))
@@ -325,14 +329,14 @@ namespace CrashEdit
                         {
                             SceneryColor c = model.Colors[tri.Color[j]];
                             if (!normals_enabled)
-                                GL.Color3(c.Red,c.Green,c.Blue);
+                                GL.Color3(c.Red, c.Green, c.Blue);
                             else
                             {
-                                var normal = new Vector3d((sbyte)c.Red / 127.0,(sbyte)c.Green / 127.0,(sbyte)c.Blue / 127.0);
+                                var normal = new Vector3d((sbyte)c.Red / 127.0, (sbyte)c.Green / 127.0, (sbyte)c.Blue / 127.0);
                                 GL.Normal3(normal);
                             }
                             GL.TexCoord2(uvs[2 * j + 0], uvs[2 * j + 1]);
-                            RenderVertex(f1,f2,tri.Vertex[j] + f1.SpecialVertexCount);
+                            RenderVertex(f1, f2, tri.Vertex[j] + f1.SpecialVertexCount);
                         }
                     }
                     GL.End();
@@ -345,27 +349,10 @@ namespace CrashEdit
                         GL.Begin(PrimitiveType.Lines);
                         for (int j = 0; j < 3; ++j)
                         {
-                            Vector3 v;
-                            if (f2 == null)
-                            {
-                                FrameVertex vertex = f1.Vertices[tri.Vertex[j] + f1.SpecialVertexCount];
-                                v = new Vector3(vertex.X + f1.XOffset / 4, vertex.Z + f1.YOffset / 4, vertex.Y + f1.ZOffset / 4);
-                            }
-                            else
-                            {
-                                FrameVertex v1 = f1.Vertices[tri.Vertex[j] + f1.SpecialVertexCount];
-                                FrameVertex v2 = f2.Vertices[tri.Vertex[j] + f2.SpecialVertexCount];
-                                int x1 = v1.X + f1.XOffset / 4;
-                                int x2 = v2.X + f2.XOffset / 4;
-                                int y1 = v1.Z + f1.YOffset / 4;
-                                int y2 = v2.Z + f2.YOffset / 4;
-                                int z1 = v1.Y + f1.ZOffset / 4;
-                                int z2 = v2.Y + f2.ZOffset / 4;
-                                v = new Vector3(x1 + (x2 - x1) / (float)interp * interi, y1 + (y2 - y1) / (float)interp * interi, z1 + (z2 - z1) / (float)interp * interi);
-                            }
+                            Vector3 v = GetVertex(f1, f2, tri.Vertex[j] + f1.SpecialVertexCount);
                             SceneryColor c = model.Colors[tri.Color[j]];
                             GL.Vertex3(v);
-                            GL.Vertex3(v + new Vector3((sbyte)c.Red,(sbyte)c.Green,(sbyte)c.Blue) / 127 * 8);
+                            GL.Vertex3(v + new Vector3((sbyte)c.Red, (sbyte)c.Green, (sbyte)c.Blue) / 127 * 16);
                         }
                         GL.End();
                         if (textures_enabled)
@@ -386,7 +373,7 @@ namespace CrashEdit
                 GL.Begin(PrimitiveType.Points);
                 for (int i = 0; i < f1.Vertices.Count; ++i)
                 {
-                    RenderVertex(f1,f2,i);
+                    RenderVertex(f1, f2, i);
                 }
                 GL.End();
             }
@@ -408,19 +395,19 @@ namespace CrashEdit
             for (int i = 0; i < f.SpecialVertexCount; ++i)
             {
                 GL.PushMatrix();
-                GL.Translate((f.Vertices[i].X + f.XOffset / 4) * BitConv.FromInt32(model.Info,0),(f.Vertices[i].Z + f.YOffset / 4) * BitConv.FromInt32(model.Info,4),(f.Vertices[i].Y + f.ZOffset / 4) * BitConv.FromInt32(model.Info,8));
+                GL.Translate((f.Vertices[i].X + f.XOffset / 4) * BitConv.FromInt32(model.Info, 0), (f.Vertices[i].Z + f.YOffset / 4) * BitConv.FromInt32(model.Info, 4), (f.Vertices[i].Y + f.ZOffset / 4) * BitConv.FromInt32(model.Info, 8));
                 GL.Rotate(-rotx, 0, 1, 0);
                 GL.Rotate(-roty, 1, 0, 0);
-                GL.Scale(12.8f*MinScale,12.8f*MinScale,12.8f*MinScale);
+                GL.Scale(12.8f, 12.8f, 12.8f);
                 GL.Begin(PrimitiveType.Quads);
-                GL.TexCoord2(0,0);
-                GL.Vertex2(-1,+1);
-                GL.TexCoord2(1,0);
-                GL.Vertex2(+1,+1);
-                GL.TexCoord2(1,1);
-                GL.Vertex2(+1,-1);
-                GL.TexCoord2(0,1);
-                GL.Vertex2(-1,-1);
+                GL.TexCoord2(0, 0);
+                GL.Vertex2(-1, +1);
+                GL.TexCoord2(1, 0);
+                GL.Vertex2(+1, +1);
+                GL.TexCoord2(1, 1);
+                GL.Vertex2(+1, -1);
+                GL.TexCoord2(0, 1);
+                GL.Vertex2(-1, -1);
                 GL.End();
                 GL.PopMatrix();
             }
@@ -429,25 +416,36 @@ namespace CrashEdit
 
         private void RenderVertex(Frame f1, Frame f2, int id)
         {
-            float f = f1.IsNew ? 4.0f * 8 : 4.0f;
+            GL.Vertex3(GetVertex(f1, f2, id));
+        }
+
+        private Vector3 GetVertex(Frame f1, Frame f2, int id)
+        {
+            float s = f1.IsNew ? 32 : 4;
+            Vector3 v;
             if (f2 == null)
             {
                 FrameVertex vertex = f1.Vertices[id];
-                GL.Vertex3(vertex.X + f1.XOffset / f, vertex.Z + f1.YOffset / f, vertex.Y + f1.ZOffset / f);
+                v = new Vector3(vertex.X + f1.XOffset / s, vertex.Z + f1.YOffset / s, vertex.Y + f1.ZOffset / s);
             }
             else
             {
                 float fac = (float)interi / interp;
                 FrameVertex v1 = f1.Vertices[id];
                 FrameVertex v2 = f2.Vertices[id];
-                float x1 = v1.X + f1.XOffset / f;
-                float x2 = v2.X + f2.XOffset / f;
-                float y1 = v1.Z + f1.YOffset / f;
-                float y2 = v2.Z + f2.YOffset / f;
-                float z1 = v1.Y + f1.ZOffset / f;
-                float z2 = v2.Y + f2.ZOffset / f;
-                GL.Vertex3(x1 + (x2 - x1) * fac, y1 + (y2 - y1) * fac, z1 + (z2 - z1) * fac);
+                float x1 = v1.X + f1.XOffset / s;
+                float x2 = v2.X + f2.XOffset / s;
+                float y1 = v1.Z + f1.YOffset / s;
+                float y2 = v2.Z + f2.YOffset / s;
+                float z1 = v1.Y + f1.ZOffset / s;
+                float z2 = v2.Y + f2.ZOffset / s;
+                v = new Vector3(NumberExt.GetFac(x1, x2, fac), NumberExt.GetFac(y1, y2, fac), NumberExt.GetFac(z1, z2, fac));
             }
+            if (model != null)
+            {
+                v *= new Vector3(model.ScaleX / 256F / 4, model.ScaleY / 256F / 4, model.ScaleZ / 256F / 4);
+            }
+            return v;
         }
 
         private Frame UncompressFrame(Frame frame)
@@ -474,7 +472,7 @@ namespace CrashEdit
                 {
                     z_alu = 0;
                 }
-                
+
                 // XZY frame data
                 int vx = frame.Temporals[bi++] ? SignTable[model.Positions[i].XBits] : 0;
                 for (int j = 0; j < model.Positions[i].XBits; ++j)
@@ -509,13 +507,13 @@ namespace CrashEdit
             if (frame.Decompressed) return frame; // already loaded (no decompression was necessary though)
             if (frame.Temporals.Length < frame.Vertices.Count * 8 * 3) return frame; // failsafe
             bool[] uncompressedbitstream = new bool[frame.Temporals.Length];
-            for (int i = 0; i < uncompressedbitstream.Length / 32;++i)
+            for (int i = 0; i < uncompressedbitstream.Length / 32; ++i)
             {
                 for (int j = 0; j < 4; ++j)
                 {
                     for (int k = 0; k < 8; ++k)
                     {
-                        uncompressedbitstream[32*i+24-j*8+k] = frame.Temporals[32*i+j*8+k]; // replace this with a cool formula one day
+                        uncompressedbitstream[32 * i + 24 - j * 8 + k] = frame.Temporals[32 * i + j * 8 + k]; // replace this with a cool formula one day
                     }
                 }
             }
@@ -525,22 +523,22 @@ namespace CrashEdit
                 byte x = 0;
                 for (int j = 0; j < 8; ++j)
                 {
-                    x |= (byte)(Convert.ToByte(uncompressedbitstream[bi++]) << (7-j));
+                    x |= (byte)(Convert.ToByte(uncompressedbitstream[bi++]) << (7 - j));
                 }
-                
+
                 byte y = 0;
                 for (int j = 0; j < 8; ++j)
                 {
-                    y |= (byte)(Convert.ToByte(uncompressedbitstream[bi++]) << (7-j));
+                    y |= (byte)(Convert.ToByte(uncompressedbitstream[bi++]) << (7 - j));
                 }
-                
+
                 byte z = 0;
                 for (int j = 0; j < 8; ++j)
                 {
-                    z |= (byte)(Convert.ToByte(uncompressedbitstream[bi++]) << (7-j));
+                    z |= (byte)(Convert.ToByte(uncompressedbitstream[bi++]) << (7 - j));
                 }
-                
-                frame.Vertices[i] = new FrameVertex(x,y,z);
+
+                frame.Vertices[i] = new FrameVertex(x, y, z);
             }
             frame.Decompressed = true;
             return frame;
@@ -570,7 +568,7 @@ namespace CrashEdit
         private void RenderCollisionBox(Frame frame, int col)
         {
             GL.PushMatrix();
-            GL.Scale(new Vector3((frame.IsNew?0.5F:4F)/MinScale));
+            GL.Scale(new Vector3(1 / (frame.IsNew ? 2048F : 256F)));
             GL.Translate(frame.Collision[col].XO, frame.Collision[col].YO, frame.Collision[col].ZO);
             GL.Begin(PrimitiveType.QuadStrip);
             GL.Vertex3(frame.Collision[col].X1, frame.Collision[col].Y1, frame.Collision[col].Z1);
