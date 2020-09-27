@@ -84,7 +84,7 @@ namespace CrashEdit
             };
         }
 
-        protected override int CameraRangeMargin => 400;
+        protected override int CameraRangeMargin => 800;
         protected override float NearPlane => 40;
         protected override float FarPlane => 400 * 200;
 
