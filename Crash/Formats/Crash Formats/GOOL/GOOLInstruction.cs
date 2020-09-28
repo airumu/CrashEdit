@@ -186,6 +186,12 @@ namespace Crash
             return finalargs;
         }
 
+        internal bool IntIsEID(int v)
+        {
+            int lastc = v >> 1 & 0x3F;
+            return lastc <= 0x3D && lastc >= 0x24 && (v & 1) == 1 && v >= 0x2000000;
+        }
+
         private string GetRefVal(int val)
         {
             if ((val & 0x800) == 0)
@@ -196,7 +202,7 @@ namespace Crash
                     if (GOOL.Format == 1 && off < GOOL.Data.Length) // external GOOL entries will logically not have local data...
                     {
                         int cval = GOOL.Data[off];
-                        if (off < GOOL.EntryCount)
+                        if (IntIsEID(cval))
                             return $"({Entry.EIDToEName(cval)})";
                         else
                             return $"({cval.TransformedString()})";
@@ -206,7 +212,7 @@ namespace Crash
                         if (GOOL.ParentGOOL != null && GOOL.Format == 0 && off < GOOL.ParentGOOL.Data.Length)
                         {
                             int cval = GOOL.ParentGOOL.Data[off];
-                            if (off < GOOL.ParentGOOL.EntryCount)
+                            if (IntIsEID(cval))
                                 return $"({Entry.EIDToEName(cval)})";
                             else
                                 return $"({cval.TransformedString()})";
@@ -220,7 +226,7 @@ namespace Crash
                     if (GOOL.Format == 0 && off < GOOL.Data.Length) // local GOOL entries will logically not have external data...
                     {
                         int cval = GOOL.Data[off];
-                        if (off < GOOL.EntryCount)
+                        if (IntIsEID(cval))
                             return $"({Entry.EIDToEName(cval)})";
                         else
                             return $"({cval.TransformedString()})";
