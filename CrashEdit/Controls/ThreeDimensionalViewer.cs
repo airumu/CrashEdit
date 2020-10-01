@@ -232,6 +232,10 @@ namespace CrashEdit
                     case Keys.S:
                     case Keys.A:
                     case Keys.D:
+                    case Keys.Up:
+                    case Keys.Down:
+                    case Keys.Left:
+                    case Keys.Right:
                     case Keys.Space:
                     case Keys.ShiftKey:
                     case Keys.R:
@@ -272,6 +276,18 @@ namespace CrashEdit
                         keyleft = true;
                         break;
                     case Keys.D:
+                        keyright = true;
+                        break;
+                    case Keys.Up:
+                        keyup = true;
+                        break;
+                    case Keys.Down:
+                        keydown = true;
+                        break;
+                    case Keys.Left:
+                        keyleft = true;
+                        break;
+                    case Keys.Right:
                         keyright = true;
                         break;
                     case Keys.Space:
@@ -331,6 +347,18 @@ namespace CrashEdit
                         keyleft = false;
                         break;
                     case Keys.D:
+                        keyright = false;
+                        break;
+                    case Keys.Up:
+                        keyup = false;
+                        break;
+                    case Keys.Down:
+                        keydown = false;
+                        break;
+                    case Keys.Left:
+                        keyleft = false;
+                        break;
+                    case Keys.Right:
                         keyright = false;
                         break;
                     case Keys.Space:
