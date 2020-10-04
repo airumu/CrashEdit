@@ -16,7 +16,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using DarkUI.Controls;
 using DarkUI.Forms;
-using System.Drawing;
 using MetroFramework.Controls;
 
 namespace CrashEdit

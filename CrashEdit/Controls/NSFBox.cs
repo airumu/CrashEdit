@@ -2,6 +2,7 @@ using Crash;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using DarkUI.Forms;
 
 namespace CrashEdit
 {
@@ -185,7 +186,7 @@ namespace CrashEdit
             }
             else
             {
-                MessageBox.Show("No results found.");
+                DarkMessageBox.ShowInformation("No results found.", "");
             }
         }
 
@@ -211,7 +212,7 @@ namespace CrashEdit
             }
             else
             {
-                MessageBox.Show("No results found.");
+                DarkMessageBox.ShowInformation("No results found.", "");
             }
         }
 
