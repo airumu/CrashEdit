@@ -15,6 +15,8 @@ namespace CrashEdit
 
         private TextureChunk texturechunk;
 
+        private ToolTip tipClick;
+
         public TextureChunkBox(TextureChunk chunk)
         {
             texturechunk = chunk;
@@ -56,9 +58,12 @@ namespace CrashEdit
                 picture.Dock = DockStyle.Fill;
                 picture.Image = bitmap;
                 picture.DoubleClick += new EventHandler(OpenViewer);
+                picture.Cursor = Cursors.Hand;
+                tipClick = new ToolTip();
+                tipClick.SetToolTip(picture, "Double-click to open the viewer");
                 TabPage page = new TabPage("Monochrome 8");
                 page.Controls.Add(picture);
-                page.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+                page.BackColor = Color.FromArgb(30, 30, 30);
                 tbcTabs.TabPages.Add(page);
             }
             {
@@ -86,9 +91,12 @@ namespace CrashEdit
                 picture.Dock = DockStyle.Fill;
                 picture.Image = bitmap;
                 picture.DoubleClick += new EventHandler(OpenViewer);
+                picture.Cursor = Cursors.Hand;
+                tipClick = new ToolTip();
+                tipClick.SetToolTip(picture, "Double-click to open the viewer");
                 TabPage page = new TabPage("BGR555");
                 page.Controls.Add(picture);
-                page.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+                page.BackColor = Color.FromArgb(30, 30, 30);
                 tbcTabs.TabPages.Add(page);
                 tbcTabs.SelectedTab = page;
             }

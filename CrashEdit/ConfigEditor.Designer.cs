@@ -197,6 +197,7 @@
             // picClearCol
             // 
             this.picClearCol.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.picClearCol.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picClearCol.Location = new System.Drawing.Point(6, 18);
             this.picClearCol.Name = "picClearCol";
             this.picClearCol.Size = new System.Drawing.Size(60, 45);
@@ -435,7 +436,7 @@
             this.chkCustomCrates.Name = "chkCustomCrates";
             this.chkCustomCrates.Size = new System.Drawing.Size(335, 15);
             this.chkCustomCrates.TabIndex = 15;
-            this.chkCustomCrates.Text = "Display custom crates";
+            this.chkCustomCrates.Text = "Display custom crates (modded BoxsC)";
             this.chkCustomCrates.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.chkCustomCrates.UseCustomBackColor = true;
             this.chkCustomCrates.UseCustomForeColor = true;
