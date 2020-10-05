@@ -73,7 +73,7 @@
             this.fraLang.ForeColor = System.Drawing.SystemColors.Window;
             this.fraLang.Location = new System.Drawing.Point(3, 3);
             this.fraLang.Name = "fraLang";
-            this.fraLang.Size = new System.Drawing.Size(187, 49);
+            this.fraLang.Size = new System.Drawing.Size(162, 49);
             this.fraLang.TabIndex = 1;
             this.fraLang.TabStop = false;
             this.fraLang.Text = "Language (requires restart)";
@@ -88,7 +88,7 @@
             this.dpdLang.ItemHeight = 19;
             this.dpdLang.Location = new System.Drawing.Point(6, 18);
             this.dpdLang.Name = "dpdLang";
-            this.dpdLang.Size = new System.Drawing.Size(175, 25);
+            this.dpdLang.Size = new System.Drawing.Size(150, 25);
             this.dpdLang.Style = MetroFramework.MetroColorStyle.Blue;
             this.dpdLang.TabIndex = 0;
             this.dpdLang.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -387,7 +387,7 @@
             // 
             this.tglKeyBinds.AutoSize = true;
             this.tglKeyBinds.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(30)))));
-            this.tglKeyBinds.Location = new System.Drawing.Point(8, 20);
+            this.tglKeyBinds.Location = new System.Drawing.Point(15, 20);
             this.tglKeyBinds.Name = "tglKeyBinds";
             this.tglKeyBinds.Size = new System.Drawing.Size(80, 19);
             this.tglKeyBinds.Style = MetroFramework.MetroColorStyle.Blue;
@@ -404,7 +404,7 @@
             this.fraKeyBinds.Controls.Add(this.tglKeyBinds);
             this.fraKeyBinds.Font = new System.Drawing.Font("Arial", 9F);
             this.fraKeyBinds.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraKeyBinds.Location = new System.Drawing.Point(196, 3);
+            this.fraKeyBinds.Location = new System.Drawing.Point(171, 3);
             this.fraKeyBinds.Name = "fraKeyBinds";
             this.fraKeyBinds.Size = new System.Drawing.Size(117, 49);
             this.fraKeyBinds.TabIndex = 13;
@@ -414,6 +414,8 @@
             // cmdHelp
             // 
             this.cmdHelp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.cmdHelp.FontSize = MetroFramework.MetroButtonSize.Medium;
+            this.cmdHelp.FontWeight = MetroFramework.MetroButtonWeight.Regular;
             this.cmdHelp.ForeColor = System.Drawing.SystemColors.InactiveCaption;
             this.cmdHelp.Location = new System.Drawing.Point(12, 309);
             this.cmdHelp.Name = "cmdHelp";
@@ -489,8 +491,8 @@
         private MetroFramework.Controls.MetroCheckBox chkOldPatchNSD;
         private MetroFramework.Controls.MetroButton cmdReset;
         private MetroFramework.Controls.MetroCheckBox chkDetailedCollision;
-        private MetroFramework.Controls.MetroToggle tglKeyBinds;
         private System.Windows.Forms.GroupBox fraKeyBinds;
         private MetroFramework.Controls.MetroButton cmdHelp;
+        private MetroFramework.Controls.MetroToggle tglKeyBinds;
     }
 }
