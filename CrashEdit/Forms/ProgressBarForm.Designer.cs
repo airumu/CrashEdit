@@ -48,6 +48,7 @@
             this.ClientSize = new System.Drawing.Size(397, 43);
             this.ControlBox = false;
             this.Controls.Add(this.uxProgress);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ProgressBarForm";
