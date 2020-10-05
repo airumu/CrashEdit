@@ -47,6 +47,7 @@ namespace CrashEdit
             chkOldPatchNSD.Checked = Settings.Default.OldPatchNSD;
             chkDetailedCollision.Checked = Settings.Default.DetailedCollision;
             tglKeyBinds.Checked = Settings.Default.NewKeyBinds;
+            chkCustomCrates.Checked = Settings.Default.UseCustomCrates;
         }
 
         private void dpdLang_SelectedIndexChanged(object sender, EventArgs e)
@@ -186,6 +187,12 @@ namespace CrashEdit
             {
                 frmhelp.Activate();
             }
+        }
+
+        private void ChkCustomCrates_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.UseCustomCrates = chkCustomCrates.Checked;
+            Settings.Default.Save();
         }
     }
 }

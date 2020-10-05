@@ -54,6 +54,7 @@
             this.tglKeyBinds = new MetroFramework.Controls.MetroToggle();
             this.fraKeyBinds = new System.Windows.Forms.GroupBox();
             this.cmdHelp = new MetroFramework.Controls.MetroButton();
+            this.chkCustomCrates = new MetroFramework.Controls.MetroCheckBox();
             this.fraLang.SuspendLayout();
             this.fraSize.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numH)).BeginInit();
@@ -358,7 +359,7 @@
             this.cmdReset.FontSize = MetroFramework.MetroButtonSize.Medium;
             this.cmdReset.FontWeight = MetroFramework.MetroButtonWeight.Regular;
             this.cmdReset.ForeColor = System.Drawing.Color.Cyan;
-            this.cmdReset.Location = new System.Drawing.Point(12, 280);
+            this.cmdReset.Location = new System.Drawing.Point(12, 301);
             this.cmdReset.Name = "cmdReset";
             this.cmdReset.Size = new System.Drawing.Size(99, 23);
             this.cmdReset.TabIndex = 10;
@@ -371,8 +372,6 @@
             // 
             // chkDetailedCollision
             // 
-            this.chkDetailedCollision.Checked = true;
-            this.chkDetailedCollision.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkDetailedCollision.Location = new System.Drawing.Point(4, 175);
             this.chkDetailedCollision.Name = "chkDetailedCollision";
             this.chkDetailedCollision.Size = new System.Drawing.Size(186, 15);
@@ -417,7 +416,7 @@
             this.cmdHelp.FontSize = MetroFramework.MetroButtonSize.Medium;
             this.cmdHelp.FontWeight = MetroFramework.MetroButtonWeight.Regular;
             this.cmdHelp.ForeColor = System.Drawing.SystemColors.InactiveCaption;
-            this.cmdHelp.Location = new System.Drawing.Point(12, 309);
+            this.cmdHelp.Location = new System.Drawing.Point(12, 330);
             this.cmdHelp.Name = "cmdHelp";
             this.cmdHelp.Size = new System.Drawing.Size(50, 23);
             this.cmdHelp.Style = MetroFramework.MetroColorStyle.Blue;
@@ -429,11 +428,26 @@
             this.cmdHelp.UseSelectable = true;
             this.cmdHelp.Click += new System.EventHandler(this.CmdHelp_Click);
             // 
+            // chkCustomCrates
+            // 
+            this.chkCustomCrates.ForeColor = System.Drawing.Color.MediumSpringGreen;
+            this.chkCustomCrates.Location = new System.Drawing.Point(4, 280);
+            this.chkCustomCrates.Name = "chkCustomCrates";
+            this.chkCustomCrates.Size = new System.Drawing.Size(335, 15);
+            this.chkCustomCrates.TabIndex = 15;
+            this.chkCustomCrates.Text = "Display custom crates";
+            this.chkCustomCrates.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.chkCustomCrates.UseCustomBackColor = true;
+            this.chkCustomCrates.UseCustomForeColor = true;
+            this.chkCustomCrates.UseSelectable = true;
+            this.chkCustomCrates.CheckedChanged += new System.EventHandler(this.ChkCustomCrates_CheckedChanged);
+            // 
             // ConfigEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.Controls.Add(this.chkCustomCrates);
             this.Controls.Add(this.cmdHelp);
             this.Controls.Add(this.fraKeyBinds);
             this.Controls.Add(this.chkDetailedCollision);
@@ -494,5 +508,6 @@
         private System.Windows.Forms.GroupBox fraKeyBinds;
         private MetroFramework.Controls.MetroButton cmdHelp;
         private MetroFramework.Controls.MetroToggle tglKeyBinds;
+        private MetroFramework.Controls.MetroCheckBox chkCustomCrates;
     }
 }

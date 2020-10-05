@@ -1,4 +1,5 @@
 using Crash;
+using CrashEdit.Properties;
 using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
@@ -485,7 +486,6 @@ namespace CrashEdit
                 case 6: // Fruit
                 case 8: // Life
                 case 9: // Doctor
-                case 11: // POW
                 case 10: // Pickup
                     if (timetrialmode && subtype != 3 && timetrialreward >= 111 && timetrialreward <= 113)
                         LoadTexture(OldResources.TimeBoxTopTexture);
@@ -501,17 +501,12 @@ namespace CrashEdit
                 case 5: // Iron
                 case 7: // Action
                 case 15: // Iron Spring
-                case 27: // Iron Continue
-                case 28: // Switch OFF
-                case 29: // Switch ON
                     LoadTexture(OldResources.IronBoxTexture);
                     break;
                 case 18: // Nitro
                     LoadTexture(OldResources.NitroBoxTopTexture);
                     break;
                 case 23: // Steel
-                case 25: // Steel Pickup
-                case 26: // Steel Fruit
                     LoadTexture(OldResources.SteelBoxTexture);
                     break;
                 case 24: // Action Nitro
@@ -520,12 +515,31 @@ namespace CrashEdit
                 default:
                     LoadTexture(OldResources.UnknownBoxTopTexture);
                     break;
-                case 30: // Switch Ghost
-                    LoadTexture(OldResources.SwitchGhostBoxTexture);
-                    break;
-                case 31: // Switch Green
-                    LoadTexture(OldResources.SwitchGreenBoxTexture);
-                    break;
+            }
+            if (Settings.Default.UseCustomCrates)
+            {
+                switch (subtype)
+                {
+                    case 11: // POW
+                        LoadTexture(OldResources.EmptyBoxTexture);
+                        break;
+                    case 27: // Iron Continue
+                    case 28: // Switch OFF
+                    case 29: // Switch ON
+                        LoadTexture(OldResources.IronBoxTexture);
+                        break;
+                    case 25: // Steel Pickup
+                    case 26: // Steel Fruit
+                        LoadTexture(OldResources.SteelBoxTexture);
+                        break;
+                    case 30: // Switch Ghost
+                        LoadTexture(OldResources.SwitchGhostBoxTexture);
+                        break;
+                    case 31: // Switch Green
+                        LoadTexture(OldResources.SwitchGreenBoxTexture);
+                        break;
+
+                }
             }
         }
 
@@ -565,9 +579,6 @@ namespace CrashEdit
                     case 10: // Pickup
                         LoadTexture(OldResources.PickupBoxTexture);
                         break;
-                    case 11: // POW
-                        LoadTexture(OldResources.POWBoxTexture);
-                        break;
                     case 13: // Ghost
                         LoadTexture(OldResources.UnknownBoxTopTexture);
                         break;
@@ -586,27 +597,36 @@ namespace CrashEdit
                     default:
                         LoadTexture(OldResources.UnknownBoxTexture);
                         break;
-                    case 25: // Steel Pickup
-                        LoadTexture(OldResources.SteelPickupBoxTexture);
-                        break;
-                    case 26: // Steel Fruit
-                        LoadTexture(OldResources.SteelFruitBoxTexture);
-                        break;
-                    case 27: // Iron Continue
-                        LoadTexture(OldResources.IronContinueBoxTexture);
-                        break;
-                    case 28: // Switch OFF
-                        LoadTexture(OldResources.SwitchOFFBoxTexture);
-                        break;
-                    case 29: // Switch ON
-                        LoadTexture(OldResources.SwitchONBoxTexture);
-                        break;
-                    case 30: // Switch Ghost
-                        LoadTexture(OldResources.SwitchGhostBoxTexture);
-                        break;
-                    case 31: // Switch Green
-                        LoadTexture(OldResources.SwitchGreenBoxTexture);
-                        break;
+                }
+                if (Settings.Default.UseCustomCrates)
+                {
+                    switch (subtype)
+                    {
+                        case 11: // POW
+                            LoadTexture(OldResources.POWBoxTexture);
+                            break;
+                        case 25: // Steel Pickup
+                            LoadTexture(OldResources.SteelPickupBoxTexture);
+                            break;
+                        case 26: // Steel Fruit
+                            LoadTexture(OldResources.SteelFruitBoxTexture);
+                            break;
+                        case 27: // Iron Continue
+                            LoadTexture(OldResources.IronContinueBoxTexture);
+                            break;
+                        case 28: // Switch OFF
+                            LoadTexture(OldResources.SwitchOFFBoxTexture);
+                            break;
+                        case 29: // Switch ON
+                            LoadTexture(OldResources.SwitchONBoxTexture);
+                            break;
+                        case 30: // Switch Ghost
+                            LoadTexture(OldResources.SwitchGhostBoxTexture);
+                            break;
+                        case 31: // Switch Green
+                            LoadTexture(OldResources.SwitchGreenBoxTexture);
+                            break;
+                    }
                 }
             }
             else
@@ -635,9 +655,6 @@ namespace CrashEdit
                     case 9: // Doctor
                         LoadTexture(OldResources.DoctorBoxTexture);
                         break;
-                    case 11: // POW
-                        LoadTexture(OldResources.POWBoxTexture);
-                        break;
                     case 13: // Ghost
                         LoadTexture(OldResources.UnknownBoxTopTexture);
                         break;
@@ -656,27 +673,36 @@ namespace CrashEdit
                     default:
                         LoadTexture(OldResources.UnknownBoxTexture);
                         break;
-                    case 25: // Steel Pickup
-                        LoadTexture(OldResources.SteelPickupBoxTexture);
-                        break;
-                    case 26: // Steel Fruit
-                        LoadTexture(OldResources.SteelFruitBoxTexture);
-                        break;
-                    case 27: // Iron Continue
-                        LoadTexture(OldResources.IronContinueBoxTexture);
-                        break;
-                    case 28: // Switch OFF
-                        LoadTexture(OldResources.SwitchOFFBoxTexture);
-                        break;
-                    case 29: // Switch ON
-                        LoadTexture(OldResources.SwitchONBoxTexture);
-                        break;
-                    case 30: // Switch Ghost
-                        LoadTexture(OldResources.SwitchGhostBoxTexture);
-                        break;
-                    case 31: // Switch Green
-                        LoadTexture(OldResources.SwitchGreenBoxTexture);
-                        break;
+                }
+                if (Settings.Default.UseCustomCrates)
+                {
+                    switch (subtype)
+                    {
+                        case 11: // POW
+                            LoadTexture(OldResources.POWBoxTexture);
+                            break;
+                        case 25: // Steel Pickup
+                            LoadTexture(OldResources.SteelPickupBoxTexture);
+                            break;
+                        case 26: // Steel Fruit
+                            LoadTexture(OldResources.SteelFruitBoxTexture);
+                            break;
+                        case 27: // Iron Continue
+                            LoadTexture(OldResources.IronContinueBoxTexture);
+                            break;
+                        case 28: // Switch OFF
+                            LoadTexture(OldResources.SwitchOFFBoxTexture);
+                            break;
+                        case 29: // Switch ON
+                            LoadTexture(OldResources.SwitchONBoxTexture);
+                            break;
+                        case 30: // Switch Ghost
+                            LoadTexture(OldResources.SwitchGhostBoxTexture);
+                            break;
+                        case 31: // Switch Green
+                            LoadTexture(OldResources.SwitchGreenBoxTexture);
+                            break;
+                    }
                 }
             }
         }

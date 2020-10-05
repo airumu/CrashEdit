@@ -181,7 +181,7 @@ namespace CrashEdit.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool DetailedCollision {
             get {
                 return ((bool)(this["DetailedCollision"]));
@@ -212,6 +212,18 @@ namespace CrashEdit.Properties {
             }
             set {
                 this["NewKeyBinds"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool UseCustomCrates {
+            get {
+                return ((bool)(this["UseCustomCrates"]));
+            }
+            set {
+                this["UseCustomCrates"] = value;
             }
         }
     }
