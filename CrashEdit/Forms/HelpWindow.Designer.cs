@@ -50,7 +50,7 @@
             this.darkLabel1.Name = "darkLabel1";
             this.darkLabel1.Size = new System.Drawing.Size(243, 112);
             this.darkLabel1.TabIndex = 0;
-            this.darkLabel1.Text = "Arrwo keys: Move\r\nA: Up\r\nZ: Down\r\nD: Undock\r\n\r\nT: Toggle textures\r\nHold down righ" +
+            this.darkLabel1.Text = "Arrow keys: Move\r\nA: Up\r\nZ: Down\r\nD: Undock\r\n\r\nT: Toggle textures\r\nHold down righ" +
     "t mouse button: Move fast";
             // 
             // darkLabel2
@@ -82,10 +82,10 @@
             this.darkLabel4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.darkLabel4.Location = new System.Drawing.Point(12, 168);
             this.darkLabel4.Name = "darkLabel4";
-            this.darkLabel4.Size = new System.Drawing.Size(175, 80);
+            this.darkLabel4.Size = new System.Drawing.Size(176, 80);
             this.darkLabel4.TabIndex = 3;
-            this.darkLabel4.Text = "X: Show collision octrees\r\nC: Open collision type viewer\r\nV: Toggle wireframe\r\nF:" +
-    " Show neighboring zones\r\nO: Toggle time trial mode";
+            this.darkLabel4.Text = "X: Display collision octrees\r\nC: Open collision type viewer\r\nV: Toggle wireframe\r" +
+    "\nF: Display neighboring zones\r\nO: Toggle time trial mode";
             // 
             // darkLabel5
             // 
@@ -96,8 +96,8 @@
             this.darkLabel5.Name = "darkLabel5";
             this.darkLabel5.Size = new System.Drawing.Size(240, 96);
             this.darkLabel5.TabIndex = 4;
-            this.darkLabel5.Text = "C: Show frame collisons\r\nN: Enable normals\r\nU: Change culling mode\r\n\r\nP: Toggle (" +
-    "game-like) frame interpolation\r\nI: interp_startend?";
+            this.darkLabel5.Text = "C: Display frame collison\r\nN: Enable normals\r\nU: Change culling mode\r\n\r\nP: Toggle" +
+    " (game-like) frame interpolation\r\nI: interp_startend?";
             // 
             // darkLabel6
             // 
