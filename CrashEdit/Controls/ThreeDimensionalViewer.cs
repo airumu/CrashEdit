@@ -73,6 +73,7 @@ namespace CrashEdit
         private bool keyright;
         private bool keya;
         private bool keyz;
+        private bool keyfast;
         private int mousex;
         private int mousey;
         private Timer inputtimer;
@@ -92,6 +93,7 @@ namespace CrashEdit
             keyright = false;
             keya = false;
             keyz = false;
+            keyfast = false;
             boundtex = 0;
             inputtimer = new Timer
             {
@@ -100,7 +102,9 @@ namespace CrashEdit
             };
             inputtimer.Tick += delegate (object sender,EventArgs e)
             {
-                int speed = 1 + range / 66;
+                int speed = 1 + range / 40;
+                if (keyfast)
+                    speed = 1 + range / 20;
                 int changex = 0;
                 int changey = 0;
                 int changez = 0;
@@ -177,6 +181,7 @@ namespace CrashEdit
                     break;
                 case MouseButtons.Right:
                     mouseright = true;
+                    keyfast = true;
                     break;
             }
         }
@@ -191,6 +196,7 @@ namespace CrashEdit
                     break;
                 case MouseButtons.Right:
                     mouseright = false;
+                    keyfast = false;
                     break;
             }
         }
@@ -211,7 +217,7 @@ namespace CrashEdit
             }
             else if (mouseright)
             {
-                range -= (int)((e.Y - mousey) * fullrange / 256 * (range / (fullrange*8 * 0.67F + 0.33F)));
+                range -= (int)((e.Y - mousey) * fullrange / 128 * (range / (fullrange*8 * 0.67F + 0.33F)));
                 if (range < 5)
                     range = 5;
                 else if (range > fullrange * 8)

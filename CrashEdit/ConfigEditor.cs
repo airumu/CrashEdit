@@ -1,4 +1,5 @@
-﻿using CrashEdit.Properties;
+﻿using CrashEdit.Forms;
+using CrashEdit.Properties;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -9,6 +10,8 @@ namespace CrashEdit
     public partial class ConfigEditor : UserControl
     {
         public static readonly List<string> Languages = new List<string> { "en", "ja" };
+
+        public HelpWindow frmhelp = null;
 
         public ConfigEditor()
         {
@@ -54,8 +57,11 @@ namespace CrashEdit
 
         private void cmdReset_Click(object sender, EventArgs e)
         {
-            Settings.Default.Reset();
-            ((OldMainForm)TopLevelControl).ResetConfig();
+            if (DarkUI.Forms.DarkMessageBox.ShowWarning("Are you sure you want to reset the settings?", "Reset settings", DarkUI.Forms.DarkDialogButton.YesNo) == DialogResult.Yes)
+            {
+                Settings.Default.Reset();
+                ((OldMainForm)TopLevelControl).ResetConfig();
+            }
         }
 
         private void numW_ValueChanged(object sender, EventArgs e)
@@ -164,6 +170,22 @@ namespace CrashEdit
         {
             Settings.Default.NewKeyBinds = tglKeyBinds.Checked;
             Settings.Default.Save();
+        }
+
+        private void CmdHelp_Click(object sender, EventArgs e)
+        {
+            if (frmhelp == null || frmhelp.IsDisposed)
+            {
+                frmhelp = new HelpWindow();
+            }
+            if (!frmhelp.Visible)
+            {
+                frmhelp.Show();
+            }
+            else
+            {
+                frmhelp.Activate();
+            }
         }
     }
 }

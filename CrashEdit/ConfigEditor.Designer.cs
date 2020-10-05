@@ -53,6 +53,7 @@
             this.chkDetailedCollision = new MetroFramework.Controls.MetroCheckBox();
             this.tglKeyBinds = new MetroFramework.Controls.MetroToggle();
             this.fraKeyBinds = new System.Windows.Forms.GroupBox();
+            this.cmdHelp = new MetroFramework.Controls.MetroButton();
             this.fraLang.SuspendLayout();
             this.fraSize.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numH)).BeginInit();
@@ -410,11 +411,28 @@
             this.fraKeyBinds.TabStop = false;
             this.fraKeyBinds.Text = "Change Key Binding";
             // 
+            // cmdHelp
+            // 
+            this.cmdHelp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.cmdHelp.ForeColor = System.Drawing.SystemColors.InactiveCaption;
+            this.cmdHelp.Location = new System.Drawing.Point(12, 309);
+            this.cmdHelp.Name = "cmdHelp";
+            this.cmdHelp.Size = new System.Drawing.Size(50, 23);
+            this.cmdHelp.Style = MetroFramework.MetroColorStyle.Blue;
+            this.cmdHelp.TabIndex = 14;
+            this.cmdHelp.Text = "Help";
+            this.cmdHelp.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.cmdHelp.UseCustomBackColor = true;
+            this.cmdHelp.UseCustomForeColor = true;
+            this.cmdHelp.UseSelectable = true;
+            this.cmdHelp.Click += new System.EventHandler(this.CmdHelp_Click);
+            // 
             // ConfigEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.Controls.Add(this.cmdHelp);
             this.Controls.Add(this.fraKeyBinds);
             this.Controls.Add(this.chkDetailedCollision);
             this.Controls.Add(this.cmdReset);
@@ -473,5 +491,6 @@
         private MetroFramework.Controls.MetroCheckBox chkDetailedCollision;
         private MetroFramework.Controls.MetroToggle tglKeyBinds;
         private System.Windows.Forms.GroupBox fraKeyBinds;
+        private MetroFramework.Controls.MetroButton cmdHelp;
     }
 }
