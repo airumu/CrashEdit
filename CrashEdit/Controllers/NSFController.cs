@@ -1,4 +1,5 @@
 using Crash;
+using CrashEdit.Properties;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -206,29 +207,56 @@ namespace CrashEdit
                                 }
                                 else if (entity.Type == 34)
                                 {
-                                    switch (entity.Subtype)
+                                    if (Settings.Default.UseCustomCrates)
                                     {
-                                        case 0: // tnt
-                                        case 2: // empty
-                                        case 3: // spring
-                                        case 4: // continue
-                                        case 6: // fruit
-                                        case 8: // life
-                                        case 9: // doctor
-                                        case 10: // pickup
-                                        case 11: // pow
-                                        case 13: // ghost
-                                        case 17: // auto pickup
-                                        case 18: // nitro
-                                        case 20: // auto empty
-                                        case 21: // empty 2
-                                        case 23: // steel
-                                        case 27: // steel pickup
-                                        case 26: // steel fruit
-                                            boxcount++;
-                                            break;
-                                        default:
-                                            break;
+                                        switch (entity.Subtype)
+                                        {
+                                            case 0: // tnt
+                                            case 2: // empty
+                                            case 3: // spring
+                                            case 4: // continue
+                                            case 6: // fruit
+                                            case 8: // life
+                                            case 9: // doctor
+                                            case 10: // pickup
+                                            case 11: // pow
+                                            case 13: // ghost
+                                            case 17: // auto pickup
+                                            case 18: // nitro
+                                            case 20: // auto empty
+                                            case 21: // empty 2
+                                            case 23: // steel
+                                            case 25: // steel pickup
+                                            case 26: // steel fruit
+                                                boxcount++;
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        switch (entity.Subtype)
+                                        {
+                                            case 0: // tnt
+                                            case 2: // empty
+                                            case 3: // spring
+                                            case 4: // continue
+                                            case 6: // fruit
+                                            case 8: // life
+                                            case 9: // doctor
+                                            case 10: // pickup
+                                            case 13: // ghost
+                                            case 17: // auto pickup
+                                            case 18: // nitro
+                                            case 20: // auto empty
+                                            case 21: // empty 2
+                                            case 23: // steel
+                                                boxcount++;
+                                                break;
+                                            default:
+                                                break;
+                                        }
                                     }
                                 }
                             }
