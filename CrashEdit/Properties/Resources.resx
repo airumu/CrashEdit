@@ -742,4 +742,22 @@
   <data name="MakeBIN_Making" xml:space="preserve">
     <value>Making BIN...</value>
   </data>
+  <data name="Config_chkCustomCrates" xml:space="preserve">
+    <value>Display custom crates (modded BoxsC)</value>
+  </data>
+  <data name="Config_chkDetailedCollision" xml:space="preserve">
+    <value>Display detailed collision type</value>
+  </data>
+  <data name="Config_cmdHelp" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="Config_cmdResetText" xml:space="preserve">
+    <value>Are you sure you want to reset the settings?</value>
+  </data>
+  <data name="Config_cmdResetTitle" xml:space="preserve">
+    <value>Reset settings</value>
+  </data>
+  <data name="Config_fraKeyBinds" xml:space="preserve">
+    <value>Change Key Binding</value>
+  </data>
 </root>

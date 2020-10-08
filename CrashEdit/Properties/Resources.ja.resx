@@ -422,7 +422,7 @@
     <value>フレームコリジョンをデフォルトで表示する</value>
   </data>
   <data name="Config_chkDeleteInvalidEntries" xml:space="preserve">
-    <value>(NSDパッチ) 存在しないエントリをロードリストから削除する</value>
+    <value>(NSD パッチ) 存在しないエントリをロードリストから削除する</value>
   </data>
   <data name="Config_chkNormalDisplay" xml:space="preserve">
     <value>法線を表示する</value>
@@ -735,5 +735,30 @@
   </data>
   <data name="MakeBIN_Making" xml:space="preserve">
     <value>BIN を作成中…</value>
+  </data>
+  <data name="Config_chkCustomCrates" xml:space="preserve">
+    <value>カスタムクレートを表示する (改造した BoxsC)</value>
+  </data>
+  <data name="Config_chkDetailedCollision" xml:space="preserve">
+    <value>詳細なコリジョンタイプを表示する</value>
+  </data>
+  <data name="Config_chkOldPatchNSD" xml:space="preserve">
+    <value>(NSD パッチ) CrashEdit v0.2.49.0 の古い NSD パッチを使用する</value>
+  </data>
+  <data name="Config_chkPatchNSDSavesNSF" xml:space="preserve">
+    <value>(NSD パッチ) NSD パッチ時に NSF ファイルも保存する</value>
+    <comment> </comment>
+  </data>
+  <data name="Config_cmdHelp" xml:space="preserve">
+    <value>ヘルプ</value>
+  </data>
+  <data name="Config_cmdResetText" xml:space="preserve">
+    <value>設定をリセットしてもよろしいですか？</value>
+  </data>
+  <data name="Config_cmdResetTitle" xml:space="preserve">
+    <value>確認</value>
+  </data>
+  <data name="Config_fraKeyBinds" xml:space="preserve">
+    <value>キーバインドの変更</value>
   </data>
 </root>

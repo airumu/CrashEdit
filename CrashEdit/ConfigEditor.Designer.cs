@@ -377,7 +377,7 @@
             this.chkDetailedCollision.Name = "chkDetailedCollision";
             this.chkDetailedCollision.Size = new System.Drawing.Size(186, 15);
             this.chkDetailedCollision.TabIndex = 11;
-            this.chkDetailedCollision.Text = "Display detailed collision types";
+            this.chkDetailedCollision.Text = "Display detailed collision type";
             this.chkDetailedCollision.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.chkDetailedCollision.UseCustomBackColor = true;
             this.chkDetailedCollision.UseSelectable = true;

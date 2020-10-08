@@ -137,11 +137,29 @@ namespace CrashEdit.Properties {
         }
         
         /// <summary>
+        ///   Display custom crates (modded BoxsC) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Config_chkCustomCrates {
+            get {
+                return ResourceManager.GetString("Config_chkCustomCrates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   (Patch NSD) Delete non-existent entries from load lists に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Config_chkDeleteInvalidEntries {
             get {
                 return ResourceManager.GetString("Config_chkDeleteInvalidEntries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Display detailed collision type に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Config_chkDetailedCollision {
+            get {
+                return ResourceManager.GetString("Config_chkDetailedCollision", resourceCulture);
             }
         }
         
@@ -182,11 +200,38 @@ namespace CrashEdit.Properties {
         }
         
         /// <summary>
+        ///   Help に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Config_cmdHelp {
+            get {
+                return ResourceManager.GetString("Config_cmdHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Reset Settings に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Config_cmdReset {
             get {
                 return ResourceManager.GetString("Config_cmdReset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Are you sure you want to reset the settings? に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Config_cmdResetText {
+            get {
+                return ResourceManager.GetString("Config_cmdResetText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Reset settings に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Config_cmdResetTitle {
+            get {
+                return ResourceManager.GetString("Config_cmdResetTitle", resourceCulture);
             }
         }
         
@@ -205,6 +250,15 @@ namespace CrashEdit.Properties {
         internal static string Config_fraClearCol {
             get {
                 return ResourceManager.GetString("Config_fraClearCol", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Change Key Binding に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Config_fraKeyBinds {
+            get {
+                return ResourceManager.GetString("Config_fraKeyBinds", resourceCulture);
             }
         }
         
