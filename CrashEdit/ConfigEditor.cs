@@ -45,9 +45,14 @@ namespace CrashEdit
             chkPatchNSDSavesNSF.Checked = Settings.Default.PatchNSDSavesNSF;
             chkOldPatchNSD.Text = Resources.Config_chkOldPatchNSD;
             chkOldPatchNSD.Checked = Settings.Default.OldPatchNSD;
+            chkDetailedCollision.Text = Resources.Config_chkDetailedCollision;
             chkDetailedCollision.Checked = Settings.Default.DetailedCollision;
+            fraKeyBinds.Text = Resources.Config_fraKeyBinds;
             tglKeyBinds.Checked = Settings.Default.NewKeyBinds;
             chkCustomCrates.Checked = Settings.Default.UseCustomCrates;
+            chkCustomCrates.Text = Resources.Config_chkCustomCrates;
+            cmdReset.Text = Resources.Config_cmdReset;
+            cmdHelp.Text = Resources.Config_cmdHelp;
         }
 
         private void dpdLang_SelectedIndexChanged(object sender, EventArgs e)
@@ -58,7 +63,7 @@ namespace CrashEdit
 
         private void cmdReset_Click(object sender, EventArgs e)
         {
-            if (DarkUI.Forms.DarkMessageBox.ShowWarning("Are you sure you want to reset the settings?", "Reset settings", DarkUI.Forms.DarkDialogButton.YesNo) == DialogResult.Yes)
+            if (DarkUI.Forms.DarkMessageBox.ShowWarning(Resources.Config_cmdResetText, Resources.Config_cmdResetTitle, DarkUI.Forms.DarkDialogButton.YesNo) == DialogResult.Yes)
             {
                 Settings.Default.Reset();
                 ((OldMainForm)TopLevelControl).ResetConfig();
