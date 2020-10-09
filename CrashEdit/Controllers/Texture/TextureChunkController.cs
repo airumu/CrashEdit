@@ -76,7 +76,7 @@ namespace CrashEdit
                 {
                     frmViewer = null;
                 };
-                frmViewer.Show(Node.TreeView);
+                frmViewer.Show();
             }
             else
                 frmViewer.Select();
