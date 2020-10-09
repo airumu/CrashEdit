@@ -338,6 +338,8 @@ namespace CrashEdit
             Icon = OldResources.CBHacksIcon;
             Width = Settings.Default.DefaultFormW;
             Height = Settings.Default.DefaultFormH;
+            Load += new EventHandler(OldMainForm_Load);
+            FormClosing += new FormClosingEventHandler(OldMainForm_FormClosing);
             Text = $"CrashEdit-tweaked v{Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
             Controls.Add(tbcTabs);
             Controls.Add(tsToolbar);
@@ -1517,11 +1519,28 @@ namespace CrashEdit
             // 
             // OldMainForm
             // 
-            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.ClientSize = new System.Drawing.Size(747, 560);
             this.Font = new System.Drawing.Font("Arial", 9F);
             this.Name = "OldMainForm";
             this.ResumeLayout(false);
+        }
 
+        private void OldMainForm_Load(object sender, EventArgs e)
+        {
+            Bounds = Settings.Default.FormBounds1;
+            WindowState = Settings.Default.FormWindowState;
+        }
+
+        private void OldMainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (WindowState == FormWindowState.Normal)
+                Settings.Default.FormBounds1 = Bounds;
+            else
+                Settings.Default.FormBounds1 = RestoreBounds;
+
+            Settings.Default.FormWindowState = WindowState;
+
+            Settings.Default.Save();
         }
     }
 }

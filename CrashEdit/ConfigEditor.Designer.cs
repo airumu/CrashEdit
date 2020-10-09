@@ -72,7 +72,7 @@
             this.fraLang.Controls.Add(this.dpdLang);
             this.fraLang.Font = new System.Drawing.Font("Arial", 9F);
             this.fraLang.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraLang.Location = new System.Drawing.Point(3, 3);
+            this.fraLang.Location = new System.Drawing.Point(4, 4);
             this.fraLang.Name = "fraLang";
             this.fraLang.Size = new System.Drawing.Size(162, 49);
             this.fraLang.TabIndex = 1;
@@ -105,12 +105,13 @@
             this.fraSize.Controls.Add(this.numW);
             this.fraSize.Font = new System.Drawing.Font("Arial", 9F);
             this.fraSize.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraSize.Location = new System.Drawing.Point(3, 58);
+            this.fraSize.Location = new System.Drawing.Point(300, 59);
             this.fraSize.Name = "fraSize";
             this.fraSize.Size = new System.Drawing.Size(135, 68);
             this.fraSize.TabIndex = 1;
             this.fraSize.TabStop = false;
             this.fraSize.Text = "Default Window Size";
+            this.fraSize.Visible = false;
             // 
             // lblH
             // 
@@ -187,7 +188,7 @@
             this.fraClearCol.Controls.Add(this.cmdClearCol);
             this.fraClearCol.Font = new System.Drawing.Font("Arial", 9F);
             this.fraClearCol.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraClearCol.Location = new System.Drawing.Point(144, 58);
+            this.fraClearCol.Location = new System.Drawing.Point(4, 59);
             this.fraClearCol.Name = "fraClearCol";
             this.fraClearCol.Size = new System.Drawing.Size(128, 68);
             this.fraClearCol.TabIndex = 4;
@@ -225,7 +226,7 @@
             this.fraAnimGrid.Controls.Add(this.chkAnimGrid);
             this.fraAnimGrid.Font = new System.Drawing.Font("Arial", 9F);
             this.fraAnimGrid.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraAnimGrid.Location = new System.Drawing.Point(279, 58);
+            this.fraAnimGrid.Location = new System.Drawing.Point(138, 59);
             this.fraAnimGrid.Name = "fraAnimGrid";
             this.fraAnimGrid.Size = new System.Drawing.Size(156, 68);
             this.fraAnimGrid.TabIndex = 6;
@@ -404,9 +405,9 @@
             this.fraKeyBinds.Controls.Add(this.tglKeyBinds);
             this.fraKeyBinds.Font = new System.Drawing.Font("Arial", 9F);
             this.fraKeyBinds.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraKeyBinds.Location = new System.Drawing.Point(171, 3);
+            this.fraKeyBinds.Location = new System.Drawing.Point(172, 4);
             this.fraKeyBinds.Name = "fraKeyBinds";
-            this.fraKeyBinds.Size = new System.Drawing.Size(117, 49);
+            this.fraKeyBinds.Size = new System.Drawing.Size(122, 49);
             this.fraKeyBinds.TabIndex = 13;
             this.fraKeyBinds.TabStop = false;
             this.fraKeyBinds.Text = "Change Key Binding";

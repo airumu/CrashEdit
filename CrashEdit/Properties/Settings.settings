@@ -53,5 +53,11 @@
     <Setting Name="UseCustomCrates" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="FormBounds" Type="System.Drawing.Rectangle" Scope="User">
+      <Value Profile="(Default)">100, 100, 747, 560</Value>
+    </Setting>
+    <Setting Name="FormWindowState" Type="System.Windows.Forms.FormWindowState" Scope="User">
+      <Value Profile="(Default)">Normal</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
