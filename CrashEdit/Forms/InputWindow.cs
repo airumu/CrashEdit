@@ -10,6 +10,9 @@ namespace CrashEdit
         {
             InitializeComponent();
 
+            Icon = OldResources.InputWindow;
+            Text = Properties.Resources.InputWindow;
+
             cmdCancel.Text = Properties.Resources.InputWindow_cmdCancel;
         }
 

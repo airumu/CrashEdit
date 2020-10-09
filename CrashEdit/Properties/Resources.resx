@@ -760,4 +760,7 @@
   <data name="Config_fraKeyBinds" xml:space="preserve">
     <value>Change Key Binding</value>
   </data>
+  <data name="InputWindow" xml:space="preserve">
+    <value>Find</value>
+  </data>
 </root>

@@ -947,6 +947,15 @@ namespace CrashEdit.Properties {
         }
         
         /// <summary>
+        ///   Find に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string InputWindow {
+            get {
+                return ResourceManager.GetString("InputWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cancel に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string InputWindow_cmdCancel {

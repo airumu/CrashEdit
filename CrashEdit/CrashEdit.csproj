@@ -451,6 +451,9 @@
     <Content Include="Resources\Computer_File_068.gif" />
     <Content Include="Resources\Icons\cbhacks-logo-new.ico" />
     <Content Include="Resources\Icons\Image.ico" />
+    <None Include="Resources\Icons\InputWindow.ico" />
+    <Content Include="Resources\Icons\InterpolatorFormIcon.ico" />
+    <Content Include="Resources\Icons\NewEntryFormIcon.ico" />
     <Content Include="Resources\Icons\NSD.ico" />
     <Content Include="Resources\Icons\NSF.ico" />
     <Content Include="Resources\Images\Arrow.gif" />

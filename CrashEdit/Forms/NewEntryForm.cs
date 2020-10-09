@@ -41,6 +41,7 @@ namespace CrashEdit
             dpdType.SelectedIndex = 0;
             txtEID.Text = "";
 
+            Icon = OldResources.NewEntryFormIcon;
             Text = Properties.Resources.NewEntryForm;
             fraName.Text = Properties.Resources.NewEntryForm_fraName;
             fraType.Text = Properties.Resources.NewEntryForm_fraType;

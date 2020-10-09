@@ -17,6 +17,18 @@ namespace CrashEdit
         [Resource("cbhacks-logo-new")]
         private static Icon cbhacksicon = null;
 
+        [Resource("InputWindow")]
+        private static Icon inputwindow = null;
+
+        [Resource("InterpolatorFormIcon")]
+        private static Icon interpolatorformicon = null;
+
+        [Resource("NewEntryFormIcon")]
+        private static Icon newentryformicon = null;
+
+        [Resource("TextureViewerIcon")]
+        private static Icon textureviewericon = null;
+
         [Resource("ArrowImage")]
         private static Image arrowimage = null;
 
@@ -326,6 +338,10 @@ namespace CrashEdit
         public static Icon NSDIcon => nsdicon;
         public static Icon NSFIcon => nsficon;
         public static Icon CBHacksIcon => cbhacksicon;
+        public static Icon InputWindow => inputwindow;
+        public static Icon InterpolatorFormIcon => interpolatorformicon;
+        public static Icon NewEntryFormIcon => newentryformicon;
+        public static Icon TextureViewerIcon => textureviewericon;
         public static Image ArrowImage => arrowimage;
         public static Image BinocularsImage => binocularsimage;
         public static Image BinocularsNextImage => binocularsnextimage;

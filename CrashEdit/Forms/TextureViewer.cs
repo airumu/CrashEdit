@@ -24,6 +24,7 @@ namespace CrashEdit
             chunk = texturechunk;
             textype = TextureType.Crash2;
 
+            Icon = OldResources.TextureViewerIcon;
             Text = string.Format("Texture Viewer [{0}] - Right-click to save texture region to file", texturechunk.EName);
 
             InitializeComponent();

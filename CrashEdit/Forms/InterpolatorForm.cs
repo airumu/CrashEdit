@@ -39,6 +39,7 @@ namespace CrashEdit
             numEnd_ValueChanged(null,null);
             UpdatePosition();
 
+            Icon = OldResources.InterpolatorFormIcon;
             Text = Properties.Resources.InterpolatorForm;
             cmdCancel.Text = Properties.Resources.InterpolatorForm_cmdCancel;
             cmdFirst.Text = Properties.Resources.InterpolatorForm_cmdFirst;

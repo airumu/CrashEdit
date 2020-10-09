@@ -747,7 +747,6 @@
   </data>
   <data name="Config_chkPatchNSDSavesNSF" xml:space="preserve">
     <value>(NSD パッチ) NSD パッチ時に NSF ファイルも保存する</value>
-    <comment> </comment>
   </data>
   <data name="Config_cmdHelp" xml:space="preserve">
     <value>ヘルプ</value>
@@ -760,5 +759,8 @@
   </data>
   <data name="Config_fraKeyBinds" xml:space="preserve">
     <value>キーバインドの変更</value>
+  </data>
+  <data name="InputWindow" xml:space="preserve">
+    <value>検索</value>
   </data>
 </root>

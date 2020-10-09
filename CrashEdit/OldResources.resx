@@ -298,4 +298,16 @@
   <data name="cbhacks-logo-new" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\Icons\cbhacks-logo-new.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="TextureViewerIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Icons\Image.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="InterpolatorFormIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Icons\InterpolatorFormIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NewEntryFormIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Icons\NewEntryFormIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="InputWindow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Icons\InputWindow.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>
