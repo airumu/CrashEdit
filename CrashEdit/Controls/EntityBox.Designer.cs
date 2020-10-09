@@ -161,6 +161,8 @@ namespace CrashEdit
             this.tabLoadLists = new System.Windows.Forms.TabPage();
             this.lblEIDErrB = new DarkUI.Controls.DarkLabel();
             this.fraLoadListPayload = new System.Windows.Forms.GroupBox();
+            this.lblPayloadTexture = new DarkUI.Controls.DarkLabel();
+            this.lblPayloadSound = new DarkUI.Controls.DarkLabel();
             this.lblPayload = new DarkUI.Controls.DarkLabel();
             this.cmdLoadListVerify = new DarkUI.Controls.DarkButton();
             this.cmdPayload = new DarkUI.Controls.DarkButton();
@@ -2037,6 +2039,8 @@ namespace CrashEdit
             // fraLoadListPayload
             // 
             this.fraLoadListPayload.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.fraLoadListPayload.Controls.Add(this.lblPayloadTexture);
+            this.fraLoadListPayload.Controls.Add(this.lblPayloadSound);
             this.fraLoadListPayload.Controls.Add(this.lblPayload);
             this.fraLoadListPayload.Controls.Add(this.cmdLoadListVerify);
             this.fraLoadListPayload.Controls.Add(this.cmdPayload);
@@ -2045,10 +2049,32 @@ namespace CrashEdit
             this.fraLoadListPayload.ForeColor = System.Drawing.SystemColors.Window;
             this.fraLoadListPayload.Location = new System.Drawing.Point(6, 316);
             this.fraLoadListPayload.Name = "fraLoadListPayload";
-            this.fraLoadListPayload.Size = new System.Drawing.Size(245, 101);
+            this.fraLoadListPayload.Size = new System.Drawing.Size(245, 128);
             this.fraLoadListPayload.TabIndex = 22;
             this.fraLoadListPayload.TabStop = false;
             this.fraLoadListPayload.Text = "Verify Load Lists";
+            // 
+            // lblPayloadTexture
+            // 
+            this.lblPayloadTexture.AutoSize = true;
+            this.lblPayloadTexture.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblPayloadTexture.Location = new System.Drawing.Point(6, 90);
+            this.lblPayloadTexture.Name = "lblPayloadTexture";
+            this.lblPayloadTexture.Size = new System.Drawing.Size(163, 15);
+            this.lblPayloadTexture.TabIndex = 26;
+            this.lblPayloadTexture.Text = "Payload is ?? texture chunks";
+            this.lblPayloadTexture.Visible = false;
+            // 
+            // lblPayloadSound
+            // 
+            this.lblPayloadSound.AutoSize = true;
+            this.lblPayloadSound.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblPayloadSound.Location = new System.Drawing.Point(6, 106);
+            this.lblPayloadSound.Name = "lblPayloadSound";
+            this.lblPayloadSound.Size = new System.Drawing.Size(162, 15);
+            this.lblPayloadSound.TabIndex = 25;
+            this.lblPayloadSound.Text = "Payload is ?? sound chunks";
+            this.lblPayloadSound.Visible = false;
             // 
             // lblPayload
             // 
@@ -3361,5 +3387,7 @@ namespace CrashEdit
         private DarkUI.Controls.DarkCheckBox chkID;
         private DarkUI.Controls.DarkCheckBox chkID2;
         private DarkUI.Controls.DarkNumericUpDown numID2;
+        private DarkUI.Controls.DarkLabel lblPayloadTexture;
+        private DarkUI.Controls.DarkLabel lblPayloadSound;
     }
 }

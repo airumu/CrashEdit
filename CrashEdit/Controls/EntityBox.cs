@@ -1679,6 +1679,8 @@ namespace CrashEdit
                 }
             }
             HashSet<Chunk> loadedchunks = new HashSet<Chunk>();
+            HashSet<Chunk> loadedsoundchunks = new HashSet<Chunk>();
+            HashSet<Chunk> loadedtexturechunks = new HashSet<Chunk>();
             foreach (Chunk chunk in chunks)
             {
                 if (chunk is NormalChunk c)
@@ -1689,12 +1691,34 @@ namespace CrashEdit
                             loadedchunks.Add(chunk);
                     }
                 }
+                else if (chunk is SoundChunk s)
+                {
+                    foreach (Entry entry in entries)
+                    {
+                        if (s.Entries.Contains(entry))
+                            loadedsoundchunks.Add(chunk);
+                    }
+                }
+                else if (chunk is TextureChunk t)
+                {
+                    foreach (Entry entry in entries)
+                    {
+                        if (loadedentries.Contains(t.EID))
+                            loadedtexturechunks.Add(chunk);
+                    }
+                }
             }
+
             lblPayload.Visible = true;
             lblPayload.Text = $"Payload is {loadedchunks.Count} normal chunks";
+            lblPayloadSound.Visible = true;
+            lblPayloadSound.Text = $"Payload is {loadedsoundchunks.Count} sound chunks";
+            lblPayloadTexture.Visible = true;
+            lblPayloadTexture.Text = $"Payload is {loadedtexturechunks.Count} texture chunks";
+
             if (loadedchunks.Count < 20)
             {
-                lblPayload.ForeColor = Color.Green;
+                lblPayload.ForeColor = Color.LimeGreen;
             }
             else if (loadedchunks.Count <= 21)
             {
@@ -1703,6 +1727,32 @@ namespace CrashEdit
             else
             {
                 lblPayload.ForeColor = Color.Red;
+            }
+
+            if (loadedtexturechunks.Count <= 7)
+            {
+                lblPayloadTexture.ForeColor = Color.LimeGreen;
+            }
+            else if (loadedtexturechunks.Count == 8)
+            {
+                lblPayloadTexture.ForeColor = Color.Goldenrod;
+            }
+            else
+            {
+                lblPayloadTexture.ForeColor = Color.Red;
+            }
+
+            if (loadedsoundchunks.Count <= 3)
+            {
+                lblPayloadSound.ForeColor = Color.LimeGreen;
+            }
+            else if (loadedsoundchunks.Count == 4)
+            {
+                lblPayloadSound.ForeColor = Color.Goldenrod;
+            }
+            else
+            {
+                lblPayloadSound.ForeColor = Color.Red;
             }
         }
 
