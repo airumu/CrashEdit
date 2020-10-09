@@ -1681,6 +1681,7 @@ namespace CrashEdit
             HashSet<Chunk> loadedchunks = new HashSet<Chunk>();
             HashSet<Chunk> loadedsoundchunks = new HashSet<Chunk>();
             HashSet<Chunk> loadedtexturechunks = new HashSet<Chunk>();
+            HashSet<Chunk> loadedwavebankchunks = new HashSet<Chunk>();
             foreach (Chunk chunk in chunks)
             {
                 if (chunk is NormalChunk c)
@@ -1707,14 +1708,21 @@ namespace CrashEdit
                             loadedtexturechunks.Add(chunk);
                     }
                 }
+                else if (chunk is WavebankChunk w)
+                {
+                    foreach (Entry entry in entries)
+                    {
+                        loadedwavebankchunks.Add(chunk);
+                    }
+                }
             }
 
             lblPayload.Visible = true;
             lblPayload.Text = $"Payload is {loadedchunks.Count} normal chunks";
-            lblPayloadSound.Visible = true;
-            lblPayloadSound.Text = $"Payload is {loadedsoundchunks.Count} sound chunks";
             lblPayloadTexture.Visible = true;
             lblPayloadTexture.Text = $"Payload is {loadedtexturechunks.Count} texture chunks";
+            lblPayloadSound.Visible = true;
+            lblPayloadSound.Text = $"Payload is {loadedsoundchunks.Count} sound chunks ({loadedwavebankchunks.Count} wavebank chunks)";
 
             if (loadedchunks.Count < 20)
             {
@@ -1729,19 +1737,6 @@ namespace CrashEdit
                 lblPayload.ForeColor = Color.Red;
             }
 
-            if (loadedsoundchunks.Count <= 3)
-            {
-                lblPayloadSound.ForeColor = Color.LimeGreen;
-            }
-            else if (loadedsoundchunks.Count == 4)
-            {
-                lblPayloadSound.ForeColor = Color.Goldenrod;
-            }
-            else
-            {
-                lblPayloadSound.ForeColor = Color.Red;
-            }
-
             if (loadedtexturechunks.Count <= 7)
             {
                 lblPayloadTexture.ForeColor = Color.LimeGreen;
@@ -1753,6 +1748,15 @@ namespace CrashEdit
             else
             {
                 lblPayloadTexture.ForeColor = Color.Red;
+            }
+
+            if (loadedsoundchunks.Count + loadedwavebankchunks.Count <= 8)
+            {
+                lblPayloadSound.ForeColor = Color.CornflowerBlue;
+            }
+            else
+            {
+                lblPayloadSound.ForeColor = Color.Red;
             }
         }
 
