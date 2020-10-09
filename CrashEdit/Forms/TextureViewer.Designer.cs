@@ -32,6 +32,9 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tabControl1 = new MetroFramework.Controls.MetroTabControl();
             this.tabC1 = new System.Windows.Forms.TabPage();
+            this.C1Size64 = new DarkUI.Controls.DarkButton();
+            this.C1Size32 = new DarkUI.Controls.DarkButton();
+            this.C1Size16 = new DarkUI.Controls.DarkButton();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.C1numY = new DarkUI.Controls.DarkNumericUpDown();
             this.C1numX = new DarkUI.Controls.DarkNumericUpDown();
@@ -52,6 +55,10 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.C1dpdColor = new DarkUI.Controls.DarkComboBox();
             this.tabC2 = new System.Windows.Forms.TabPage();
+            this.C2SizeMax = new DarkUI.Controls.DarkButton();
+            this.C2Size64 = new DarkUI.Controls.DarkButton();
+            this.C2Size32 = new DarkUI.Controls.DarkButton();
+            this.C2Size16 = new DarkUI.Controls.DarkButton();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.C2numY = new DarkUI.Controls.DarkNumericUpDown();
             this.C2numX = new DarkUI.Controls.DarkNumericUpDown();
@@ -149,6 +156,9 @@
             // tabC1
             // 
             this.tabC1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.tabC1.Controls.Add(this.C1Size64);
+            this.tabC1.Controls.Add(this.C1Size32);
+            this.tabC1.Controls.Add(this.C1Size16);
             this.tabC1.Controls.Add(this.groupBox5);
             this.tabC1.Controls.Add(this.groupBox4);
             this.tabC1.Controls.Add(this.groupBox3);
@@ -162,6 +172,36 @@
             this.tabC1.Size = new System.Drawing.Size(620, 155);
             this.tabC1.TabIndex = 0;
             this.tabC1.Text = "Crash 1";
+            // 
+            // C1Size64
+            // 
+            this.C1Size64.Location = new System.Drawing.Point(304, 80);
+            this.C1Size64.Name = "C1Size64";
+            this.C1Size64.Padding = new System.Windows.Forms.Padding(5);
+            this.C1Size64.Size = new System.Drawing.Size(70, 25);
+            this.C1Size64.TabIndex = 13;
+            this.C1Size64.Text = "64 × 64";
+            this.C1Size64.Click += new System.EventHandler(this.C1Size64_Click);
+            // 
+            // C1Size32
+            // 
+            this.C1Size32.Location = new System.Drawing.Point(304, 47);
+            this.C1Size32.Name = "C1Size32";
+            this.C1Size32.Padding = new System.Windows.Forms.Padding(5);
+            this.C1Size32.Size = new System.Drawing.Size(70, 25);
+            this.C1Size32.TabIndex = 12;
+            this.C1Size32.Text = "32 × 32";
+            this.C1Size32.Click += new System.EventHandler(this.C1Size32_Click);
+            // 
+            // C1Size16
+            // 
+            this.C1Size16.Location = new System.Drawing.Point(304, 14);
+            this.C1Size16.Name = "C1Size16";
+            this.C1Size16.Padding = new System.Windows.Forms.Padding(5);
+            this.C1Size16.Size = new System.Drawing.Size(70, 25);
+            this.C1Size16.TabIndex = 11;
+            this.C1Size16.Text = "16 × 16";
+            this.C1Size16.Click += new System.EventHandler(this.C1Size16_Click);
             // 
             // groupBox5
             // 
@@ -418,6 +458,10 @@
             // tabC2
             // 
             this.tabC2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.tabC2.Controls.Add(this.C2SizeMax);
+            this.tabC2.Controls.Add(this.C2Size64);
+            this.tabC2.Controls.Add(this.C2Size32);
+            this.tabC2.Controls.Add(this.C2Size16);
             this.tabC2.Controls.Add(this.groupBox6);
             this.tabC2.Controls.Add(this.groupBox7);
             this.tabC2.Controls.Add(this.groupBox8);
@@ -431,6 +475,46 @@
             this.tabC2.Size = new System.Drawing.Size(620, 155);
             this.tabC2.TabIndex = 1;
             this.tabC2.Text = "Crash 2";
+            // 
+            // C2SizeMax
+            // 
+            this.C2SizeMax.Location = new System.Drawing.Point(304, 113);
+            this.C2SizeMax.Name = "C2SizeMax";
+            this.C2SizeMax.Padding = new System.Windows.Forms.Padding(5);
+            this.C2SizeMax.Size = new System.Drawing.Size(70, 25);
+            this.C2SizeMax.TabIndex = 0;
+            this.C2SizeMax.Text = "Max";
+            this.C2SizeMax.Click += new System.EventHandler(this.C2SizeMax_Click);
+            // 
+            // C2Size64
+            // 
+            this.C2Size64.Location = new System.Drawing.Point(304, 80);
+            this.C2Size64.Name = "C2Size64";
+            this.C2Size64.Padding = new System.Windows.Forms.Padding(5);
+            this.C2Size64.Size = new System.Drawing.Size(70, 25);
+            this.C2Size64.TabIndex = 12;
+            this.C2Size64.Text = "64 × 64";
+            this.C2Size64.Click += new System.EventHandler(this.C2Size64_Click);
+            // 
+            // C2Size32
+            // 
+            this.C2Size32.Location = new System.Drawing.Point(304, 47);
+            this.C2Size32.Name = "C2Size32";
+            this.C2Size32.Padding = new System.Windows.Forms.Padding(5);
+            this.C2Size32.Size = new System.Drawing.Size(70, 25);
+            this.C2Size32.TabIndex = 11;
+            this.C2Size32.Text = "32 × 32";
+            this.C2Size32.Click += new System.EventHandler(this.C2Size32_Click);
+            // 
+            // C2Size16
+            // 
+            this.C2Size16.Location = new System.Drawing.Point(304, 14);
+            this.C2Size16.Name = "C2Size16";
+            this.C2Size16.Padding = new System.Windows.Forms.Padding(5);
+            this.C2Size16.Size = new System.Drawing.Size(70, 25);
+            this.C2Size16.TabIndex = 10;
+            this.C2Size16.Text = "16 × 16";
+            this.C2Size16.Click += new System.EventHandler(this.C2Size16_Click);
             // 
             // groupBox6
             // 
@@ -784,5 +868,12 @@
         private DarkUI.Controls.DarkComboBox C2dpdColor;
         private DarkUI.Controls.DarkNumericUpDown C2numH;
         private DarkUI.Controls.DarkNumericUpDown C2numW;
+        private DarkUI.Controls.DarkButton C2Size16;
+        private DarkUI.Controls.DarkButton C2Size32;
+        private DarkUI.Controls.DarkButton C2Size64;
+        private DarkUI.Controls.DarkButton C2SizeMax;
+        private DarkUI.Controls.DarkButton C1Size16;
+        private DarkUI.Controls.DarkButton C1Size32;
+        private DarkUI.Controls.DarkButton C1Size64;
     }
 }

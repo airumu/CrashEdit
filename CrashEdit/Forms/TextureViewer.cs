@@ -1,4 +1,5 @@
 ﻿using Crash;
+using DarkUI.Forms;
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -7,7 +8,7 @@ using System.Windows.Forms;
 
 namespace CrashEdit
 {
-    public partial class TextureViewer : Form
+    public partial class TextureViewer : DarkForm
     {
         internal enum TextureType
         {
@@ -182,6 +183,48 @@ namespace CrashEdit
             pictureBox1.Size = bitmap.Size;
             if (Width != pw + 16)
                 Width = pw + 16;
+        }
+
+        private void C2Size16_Click(object sender, EventArgs e)
+        {
+            C2numW.Value = 16;
+            C2numH.Value = 16;
+        }
+
+        private void C2Size32_Click(object sender, EventArgs e)
+        {
+            C2numW.Value = 32;
+            C2numH.Value = 32;
+        }
+
+        private void C2Size64_Click(object sender, EventArgs e)
+        {
+            C2numW.Value = 64;
+            C2numH.Value = 64;
+        }
+
+        private void C2SizeMax_Click(object sender, EventArgs e)
+        {
+            C2numW.Value = 1024;
+            C2numH.Value = 128;
+        }
+
+        private void C1Size16_Click(object sender, EventArgs e)
+        {
+            C1dpdW.SelectedItem = "16";
+            C1dpdH.SelectedItem = "16";
+        }
+
+        private void C1Size32_Click(object sender, EventArgs e)
+        {
+            C1dpdW.SelectedItem = "32";
+            C1dpdH.SelectedItem = "32";
+        }
+
+        private void C1Size64_Click(object sender, EventArgs e)
+        {
+            C1dpdW.SelectedItem = "64";
+            C1dpdH.SelectedItem = "64";
         }
     }
 }
