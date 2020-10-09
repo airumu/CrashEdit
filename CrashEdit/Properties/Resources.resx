@@ -446,10 +446,10 @@
     <value>Amount</value>
   </data>
   <data name="Config_lblH" xml:space="preserve">
-    <value>Width</value>
+    <value>Height</value>
   </data>
   <data name="Config_lblW" xml:space="preserve">
-    <value>Height</value>
+    <value>Width</value>
   </data>
   <data name="Crash3AnimationSelector_Desc" xml:space="preserve">
     <value>Type in a Model (or Compressed Model) name and press Enter.</value>

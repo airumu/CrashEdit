@@ -290,7 +290,7 @@ namespace CrashEdit.Properties {
         }
         
         /// <summary>
-        ///   Width に類似しているローカライズされた文字列を検索します。
+        ///   Height に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Config_lblH {
             get {
@@ -299,7 +299,7 @@ namespace CrashEdit.Properties {
         }
         
         /// <summary>
-        ///   Height に類似しているローカライズされた文字列を検索します。
+        ///   Width に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Config_lblW {
             get {

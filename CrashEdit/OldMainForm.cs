@@ -1527,16 +1527,16 @@ namespace CrashEdit
 
         private void OldMainForm_Load(object sender, EventArgs e)
         {
-            Bounds = Settings.Default.FormBounds1;
+            Bounds = Settings.Default.FormBounds;
             WindowState = Settings.Default.FormWindowState;
         }
 
         private void OldMainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (WindowState == FormWindowState.Normal)
-                Settings.Default.FormBounds1 = Bounds;
+                Settings.Default.FormBounds = Bounds;
             else
-                Settings.Default.FormBounds1 = RestoreBounds;
+                Settings.Default.FormBounds = RestoreBounds;
 
             Settings.Default.FormWindowState = WindowState;
 

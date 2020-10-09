@@ -1729,19 +1729,6 @@ namespace CrashEdit
                 lblPayload.ForeColor = Color.Red;
             }
 
-            if (loadedtexturechunks.Count <= 7)
-            {
-                lblPayloadTexture.ForeColor = Color.LimeGreen;
-            }
-            else if (loadedtexturechunks.Count == 8)
-            {
-                lblPayloadTexture.ForeColor = Color.Goldenrod;
-            }
-            else
-            {
-                lblPayloadTexture.ForeColor = Color.Red;
-            }
-
             if (loadedsoundchunks.Count <= 3)
             {
                 lblPayloadSound.ForeColor = Color.LimeGreen;
@@ -1753,6 +1740,19 @@ namespace CrashEdit
             else
             {
                 lblPayloadSound.ForeColor = Color.Red;
+            }
+
+            if (loadedtexturechunks.Count <= 7)
+            {
+                lblPayloadTexture.ForeColor = Color.LimeGreen;
+            }
+            else if (loadedtexturechunks.Count == 8)
+            {
+                lblPayloadTexture.ForeColor = Color.Goldenrod;
+            }
+            else
+            {
+                lblPayloadTexture.ForeColor = Color.Red;
             }
         }
 
