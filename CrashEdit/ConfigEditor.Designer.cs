@@ -360,7 +360,7 @@
             this.cmdReset.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
             this.cmdReset.FontSize = MetroFramework.MetroButtonSize.Medium;
             this.cmdReset.FontWeight = MetroFramework.MetroButtonWeight.Regular;
-            this.cmdReset.ForeColor = System.Drawing.Color.Cyan;
+            this.cmdReset.ForeColor = System.Drawing.Color.DeepSkyBlue;
             this.cmdReset.Location = new System.Drawing.Point(12, 301);
             this.cmdReset.Name = "cmdReset";
             this.cmdReset.Size = new System.Drawing.Size(99, 23);
