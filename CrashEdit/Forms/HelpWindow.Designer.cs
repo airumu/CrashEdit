@@ -183,6 +183,8 @@
             this.Controls.Add(this.darkLabel2);
             this.Controls.Add(this.darkLabel1);
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "HelpWindow";
             this.Padding = new System.Windows.Forms.Padding(0, 0, 4, 4);
             this.ShowIcon = false;
