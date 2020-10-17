@@ -1,4 +1,5 @@
 using Crash;
+using MetroFramework.Controls;
 using System.Windows.Forms;
 
 namespace CrashEdit
@@ -26,6 +27,7 @@ namespace CrashEdit
 
         protected override Control CreateEditor()
         {
+            /*
             if (!Frame.IsNew)
             {
                 ModelEntry modelentry = AnimationEntryController.EntryChunkController.NSFController.NSF.FindEID<ModelEntry>(Frame.ModelEID);
@@ -35,6 +37,45 @@ namespace CrashEdit
                     texturechunks[i] = AnimationEntryController.EntryChunkController.NSFController.NSF.FindEID<TextureChunk>(BitConv.FromInt32(modelentry.Info,0xC+i*4));
                 }
                 return new UndockableControl(new AnimationEntryViewer(Frame,modelentry,texturechunks));
+            }
+            else
+            {
+                return new Crash3AnimationSelector(AnimationEntryController.AnimationEntry, Frame, AnimationEntryController.EntryChunkController.NSFController.NSF);
+            }
+            */
+            if (!Frame.IsNew)
+            {
+                MetroTabControl tbcTabs = new MetroTabControl()
+                {
+                    Dock = DockStyle.Fill,
+                    FontSize = MetroFramework.MetroTabControlSize.Medium,
+                    FontWeight = MetroFramework.MetroTabControlWeight.Regular,
+                    Style = MetroFramework.MetroColorStyle.Teal,
+                    Theme = MetroFramework.MetroThemeStyle.Dark
+                };
+
+                ModelEntry modelentry = AnimationEntryController.EntryChunkController.NSFController.NSF.FindEID<ModelEntry>(Frame.ModelEID);
+
+                FrameBox framebox = new FrameBox(this);
+                framebox.Dock = DockStyle.Fill;
+                TextureChunk[] texturechunks = new TextureChunk[8];
+                for (int i = 0; i < 8; ++i)
+                {
+                    texturechunks[i] = AnimationEntryController.EntryChunkController.NSFController.NSF.FindEID<TextureChunk>(BitConv.FromInt32(modelentry.Info, 0xC + i * 4));
+                }
+
+                UndockableControl viewerbox = new UndockableControl(new AnimationEntryViewer(Frame, modelentry, texturechunks)) { Dock = DockStyle.Fill };
+
+                TabPage edittab = new TabPage("Editor");
+                edittab.Controls.Add(framebox);
+                TabPage viewertab = new TabPage("Viewer");
+                viewertab.Controls.Add(new UndockableControl(viewerbox));
+
+                tbcTabs.TabPages.Add(viewertab);
+                tbcTabs.TabPages.Add(edittab);
+                tbcTabs.SelectedTab = viewertab;
+
+                return tbcTabs;
             }
             else
             {

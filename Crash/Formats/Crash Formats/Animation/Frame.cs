@@ -138,9 +138,9 @@ namespace Crash
         }
 
         public int ModelEID { get; }
-        public short XOffset { get; }
-        public short YOffset { get; }
-        public short ZOffset { get; }
+        public short XOffset { get; set; }
+        public short YOffset { get; set; }
+        public short ZOffset { get; set; }
         public int HeaderSize { get; }
         public IList<FrameCollision> Collision => collision;
         public IList<FrameVertex> Vertices => vertices;
