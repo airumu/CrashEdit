@@ -219,12 +219,19 @@ namespace CrashEdit
             UpdateCollision();
         }
 
+        private void UpdateOffset()
+        {
+            numXOffset.Value = frame.XOffset;
+            numYOffset.Value = frame.YOffset;
+            numZOffset.Value = frame.ZOffset;
+        }
+
         private void numX_ValueChanged(object sender,EventArgs e)
         {
             if (!vertexdirty)
             {
                 FrameVertex pos = frame.Vertices[vertexindex];
-                frame.Vertices[vertexindex] = new FrameVertex((byte)numX.Value,pos.Y,pos.Z);
+                frame.Vertices[vertexindex] = new FrameVertex((byte)numX.Value, pos.Y, pos.Z);
             }
         }
 
@@ -341,13 +348,6 @@ namespace CrashEdit
                 FrameCollision pos = frame.Collision[collisionindex];
                 frame.Collision[collisionindex] = new FrameCollision(pos.U, pos.XO, pos.YO, (int)numZG.Value, pos.X1, pos.Y1, pos.Z1, pos.X2, pos.Y2, pos.Z2);
             }
-        }
-
-        private void UpdateOffset()
-        {
-            numXOffset.Value = frame.XOffset;
-            numYOffset.Value = frame.YOffset;
-            numZOffset.Value = frame.ZOffset;
         }
     }
 }
