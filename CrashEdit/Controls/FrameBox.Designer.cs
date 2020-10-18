@@ -649,12 +649,12 @@ namespace CrashEdit
             this.numZOffset.Location = new System.Drawing.Point(27, 82);
             this.numZOffset.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.numZOffset.Maximum = new decimal(new int[] {
-            2147483647,
+            32767,
             0,
             0,
             0});
             this.numZOffset.Minimum = new decimal(new int[] {
-            -2147483648,
+            32768,
             0,
             0,
             -2147483648});
@@ -668,12 +668,12 @@ namespace CrashEdit
             this.numYOffset.Location = new System.Drawing.Point(27, 52);
             this.numYOffset.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.numYOffset.Maximum = new decimal(new int[] {
-            2147483647,
+            32767,
             0,
             0,
             0});
             this.numYOffset.Minimum = new decimal(new int[] {
-            -2147483648,
+            32768,
             0,
             0,
             -2147483648});
@@ -687,12 +687,12 @@ namespace CrashEdit
             this.numXOffset.Location = new System.Drawing.Point(27, 22);
             this.numXOffset.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.numXOffset.Maximum = new decimal(new int[] {
-            2147483647,
+            32767,
             0,
             0,
             0});
             this.numXOffset.Minimum = new decimal(new int[] {
-            -2147483648,
+            32768,
             0,
             0,
             -2147483648});
