@@ -161,7 +161,7 @@ namespace CrashEdit
                 cmdPreviousCollision.Enabled = (collisionindex > 0);
                 cmdNextCollision.Enabled = (collisionindex < frame.Collision.Count - 1);
                 cmdInsertCollision.Enabled = true;
-                cmdRemoveCollision.Enabled = (frame.Collision.Count > 1);
+                cmdRemoveCollision.Enabled = true;
                 fraG1.Enabled = true;
                 numX1.Value = frame.Collision[collisionindex].X1;
                 numY1.Value = frame.Collision[collisionindex].Y1;

@@ -250,5 +250,17 @@ namespace CrashEdit.Properties {
                 this["FormWindowState"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AnimViewPanel {
+            get {
+                return ((bool)(this["AnimViewPanel"]));
+            }
+            set {
+                this["AnimViewPanel"] = value;
+            }
+        }
     }
 }

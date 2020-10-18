@@ -1,11 +1,14 @@
 using Crash;
 using MetroFramework.Controls;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace CrashEdit
 {
     public sealed class FrameController : Controller
     {
+        private SplitContainer pnSplit;
+
         public FrameController(AnimationEntryController animationentrycontroller,Frame frame)
         {
             AnimationEntryController = animationentrycontroller;
@@ -45,15 +48,6 @@ namespace CrashEdit
             */
             if (!Frame.IsNew)
             {
-                MetroTabControl tbcTabs = new MetroTabControl()
-                {
-                    Dock = DockStyle.Fill,
-                    FontSize = MetroFramework.MetroTabControlSize.Medium,
-                    FontWeight = MetroFramework.MetroTabControlWeight.Regular,
-                    Style = MetroFramework.MetroColorStyle.Teal,
-                    Theme = MetroFramework.MetroThemeStyle.Dark
-                };
-
                 ModelEntry modelentry = AnimationEntryController.EntryChunkController.NSFController.NSF.FindEID<ModelEntry>(Frame.ModelEID);
 
                 FrameBox framebox = new FrameBox(this);
@@ -66,16 +60,40 @@ namespace CrashEdit
 
                 UndockableControl viewerbox = new UndockableControl(new AnimationEntryViewer(Frame, modelentry, texturechunks)) { Dock = DockStyle.Fill };
 
-                TabPage edittab = new TabPage("Editor");
-                edittab.Controls.Add(framebox);
-                TabPage viewertab = new TabPage("Viewer");
-                viewertab.Controls.Add(new UndockableControl(viewerbox));
+                if (Properties.Settings.Default.AnimViewPanel)
+                {
+                    pnSplit = new SplitContainer { Dock = DockStyle.Fill };
+                    pnSplit.BackColor = Color.FromArgb(45, 45, 48);
+                    pnSplit.Orientation = Orientation.Horizontal;
+                    pnSplit.SplitterDistance = 50;
 
-                tbcTabs.TabPages.Add(viewertab);
-                tbcTabs.TabPages.Add(edittab);
-                tbcTabs.SelectedTab = viewertab;
+                    pnSplit.Panel1.Controls.Add(framebox);
+                    pnSplit.Panel2.Controls.Add(viewerbox);
 
-                return tbcTabs;
+                    return pnSplit;
+                }
+                else
+                {
+                    MetroTabControl tbcTabs = new MetroTabControl()
+                    {
+                        Dock = DockStyle.Fill,
+                        FontSize = MetroFramework.MetroTabControlSize.Medium,
+                        FontWeight = MetroFramework.MetroTabControlWeight.Regular,
+                        Style = MetroFramework.MetroColorStyle.Teal,
+                        Theme = MetroFramework.MetroThemeStyle.Dark
+                    };
+
+                    TabPage edittab = new TabPage("Editor");
+                    edittab.Controls.Add(framebox);
+                    TabPage viewertab = new TabPage("Viewer");
+                    viewertab.Controls.Add(new UndockableControl(viewerbox));
+
+                    tbcTabs.TabPages.Add(viewertab);
+                    tbcTabs.TabPages.Add(edittab);
+                    tbcTabs.SelectedTab = viewertab;
+
+                    return tbcTabs;
+                }
             }
             else
             {

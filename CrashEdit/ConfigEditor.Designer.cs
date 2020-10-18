@@ -55,6 +55,7 @@
             this.fraKeyBinds = new System.Windows.Forms.GroupBox();
             this.cmdHelp = new MetroFramework.Controls.MetroButton();
             this.chkCustomCrates = new MetroFramework.Controls.MetroCheckBox();
+            this.chkAnimViewPanel = new MetroFramework.Controls.MetroCheckBox();
             this.fraLang.SuspendLayout();
             this.fraSize.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numH)).BeginInit();
@@ -444,11 +445,25 @@
             this.chkCustomCrates.UseSelectable = true;
             this.chkCustomCrates.CheckedChanged += new System.EventHandler(this.ChkCustomCrates_CheckedChanged);
             // 
+            // chkAnimViewPanel
+            // 
+            this.chkAnimViewPanel.ForeColor = System.Drawing.Color.Gainsboro;
+            this.chkAnimViewPanel.Location = new System.Drawing.Point(300, 132);
+            this.chkAnimViewPanel.Name = "chkAnimViewPanel";
+            this.chkAnimViewPanel.Size = new System.Drawing.Size(190, 15);
+            this.chkAnimViewPanel.TabIndex = 16;
+            this.chkAnimViewPanel.Text = "Separate the panel in FrameBox";
+            this.chkAnimViewPanel.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.chkAnimViewPanel.UseCustomBackColor = true;
+            this.chkAnimViewPanel.UseSelectable = true;
+            this.chkAnimViewPanel.CheckedChanged += new System.EventHandler(this.ChkAnimViewPanel_CheckedChanged);
+            // 
             // ConfigEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.Controls.Add(this.chkAnimViewPanel);
             this.Controls.Add(this.chkCustomCrates);
             this.Controls.Add(this.cmdHelp);
             this.Controls.Add(this.fraKeyBinds);
@@ -511,5 +526,6 @@
         private MetroFramework.Controls.MetroButton cmdHelp;
         private MetroFramework.Controls.MetroToggle tglKeyBinds;
         private MetroFramework.Controls.MetroCheckBox chkCustomCrates;
+        private MetroFramework.Controls.MetroCheckBox chkAnimViewPanel;
     }
 }
