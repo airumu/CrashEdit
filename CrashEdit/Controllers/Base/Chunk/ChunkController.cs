@@ -8,6 +8,7 @@ namespace CrashEdit
         {
             NSFController = nsfcontroller;
             Chunk = chunk;
+            AddMenu(Crash.UI.Properties.Resources.ChunkController_AcExport, Menu_Export_Entry);
             AddMenu(Crash.UI.Properties.Resources.ChunkController_AcDelete,Menu_Delete_Chunk);
             if (!(this is UnprocessedChunkController))
             {
@@ -17,6 +18,12 @@ namespace CrashEdit
 
         public NSFController NSFController { get; }
         public Chunk Chunk { get; }
+
+        private void Menu_Export_Entry()
+        {
+            int index = NSFController.NSF.Chunks.IndexOf(Chunk);
+            FileUtil.SaveFile(Chunk.Save(index * 2 + 1), FileFilters.Any);
+        }
 
         private void Menu_Delete_Chunk()
         {

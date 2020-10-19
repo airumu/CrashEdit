@@ -355,4 +355,7 @@ NTSC-U, NTSC-J, and PAL are all supported.</value>
   <data name="TextureChunkController_AcOpenViewer" xml:space="preserve">
     <value>Open viewer</value>
   </data>
+  <data name="ChunkController_AcExport" xml:space="preserve">
+    <value>Export Chunk</value>
+  </data>
 </root>

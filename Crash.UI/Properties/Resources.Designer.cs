@@ -115,6 +115,15 @@ namespace Crash.UI.Properties {
         }
         
         /// <summary>
+        ///   Export Chunk に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string ChunkController_AcExport {
+            get {
+                return ResourceManager.GetString("ChunkController_AcExport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Colored Animation ({0}) に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string ColoredAnimationEntryController_Text {
