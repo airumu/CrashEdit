@@ -50,7 +50,7 @@ namespace CrashEdit
 
         protected override Control CreateEditor()
         {
-            return new GOOLBox(GOOLEntry);
+            return new UndockableControl(new GOOLBox(GOOLEntry));
         }
 
         public GOOLEntry GOOLEntry { get; }
