@@ -69,6 +69,7 @@ namespace CrashEdit
         private MetroTabControl tbcTabs;
         private GameVersionForm dlgGameVersion;
         private ToolStripButton tbbPAL;
+        private DarkTextBox txtInput;
 
         private FolderBrowserDialog dlgMakeBINDir = new FolderBrowserDialog();
         private SaveFileDialog dlgMakeBINFile = new SaveFileDialog();
@@ -79,6 +80,9 @@ namespace CrashEdit
         private static bool PAL = Settings.Default.PAL;
         private const int RateNTSC = 30;
         private const int RatePAL = 25;
+
+        public string Input => txtInput.Text;
+        private static bool changetext = true;
 
         public OldMainForm()
         {
@@ -130,7 +134,7 @@ namespace CrashEdit
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
             tbbFind.Click += new EventHandler(tbbFind_Click);
-            tbbFind.Size = new Size(48, 40);
+            tbbFind.Size = new Size(64, 39);
 
             tbbFindNext = new ToolStripButton
             {
@@ -210,6 +214,14 @@ namespace CrashEdit
             tbbPlay.Click += new EventHandler(tbbPlay_Click);
             tbbPlay.Size = new Size(40, 40);
 
+            txtInput = new DarkTextBox
+            {
+                Location = new Point(221, 19),
+                Size = new Size(64, 20)
+            };
+            txtInput.TextChanged += new EventHandler(txtInput_Change);
+            txtInput.Click += new EventHandler(txtInput_Click);
+
             tsToolbar = new DarkToolStrip
             {
                 Dock = DockStyle.Top,
@@ -231,7 +243,7 @@ namespace CrashEdit
             tsToolbar.Items.Add(tbbPlay);
             tsToolbar.Font = new Font("Arial", 9F);
 
-            tbcTabs = new MetroTabControl
+           tbcTabs = new MetroTabControl
             {
                 Dock = DockStyle.Fill
             };
@@ -295,7 +307,7 @@ namespace CrashEdit
 
             msMenu.Visible = false;
             msMenu.Font = new Font("Arial", 9F);
-            msMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            msMenu.Items.AddRange(new ToolStripItem[] {
             mnuOpen,
             mnuSave,
             mnuPatchNSD,
@@ -341,6 +353,7 @@ namespace CrashEdit
             Load += new EventHandler(OldMainForm_Load);
             FormClosing += new FormClosingEventHandler(OldMainForm_FormClosing);
             Text = $"CrashEdit-tweaked v{Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
+            Controls.Add(txtInput);
             Controls.Add(tbcTabs);
             Controls.Add(tsToolbar);
             Controls.Add(msMenu);
@@ -356,7 +369,8 @@ namespace CrashEdit
             tbbClose.Enabled =
             tbbFind.Enabled =
             tbbFindNext.Enabled =
-            tbbPlay.Enabled = tab != null && tab.Tag is NSFBox;
+            tbbPlay.Enabled =
+            txtInput.Enabled = tab != null && tab.Tag is NSFBox;
         }
 
         void tbbPAL_Click(object sender, EventArgs e)
@@ -504,6 +518,16 @@ namespace CrashEdit
         void tbbFindNext_Click(object sender,EventArgs e)
         {
             FindNext();
+        }
+
+        void txtInput_Change(object sender, EventArgs e)
+        {
+            changetext = true;
+        }
+
+        void txtInput_Click(object sender, EventArgs e)
+        {
+            txtInput.SelectAll();
         }
 
         public void OpenNSF()
@@ -1291,22 +1315,32 @@ namespace CrashEdit
 
         public void Find()
         {
+            txtInput.Select();
+            txtInput.SelectAll();
+
             if (tbcTabs.SelectedTab != null)
             {
                 NSFBox nsfbox = (NSFBox)tbcTabs.SelectedTab.Tag;
-                using (InputWindow inputwindow = new InputWindow())
-                {
-                    if (inputwindow.ShowDialog(this) == DialogResult.OK)
-                    {
-                        nsfbox.Find(inputwindow.Input);
-                    }
-                }
+                nsfbox.Find(Input);
             }
         }
 
         public void FindNext()
         {
-            if (tbcTabs.SelectedTab != null)
+            txtInput.Select();
+            txtInput.SelectAll();
+
+            if (changetext == true)
+            {
+                if (tbcTabs.SelectedTab != null)
+                {
+                    NSFBox nsfbox = (NSFBox)tbcTabs.SelectedTab.Tag;
+                    nsfbox.Find(Input);
+                }
+                changetext = false;
+                return;
+            }
+            else if (tbcTabs.SelectedTab != null)
             {
                 NSFBox nsfbox = (NSFBox)tbcTabs.SelectedTab.Tag;
                 nsfbox.FindNext();

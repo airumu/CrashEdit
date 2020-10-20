@@ -186,7 +186,7 @@ namespace CrashEdit
             }
             else
             {
-                DarkMessageBox.ShowInformation("No results found.", "");
+                DarkMessageBox.ShowInformation("No results found.", "Find");
             }
         }
 
