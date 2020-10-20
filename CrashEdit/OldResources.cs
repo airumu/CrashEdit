@@ -14,7 +14,7 @@ namespace CrashEdit
         [Resource("NSFIcon")]
         private static Icon nsficon = null;
 
-        [Resource("cbhacks-logo-new")]
+        [Resource("cbhacks-logo-new2")]
         private static Icon cbhacksicon = null;
 
         [Resource("InputWindow")]

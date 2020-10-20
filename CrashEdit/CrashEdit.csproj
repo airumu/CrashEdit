@@ -460,6 +460,7 @@
     <Content Include="Resources\Computer_File_064.gif" />
     <Content Include="Resources\Computer_File_068.gif" />
     <Content Include="Resources\Icons\cbhacks-logo-new.ico" />
+    <None Include="Resources\Icons\cbhacks-logo-new2.ico" />
     <Content Include="Resources\Icons\Image.ico" />
     <None Include="Resources\Icons\InputWindow.ico" />
     <Content Include="Resources\Icons\InterpolatorFormIcon.ico" />
