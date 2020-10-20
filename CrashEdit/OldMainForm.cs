@@ -69,7 +69,7 @@ namespace CrashEdit
         private MetroTabControl tbcTabs;
         private GameVersionForm dlgGameVersion;
         private ToolStripButton tbbPAL;
-        private DarkTextBox txtInput;
+        private MetroTextBox txtInput;
 
         private FolderBrowserDialog dlgMakeBINDir = new FolderBrowserDialog();
         private SaveFileDialog dlgMakeBINFile = new SaveFileDialog();
@@ -214,10 +214,18 @@ namespace CrashEdit
             tbbPlay.Click += new EventHandler(tbbPlay_Click);
             tbbPlay.Size = new Size(40, 40);
 
-            txtInput = new DarkTextBox
+            txtInput = new MetroTextBox
             {
                 Location = new Point(221, 19),
-                Size = new Size(64, 20)
+                Size = new Size(64, 20),
+                Style = MetroFramework.MetroColorStyle.Teal,
+                Theme = MetroFramework.MetroThemeStyle.Dark,
+                UseCustomBackColor = true,
+                BackColor = Color.FromArgb(35, 35, 38),
+                TextAlign = HorizontalAlignment.Center,
+                WaterMark = "Find",
+                WaterMarkColor = Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109))))),
+                WaterMarkFont = new Font("Segoe UI", 12F, FontStyle.Italic, GraphicsUnit.Pixel)
             };
             txtInput.TextChanged += new EventHandler(txtInput_Change);
             txtInput.Click += new EventHandler(txtInput_Click);
