@@ -1606,6 +1606,7 @@ namespace CrashEdit
                         {
                             if (!loadedentries.Remove(eid))
                             {
+                                lblVerifyLoadLists.Visible = false;
                                 DarkMessageBox.ShowWarning($"Load lists are incorrect. {Entry.EIDToEName(eid)} was already deloaded by position {i}.", "Load list verification exception");
                                 haserror = true;
                             }
@@ -1614,7 +1615,7 @@ namespace CrashEdit
                 }
             }
             if (loadedentries.Count == 0 && !haserror)
-                DarkMessageBox.ShowInformation("Load lists are correct.", "Load list verification exception");
+                lblVerifyLoadLists.Visible = true;
             else if (loadedentries.Count != 0)
             {
                 string eidlist = string.Empty;
@@ -1622,6 +1623,7 @@ namespace CrashEdit
                 {
                     eidlist += Entry.EIDToEName(eid) + Environment.NewLine;
                 }
+                lblVerifyLoadLists.Visible = false;
                 DarkMessageBox.ShowWarning($"Load lists are incorrect. The following entries are never deloaded:\n{eidlist}", "Load list verification exception");
             }
         }

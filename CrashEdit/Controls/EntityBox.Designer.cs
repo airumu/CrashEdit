@@ -246,6 +246,7 @@ namespace CrashEdit
             this.tsbLoadLists = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbDrawLists = new System.Windows.Forms.ToolStripButton();
+            this.lblVerifyLoadLists = new DarkUI.Controls.DarkLabel();
             this.tbcTabs.SuspendLayout();
             this.tabGeneral.SuspendLayout();
             this.fraName.SuspendLayout();
@@ -2039,6 +2040,7 @@ namespace CrashEdit
             // fraLoadListPayload
             // 
             this.fraLoadListPayload.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.fraLoadListPayload.Controls.Add(this.lblVerifyLoadLists);
             this.fraLoadListPayload.Controls.Add(this.lblPayloadTexture);
             this.fraLoadListPayload.Controls.Add(this.lblPayloadSound);
             this.fraLoadListPayload.Controls.Add(this.lblPayload);
@@ -2049,7 +2051,7 @@ namespace CrashEdit
             this.fraLoadListPayload.ForeColor = System.Drawing.SystemColors.Window;
             this.fraLoadListPayload.Location = new System.Drawing.Point(6, 316);
             this.fraLoadListPayload.Name = "fraLoadListPayload";
-            this.fraLoadListPayload.Size = new System.Drawing.Size(245, 128);
+            this.fraLoadListPayload.Size = new System.Drawing.Size(248, 128);
             this.fraLoadListPayload.TabIndex = 22;
             this.fraLoadListPayload.TabStop = false;
             this.fraLoadListPayload.Text = "Verify Load Lists";
@@ -3049,6 +3051,17 @@ namespace CrashEdit
             this.tsbDrawLists.Size = new System.Drawing.Size(24, 24);
             this.tsbDrawLists.Text = "Draw Lists";
             // 
+            // lblVerifyLoadLists
+            // 
+            this.lblVerifyLoadLists.AutoSize = true;
+            this.lblVerifyLoadLists.ForeColor = System.Drawing.Color.SpringGreen;
+            this.lblVerifyLoadLists.Location = new System.Drawing.Point(130, 21);
+            this.lblVerifyLoadLists.Name = "lblVerifyLoadLists";
+            this.lblVerifyLoadLists.Size = new System.Drawing.Size(122, 15);
+            this.lblVerifyLoadLists.TabIndex = 23;
+            this.lblVerifyLoadLists.Text = "Load lists are correct.";
+            this.lblVerifyLoadLists.Visible = false;
+            // 
             // EntityBox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -3389,5 +3402,6 @@ namespace CrashEdit
         private DarkUI.Controls.DarkNumericUpDown numID2;
         private DarkUI.Controls.DarkLabel lblPayloadTexture;
         private DarkUI.Controls.DarkLabel lblPayloadSound;
+        private DarkUI.Controls.DarkLabel lblVerifyLoadLists;
     }
 }
