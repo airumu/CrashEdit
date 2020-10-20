@@ -56,6 +56,7 @@
             this.cmdHelp = new MetroFramework.Controls.MetroButton();
             this.chkCustomCrates = new MetroFramework.Controls.MetroCheckBox();
             this.chkAnimViewPanel = new MetroFramework.Controls.MetroCheckBox();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.fraLang.SuspendLayout();
             this.fraSize.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numH)).BeginInit();
@@ -279,7 +280,7 @@
             // chkOldPatchNSD
             // 
             this.chkOldPatchNSD.ForeColor = System.Drawing.Color.MediumSpringGreen;
-            this.chkOldPatchNSD.Location = new System.Drawing.Point(4, 259);
+            this.chkOldPatchNSD.Location = new System.Drawing.Point(4, 266);
             this.chkOldPatchNSD.Name = "chkOldPatchNSD";
             this.chkOldPatchNSD.Size = new System.Drawing.Size(335, 15);
             this.chkOldPatchNSD.TabIndex = 9;
@@ -295,7 +296,7 @@
             this.chkPatchNSDSavesNSF.Checked = true;
             this.chkPatchNSDSavesNSF.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkPatchNSDSavesNSF.ForeColor = System.Drawing.SystemColors.Control;
-            this.chkPatchNSDSavesNSF.Location = new System.Drawing.Point(4, 238);
+            this.chkPatchNSDSavesNSF.Location = new System.Drawing.Point(4, 245);
             this.chkPatchNSDSavesNSF.Name = "chkPatchNSDSavesNSF";
             this.chkPatchNSDSavesNSF.Size = new System.Drawing.Size(280, 15);
             this.chkPatchNSDSavesNSF.TabIndex = 8;
@@ -307,7 +308,7 @@
             // 
             // chkDeleteInvalidEntries
             // 
-            this.chkDeleteInvalidEntries.Location = new System.Drawing.Point(4, 217);
+            this.chkDeleteInvalidEntries.Location = new System.Drawing.Point(4, 224);
             this.chkDeleteInvalidEntries.Name = "chkDeleteInvalidEntries";
             this.chkDeleteInvalidEntries.Size = new System.Drawing.Size(309, 15);
             this.chkDeleteInvalidEntries.TabIndex = 5;
@@ -362,7 +363,7 @@
             this.cmdReset.FontSize = MetroFramework.MetroButtonSize.Medium;
             this.cmdReset.FontWeight = MetroFramework.MetroButtonWeight.Regular;
             this.cmdReset.ForeColor = System.Drawing.Color.DeepSkyBlue;
-            this.cmdReset.Location = new System.Drawing.Point(12, 301);
+            this.cmdReset.Location = new System.Drawing.Point(12, 308);
             this.cmdReset.Name = "cmdReset";
             this.cmdReset.Size = new System.Drawing.Size(99, 23);
             this.cmdReset.TabIndex = 10;
@@ -377,7 +378,7 @@
             // 
             this.chkDetailedCollision.Location = new System.Drawing.Point(4, 175);
             this.chkDetailedCollision.Name = "chkDetailedCollision";
-            this.chkDetailedCollision.Size = new System.Drawing.Size(186, 15);
+            this.chkDetailedCollision.Size = new System.Drawing.Size(190, 15);
             this.chkDetailedCollision.TabIndex = 11;
             this.chkDetailedCollision.Text = "Display detailed collision type";
             this.chkDetailedCollision.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -419,7 +420,7 @@
             this.cmdHelp.FontSize = MetroFramework.MetroButtonSize.Medium;
             this.cmdHelp.FontWeight = MetroFramework.MetroButtonWeight.Regular;
             this.cmdHelp.ForeColor = System.Drawing.SystemColors.InactiveCaption;
-            this.cmdHelp.Location = new System.Drawing.Point(12, 330);
+            this.cmdHelp.Location = new System.Drawing.Point(12, 337);
             this.cmdHelp.Name = "cmdHelp";
             this.cmdHelp.Size = new System.Drawing.Size(50, 23);
             this.cmdHelp.Style = MetroFramework.MetroColorStyle.Blue;
@@ -434,9 +435,9 @@
             // chkCustomCrates
             // 
             this.chkCustomCrates.ForeColor = System.Drawing.Color.MediumSpringGreen;
-            this.chkCustomCrates.Location = new System.Drawing.Point(4, 280);
+            this.chkCustomCrates.Location = new System.Drawing.Point(4, 287);
             this.chkCustomCrates.Name = "chkCustomCrates";
-            this.chkCustomCrates.Size = new System.Drawing.Size(335, 15);
+            this.chkCustomCrates.Size = new System.Drawing.Size(231, 15);
             this.chkCustomCrates.TabIndex = 15;
             this.chkCustomCrates.Text = "Display custom crates (modded BoxsC)";
             this.chkCustomCrates.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -448,7 +449,7 @@
             // chkAnimViewPanel
             // 
             this.chkAnimViewPanel.ForeColor = System.Drawing.Color.Gainsboro;
-            this.chkAnimViewPanel.Location = new System.Drawing.Point(300, 132);
+            this.chkAnimViewPanel.Location = new System.Drawing.Point(256, 132);
             this.chkAnimViewPanel.Name = "chkAnimViewPanel";
             this.chkAnimViewPanel.Size = new System.Drawing.Size(190, 15);
             this.chkAnimViewPanel.TabIndex = 16;
@@ -458,11 +459,20 @@
             this.chkAnimViewPanel.UseSelectable = true;
             this.chkAnimViewPanel.CheckedChanged += new System.EventHandler(this.ChkAnimViewPanel_CheckedChanged);
             // 
+            // panel1
+            // 
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Location = new System.Drawing.Point(4, 217);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(420, 1);
+            this.panel1.TabIndex = 17;
+            // 
             // ConfigEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.chkAnimViewPanel);
             this.Controls.Add(this.chkCustomCrates);
             this.Controls.Add(this.cmdHelp);
@@ -527,5 +537,6 @@
         private MetroFramework.Controls.MetroToggle tglKeyBinds;
         private MetroFramework.Controls.MetroCheckBox chkCustomCrates;
         private MetroFramework.Controls.MetroCheckBox chkAnimViewPanel;
+        private System.Windows.Forms.Panel panel1;
     }
 }
