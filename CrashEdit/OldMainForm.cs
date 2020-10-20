@@ -1346,6 +1346,7 @@ namespace CrashEdit
                 NSFBox nsfbox = (NSFBox)tbcTabs.SelectedTab.Tag;
                 nsfbox.Find(Input);
             }
+            changetext = false;
         }
 
         public void FindShortcut()
