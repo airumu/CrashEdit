@@ -159,10 +159,10 @@
             this.darkLabel11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.darkLabel11.Location = new System.Drawing.Point(12, 412);
             this.darkLabel11.Name = "darkLabel11";
-            this.darkLabel11.Size = new System.Drawing.Size(140, 112);
+            this.darkLabel11.Size = new System.Drawing.Size(140, 128);
             this.darkLabel11.TabIndex = 10;
             this.darkLabel11.Text = "Open (Ctrl + O)\r\nSave (Ctrl + Shift + S)\r\nPatch NSD (Ctrl + S)\r\nClose (Ctrl + Shi" +
-    "ft + C)\r\nFind (Ctrl + F)\r\nFind Next (F3)\r\nPlay (F1)";
+    "ft + C)\r\nFind (Ctrl + F)\r\nFind Next (F3)\r\nFind first node (Enter)\r\nPlay (F1)";
             // 
             // HelpWindow
             // 
@@ -170,7 +170,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(329, 531);
+            this.ClientSize = new System.Drawing.Size(329, 544);
             this.Controls.Add(this.darkLabel11);
             this.Controls.Add(this.darkLabel10);
             this.Controls.Add(this.lblLine);

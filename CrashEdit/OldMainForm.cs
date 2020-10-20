@@ -129,7 +129,7 @@ namespace CrashEdit
             tbbFind = new ToolStripButton
             {
                 Text = Resources.Toolbar_Find,
-                ToolTipText = "Find (Ctrl+F)",
+                ToolTipText = "Find (Ctrl+F / Enter)",
                 ImageKey = "tb_find",
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
@@ -221,6 +221,8 @@ namespace CrashEdit
             };
             txtInput.TextChanged += new EventHandler(txtInput_Change);
             txtInput.Click += new EventHandler(txtInput_Click);
+            txtInput.KeyDown += new KeyEventHandler(txtInput_KeyDown);
+            txtInput.KeyPress += new KeyPressEventHandler(txtInput_KeyPress);
 
             tsToolbar = new DarkToolStrip
             {
@@ -328,7 +330,7 @@ namespace CrashEdit
             mnuClose.Click += new EventHandler(tbbClose_Click);
             mnuClose.ShortcutKeys = Keys.Control | Keys.Shift | Keys.C;
 
-            mnuFind.Click += new EventHandler(tbbFind_Click);
+            mnuFind.Click += new EventHandler(tbbFind_Shortcut);
             mnuFind.ShortcutKeys = Keys.Control | Keys.F;
 
             mnuFindNext.Click += new EventHandler(tbbFindNext_Click);
@@ -515,6 +517,11 @@ namespace CrashEdit
             Find();
         }
 
+        void tbbFind_Shortcut(object sender, EventArgs e)
+        {
+            FindShortcut();
+        }
+
         void tbbFindNext_Click(object sender,EventArgs e)
         {
             FindNext();
@@ -528,6 +535,24 @@ namespace CrashEdit
         void txtInput_Click(object sender, EventArgs e)
         {
             txtInput.SelectAll();
+        }
+
+        void txtInput_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                Find();
+            }
+        }
+
+        private void txtInput_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // prevent beeping
+            if (e.KeyChar == (char)Keys.Enter || e.KeyChar == (char)Keys.Escape)
+            {
+                e.Handled = true;
+            }
         }
 
         public void OpenNSF()
@@ -1182,9 +1207,7 @@ namespace CrashEdit
                 if (DarkMessageBox.ShowInformation("Are you sure you want to overwrite the NSD file?\n\nIf NSD hash map is not in correct order, EIDs will be swapped.\nAll loadlists will be sorted according to the NSD.", Resources.Save_ConfirmationPrompt, DarkDialogButton.YesNo) == DialogResult.Yes)
                 {
                     File.WriteAllBytes(path, nsd.Save());
-                    /*}
-                    if (MessageBox.Show("Do you want to sort all loadlists according to the NSD?", "Loadlist autosorter", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                    {*/
+                    //if (MessageBox.Show("Do you want to sort all loadlists according to the NSD?", "Loadlist autosorter", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     foreach (Chunk chunk in nsf.Chunks)
                     {
                         if (!(chunk is EntryChunk))
@@ -1323,6 +1346,12 @@ namespace CrashEdit
                 NSFBox nsfbox = (NSFBox)tbcTabs.SelectedTab.Tag;
                 nsfbox.Find(Input);
             }
+        }
+
+        public void FindShortcut()
+        {
+            txtInput.Select();
+            txtInput.SelectAll();
         }
 
         public void FindNext()
