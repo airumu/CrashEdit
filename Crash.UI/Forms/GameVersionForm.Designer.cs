@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GameVersionForm));
             this.lblMessage = new DarkUI.Controls.DarkLabel();
             this.fraRelease = new System.Windows.Forms.GroupBox();
             this.cmdCrash3 = new DarkUI.Controls.DarkButton();
@@ -211,6 +212,7 @@
             this.Font = new System.Drawing.Font("Arial", 9F);
             this.ForeColor = System.Drawing.SystemColors.Control;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
