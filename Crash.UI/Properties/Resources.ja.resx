@@ -199,7 +199,7 @@
     <value>パレット ({0})</value>
   </data>
   <data name="SceneryEntryController_Text" xml:space="preserve">
-    <value>風景 ({0})</value>
+    <value>背景 ({0})</value>
   </data>
   <data name="SoundChunkController_Text" xml:space="preserve">
     <value>サウンドチャンク {0}</value>
@@ -307,10 +307,10 @@
     <value>エントリの追加</value>
   </data>
   <data name="EntryChunkController_AcImport" xml:space="preserve">
-    <value>エントリをインポート</value>
+    <value>エントリのインポート</value>
   </data>
   <data name="EntryController_AcExport" xml:space="preserve">
-    <value>エントリ 「{0}」 をエクスポート</value>
+    <value>エントリ 「{0}」 のエクスポート</value>
   </data>
   <data name="EntryController_AcRename" xml:space="preserve">
     <value>エントリ 「{0}」 の名前を変更</value>
@@ -352,7 +352,7 @@
     <value>エンティティの追加</value>
   </data>
   <data name="TextureChunkController_AcOpenViewer" xml:space="preserve">
-    <value>ビューアーを開く</value>
+    <value>ビューアを開く</value>
   </data>
   <data name="ChunkController_AcExport" xml:space="preserve">
     <value>チャンクのエクスポート</value>

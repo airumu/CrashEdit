@@ -1,4 +1,5 @@
 using Crash;
+using Crash.UI.Properties;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -67,7 +68,7 @@ namespace CrashEdit
                 ForeColor = SystemColors.Control,
                 Font = new Font("Arial", 9F),
                 TextAlign = ContentAlignment.MiddleCenter,
-                Text = "No options available"
+                Text = Resources.Controller_NoOptionsAvailable
             };
             return label;
         }

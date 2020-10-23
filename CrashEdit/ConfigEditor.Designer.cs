@@ -451,7 +451,7 @@
             this.chkAnimViewPanel.ForeColor = System.Drawing.Color.Gainsboro;
             this.chkAnimViewPanel.Location = new System.Drawing.Point(256, 132);
             this.chkAnimViewPanel.Name = "chkAnimViewPanel";
-            this.chkAnimViewPanel.Size = new System.Drawing.Size(190, 15);
+            this.chkAnimViewPanel.Size = new System.Drawing.Size(210, 15);
             this.chkAnimViewPanel.TabIndex = 16;
             this.chkAnimViewPanel.Text = "Separate the panel in FrameBox";
             this.chkAnimViewPanel.Theme = MetroFramework.MetroThemeStyle.Dark;

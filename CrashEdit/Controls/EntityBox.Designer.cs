@@ -161,6 +161,7 @@ namespace CrashEdit
             this.tabLoadLists = new System.Windows.Forms.TabPage();
             this.lblEIDErrB = new DarkUI.Controls.DarkLabel();
             this.fraLoadListPayload = new System.Windows.Forms.GroupBox();
+            this.lblVerifyLoadLists = new DarkUI.Controls.DarkLabel();
             this.lblPayloadTexture = new DarkUI.Controls.DarkLabel();
             this.lblPayloadSound = new DarkUI.Controls.DarkLabel();
             this.lblPayload = new DarkUI.Controls.DarkLabel();
@@ -246,7 +247,6 @@ namespace CrashEdit
             this.tsbLoadLists = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbDrawLists = new System.Windows.Forms.ToolStripButton();
-            this.lblVerifyLoadLists = new DarkUI.Controls.DarkLabel();
             this.tbcTabs.SuspendLayout();
             this.tabGeneral.SuspendLayout();
             this.fraName.SuspendLayout();
@@ -1180,17 +1180,16 @@ namespace CrashEdit
             this.fraBoxCount.ForeColor = System.Drawing.SystemColors.Window;
             this.fraBoxCount.Location = new System.Drawing.Point(157, 3);
             this.fraBoxCount.Name = "fraBoxCount";
-            this.fraBoxCount.Size = new System.Drawing.Size(132, 126);
+            this.fraBoxCount.Size = new System.Drawing.Size(128, 126);
             this.fraBoxCount.TabIndex = 8;
             this.fraBoxCount.TabStop = false;
             this.fraBoxCount.Text = "Box Count";
             // 
             // chkBonusBoxCount
             // 
-            this.chkBonusBoxCount.AutoSize = true;
             this.chkBonusBoxCount.Location = new System.Drawing.Point(6, 70);
             this.chkBonusBoxCount.Name = "chkBonusBoxCount";
-            this.chkBonusBoxCount.Size = new System.Drawing.Size(119, 19);
+            this.chkBonusBoxCount.Size = new System.Drawing.Size(116, 19);
             this.chkBonusBoxCount.TabIndex = 2;
             this.chkBonusBoxCount.Text = "Enabled (Bonus)";
             this.chkBonusBoxCount.CheckedChanged += new System.EventHandler(this.chkBonusBoxCount_CheckedChanged);
@@ -1209,7 +1208,7 @@ namespace CrashEdit
             0,
             -2147483648});
             this.numBonusBoxCount.Name = "numBonusBoxCount";
-            this.numBonusBoxCount.Size = new System.Drawing.Size(120, 21);
+            this.numBonusBoxCount.Size = new System.Drawing.Size(116, 21);
             this.numBonusBoxCount.TabIndex = 3;
             this.numBonusBoxCount.ValueChanged += new System.EventHandler(this.numBonusBoxCount_ValueChanged);
             // 
@@ -1237,7 +1236,7 @@ namespace CrashEdit
             0,
             -2147483648});
             this.numBoxCount.Name = "numBoxCount";
-            this.numBoxCount.Size = new System.Drawing.Size(120, 21);
+            this.numBoxCount.Size = new System.Drawing.Size(116, 21);
             this.numBoxCount.TabIndex = 1;
             this.numBoxCount.ValueChanged += new System.EventHandler(this.numBoxCount_ValueChanged);
             // 
@@ -2055,6 +2054,17 @@ namespace CrashEdit
             this.fraLoadListPayload.TabIndex = 22;
             this.fraLoadListPayload.TabStop = false;
             this.fraLoadListPayload.Text = "Verify Load Lists";
+            // 
+            // lblVerifyLoadLists
+            // 
+            this.lblVerifyLoadLists.AutoSize = true;
+            this.lblVerifyLoadLists.ForeColor = System.Drawing.Color.SpringGreen;
+            this.lblVerifyLoadLists.Location = new System.Drawing.Point(130, 21);
+            this.lblVerifyLoadLists.Name = "lblVerifyLoadLists";
+            this.lblVerifyLoadLists.Size = new System.Drawing.Size(125, 15);
+            this.lblVerifyLoadLists.TabIndex = 23;
+            this.lblVerifyLoadLists.Text = "Load lists are correct.";
+            this.lblVerifyLoadLists.Visible = false;
             // 
             // lblPayloadTexture
             // 
@@ -3050,17 +3060,6 @@ namespace CrashEdit
             this.tsbDrawLists.Name = "tsbDrawLists";
             this.tsbDrawLists.Size = new System.Drawing.Size(24, 24);
             this.tsbDrawLists.Text = "Draw Lists";
-            // 
-            // lblVerifyLoadLists
-            // 
-            this.lblVerifyLoadLists.AutoSize = true;
-            this.lblVerifyLoadLists.ForeColor = System.Drawing.Color.SpringGreen;
-            this.lblVerifyLoadLists.Location = new System.Drawing.Point(130, 21);
-            this.lblVerifyLoadLists.Name = "lblVerifyLoadLists";
-            this.lblVerifyLoadLists.Size = new System.Drawing.Size(122, 15);
-            this.lblVerifyLoadLists.TabIndex = 23;
-            this.lblVerifyLoadLists.Text = "Load lists are correct.";
-            this.lblVerifyLoadLists.Visible = false;
             // 
             // EntityBox
             // 

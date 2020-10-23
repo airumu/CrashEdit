@@ -434,10 +434,10 @@
     <value>設定のリセット</value>
   </data>
   <data name="Config_fraAnimGrid" xml:space="preserve">
-    <value>アニメーションビューワーのグリッド線</value>
+    <value>アニメーションビューアのグリッド線</value>
   </data>
   <data name="Config_fraClearCol" xml:space="preserve">
-    <value>クリア</value>
+    <value>背景色</value>
   </data>
   <data name="Config_fraSize" xml:space="preserve">
     <value>ウィンドウのサイズ</value>
@@ -762,5 +762,11 @@
   </data>
   <data name="InputWindow" xml:space="preserve">
     <value>検索</value>
+  </data>
+  <data name="Config_chkAnimViewPanel" xml:space="preserve">
+    <value>アニメーションエディタのパネルを分割する</value>
+  </data>
+  <data name="TextureViewer_Title" xml:space="preserve">
+    <value>テクスチャビューア [{0}] - 右クリックでテクスチャをファイルに保存</value>
   </data>
 </root>

@@ -128,6 +128,15 @@ namespace CrashEdit.Properties {
         }
         
         /// <summary>
+        ///   Separate the panel in FrameBox に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Config_chkAnimViewPanel {
+            get {
+                return ResourceManager.GetString("Config_chkAnimViewPanel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Display frame collision by default に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Config_chkCollisionDisplay {
@@ -1922,6 +1931,15 @@ namespace CrashEdit.Properties {
         internal static string TextureViewer_groupBox5 {
             get {
                 return ResourceManager.GetString("TextureViewer_groupBox5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Texture Viewer [{0}] - Right-click to save texture region to file に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string TextureViewer_Title {
+            get {
+                return ResourceManager.GetString("TextureViewer_Title", resourceCulture);
             }
         }
         

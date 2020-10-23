@@ -763,4 +763,10 @@
   <data name="InputWindow" xml:space="preserve">
     <value>Find</value>
   </data>
+  <data name="Config_chkAnimViewPanel" xml:space="preserve">
+    <value>Separate the panel in FrameBox</value>
+  </data>
+  <data name="TextureViewer_Title" xml:space="preserve">
+    <value>Texture Viewer [{0}] - Right-click to save texture region to file</value>
+  </data>
 </root>

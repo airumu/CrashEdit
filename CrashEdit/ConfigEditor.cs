@@ -50,6 +50,7 @@ namespace CrashEdit
             fraKeyBinds.Text = Resources.Config_fraKeyBinds;
             tglKeyBinds.Checked = Settings.Default.NewKeyBinds;
             chkCustomCrates.Checked = Settings.Default.UseCustomCrates;
+            chkAnimViewPanel.Text = Resources.Config_chkAnimViewPanel;
             chkAnimViewPanel.Checked = Settings.Default.AnimViewPanel;
             chkCustomCrates.Text = Resources.Config_chkCustomCrates;
             cmdReset.Text = Resources.Config_cmdReset;

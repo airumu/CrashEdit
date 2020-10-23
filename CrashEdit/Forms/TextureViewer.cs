@@ -1,4 +1,5 @@
 ﻿using Crash;
+using CrashEdit.Properties;
 using DarkUI.Forms;
 using System;
 using System.Drawing;
@@ -26,7 +27,7 @@ namespace CrashEdit
             textype = TextureType.Crash2;
 
             Icon = OldResources.TextureViewerIcon;
-            Text = string.Format("Texture Viewer [{0}] - Right-click to save texture region to file", texturechunk.EName);
+            Text = string.Format(Resources.TextureViewer_Title, texturechunk.EName);
 
             InitializeComponent();
 
