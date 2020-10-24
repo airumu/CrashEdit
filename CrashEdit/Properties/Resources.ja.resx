@@ -341,7 +341,7 @@
     <value>DDA セクション</value>
   </data>
   <data name="EntityBox_FraDDASettings" xml:space="preserve">
-    <value>DDA デス数</value>
+    <value>DDA デスカウント</value>
   </data>
   <data name="EntityBox_FraID" xml:space="preserve">
     <value>ID</value>
@@ -353,10 +353,10 @@
     <value>その他の設定</value>
   </data>
   <data name="EntityBox_FraPosition" xml:space="preserve">
-    <value>ポジション</value>
+    <value>位置</value>
   </data>
   <data name="EntityBox_FraScaling" xml:space="preserve">
-    <value>スケールの設定</value>
+    <value>スケールモディファイア</value>
   </data>
   <data name="EntityBox_FraSettings" xml:space="preserve">
     <value>引数</value>
@@ -374,10 +374,10 @@
     <value>タイプ</value>
   </data>
   <data name="EntityBox_FraVictims" xml:space="preserve">
-    <value>Victims</value>
+    <value>ビクティム</value>
   </data>
   <data name="EntityBox_FraZMod" xml:space="preserve">
-    <value>深さの設定</value>
+    <value>ディプスモディファイア</value>
   </data>
   <data name="EntityBox_TabCamera" xml:space="preserve">
     <value>カメラ</value>
@@ -503,28 +503,28 @@
     <value>ロードリストの整合性チェック</value>
   </data>
   <data name="EntityBox_fraNeighbor" xml:space="preserve">
-    <value>隣接の設定</value>
+    <value>隣接ｿﾞｰﾝの設定</value>
   </data>
   <data name="EntityBox_fraNeighborSetting" xml:space="preserve">
-    <value>隣接</value>
+    <value>隣接ｿﾞｰﾝ</value>
   </data>
   <data name="EntityBox_lblFOVPosition" xml:space="preserve">
-    <value>ポジション</value>
+    <value>位置</value>
   </data>
   <data name="EntityBox_lblMetavalueDrawA" xml:space="preserve">
-    <value>ポジション</value>
+    <value>位置</value>
   </data>
   <data name="EntityBox_lblMetavalueDrawB" xml:space="preserve">
-    <value>ポジション</value>
+    <value>位置</value>
   </data>
   <data name="EntityBox_lblMetavalueLoadA" xml:space="preserve">
-    <value>ポジション</value>
+    <value>位置</value>
   </data>
   <data name="EntityBox_lblMetavalueLoadB" xml:space="preserve">
-    <value>ポジション</value>
+    <value>位置</value>
   </data>
   <data name="EntityBox_lblNeighborCamera" xml:space="preserve">
-    <value>ｶﾒﾗ index</value>
+    <value>ｶﾒﾗｲﾝﾃﾞｯｸｽ</value>
   </data>
   <data name="EntityBox_lblNeighborFlag" xml:space="preserve">
     <value>フラグ</value>
@@ -533,13 +533,13 @@
     <value>リンクタイプ</value>
   </data>
   <data name="EntityBox_lblNeighborPosition" xml:space="preserve">
-    <value>ポジション</value>
+    <value>位置</value>
   </data>
   <data name="EntityBox_lblNeighborZone" xml:space="preserve">
-    <value>ｿﾞｰﾝ index</value>
+    <value>ｿﾞｰﾝｲﾝﾃﾞｯｸｽ</value>
   </data>
   <data name="EntityBox_lblPayloadPosition" xml:space="preserve">
-    <value>ポジション</value>
+    <value>位置</value>
   </data>
   <data name="EntityBox_fraAvgDist" xml:space="preserve">
     <value>ポイントの距離</value>
@@ -584,7 +584,7 @@
     <value>オーダー</value>
   </data>
   <data name="InterpolatorForm_fraPosition" xml:space="preserve">
-    <value>ポジション</value>
+    <value>位置</value>
   </data>
   <data name="InterpolatorForm_fraTension" xml:space="preserve">
     <value>テンション</value>

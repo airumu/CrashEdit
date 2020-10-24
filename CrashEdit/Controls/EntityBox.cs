@@ -133,6 +133,7 @@ namespace CrashEdit
             cmdNextEIDA.Text = Resources.EntityBox_CmdNext;
             cmdNextEIDB.Text = Resources.EntityBox_CmdNext;
             cmdNextEntityA.Text = Resources.EntityBox_CmdNext;
+            cmdNextEntityB.Text = Resources.EntityBox_CmdNext;
             cmdPreviousPosition.Text = Resources.EntityBox_CmdPrevious;
             cmdPreviousSetting.Text = Resources.EntityBox_CmdPrevious;
             cmdPreviousVictim.Text = Resources.EntityBox_CmdPrevious;
