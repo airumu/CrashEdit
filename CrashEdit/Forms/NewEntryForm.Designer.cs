@@ -169,7 +169,7 @@
             this.Controls.Add(this.cmdCancel);
             this.Controls.Add(this.fraName);
             this.Controls.Add(this.fraType);
-            this.Font = new System.Drawing.Font("Arial", 9F);
+            this.Font = new System.Drawing.Font("Yu Gothic UI ", 9F);
             this.ForeColor = System.Drawing.SystemColors.Control;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);

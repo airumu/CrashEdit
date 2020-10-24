@@ -387,7 +387,7 @@ namespace CrashEdit
             this.tabGeneral.Controls.Add(this.fraSubtype);
             this.tabGeneral.Controls.Add(this.fraPosition);
             this.tabGeneral.Controls.Add(this.fraID);
-            this.tabGeneral.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tabGeneral.Font = new System.Drawing.Font("Yu Gothic UI ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabGeneral.Location = new System.Drawing.Point(4, 38);
             this.tabGeneral.Name = "tabGeneral";
             this.tabGeneral.Size = new System.Drawing.Size(390, 377);

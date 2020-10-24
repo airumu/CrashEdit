@@ -44,7 +44,7 @@
             // darkLabel1
             // 
             this.darkLabel1.AutoSize = true;
-            this.darkLabel1.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.darkLabel1.Font = new System.Drawing.Font("Yu Gothic UI ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.darkLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.darkLabel1.Location = new System.Drawing.Point(12, 22);
             this.darkLabel1.Name = "darkLabel1";
@@ -56,7 +56,7 @@
             // darkLabel2
             // 
             this.darkLabel2.AutoSize = true;
-            this.darkLabel2.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.darkLabel2.Font = new System.Drawing.Font("Yu Gothic UI ", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.darkLabel2.ForeColor = System.Drawing.SystemColors.MenuHighlight;
             this.darkLabel2.Location = new System.Drawing.Point(4, 4);
             this.darkLabel2.Name = "darkLabel2";
@@ -67,7 +67,7 @@
             // darkLabel3
             // 
             this.darkLabel3.AutoSize = true;
-            this.darkLabel3.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.darkLabel3.Font = new System.Drawing.Font("Yu Gothic UI ", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.darkLabel3.ForeColor = System.Drawing.SystemColors.MenuHighlight;
             this.darkLabel3.Location = new System.Drawing.Point(4, 150);
             this.darkLabel3.Name = "darkLabel3";
@@ -78,7 +78,7 @@
             // darkLabel4
             // 
             this.darkLabel4.AutoSize = true;
-            this.darkLabel4.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.darkLabel4.Font = new System.Drawing.Font("Yu Gothic UI ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.darkLabel4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.darkLabel4.Location = new System.Drawing.Point(12, 168);
             this.darkLabel4.Name = "darkLabel4";
@@ -90,7 +90,7 @@
             // darkLabel5
             // 
             this.darkLabel5.AutoSize = true;
-            this.darkLabel5.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.darkLabel5.Font = new System.Drawing.Font("Yu Gothic UI ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.darkLabel5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.darkLabel5.Location = new System.Drawing.Point(12, 282);
             this.darkLabel5.Name = "darkLabel5";
@@ -102,7 +102,7 @@
             // darkLabel6
             // 
             this.darkLabel6.AutoSize = true;
-            this.darkLabel6.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.darkLabel6.Font = new System.Drawing.Font("Yu Gothic UI ", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.darkLabel6.ForeColor = System.Drawing.SystemColors.MenuHighlight;
             this.darkLabel6.Location = new System.Drawing.Point(4, 264);
             this.darkLabel6.Name = "darkLabel6";
@@ -113,7 +113,7 @@
             // darkLabel7
             // 
             this.darkLabel7.AutoSize = true;
-            this.darkLabel7.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.darkLabel7.Font = new System.Drawing.Font("Yu Gothic UI ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.darkLabel7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.darkLabel7.Location = new System.Drawing.Point(165, 22);
             this.darkLabel7.Name = "darkLabel7";
@@ -124,7 +124,7 @@
             // darkLabel8
             // 
             this.darkLabel8.AutoSize = true;
-            this.darkLabel8.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.darkLabel8.Font = new System.Drawing.Font("Yu Gothic UI ", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.darkLabel8.ForeColor = System.Drawing.SystemColors.ActiveCaption;
             this.darkLabel8.Location = new System.Drawing.Point(157, 4);
             this.darkLabel8.Name = "darkLabel8";
@@ -144,7 +144,7 @@
             // darkLabel10
             // 
             this.darkLabel10.AutoSize = true;
-            this.darkLabel10.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.darkLabel10.Font = new System.Drawing.Font("Yu Gothic UI ", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.darkLabel10.ForeColor = System.Drawing.Color.MediumSeaGreen;
             this.darkLabel10.Location = new System.Drawing.Point(4, 394);
             this.darkLabel10.Name = "darkLabel10";
@@ -155,7 +155,7 @@
             // darkLabel11
             // 
             this.darkLabel11.AutoSize = true;
-            this.darkLabel11.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.darkLabel11.Font = new System.Drawing.Font("Yu Gothic UI ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.darkLabel11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.darkLabel11.Location = new System.Drawing.Point(12, 412);
             this.darkLabel11.Name = "darkLabel11";

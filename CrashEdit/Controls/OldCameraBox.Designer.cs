@@ -505,7 +505,7 @@ namespace CrashEdit
             this.tabPosition.AutoScroll = true;
             this.tabPosition.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.tabPosition.Controls.Add(this.fraPosition);
-            this.tabPosition.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tabPosition.Font = new System.Drawing.Font("Yu Gothic UI ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabPosition.ForeColor = System.Drawing.SystemColors.Window;
             this.tabPosition.Location = new System.Drawing.Point(4, 38);
             this.tabPosition.Name = "tabPosition";
@@ -523,7 +523,7 @@ namespace CrashEdit
             this.tabSettings.Controls.Add(this.fraZoom);
             this.tabSettings.Controls.Add(this.fraMode);
             this.tabSettings.Controls.Add(this.fraDirection);
-            this.tabSettings.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tabSettings.Font = new System.Drawing.Font("Yu Gothic UI ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabSettings.ForeColor = System.Drawing.SystemColors.Window;
             this.tabSettings.Location = new System.Drawing.Point(4, 38);
             this.tabSettings.Name = "tabSettings";
@@ -950,7 +950,7 @@ namespace CrashEdit
             this.tabNeighbor.Controls.Add(this.fraNeighbor1);
             this.tabNeighbor.Controls.Add(this.fraNeighbor0);
             this.tabNeighbor.Controls.Add(this.fraCount);
-            this.tabNeighbor.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tabNeighbor.Font = new System.Drawing.Font("Yu Gothic UI ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabNeighbor.ForeColor = System.Drawing.SystemColors.Window;
             this.tabNeighbor.Location = new System.Drawing.Point(4, 38);
             this.tabNeighbor.Name = "tabNeighbor";

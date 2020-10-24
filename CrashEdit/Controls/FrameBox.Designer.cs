@@ -795,7 +795,7 @@ namespace CrashEdit
             this.Controls.Add(this.fraCollision);
             this.Controls.Add(this.fraOffset);
             this.Controls.Add(this.fraVertice);
-            this.Font = new System.Drawing.Font("Arial", 9F);
+            this.Font = new System.Drawing.Font("Yu Gothic UI ", 9F);
             this.ForeColor = System.Drawing.SystemColors.Window;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "FrameBox";

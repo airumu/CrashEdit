@@ -27,7 +27,7 @@ namespace CrashEdit
 
         protected override Control CreateEditor()
         {
-            return new DarkLabel { Text = string.Format("Polygon count: {0}", BitConv.FromInt32(OldModelEntry.Info, 0)), TextAlign = ContentAlignment.MiddleCenter, Font = new System.Drawing.Font("Arial", 9F) };
+            return new DarkLabel { Text = string.Format("Polygon count: {0}", BitConv.FromInt32(OldModelEntry.Info, 0)), TextAlign = ContentAlignment.MiddleCenter, Font = new System.Drawing.Font("Yu Gothic UI ", 9F) };
         }
 
         public OldModelEntry OldModelEntry { get; }
