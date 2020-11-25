@@ -280,12 +280,6 @@
   <data name="SteelPickupBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\Textures\SteelPickupBoxTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="SwitchGhostBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Textures\SwitchGhostBoxTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="SwitchGreenBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Textures\SwitchGreenBoxTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="SwitchOFFBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\Textures\SwitchOFFBoxTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -312,5 +306,20 @@
   </data>
   <data name="cbhacks-logo-new2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\Icons\cbhacks-logo-new2.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SwitchGhostBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\SwitchGhostBoxTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SwitchGhostToGreenBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\SwitchGhostToGreenBoxTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SwitchGhostToRedABoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\SwitchGhostToRedABoxTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SwitchGreenBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\SwitchGreenBoxTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SwitchRedBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\SwitchRedBoxTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

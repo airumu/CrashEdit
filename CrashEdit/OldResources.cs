@@ -292,9 +292,21 @@ namespace CrashEdit
         [ExternalTexture(4, 5)]
         private static Bitmap switchghostboxtexture = null;
 
+        [Resource("SwitchGhostToGreenBoxTexture")]
+        [ExternalTexture(7, 5)]
+        private static Bitmap switchghosttogreenboxtexture = null;
+
         [Resource("SwitchGreenBoxTexture")]
         [ExternalTexture(5, 5)]
         private static Bitmap switchgreenboxtexture = null;
+
+        [Resource("SwitchGhostToRedBoxTexture")]
+        [ExternalTexture(8, 5)]
+        private static Bitmap switchghosttoredboxtexture = null;
+
+        [Resource("SwitchRedBoxTexture")]
+        [ExternalTexture(6, 5)]
+        private static Bitmap switchredboxtexture = null;
 
         static OldResources()
         {
@@ -414,8 +426,11 @@ namespace CrashEdit
         public static Bitmap SteelFruitBoxTexture => steelfruitboxtexture;
         public static Bitmap SwitchOFFBoxTexture => switchoffboxtexture;
         public static Bitmap SwitchONBoxTexture => switchonboxtexture;
-        public static Bitmap SwitchGhostBoxTexture => switchghostboxtexture;
+        public static Bitmap SwitchGhostTexture => switchghostboxtexture;
+        public static Bitmap SwitchGhostToGreenBoxTexture => switchghosttogreenboxtexture;
         public static Bitmap SwitchGreenBoxTexture => switchgreenboxtexture;
+        public static Bitmap SwitchGhostToRedBoxTexture => switchghosttoredboxtexture;
+        public static Bitmap SwitchRedBoxTexture => switchredboxtexture;
 
         [AttributeUsage(AttributeTargets.Field)]
         private class ResourceAttribute : Attribute

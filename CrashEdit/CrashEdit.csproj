@@ -519,6 +519,11 @@
     <None Include="Resources\Textures\SwitchOFFBoxTexture.png" />
     <None Include="Resources\Textures\SwitchONBoxTexture.png" />
     <None Include="Resources\SaveImage2.gif" />
+    <None Include="Resources\SwitchRedBoxTexture.png" />
+    <None Include="Resources\SwitchGhostToGreenBoxTexture.png" />
+    <None Include="Resources\SwitchGhostToRedABoxTexture.png" />
+    <None Include="Resources\SwitchGhostBoxTexture.png" />
+    <None Include="Resources\SwitchGreenBoxTexture.png" />
     <Content Include="Resources\Textures\ActivatorBox.png" />
     <Content Include="Resources\Textures\Apple.png" />
     <Content Include="Resources\Textures\AppleBox.png" />

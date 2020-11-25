@@ -532,13 +532,16 @@ namespace CrashEdit
                     case 26: // Steel Fruit
                         LoadTexture(OldResources.SteelBoxTexture);
                         break;
-                    case 30: // Switch Ghost
-                        LoadTexture(OldResources.SwitchGhostBoxTexture);
+                    case 30: // Switch Ghost to Red
+                    case 32: // Switch Ghost to Green
+                        LoadTexture(OldResources.SwitchGhostTexture);
                         break;
                     case 31: // Switch Green
                         LoadTexture(OldResources.SwitchGreenBoxTexture);
                         break;
-
+                    case 33: // Switch Red
+                        LoadTexture(OldResources.SwitchRedBoxTexture);
+                        break;
                 }
             }
         }
@@ -620,11 +623,17 @@ namespace CrashEdit
                         case 29: // Switch ON
                             LoadTexture(OldResources.SwitchONBoxTexture);
                             break;
-                        case 30: // Switch Ghost
-                            LoadTexture(OldResources.SwitchGhostBoxTexture);
+                        case 30: // Switch Ghost to Red
+                            LoadTexture(OldResources.SwitchGhostToRedBoxTexture);
                             break;
                         case 31: // Switch Green
                             LoadTexture(OldResources.SwitchGreenBoxTexture);
+                            break;
+                        case 32: // Switch Ghost to Green
+                            LoadTexture(OldResources.SwitchGhostToGreenBoxTexture);
+                            break;
+                        case 33: // Switch Red
+                            LoadTexture(OldResources.SwitchRedBoxTexture);
                             break;
                     }
                 }
@@ -696,11 +705,16 @@ namespace CrashEdit
                         case 29: // Switch ON
                             LoadTexture(OldResources.SwitchONBoxTexture);
                             break;
-                        case 30: // Switch Ghost
-                            LoadTexture(OldResources.SwitchGhostBoxTexture);
+                        case 30: // Switch Ghost to Red
+                        case 32: // Switch Ghost to Green
+                            LoadTexture(OldResources.SwitchGhostTexture);
+                            break;
                             break;
                         case 31: // Switch Green
                             LoadTexture(OldResources.SwitchGreenBoxTexture);
+                            break;
+                        case 33: // Switch Red
+                            LoadTexture(OldResources.SwitchRedBoxTexture);
                             break;
                     }
                 }
