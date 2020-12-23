@@ -1332,8 +1332,8 @@ namespace CrashEdit
             {
                 nsfdata = null;
             }
-            byte[] olddata = File.ReadAllBytes(filename);
-            if (nsfdata == null || (nsfdata.Length == olddata.Length && nsfdata.SequenceEqual(olddata)) || DarkMessageBox.ShowWarning(Resources.CloseNSF, Resources.Close_ConfirmationPrompt, DarkDialogButton.YesNo) == DialogResult.Yes)
+            byte[] olddata = File.Exists(filename) ? File.ReadAllBytes(filename) : null;
+            if ((olddata != null && (nsfdata == null || (nsfdata.Length == olddata.Length && nsfdata.SequenceEqual(olddata)))) || DarkMessageBox.ShowWarning(Resources.CloseNSF, Resources.Close_ConfirmationPrompt, DarkDialogButton.YesNo) == DialogResult.Yes)
             {
                 TabPage tab = tbcTabs.SelectedTab;
                 if (tab != null)
