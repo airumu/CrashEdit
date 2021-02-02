@@ -794,6 +794,7 @@ namespace CrashEdit
             // 
             // numHeader
             // 
+            this.numHeader.InterceptArrowKeys = false;
             this.numHeader.Location = new System.Drawing.Point(27, 17);
             this.numHeader.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.numHeader.Maximum = new decimal(new int[] {
