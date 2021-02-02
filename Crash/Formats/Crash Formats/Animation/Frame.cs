@@ -141,7 +141,7 @@ namespace Crash
         public short XOffset { get; set; }
         public short YOffset { get; set; }
         public short ZOffset { get; set; }
-        public int HeaderSize { get; }
+        public int HeaderSize { get; set; }
         public IList<FrameCollision> Collision => collision;
         public IList<FrameVertex> Vertices => vertices;
         public int SpecialVertexCount { get; }

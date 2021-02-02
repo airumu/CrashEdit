@@ -22,6 +22,7 @@ namespace CrashEdit
             UpdateVertice();
             UpdateCollision();
             UpdateOffset();
+            UpdateHeaderSize();
             vertexindex = 0;
             collisionindex = 0;
         }
@@ -196,27 +197,36 @@ namespace CrashEdit
             if (frame.Collision.Count > 0)
             {
                 frame.Collision.Add(frame.Collision[collisionindex - 1]);
+                frame.HeaderSize = (int)numXOffset.Value;
+                frame.HeaderSize = (int)numHeader.Value + 40;
             }
             else
             {
                 frame.Collision.Add(new FrameCollision(0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
+                frame.HeaderSize = (int)numXOffset.Value;
+                frame.HeaderSize = (int)numHeader.Value + 40;
             }
             InvalidateNodes();
             UpdateCollision();
+            UpdateHeaderSize();
         }
 
         private void cmdInsertCollision_Click(object sender, EventArgs e)
         {
             frame.Collision.Insert(collisionindex, frame.Collision[collisionindex]);
+            frame.HeaderSize = (int)numHeader.Value + 40;
             InvalidateNodes();
             UpdateCollision();
+            UpdateHeaderSize();
         }
 
         private void cmdRemoveCollision_Click(object sender, EventArgs e)
         {
             frame.Collision.RemoveAt(collisionindex);
+            frame.HeaderSize = (int)numHeader.Value - 40;
             InvalidateNodes();
             UpdateCollision();
+            UpdateHeaderSize();
         }
 
         private void UpdateOffset()
@@ -224,6 +234,11 @@ namespace CrashEdit
             numXOffset.Value = frame.XOffset;
             numYOffset.Value = frame.YOffset;
             numZOffset.Value = frame.ZOffset;
+        }
+
+        private void UpdateHeaderSize()
+        {
+            numHeader.Value = frame.HeaderSize;
         }
 
         private void numX_ValueChanged(object sender,EventArgs e)

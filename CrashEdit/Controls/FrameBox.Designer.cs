@@ -76,6 +76,9 @@ namespace CrashEdit
             this.fraCollision = new System.Windows.Forms.GroupBox();
             this.cmdRemoveCollision = new DarkUI.Controls.DarkButton();
             this.cmdInsertCollision = new DarkUI.Controls.DarkButton();
+            this.numHeader = new DarkUI.Controls.DarkNumericUpDown();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.fraVertice.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numZ)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numY)).BeginInit();
@@ -97,6 +100,8 @@ namespace CrashEdit
             ((System.ComponentModel.ISupportInitialize)(this.numYOffset)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numXOffset)).BeginInit();
             this.fraCollision.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numHeader)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // fraVertice
@@ -119,7 +124,7 @@ namespace CrashEdit
             this.fraVertice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.fraVertice.Name = "fraVertice";
             this.fraVertice.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.fraVertice.Size = new System.Drawing.Size(255, 152);
+            this.fraVertice.Size = new System.Drawing.Size(255, 168);
             this.fraVertice.TabIndex = 1;
             this.fraVertice.TabStop = false;
             this.fraVertice.Text = "Vertice(s)";
@@ -216,7 +221,7 @@ namespace CrashEdit
             this.lblX.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblX.Location = new System.Drawing.Point(7, 62);
             this.lblX.Name = "lblX";
-            this.lblX.Size = new System.Drawing.Size(14, 15);
+            this.lblX.Size = new System.Drawing.Size(15, 15);
             this.lblX.TabIndex = 3;
             this.lblX.Text = "X";
             // 
@@ -322,7 +327,7 @@ namespace CrashEdit
             this.lblXG.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblXG.Location = new System.Drawing.Point(7, 24);
             this.lblXG.Name = "lblXG";
-            this.lblXG.Size = new System.Drawing.Size(14, 15);
+            this.lblXG.Size = new System.Drawing.Size(15, 15);
             this.lblXG.TabIndex = 3;
             this.lblXG.Text = "X";
             // 
@@ -428,7 +433,7 @@ namespace CrashEdit
             this.lblX2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblX2.Location = new System.Drawing.Point(7, 24);
             this.lblX2.Name = "lblX2";
-            this.lblX2.Size = new System.Drawing.Size(14, 15);
+            this.lblX2.Size = new System.Drawing.Size(15, 15);
             this.lblX2.TabIndex = 3;
             this.lblX2.Text = "X";
             // 
@@ -534,7 +539,7 @@ namespace CrashEdit
             this.lblX1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblX1.Location = new System.Drawing.Point(7, 24);
             this.lblX1.Name = "lblX1";
-            this.lblX1.Size = new System.Drawing.Size(14, 15);
+            this.lblX1.Size = new System.Drawing.Size(15, 15);
             this.lblX1.TabIndex = 3;
             this.lblX1.Text = "X";
             // 
@@ -640,7 +645,7 @@ namespace CrashEdit
             this.lblXOffset.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblXOffset.Location = new System.Drawing.Point(7, 24);
             this.lblXOffset.Name = "lblXOffset";
-            this.lblXOffset.Size = new System.Drawing.Size(14, 15);
+            this.lblXOffset.Size = new System.Drawing.Size(15, 15);
             this.lblXOffset.TabIndex = 3;
             this.lblXOffset.Text = "X";
             // 
@@ -758,7 +763,7 @@ namespace CrashEdit
             this.fraCollision.Controls.Add(this.cmdPreviousCollision);
             this.fraCollision.Controls.Add(this.cmdNextCollision);
             this.fraCollision.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraCollision.Location = new System.Drawing.Point(3, 163);
+            this.fraCollision.Location = new System.Drawing.Point(3, 179);
             this.fraCollision.Name = "fraCollision";
             this.fraCollision.Size = new System.Drawing.Size(308, 290);
             this.fraCollision.TabIndex = 13;
@@ -787,15 +792,47 @@ namespace CrashEdit
             this.cmdInsertCollision.Text = "Insert";
             this.cmdInsertCollision.Click += new System.EventHandler(this.cmdInsertCollision_Click);
             // 
+            // numHeader
+            // 
+            this.numHeader.Location = new System.Drawing.Point(27, 17);
+            this.numHeader.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.numHeader.Maximum = new decimal(new int[] {
+            32767,
+            0,
+            0,
+            0});
+            this.numHeader.Minimum = new decimal(new int[] {
+            32768,
+            0,
+            0,
+            -2147483648});
+            this.numHeader.Name = "numHeader";
+            this.numHeader.ReadOnly = true;
+            this.numHeader.Size = new System.Drawing.Size(111, 21);
+            this.numHeader.TabIndex = 6;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.groupBox1.Controls.Add(this.numHeader);
+            this.groupBox1.ForeColor = System.Drawing.SystemColors.Window;
+            this.groupBox1.Location = new System.Drawing.Point(264, 124);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(145, 48);
+            this.groupBox1.TabIndex = 14;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Header Size";
+            // 
             // FrameBox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.fraCollision);
             this.Controls.Add(this.fraOffset);
             this.Controls.Add(this.fraVertice);
-            this.Font = new System.Drawing.Font("Yu Gothic UI ", 9F);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.ForeColor = System.Drawing.SystemColors.Window;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "FrameBox";
@@ -826,6 +863,8 @@ namespace CrashEdit
             ((System.ComponentModel.ISupportInitialize)(this.numYOffset)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numXOffset)).EndInit();
             this.fraCollision.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numHeader)).EndInit();
+            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -880,5 +919,8 @@ namespace CrashEdit
         private System.Windows.Forms.GroupBox fraCollision;
         private DarkUI.Controls.DarkButton cmdRemoveCollision;
         private DarkUI.Controls.DarkButton cmdInsertCollision;
+        private DarkUI.Controls.DarkNumericUpDown numHeader;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }
