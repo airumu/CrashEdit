@@ -8,7 +8,7 @@ namespace CrashEdit
 {
     internal static class Program
     {
-        public static SortedDictionary<string,string> C3AnimLinks = new SortedDictionary<string,string>(new ENameComparer());
+        public static SortedDictionary<string, string> C3AnimLinks = new SortedDictionary<string, string>(new ENameComparer());
         public static void SaveC3AnimLinks()
         {
             using (XmlWriter writer = XmlWriter.Create("CrashEdit.exe.animmodel.config", new XmlWriterSettings() { Indent = true, IndentChars = "\t" }))
@@ -29,41 +29,47 @@ namespace CrashEdit
         public static void LoadC3AnimLinks()
         {
             C3AnimLinks.Clear();
-            XmlReader r;
+            if (!System.IO.File.Exists("CrashEdit.exe.animmodel.config")) return;
+            XmlReader r = XmlReader.Create("CrashEdit.exe.animmodel.config");
             try
             {
-                r = XmlReader.Create("CrashEdit.exe.animmodel.config");
-            }
-            catch (System.IO.FileNotFoundException)
-            {
-                return;
-            }
-            while (r.Read())
-            {
-                switch (r.NodeType)
+                while (r.Read())
                 {
-                    case XmlNodeType.Element:
-                        if (r.Name == "animmodel")
-                        {
-                            string anim = r.GetAttribute("anim");
-                            string model = r.GetAttribute("model");
-                            C3AnimLinks.Add(anim, model);
-                        }
-                        break;
+                    switch (r.NodeType)
+                    {
+                        case XmlNodeType.Element:
+                            if (r.Name == "animmodel")
+                            {
+                                string anim = r.GetAttribute("anim");
+                                string model = r.GetAttribute("model");
+                                C3AnimLinks.Add(anim, model);
+                            }
+                            break;
+                    }
                 }
             }
-            r.Close();
-            r.Dispose();
+            finally
+            {
+                r.Close();
+                r.Dispose();
+            }
         }
 
         [STAThread]
         internal static void Main(string[] args)
         {
+            if (Properties.Settings.Default.UpgradeSettings)
+            {
+                Properties.Settings.Default.Upgrade();
+                Properties.Settings.Default.UpgradeSettings = false;
+                Properties.Settings.Default.Save();
+            }
             try
             {
                 Properties.Resources.Culture = Crash.UI.Properties.Resources.Culture = new System.Globalization.CultureInfo(Properties.Settings.Default.Language);
             }
-            catch {
+            catch
+            {
                 Properties.Settings.Default.Language = "en";
             }
             if (Properties.Settings.Default.DefaultFormW < 640)
