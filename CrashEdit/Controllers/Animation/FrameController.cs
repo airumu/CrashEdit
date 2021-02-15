@@ -63,7 +63,7 @@ namespace CrashEdit
                 if (Properties.Settings.Default.AnimViewPanel)
                 {
                     pnSplit = new SplitContainer { Dock = DockStyle.Fill };
-                    pnSplit.BackColor = Color.FromArgb(45, 45, 48);
+                    pnSplit.BackColor = Color.FromArgb(30, 30, 30);
                     pnSplit.Orientation = Orientation.Horizontal;
                     pnSplit.SplitterDistance = 50;
 

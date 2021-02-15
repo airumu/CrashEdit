@@ -14,9 +14,10 @@ namespace CrashEdit
             {
                 Dock = DockStyle.Fill
             };
-            lstCode.BackColor = Color.FromArgb(30, 30, 30);
+            lstCode.BackColor = Color.FromArgb(35, 35, 38);
             lstCode.ForeColor = Color.FromArgb(220, 220, 220);
             lstCode.Font = new Font("MS UI Gothic", 9F);
+            lstCode.BorderStyle = BorderStyle.None;
             lstCode.Items.Add($"Type: {goolentry.ID}");
             lstCode.Items.Add($"Category: {goolentry.Category / 0x100}");
             lstCode.Items.Add($"Format: {goolentry.Format}");

@@ -75,7 +75,7 @@ namespace CrashEdit
 
             pnSplit = new SplitContainer { Dock = DockStyle.Fill };
             pnSplit.Panel1.Controls.Add(trvMain);
-            pnSplit.BackColor = Color.FromArgb(45, 45, 48);
+            pnSplit.BackColor = Color.FromArgb(30, 30, 30);
 
             Controls.Add(pnSplit);
         }

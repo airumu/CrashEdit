@@ -17,7 +17,7 @@ namespace CrashEdit
             Dock = control.Dock;
             control.Dock = DockStyle.Fill;
             Controls.Add(control);
-            BackColor = SystemColors.AppWorkspace;
+            BackColor = Color.FromArgb(35, 35, 38);
         }
 
         protected override bool IsInputKey(Keys keyData)
