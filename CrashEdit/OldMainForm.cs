@@ -216,7 +216,7 @@ namespace CrashEdit
 
             txtInput = new MetroTextBox
             {
-                Location = new Point(221, 19),
+                Location = new Point(222, 19),
                 Size = new Size(64, 20),
                 Style = MetroFramework.MetroColorStyle.Teal,
                 Theme = MetroFramework.MetroThemeStyle.Dark,
@@ -224,8 +224,8 @@ namespace CrashEdit
                 BackColor = Color.FromArgb(35, 35, 38),
                 TextAlign = HorizontalAlignment.Center,
                 WaterMark = "Find",
-                WaterMarkColor = Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109))))),
-                WaterMarkFont = new Font("Microsoft Sans Serif", 12F, FontStyle.Italic, GraphicsUnit.Pixel)
+                WaterMarkColor = Color.FromArgb(109, 109,109),
+                WaterMarkFont = new Font("Yu Gothic UI", 12F, FontStyle.Italic, GraphicsUnit.Pixel)
             };
             txtInput.TextChanged += new EventHandler(txtInput_Change);
             txtInput.Click += new EventHandler(txtInput_Click);

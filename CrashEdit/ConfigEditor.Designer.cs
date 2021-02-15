@@ -295,7 +295,7 @@
             // 
             this.chkPatchNSDSavesNSF.Checked = true;
             this.chkPatchNSDSavesNSF.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkPatchNSDSavesNSF.ForeColor = System.Drawing.SystemColors.Control;
+            this.chkPatchNSDSavesNSF.ForeColor = System.Drawing.SystemColors.Window;
             this.chkPatchNSDSavesNSF.Location = new System.Drawing.Point(4, 245);
             this.chkPatchNSDSavesNSF.Name = "chkPatchNSDSavesNSF";
             this.chkPatchNSDSavesNSF.Size = new System.Drawing.Size(280, 15);
@@ -346,7 +346,7 @@
             // 
             // chkNormalDisplay
             // 
-            this.chkNormalDisplay.ForeColor = System.Drawing.Color.Gainsboro;
+            this.chkNormalDisplay.ForeColor = System.Drawing.SystemColors.Window;
             this.chkNormalDisplay.Location = new System.Drawing.Point(4, 132);
             this.chkNormalDisplay.Name = "chkNormalDisplay";
             this.chkNormalDisplay.Size = new System.Drawing.Size(107, 15);
@@ -420,7 +420,7 @@
             this.cmdHelp.FontSize = MetroFramework.MetroButtonSize.Medium;
             this.cmdHelp.FontWeight = MetroFramework.MetroButtonWeight.Regular;
             this.cmdHelp.ForeColor = System.Drawing.SystemColors.InactiveCaption;
-            this.cmdHelp.Location = new System.Drawing.Point(12, 337);
+            this.cmdHelp.Location = new System.Drawing.Point(117, 308);
             this.cmdHelp.Name = "cmdHelp";
             this.cmdHelp.Size = new System.Drawing.Size(50, 23);
             this.cmdHelp.Style = MetroFramework.MetroColorStyle.Blue;
@@ -448,7 +448,7 @@
             // 
             // chkAnimViewPanel
             // 
-            this.chkAnimViewPanel.ForeColor = System.Drawing.Color.Gainsboro;
+            this.chkAnimViewPanel.ForeColor = System.Drawing.SystemColors.Window;
             this.chkAnimViewPanel.Location = new System.Drawing.Point(256, 132);
             this.chkAnimViewPanel.Name = "chkAnimViewPanel";
             this.chkAnimViewPanel.Size = new System.Drawing.Size(210, 15);
