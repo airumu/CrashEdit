@@ -66,7 +66,7 @@ namespace CrashEdit
             {
                 BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30))))),
                 ForeColor = SystemColors.Control,
-                Font = new Font("Yu Gothic UI ", 9F),
+                Font = new Font("Microsoft Sans Serif", 9F),
                 TextAlign = ContentAlignment.MiddleCenter,
                 Text = Resources.Controller_NoOptionsAvailable
             };

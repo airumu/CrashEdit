@@ -209,7 +209,7 @@
             this.Controls.Add(this.fraPrerelease);
             this.Controls.Add(this.fraRelease);
             this.Controls.Add(this.lblMessage);
-            this.Font = new System.Drawing.Font("Arial", 9F);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.ForeColor = System.Drawing.SystemColors.Control;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

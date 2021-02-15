@@ -87,7 +87,7 @@ namespace CrashEdit
             pnOptions.Controls.Add(lblSampleRate,0,1);
             pnOptions.BackColor = Color.FromArgb(30, 30, 30);
             pnOptions.ForeColor = SystemColors.Control;
-            pnOptions.Font = new Font("Yu Gothic UI ", 9F);
+            pnOptions.Font = new Font("Microsoft Sans Serif", 9F);
 
             Controls.Add(pnOptions);
             Controls.Add(tsToolbar);

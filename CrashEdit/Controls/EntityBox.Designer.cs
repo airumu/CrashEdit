@@ -363,7 +363,7 @@ namespace CrashEdit
             this.tabGeneral.Controls.Add(this.fraSettings);
             this.tabGeneral.Controls.Add(this.fraPosition);
             this.tabGeneral.Controls.Add(this.fraID);
-            this.tabGeneral.Font = new System.Drawing.Font("Yu Gothic UI ", 9F);
+            this.tabGeneral.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.tabGeneral.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.tabGeneral.Location = new System.Drawing.Point(4, 38);
             this.tabGeneral.Name = "tabGeneral";
@@ -915,7 +915,7 @@ namespace CrashEdit
             this.tabSpecial.Controls.Add(this.fraDDASettings);
             this.tabSpecial.Controls.Add(this.fraBoxCount);
             this.tabSpecial.Controls.Add(this.fraVictims);
-            this.tabSpecial.Font = new System.Drawing.Font("Yu Gothic UI ", 9F);
+            this.tabSpecial.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.tabSpecial.ForeColor = System.Drawing.SystemColors.Window;
             this.tabSpecial.Location = new System.Drawing.Point(4, 38);
             this.tabSpecial.Name = "tabSpecial";
@@ -1332,7 +1332,7 @@ namespace CrashEdit
             this.tabCamera.Controls.Add(this.fraCameraSubIndex);
             this.tabCamera.Controls.Add(this.fraCameraIndex);
             this.tabCamera.Controls.Add(this.fraSLST);
-            this.tabCamera.Font = new System.Drawing.Font("Yu Gothic UI ", 9F);
+            this.tabCamera.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.tabCamera.ForeColor = System.Drawing.SystemColors.Window;
             this.tabCamera.Location = new System.Drawing.Point(4, 38);
             this.tabCamera.Name = "tabCamera";
@@ -1364,7 +1364,7 @@ namespace CrashEdit
             // lblFOVPosition
             // 
             this.lblFOVPosition.AutoSize = true;
-            this.lblFOVPosition.Font = new System.Drawing.Font("Yu Gothic UI ", 9F);
+            this.lblFOVPosition.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.lblFOVPosition.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblFOVPosition.Location = new System.Drawing.Point(20, 66);
             this.lblFOVPosition.Name = "lblFOVPosition";
@@ -1554,7 +1554,7 @@ namespace CrashEdit
             // lblNeighborPosition
             // 
             this.lblNeighborPosition.AutoSize = true;
-            this.lblNeighborPosition.Font = new System.Drawing.Font("Yu Gothic UI ", 9F);
+            this.lblNeighborPosition.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.lblNeighborPosition.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblNeighborPosition.Location = new System.Drawing.Point(20, 66);
             this.lblNeighborPosition.Name = "lblNeighborPosition";
@@ -2016,7 +2016,7 @@ namespace CrashEdit
             this.tabLoadLists.Controls.Add(this.fraLoadListB);
             this.tabLoadLists.Controls.Add(this.lblEIDErrA);
             this.tabLoadLists.Controls.Add(this.fraLoadListA);
-            this.tabLoadLists.Font = new System.Drawing.Font("Yu Gothic UI ", 9F);
+            this.tabLoadLists.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.tabLoadLists.ForeColor = System.Drawing.SystemColors.Window;
             this.tabLoadLists.Location = new System.Drawing.Point(4, 38);
             this.tabLoadLists.Name = "tabLoadLists";
@@ -2524,7 +2524,7 @@ namespace CrashEdit
             this.tabDrawLists.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.tabDrawLists.Controls.Add(this.fraDrawListB);
             this.tabDrawLists.Controls.Add(this.fraDrawListA);
-            this.tabDrawLists.Font = new System.Drawing.Font("Yu Gothic UI ", 9F);
+            this.tabDrawLists.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.tabDrawLists.ForeColor = System.Drawing.SystemColors.Window;
             this.tabDrawLists.Location = new System.Drawing.Point(4, 38);
             this.tabDrawLists.Name = "tabDrawLists";

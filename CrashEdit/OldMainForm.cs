@@ -225,7 +225,7 @@ namespace CrashEdit
                 TextAlign = HorizontalAlignment.Center,
                 WaterMark = "Find",
                 WaterMarkColor = Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109))))),
-                WaterMarkFont = new Font("Segoe UI", 12F, FontStyle.Italic, GraphicsUnit.Pixel)
+                WaterMarkFont = new Font("Microsoft Sans Serif", 12F, FontStyle.Italic, GraphicsUnit.Pixel)
             };
             txtInput.TextChanged += new EventHandler(txtInput_Change);
             txtInput.Click += new EventHandler(txtInput_Click);
@@ -251,7 +251,7 @@ namespace CrashEdit
             tsToolbar.Items.Add(tbbPAL);
             tsToolbar.Items.Add(new ToolStripSeparator());
             tsToolbar.Items.Add(tbbPlay);
-            tsToolbar.Font = new Font("Arial", 9F);
+            tsToolbar.Font = new Font("Microsoft Sans Serif", 9F);
 
            tbcTabs = new MetroTabControl
             {
@@ -262,7 +262,7 @@ namespace CrashEdit
             tbcTabs.FontWeight = MetroFramework.MetroTabControlWeight.Regular;
             tbcTabs.Style = MetroFramework.MetroColorStyle.Blue;
             tbcTabs.Theme = MetroFramework.MetroThemeStyle.Dark;
-            tbcTabs.Font = new Font("Arial", 9F);
+            tbcTabs.Font = new Font("Microsoft Sans Serif", 9F);
 
             TabPage configtab = new TabPage("CrashEdit")
             {
@@ -316,7 +316,7 @@ namespace CrashEdit
             };
 
             msMenu.Visible = false;
-            msMenu.Font = new Font("Arial", 9F);
+            msMenu.Font = new Font("Microsoft Sans Serif", 9F);
             msMenu.Items.AddRange(new ToolStripItem[] {
             mnuOpen,
             mnuSave,
@@ -1592,7 +1592,7 @@ namespace CrashEdit
             // OldMainForm
             // 
             this.ClientSize = new System.Drawing.Size(747, 560);
-            this.Font = new System.Drawing.Font("Arial", 9F);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.Name = "OldMainForm";
             this.ResumeLayout(false);
         }

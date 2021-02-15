@@ -164,7 +164,7 @@
             this.tabC1.Controls.Add(this.groupBox3);
             this.tabC1.Controls.Add(this.groupBox2);
             this.tabC1.Controls.Add(this.groupBox1);
-            this.tabC1.Font = new System.Drawing.Font("Yu Gothic UI ", 9F);
+            this.tabC1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.tabC1.ForeColor = System.Drawing.SystemColors.Control;
             this.tabC1.Location = new System.Drawing.Point(4, 34);
             this.tabC1.Name = "tabC1";
@@ -210,7 +210,7 @@
             this.groupBox5.Controls.Add(this.C1numX);
             this.groupBox5.Controls.Add(this.label5);
             this.groupBox5.Controls.Add(this.label6);
-            this.groupBox5.Font = new System.Drawing.Font("Yu Gothic UI ", 9F);
+            this.groupBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.groupBox5.ForeColor = System.Drawing.SystemColors.Control;
             this.groupBox5.Location = new System.Drawing.Point(8, 6);
             this.groupBox5.Name = "groupBox5";
@@ -270,7 +270,7 @@
             this.groupBox4.Controls.Add(this.C1dpdW);
             this.groupBox4.Controls.Add(this.label3);
             this.groupBox4.Controls.Add(this.label4);
-            this.groupBox4.Font = new System.Drawing.Font("Yu Gothic UI ", 9F);
+            this.groupBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.groupBox4.ForeColor = System.Drawing.SystemColors.Control;
             this.groupBox4.Location = new System.Drawing.Point(106, 6);
             this.groupBox4.Name = "groupBox4";
@@ -349,7 +349,7 @@
             // 
             // C1numCY
             // 
-            this.C1numCY.Font = new System.Drawing.Font("Yu Gothic UI ", 9F);
+            this.C1numCY.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.C1numCY.Location = new System.Drawing.Point(26, 49);
             this.C1numCY.Maximum = new decimal(new int[] {
             127,
@@ -362,7 +362,7 @@
             // 
             // C1numCX
             // 
-            this.C1numCX.Font = new System.Drawing.Font("Yu Gothic UI ", 9F);
+            this.C1numCX.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.C1numCX.Location = new System.Drawing.Point(26, 20);
             this.C1numCX.Maximum = new decimal(new int[] {
             15,
@@ -401,7 +401,7 @@
             this.groupBox2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(38)))));
             this.groupBox2.Controls.Add(this.C1dpdBlend);
-            this.groupBox2.Font = new System.Drawing.Font("Yu Gothic UI ", 9F);
+            this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.groupBox2.ForeColor = System.Drawing.SystemColors.Control;
             this.groupBox2.Location = new System.Drawing.Point(107, 89);
             this.groupBox2.Name = "groupBox2";
@@ -431,7 +431,7 @@
             this.groupBox1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(38)))));
             this.groupBox1.Controls.Add(this.C1dpdColor);
-            this.groupBox1.Font = new System.Drawing.Font("Yu Gothic UI ", 9F);
+            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.groupBox1.ForeColor = System.Drawing.SystemColors.Control;
             this.groupBox1.Location = new System.Drawing.Point(8, 89);
             this.groupBox1.Name = "groupBox1";
@@ -467,7 +467,7 @@
             this.tabC2.Controls.Add(this.groupBox8);
             this.tabC2.Controls.Add(this.groupBox9);
             this.tabC2.Controls.Add(this.groupBox10);
-            this.tabC2.Font = new System.Drawing.Font("Yu Gothic UI ", 9F);
+            this.tabC2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.tabC2.ForeColor = System.Drawing.SystemColors.Control;
             this.tabC2.Location = new System.Drawing.Point(4, 34);
             this.tabC2.Name = "tabC2";

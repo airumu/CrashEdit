@@ -63,7 +63,7 @@ namespace CrashEdit
                 HideSelection = false,
                 SelectedNode = NSFController.Node,
                 AllowDrop = true,
-                Font = new Font("Yu Gothic UI ", 9F),
+                Font = new Font("Microsoft Sans Serif", 9F),
                 BackColor = Color.FromArgb(38, 38, 38),
                 ForeColor = Color.FromArgb(200, 200, 200)
             };

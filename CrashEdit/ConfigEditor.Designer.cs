@@ -72,7 +72,7 @@
             // 
             this.fraLang.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
             this.fraLang.Controls.Add(this.dpdLang);
-            this.fraLang.Font = new System.Drawing.Font("Arial", 9F);
+            this.fraLang.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.fraLang.ForeColor = System.Drawing.SystemColors.Window;
             this.fraLang.Location = new System.Drawing.Point(4, 4);
             this.fraLang.Name = "fraLang";
@@ -84,7 +84,7 @@
             // dpdLang
             // 
             this.dpdLang.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(55)))), ((int)(((byte)(60)))));
-            this.dpdLang.Font = new System.Drawing.Font("MS UI Gothic", 9F);
+            this.dpdLang.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.dpdLang.FontSize = MetroFramework.MetroComboBoxSize.Small;
             this.dpdLang.FormattingEnabled = true;
             this.dpdLang.IntegralHeight = false;
@@ -105,7 +105,7 @@
             this.fraSize.Controls.Add(this.lblW);
             this.fraSize.Controls.Add(this.numH);
             this.fraSize.Controls.Add(this.numW);
-            this.fraSize.Font = new System.Drawing.Font("Arial", 9F);
+            this.fraSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.fraSize.ForeColor = System.Drawing.SystemColors.Window;
             this.fraSize.Location = new System.Drawing.Point(300, 59);
             this.fraSize.Name = "fraSize";
@@ -188,7 +188,7 @@
             this.fraClearCol.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
             this.fraClearCol.Controls.Add(this.picClearCol);
             this.fraClearCol.Controls.Add(this.cmdClearCol);
-            this.fraClearCol.Font = new System.Drawing.Font("Arial", 9F);
+            this.fraClearCol.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.fraClearCol.ForeColor = System.Drawing.SystemColors.Window;
             this.fraClearCol.Location = new System.Drawing.Point(4, 59);
             this.fraClearCol.Name = "fraClearCol";
@@ -226,7 +226,7 @@
             this.fraAnimGrid.Controls.Add(this.numAnimGrid);
             this.fraAnimGrid.Controls.Add(this.lblAnimGrid);
             this.fraAnimGrid.Controls.Add(this.chkAnimGrid);
-            this.fraAnimGrid.Font = new System.Drawing.Font("Arial", 9F);
+            this.fraAnimGrid.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.fraAnimGrid.ForeColor = System.Drawing.SystemColors.Window;
             this.fraAnimGrid.Location = new System.Drawing.Point(138, 59);
             this.fraAnimGrid.Name = "fraAnimGrid";
@@ -405,7 +405,7 @@
             // 
             this.fraKeyBinds.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
             this.fraKeyBinds.Controls.Add(this.tglKeyBinds);
-            this.fraKeyBinds.Font = new System.Drawing.Font("Arial", 9F);
+            this.fraKeyBinds.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.fraKeyBinds.ForeColor = System.Drawing.SystemColors.Window;
             this.fraKeyBinds.Location = new System.Drawing.Point(172, 4);
             this.fraKeyBinds.Name = "fraKeyBinds";

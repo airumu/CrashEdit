@@ -33,7 +33,7 @@ namespace CrashEdit
         {
             totalsize = 0;
             lstEntryList.Items.Clear();
-            lstEntryList.Font = new Font("Yu Gothic UI ", 9F);
+            lstEntryList.Font = new Font("Microsoft Sans Serif", 9F);
             lstEntryList.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             lstEntryList.ForeColor = SystemColors.Control;
             foreach (Entry entry in controller.EntryChunk.Entries)
