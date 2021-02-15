@@ -20,7 +20,7 @@ namespace CrashEdit
         public override void InvalidateNodeImage()
         {
             Node.ImageKey = "speaker";
-            Node.SelectedImageKey = "speaker";
+            Node.SelectedImageKey = "speakerblue";
         }
 
         protected override Control CreateEditor()

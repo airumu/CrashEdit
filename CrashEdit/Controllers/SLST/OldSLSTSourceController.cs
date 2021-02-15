@@ -21,7 +21,7 @@ namespace CrashEdit
         public override void InvalidateNodeImage()
         {
             Node.ImageKey = "arrow";
-            Node.SelectedImageKey = "arrow";
+            Node.SelectedImageKey = "arrowblue";
         }
 
         protected override Control CreateEditor()

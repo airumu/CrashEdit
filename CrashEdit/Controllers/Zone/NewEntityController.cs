@@ -20,11 +20,11 @@ namespace CrashEdit
         {
             if (Entity.Name != null && Entity.ID != null)
             {
-                Node.Text = $"{Entity.Name} [ID {Entity.ID}]";
+                Node.Text = $"{Entity.Name} - ID {Entity.ID} ";
             }
             else if (Entity.ID != null)
             {
-                Node.Text = $"{Crash.UI.Properties.Resources.EntityController_Text} [ID {Entity.ID}]";
+                Node.Text = $"{Crash.UI.Properties.Resources.EntityController_Text} - ID {Entity.ID} ";
             }
             else
             {
@@ -35,7 +35,7 @@ namespace CrashEdit
         public override void InvalidateNodeImage()
         {
             Node.ImageKey = "arrow";
-            Node.SelectedImageKey = "arrow";
+            Node.SelectedImageKey = "arrowblue";
         }
 
         protected override Control CreateEditor()

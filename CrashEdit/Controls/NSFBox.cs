@@ -26,7 +26,9 @@ namespace CrashEdit
                 imglist.Images.Add("whitej",OldResources.WhiteJournalImage);
                 imglist.Images.Add("thing",OldResources.ThingImage);
                 imglist.Images.Add("speaker",OldResources.SpeakerImage);
+                imglist.Images.Add("speakerblue",OldResources.SpeakerBlueImage);
                 imglist.Images.Add("arrow",OldResources.ArrowImage);
+                imglist.Images.Add("arrowblue",OldResources.ArrowBlueImage);
                 imglist.Images.Add("greyb",OldResources.GreyBuckle);
                 imglist.Images.Add("codeb",OldResources.CodeBuckle);
                 imglist.Images.Add("crimsonb",OldResources.CrimsonBuckle);

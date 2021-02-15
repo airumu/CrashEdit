@@ -32,6 +32,9 @@ namespace CrashEdit
         [Resource("ArrowImage")]
         private static Image arrowimage = null;
 
+        [Resource("ArrowBlueImage")]
+        private static Image arrowblueimage = null;
+
         [Resource("BinocularsImage")]
         private static Image binocularsimage = null;
 
@@ -67,6 +70,9 @@ namespace CrashEdit
 
         [Resource("SpeakerImage")]
         private static Image speakerimage = null;
+
+        [Resource("SpeakerBlueImage")]
+        private static Image speakerblueimage = null;
 
         [Resource("ThingImage")]
         private static Image thingimage = null;
@@ -355,6 +361,7 @@ namespace CrashEdit
         public static Icon NewEntryFormIcon => newentryformicon;
         public static Icon TextureViewerIcon => textureviewericon;
         public static Image ArrowImage => arrowimage;
+        public static Image ArrowBlueImage => arrowblueimage;
         public static Image BinocularsImage => binocularsimage;
         public static Image BinocularsNextImage => binocularsnextimage;
         public static Image FileImage => fileimage;
@@ -367,6 +374,7 @@ namespace CrashEdit
         public static Image SaveImage => saveimage;
         public static Image SaveImage2 => saveimage2;
         public static Image SpeakerImage => speakerimage;
+        public static Image SpeakerBlueImage => speakerblueimage;
         public static Image ThingImage => thingimage;
         public static Image BlueJournalImage => bluejournalimage;
         public static Image WhiteJournalImage => whitejournalimage;
