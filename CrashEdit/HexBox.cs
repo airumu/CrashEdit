@@ -349,8 +349,8 @@ namespace CrashEdit
             Brush inputselbackbrush = Brushes.Crimson;
             Brush eidbackbrush = Brushes.SteelBlue;
             SolidBrush voidbrush = new SolidBrush(Color.FromArgb(0x78404068));
-            Font font = new Font("Microsoft Sans SerifI", 9F);
-            Font selfont = new Font("Microsoft Sans Serif", 10F);
+            Font font = new Font("Segoe UI", 9F);
+            Font selfont = new Font("Segoe UI", 11F);
             StringFormat format = new StringFormat();
             StringFormat selformat = new StringFormat();
             format.Alignment = StringAlignment.Center;

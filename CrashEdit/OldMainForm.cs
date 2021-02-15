@@ -104,7 +104,7 @@ namespace CrashEdit
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
             tbbSave.Click += new EventHandler(tbbSave_Click);
-            tbbSave.Size = new Size(48, 40);
+            tbbSave.Size = new Size(48, 36);
 
             tbbPatchNSD = new ToolStripButton
             {
@@ -114,7 +114,7 @@ namespace CrashEdit
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
             tbbPatchNSD.Click += new EventHandler(tbbPatchNSD_Click);
-            tbbPatchNSD.Size = new Size(64, 40);
+            tbbPatchNSD.Size = new Size(64, 36);
 
             tbbClose = new ToolStripButton
             {
@@ -144,7 +144,7 @@ namespace CrashEdit
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
             tbbFindNext.Click += new EventHandler(tbbFindNext_Click);
-            tbbFindNext.Size = new Size(64, 40);
+            tbbFindNext.Size = new Size(64, 36);
             tbbFindNext.BackColor = Color.FromArgb(30, 30, 30);
             tbbFindNext.ForeColor = SystemColors.Control;
 
@@ -251,7 +251,7 @@ namespace CrashEdit
             tsToolbar.Items.Add(tbbPAL);
             tsToolbar.Items.Add(new ToolStripSeparator());
             tsToolbar.Items.Add(tbbPlay);
-            tsToolbar.Font = new Font("Microsoft Sans Serif", 9F);
+            tsToolbar.Font = new Font("Yu Gothic UI", 9F);
 
            tbcTabs = new MetroTabControl
             {
@@ -262,7 +262,7 @@ namespace CrashEdit
             tbcTabs.FontWeight = MetroFramework.MetroTabControlWeight.Regular;
             tbcTabs.Style = MetroFramework.MetroColorStyle.Blue;
             tbcTabs.Theme = MetroFramework.MetroThemeStyle.Dark;
-            tbcTabs.Font = new Font("Microsoft Sans Serif", 9F);
+            tbcTabs.Font = new Font("Yu Gothic UI", 9F);
 
             TabPage configtab = new TabPage("CrashEdit")
             {
@@ -316,7 +316,7 @@ namespace CrashEdit
             };
 
             msMenu.Visible = false;
-            msMenu.Font = new Font("Microsoft Sans Serif", 9F);
+            msMenu.Font = new Font("Yu Gothic UI", 9F);
             msMenu.Items.AddRange(new ToolStripItem[] {
             mnuOpen,
             mnuSave,
@@ -1592,7 +1592,7 @@ namespace CrashEdit
             // OldMainForm
             // 
             this.ClientSize = new System.Drawing.Size(747, 560);
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.Font = new System.Drawing.Font("Yu Gothic UI", 9F);
             this.Name = "OldMainForm";
             this.ResumeLayout(false);
         }
