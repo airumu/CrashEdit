@@ -16,6 +16,7 @@ namespace CrashEdit
             };
             lstValues.BackColor = Color.FromArgb(30, 30, 30);
             lstValues.ForeColor = Color.FromArgb(220, 220, 220);
+            lstValues.BorderStyle = BorderStyle.None;
             lstValues.Items.Add(string.Format("Count: {0}",slstitem.Polygons.Count));
             lstValues.Items.Add(string.Format("Type: {0}",0));
             foreach (OldSLSTPolygonID value in slstitem.Polygons)
