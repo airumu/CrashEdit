@@ -29,18 +29,23 @@ namespace CrashEdit
         private void InitializeComponent()
         {
             this.fraVertice = new System.Windows.Forms.GroupBox();
+            this.lblSPVertex = new DarkUI.Controls.DarkLabel();
+            this.cmdNext10Vertice = new DarkUI.Controls.DarkButton();
+            this.cmdPrevious10Vertice = new DarkUI.Controls.DarkButton();
+            this.cmdLastVertice = new DarkUI.Controls.DarkButton();
+            this.cmdFirstVertice = new DarkUI.Controls.DarkButton();
             this.lblVerticeIndex = new DarkUI.Controls.DarkLabel();
             this.cmdNextVertice = new DarkUI.Controls.DarkButton();
             this.cmdPreviousVertice = new DarkUI.Controls.DarkButton();
-            this.cmdInsertVertice = new DarkUI.Controls.DarkButton();
             this.lblZ = new DarkUI.Controls.DarkLabel();
-            this.cmdRemoveVertice = new DarkUI.Controls.DarkButton();
             this.lblY = new DarkUI.Controls.DarkLabel();
-            this.cmdAppendVertice = new DarkUI.Controls.DarkButton();
             this.lblX = new DarkUI.Controls.DarkLabel();
             this.numZ = new DarkUI.Controls.DarkNumericUpDown();
             this.numY = new DarkUI.Controls.DarkNumericUpDown();
             this.numX = new DarkUI.Controls.DarkNumericUpDown();
+            this.cmdInsertVertice = new DarkUI.Controls.DarkButton();
+            this.cmdRemoveVertice = new DarkUI.Controls.DarkButton();
+            this.cmdAppendVertice = new DarkUI.Controls.DarkButton();
             this.fraGG = new System.Windows.Forms.GroupBox();
             this.lblZG = new DarkUI.Controls.DarkLabel();
             this.lblYG = new DarkUI.Controls.DarkLabel();
@@ -79,6 +84,8 @@ namespace CrashEdit
             this.numHeader = new DarkUI.Controls.DarkNumericUpDown();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.numSPVertex = new DarkUI.Controls.DarkNumericUpDown();
             this.fraVertice.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numZ)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numY)).BeginInit();
@@ -102,19 +109,23 @@ namespace CrashEdit
             this.fraCollision.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numHeader)).BeginInit();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numSPVertex)).BeginInit();
             this.SuspendLayout();
             // 
             // fraVertice
             // 
             this.fraVertice.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.fraVertice.Controls.Add(this.lblSPVertex);
+            this.fraVertice.Controls.Add(this.cmdNext10Vertice);
+            this.fraVertice.Controls.Add(this.cmdPrevious10Vertice);
+            this.fraVertice.Controls.Add(this.cmdLastVertice);
+            this.fraVertice.Controls.Add(this.cmdFirstVertice);
             this.fraVertice.Controls.Add(this.lblVerticeIndex);
             this.fraVertice.Controls.Add(this.cmdNextVertice);
             this.fraVertice.Controls.Add(this.cmdPreviousVertice);
-            this.fraVertice.Controls.Add(this.cmdInsertVertice);
             this.fraVertice.Controls.Add(this.lblZ);
-            this.fraVertice.Controls.Add(this.cmdRemoveVertice);
             this.fraVertice.Controls.Add(this.lblY);
-            this.fraVertice.Controls.Add(this.cmdAppendVertice);
             this.fraVertice.Controls.Add(this.lblX);
             this.fraVertice.Controls.Add(this.numZ);
             this.fraVertice.Controls.Add(this.numY);
@@ -124,10 +135,64 @@ namespace CrashEdit
             this.fraVertice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.fraVertice.Name = "fraVertice";
             this.fraVertice.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.fraVertice.Size = new System.Drawing.Size(255, 168);
+            this.fraVertice.Size = new System.Drawing.Size(308, 168);
             this.fraVertice.TabIndex = 1;
             this.fraVertice.TabStop = false;
             this.fraVertice.Text = "Vertice(s)";
+            // 
+            // lblSPVertex
+            // 
+            this.lblSPVertex.AutoSize = true;
+            this.lblSPVertex.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(174)))), ((int)(((byte)(219)))));
+            this.lblSPVertex.Location = new System.Drawing.Point(23, 48);
+            this.lblSPVertex.Name = "lblSPVertex";
+            this.lblSPVertex.Size = new System.Drawing.Size(82, 15);
+            this.lblSPVertex.TabIndex = 12;
+            this.lblSPVertex.Text = "SpecialVertex";
+            // 
+            // cmdNext10Vertice
+            // 
+            this.cmdNext10Vertice.Location = new System.Drawing.Point(216, 62);
+            this.cmdNext10Vertice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.cmdNext10Vertice.Name = "cmdNext10Vertice";
+            this.cmdNext10Vertice.Padding = new System.Windows.Forms.Padding(5);
+            this.cmdNext10Vertice.Size = new System.Drawing.Size(80, 26);
+            this.cmdNext10Vertice.TabIndex = 11;
+            this.cmdNext10Vertice.Text = "Next 10";
+            this.cmdNext10Vertice.Click += new System.EventHandler(this.CmdNext10Vertice_Click);
+            // 
+            // cmdPrevious10Vertice
+            // 
+            this.cmdPrevious10Vertice.Location = new System.Drawing.Point(130, 62);
+            this.cmdPrevious10Vertice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.cmdPrevious10Vertice.Name = "cmdPrevious10Vertice";
+            this.cmdPrevious10Vertice.Padding = new System.Windows.Forms.Padding(5);
+            this.cmdPrevious10Vertice.Size = new System.Drawing.Size(80, 26);
+            this.cmdPrevious10Vertice.TabIndex = 10;
+            this.cmdPrevious10Vertice.Text = "Previous 10";
+            this.cmdPrevious10Vertice.Click += new System.EventHandler(this.CmdPrevious10Vertice_Click);
+            // 
+            // cmdLastVertice
+            // 
+            this.cmdLastVertice.Location = new System.Drawing.Point(216, 122);
+            this.cmdLastVertice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.cmdLastVertice.Name = "cmdLastVertice";
+            this.cmdLastVertice.Padding = new System.Windows.Forms.Padding(5);
+            this.cmdLastVertice.Size = new System.Drawing.Size(79, 26);
+            this.cmdLastVertice.TabIndex = 9;
+            this.cmdLastVertice.Text = "Last";
+            this.cmdLastVertice.Click += new System.EventHandler(this.cmdLastVertice_Click);
+            // 
+            // cmdFirstVertice
+            // 
+            this.cmdFirstVertice.Location = new System.Drawing.Point(130, 122);
+            this.cmdFirstVertice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.cmdFirstVertice.Name = "cmdFirstVertice";
+            this.cmdFirstVertice.Padding = new System.Windows.Forms.Padding(5);
+            this.cmdFirstVertice.Size = new System.Drawing.Size(80, 26);
+            this.cmdFirstVertice.TabIndex = 8;
+            this.cmdFirstVertice.Text = "First";
+            this.cmdFirstVertice.Click += new System.EventHandler(this.cmdFirstVertice_Click);
             // 
             // lblVerticeIndex
             // 
@@ -142,84 +207,51 @@ namespace CrashEdit
             // 
             // cmdNextVertice
             // 
-            this.cmdNextVertice.Location = new System.Drawing.Point(177, 22);
+            this.cmdNextVertice.Location = new System.Drawing.Point(216, 22);
             this.cmdNextVertice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmdNextVertice.Name = "cmdNextVertice";
             this.cmdNextVertice.Padding = new System.Windows.Forms.Padding(5);
-            this.cmdNextVertice.Size = new System.Drawing.Size(68, 26);
+            this.cmdNextVertice.Size = new System.Drawing.Size(80, 26);
             this.cmdNextVertice.TabIndex = 1;
             this.cmdNextVertice.Text = "Next";
             this.cmdNextVertice.Click += new System.EventHandler(this.cmdNextVertice_Click);
             // 
             // cmdPreviousVertice
             // 
-            this.cmdPreviousVertice.Location = new System.Drawing.Point(103, 22);
+            this.cmdPreviousVertice.Location = new System.Drawing.Point(130, 22);
             this.cmdPreviousVertice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmdPreviousVertice.Name = "cmdPreviousVertice";
             this.cmdPreviousVertice.Padding = new System.Windows.Forms.Padding(5);
-            this.cmdPreviousVertice.Size = new System.Drawing.Size(68, 26);
+            this.cmdPreviousVertice.Size = new System.Drawing.Size(80, 26);
             this.cmdPreviousVertice.TabIndex = 0;
             this.cmdPreviousVertice.Text = "Previous";
             this.cmdPreviousVertice.Click += new System.EventHandler(this.cmdPreviousVertice_Click);
-            // 
-            // cmdInsertVertice
-            // 
-            this.cmdInsertVertice.Location = new System.Drawing.Point(130, 87);
-            this.cmdInsertVertice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.cmdInsertVertice.Name = "cmdInsertVertice";
-            this.cmdInsertVertice.Padding = new System.Windows.Forms.Padding(5);
-            this.cmdInsertVertice.Size = new System.Drawing.Size(87, 26);
-            this.cmdInsertVertice.TabIndex = 6;
-            this.cmdInsertVertice.Text = "Insert";
-            this.cmdInsertVertice.Click += new System.EventHandler(this.cmdInsertVertice_Click);
             // 
             // lblZ
             // 
             this.lblZ.AutoSize = true;
             this.lblZ.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.lblZ.Location = new System.Drawing.Point(7, 122);
+            this.lblZ.Location = new System.Drawing.Point(7, 130);
             this.lblZ.Name = "lblZ";
             this.lblZ.Size = new System.Drawing.Size(14, 15);
             this.lblZ.TabIndex = 5;
             this.lblZ.Text = "Z";
             // 
-            // cmdRemoveVertice
-            // 
-            this.cmdRemoveVertice.Location = new System.Drawing.Point(130, 118);
-            this.cmdRemoveVertice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.cmdRemoveVertice.Name = "cmdRemoveVertice";
-            this.cmdRemoveVertice.Padding = new System.Windows.Forms.Padding(5);
-            this.cmdRemoveVertice.Size = new System.Drawing.Size(87, 26);
-            this.cmdRemoveVertice.TabIndex = 7;
-            this.cmdRemoveVertice.Text = "Remove";
-            this.cmdRemoveVertice.Click += new System.EventHandler(this.cmdRemoveVertice_Click);
-            // 
             // lblY
             // 
             this.lblY.AutoSize = true;
             this.lblY.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.lblY.Location = new System.Drawing.Point(7, 92);
+            this.lblY.Location = new System.Drawing.Point(7, 100);
             this.lblY.Name = "lblY";
             this.lblY.Size = new System.Drawing.Size(14, 15);
             this.lblY.TabIndex = 4;
             this.lblY.Text = "Y";
             // 
-            // cmdAppendVertice
-            // 
-            this.cmdAppendVertice.Location = new System.Drawing.Point(130, 56);
-            this.cmdAppendVertice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.cmdAppendVertice.Name = "cmdAppendVertice";
-            this.cmdAppendVertice.Padding = new System.Windows.Forms.Padding(5);
-            this.cmdAppendVertice.Size = new System.Drawing.Size(87, 26);
-            this.cmdAppendVertice.TabIndex = 5;
-            this.cmdAppendVertice.Text = "Append";
-            this.cmdAppendVertice.Click += new System.EventHandler(this.cmdAppendVertice_Click);
-            // 
             // lblX
             // 
             this.lblX.AutoSize = true;
             this.lblX.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.lblX.Location = new System.Drawing.Point(7, 62);
+            this.lblX.Location = new System.Drawing.Point(7, 70);
             this.lblX.Name = "lblX";
             this.lblX.Size = new System.Drawing.Size(15, 15);
             this.lblX.TabIndex = 3;
@@ -232,7 +264,7 @@ namespace CrashEdit
             0,
             0,
             0});
-            this.numZ.Location = new System.Drawing.Point(30, 120);
+            this.numZ.Location = new System.Drawing.Point(30, 128);
             this.numZ.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.numZ.Maximum = new decimal(new int[] {
             255,
@@ -251,7 +283,7 @@ namespace CrashEdit
             0,
             0,
             0});
-            this.numY.Location = new System.Drawing.Point(30, 90);
+            this.numY.Location = new System.Drawing.Point(30, 98);
             this.numY.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.numY.Maximum = new decimal(new int[] {
             255,
@@ -270,7 +302,7 @@ namespace CrashEdit
             0,
             0,
             0});
-            this.numX.Location = new System.Drawing.Point(30, 60);
+            this.numX.Location = new System.Drawing.Point(30, 68);
             this.numX.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.numX.Maximum = new decimal(new int[] {
             255,
@@ -281,6 +313,43 @@ namespace CrashEdit
             this.numX.Size = new System.Drawing.Size(85, 21);
             this.numX.TabIndex = 2;
             this.numX.ValueChanged += new System.EventHandler(this.numX_ValueChanged);
+            // 
+            // cmdInsertVertice
+            // 
+            this.cmdInsertVertice.Location = new System.Drawing.Point(317, 267);
+            this.cmdInsertVertice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.cmdInsertVertice.Name = "cmdInsertVertice";
+            this.cmdInsertVertice.Padding = new System.Windows.Forms.Padding(5);
+            this.cmdInsertVertice.Size = new System.Drawing.Size(86, 26);
+            this.cmdInsertVertice.TabIndex = 6;
+            this.cmdInsertVertice.Text = "Insert";
+            this.cmdInsertVertice.Visible = false;
+            this.cmdInsertVertice.Click += new System.EventHandler(this.cmdInsertVertice_Click);
+            // 
+            // cmdRemoveVertice
+            // 
+            this.cmdRemoveVertice.Location = new System.Drawing.Point(317, 301);
+            this.cmdRemoveVertice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.cmdRemoveVertice.Name = "cmdRemoveVertice";
+            this.cmdRemoveVertice.Padding = new System.Windows.Forms.Padding(5);
+            this.cmdRemoveVertice.Size = new System.Drawing.Size(86, 26);
+            this.cmdRemoveVertice.TabIndex = 7;
+            this.cmdRemoveVertice.Text = "Remove";
+            this.cmdRemoveVertice.Visible = false;
+            this.cmdRemoveVertice.Click += new System.EventHandler(this.cmdRemoveVertice_Click);
+            // 
+            // cmdAppendVertice
+            // 
+            this.cmdAppendVertice.Enabled = false;
+            this.cmdAppendVertice.Location = new System.Drawing.Point(317, 233);
+            this.cmdAppendVertice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.cmdAppendVertice.Name = "cmdAppendVertice";
+            this.cmdAppendVertice.Padding = new System.Windows.Forms.Padding(5);
+            this.cmdAppendVertice.Size = new System.Drawing.Size(86, 26);
+            this.cmdAppendVertice.TabIndex = 5;
+            this.cmdAppendVertice.Text = "Append";
+            this.cmdAppendVertice.Visible = false;
+            this.cmdAppendVertice.Click += new System.EventHandler(this.cmdAppendVertice_Click);
             // 
             // fraGG
             // 
@@ -610,7 +679,7 @@ namespace CrashEdit
             this.fraOffset.Controls.Add(this.numYOffset);
             this.fraOffset.Controls.Add(this.numXOffset);
             this.fraOffset.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraOffset.Location = new System.Drawing.Point(264, 5);
+            this.fraOffset.Location = new System.Drawing.Point(317, 4);
             this.fraOffset.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.fraOffset.Name = "fraOffset";
             this.fraOffset.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -763,7 +832,7 @@ namespace CrashEdit
             this.fraCollision.Controls.Add(this.cmdPreviousCollision);
             this.fraCollision.Controls.Add(this.cmdNextCollision);
             this.fraCollision.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraCollision.Location = new System.Drawing.Point(3, 179);
+            this.fraCollision.Location = new System.Drawing.Point(3, 178);
             this.fraCollision.Name = "fraCollision";
             this.fraCollision.Size = new System.Drawing.Size(308, 290);
             this.fraCollision.TabIndex = 13;
@@ -817,27 +886,63 @@ namespace CrashEdit
             this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
             this.groupBox1.Controls.Add(this.numHeader);
             this.groupBox1.ForeColor = System.Drawing.SystemColors.Window;
-            this.groupBox1.Location = new System.Drawing.Point(264, 124);
+            this.groupBox1.Location = new System.Drawing.Point(317, 124);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(145, 48);
             this.groupBox1.TabIndex = 14;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Header Size";
             // 
+            // groupBox2
+            // 
+            this.groupBox2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.groupBox2.Controls.Add(this.numSPVertex);
+            this.groupBox2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(174)))), ((int)(((byte)(219)))));
+            this.groupBox2.Location = new System.Drawing.Point(317, 178);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(145, 48);
+            this.groupBox2.TabIndex = 15;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "SpecialVertex Count";
+            // 
+            // numSPVertex
+            // 
+            this.numSPVertex.InterceptArrowKeys = false;
+            this.numSPVertex.Location = new System.Drawing.Point(27, 17);
+            this.numSPVertex.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.numSPVertex.Maximum = new decimal(new int[] {
+            32767,
+            0,
+            0,
+            0});
+            this.numSPVertex.Minimum = new decimal(new int[] {
+            32768,
+            0,
+            0,
+            -2147483648});
+            this.numSPVertex.Name = "numSPVertex";
+            this.numSPVertex.ReadOnly = true;
+            this.numSPVertex.Size = new System.Drawing.Size(111, 21);
+            this.numSPVertex.TabIndex = 6;
+            // 
             // FrameBox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.fraCollision);
             this.Controls.Add(this.fraOffset);
             this.Controls.Add(this.fraVertice);
+            this.Controls.Add(this.cmdInsertVertice);
+            this.Controls.Add(this.cmdRemoveVertice);
+            this.Controls.Add(this.cmdAppendVertice);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.ForeColor = System.Drawing.SystemColors.Window;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "FrameBox";
-            this.Size = new System.Drawing.Size(464, 524);
+            this.Size = new System.Drawing.Size(545, 524);
             this.fraVertice.ResumeLayout(false);
             this.fraVertice.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numZ)).EndInit();
@@ -866,6 +971,8 @@ namespace CrashEdit
             this.fraCollision.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numHeader)).EndInit();
             this.groupBox1.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numSPVertex)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -923,5 +1030,12 @@ namespace CrashEdit
         private DarkUI.Controls.DarkNumericUpDown numHeader;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private DarkUI.Controls.DarkNumericUpDown numSPVertex;
+        private DarkUI.Controls.DarkButton cmdLastVertice;
+        private DarkUI.Controls.DarkButton cmdFirstVertice;
+        private DarkUI.Controls.DarkButton cmdNext10Vertice;
+        private DarkUI.Controls.DarkButton cmdPrevious10Vertice;
+        private DarkUI.Controls.DarkLabel lblSPVertex;
     }
 }
