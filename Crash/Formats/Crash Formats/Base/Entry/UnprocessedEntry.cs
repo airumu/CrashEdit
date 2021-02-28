@@ -43,6 +43,7 @@ namespace Crash
 
                     // Compare the data held in both the original item data
                     // and the output item data. Warn on mismatch.
+                    /*
                     for (int j = 0; j < shorterData.Length; j++) {
                         if (shorterData[j] == longerData[j])
                             continue;
@@ -50,7 +51,7 @@ namespace Crash
                         ErrorManager.SignalIgnorableError("Entry: Processed entry deprocesses to different item data");
                         return result;
                     }
-
+                    */
                     // Compare excess bytes in whichever item's data was
                     // longer. Warn on non-zero.
                     //

@@ -39,10 +39,20 @@ namespace Crash
             }
             int fake_headersize = 24 + collisioncount * 0x28;
             int specialvertexcount = (headersize - fake_headersize) / 3;
+            int specialvertexsize = specialvertexcount * 3;
             FrameVertex[] vertices = new FrameVertex[vertexcount];
-            for (int i = 0; i < specialvertexcount; ++i) // these vertices are NEVER compressed
+            if (specialvertexcount != 0)
             {
-                vertices[i] = new FrameVertex(data[fake_headersize + i * 3], data[fake_headersize + i * 3 + 1], data[fake_headersize + i * 3 + 2]);
+                // ErrorManager.SignalError("Frame: Unsupported");
+            }
+            if (((data.Length - fake_headersize) / 3) != vertexcount)
+            {
+                if (((data.Length - fake_headersize) / 3) != vertexcount + 1)
+                    ErrorManager.SignalErrorSkip();
+            }
+            for (int i = 0; i < vertexcount; ++i) // these vertices are NEVER compressed
+            {
+                vertices[i] = new FrameVertex(data[fake_headersize - specialvertexsize + i * 3], data[fake_headersize - specialvertexsize + i * 3 + 1], data[fake_headersize - specialvertexsize + i * 3 + 2]);
             }
             if (((data.Length - fake_headersize) % 4) != 0)
             {
@@ -144,9 +154,9 @@ namespace Crash
         public int HeaderSize { get; set; }
         public IList<FrameCollision> Collision => collision;
         public IList<FrameVertex> Vertices => vertices;
-        public int SpecialVertexCount { get; }
-        public bool[] Temporals { get; }
-        public short Unknown { get; }
+        public int SpecialVertexCount { get; set; }
+        public bool[] Temporals { get; set; }
+        public short Unknown { get; set; }
 
         public bool IsNew { get; }
 
@@ -186,6 +196,7 @@ namespace Crash
                 BitConv.ToInt32(result,24+i*0x28+0x20,collision[i].Y2);
                 BitConv.ToInt32(result,24+i*0x28+0x24,collision[i].Z2);
             }
+            /*
             for (short i = 0; i < Temporals.Length / 32; ++i)
             {
                 int val = 0;
@@ -194,6 +205,11 @@ namespace Crash
                     val |= Convert.ToInt32(Temporals[i*32+j]) << (31-j);
                 }
                 BitConv.ToInt32(result, fake_headersize+i*4, val);
+            }
+            */
+            for (int i = 0; i < vertices.Count; ++i)
+            {
+                vertices[i].Save().CopyTo(result, fake_headersize + i * 3);
             }
             return result;
         }

@@ -1,5 +1,6 @@
 using Crash;
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace CrashEdit
@@ -23,6 +24,7 @@ namespace CrashEdit
             UpdateCollision();
             UpdateOffset();
             UpdateHeaderSize();
+            UpdateSPVertex();
             vertexindex = 0;
             collisionindex = 0;
         }
@@ -64,8 +66,6 @@ namespace CrashEdit
             else
             {
                 lblVerticeIndex.Text = string.Format("{0} / {1}",vertexindex + 1,frame.Vertices.Count);
-                cmdPreviousVertice.Enabled = (vertexindex > 0);
-                cmdNextVertice.Enabled = (vertexindex < frame.Vertices.Count - 1);
                 cmdInsertVertice.Enabled = true;
                 cmdRemoveVertice.Enabled = (frame.Vertices.Count > 1);
                 lblX.Enabled = true;
@@ -77,6 +77,16 @@ namespace CrashEdit
                 numX.Value = frame.Vertices[vertexindex].X;
                 numY.Value = frame.Vertices[vertexindex].Y;
                 numZ.Value = frame.Vertices[vertexindex].Z;
+                if (vertexindex <= frame.SpecialVertexCount - 1)
+                {
+                    lblVerticeIndex.ForeColor = Color.FromArgb(0, 174, 219);
+                    lblSPVertex.Visible = true;
+                }
+                else
+                {
+                    lblVerticeIndex.ForeColor = Color.FromArgb(220, 220, 220);
+                    lblSPVertex.Visible = false;
+                }
             }
             vertexdirty = false;
         }
@@ -90,6 +100,32 @@ namespace CrashEdit
         private void cmdNextVertice_Click(object sender,EventArgs e)
         {
             vertexindex++;
+            UpdateVertice();
+        }
+
+        private void CmdPrevious10Vertice_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < 10; ++i)
+                vertexindex--;
+            UpdateVertice();
+        }
+
+        private void CmdNext10Vertice_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < 10; ++i)
+                vertexindex++;
+            UpdateVertice();
+        }
+
+        private void cmdFirstVertice_Click(object sender, EventArgs e)
+        {
+            vertexindex = 0;
+            UpdateVertice();
+        }
+
+        private void cmdLastVertice_Click(object sender, EventArgs e)
+        {
+            vertexindex = frame.Vertices.Count;
             UpdateVertice();
         }
 
@@ -239,6 +275,11 @@ namespace CrashEdit
         private void UpdateHeaderSize()
         {
             numHeader.Value = frame.HeaderSize;
+        }
+
+        private void UpdateSPVertex()
+        {
+            numSPVertex.Value = frame.SpecialVertexCount;
         }
 
         private void numX_ValueChanged(object sender,EventArgs e)
