@@ -107,7 +107,7 @@
             this.fraSize.Controls.Add(this.numW);
             this.fraSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.fraSize.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraSize.Location = new System.Drawing.Point(300, 59);
+            this.fraSize.Location = new System.Drawing.Point(371, 59);
             this.fraSize.Name = "fraSize";
             this.fraSize.Size = new System.Drawing.Size(135, 68);
             this.fraSize.TabIndex = 1;
@@ -212,7 +212,7 @@
             // 
             this.cmdClearCol.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.cmdClearCol.ForeColor = System.Drawing.SystemColors.MenuText;
-            this.cmdClearCol.Location = new System.Drawing.Point(73, 39);
+            this.cmdClearCol.Location = new System.Drawing.Point(72, 39);
             this.cmdClearCol.Name = "cmdClearCol";
             this.cmdClearCol.Padding = new System.Windows.Forms.Padding(5);
             this.cmdClearCol.Size = new System.Drawing.Size(49, 24);
@@ -230,14 +230,14 @@
             this.fraAnimGrid.ForeColor = System.Drawing.SystemColors.Window;
             this.fraAnimGrid.Location = new System.Drawing.Point(138, 59);
             this.fraAnimGrid.Name = "fraAnimGrid";
-            this.fraAnimGrid.Size = new System.Drawing.Size(156, 68);
+            this.fraAnimGrid.Size = new System.Drawing.Size(227, 68);
             this.fraAnimGrid.TabIndex = 6;
             this.fraAnimGrid.TabStop = false;
             this.fraAnimGrid.Text = "Animation Viewer World Grid";
             // 
             // numAnimGrid
             // 
-            this.numAnimGrid.Location = new System.Drawing.Point(62, 39);
+            this.numAnimGrid.Location = new System.Drawing.Point(70, 39);
             this.numAnimGrid.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -279,6 +279,7 @@
             // 
             // chkOldPatchNSD
             // 
+            this.chkOldPatchNSD.AutoSize = true;
             this.chkOldPatchNSD.ForeColor = System.Drawing.Color.MediumSpringGreen;
             this.chkOldPatchNSD.Location = new System.Drawing.Point(4, 266);
             this.chkOldPatchNSD.Name = "chkOldPatchNSD";
@@ -293,6 +294,7 @@
             // 
             // chkPatchNSDSavesNSF
             // 
+            this.chkPatchNSDSavesNSF.AutoSize = true;
             this.chkPatchNSDSavesNSF.Checked = true;
             this.chkPatchNSDSavesNSF.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkPatchNSDSavesNSF.ForeColor = System.Drawing.SystemColors.Window;
@@ -308,6 +310,7 @@
             // 
             // chkDeleteInvalidEntries
             // 
+            this.chkDeleteInvalidEntries.AutoSize = true;
             this.chkDeleteInvalidEntries.Location = new System.Drawing.Point(4, 224);
             this.chkDeleteInvalidEntries.Name = "chkDeleteInvalidEntries";
             this.chkDeleteInvalidEntries.Size = new System.Drawing.Size(309, 15);
@@ -320,6 +323,7 @@
             // 
             // chkUseAnimLinks
             // 
+            this.chkUseAnimLinks.AutoSize = true;
             this.chkUseAnimLinks.Checked = true;
             this.chkUseAnimLinks.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkUseAnimLinks.Location = new System.Drawing.Point(4, 196);
@@ -334,6 +338,7 @@
             // 
             // chkCollisionDisplay
             // 
+            this.chkCollisionDisplay.AutoSize = true;
             this.chkCollisionDisplay.Location = new System.Drawing.Point(4, 154);
             this.chkCollisionDisplay.Name = "chkCollisionDisplay";
             this.chkCollisionDisplay.Size = new System.Drawing.Size(198, 15);
@@ -346,6 +351,7 @@
             // 
             // chkNormalDisplay
             // 
+            this.chkNormalDisplay.AutoSize = true;
             this.chkNormalDisplay.ForeColor = System.Drawing.SystemColors.Window;
             this.chkNormalDisplay.Location = new System.Drawing.Point(4, 132);
             this.chkNormalDisplay.Name = "chkNormalDisplay";
@@ -359,13 +365,14 @@
             // 
             // cmdReset
             // 
+            this.cmdReset.AutoSize = true;
             this.cmdReset.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
             this.cmdReset.FontSize = MetroFramework.MetroButtonSize.Medium;
             this.cmdReset.FontWeight = MetroFramework.MetroButtonWeight.Regular;
             this.cmdReset.ForeColor = System.Drawing.Color.DeepSkyBlue;
             this.cmdReset.Location = new System.Drawing.Point(12, 308);
             this.cmdReset.Name = "cmdReset";
-            this.cmdReset.Size = new System.Drawing.Size(99, 23);
+            this.cmdReset.Size = new System.Drawing.Size(91, 22);
             this.cmdReset.TabIndex = 10;
             this.cmdReset.Text = "Reset Settings";
             this.cmdReset.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -376,9 +383,10 @@
             // 
             // chkDetailedCollision
             // 
+            this.chkDetailedCollision.AutoSize = true;
             this.chkDetailedCollision.Location = new System.Drawing.Point(4, 175);
             this.chkDetailedCollision.Name = "chkDetailedCollision";
-            this.chkDetailedCollision.Size = new System.Drawing.Size(190, 15);
+            this.chkDetailedCollision.Size = new System.Drawing.Size(179, 15);
             this.chkDetailedCollision.TabIndex = 11;
             this.chkDetailedCollision.Text = "Display detailed collision type";
             this.chkDetailedCollision.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -416,11 +424,12 @@
             // 
             // cmdHelp
             // 
+            this.cmdHelp.AutoSize = true;
             this.cmdHelp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
             this.cmdHelp.FontSize = MetroFramework.MetroButtonSize.Medium;
             this.cmdHelp.FontWeight = MetroFramework.MetroButtonWeight.Regular;
             this.cmdHelp.ForeColor = System.Drawing.SystemColors.InactiveCaption;
-            this.cmdHelp.Location = new System.Drawing.Point(117, 308);
+            this.cmdHelp.Location = new System.Drawing.Point(12, 336);
             this.cmdHelp.Name = "cmdHelp";
             this.cmdHelp.Size = new System.Drawing.Size(50, 23);
             this.cmdHelp.Style = MetroFramework.MetroColorStyle.Blue;
@@ -434,10 +443,11 @@
             // 
             // chkCustomCrates
             // 
+            this.chkCustomCrates.AutoSize = true;
             this.chkCustomCrates.ForeColor = System.Drawing.Color.MediumSpringGreen;
             this.chkCustomCrates.Location = new System.Drawing.Point(4, 287);
             this.chkCustomCrates.Name = "chkCustomCrates";
-            this.chkCustomCrates.Size = new System.Drawing.Size(231, 15);
+            this.chkCustomCrates.Size = new System.Drawing.Size(230, 15);
             this.chkCustomCrates.TabIndex = 15;
             this.chkCustomCrates.Text = "Display custom crates (modded BoxsC)";
             this.chkCustomCrates.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -448,10 +458,11 @@
             // 
             // chkAnimViewPanel
             // 
+            this.chkAnimViewPanel.AutoSize = true;
             this.chkAnimViewPanel.ForeColor = System.Drawing.SystemColors.Window;
             this.chkAnimViewPanel.Location = new System.Drawing.Point(256, 132);
             this.chkAnimViewPanel.Name = "chkAnimViewPanel";
-            this.chkAnimViewPanel.Size = new System.Drawing.Size(210, 15);
+            this.chkAnimViewPanel.Size = new System.Drawing.Size(189, 15);
             this.chkAnimViewPanel.TabIndex = 16;
             this.chkAnimViewPanel.Text = "Separate the panel in FrameBox";
             this.chkAnimViewPanel.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -504,6 +515,7 @@
             this.fraKeyBinds.ResumeLayout(false);
             this.fraKeyBinds.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 

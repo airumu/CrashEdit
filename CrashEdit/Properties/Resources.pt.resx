@@ -744,4 +744,34 @@ como Ângulo: {1:F}deg
 como Tempo: {2:F}s
 como Metros: {3:F3}m</value>
   </data>
+  <data name="Config_chkAnimViewPanel" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Config_chkCustomCrates" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Config_chkDetailedCollision" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Config_chkOldPatchNSD" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Config_cmdHelp" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Config_cmdResetText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Config_cmdResetTitle" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Config_fraKeyBinds" xml:space="preserve">
+    <value />
+  </data>
+  <data name="InputWindow" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Toolbar_Play" xml:space="preserve">
+    <value />
+  </data>
 </root>

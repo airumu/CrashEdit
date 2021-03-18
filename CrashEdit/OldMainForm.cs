@@ -88,8 +88,9 @@ namespace CrashEdit
         {
             tbbOpen = new ToolStripButton
             {
-                Text = Resources.Toolbar_Open,
-                ToolTipText = "Open (Ctrl+O)",
+                // Text = Resources.Toolbar_Open,
+                Text = "Open",
+                ToolTipText = Resources.Toolbar_Open + " (Ctrl+O)",
                 ImageKey = "tb_open",
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
@@ -98,8 +99,9 @@ namespace CrashEdit
 
             tbbSave = new ToolStripButton
             {
-                Text = Resources.Toolbar_Save,
-                ToolTipText = "Save (Ctrl+Shift+S)",
+                // Text = Resources.Toolbar_Save,
+                Text = "Save",
+                ToolTipText = Resources.Toolbar_Save + " (Ctrl+Shift+S)",
                 ImageKey = "tb_save",
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
@@ -108,8 +110,9 @@ namespace CrashEdit
 
             tbbPatchNSD = new ToolStripButton
             {
-                Text = Resources.Toolbar_PatchNSD,
-                ToolTipText = "Patch NSD (Ctrl+S)",
+                // Text = Resources.Toolbar_PatchNSD,
+                Text = "Patch NSD",
+                ToolTipText = Resources.Toolbar_PatchNSD + " (Ctrl+S)",
                 ImageKey = "tb_patchnsd",
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
@@ -118,8 +121,9 @@ namespace CrashEdit
 
             tbbClose = new ToolStripButton
             {
-                Text = Resources.Toolbar_Close,
-                ToolTipText = "Close (Ctrl+Shift+C)",
+                // Text = Resources.Toolbar_Close,
+                Text = "Close",
+                ToolTipText = Resources.Toolbar_Close + " (Ctrl+Shift+C)",
                 ImageKey = "tb_close",
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
@@ -128,8 +132,9 @@ namespace CrashEdit
 
             tbbFind = new ToolStripButton
             {
-                Text = Resources.Toolbar_Find,
-                ToolTipText = "Find (Ctrl+F / Enter)",
+                // Text = Resources.Toolbar_Find,
+                Text = "Find",
+                ToolTipText = Resources.Toolbar_Find + " (Ctrl+F / Enter)",
                 ImageKey = "tb_find",
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
@@ -138,8 +143,9 @@ namespace CrashEdit
 
             tbbFindNext = new ToolStripButton
             {
-                Text = Resources.Toolbar_FindNext,
-                ToolTipText = "Find Next (F3)",
+                // Text = Resources.Toolbar_FindNext,
+                Text = "Find Next",
+                ToolTipText = Resources.Toolbar_FindNext + " (F3)",
                 ImageKey = "tb_findnext",
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
@@ -207,7 +213,7 @@ namespace CrashEdit
 
             tbbPlay = new ToolStripButton
             {
-                Text = "Play",
+                Text = Resources.Toolbar_Play,
                 ToolTipText = "Play (F1)",
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
@@ -223,6 +229,7 @@ namespace CrashEdit
                 UseCustomBackColor = true,
                 BackColor = Color.FromArgb(35, 35, 38),
                 TextAlign = HorizontalAlignment.Center,
+                // WaterMark = Resources.Toolbar_Find,
                 WaterMark = "Find",
                 WaterMarkColor = Color.FromArgb(109, 109,109),
                 WaterMarkFont = new Font("Yu Gothic UI", 12F, FontStyle.Italic, GraphicsUnit.Pixel)
@@ -312,7 +319,7 @@ namespace CrashEdit
 
             mnuPlay = new ToolStripMenuItem
             {
-                Text = "Play"
+                Text = Resources.Toolbar_Play
             };
 
             msMenu.Visible = false;

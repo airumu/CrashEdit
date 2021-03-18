@@ -769,4 +769,7 @@
   <data name="TextureViewer_Title" xml:space="preserve">
     <value>テクスチャビューア [{0}] - 右クリックでテクスチャをファイルに保存</value>
   </data>
+  <data name="Toolbar_Play" xml:space="preserve">
+    <value>Play</value>
+  </data>
 </root>

@@ -511,7 +511,7 @@ namespace CrashEdit
             this.chkSettingHex.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkSettingHex.Location = new System.Drawing.Point(118, 102);
             this.chkSettingHex.Name = "chkSettingHex";
-            this.chkSettingHex.Size = new System.Drawing.Size(47, 19);
+            this.chkSettingHex.Size = new System.Drawing.Size(48, 19);
             this.chkSettingHex.TabIndex = 8;
             this.chkSettingHex.Text = "Hex";
             this.chkSettingHex.CheckedChanged += new System.EventHandler(this.chkSettingHex_CheckedChanged);
@@ -759,7 +759,7 @@ namespace CrashEdit
             this.lblX.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblX.Location = new System.Drawing.Point(6, 50);
             this.lblX.Name = "lblX";
-            this.lblX.Size = new System.Drawing.Size(14, 15);
+            this.lblX.Size = new System.Drawing.Size(15, 15);
             this.lblX.TabIndex = 3;
             this.lblX.Text = "X";
             // 
@@ -930,9 +930,9 @@ namespace CrashEdit
             this.fraZMod.Controls.Add(this.chkZMod);
             this.fraZMod.Controls.Add(this.numZMod);
             this.fraZMod.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraZMod.Location = new System.Drawing.Point(3, 237);
+            this.fraZMod.Location = new System.Drawing.Point(3, 241);
             this.fraZMod.Name = "fraZMod";
-            this.fraZMod.Size = new System.Drawing.Size(120, 73);
+            this.fraZMod.Size = new System.Drawing.Size(120, 77);
             this.fraZMod.TabIndex = 11;
             this.fraZMod.TabStop = false;
             this.fraZMod.Text = "Depth Modifier";
@@ -940,7 +940,7 @@ namespace CrashEdit
             // chkZMod
             // 
             this.chkZMod.AutoSize = true;
-            this.chkZMod.Location = new System.Drawing.Point(6, 19);
+            this.chkZMod.Location = new System.Drawing.Point(6, 26);
             this.chkZMod.Name = "chkZMod";
             this.chkZMod.Size = new System.Drawing.Size(72, 19);
             this.chkZMod.TabIndex = 0;
@@ -949,7 +949,7 @@ namespace CrashEdit
             // 
             // numZMod
             // 
-            this.numZMod.Location = new System.Drawing.Point(6, 44);
+            this.numZMod.Location = new System.Drawing.Point(6, 48);
             this.numZMod.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -971,9 +971,9 @@ namespace CrashEdit
             this.fraTTReward.Controls.Add(this.chkTTReward);
             this.fraTTReward.Controls.Add(this.numTTReward);
             this.fraTTReward.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraTTReward.Location = new System.Drawing.Point(255, 237);
+            this.fraTTReward.Location = new System.Drawing.Point(255, 241);
             this.fraTTReward.Name = "fraTTReward";
-            this.fraTTReward.Size = new System.Drawing.Size(124, 73);
+            this.fraTTReward.Size = new System.Drawing.Size(124, 77);
             this.fraTTReward.TabIndex = 12;
             this.fraTTReward.TabStop = false;
             this.fraTTReward.Text = "Time Trial Reward";
@@ -981,7 +981,7 @@ namespace CrashEdit
             // chkTTReward
             // 
             this.chkTTReward.AutoSize = true;
-            this.chkTTReward.Location = new System.Drawing.Point(6, 19);
+            this.chkTTReward.Location = new System.Drawing.Point(6, 26);
             this.chkTTReward.Name = "chkTTReward";
             this.chkTTReward.Size = new System.Drawing.Size(72, 19);
             this.chkTTReward.TabIndex = 0;
@@ -990,7 +990,7 @@ namespace CrashEdit
             // 
             // numTTReward
             // 
-            this.numTTReward.Location = new System.Drawing.Point(6, 44);
+            this.numTTReward.Location = new System.Drawing.Point(6, 48);
             this.numTTReward.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -1014,7 +1014,7 @@ namespace CrashEdit
             this.fraOtherSettings.ForeColor = System.Drawing.SystemColors.Window;
             this.fraOtherSettings.Location = new System.Drawing.Point(255, 158);
             this.fraOtherSettings.Name = "fraOtherSettings";
-            this.fraOtherSettings.Size = new System.Drawing.Size(124, 73);
+            this.fraOtherSettings.Size = new System.Drawing.Size(124, 77);
             this.fraOtherSettings.TabIndex = 10;
             this.fraOtherSettings.TabStop = false;
             this.fraOtherSettings.Text = "Other Settings";
@@ -1022,7 +1022,7 @@ namespace CrashEdit
             // chkOtherSettings
             // 
             this.chkOtherSettings.AutoSize = true;
-            this.chkOtherSettings.Location = new System.Drawing.Point(6, 22);
+            this.chkOtherSettings.Location = new System.Drawing.Point(6, 26);
             this.chkOtherSettings.Name = "chkOtherSettings";
             this.chkOtherSettings.Size = new System.Drawing.Size(72, 19);
             this.chkOtherSettings.TabIndex = 0;
@@ -1031,7 +1031,7 @@ namespace CrashEdit
             // 
             // numOtherSettings
             // 
-            this.numOtherSettings.Location = new System.Drawing.Point(6, 44);
+            this.numOtherSettings.Location = new System.Drawing.Point(6, 48);
             this.numOtherSettings.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -1053,9 +1053,9 @@ namespace CrashEdit
             this.fraScaling.Controls.Add(this.chkScaling);
             this.fraScaling.Controls.Add(this.numScaling);
             this.fraScaling.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraScaling.Location = new System.Drawing.Point(129, 237);
+            this.fraScaling.Location = new System.Drawing.Point(129, 241);
             this.fraScaling.Name = "fraScaling";
-            this.fraScaling.Size = new System.Drawing.Size(120, 73);
+            this.fraScaling.Size = new System.Drawing.Size(120, 77);
             this.fraScaling.TabIndex = 11;
             this.fraScaling.TabStop = false;
             this.fraScaling.Text = "Scale Modifier";
@@ -1063,7 +1063,7 @@ namespace CrashEdit
             // chkScaling
             // 
             this.chkScaling.AutoSize = true;
-            this.chkScaling.Location = new System.Drawing.Point(6, 19);
+            this.chkScaling.Location = new System.Drawing.Point(6, 26);
             this.chkScaling.Name = "chkScaling";
             this.chkScaling.Size = new System.Drawing.Size(72, 19);
             this.chkScaling.TabIndex = 0;
@@ -1072,7 +1072,7 @@ namespace CrashEdit
             // 
             // numScaling
             // 
-            this.numScaling.Location = new System.Drawing.Point(6, 44);
+            this.numScaling.Location = new System.Drawing.Point(6, 48);
             this.numScaling.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -1096,7 +1096,7 @@ namespace CrashEdit
             this.fraDDASection.ForeColor = System.Drawing.SystemColors.Window;
             this.fraDDASection.Location = new System.Drawing.Point(3, 158);
             this.fraDDASection.Name = "fraDDASection";
-            this.fraDDASection.Size = new System.Drawing.Size(120, 73);
+            this.fraDDASection.Size = new System.Drawing.Size(120, 77);
             this.fraDDASection.TabIndex = 10;
             this.fraDDASection.TabStop = false;
             this.fraDDASection.Text = "DDA Section";
@@ -1104,7 +1104,7 @@ namespace CrashEdit
             // chkDDASection
             // 
             this.chkDDASection.AutoSize = true;
-            this.chkDDASection.Location = new System.Drawing.Point(6, 22);
+            this.chkDDASection.Location = new System.Drawing.Point(6, 26);
             this.chkDDASection.Name = "chkDDASection";
             this.chkDDASection.Size = new System.Drawing.Size(72, 19);
             this.chkDDASection.TabIndex = 0;
@@ -1113,7 +1113,7 @@ namespace CrashEdit
             // 
             // numDDASection
             // 
-            this.numDDASection.Location = new System.Drawing.Point(6, 44);
+            this.numDDASection.Location = new System.Drawing.Point(6, 48);
             this.numDDASection.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -1137,7 +1137,7 @@ namespace CrashEdit
             this.fraDDASettings.ForeColor = System.Drawing.SystemColors.Window;
             this.fraDDASettings.Location = new System.Drawing.Point(129, 158);
             this.fraDDASettings.Name = "fraDDASettings";
-            this.fraDDASettings.Size = new System.Drawing.Size(120, 73);
+            this.fraDDASettings.Size = new System.Drawing.Size(120, 77);
             this.fraDDASettings.TabIndex = 9;
             this.fraDDASettings.TabStop = false;
             this.fraDDASettings.Text = "DDA Death Count";
@@ -1145,7 +1145,7 @@ namespace CrashEdit
             // chkDDASettings
             // 
             this.chkDDASettings.AutoSize = true;
-            this.chkDDASettings.Location = new System.Drawing.Point(6, 22);
+            this.chkDDASettings.Location = new System.Drawing.Point(6, 26);
             this.chkDDASettings.Name = "chkDDASettings";
             this.chkDDASettings.Size = new System.Drawing.Size(72, 19);
             this.chkDDASettings.TabIndex = 0;
@@ -1154,7 +1154,7 @@ namespace CrashEdit
             // 
             // numDDASettings
             // 
-            this.numDDASettings.Location = new System.Drawing.Point(6, 44);
+            this.numDDASettings.Location = new System.Drawing.Point(6, 48);
             this.numDDASettings.Maximum = new decimal(new int[] {
             8388607,
             0,
@@ -1368,7 +1368,7 @@ namespace CrashEdit
             this.lblFOVPosition.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblFOVPosition.Location = new System.Drawing.Point(20, 66);
             this.lblFOVPosition.Name = "lblFOVPosition";
-            this.lblFOVPosition.Size = new System.Drawing.Size(52, 15);
+            this.lblFOVPosition.Size = new System.Drawing.Size(51, 15);
             this.lblFOVPosition.TabIndex = 20;
             this.lblFOVPosition.Text = "Position";
             // 
@@ -1558,7 +1558,7 @@ namespace CrashEdit
             this.lblNeighborPosition.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblNeighborPosition.Location = new System.Drawing.Point(20, 66);
             this.lblNeighborPosition.Name = "lblNeighborPosition";
-            this.lblNeighborPosition.Size = new System.Drawing.Size(52, 15);
+            this.lblNeighborPosition.Size = new System.Drawing.Size(51, 15);
             this.lblNeighborPosition.TabIndex = 20;
             this.lblNeighborPosition.Text = "Position";
             // 
@@ -1691,7 +1691,7 @@ namespace CrashEdit
             this.lblNeighborLink.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblNeighborLink.Location = new System.Drawing.Point(8, 176);
             this.lblNeighborLink.Name = "lblNeighborLink";
-            this.lblNeighborLink.Size = new System.Drawing.Size(58, 15);
+            this.lblNeighborLink.Size = new System.Drawing.Size(59, 15);
             this.lblNeighborLink.TabIndex = 45;
             this.lblNeighborLink.Text = "Link Type";
             // 
@@ -1707,14 +1707,14 @@ namespace CrashEdit
             // 
             // numNeighborFlag
             // 
-            this.numNeighborFlag.Location = new System.Drawing.Point(81, 93);
+            this.numNeighborFlag.Location = new System.Drawing.Point(95, 93);
             this.numNeighborFlag.Maximum = new decimal(new int[] {
             255,
             0,
             0,
             0});
             this.numNeighborFlag.Name = "numNeighborFlag";
-            this.numNeighborFlag.Size = new System.Drawing.Size(60, 21);
+            this.numNeighborFlag.Size = new System.Drawing.Size(46, 21);
             this.numNeighborFlag.TabIndex = 38;
             this.numNeighborFlag.ValueChanged += new System.EventHandler(this.numNeighborFlag_ValueChanged);
             // 
@@ -1734,46 +1734,46 @@ namespace CrashEdit
             this.lblNeighborZone.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblNeighborZone.Location = new System.Drawing.Point(8, 149);
             this.lblNeighborZone.Name = "lblNeighborZone";
-            this.lblNeighborZone.Size = new System.Drawing.Size(67, 15);
+            this.lblNeighborZone.Size = new System.Drawing.Size(68, 15);
             this.lblNeighborZone.TabIndex = 41;
             this.lblNeighborZone.Text = "Zone Index";
             // 
             // numNeighborLink
             // 
-            this.numNeighborLink.Location = new System.Drawing.Point(81, 174);
+            this.numNeighborLink.Location = new System.Drawing.Point(95, 174);
             this.numNeighborLink.Maximum = new decimal(new int[] {
             255,
             0,
             0,
             0});
             this.numNeighborLink.Name = "numNeighborLink";
-            this.numNeighborLink.Size = new System.Drawing.Size(60, 21);
+            this.numNeighborLink.Size = new System.Drawing.Size(46, 21);
             this.numNeighborLink.TabIndex = 43;
             this.numNeighborLink.ValueChanged += new System.EventHandler(this.numNeighborLink_ValueChanged);
             // 
             // numNeighborCamera
             // 
-            this.numNeighborCamera.Location = new System.Drawing.Point(81, 120);
+            this.numNeighborCamera.Location = new System.Drawing.Point(95, 120);
             this.numNeighborCamera.Maximum = new decimal(new int[] {
             255,
             0,
             0,
             0});
             this.numNeighborCamera.Name = "numNeighborCamera";
-            this.numNeighborCamera.Size = new System.Drawing.Size(60, 21);
+            this.numNeighborCamera.Size = new System.Drawing.Size(46, 21);
             this.numNeighborCamera.TabIndex = 40;
             this.numNeighborCamera.ValueChanged += new System.EventHandler(this.numNeighborCamera_ValueChanged);
             // 
             // numNeighborZone
             // 
-            this.numNeighborZone.Location = new System.Drawing.Point(81, 147);
+            this.numNeighborZone.Location = new System.Drawing.Point(95, 147);
             this.numNeighborZone.Maximum = new decimal(new int[] {
             255,
             0,
             0,
             0});
             this.numNeighborZone.Name = "numNeighborZone";
-            this.numNeighborZone.Size = new System.Drawing.Size(60, 21);
+            this.numNeighborZone.Size = new System.Drawing.Size(46, 21);
             this.numNeighborZone.TabIndex = 42;
             this.numNeighborZone.ValueChanged += new System.EventHandler(this.numNeighborZone_ValueChanged);
             // 
@@ -2061,7 +2061,7 @@ namespace CrashEdit
             this.lblVerifyLoadLists.ForeColor = System.Drawing.Color.SpringGreen;
             this.lblVerifyLoadLists.Location = new System.Drawing.Point(130, 21);
             this.lblVerifyLoadLists.Name = "lblVerifyLoadLists";
-            this.lblVerifyLoadLists.Size = new System.Drawing.Size(125, 15);
+            this.lblVerifyLoadLists.Size = new System.Drawing.Size(123, 15);
             this.lblVerifyLoadLists.TabIndex = 23;
             this.lblVerifyLoadLists.Text = "Load lists are correct.";
             this.lblVerifyLoadLists.Visible = false;
@@ -2072,7 +2072,7 @@ namespace CrashEdit
             this.lblPayloadTexture.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblPayloadTexture.Location = new System.Drawing.Point(6, 90);
             this.lblPayloadTexture.Name = "lblPayloadTexture";
-            this.lblPayloadTexture.Size = new System.Drawing.Size(163, 15);
+            this.lblPayloadTexture.Size = new System.Drawing.Size(162, 15);
             this.lblPayloadTexture.TabIndex = 26;
             this.lblPayloadTexture.Text = "Payload is ?? texture chunks";
             this.lblPayloadTexture.Visible = false;
@@ -2083,7 +2083,7 @@ namespace CrashEdit
             this.lblPayloadSound.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblPayloadSound.Location = new System.Drawing.Point(6, 106);
             this.lblPayloadSound.Name = "lblPayloadSound";
-            this.lblPayloadSound.Size = new System.Drawing.Size(162, 15);
+            this.lblPayloadSound.Size = new System.Drawing.Size(159, 15);
             this.lblPayloadSound.TabIndex = 25;
             this.lblPayloadSound.Text = "Payload is ?? sound chunks";
             this.lblPayloadSound.Visible = false;
@@ -2094,7 +2094,7 @@ namespace CrashEdit
             this.lblPayload.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblPayload.Location = new System.Drawing.Point(6, 74);
             this.lblPayload.Name = "lblPayload";
-            this.lblPayload.Size = new System.Drawing.Size(166, 15);
+            this.lblPayload.Size = new System.Drawing.Size(164, 15);
             this.lblPayload.TabIndex = 24;
             this.lblPayload.Text = "Payload is ?? normal chunks";
             this.lblPayload.Visible = false;
@@ -2123,15 +2123,15 @@ namespace CrashEdit
             // 
             this.lblPayloadPosition.AutoSize = true;
             this.lblPayloadPosition.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.lblPayloadPosition.Location = new System.Drawing.Point(6, 46);
+            this.lblPayloadPosition.Location = new System.Drawing.Point(6, 48);
             this.lblPayloadPosition.Name = "lblPayloadPosition";
-            this.lblPayloadPosition.Size = new System.Drawing.Size(52, 15);
+            this.lblPayloadPosition.Size = new System.Drawing.Size(51, 15);
             this.lblPayloadPosition.TabIndex = 22;
             this.lblPayloadPosition.Text = "Position";
             // 
             // numPayloadPosition
             // 
-            this.numPayloadPosition.Location = new System.Drawing.Point(64, 44);
+            this.numPayloadPosition.Location = new System.Drawing.Point(64, 46);
             this.numPayloadPosition.Maximum = new decimal(new int[] {
             65535,
             0,
@@ -2166,7 +2166,7 @@ namespace CrashEdit
             this.lblMetavalueLoadB.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblMetavalueLoadB.Location = new System.Drawing.Point(14, 68);
             this.lblMetavalueLoadB.Name = "lblMetavalueLoadB";
-            this.lblMetavalueLoadB.Size = new System.Drawing.Size(52, 15);
+            this.lblMetavalueLoadB.Size = new System.Drawing.Size(51, 15);
             this.lblMetavalueLoadB.TabIndex = 20;
             this.lblMetavalueLoadB.Text = "Position";
             // 
@@ -2360,7 +2360,7 @@ namespace CrashEdit
             this.lblMetavalueLoadA.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblMetavalueLoadA.Location = new System.Drawing.Point(14, 68);
             this.lblMetavalueLoadA.Name = "lblMetavalueLoadA";
-            this.lblMetavalueLoadA.Size = new System.Drawing.Size(52, 15);
+            this.lblMetavalueLoadA.Size = new System.Drawing.Size(51, 15);
             this.lblMetavalueLoadA.TabIndex = 20;
             this.lblMetavalueLoadA.Text = "Position";
             // 
@@ -2559,7 +2559,7 @@ namespace CrashEdit
             this.lblMetavalueDrawB.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblMetavalueDrawB.Location = new System.Drawing.Point(14, 68);
             this.lblMetavalueDrawB.Name = "lblMetavalueDrawB";
-            this.lblMetavalueDrawB.Size = new System.Drawing.Size(52, 15);
+            this.lblMetavalueDrawB.Size = new System.Drawing.Size(51, 15);
             this.lblMetavalueDrawB.TabIndex = 20;
             this.lblMetavalueDrawB.Text = "Position";
             // 
@@ -2764,7 +2764,7 @@ namespace CrashEdit
             this.lblMetavalueDrawA.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblMetavalueDrawA.Location = new System.Drawing.Point(14, 68);
             this.lblMetavalueDrawA.Name = "lblMetavalueDrawA";
-            this.lblMetavalueDrawA.Size = new System.Drawing.Size(52, 15);
+            this.lblMetavalueDrawA.Size = new System.Drawing.Size(51, 15);
             this.lblMetavalueDrawA.TabIndex = 20;
             this.lblMetavalueDrawA.Text = "Position";
             // 

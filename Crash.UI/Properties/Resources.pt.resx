@@ -354,4 +354,7 @@
   <data name="TextureChunkController_AcOpenViewer" xml:space="preserve">
     <value>Abrir o Vizualizador</value>
   </data>
+  <data name="ChunkController_AcExport" xml:space="preserve">
+    <value />
+  </data>
 </root>

@@ -1998,6 +1998,15 @@ namespace CrashEdit.Properties {
         }
         
         /// <summary>
+        ///   Play に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Toolbar_Play {
+            get {
+                return ResourceManager.GetString("Toolbar_Play", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Redo {0} に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Toolbar_RedoAction {
