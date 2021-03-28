@@ -306,7 +306,7 @@ namespace CrashEdit
                     case 0x22:
                         if (entity.Subtype.HasValue)
                         {
-                            RenderBox(entity.Subtype.Value, entity.TimeTrialReward.HasValue ? entity.TimeTrialReward.Value >> 8 : 0);
+                            RenderBox(entity.Subtype.Value, entity.Mode.HasValue ? entity.Mode.Value : 0);
                         }
                         break;
                     default:
@@ -487,8 +487,14 @@ namespace CrashEdit
                 case 8: // Life
                 case 9: // Doctor
                 case 10: // Pickup
-                    if (timetrialmode && subtype != 3 && timetrialreward >= 111 && timetrialreward <= 113)
+                    if (timetrialmode && timetrialreward >= 1 && timetrialreward <= 3)
                         LoadTexture(OldResources.TimeBoxTopTexture);
+                    else if (timetrialmode && timetrialreward == 5)
+                        LoadTexture(OldResources.TNTBoxTopTexture);
+                    else if (timetrialmode && timetrialreward == 6)
+                        LoadTexture(OldResources.NitroBoxTopTexture);
+                    else if (timetrialmode && timetrialreward == 7)
+                        LoadTexture(OldResources.EmptyBoxTexture);
                     else
                         LoadTexture(OldResources.EmptyBoxTexture);
                     break;
@@ -725,17 +731,26 @@ namespace CrashEdit
         {
             switch (timetrialreward)
             {
-                case 102: // Doctor
+                case 4: // Doctor
                     LoadTexture(OldResources.DoctorBoxTexture);
                     break;
-                case 111: // Time 1
+                case 1: // Time 1
                     LoadTexture(OldResources.Time1BoxTexture);
                     break;
-                case 112: // Time 2
+                case 2: // Time 2
                     LoadTexture(OldResources.Time2BoxTexture);
                     break;
-                case 113: // Time 3
+                case 3: // Time 3
                     LoadTexture(OldResources.Time3BoxTexture);
+                    break;
+                case 5: // TNT
+                    LoadTexture(OldResources.TNTBoxTexture);
+                    break;
+                case 6: // Nitro
+                    LoadTexture(OldResources.NitroBoxTexture);
+                    break;
+                case 7: // Pow
+                    LoadTexture(OldResources.POWBoxTexture);
                     break;
                 default: // Empty
                     LoadTexture(OldResources.EmptyBoxTexture);

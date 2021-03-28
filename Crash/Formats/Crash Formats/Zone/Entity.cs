@@ -77,9 +77,8 @@ namespace Crash
             return new Entity(properties);
         }
 
-        //[EntityPropertyField(0x29)]
-        //private byte? mode;
-        //private int? mode;
+        [EntityPropertyField(0x29)]
+        private byte? mode = null;
         [EntityPropertyField(0x2C)]
         private string name;
         [EntityPropertyField(0x32)]
@@ -157,11 +156,11 @@ namespace Crash
             }
         }
 
-        //public int? Mode
-        //{
-        //    get => mode;
-        //    set => mode = value;
-        //}
+        public byte? Mode
+        {
+            get => mode;
+            set => mode = value;
+        }
 
         public string Name
         {
