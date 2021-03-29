@@ -306,7 +306,7 @@ namespace CrashEdit
                     case 0x22:
                         if (entity.Subtype.HasValue)
                         {
-                            RenderBox(entity.Subtype.Value, entity.TTC2Type.HasValue ? entity.TTC2Type.Value >> 8 : 0);
+                            RenderBox(entity.Subtype.Value, entity.Mode.HasValue ? entity.Mode.Value : 0);
                         }
                         break;
                     default:
@@ -479,48 +479,44 @@ namespace CrashEdit
             switch (subtype)
             {
                 case 0: // TNT
-                    if (timetrialmode && timetrialreward != 0)
-                        LoadBoxTopTextureTimeTrial(timetrialreward);
-                    else
-                        LoadTexture(OldResources.TNTBoxTopTexture);
+                    LoadTexture(OldResources.TNTBoxTopTexture);
                     break;
                 case 2: // Empty
                 case 3: // Spring
-                case 4: // Continue
                 case 6: // Fruit
                 case 8: // Life
                 case 9: // Doctor
                 case 10: // Pickup
-                    if (timetrialmode)
-                        LoadBoxTopTextureTimeTrial(timetrialreward);
+                    if (timetrialmode && timetrialreward >= 1 && timetrialreward <= 3)
+                        LoadTexture(OldResources.TimeBoxTopTexture);
+                    else if (timetrialmode && timetrialreward == 5)
+                        LoadTexture(OldResources.TNTBoxTopTexture);
+                    else if (timetrialmode && timetrialreward == 6)
+                        LoadTexture(OldResources.NitroBoxTopTexture);
+                    else if (timetrialmode && timetrialreward == 7)
+                        LoadTexture(OldResources.EmptyBoxTexture);
                     else
                         LoadTexture(OldResources.EmptyBoxTexture);
+                    break;
+                case 4: // Continue
+                    if (timetrialmode)
+                        LoadTexture(OldResources.EmptyBoxTexture);
+                    else
+                        LoadTexture(OldResources.ContinueBoxTexture);
                     break;
                 case 5: // Iron
                 case 7: // Action
                 case 15: // Iron Spring
-                    if (timetrialmode && timetrialreward != 0)
-                        LoadBoxTopTextureTimeTrial(timetrialreward);
-                    else
-                        LoadTexture(OldResources.IronBoxTexture);
+                    LoadTexture(OldResources.IronBoxTexture);
                     break;
                 case 18: // Nitro
-                    if (timetrialmode && timetrialreward != 0)
-                        LoadBoxTopTextureTimeTrial(timetrialreward);
-                    else
-                        LoadTexture(OldResources.NitroBoxTopTexture);
+                    LoadTexture(OldResources.NitroBoxTopTexture);
                     break;
                 case 23: // Steel
-                    if (timetrialmode && timetrialreward != 0)
-                        LoadBoxTopTextureTimeTrial(timetrialreward);
-                    else
-                        LoadTexture(OldResources.SteelBoxTexture);
+                    LoadTexture(OldResources.SteelBoxTexture);
                     break;
                 case 24: // Action Nitro
-                    if (timetrialmode && timetrialreward != 0)
-                        LoadBoxTopTextureTimeTrial(timetrialreward);
-                    else
-                        LoadTexture(OldResources.ActionNitroBoxTopTexture);
+                    LoadTexture(OldResources.ActionNitroBoxTopTexture);
                     break;
                 default:
                     LoadTexture(OldResources.UnknownBoxTopTexture);
@@ -531,247 +527,202 @@ namespace CrashEdit
                 switch (subtype)
                 {
                     case 11: // POW
-                        if (timetrialmode && timetrialreward != 0)
-                            LoadBoxTopTextureTimeTrial(timetrialreward);
-                        else
-                            LoadTexture(OldResources.POWBoxTopTexture);
+                        LoadTexture(OldResources.EmptyBoxTexture);
                         break;
                     case 27: // Iron Continue
                     case 28: // Switch OFF
                     case 29: // Switch ON
-                        if (timetrialmode && timetrialreward != 0)
-                            LoadBoxTopTextureTimeTrial(timetrialreward);
-                        else
-                            LoadTexture(OldResources.IronBoxTexture);
+                        LoadTexture(OldResources.IronBoxTexture);
                         break;
                     case 25: // Steel Pickup
                     case 26: // Steel Fruit
-                        if (timetrialmode && timetrialreward != 0)
-                            LoadBoxTopTextureTimeTrial(timetrialreward);
-                        else
-                            LoadTexture(OldResources.SteelBoxTexture);
+                        LoadTexture(OldResources.SteelBoxTexture);
                         break;
                     case 30: // Switch Ghost to Red
                     case 32: // Switch Ghost to Green
-                        if (timetrialmode && timetrialreward != 0)
-                            LoadBoxTopTextureTimeTrial(timetrialreward);
-                        else
-                            LoadTexture(OldResources.SwitchGhostTexture);
+                        LoadTexture(OldResources.SwitchGhostTexture);
                         break;
                     case 31: // Switch Green
-                        if (timetrialmode && timetrialreward != 0)
-                            LoadBoxTopTextureTimeTrial(timetrialreward);
-                        else
-                            LoadTexture(OldResources.SwitchGreenBoxTexture);
+                        LoadTexture(OldResources.SwitchGreenBoxTexture);
                         break;
                     case 33: // Switch Red
-                        if (timetrialmode && timetrialreward != 0)
-                            LoadBoxTopTextureTimeTrial(timetrialreward);
-                        else
-                            LoadTexture(OldResources.SwitchRedBoxTexture);
+                        LoadTexture(OldResources.SwitchRedBoxTexture);
                         break;
                 }
             }
         }
 
-        private void LoadBoxTopTextureTimeTrial(int timetrialreward)
-        {
-            switch (timetrialreward)
-            {
-                case 1: // Time 1
-                    LoadTexture(OldResources.TimeBoxTopTexture);
-                    break;
-                case 2: // Time 2
-                    LoadTexture(OldResources.TimeBoxTopTexture);
-                    break;
-                case 3: // Time 3
-                    LoadTexture(OldResources.TimeBoxTopTexture);
-                    break;
-                case 5: // TNT
-                    LoadTexture(OldResources.TNTBoxTopTexture);
-                    break;
-                case 6: // Nitro
-                    LoadTexture(OldResources.NitroBoxTopTexture);
-                    break;
-                case 7: // POW
-                    LoadTexture(OldResources.POWBoxTopTexture);
-                    break;
-                case 9: // Action
-                case 10: // Iron
-                    LoadTexture(OldResources.IronBoxTexture);
-                    break;
-                default: // Empty
-                    LoadTexture(OldResources.EmptyBoxTexture);
-                    break;
-            }
-        }
-
         private void LoadBoxSideTexture(int subtype, int timetrialreward)
         {
-            switch (subtype)
-            {
-                case 0: // TNT
-                    if (timetrialmode && timetrialreward != 0)
-                        LoadBoxSideTextureTimeTrial(timetrialreward);
-                    else
-                        LoadTexture(OldResources.TNTBoxTexture);
-                    break;
-                case 2: // Empty
-                    if (timetrialmode)
-                        LoadBoxSideTextureTimeTrial(timetrialreward);
-                    else
-                        LoadTexture(OldResources.EmptyBoxTexture);
-                    break;
-                case 3: // Spring
-                    if (timetrialmode && timetrialreward != 0)
-                        LoadBoxSideTextureTimeTrial(timetrialreward);
-                    else
-                        LoadTexture(OldResources.SpringBoxTexture);
-                    break;
-                case 4: // Continue
-                    if (timetrialmode)
-                        LoadBoxSideTextureTimeTrial(timetrialreward);
-                    else
-                        LoadTexture(OldResources.ContinueBoxTexture);
-                    break;
-                case 5: // Iron
-                    if (timetrialmode && timetrialreward != 0)
-                        LoadBoxSideTextureTimeTrial(timetrialreward);
-                    else
-                        LoadTexture(OldResources.IronBoxTexture);
-                    break;
-                case 6: // Fruit
-                    if (timetrialmode)
-                        LoadBoxSideTextureTimeTrial(timetrialreward);
-                    else
-                        LoadTexture(OldResources.FruitBoxTexture);
-                    break;
-                case 7: // Action
-                    if (timetrialmode && timetrialreward != 0)
-                        LoadBoxSideTextureTimeTrial(timetrialreward);
-                    else
-                        LoadTexture(OldResources.ActionBoxTexture);
-                    break;
-                case 8: // Life
-                    if (timetrialmode)
-                        LoadBoxSideTextureTimeTrial(timetrialreward);
-                    else
-                        LoadTexture(OldResources.LifeBoxTexture);
-                    break;
-                case 9: // Doctor
-                    if (timetrialmode)
-                        LoadBoxSideTextureTimeTrial(timetrialreward);
-                    else
-                        LoadTexture(OldResources.DoctorBoxTexture);
-                    break;
-                case 10: // Pickup
-                    if (timetrialmode && timetrialreward != 0)
-                        LoadBoxSideTextureTimeTrial(timetrialreward);
-                    else
-                        LoadTexture(OldResources.PickupBoxTexture);
-                    break;
-                case 13: // Ghost
-                    if (timetrialmode && timetrialreward != 0)
-                        LoadBoxSideTextureTimeTrial(timetrialreward);
-                    else
-                        LoadTexture(OldResources.UnknownBoxTopTexture);
-                    break;
-                case 15: // Iron Spring
-                    if (timetrialmode && timetrialreward != 0)
-                        LoadBoxSideTextureTimeTrial(timetrialreward);
-                    else
-                        LoadTexture(OldResources.IronSpringBoxTexture);
-                    break;
-                case 18: // Nitro
-                    if (timetrialmode && timetrialreward != 0)
-                        LoadBoxSideTextureTimeTrial(timetrialreward);
-                    else
-                        LoadTexture(OldResources.NitroBoxTexture);
-                    break;
-                case 23: // Steel
-                    if (timetrialmode && timetrialreward != 0)
-                        LoadBoxSideTextureTimeTrial(timetrialreward);
-                    else
-                        LoadTexture(OldResources.SteelBoxTexture);
-                    break;
-                case 24: // Action Nitro
-                    if (timetrialmode && timetrialreward != 0)
-                        LoadBoxSideTextureTimeTrial(timetrialreward);
-                    else
-                        LoadTexture(OldResources.ActionNitroBoxTexture);
-                    break;
-                default:
-                    LoadTexture(OldResources.UnknownBoxTexture);
-                    break;
-            }
-            if (Settings.Default.UseCustomCrates)
+            if (!timetrialmode)
             {
                 switch (subtype)
                 {
-                    case 11: // POW
-                        if (timetrialmode && timetrialreward != 0)
-                            LoadBoxSideTextureTimeTrial(timetrialreward);
-                        else
+                    case 0: // TNT
+                        LoadTexture(OldResources.TNTBoxTexture);
+                        break;
+                    case 2: // Empty
+                        LoadTexture(OldResources.EmptyBoxTexture);
+                        break;
+                    case 3: // Spring
+                        LoadTexture(OldResources.SpringBoxTexture);
+                        break;
+                    case 4: // Continue
+                        LoadTexture(OldResources.ContinueBoxTexture);
+                        break;
+                    case 5: // Iron
+                        LoadTexture(OldResources.IronBoxTexture);
+                        break;
+                    case 6: // Fruit
+                        LoadTexture(OldResources.FruitBoxTexture);
+                        break;
+                    case 7: // Action
+                        LoadTexture(OldResources.ActionBoxTexture);
+                        break;
+                    case 8: // Life
+                        LoadTexture(OldResources.LifeBoxTexture);
+                        break;
+                    case 9: // Doctor
+                        LoadTexture(OldResources.DoctorBoxTexture);
+                        break;
+                    case 10: // Pickup
+                        LoadTexture(OldResources.PickupBoxTexture);
+                        break;
+                    case 13: // Ghost
+                        LoadTexture(OldResources.UnknownBoxTopTexture);
+                        break;
+                    case 15: // Iron Spring
+                        LoadTexture(OldResources.IronSpringBoxTexture);
+                        break;
+                    case 18: // Nitro
+                        LoadTexture(OldResources.NitroBoxTexture);
+                        break;
+                    case 23: // Steel
+                        LoadTexture(OldResources.SteelBoxTexture);
+                        break;
+                    case 24: // Action Nitro
+                        LoadTexture(OldResources.ActionNitroBoxTexture);
+                        break;
+                    default:
+                        LoadTexture(OldResources.UnknownBoxTexture);
+                        break;
+                }
+                if (Settings.Default.UseCustomCrates)
+                {
+                    switch (subtype)
+                    {
+                        case 11: // POW
                             LoadTexture(OldResources.POWBoxTexture);
-                        break;
-                    case 25: // Steel Pickup
-                        if (timetrialmode && timetrialreward != 0)
-                            LoadBoxSideTextureTimeTrial(timetrialreward);
-                        else
+                            break;
+                        case 25: // Steel Pickup
                             LoadTexture(OldResources.SteelPickupBoxTexture);
-                        break;
-                    case 26: // Steel Fruit
-                        if (timetrialmode && timetrialreward != 0)
-                            LoadBoxSideTextureTimeTrial(timetrialreward);
-                        else if (timetrialmode)
-                            LoadTexture(OldResources.SteelBoxTexture);
-                        else
+                            break;
+                        case 26: // Steel Fruit
                             LoadTexture(OldResources.SteelFruitBoxTexture);
-                        break;
-                    case 27: // Iron Continue
-                        if (timetrialmode && timetrialreward != 0)
-                            LoadBoxSideTextureTimeTrial(timetrialreward);
-                        else if (timetrialmode)
-                            LoadTexture(OldResources.IronBoxTexture);
-                        else
+                            break;
+                        case 27: // Iron Continue
                             LoadTexture(OldResources.IronContinueBoxTexture);
-                        break;
-                    case 28: // Switch OFF
-                        if (timetrialmode && timetrialreward != 0)
-                            LoadBoxSideTextureTimeTrial(timetrialreward);
-                        else
+                            break;
+                        case 28: // Switch OFF
                             LoadTexture(OldResources.SwitchOFFBoxTexture);
-                        break;
-                    case 29: // Switch ON
-                        if (timetrialmode && timetrialreward != 0)
-                            LoadBoxSideTextureTimeTrial(timetrialreward);
-                        else
+                            break;
+                        case 29: // Switch ON
                             LoadTexture(OldResources.SwitchONBoxTexture);
-                        break;
-                    case 30: // Switch Ghost to Red
-                        if (timetrialmode && timetrialreward != 0)
-                            LoadBoxSideTextureTimeTrial(timetrialreward);
-                        else
+                            break;
+                        case 30: // Switch Ghost to Red
                             LoadTexture(OldResources.SwitchGhostToRedBoxTexture);
-                        break;
-                    case 31: // Switch Green
-                        if (timetrialmode && timetrialreward != 0)
-                            LoadBoxSideTextureTimeTrial(timetrialreward);
-                        else
+                            break;
+                        case 31: // Switch Green
                             LoadTexture(OldResources.SwitchGreenBoxTexture);
-                        break;
-                    case 32: // Switch Ghost to Green
-                        if (timetrialmode && timetrialreward != 0)
-                            LoadBoxSideTextureTimeTrial(timetrialreward);
-                        else
+                            break;
+                        case 32: // Switch Ghost to Green
                             LoadTexture(OldResources.SwitchGhostToGreenBoxTexture);
-                        break;
-                    case 33: // Switch Red
-                        if (timetrialmode && timetrialreward != 0)
-                            LoadBoxSideTextureTimeTrial(timetrialreward);
-                        else
+                            break;
+                        case 33: // Switch Red
                             LoadTexture(OldResources.SwitchRedBoxTexture);
+                            break;
+                    }
+                }
+            }
+            else
+            {
+                switch (subtype)
+                {
+                    case 0: // TNT
+                        LoadTexture(OldResources.TNTBoxTexture);
                         break;
+                    case 2: // Empty
+                    case 4: // Continue
+                    case 6: // Fruit
+                    case 8: // Life
+                    case 10: // Pickup
+                        LoadBoxSideTextureTimeTrial(timetrialreward);
+                        break;
+                    case 3: // Spring
+                        LoadTexture(OldResources.SpringBoxTexture);
+                        break;
+                    case 5: // Iron
+                        LoadTexture(OldResources.IronBoxTexture);
+                        break;
+                    case 7: // Action
+                        LoadTexture(OldResources.ActionBoxTexture);
+                        break;
+                    case 9: // Doctor
+                        LoadTexture(OldResources.DoctorBoxTexture);
+                        break;
+                    case 13: // Ghost
+                        LoadTexture(OldResources.UnknownBoxTopTexture);
+                        break;
+                    case 15: // Iron Spring
+                        LoadTexture(OldResources.IronSpringBoxTexture);
+                        break;
+                    case 18: // Nitro
+                        LoadTexture(OldResources.NitroBoxTexture);
+                        break;
+                    case 23: // Steel
+                        LoadTexture(OldResources.SteelBoxTexture);
+                        break;
+                    case 24: // Action Nitro
+                        LoadTexture(OldResources.ActionNitroBoxTexture);
+                        break;
+                    default:
+                        LoadTexture(OldResources.UnknownBoxTexture);
+                        break;
+                }
+                if (Settings.Default.UseCustomCrates)
+                {
+                    switch (subtype)
+                    {
+                        case 11: // POW
+                            LoadTexture(OldResources.POWBoxTexture);
+                            break;
+                        case 25: // Steel Pickup
+                            LoadTexture(OldResources.SteelPickupBoxTexture);
+                            break;
+                        case 26: // Steel Fruit
+                            LoadTexture(OldResources.SteelFruitBoxTexture);
+                            break;
+                        case 27: // Iron Continue
+                            LoadTexture(OldResources.IronContinueBoxTexture);
+                            break;
+                        case 28: // Switch OFF
+                            LoadTexture(OldResources.SwitchOFFBoxTexture);
+                            break;
+                        case 29: // Switch ON
+                            LoadTexture(OldResources.SwitchONBoxTexture);
+                            break;
+                        case 30: // Switch Ghost to Red
+                        case 32: // Switch Ghost to Green
+                            LoadTexture(OldResources.SwitchGhostTexture);
+                            break;
+                            break;
+                        case 31: // Switch Green
+                            LoadTexture(OldResources.SwitchGreenBoxTexture);
+                            break;
+                        case 33: // Switch Red
+                            LoadTexture(OldResources.SwitchRedBoxTexture);
+                            break;
+                    }
                 }
             }
         }
@@ -798,14 +749,8 @@ namespace CrashEdit
                 case 6: // Nitro
                     LoadTexture(OldResources.NitroBoxTexture);
                     break;
-                case 7: // POW
+                case 7: // Pow
                     LoadTexture(OldResources.POWBoxTexture);
-                    break;
-                case 9: // Action
-                    LoadTexture(OldResources.ActionBoxTexture);
-                    break;
-                case 10: // Iron
-                    LoadTexture(OldResources.IronBoxTexture);
                     break;
                 default: // Empty
                     LoadTexture(OldResources.EmptyBoxTexture);

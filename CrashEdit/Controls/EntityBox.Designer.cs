@@ -2098,7 +2098,6 @@ namespace CrashEdit
             this.fraMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
             this.fraMode.Controls.Add(this.chkMode);
             this.fraMode.Controls.Add(this.numMode);
-            this.fraMode.Enabled = false;
             this.fraMode.ForeColor = System.Drawing.SystemColors.Window;
             this.fraMode.Location = new System.Drawing.Point(3, 87);
             this.fraMode.Name = "fraMode";
