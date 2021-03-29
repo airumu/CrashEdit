@@ -964,7 +964,7 @@ namespace CrashEdit
             this.fraC2TTSet.Size = new System.Drawing.Size(118, 280);
             this.fraC2TTSet.TabIndex = 11;
             this.fraC2TTSet.TabStop = false;
-            this.fraC2TTSet.Text = "Crash 2 Time Trial";
+            this.fraC2TTSet.Text = "C2 TT Settings";
             // 
             // fraTTC2Yrot
             // 
@@ -1395,7 +1395,7 @@ namespace CrashEdit
             this.fraC3Set.Size = new System.Drawing.Size(118, 153);
             this.fraC3Set.TabIndex = 12;
             this.fraC3Set.TabStop = false;
-            this.fraC3Set.Text = "Crash 3 Settings";
+            this.fraC3Set.Text = "C3 Settings";
             // 
             // fraScaling
             // 

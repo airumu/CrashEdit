@@ -596,6 +596,10 @@ namespace CrashEdit
                 case 7: // POW
                     LoadTexture(OldResources.POWBoxTopTexture);
                     break;
+                case 9: // Action
+                case 10: // Iron
+                    LoadTexture(OldResources.IronBoxTexture);
+                    break;
                 default: // Empty
                     LoadTexture(OldResources.EmptyBoxTexture);
                     break;
@@ -796,6 +800,12 @@ namespace CrashEdit
                     break;
                 case 7: // POW
                     LoadTexture(OldResources.POWBoxTexture);
+                    break;
+                case 9: // Action
+                    LoadTexture(OldResources.ActionBoxTexture);
+                    break;
+                case 10: // Iron
+                    LoadTexture(OldResources.IronBoxTexture);
                     break;
                 default: // Empty
                     LoadTexture(OldResources.EmptyBoxTexture);
