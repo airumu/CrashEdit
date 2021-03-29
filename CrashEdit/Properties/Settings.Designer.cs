@@ -262,5 +262,17 @@ namespace CrashEdit.Properties {
                 this["AnimViewPanel"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool PatchNSDGoolMap {
+            get {
+                return ((bool)(this["PatchNSDGoolMap"]));
+            }
+            set {
+                this["PatchNSDGoolMap"] = value;
+            }
+        }
     }
 }

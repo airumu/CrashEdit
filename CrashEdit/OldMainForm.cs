@@ -1055,7 +1055,10 @@ namespace CrashEdit
         public void PatchNSD(NSD nsd, NSF nsf, string path, bool ignore_warnings)
         {
             if (Settings.Default.OldPatchNSD)
-                PatchNSDGoolMap(nsd.GOOLMap, nsf, ignore_warnings);
+            {
+                if (Settings.Default.PatchNSDGoolMap)
+                    PatchNSDGoolMap(nsd.GOOLMap, nsf, ignore_warnings);
+            }
             else
             {
                 var indexdata = nsf.MakeNSDIndex();

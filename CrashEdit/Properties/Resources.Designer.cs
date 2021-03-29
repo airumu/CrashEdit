@@ -191,6 +191,15 @@ namespace CrashEdit.Properties {
         }
         
         /// <summary>
+        ///   (Patch NSD) Patch GOOL map に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Config_chkPatchNSDGoolMap {
+            get {
+                return ResourceManager.GetString("Config_chkPatchNSDGoolMap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   (Patch NSD) Always save NSF after NSD patching に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Config_chkPatchNSDSavesNSF {

@@ -55,6 +55,8 @@ namespace CrashEdit
             chkCustomCrates.Text = Resources.Config_chkCustomCrates;
             cmdReset.Text = Resources.Config_cmdReset;
             cmdHelp.Text = Resources.Config_cmdHelp;
+            chkPatchNSDGoolMap.Text = Resources.Config_chkPatchNSDGoolMap;
+            chkPatchNSDGoolMap.Checked = Settings.Default.PatchNSDGoolMap;
         }
 
         private void dpdLang_SelectedIndexChanged(object sender, EventArgs e)
@@ -165,6 +167,13 @@ namespace CrashEdit
         private void chkOldPatchNSD_CheckedChanged(object sender, EventArgs e)
         {
             Settings.Default.OldPatchNSD = chkOldPatchNSD.Checked;
+            Settings.Default.Save();
+            chkPatchNSDGoolMap.Enabled = chkOldPatchNSD.Checked;
+        }
+
+        private void chkPatchNSDGoolMap_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.PatchNSDGoolMap = chkPatchNSDGoolMap.Checked;
             Settings.Default.Save();
         }
 

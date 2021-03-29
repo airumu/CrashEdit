@@ -57,6 +57,7 @@
             this.chkCustomCrates = new MetroFramework.Controls.MetroCheckBox();
             this.chkAnimViewPanel = new MetroFramework.Controls.MetroCheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.chkPatchNSDGoolMap = new MetroFramework.Controls.MetroCheckBox();
             this.fraLang.SuspendLayout();
             this.fraSize.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numH)).BeginInit();
@@ -370,7 +371,7 @@
             this.cmdReset.FontSize = MetroFramework.MetroButtonSize.Medium;
             this.cmdReset.FontWeight = MetroFramework.MetroButtonWeight.Regular;
             this.cmdReset.ForeColor = System.Drawing.Color.DeepSkyBlue;
-            this.cmdReset.Location = new System.Drawing.Point(12, 308);
+            this.cmdReset.Location = new System.Drawing.Point(10, 329);
             this.cmdReset.Name = "cmdReset";
             this.cmdReset.Size = new System.Drawing.Size(91, 22);
             this.cmdReset.TabIndex = 10;
@@ -429,7 +430,7 @@
             this.cmdHelp.FontSize = MetroFramework.MetroButtonSize.Medium;
             this.cmdHelp.FontWeight = MetroFramework.MetroButtonWeight.Regular;
             this.cmdHelp.ForeColor = System.Drawing.SystemColors.InactiveCaption;
-            this.cmdHelp.Location = new System.Drawing.Point(12, 336);
+            this.cmdHelp.Location = new System.Drawing.Point(10, 357);
             this.cmdHelp.Name = "cmdHelp";
             this.cmdHelp.Size = new System.Drawing.Size(50, 23);
             this.cmdHelp.Style = MetroFramework.MetroColorStyle.Blue;
@@ -445,7 +446,7 @@
             // 
             this.chkCustomCrates.AutoSize = true;
             this.chkCustomCrates.ForeColor = System.Drawing.Color.MediumSpringGreen;
-            this.chkCustomCrates.Location = new System.Drawing.Point(4, 287);
+            this.chkCustomCrates.Location = new System.Drawing.Point(4, 308);
             this.chkCustomCrates.Name = "chkCustomCrates";
             this.chkCustomCrates.Size = new System.Drawing.Size(230, 15);
             this.chkCustomCrates.TabIndex = 15;
@@ -478,11 +479,28 @@
             this.panel1.Size = new System.Drawing.Size(420, 1);
             this.panel1.TabIndex = 17;
             // 
+            // chkPatchNSDGoolMap
+            // 
+            this.chkPatchNSDGoolMap.AutoSize = true;
+            this.chkPatchNSDGoolMap.Enabled = false;
+            this.chkPatchNSDGoolMap.ForeColor = System.Drawing.Color.MediumSpringGreen;
+            this.chkPatchNSDGoolMap.Location = new System.Drawing.Point(18, 287);
+            this.chkPatchNSDGoolMap.Name = "chkPatchNSDGoolMap";
+            this.chkPatchNSDGoolMap.Size = new System.Drawing.Size(182, 15);
+            this.chkPatchNSDGoolMap.TabIndex = 18;
+            this.chkPatchNSDGoolMap.Text = "(Patch NSD) Patch GOOL map";
+            this.chkPatchNSDGoolMap.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.chkPatchNSDGoolMap.UseCustomBackColor = true;
+            this.chkPatchNSDGoolMap.UseCustomForeColor = true;
+            this.chkPatchNSDGoolMap.UseSelectable = true;
+            this.chkPatchNSDGoolMap.CheckedChanged += new System.EventHandler(this.chkPatchNSDGoolMap_CheckedChanged);
+            // 
             // ConfigEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.Controls.Add(this.chkPatchNSDGoolMap);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.chkAnimViewPanel);
             this.Controls.Add(this.chkCustomCrates);
@@ -550,5 +568,6 @@
         private MetroFramework.Controls.MetroCheckBox chkCustomCrates;
         private MetroFramework.Controls.MetroCheckBox chkAnimViewPanel;
         private System.Windows.Forms.Panel panel1;
+        private MetroFramework.Controls.MetroCheckBox chkPatchNSDGoolMap;
     }
 }
