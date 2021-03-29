@@ -369,7 +369,7 @@ namespace CrashEdit
             Height = Settings.Default.DefaultFormH;
             Load += new EventHandler(OldMainForm_Load);
             FormClosing += new FormClosingEventHandler(OldMainForm_FormClosing);
-            Text = $"CrashEdit-tweaked v{Assembly.GetExecutingAssembly().GetName().Version.ToString()} - Crash 2 Time Trilas Viewer";
+            Text = $"CrashEdit-tweaked v{Assembly.GetExecutingAssembly().GetName().Version.ToString()} - Crash 2 Time Trial Editor v1";
             Controls.Add(txtInput);
             Controls.Add(tbcTabs);
             Controls.Add(tsToolbar);
@@ -1055,7 +1055,10 @@ namespace CrashEdit
         public void PatchNSD(NSD nsd, NSF nsf, string path, bool ignore_warnings)
         {
             if (Settings.Default.OldPatchNSD)
-            {}
+            {
+                if (Settings.Default.PatchNSDGoolMap)
+                    PatchNSDGoolMap(nsd.GOOLMap, nsf, ignore_warnings);
+            }
             else
             {
                 var indexdata = nsf.MakeNSDIndex();
