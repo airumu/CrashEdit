@@ -41,6 +41,10 @@ namespace CrashEdit
             UpdateSubtype();
             UpdateSettings();
             UpdateID();
+            UpdateTTC2Type();
+            UpdateTTC2Yrot();
+            UpdateTTC2BoxFlag();
+            UpdateTTC2GhostTarget();
             positionindex = 0;
             victimindex = 0;
             loadlistarowindex = 0;
@@ -1624,10 +1628,6 @@ namespace CrashEdit
             UpdateOtherSettings();
             UpdateZMod();
             UpdateTTReward();
-            UpdateTTC2Type();
-            UpdateTTC2Yrot();
-            UpdateTTC2BoxFlag();
-            UpdateTTC2GhostTarget();
             tabSpecial.Enter -= tabSpecial_Enter;
         }
 
