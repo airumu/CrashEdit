@@ -532,6 +532,7 @@
     <Content Include="Resources\Textures\ArrowBox.png" />
     <Content Include="Resources\Textures\BodyslamBox.png" />
     <Content Include="Resources\Textures\Box.png" />
+    <None Include="Resources\Textures\POWTop.png" />
     <Content Include="Resources\Textures\Checkpoint.png" />
     <Content Include="Resources\Textures\DetonatorBox.png" />
     <Content Include="Resources\Textures\DetonatorBoxTop.png" />

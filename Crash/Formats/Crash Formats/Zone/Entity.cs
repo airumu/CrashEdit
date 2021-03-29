@@ -130,6 +130,14 @@ namespace Crash
         private int? timetrialreward = null;
         [EntityPropertyField(0x337)]
         private EntitySetting? bonusboxcount = null;
+        [EntityPropertyField(0x338)]
+        private int? ttc2type = null;
+        [EntityPropertyField(0x339)]
+        private int? ttc2roty = null;
+        [EntityPropertyField(0x33A)]
+        private int? ttc2boxflag = null;
+        [EntityPropertyField(0x33B)]
+        private int? ttc2ghosttarget = null;
 
         private Dictionary<short,EntityProperty> extraproperties;
 
@@ -341,6 +349,26 @@ namespace Crash
             set => bonusboxcount = value;
         }
 
+        public int? TTC2Type
+        {
+            get => ttc2type;
+            set => ttc2type = value;
+        }
+        public int? TTC2Yrot
+        {
+            get => ttc2roty;
+            set => ttc2roty = value;
+        }
+        public int? TTC2BoxFlag
+        {
+            get => ttc2boxflag;
+            set => ttc2boxflag = value;
+        }
+        public int? TTC2GhostTarget
+        {
+            get => ttc2ghosttarget;
+            set => ttc2ghosttarget = value;
+        }
         public IDictionary<short,EntityProperty> ExtraProperties => extraproperties;
 
         public byte[] Save()

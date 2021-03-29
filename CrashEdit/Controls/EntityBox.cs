@@ -1624,6 +1624,10 @@ namespace CrashEdit
             UpdateOtherSettings();
             UpdateZMod();
             UpdateTTReward();
+            UpdateTTC2Type();
+            UpdateTTC2Yrot();
+            UpdateTTC2BoxFlag();
+            UpdateTTC2GhostTarget();
             tabSpecial.Enter -= tabSpecial_Enter;
         }
 
@@ -1901,6 +1905,118 @@ namespace CrashEdit
         private void numTTReward_ValueChanged(object sender, EventArgs e)
         {
             entity.TimeTrialReward = (int)numTTReward.Value << 8;
+        }
+
+        private void UpdateTTC2Type()
+        {
+            if (entity.TTC2Type.HasValue)
+            {
+                numTTC2Type.Value = entity.TTC2Type.Value >> 8;
+            }
+            numTTC2Type.Enabled = entity.TTC2Type.HasValue;
+            chkTTC2Type.Checked = entity.TTC2Type.HasValue;
+        }
+
+        private void chkTTC2Type_CheckedChanged(object sender, EventArgs e)
+        {
+            numTTC2Type.Enabled = chkTTC2Type.Checked;
+            if (chkTTC2Type.Checked)
+            {
+                entity.TTC2Type = (int)numTTC2Type.Value << 8;
+            }
+            else
+            {
+                entity.TTC2Type = null;
+            }
+        }
+
+        private void numTTC2Type_ValueChanged(object sender, EventArgs e)
+        {
+            entity.TTC2Type = (int)numTTC2Type.Value << 8;
+        }
+
+        private void UpdateTTC2Yrot()
+        {
+            if (entity.TTC2Yrot.HasValue)
+            {
+                numTTC2Yrot.Value = entity.TTC2Yrot.Value >> 8;
+            }
+            numTTC2Yrot.Enabled = entity.TTC2Yrot.HasValue;
+            chkTTC2Yrot.Checked = entity.TTC2Yrot.HasValue;
+        }
+
+        private void chkTTC2Yrot_CheckedChanged(object sender, EventArgs e)
+        {
+            numTTC2Yrot.Enabled = chkTTC2Yrot.Checked;
+            if (chkTTC2Yrot.Checked)
+            {
+                entity.TTC2Yrot = (int)numTTC2Yrot.Value << 8;
+            }
+            else
+            {
+                entity.TTC2Yrot = null;
+            }
+        }
+
+        private void numTTC2Yrot_ValueChanged(object sender, EventArgs e)
+        {
+            entity.TTC2Yrot = (int)numTTC2Yrot.Value << 8;
+        }
+
+        private void UpdateTTC2BoxFlag()
+        {
+            if (entity.TTC2BoxFlag.HasValue)
+            {
+                numTTC2BoxFlag.Value = entity.TTC2BoxFlag.Value >> 8;
+            }
+            numTTC2BoxFlag.Enabled = entity.TTC2BoxFlag.HasValue;
+            chkTTC2BoxFlag.Checked = entity.TTC2BoxFlag.HasValue;
+        }
+
+        private void chkTTC2BoxFlag_CheckedChanged(object sender, EventArgs e)
+        {
+            numTTC2BoxFlag.Enabled = chkTTC2BoxFlag.Checked;
+            if (chkTTC2BoxFlag.Checked)
+            {
+                entity.TTC2BoxFlag = (int)numTTC2BoxFlag.Value << 8;
+            }
+            else
+            {
+                entity.TTC2BoxFlag = null;
+            }
+        }
+
+        private void numTTC2BoxFlag_ValueChanged(object sender, EventArgs e)
+        {
+            entity.TTC2BoxFlag = (int)numTTC2BoxFlag.Value << 8;
+        }
+
+        private void UpdateTTC2GhostTarget()
+        {
+            if (entity.TTC2GhostTarget.HasValue)
+            {
+                numTTC2GhostTarget.Value = entity.TTC2GhostTarget.Value >> 8;
+            }
+            numTTC2GhostTarget.Enabled = entity.TTC2GhostTarget.HasValue;
+            chkTTC2GhostTarget.Checked = entity.TTC2GhostTarget.HasValue;
+        }
+
+        private void chkTTC2GhostTarget_CheckedChanged(object sender, EventArgs e)
+        {
+            numTTC2GhostTarget.Enabled = chkTTC2GhostTarget.Checked;
+            if (chkTTC2GhostTarget.Checked)
+            {
+                entity.TTC2GhostTarget = (int)numTTC2GhostTarget.Value << 8;
+            }
+            else
+            {
+                entity.TTC2GhostTarget = null;
+            }
+        }
+
+        private void numTTC2GhostTarget_ValueChanged(object sender, EventArgs e)
+        {
+            entity.TTC2GhostTarget = (int)numTTC2GhostTarget.Value << 8;
         }
 
         private void UpdateCameraIndex()

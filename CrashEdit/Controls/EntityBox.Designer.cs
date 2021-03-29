@@ -73,24 +73,26 @@ namespace CrashEdit
             this.chkID2 = new DarkUI.Controls.DarkCheckBox();
             this.numID2 = new DarkUI.Controls.DarkNumericUpDown();
             this.tabSpecial = new System.Windows.Forms.TabPage();
-            this.fraZMod = new System.Windows.Forms.GroupBox();
-            this.chkZMod = new DarkUI.Controls.DarkCheckBox();
-            this.numZMod = new DarkUI.Controls.DarkNumericUpDown();
-            this.fraTTReward = new System.Windows.Forms.GroupBox();
-            this.chkTTReward = new DarkUI.Controls.DarkCheckBox();
-            this.numTTReward = new DarkUI.Controls.DarkNumericUpDown();
-            this.fraOtherSettings = new System.Windows.Forms.GroupBox();
-            this.chkOtherSettings = new DarkUI.Controls.DarkCheckBox();
-            this.numOtherSettings = new DarkUI.Controls.DarkNumericUpDown();
-            this.fraScaling = new System.Windows.Forms.GroupBox();
-            this.chkScaling = new DarkUI.Controls.DarkCheckBox();
-            this.numScaling = new DarkUI.Controls.DarkNumericUpDown();
-            this.fraDDASection = new System.Windows.Forms.GroupBox();
-            this.chkDDASection = new DarkUI.Controls.DarkCheckBox();
-            this.numDDASection = new DarkUI.Controls.DarkNumericUpDown();
+            this.fraC2TTSet = new System.Windows.Forms.GroupBox();
+            this.fraTTC2Yrot = new System.Windows.Forms.GroupBox();
+            this.chkTTC2Yrot = new DarkUI.Controls.DarkCheckBox();
+            this.numTTC2Yrot = new DarkUI.Controls.DarkNumericUpDown();
+            this.fraTTC2BoxFlag = new System.Windows.Forms.GroupBox();
+            this.chkTTC2BoxFlag = new DarkUI.Controls.DarkCheckBox();
+            this.numTTC2BoxFlag = new DarkUI.Controls.DarkNumericUpDown();
+            this.fraTTC2Type = new System.Windows.Forms.GroupBox();
+            this.chkTTC2Type = new DarkUI.Controls.DarkCheckBox();
+            this.numTTC2Type = new DarkUI.Controls.DarkNumericUpDown();
+            this.fraTTC2GhostTarget = new System.Windows.Forms.GroupBox();
+            this.chkTTC2GhostTarget = new DarkUI.Controls.DarkCheckBox();
+            this.numTTC2GhostTarget = new DarkUI.Controls.DarkNumericUpDown();
+            this.fraDDASet = new System.Windows.Forms.GroupBox();
             this.fraDDASettings = new System.Windows.Forms.GroupBox();
             this.chkDDASettings = new DarkUI.Controls.DarkCheckBox();
             this.numDDASettings = new DarkUI.Controls.DarkNumericUpDown();
+            this.fraDDASection = new System.Windows.Forms.GroupBox();
+            this.chkDDASection = new DarkUI.Controls.DarkCheckBox();
+            this.numDDASection = new DarkUI.Controls.DarkNumericUpDown();
             this.fraBoxCount = new System.Windows.Forms.GroupBox();
             this.chkBonusBoxCount = new DarkUI.Controls.DarkCheckBox();
             this.numBonusBoxCount = new DarkUI.Controls.DarkNumericUpDown();
@@ -103,6 +105,20 @@ namespace CrashEdit
             this.cmdNextVictim = new DarkUI.Controls.DarkButton();
             this.cmdPreviousVictim = new DarkUI.Controls.DarkButton();
             this.lblVictimIndex = new DarkUI.Controls.DarkLabel();
+            this.fraC3Set = new System.Windows.Forms.GroupBox();
+            this.fraScaling = new System.Windows.Forms.GroupBox();
+            this.chkScaling = new DarkUI.Controls.DarkCheckBox();
+            this.numScaling = new DarkUI.Controls.DarkNumericUpDown();
+            this.fraTTReward = new System.Windows.Forms.GroupBox();
+            this.chkTTReward = new DarkUI.Controls.DarkCheckBox();
+            this.numTTReward = new DarkUI.Controls.DarkNumericUpDown();
+            this.fraOtherSet = new System.Windows.Forms.GroupBox();
+            this.fraZMod = new System.Windows.Forms.GroupBox();
+            this.chkZMod = new DarkUI.Controls.DarkCheckBox();
+            this.numZMod = new DarkUI.Controls.DarkNumericUpDown();
+            this.fraOtherSettings = new System.Windows.Forms.GroupBox();
+            this.chkOtherSettings = new DarkUI.Controls.DarkCheckBox();
+            this.numOtherSettings = new DarkUI.Controls.DarkNumericUpDown();
             this.tabCamera = new System.Windows.Forms.TabPage();
             this.fraFOV = new System.Windows.Forms.GroupBox();
             this.lblFOVPosition = new DarkUI.Controls.DarkLabel();
@@ -266,23 +282,35 @@ namespace CrashEdit
             ((System.ComponentModel.ISupportInitialize)(this.numID)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numID2)).BeginInit();
             this.tabSpecial.SuspendLayout();
-            this.fraZMod.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numZMod)).BeginInit();
-            this.fraTTReward.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numTTReward)).BeginInit();
-            this.fraOtherSettings.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numOtherSettings)).BeginInit();
-            this.fraScaling.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numScaling)).BeginInit();
-            this.fraDDASection.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numDDASection)).BeginInit();
+            this.fraC2TTSet.SuspendLayout();
+            this.fraTTC2Yrot.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numTTC2Yrot)).BeginInit();
+            this.fraTTC2BoxFlag.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numTTC2BoxFlag)).BeginInit();
+            this.fraTTC2Type.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numTTC2Type)).BeginInit();
+            this.fraTTC2GhostTarget.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numTTC2GhostTarget)).BeginInit();
+            this.fraDDASet.SuspendLayout();
             this.fraDDASettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numDDASettings)).BeginInit();
+            this.fraDDASection.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numDDASection)).BeginInit();
             this.fraBoxCount.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numBonusBoxCount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numBoxCount)).BeginInit();
             this.fraVictims.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numVictimID)).BeginInit();
+            this.fraC3Set.SuspendLayout();
+            this.fraScaling.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numScaling)).BeginInit();
+            this.fraTTReward.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numTTReward)).BeginInit();
+            this.fraOtherSet.SuspendLayout();
+            this.fraZMod.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numZMod)).BeginInit();
+            this.fraOtherSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numOtherSettings)).BeginInit();
             this.tabCamera.SuspendLayout();
             this.fraFOV.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numFOVPosition)).BeginInit();
@@ -907,14 +935,12 @@ namespace CrashEdit
             // 
             this.tabSpecial.AutoScroll = true;
             this.tabSpecial.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.tabSpecial.Controls.Add(this.fraZMod);
-            this.tabSpecial.Controls.Add(this.fraTTReward);
-            this.tabSpecial.Controls.Add(this.fraOtherSettings);
-            this.tabSpecial.Controls.Add(this.fraScaling);
-            this.tabSpecial.Controls.Add(this.fraDDASection);
-            this.tabSpecial.Controls.Add(this.fraDDASettings);
+            this.tabSpecial.Controls.Add(this.fraC2TTSet);
+            this.tabSpecial.Controls.Add(this.fraDDASet);
             this.tabSpecial.Controls.Add(this.fraBoxCount);
             this.tabSpecial.Controls.Add(this.fraVictims);
+            this.tabSpecial.Controls.Add(this.fraC3Set);
+            this.tabSpecial.Controls.Add(this.fraOtherSet);
             this.tabSpecial.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.tabSpecial.ForeColor = System.Drawing.SystemColors.Window;
             this.tabSpecial.Location = new System.Drawing.Point(4, 38);
@@ -924,220 +950,214 @@ namespace CrashEdit
             this.tabSpecial.Text = "Special";
             this.tabSpecial.Enter += new System.EventHandler(this.tabSpecial_Enter);
             // 
-            // fraZMod
+            // fraC2TTSet
             // 
-            this.fraZMod.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
-            this.fraZMod.Controls.Add(this.chkZMod);
-            this.fraZMod.Controls.Add(this.numZMod);
-            this.fraZMod.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraZMod.Location = new System.Drawing.Point(3, 241);
-            this.fraZMod.Name = "fraZMod";
-            this.fraZMod.Size = new System.Drawing.Size(120, 77);
-            this.fraZMod.TabIndex = 11;
-            this.fraZMod.TabStop = false;
-            this.fraZMod.Text = "Depth Modifier";
+            this.fraC2TTSet.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.fraC2TTSet.Controls.Add(this.fraTTC2Yrot);
+            this.fraC2TTSet.Controls.Add(this.fraTTC2BoxFlag);
+            this.fraC2TTSet.Controls.Add(this.fraTTC2Type);
+            this.fraC2TTSet.Controls.Add(this.fraTTC2GhostTarget);
+            this.fraC2TTSet.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.fraC2TTSet.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.fraC2TTSet.Location = new System.Drawing.Point(3, 158);
+            this.fraC2TTSet.Name = "fraC2TTSet";
+            this.fraC2TTSet.Size = new System.Drawing.Size(118, 280);
+            this.fraC2TTSet.TabIndex = 11;
+            this.fraC2TTSet.TabStop = false;
+            this.fraC2TTSet.Text = "Crash 2 Time Trial";
             // 
-            // chkZMod
+            // fraTTC2Yrot
             // 
-            this.chkZMod.AutoSize = true;
-            this.chkZMod.Location = new System.Drawing.Point(6, 26);
-            this.chkZMod.Name = "chkZMod";
-            this.chkZMod.Size = new System.Drawing.Size(72, 19);
-            this.chkZMod.TabIndex = 0;
-            this.chkZMod.Text = "Enabled";
-            this.chkZMod.CheckedChanged += new System.EventHandler(this.chkZMod_CheckedChanged);
+            this.fraTTC2Yrot.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.fraTTC2Yrot.Controls.Add(this.chkTTC2Yrot);
+            this.fraTTC2Yrot.Controls.Add(this.numTTC2Yrot);
+            this.fraTTC2Yrot.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.fraTTC2Yrot.ForeColor = System.Drawing.SystemColors.InactiveCaption;
+            this.fraTTC2Yrot.Location = new System.Drawing.Point(8, 82);
+            this.fraTTC2Yrot.Name = "fraTTC2Yrot";
+            this.fraTTC2Yrot.Size = new System.Drawing.Size(102, 65);
+            this.fraTTC2Yrot.TabIndex = 11;
+            this.fraTTC2Yrot.TabStop = false;
+            this.fraTTC2Yrot.Text = "Y Rotation";
             // 
-            // numZMod
+            // chkTTC2Yrot
             // 
-            this.numZMod.Location = new System.Drawing.Point(6, 48);
-            this.numZMod.Maximum = new decimal(new int[] {
+            this.chkTTC2Yrot.AutoSize = true;
+            this.chkTTC2Yrot.Location = new System.Drawing.Point(6, 16);
+            this.chkTTC2Yrot.Name = "chkTTC2Yrot";
+            this.chkTTC2Yrot.Size = new System.Drawing.Size(72, 19);
+            this.chkTTC2Yrot.TabIndex = 0;
+            this.chkTTC2Yrot.Text = "Enabled";
+            this.chkTTC2Yrot.CheckedChanged += new System.EventHandler(this.chkTTC2Yrot_CheckedChanged);
+            // 
+            // numTTC2Yrot
+            // 
+            this.numTTC2Yrot.Location = new System.Drawing.Point(6, 37);
+            this.numTTC2Yrot.Maximum = new decimal(new int[] {
             2147483647,
             0,
             0,
             0});
-            this.numZMod.Minimum = new decimal(new int[] {
+            this.numTTC2Yrot.Minimum = new decimal(new int[] {
             -2147483648,
             0,
             0,
             -2147483648});
-            this.numZMod.Name = "numZMod";
-            this.numZMod.Size = new System.Drawing.Size(108, 21);
-            this.numZMod.TabIndex = 1;
-            this.numZMod.ValueChanged += new System.EventHandler(this.numZMod_ValueChanged);
+            this.numTTC2Yrot.Name = "numTTC2Yrot";
+            this.numTTC2Yrot.Size = new System.Drawing.Size(90, 21);
+            this.numTTC2Yrot.TabIndex = 1;
+            this.numTTC2Yrot.ValueChanged += new System.EventHandler(this.numTTC2Yrot_ValueChanged);
             // 
-            // fraTTReward
+            // fraTTC2BoxFlag
             // 
-            this.fraTTReward.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
-            this.fraTTReward.Controls.Add(this.chkTTReward);
-            this.fraTTReward.Controls.Add(this.numTTReward);
-            this.fraTTReward.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraTTReward.Location = new System.Drawing.Point(255, 241);
-            this.fraTTReward.Name = "fraTTReward";
-            this.fraTTReward.Size = new System.Drawing.Size(124, 77);
-            this.fraTTReward.TabIndex = 12;
-            this.fraTTReward.TabStop = false;
-            this.fraTTReward.Text = "Time Trial Reward";
+            this.fraTTC2BoxFlag.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.fraTTC2BoxFlag.Controls.Add(this.chkTTC2BoxFlag);
+            this.fraTTC2BoxFlag.Controls.Add(this.numTTC2BoxFlag);
+            this.fraTTC2BoxFlag.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.fraTTC2BoxFlag.ForeColor = System.Drawing.SystemColors.InactiveCaption;
+            this.fraTTC2BoxFlag.Location = new System.Drawing.Point(8, 146);
+            this.fraTTC2BoxFlag.Name = "fraTTC2BoxFlag";
+            this.fraTTC2BoxFlag.Size = new System.Drawing.Size(102, 65);
+            this.fraTTC2BoxFlag.TabIndex = 12;
+            this.fraTTC2BoxFlag.TabStop = false;
+            this.fraTTC2BoxFlag.Text = "Box Flag";
             // 
-            // chkTTReward
+            // chkTTC2BoxFlag
             // 
-            this.chkTTReward.AutoSize = true;
-            this.chkTTReward.Location = new System.Drawing.Point(6, 26);
-            this.chkTTReward.Name = "chkTTReward";
-            this.chkTTReward.Size = new System.Drawing.Size(72, 19);
-            this.chkTTReward.TabIndex = 0;
-            this.chkTTReward.Text = "Enabled";
-            this.chkTTReward.CheckedChanged += new System.EventHandler(this.chkTTReward_CheckedChanged);
+            this.chkTTC2BoxFlag.AutoSize = true;
+            this.chkTTC2BoxFlag.Location = new System.Drawing.Point(6, 16);
+            this.chkTTC2BoxFlag.Name = "chkTTC2BoxFlag";
+            this.chkTTC2BoxFlag.Size = new System.Drawing.Size(72, 19);
+            this.chkTTC2BoxFlag.TabIndex = 0;
+            this.chkTTC2BoxFlag.Text = "Enabled";
+            this.chkTTC2BoxFlag.CheckedChanged += new System.EventHandler(this.chkTTC2BoxFlag_CheckedChanged);
             // 
-            // numTTReward
+            // numTTC2BoxFlag
             // 
-            this.numTTReward.Location = new System.Drawing.Point(6, 48);
-            this.numTTReward.Maximum = new decimal(new int[] {
+            this.numTTC2BoxFlag.Location = new System.Drawing.Point(6, 37);
+            this.numTTC2BoxFlag.Maximum = new decimal(new int[] {
             2147483647,
             0,
             0,
             0});
-            this.numTTReward.Minimum = new decimal(new int[] {
+            this.numTTC2BoxFlag.Minimum = new decimal(new int[] {
             -2147483648,
             0,
             0,
             -2147483648});
-            this.numTTReward.Name = "numTTReward";
-            this.numTTReward.Size = new System.Drawing.Size(112, 21);
-            this.numTTReward.TabIndex = 1;
-            this.numTTReward.ValueChanged += new System.EventHandler(this.numTTReward_ValueChanged);
+            this.numTTC2BoxFlag.Name = "numTTC2BoxFlag";
+            this.numTTC2BoxFlag.Size = new System.Drawing.Size(90, 21);
+            this.numTTC2BoxFlag.TabIndex = 1;
+            this.numTTC2BoxFlag.ValueChanged += new System.EventHandler(this.numTTC2BoxFlag_ValueChanged);
             // 
-            // fraOtherSettings
+            // fraTTC2Type
             // 
-            this.fraOtherSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
-            this.fraOtherSettings.Controls.Add(this.chkOtherSettings);
-            this.fraOtherSettings.Controls.Add(this.numOtherSettings);
-            this.fraOtherSettings.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraOtherSettings.Location = new System.Drawing.Point(255, 158);
-            this.fraOtherSettings.Name = "fraOtherSettings";
-            this.fraOtherSettings.Size = new System.Drawing.Size(124, 77);
-            this.fraOtherSettings.TabIndex = 10;
-            this.fraOtherSettings.TabStop = false;
-            this.fraOtherSettings.Text = "Other Settings";
+            this.fraTTC2Type.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.fraTTC2Type.Controls.Add(this.chkTTC2Type);
+            this.fraTTC2Type.Controls.Add(this.numTTC2Type);
+            this.fraTTC2Type.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.fraTTC2Type.ForeColor = System.Drawing.SystemColors.InactiveCaption;
+            this.fraTTC2Type.Location = new System.Drawing.Point(8, 18);
+            this.fraTTC2Type.Name = "fraTTC2Type";
+            this.fraTTC2Type.Size = new System.Drawing.Size(102, 65);
+            this.fraTTC2Type.TabIndex = 12;
+            this.fraTTC2Type.TabStop = false;
+            this.fraTTC2Type.Text = "Type";
             // 
-            // chkOtherSettings
+            // chkTTC2Type
             // 
-            this.chkOtherSettings.AutoSize = true;
-            this.chkOtherSettings.Location = new System.Drawing.Point(6, 26);
-            this.chkOtherSettings.Name = "chkOtherSettings";
-            this.chkOtherSettings.Size = new System.Drawing.Size(72, 19);
-            this.chkOtherSettings.TabIndex = 0;
-            this.chkOtherSettings.Text = "Enabled";
-            this.chkOtherSettings.CheckedChanged += new System.EventHandler(this.chkOtherSettings_CheckedChanged);
+            this.chkTTC2Type.AutoSize = true;
+            this.chkTTC2Type.Location = new System.Drawing.Point(6, 16);
+            this.chkTTC2Type.Name = "chkTTC2Type";
+            this.chkTTC2Type.Size = new System.Drawing.Size(72, 19);
+            this.chkTTC2Type.TabIndex = 0;
+            this.chkTTC2Type.Text = "Enabled";
+            this.chkTTC2Type.CheckedChanged += new System.EventHandler(this.chkTTC2Type_CheckedChanged);
             // 
-            // numOtherSettings
+            // numTTC2Type
             // 
-            this.numOtherSettings.Location = new System.Drawing.Point(6, 48);
-            this.numOtherSettings.Maximum = new decimal(new int[] {
+            this.numTTC2Type.Location = new System.Drawing.Point(6, 37);
+            this.numTTC2Type.Maximum = new decimal(new int[] {
             2147483647,
             0,
             0,
             0});
-            this.numOtherSettings.Minimum = new decimal(new int[] {
+            this.numTTC2Type.Minimum = new decimal(new int[] {
             -2147483648,
             0,
             0,
             -2147483648});
-            this.numOtherSettings.Name = "numOtherSettings";
-            this.numOtherSettings.Size = new System.Drawing.Size(112, 21);
-            this.numOtherSettings.TabIndex = 1;
-            this.numOtherSettings.ValueChanged += new System.EventHandler(this.numOtherSettings_ValueChanged);
+            this.numTTC2Type.Name = "numTTC2Type";
+            this.numTTC2Type.Size = new System.Drawing.Size(90, 21);
+            this.numTTC2Type.TabIndex = 1;
+            this.numTTC2Type.ValueChanged += new System.EventHandler(this.numTTC2Type_ValueChanged);
             // 
-            // fraScaling
+            // fraTTC2GhostTarget
             // 
-            this.fraScaling.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
-            this.fraScaling.Controls.Add(this.chkScaling);
-            this.fraScaling.Controls.Add(this.numScaling);
-            this.fraScaling.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraScaling.Location = new System.Drawing.Point(129, 241);
-            this.fraScaling.Name = "fraScaling";
-            this.fraScaling.Size = new System.Drawing.Size(120, 77);
-            this.fraScaling.TabIndex = 11;
-            this.fraScaling.TabStop = false;
-            this.fraScaling.Text = "Scale Modifier";
+            this.fraTTC2GhostTarget.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.fraTTC2GhostTarget.Controls.Add(this.chkTTC2GhostTarget);
+            this.fraTTC2GhostTarget.Controls.Add(this.numTTC2GhostTarget);
+            this.fraTTC2GhostTarget.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.fraTTC2GhostTarget.ForeColor = System.Drawing.SystemColors.InactiveCaption;
+            this.fraTTC2GhostTarget.Location = new System.Drawing.Point(8, 210);
+            this.fraTTC2GhostTarget.Name = "fraTTC2GhostTarget";
+            this.fraTTC2GhostTarget.Size = new System.Drawing.Size(102, 65);
+            this.fraTTC2GhostTarget.TabIndex = 12;
+            this.fraTTC2GhostTarget.TabStop = false;
+            this.fraTTC2GhostTarget.Text = "Ghost Target";
             // 
-            // chkScaling
+            // chkTTC2GhostTarget
             // 
-            this.chkScaling.AutoSize = true;
-            this.chkScaling.Location = new System.Drawing.Point(6, 26);
-            this.chkScaling.Name = "chkScaling";
-            this.chkScaling.Size = new System.Drawing.Size(72, 19);
-            this.chkScaling.TabIndex = 0;
-            this.chkScaling.Text = "Enabled";
-            this.chkScaling.CheckedChanged += new System.EventHandler(this.chkScaling_CheckedChanged);
+            this.chkTTC2GhostTarget.AutoSize = true;
+            this.chkTTC2GhostTarget.Location = new System.Drawing.Point(6, 16);
+            this.chkTTC2GhostTarget.Name = "chkTTC2GhostTarget";
+            this.chkTTC2GhostTarget.Size = new System.Drawing.Size(72, 19);
+            this.chkTTC2GhostTarget.TabIndex = 0;
+            this.chkTTC2GhostTarget.Text = "Enabled";
+            this.chkTTC2GhostTarget.CheckedChanged += new System.EventHandler(this.chkTTC2GhostTarget_CheckedChanged);
             // 
-            // numScaling
+            // numTTC2GhostTarget
             // 
-            this.numScaling.Location = new System.Drawing.Point(6, 48);
-            this.numScaling.Maximum = new decimal(new int[] {
+            this.numTTC2GhostTarget.Location = new System.Drawing.Point(6, 37);
+            this.numTTC2GhostTarget.Maximum = new decimal(new int[] {
             2147483647,
             0,
             0,
             0});
-            this.numScaling.Minimum = new decimal(new int[] {
+            this.numTTC2GhostTarget.Minimum = new decimal(new int[] {
             -2147483648,
             0,
             0,
             -2147483648});
-            this.numScaling.Name = "numScaling";
-            this.numScaling.Size = new System.Drawing.Size(108, 21);
-            this.numScaling.TabIndex = 1;
-            this.numScaling.ValueChanged += new System.EventHandler(this.numScaling_ValueChanged);
+            this.numTTC2GhostTarget.Name = "numTTC2GhostTarget";
+            this.numTTC2GhostTarget.Size = new System.Drawing.Size(90, 21);
+            this.numTTC2GhostTarget.TabIndex = 1;
+            this.numTTC2GhostTarget.ValueChanged += new System.EventHandler(this.numTTC2GhostTarget_ValueChanged);
             // 
-            // fraDDASection
+            // fraDDASet
             // 
-            this.fraDDASection.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
-            this.fraDDASection.Controls.Add(this.chkDDASection);
-            this.fraDDASection.Controls.Add(this.numDDASection);
-            this.fraDDASection.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraDDASection.Location = new System.Drawing.Point(3, 158);
-            this.fraDDASection.Name = "fraDDASection";
-            this.fraDDASection.Size = new System.Drawing.Size(120, 77);
-            this.fraDDASection.TabIndex = 10;
-            this.fraDDASection.TabStop = false;
-            this.fraDDASection.Text = "DDA Section";
-            // 
-            // chkDDASection
-            // 
-            this.chkDDASection.AutoSize = true;
-            this.chkDDASection.Location = new System.Drawing.Point(6, 26);
-            this.chkDDASection.Name = "chkDDASection";
-            this.chkDDASection.Size = new System.Drawing.Size(72, 19);
-            this.chkDDASection.TabIndex = 0;
-            this.chkDDASection.Text = "Enabled";
-            this.chkDDASection.CheckedChanged += new System.EventHandler(this.chkDDASection_CheckedChanged);
-            // 
-            // numDDASection
-            // 
-            this.numDDASection.Location = new System.Drawing.Point(6, 48);
-            this.numDDASection.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
-            this.numDDASection.Minimum = new decimal(new int[] {
-            -2147483648,
-            0,
-            0,
-            -2147483648});
-            this.numDDASection.Name = "numDDASection";
-            this.numDDASection.Size = new System.Drawing.Size(108, 21);
-            this.numDDASection.TabIndex = 1;
-            this.numDDASection.ValueChanged += new System.EventHandler(this.numDDASection_ValueChanged);
+            this.fraDDASet.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.fraDDASet.Controls.Add(this.fraDDASettings);
+            this.fraDDASet.Controls.Add(this.fraDDASection);
+            this.fraDDASet.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.fraDDASet.ForeColor = System.Drawing.Color.Crimson;
+            this.fraDDASet.Location = new System.Drawing.Point(120, 158);
+            this.fraDDASet.Name = "fraDDASet";
+            this.fraDDASet.Size = new System.Drawing.Size(118, 153);
+            this.fraDDASet.TabIndex = 10;
+            this.fraDDASet.TabStop = false;
+            this.fraDDASet.Text = "DDA Settings";
             // 
             // fraDDASettings
             // 
             this.fraDDASettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
             this.fraDDASettings.Controls.Add(this.chkDDASettings);
             this.fraDDASettings.Controls.Add(this.numDDASettings);
-            this.fraDDASettings.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraDDASettings.Location = new System.Drawing.Point(129, 158);
+            this.fraDDASettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.fraDDASettings.ForeColor = System.Drawing.SystemColors.InactiveCaption;
+            this.fraDDASettings.Location = new System.Drawing.Point(8, 82);
             this.fraDDASettings.Name = "fraDDASettings";
-            this.fraDDASettings.Size = new System.Drawing.Size(120, 77);
+            this.fraDDASettings.Size = new System.Drawing.Size(102, 65);
             this.fraDDASettings.TabIndex = 9;
             this.fraDDASettings.TabStop = false;
             this.fraDDASettings.Text = "DDA Death Count";
@@ -1145,7 +1165,7 @@ namespace CrashEdit
             // chkDDASettings
             // 
             this.chkDDASettings.AutoSize = true;
-            this.chkDDASettings.Location = new System.Drawing.Point(6, 26);
+            this.chkDDASettings.Location = new System.Drawing.Point(6, 16);
             this.chkDDASettings.Name = "chkDDASettings";
             this.chkDDASettings.Size = new System.Drawing.Size(72, 19);
             this.chkDDASettings.TabIndex = 0;
@@ -1154,7 +1174,7 @@ namespace CrashEdit
             // 
             // numDDASettings
             // 
-            this.numDDASettings.Location = new System.Drawing.Point(6, 48);
+            this.numDDASettings.Location = new System.Drawing.Point(6, 37);
             this.numDDASettings.Maximum = new decimal(new int[] {
             8388607,
             0,
@@ -1166,9 +1186,51 @@ namespace CrashEdit
             0,
             -2147483648});
             this.numDDASettings.Name = "numDDASettings";
-            this.numDDASettings.Size = new System.Drawing.Size(108, 21);
+            this.numDDASettings.Size = new System.Drawing.Size(90, 21);
             this.numDDASettings.TabIndex = 1;
             this.numDDASettings.ValueChanged += new System.EventHandler(this.numDDASettings_ValueChanged);
+            // 
+            // fraDDASection
+            // 
+            this.fraDDASection.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.fraDDASection.Controls.Add(this.chkDDASection);
+            this.fraDDASection.Controls.Add(this.numDDASection);
+            this.fraDDASection.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.fraDDASection.ForeColor = System.Drawing.SystemColors.InactiveCaption;
+            this.fraDDASection.Location = new System.Drawing.Point(8, 18);
+            this.fraDDASection.Name = "fraDDASection";
+            this.fraDDASection.Size = new System.Drawing.Size(102, 65);
+            this.fraDDASection.TabIndex = 10;
+            this.fraDDASection.TabStop = false;
+            this.fraDDASection.Text = "DDA Section";
+            // 
+            // chkDDASection
+            // 
+            this.chkDDASection.AutoSize = true;
+            this.chkDDASection.Location = new System.Drawing.Point(6, 16);
+            this.chkDDASection.Name = "chkDDASection";
+            this.chkDDASection.Size = new System.Drawing.Size(72, 19);
+            this.chkDDASection.TabIndex = 0;
+            this.chkDDASection.Text = "Enabled";
+            this.chkDDASection.CheckedChanged += new System.EventHandler(this.chkDDASection_CheckedChanged);
+            // 
+            // numDDASection
+            // 
+            this.numDDASection.Location = new System.Drawing.Point(6, 37);
+            this.numDDASection.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
+            this.numDDASection.Minimum = new decimal(new int[] {
+            -2147483648,
+            0,
+            0,
+            -2147483648});
+            this.numDDASection.Name = "numDDASection";
+            this.numDDASection.Size = new System.Drawing.Size(90, 21);
+            this.numDDASection.TabIndex = 1;
+            this.numDDASection.ValueChanged += new System.EventHandler(this.numDDASection_ValueChanged);
             // 
             // fraBoxCount
             // 
@@ -1180,23 +1242,23 @@ namespace CrashEdit
             this.fraBoxCount.ForeColor = System.Drawing.SystemColors.Window;
             this.fraBoxCount.Location = new System.Drawing.Point(157, 3);
             this.fraBoxCount.Name = "fraBoxCount";
-            this.fraBoxCount.Size = new System.Drawing.Size(128, 126);
+            this.fraBoxCount.Size = new System.Drawing.Size(123, 124);
             this.fraBoxCount.TabIndex = 8;
             this.fraBoxCount.TabStop = false;
             this.fraBoxCount.Text = "Box Count";
             // 
             // chkBonusBoxCount
             // 
-            this.chkBonusBoxCount.Location = new System.Drawing.Point(6, 70);
+            this.chkBonusBoxCount.Location = new System.Drawing.Point(6, 74);
             this.chkBonusBoxCount.Name = "chkBonusBoxCount";
-            this.chkBonusBoxCount.Size = new System.Drawing.Size(116, 19);
+            this.chkBonusBoxCount.Size = new System.Drawing.Size(111, 19);
             this.chkBonusBoxCount.TabIndex = 2;
             this.chkBonusBoxCount.Text = "Enabled (Bonus)";
             this.chkBonusBoxCount.CheckedChanged += new System.EventHandler(this.chkBonusBoxCount_CheckedChanged);
             // 
             // numBonusBoxCount
             // 
-            this.numBonusBoxCount.Location = new System.Drawing.Point(6, 95);
+            this.numBonusBoxCount.Location = new System.Drawing.Point(6, 97);
             this.numBonusBoxCount.Maximum = new decimal(new int[] {
             8388607,
             0,
@@ -1208,13 +1270,12 @@ namespace CrashEdit
             0,
             -2147483648});
             this.numBonusBoxCount.Name = "numBonusBoxCount";
-            this.numBonusBoxCount.Size = new System.Drawing.Size(116, 21);
+            this.numBonusBoxCount.Size = new System.Drawing.Size(111, 21);
             this.numBonusBoxCount.TabIndex = 3;
             this.numBonusBoxCount.ValueChanged += new System.EventHandler(this.numBonusBoxCount_ValueChanged);
             // 
             // chkBoxCount
             // 
-            this.chkBoxCount.AutoSize = true;
             this.chkBoxCount.Location = new System.Drawing.Point(6, 20);
             this.chkBoxCount.Name = "chkBoxCount";
             this.chkBoxCount.Size = new System.Drawing.Size(72, 19);
@@ -1236,7 +1297,7 @@ namespace CrashEdit
             0,
             -2147483648});
             this.numBoxCount.Name = "numBoxCount";
-            this.numBoxCount.Size = new System.Drawing.Size(116, 21);
+            this.numBoxCount.Size = new System.Drawing.Size(111, 21);
             this.numBoxCount.TabIndex = 1;
             this.numBoxCount.ValueChanged += new System.EventHandler(this.numBoxCount_ValueChanged);
             // 
@@ -1321,6 +1382,200 @@ namespace CrashEdit
             this.lblVictimIndex.TabIndex = 7;
             this.lblVictimIndex.Text = "?? / ??";
             this.lblVictimIndex.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // fraC3Set
+            // 
+            this.fraC3Set.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.fraC3Set.Controls.Add(this.fraScaling);
+            this.fraC3Set.Controls.Add(this.fraTTReward);
+            this.fraC3Set.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.fraC3Set.ForeColor = System.Drawing.Color.DarkOrange;
+            this.fraC3Set.Location = new System.Drawing.Point(236, 158);
+            this.fraC3Set.Name = "fraC3Set";
+            this.fraC3Set.Size = new System.Drawing.Size(118, 153);
+            this.fraC3Set.TabIndex = 12;
+            this.fraC3Set.TabStop = false;
+            this.fraC3Set.Text = "Crash 3 Settings";
+            // 
+            // fraScaling
+            // 
+            this.fraScaling.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.fraScaling.Controls.Add(this.chkScaling);
+            this.fraScaling.Controls.Add(this.numScaling);
+            this.fraScaling.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.fraScaling.ForeColor = System.Drawing.SystemColors.InactiveCaption;
+            this.fraScaling.Location = new System.Drawing.Point(6, 18);
+            this.fraScaling.Name = "fraScaling";
+            this.fraScaling.Size = new System.Drawing.Size(106, 65);
+            this.fraScaling.TabIndex = 11;
+            this.fraScaling.TabStop = false;
+            this.fraScaling.Text = "Scale Modifier";
+            // 
+            // chkScaling
+            // 
+            this.chkScaling.AutoSize = true;
+            this.chkScaling.Location = new System.Drawing.Point(6, 16);
+            this.chkScaling.Name = "chkScaling";
+            this.chkScaling.Size = new System.Drawing.Size(72, 19);
+            this.chkScaling.TabIndex = 0;
+            this.chkScaling.Text = "Enabled";
+            this.chkScaling.CheckedChanged += new System.EventHandler(this.chkScaling_CheckedChanged);
+            // 
+            // numScaling
+            // 
+            this.numScaling.Location = new System.Drawing.Point(6, 37);
+            this.numScaling.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
+            this.numScaling.Minimum = new decimal(new int[] {
+            -2147483648,
+            0,
+            0,
+            -2147483648});
+            this.numScaling.Name = "numScaling";
+            this.numScaling.Size = new System.Drawing.Size(94, 21);
+            this.numScaling.TabIndex = 1;
+            this.numScaling.ValueChanged += new System.EventHandler(this.numScaling_ValueChanged);
+            // 
+            // fraTTReward
+            // 
+            this.fraTTReward.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.fraTTReward.Controls.Add(this.chkTTReward);
+            this.fraTTReward.Controls.Add(this.numTTReward);
+            this.fraTTReward.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.fraTTReward.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraTTReward.Location = new System.Drawing.Point(6, 82);
+            this.fraTTReward.Name = "fraTTReward";
+            this.fraTTReward.Size = new System.Drawing.Size(106, 65);
+            this.fraTTReward.TabIndex = 12;
+            this.fraTTReward.TabStop = false;
+            this.fraTTReward.Text = "Time Trial Reward";
+            // 
+            // chkTTReward
+            // 
+            this.chkTTReward.AutoSize = true;
+            this.chkTTReward.Location = new System.Drawing.Point(6, 16);
+            this.chkTTReward.Name = "chkTTReward";
+            this.chkTTReward.Size = new System.Drawing.Size(72, 19);
+            this.chkTTReward.TabIndex = 0;
+            this.chkTTReward.Text = "Enabled";
+            this.chkTTReward.CheckedChanged += new System.EventHandler(this.chkTTReward_CheckedChanged);
+            // 
+            // numTTReward
+            // 
+            this.numTTReward.Location = new System.Drawing.Point(6, 37);
+            this.numTTReward.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
+            this.numTTReward.Minimum = new decimal(new int[] {
+            -2147483648,
+            0,
+            0,
+            -2147483648});
+            this.numTTReward.Name = "numTTReward";
+            this.numTTReward.Size = new System.Drawing.Size(94, 21);
+            this.numTTReward.TabIndex = 1;
+            this.numTTReward.ValueChanged += new System.EventHandler(this.numTTReward_ValueChanged);
+            // 
+            // fraOtherSet
+            // 
+            this.fraOtherSet.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.fraOtherSet.Controls.Add(this.fraZMod);
+            this.fraOtherSet.Controls.Add(this.fraOtherSettings);
+            this.fraOtherSet.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.fraOtherSet.ForeColor = System.Drawing.Color.MediumSeaGreen;
+            this.fraOtherSet.Location = new System.Drawing.Point(352, 158);
+            this.fraOtherSet.Name = "fraOtherSet";
+            this.fraOtherSet.Size = new System.Drawing.Size(118, 153);
+            this.fraOtherSet.TabIndex = 11;
+            this.fraOtherSet.TabStop = false;
+            this.fraOtherSet.Text = "Other Settings";
+            // 
+            // fraZMod
+            // 
+            this.fraZMod.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.fraZMod.Controls.Add(this.chkZMod);
+            this.fraZMod.Controls.Add(this.numZMod);
+            this.fraZMod.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.fraZMod.ForeColor = System.Drawing.SystemColors.InactiveCaption;
+            this.fraZMod.Location = new System.Drawing.Point(8, 82);
+            this.fraZMod.Name = "fraZMod";
+            this.fraZMod.Size = new System.Drawing.Size(102, 65);
+            this.fraZMod.TabIndex = 11;
+            this.fraZMod.TabStop = false;
+            this.fraZMod.Text = "Depth Modifier";
+            // 
+            // chkZMod
+            // 
+            this.chkZMod.Location = new System.Drawing.Point(6, 16);
+            this.chkZMod.Name = "chkZMod";
+            this.chkZMod.Size = new System.Drawing.Size(72, 19);
+            this.chkZMod.TabIndex = 0;
+            this.chkZMod.Text = "Enabled";
+            this.chkZMod.CheckedChanged += new System.EventHandler(this.chkZMod_CheckedChanged);
+            // 
+            // numZMod
+            // 
+            this.numZMod.Location = new System.Drawing.Point(6, 37);
+            this.numZMod.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
+            this.numZMod.Minimum = new decimal(new int[] {
+            -2147483648,
+            0,
+            0,
+            -2147483648});
+            this.numZMod.Name = "numZMod";
+            this.numZMod.Size = new System.Drawing.Size(90, 21);
+            this.numZMod.TabIndex = 1;
+            this.numZMod.ValueChanged += new System.EventHandler(this.numZMod_ValueChanged);
+            // 
+            // fraOtherSettings
+            // 
+            this.fraOtherSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.fraOtherSettings.Controls.Add(this.chkOtherSettings);
+            this.fraOtherSettings.Controls.Add(this.numOtherSettings);
+            this.fraOtherSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.fraOtherSettings.ForeColor = System.Drawing.SystemColors.InactiveCaption;
+            this.fraOtherSettings.Location = new System.Drawing.Point(8, 18);
+            this.fraOtherSettings.Name = "fraOtherSettings";
+            this.fraOtherSettings.Size = new System.Drawing.Size(102, 65);
+            this.fraOtherSettings.TabIndex = 10;
+            this.fraOtherSettings.TabStop = false;
+            this.fraOtherSettings.Text = "Misc Settings";
+            // 
+            // chkOtherSettings
+            // 
+            this.chkOtherSettings.Location = new System.Drawing.Point(6, 16);
+            this.chkOtherSettings.Name = "chkOtherSettings";
+            this.chkOtherSettings.Size = new System.Drawing.Size(72, 19);
+            this.chkOtherSettings.TabIndex = 0;
+            this.chkOtherSettings.Text = "Enabled";
+            this.chkOtherSettings.CheckedChanged += new System.EventHandler(this.chkOtherSettings_CheckedChanged);
+            // 
+            // numOtherSettings
+            // 
+            this.numOtherSettings.Location = new System.Drawing.Point(6, 37);
+            this.numOtherSettings.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
+            this.numOtherSettings.Minimum = new decimal(new int[] {
+            -2147483648,
+            0,
+            0,
+            -2147483648});
+            this.numOtherSettings.Name = "numOtherSettings";
+            this.numOtherSettings.Size = new System.Drawing.Size(90, 21);
+            this.numOtherSettings.TabIndex = 1;
+            this.numOtherSettings.ValueChanged += new System.EventHandler(this.numOtherSettings_ValueChanged);
             // 
             // tabCamera
             // 
@@ -3068,7 +3323,7 @@ namespace CrashEdit
             this.Controls.Add(this.darkToolStrip);
             this.Controls.Add(this.tbcTabs);
             this.Name = "EntityBox";
-            this.Size = new System.Drawing.Size(600, 500);
+            this.Size = new System.Drawing.Size(900, 800);
             this.tbcTabs.ResumeLayout(false);
             this.tabGeneral.ResumeLayout(false);
             this.fraName.ResumeLayout(false);
@@ -3094,30 +3349,43 @@ namespace CrashEdit
             ((System.ComponentModel.ISupportInitialize)(this.numID)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numID2)).EndInit();
             this.tabSpecial.ResumeLayout(false);
-            this.fraZMod.ResumeLayout(false);
-            this.fraZMod.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numZMod)).EndInit();
-            this.fraTTReward.ResumeLayout(false);
-            this.fraTTReward.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numTTReward)).EndInit();
-            this.fraOtherSettings.ResumeLayout(false);
-            this.fraOtherSettings.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numOtherSettings)).EndInit();
-            this.fraScaling.ResumeLayout(false);
-            this.fraScaling.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numScaling)).EndInit();
-            this.fraDDASection.ResumeLayout(false);
-            this.fraDDASection.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numDDASection)).EndInit();
+            this.fraC2TTSet.ResumeLayout(false);
+            this.fraTTC2Yrot.ResumeLayout(false);
+            this.fraTTC2Yrot.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numTTC2Yrot)).EndInit();
+            this.fraTTC2BoxFlag.ResumeLayout(false);
+            this.fraTTC2BoxFlag.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numTTC2BoxFlag)).EndInit();
+            this.fraTTC2Type.ResumeLayout(false);
+            this.fraTTC2Type.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numTTC2Type)).EndInit();
+            this.fraTTC2GhostTarget.ResumeLayout(false);
+            this.fraTTC2GhostTarget.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numTTC2GhostTarget)).EndInit();
+            this.fraDDASet.ResumeLayout(false);
             this.fraDDASettings.ResumeLayout(false);
             this.fraDDASettings.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numDDASettings)).EndInit();
+            this.fraDDASection.ResumeLayout(false);
+            this.fraDDASection.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numDDASection)).EndInit();
             this.fraBoxCount.ResumeLayout(false);
-            this.fraBoxCount.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numBonusBoxCount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numBoxCount)).EndInit();
             this.fraVictims.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numVictimID)).EndInit();
+            this.fraC3Set.ResumeLayout(false);
+            this.fraScaling.ResumeLayout(false);
+            this.fraScaling.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numScaling)).EndInit();
+            this.fraTTReward.ResumeLayout(false);
+            this.fraTTReward.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numTTReward)).EndInit();
+            this.fraOtherSet.ResumeLayout(false);
+            this.fraZMod.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numZMod)).EndInit();
+            this.fraOtherSettings.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numOtherSettings)).EndInit();
             this.tabCamera.ResumeLayout(false);
             this.tabCamera.PerformLayout();
             this.fraFOV.ResumeLayout(false);
@@ -3200,9 +3468,6 @@ namespace CrashEdit
         private System.Windows.Forms.GroupBox fraDDASettings;
         private DarkUI.Controls.DarkCheckBox chkDDASettings;
         private DarkUI.Controls.DarkNumericUpDown numDDASettings;
-        private System.Windows.Forms.GroupBox fraDDASection;
-        private DarkUI.Controls.DarkCheckBox chkDDASection;
-        private DarkUI.Controls.DarkNumericUpDown numDDASection;
         private System.Windows.Forms.TabPage tabLoadLists;
         private System.Windows.Forms.GroupBox fraLoadListA;
         private DarkUI.Controls.DarkButton cmdRemoveEIDA;
@@ -3402,5 +3667,24 @@ namespace CrashEdit
         private DarkUI.Controls.DarkLabel lblPayloadTexture;
         private DarkUI.Controls.DarkLabel lblPayloadSound;
         private DarkUI.Controls.DarkLabel lblVerifyLoadLists;
+        private System.Windows.Forms.GroupBox fraDDASection;
+        private DarkUI.Controls.DarkCheckBox chkDDASection;
+        private DarkUI.Controls.DarkNumericUpDown numDDASection;
+        private System.Windows.Forms.GroupBox fraC2TTSet;
+        private System.Windows.Forms.GroupBox fraTTC2Yrot;
+        private DarkUI.Controls.DarkCheckBox chkTTC2Yrot;
+        private DarkUI.Controls.DarkNumericUpDown numTTC2Yrot;
+        private System.Windows.Forms.GroupBox fraTTC2BoxFlag;
+        private DarkUI.Controls.DarkCheckBox chkTTC2BoxFlag;
+        private DarkUI.Controls.DarkNumericUpDown numTTC2BoxFlag;
+        private System.Windows.Forms.GroupBox fraTTC2Type;
+        private System.Windows.Forms.GroupBox fraTTC2GhostTarget;
+        private DarkUI.Controls.DarkCheckBox chkTTC2GhostTarget;
+        private DarkUI.Controls.DarkNumericUpDown numTTC2GhostTarget;
+        private DarkUI.Controls.DarkCheckBox chkTTC2Type;
+        private DarkUI.Controls.DarkNumericUpDown numTTC2Type;
+        private System.Windows.Forms.GroupBox fraDDASet;
+        private System.Windows.Forms.GroupBox fraC3Set;
+        private System.Windows.Forms.GroupBox fraOtherSet;
     }
 }

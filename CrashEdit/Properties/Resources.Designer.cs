@@ -668,7 +668,7 @@ namespace CrashEdit.Properties {
         }
         
         /// <summary>
-        ///   Other Settings に類似しているローカライズされた文字列を検索します。
+        ///   Misc Settings に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string EntityBox_FraOtherSettings {
             get {

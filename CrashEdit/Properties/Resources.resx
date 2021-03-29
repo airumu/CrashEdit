@@ -350,7 +350,7 @@
     <value>Name</value>
   </data>
   <data name="EntityBox_FraOtherSettings" xml:space="preserve">
-    <value>Other Settings</value>
+    <value>Misc Settings</value>
   </data>
   <data name="EntityBox_FraPosition" xml:space="preserve">
     <value>Position(s)</value>
