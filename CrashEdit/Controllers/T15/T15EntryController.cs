@@ -18,8 +18,8 @@ namespace CrashEdit
 
         public override void InvalidateNodeImage()
         {
-            Node.ImageKey = "thing";
-            Node.SelectedImageKey = "thing";
+            Node.ImageKey = "yellowb";
+            Node.SelectedImageKey = "yellowb";
         }
 
         public T15Entry T15Entry { get; }
