@@ -125,46 +125,46 @@
     <value>Resources/Icons/NSF.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
   </data>
   <data name="ArrowImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Images/Arrow.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources/objects_028.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
   </data>
   <data name="BinocularsImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Images/Binoculars.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources/objects_036.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
   </data>
   <data name="BinocularsNextImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Images/BinocularsNext.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources/objects_037.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
   </data>
   <data name="FileImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Images/File.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources/Computer_File_053.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
   </data>
   <data name="FolderImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Images/Folder.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources/Computer_File_063.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
   </data>
   <data name="ImageImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Images/Image.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources/Computer_File_068.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
   </data>
   <data name="MusicImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Images/Music.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources/objects_006.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
   </data>
   <data name="OpenImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Images/Open.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources/Computer_File_064.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
   </data>
   <data name="SaveImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Images/Save.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources/objects_029.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
   </data>
   <data name="SpeakerImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Images/Speaker.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources/objects_053.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
   </data>
   <data name="ThingImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Images/Thing.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources/objects_012.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
   </data>
   <data name="BlueJournalImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Images/BlueJournal.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources/People_020.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
   </data>
   <data name="WhiteJournalImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Images/WhiteJournal.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources/People_017.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
   </data>
   <data name="YellowJournalImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Images/YellowJournal.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources/People_014.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
   </data>
   <data name="ActionBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources/Textures/ActivatorBox.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
@@ -269,25 +269,25 @@
     <value>Resources\objects_012_yellow.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="IronContinueBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Textures\IronContinueBoxTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>Resources\Textures\IronCheckpoint.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="POWBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Textures\POWBoxTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>Resources\Textures\POW.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SteelFruitBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Textures\SteelFruitBoxTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>Resources\Textures\SteelFruitBox.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SteelPickupBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Textures\SteelPickupBoxTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>Resources\Textures\SteelPickupBox.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SwitchOFFBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Textures\SwitchOFFBoxTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>Resources\Textures\SwitchOFF.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SwitchONBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Textures\SwitchONBoxTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>Resources\Textures\SwitchON.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SaveImage2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\SaveImage2.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>Resources\objects_029_green.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="cbhacks-logo-new" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\Icons\cbhacks-logo-new.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -308,22 +308,22 @@
     <value>Resources\Icons\cbhacks-logo-new2.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SwitchGhostBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Textures\SwitchGhostBoxTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>Resources\Textures\SwitchGhost.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SwitchGhostToGreenBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Textures\SwitchGhostToGreenBoxTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>Resources\Textures\SwitchGhostToGreen.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SwitchGhostToRedABoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Textures\SwitchGhostToRedABoxTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>Resources\Textures\SwitchGhostToRed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SwitchGreenBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Textures\SwitchGreenBoxTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>Resources\Textures\SwitchSolidGreen.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SwitchRedBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Textures\SwitchRedBoxTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>Resources\Textures\SwitchSolidRed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ArrowBlueImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Arrow2.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>Resources\objects_028_blue.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SpeakerBlueImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\objects_053_blue.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

@@ -214,9 +214,6 @@
   <data name="objects_036" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\objects_036.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="objects_029" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\objects_029.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="objects_020" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\objects_020.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -771,5 +768,8 @@
   </data>
   <data name="Toolbar_Play" xml:space="preserve">
     <value>Play</value>
+  </data>
+  <data name="objects_029" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\objects_029.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
