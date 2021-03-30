@@ -523,7 +523,10 @@ namespace CrashEdit
                         LoadTexture(OldResources.ActionNitroBoxTopTexture);
                     break;
                 default:
-                    LoadTexture(OldResources.UnknownBoxTopTexture);
+                    if (timetrialmode && timetrialreward != 0)
+                        LoadBoxTopTextureTimeTrial(timetrialreward);
+                    else
+                        LoadTexture(OldResources.UnknownBoxTopTexture);
                     break;
             }
             if (Settings.Default.UseCustomCrates)
@@ -701,7 +704,10 @@ namespace CrashEdit
                         LoadTexture(OldResources.ActionNitroBoxTexture);
                     break;
                 default:
-                    LoadTexture(OldResources.UnknownBoxTexture);
+                    if (timetrialmode && timetrialreward != 0)
+                        LoadBoxSideTextureTimeTrial(timetrialreward);
+                    else
+                        LoadTexture(OldResources.UnknownBoxTexture);
                     break;
             }
             if (Settings.Default.UseCustomCrates)
