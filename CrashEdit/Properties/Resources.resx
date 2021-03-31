@@ -341,7 +341,8 @@
     <value>DDA Death Count</value>
   </data>
   <data name="EntityBox_FraID" xml:space="preserve">
-    <value>ID</value>
+    <value>ID &amp;&amp; Look-up ID</value>
+    <comment>Two &amp; are used because &amp; is used to select the mnemonic character in titles.</comment>
   </data>
   <data name="EntityBox_FraName" xml:space="preserve">
     <value>Name</value>

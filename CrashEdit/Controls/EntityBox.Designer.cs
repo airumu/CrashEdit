@@ -38,7 +38,6 @@ namespace CrashEdit
             this.fraType = new System.Windows.Forms.GroupBox();
             this.chkType = new DarkUI.Controls.DarkCheckBox();
             this.numType = new DarkUI.Controls.DarkNumericUpDown();
-            this.fraSubtype = new System.Windows.Forms.GroupBox();
             this.chkSubtype = new DarkUI.Controls.DarkCheckBox();
             this.numSubtype = new DarkUI.Controls.DarkNumericUpDown();
             this.fraSettings = new System.Windows.Forms.GroupBox();
@@ -72,10 +71,10 @@ namespace CrashEdit
             this.chkID = new DarkUI.Controls.DarkCheckBox();
             this.chkID2 = new DarkUI.Controls.DarkCheckBox();
             this.numID2 = new DarkUI.Controls.DarkNumericUpDown();
+            this.fraC2TTSet = new System.Windows.Forms.GroupBox();
             this.fraTTC2Type = new System.Windows.Forms.GroupBox();
             this.chkTTC2Type = new DarkUI.Controls.DarkCheckBox();
             this.numTTC2Type = new DarkUI.Controls.DarkNumericUpDown();
-            this.fraC2TTSet = new System.Windows.Forms.GroupBox();
             this.fraTTC2Yrot = new System.Windows.Forms.GroupBox();
             this.chkTTC2Yrot = new DarkUI.Controls.DarkCheckBox();
             this.numTTC2Yrot = new DarkUI.Controls.DarkNumericUpDown();
@@ -263,12 +262,12 @@ namespace CrashEdit
             this.tsbLoadLists = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbDrawLists = new System.Windows.Forms.ToolStripButton();
+            this.fraSubtype = new System.Windows.Forms.GroupBox();
             this.tbcTabs.SuspendLayout();
             this.tabGeneral.SuspendLayout();
             this.fraName.SuspendLayout();
             this.fraType.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numType)).BeginInit();
-            this.fraSubtype.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numSubtype)).BeginInit();
             this.fraSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numSettingC)).BeginInit();
@@ -281,9 +280,9 @@ namespace CrashEdit
             this.fraID.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numID)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numID2)).BeginInit();
+            this.fraC2TTSet.SuspendLayout();
             this.fraTTC2Type.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numTTC2Type)).BeginInit();
-            this.fraC2TTSet.SuspendLayout();
             this.fraTTC2Yrot.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numTTC2Yrot)).BeginInit();
             this.fraTTC2BoxFlag.SuspendLayout();
@@ -351,6 +350,7 @@ namespace CrashEdit
             this.fraEntityA.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numEntityA)).BeginInit();
             this.darkToolStrip.SuspendLayout();
+            this.fraSubtype.SuspendLayout();
             this.SuspendLayout();
             // 
             // cmdInsertVictim
@@ -470,19 +470,6 @@ namespace CrashEdit
             this.numType.TabIndex = 1;
             this.numType.ValueChanged += new System.EventHandler(this.numType_ValueChanged);
             // 
-            // fraSubtype
-            // 
-            this.fraSubtype.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
-            this.fraSubtype.Controls.Add(this.chkSubtype);
-            this.fraSubtype.Controls.Add(this.numSubtype);
-            this.fraSubtype.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraSubtype.Location = new System.Drawing.Point(350, 81);
-            this.fraSubtype.Name = "fraSubtype";
-            this.fraSubtype.Size = new System.Drawing.Size(100, 74);
-            this.fraSubtype.TabIndex = 5;
-            this.fraSubtype.TabStop = false;
-            this.fraSubtype.Text = "Subtype";
-            // 
             // chkSubtype
             // 
             this.chkSubtype.AutoSize = true;
@@ -528,7 +515,7 @@ namespace CrashEdit
             this.fraSettings.ForeColor = System.Drawing.SystemColors.Window;
             this.fraSettings.Location = new System.Drawing.Point(3, 241);
             this.fraSettings.Name = "fraSettings";
-            this.fraSettings.Size = new System.Drawing.Size(216, 132);
+            this.fraSettings.Size = new System.Drawing.Size(216, 129);
             this.fraSettings.TabIndex = 2;
             this.fraSettings.TabStop = false;
             this.fraSettings.Text = "Argument(s)";
@@ -538,7 +525,7 @@ namespace CrashEdit
             this.chkSettingHex.AutoSize = true;
             this.chkSettingHex.Checked = true;
             this.chkSettingHex.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkSettingHex.Location = new System.Drawing.Point(118, 102);
+            this.chkSettingHex.Location = new System.Drawing.Point(125, 102);
             this.chkSettingHex.Name = "chkSettingHex";
             this.chkSettingHex.Size = new System.Drawing.Size(48, 19);
             this.chkSettingHex.TabIndex = 8;
@@ -570,34 +557,34 @@ namespace CrashEdit
             this.lblSettingIndex.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblSettingIndex.Location = new System.Drawing.Point(6, 18);
             this.lblSettingIndex.Name = "lblSettingIndex";
-            this.lblSettingIndex.Size = new System.Drawing.Size(60, 21);
+            this.lblSettingIndex.Size = new System.Drawing.Size(76, 21);
             this.lblSettingIndex.TabIndex = 5;
             this.lblSettingIndex.Text = "?? / ??";
             this.lblSettingIndex.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // cmdNextSetting
             // 
-            this.cmdNextSetting.Location = new System.Drawing.Point(142, 18);
+            this.cmdNextSetting.Location = new System.Drawing.Point(151, 16);
             this.cmdNextSetting.Name = "cmdNextSetting";
             this.cmdNextSetting.Padding = new System.Windows.Forms.Padding(5);
-            this.cmdNextSetting.Size = new System.Drawing.Size(64, 21);
+            this.cmdNextSetting.Size = new System.Drawing.Size(57, 23);
             this.cmdNextSetting.TabIndex = 1;
             this.cmdNextSetting.Text = "Next";
             this.cmdNextSetting.Click += new System.EventHandler(this.cmdNextSetting_Click);
             // 
             // cmdPreviousSetting
             // 
-            this.cmdPreviousSetting.Location = new System.Drawing.Point(72, 18);
+            this.cmdPreviousSetting.Location = new System.Drawing.Point(88, 16);
             this.cmdPreviousSetting.Name = "cmdPreviousSetting";
             this.cmdPreviousSetting.Padding = new System.Windows.Forms.Padding(5);
-            this.cmdPreviousSetting.Size = new System.Drawing.Size(64, 21);
+            this.cmdPreviousSetting.Size = new System.Drawing.Size(57, 23);
             this.cmdPreviousSetting.TabIndex = 0;
             this.cmdPreviousSetting.Text = "Previous";
             this.cmdPreviousSetting.Click += new System.EventHandler(this.cmdPreviousSetting_Click);
             // 
             // cmdAddSetting
             // 
-            this.cmdAddSetting.Location = new System.Drawing.Point(133, 46);
+            this.cmdAddSetting.Location = new System.Drawing.Point(125, 46);
             this.cmdAddSetting.Name = "cmdAddSetting";
             this.cmdAddSetting.Padding = new System.Windows.Forms.Padding(5);
             this.cmdAddSetting.Size = new System.Drawing.Size(75, 21);
@@ -607,7 +594,7 @@ namespace CrashEdit
             // 
             // cmdRemoveSetting
             // 
-            this.cmdRemoveSetting.Location = new System.Drawing.Point(133, 71);
+            this.cmdRemoveSetting.Location = new System.Drawing.Point(125, 71);
             this.cmdRemoveSetting.Name = "cmdRemoveSetting";
             this.cmdRemoveSetting.Padding = new System.Windows.Forms.Padding(5);
             this.cmdRemoveSetting.Size = new System.Drawing.Size(75, 21);
@@ -692,10 +679,10 @@ namespace CrashEdit
             // 
             // cmdAppendPosition
             // 
-            this.cmdAppendPosition.Location = new System.Drawing.Point(133, 45);
+            this.cmdAppendPosition.Location = new System.Drawing.Point(125, 46);
             this.cmdAppendPosition.Name = "cmdAppendPosition";
             this.cmdAppendPosition.Padding = new System.Windows.Forms.Padding(5);
-            this.cmdAppendPosition.Size = new System.Drawing.Size(75, 23);
+            this.cmdAppendPosition.Size = new System.Drawing.Size(75, 21);
             this.cmdAppendPosition.TabIndex = 6;
             this.cmdAppendPosition.Text = "Append";
             this.cmdAppendPosition.Click += new System.EventHandler(this.cmdAppendPosition_Click);
@@ -723,7 +710,7 @@ namespace CrashEdit
             // cmdInterpolate
             // 
             this.cmdInterpolate.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.cmdInterpolate.Location = new System.Drawing.Point(26, 125);
+            this.cmdInterpolate.Location = new System.Drawing.Point(26, 123);
             this.cmdInterpolate.Name = "cmdInterpolate";
             this.cmdInterpolate.Padding = new System.Windows.Forms.Padding(5);
             this.cmdInterpolate.Size = new System.Drawing.Size(79, 23);
@@ -744,7 +731,7 @@ namespace CrashEdit
             // 
             // cmdInsertPosition
             // 
-            this.cmdInsertPosition.Location = new System.Drawing.Point(133, 74);
+            this.cmdInsertPosition.Location = new System.Drawing.Point(125, 72);
             this.cmdInsertPosition.Name = "cmdInsertPosition";
             this.cmdInsertPosition.Padding = new System.Windows.Forms.Padding(5);
             this.cmdInsertPosition.Size = new System.Drawing.Size(75, 21);
@@ -764,7 +751,7 @@ namespace CrashEdit
             // 
             // cmdRemovePosition
             // 
-            this.cmdRemovePosition.Location = new System.Drawing.Point(133, 101);
+            this.cmdRemovePosition.Location = new System.Drawing.Point(125, 98);
             this.cmdRemovePosition.Name = "cmdRemovePosition";
             this.cmdRemovePosition.Padding = new System.Windows.Forms.Padding(5);
             this.cmdRemovePosition.Size = new System.Drawing.Size(75, 21);
@@ -868,13 +855,14 @@ namespace CrashEdit
             this.fraID.Controls.Add(this.chkID);
             this.fraID.Controls.Add(this.chkID2);
             this.fraID.Controls.Add(this.numID2);
+            this.fraID.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.fraID.ForeColor = System.Drawing.SystemColors.Window;
             this.fraID.Location = new System.Drawing.Point(225, 3);
             this.fraID.Name = "fraID";
             this.fraID.Size = new System.Drawing.Size(118, 119);
             this.fraID.TabIndex = 3;
             this.fraID.TabStop = false;
-            this.fraID.Text = "ID";
+            this.fraID.Text = "ID && Look-up ID";
             // 
             // numID
             // 
@@ -932,6 +920,22 @@ namespace CrashEdit
             this.numID2.TabIndex = 3;
             this.numID2.ValueChanged += new System.EventHandler(this.numID2_ValueChanged);
             // 
+            // fraC2TTSet
+            // 
+            this.fraC2TTSet.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.fraC2TTSet.Controls.Add(this.fraTTC2Type);
+            this.fraC2TTSet.Controls.Add(this.fraTTC2Yrot);
+            this.fraC2TTSet.Controls.Add(this.fraTTC2BoxFlag);
+            this.fraC2TTSet.Controls.Add(this.fraTTC2GhostTarget);
+            this.fraC2TTSet.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.fraC2TTSet.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.fraC2TTSet.Location = new System.Drawing.Point(225, 125);
+            this.fraC2TTSet.Name = "fraC2TTSet";
+            this.fraC2TTSet.Size = new System.Drawing.Size(119, 280);
+            this.fraC2TTSet.TabIndex = 11;
+            this.fraC2TTSet.TabStop = false;
+            this.fraC2TTSet.Text = "C2 TT Settings";
+            // 
             // fraTTC2Type
             // 
             this.fraTTC2Type.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
@@ -973,22 +977,6 @@ namespace CrashEdit
             this.numTTC2Type.Size = new System.Drawing.Size(90, 21);
             this.numTTC2Type.TabIndex = 1;
             this.numTTC2Type.ValueChanged += new System.EventHandler(this.numTTC2Type_ValueChanged);
-            // 
-            // fraC2TTSet
-            // 
-            this.fraC2TTSet.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
-            this.fraC2TTSet.Controls.Add(this.fraTTC2Type);
-            this.fraC2TTSet.Controls.Add(this.fraTTC2Yrot);
-            this.fraC2TTSet.Controls.Add(this.fraTTC2BoxFlag);
-            this.fraC2TTSet.Controls.Add(this.fraTTC2GhostTarget);
-            this.fraC2TTSet.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.fraC2TTSet.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.fraC2TTSet.Location = new System.Drawing.Point(225, 125);
-            this.fraC2TTSet.Name = "fraC2TTSet";
-            this.fraC2TTSet.Size = new System.Drawing.Size(119, 280);
-            this.fraC2TTSet.TabIndex = 11;
-            this.fraC2TTSet.TabStop = false;
-            this.fraC2TTSet.Text = "C2 TT Settings";
             // 
             // fraTTC2Yrot
             // 
@@ -3316,6 +3304,19 @@ namespace CrashEdit
             this.tsbDrawLists.Size = new System.Drawing.Size(24, 24);
             this.tsbDrawLists.Text = "Draw Lists";
             // 
+            // fraSubtype
+            // 
+            this.fraSubtype.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.fraSubtype.Controls.Add(this.chkSubtype);
+            this.fraSubtype.Controls.Add(this.numSubtype);
+            this.fraSubtype.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraSubtype.Location = new System.Drawing.Point(350, 81);
+            this.fraSubtype.Name = "fraSubtype";
+            this.fraSubtype.Size = new System.Drawing.Size(100, 74);
+            this.fraSubtype.TabIndex = 5;
+            this.fraSubtype.TabStop = false;
+            this.fraSubtype.Text = "Subtype";
+            // 
             // EntityBox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -3331,8 +3332,6 @@ namespace CrashEdit
             this.fraType.ResumeLayout(false);
             this.fraType.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numType)).EndInit();
-            this.fraSubtype.ResumeLayout(false);
-            this.fraSubtype.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numSubtype)).EndInit();
             this.fraSettings.ResumeLayout(false);
             this.fraSettings.PerformLayout();
@@ -3348,10 +3347,10 @@ namespace CrashEdit
             this.fraID.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numID)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numID2)).EndInit();
+            this.fraC2TTSet.ResumeLayout(false);
             this.fraTTC2Type.ResumeLayout(false);
             this.fraTTC2Type.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numTTC2Type)).EndInit();
-            this.fraC2TTSet.ResumeLayout(false);
             this.fraTTC2Yrot.ResumeLayout(false);
             this.fraTTC2Yrot.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numTTC2Yrot)).EndInit();
@@ -3447,6 +3446,8 @@ namespace CrashEdit
             ((System.ComponentModel.ISupportInitialize)(this.numEntityA)).EndInit();
             this.darkToolStrip.ResumeLayout(false);
             this.darkToolStrip.PerformLayout();
+            this.fraSubtype.ResumeLayout(false);
+            this.fraSubtype.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -3630,7 +3631,6 @@ namespace CrashEdit
         private System.Windows.Forms.GroupBox fraType;
         private DarkUI.Controls.DarkCheckBox chkType;
         private DarkUI.Controls.DarkNumericUpDown numType;
-        private System.Windows.Forms.GroupBox fraSubtype;
         private DarkUI.Controls.DarkCheckBox chkSubtype;
         private DarkUI.Controls.DarkNumericUpDown numSubtype;
         private System.Windows.Forms.GroupBox fraSettings;
@@ -3686,5 +3686,6 @@ namespace CrashEdit
         private System.Windows.Forms.GroupBox fraDDASet;
         private System.Windows.Forms.GroupBox fraC3Set;
         private System.Windows.Forms.GroupBox fraOtherSet;
+        private System.Windows.Forms.GroupBox fraSubtype;
     }
 }

@@ -605,7 +605,7 @@ namespace CrashEdit.Properties {
         }
         
         /// <summary>
-        ///   ID に類似しているローカライズされた文字列を検索します。
+        ///   ID &amp;&amp; Look-up ID に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string EntityBox_FraID {
             get {
