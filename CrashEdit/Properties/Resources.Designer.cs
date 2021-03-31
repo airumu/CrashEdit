@@ -767,6 +767,18 @@ namespace CrashEdit.Properties {
         }
         
         /// <summary>
+        ///   as Number: {0:F3}
+        ///as Angle: {1:F}deg
+        ///as Time: {2:F}s
+        ///as Meters: {3:F3}m に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_lblArgAs {
+            get {
+                return ResourceManager.GetString("EntityBox_lblArgAs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Position に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string EntityBox_lblFOVPosition {

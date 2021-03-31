@@ -38,6 +38,7 @@ namespace CrashEdit
             this.fraType = new System.Windows.Forms.GroupBox();
             this.chkType = new DarkUI.Controls.DarkCheckBox();
             this.numType = new DarkUI.Controls.DarkNumericUpDown();
+            this.fraSubtype = new System.Windows.Forms.GroupBox();
             this.chkSubtype = new DarkUI.Controls.DarkCheckBox();
             this.numSubtype = new DarkUI.Controls.DarkNumericUpDown();
             this.fraSettings = new System.Windows.Forms.GroupBox();
@@ -84,6 +85,7 @@ namespace CrashEdit
             this.fraTTC2GhostTarget = new System.Windows.Forms.GroupBox();
             this.chkTTC2GhostTarget = new DarkUI.Controls.DarkCheckBox();
             this.numTTC2GhostTarget = new DarkUI.Controls.DarkNumericUpDown();
+            this.lblArgAs = new DarkUI.Controls.DarkLabel();
             this.tabSpecial = new System.Windows.Forms.TabPage();
             this.fraDDASet = new System.Windows.Forms.GroupBox();
             this.fraDDASettings = new System.Windows.Forms.GroupBox();
@@ -262,12 +264,12 @@ namespace CrashEdit
             this.tsbLoadLists = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbDrawLists = new System.Windows.Forms.ToolStripButton();
-            this.fraSubtype = new System.Windows.Forms.GroupBox();
             this.tbcTabs.SuspendLayout();
             this.tabGeneral.SuspendLayout();
             this.fraName.SuspendLayout();
             this.fraType.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numType)).BeginInit();
+            this.fraSubtype.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numSubtype)).BeginInit();
             this.fraSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numSettingC)).BeginInit();
@@ -350,7 +352,6 @@ namespace CrashEdit
             this.fraEntityA.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numEntityA)).BeginInit();
             this.darkToolStrip.SuspendLayout();
-            this.fraSubtype.SuspendLayout();
             this.SuspendLayout();
             // 
             // cmdInsertVictim
@@ -392,6 +393,7 @@ namespace CrashEdit
             this.tabGeneral.Controls.Add(this.fraPosition);
             this.tabGeneral.Controls.Add(this.fraID);
             this.tabGeneral.Controls.Add(this.fraC2TTSet);
+            this.tabGeneral.Controls.Add(this.lblArgAs);
             this.tabGeneral.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.tabGeneral.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.tabGeneral.Location = new System.Drawing.Point(4, 38);
@@ -470,6 +472,19 @@ namespace CrashEdit
             this.numType.TabIndex = 1;
             this.numType.ValueChanged += new System.EventHandler(this.numType_ValueChanged);
             // 
+            // fraSubtype
+            // 
+            this.fraSubtype.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.fraSubtype.Controls.Add(this.chkSubtype);
+            this.fraSubtype.Controls.Add(this.numSubtype);
+            this.fraSubtype.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraSubtype.Location = new System.Drawing.Point(350, 81);
+            this.fraSubtype.Name = "fraSubtype";
+            this.fraSubtype.Size = new System.Drawing.Size(100, 74);
+            this.fraSubtype.TabIndex = 5;
+            this.fraSubtype.TabStop = false;
+            this.fraSubtype.Text = "Subtype";
+            // 
             // chkSubtype
             // 
             this.chkSubtype.AutoSize = true;
@@ -535,7 +550,7 @@ namespace CrashEdit
             // numSettingC
             // 
             this.numSettingC.Hexadecimal = true;
-            this.numSettingC.Location = new System.Drawing.Point(6, 101);
+            this.numSettingC.Location = new System.Drawing.Point(8, 101);
             this.numSettingC.Maximum = new decimal(new int[] {
             -1,
             2147483647,
@@ -547,7 +562,7 @@ namespace CrashEdit
             0,
             -2147483648});
             this.numSettingC.Name = "numSettingC";
-            this.numSettingC.Size = new System.Drawing.Size(106, 21);
+            this.numSettingC.Size = new System.Drawing.Size(104, 21);
             this.numSettingC.TabIndex = 7;
             this.numSettingC.ValueChanged += new System.EventHandler(this.numSettingC_ValueChanged);
             // 
@@ -1103,6 +1118,19 @@ namespace CrashEdit
             this.numTTC2GhostTarget.Size = new System.Drawing.Size(90, 21);
             this.numTTC2GhostTarget.TabIndex = 1;
             this.numTTC2GhostTarget.ValueChanged += new System.EventHandler(this.numTTC2GhostTarget_ValueChanged);
+            // 
+            // lblArgAs
+            // 
+            this.lblArgAs.AutoSize = true;
+            this.lblArgAs.Enabled = false;
+            this.lblArgAs.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.lblArgAs.ForeColor = System.Drawing.SystemColors.AppWorkspace;
+            this.lblArgAs.Location = new System.Drawing.Point(8, 372);
+            this.lblArgAs.Name = "lblArgAs";
+            this.lblArgAs.Size = new System.Drawing.Size(110, 60);
+            this.lblArgAs.TabIndex = 9;
+            this.lblArgAs.Text = "as Number: {0:F3}\r\nas Angle: {1:F}deg\r\nas Time: {2:F}s\r\nas Meters: {3:F3}m";
+            this.lblArgAs.Visible = false;
             // 
             // tabSpecial
             // 
@@ -3304,19 +3332,6 @@ namespace CrashEdit
             this.tsbDrawLists.Size = new System.Drawing.Size(24, 24);
             this.tsbDrawLists.Text = "Draw Lists";
             // 
-            // fraSubtype
-            // 
-            this.fraSubtype.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
-            this.fraSubtype.Controls.Add(this.chkSubtype);
-            this.fraSubtype.Controls.Add(this.numSubtype);
-            this.fraSubtype.ForeColor = System.Drawing.SystemColors.Window;
-            this.fraSubtype.Location = new System.Drawing.Point(350, 81);
-            this.fraSubtype.Name = "fraSubtype";
-            this.fraSubtype.Size = new System.Drawing.Size(100, 74);
-            this.fraSubtype.TabIndex = 5;
-            this.fraSubtype.TabStop = false;
-            this.fraSubtype.Text = "Subtype";
-            // 
             // EntityBox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -3327,11 +3342,14 @@ namespace CrashEdit
             this.Size = new System.Drawing.Size(900, 800);
             this.tbcTabs.ResumeLayout(false);
             this.tabGeneral.ResumeLayout(false);
+            this.tabGeneral.PerformLayout();
             this.fraName.ResumeLayout(false);
             this.fraName.PerformLayout();
             this.fraType.ResumeLayout(false);
             this.fraType.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numType)).EndInit();
+            this.fraSubtype.ResumeLayout(false);
+            this.fraSubtype.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numSubtype)).EndInit();
             this.fraSettings.ResumeLayout(false);
             this.fraSettings.PerformLayout();
@@ -3446,8 +3464,6 @@ namespace CrashEdit
             ((System.ComponentModel.ISupportInitialize)(this.numEntityA)).EndInit();
             this.darkToolStrip.ResumeLayout(false);
             this.darkToolStrip.PerformLayout();
-            this.fraSubtype.ResumeLayout(false);
-            this.fraSubtype.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -3687,5 +3703,6 @@ namespace CrashEdit
         private System.Windows.Forms.GroupBox fraC3Set;
         private System.Windows.Forms.GroupBox fraOtherSet;
         private System.Windows.Forms.GroupBox fraSubtype;
+        private DarkUI.Controls.DarkLabel lblArgAs;
     }
 }

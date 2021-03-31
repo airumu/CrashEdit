@@ -32,6 +32,8 @@ namespace CrashEdit
         private int fovframeindex;
         private int fovindex;
 
+        // private Timer argtexttimer;
+
         internal void MainInit()
         {
             InitializeComponent();
@@ -230,7 +232,21 @@ namespace CrashEdit
             lblMetavalueDrawB.Text = Properties.Resources.EntityBox_lblMetavalueDrawB;
             fraEntityA.Text = Properties.Resources.EntityBox_fraEntityA;
             fraEntityB.Text = Properties.Resources.EntityBox_fraEntityB;
+            lblArgAs.Text = MakeArgAsText();
             chkSettingHex_CheckedChanged(null, null);
+
+            /*
+            // use a Timer because of PAL switch
+            argtexttimer = new Timer()
+            {
+                Enabled = true,
+                Interval = 40
+            };
+            argtexttimer.Tick += (object sender, EventArgs e) =>
+            {
+                lblArgAs.Text = MakeArgAsText();
+            };
+            */
         }
 
         public EntityBox(NewEntityController controller)
@@ -250,6 +266,16 @@ namespace CrashEdit
         private void InvalidateNodes()
         {
             controller.InvalidateNode();
+        }
+
+        internal string MakeArgAsText()
+        {
+            int arg = entity.Settings.Count > 0 ? entity.Settings[settingindex].Value : 0;
+            return string.Format(Resources.EntityBox_lblArgAs,
+                arg / 256F,
+                arg / (float)0x1000 * 360,
+                arg / (OldMainForm.PAL ? 25F : 30F),
+                arg / (256F * 400));
         }
 
         private void UpdateName()
@@ -297,6 +323,7 @@ namespace CrashEdit
             if (positionindex >= entity.Positions.Count)
             {
                 lblPositionIndex.Text = "-- / --";
+                // lblArgAs.Enabled =
                 cmdPreviousPosition.Enabled = false;
                 cmdNextPosition.Enabled = false;
                 cmdInsertPosition.Enabled = false;
@@ -307,8 +334,10 @@ namespace CrashEdit
             else
             {
                 lblPositionIndex.Text = $"{positionindex+1} / {entity.Positions.Count}";
+                // lblArgAs.Text = MakeArgAsText();
                 cmdPreviousPosition.Enabled = positionindex > 0;
                 cmdNextPosition.Enabled = positionindex < entity.Positions.Count-1;
+                // lblArgAs.Enabled =
                 cmdInsertPosition.Enabled = true;
                 cmdRemovePosition.Enabled = true;
                 lblX.Enabled = lblY.Enabled = lblZ.Enabled = numX.Enabled = numY.Enabled = numZ.Enabled = true;
@@ -467,6 +496,7 @@ namespace CrashEdit
                 settingdirty = true;
                 SetCVal(entity.Settings[settingindex].ValueA | (entity.Settings[settingindex].ValueB << 8));
                 settingdirty = false;
+                // lblArgAs.Text = MakeArgAsText();
             }
         }
 
@@ -479,6 +509,7 @@ namespace CrashEdit
                 settingdirty = true;
                 SetCVal(entity.Settings[settingindex].ValueA | (entity.Settings[settingindex].ValueB << 8));
                 settingdirty = false;
+                // lblArgAs.Text = MakeArgAsText();
             }
         }
 
@@ -512,6 +543,7 @@ namespace CrashEdit
                 numSettingA.Value = entity.Settings[settingindex].ValueA;
                 numSettingB.Value = entity.Settings[settingindex].ValueB;
                 settingdirty = false;
+                // lblArgAs.Text = MakeArgAsText();
             }
         }
 
