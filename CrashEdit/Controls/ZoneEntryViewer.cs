@@ -591,16 +591,6 @@ namespace CrashEdit
                     LoadTexture(OldResources.TimeBoxTopTexture);
                     break;
                 case 5: // TNT
-                case 50:
-                case 51:
-                case 52:
-                case 53:
-                case 54:
-                case 55:
-                case 56:
-                case 57:
-                case 58:
-                case 59:
                     LoadTexture(OldResources.TNTBoxTopTexture);
                     break;
                 case 6: // Nitro
@@ -611,6 +601,7 @@ namespace CrashEdit
                     break;
                 case 9: // Action
                 case 10: // Iron
+                case 11: // Iron arrow
                     LoadTexture(OldResources.IronBoxTexture);
                     break;
                 default: // Empty
@@ -809,16 +800,6 @@ namespace CrashEdit
                     LoadTexture(OldResources.Time3BoxTexture);
                     break;
                 case 5: // TNT
-                case 50:
-                case 51:
-                case 52:
-                case 53:
-                case 54:
-                case 55:
-                case 56:
-                case 57:
-                case 58:
-                case 59:
                     LoadTexture(OldResources.TNTBoxTexture);
                     break;
                 case 6: // Nitro
@@ -832,6 +813,9 @@ namespace CrashEdit
                     break;
                 case 10: // Iron
                     LoadTexture(OldResources.IronBoxTexture);
+                    break;
+                case 11: // Iron arrow
+                    LoadTexture(OldResources.IronSpringBoxTexture);
                     break;
                 default: // Empty
                     LoadTexture(OldResources.EmptyBoxTexture);
