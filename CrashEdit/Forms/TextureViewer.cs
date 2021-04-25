@@ -91,7 +91,7 @@ namespace CrashEdit
 
         internal int TexColorMode => textype == TextureType.Crash1 ? C1dpdColor.SelectedIndex : C2dpdColor.SelectedIndex;
         internal int TexBlendMode => textype == TextureType.Crash1 ? C1dpdBlend.SelectedIndex : C2dpdBlend.SelectedIndex;
-        internal int TexX => textype == TextureType.Crash1 ? (2 << (2-C1dpdColor.SelectedIndex)) * (int)C1numX.Value : (int)C2numX.Value;
+        internal int TexX => textype == TextureType.Crash1 ? (2 << (2 - C1dpdColor.SelectedIndex)) * (int)C1numX.Value : (int)C2numX.Value;
         internal int TexY => textype == TextureType.Crash1 ? (int)C1numY.Value * 4 : (int)C2numY.Value;
         internal int TexW => textype == TextureType.Crash1 ? 4 << C1dpdW.SelectedIndex : (int)C2numW.Value;
         internal int TexH => textype == TextureType.Crash1 ? 4 << C1dpdH.SelectedIndex : (int)C2numH.Value;
@@ -105,7 +105,7 @@ namespace CrashEdit
 
         private void UpdatePicture()
         {
-            int pw = 256 << (2-TexColorMode);
+            int pw = 256 << (2 - TexColorMode);
             int ph = 128;
             Bitmap bitmap = new Bitmap(pw + 64, ph + 64, PixelFormat.Format32bppArgb); // we give the image some buffer space for the selection graphic
             Rectangle brect = new Rectangle(Point.Empty, bitmap.Size);
@@ -129,7 +129,7 @@ namespace CrashEdit
                 palette = new int[256];
                 for (int x = 0; x < 256; ++x)
                 {
-                    PixelConv.Convert5551_8888(BitConv.FromInt16(chunk.Data, cluty * 512 + x * 2), blendmode);
+                    palette[x] = PixelConv.Convert5551_8888(BitConv.FromInt16(chunk.Data, cluty * 512 + x * 2), blendmode);
                 }
             }
             try
@@ -139,9 +139,9 @@ namespace CrashEdit
                     for (int x = 0; x < pw; x++)
                     {
                         int pixel = colormode == 0 ? palette[chunk.Data[x / 2 + y * 512] >> ((x & 1) == 0 ? 0 : 4) & 0xF] :
-                            colormode == 1 ? palette[chunk.Data[x + y * 512]] :
-                            colormode == 2 ? PixelConv.Convert5551_8888(BitConv.FromInt16(chunk.Data, x * 2 + y * 512), blendmode)
-                            : throw new Exception("invalid colormode");
+                                    colormode == 1 ? palette[chunk.Data[x + y * 512]] :
+                                    colormode == 2 ? PixelConv.Convert5551_8888(BitConv.FromInt16(chunk.Data, x * 2 + y * 512), blendmode)
+                                    : throw new Exception("invalid colormode");
                         System.Runtime.InteropServices.Marshal.WriteInt32(bdata.Scan0, x * 4 + y * bdata.Stride, pixel);
                     }
                 }
@@ -173,7 +173,7 @@ namespace CrashEdit
                         new Rectangle(x-3,y-3,w+5,h+5)
                     });
                     pen.Color = Color.White;
-                    g.DrawRectangle(pen, new Rectangle(x-2,y-2,w+3,h+3));
+                    g.DrawRectangle(pen, new Rectangle(x - 2, y - 2, w + 3, h + 3));
                 }
                 selectedregion.X = x;
                 selectedregion.Y = y;
