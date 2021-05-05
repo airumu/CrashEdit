@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("CrashEdit [deprecate]")]
+[assembly: AssemblyTitle("CrashEdit [tweaked]")]
 [assembly: AssemblyDescription("Unofficial Crash Bandicoot 1/2/3 Level Editor")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("cbhacks")]
