@@ -164,7 +164,7 @@ namespace CrashEdit.Properties {
         }
         
         /// <summary>
-        ///   Display detailed collision type に類似しているローカライズされた文字列を検索します。
+        ///   Display detailed collision types に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Config_chkDetailedCollision {
             get {

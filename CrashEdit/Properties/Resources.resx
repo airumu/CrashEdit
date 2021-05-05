@@ -746,7 +746,7 @@
     <value>Display custom crates (modded BoxsC)</value>
   </data>
   <data name="Config_chkDetailedCollision" xml:space="preserve">
-    <value>Display detailed collision type</value>
+    <value>Display detailed collision types</value>
   </data>
   <data name="Config_cmdHelp" xml:space="preserve">
     <value>Help</value>

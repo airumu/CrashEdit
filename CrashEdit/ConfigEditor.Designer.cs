@@ -386,9 +386,9 @@
             this.chkDetailedCollision.AutoSize = true;
             this.chkDetailedCollision.Location = new System.Drawing.Point(4, 175);
             this.chkDetailedCollision.Name = "chkDetailedCollision";
-            this.chkDetailedCollision.Size = new System.Drawing.Size(179, 15);
+            this.chkDetailedCollision.Size = new System.Drawing.Size(184, 15);
             this.chkDetailedCollision.TabIndex = 11;
-            this.chkDetailedCollision.Text = "Display detailed collision type";
+            this.chkDetailedCollision.Text = "Display detailed collision types";
             this.chkDetailedCollision.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.chkDetailedCollision.UseCustomBackColor = true;
             this.chkDetailedCollision.UseSelectable = true;
