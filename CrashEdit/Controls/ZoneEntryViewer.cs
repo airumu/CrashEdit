@@ -539,6 +539,12 @@ namespace CrashEdit
                         else
                             LoadTexture(OldResources.POWBoxTopTexture);
                         break;
+                    case 12: // Purple
+                        if (timetrialmode && timetrialreward != 0)
+                            LoadBoxTopTextureTimeTrial(timetrialreward);
+                        else
+                            LoadTexture(OldResources.PurpleBoxTopTexture);
+                        break;
                     case 27: // Iron Continue
                     case 28: // Switch OFF
                     case 29: // Switch ON
@@ -720,6 +726,12 @@ namespace CrashEdit
                             LoadBoxSideTextureTimeTrial(timetrialreward);
                         else
                             LoadTexture(OldResources.POWBoxTexture);
+                        break;
+                    case 12: // Purple
+                        if (timetrialmode && timetrialreward != 0)
+                            LoadBoxSideTextureTimeTrial(timetrialreward);
+                        else
+                            LoadTexture(OldResources.PurpleBoxTexture);
                         break;
                     case 25: // Steel Pickup
                         if (timetrialmode && timetrialreward != 0)

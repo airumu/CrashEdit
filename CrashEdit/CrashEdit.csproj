@@ -545,6 +545,8 @@
     <Content Include="Resources\Textures\Nitro.png" />
     <Content Include="Resources\Textures\NitroTop.png" />
     <Content Include="Resources\Textures\Point.png" />
+    <None Include="Resources\Textures\PurpleBox.png" />
+    <None Include="Resources\Textures\PurpleBoxTop.png" />
     <Content Include="Resources\Textures\QuestionMarkBox.png" />
     <Content Include="Resources\Textures\TNT.png" />
     <Content Include="Resources\Textures\TNTTop.png" />

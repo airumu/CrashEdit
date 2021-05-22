@@ -318,6 +318,14 @@ namespace CrashEdit
         [ExternalTexture(10, 5)]
         private static Bitmap powboxtoptexture = null;
 
+        [Resource("PurpleBoxTopTexture")]
+        [ExternalTexture(11, 5)]
+        private static Bitmap purpleboxtop = null;
+
+        [Resource("PurpleBoxTexture")]
+        [ExternalTexture(12, 5)]
+        private static Bitmap purplebox = null;
+
         static OldResources()
         {
             ResourceManager manager = new ResourceManager("CrashEdit.OldResources",Assembly.GetExecutingAssembly());
@@ -444,6 +452,8 @@ namespace CrashEdit
         public static Bitmap SwitchGhostToRedBoxTexture => switchghosttoredboxtexture;
         public static Bitmap SwitchRedBoxTexture => switchredboxtexture;
         public static Bitmap POWBoxTopTexture => powboxtoptexture;
+        public static Bitmap PurpleBoxTopTexture => purpleboxtop;
+        public static Bitmap PurpleBoxTexture => purplebox;
 
         [AttributeUsage(AttributeTargets.Field)]
         private class ResourceAttribute : Attribute
