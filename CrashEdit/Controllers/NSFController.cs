@@ -220,8 +220,9 @@ namespace CrashEdit
                                             case 9: // doctor
                                             case 10: // pickup
                                             case 11: // pow
+                                            case 12: // purple
                                             case 13: // ghost
-                                            case 17: // auto pickup
+                                            case 17: // slot
                                             case 18: // nitro
                                             case 20: // auto empty
                                             case 21: // empty 2
