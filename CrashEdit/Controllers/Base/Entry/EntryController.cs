@@ -81,7 +81,7 @@ namespace CrashEdit
             using (NewEntryForm newentrywindow = new NewEntryForm(EntryChunkController.NSFController))
             {
                 newentrywindow.Text = "Rename Entry";
-                newentrywindow.BackColor = Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+                newentrywindow.BackColor = Color.FromArgb(40, 40, 45);
                 newentrywindow.ForeColor = SystemColors.Control;
                 newentrywindow.SetRenameMode(Entry.EName);
                 if (newentrywindow.ShowDialog(Node.TreeView.TopLevelControl) == DialogResult.OK)

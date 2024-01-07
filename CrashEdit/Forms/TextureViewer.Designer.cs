@@ -110,7 +110,7 @@
             // 
             // splitContainer1
             // 
-            this.splitContainer1.BackColor = System.Drawing.SystemColors.Control;
+            this.splitContainer1.BackColor = System.Drawing.Color.FromArgb(17, 17, 17);
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
             this.splitContainer1.Name = "splitContainer1";
@@ -155,7 +155,7 @@
             // 
             // tabC1
             // 
-            this.tabC1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.tabC1.BackColor = System.Drawing.Color.FromArgb(30, 30, 35);
             this.tabC1.Controls.Add(this.C1Size64);
             this.tabC1.Controls.Add(this.C1Size32);
             this.tabC1.Controls.Add(this.C1Size16);
@@ -165,7 +165,7 @@
             this.tabC1.Controls.Add(this.groupBox2);
             this.tabC1.Controls.Add(this.groupBox1);
             this.tabC1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.tabC1.ForeColor = System.Drawing.SystemColors.Control;
+            this.tabC1.ForeColor = System.Drawing.Color.Silver;
             this.tabC1.Location = new System.Drawing.Point(4, 34);
             this.tabC1.Name = "tabC1";
             this.tabC1.Padding = new System.Windows.Forms.Padding(3);
@@ -205,13 +205,13 @@
             // 
             // groupBox5
             // 
-            this.groupBox5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(38)))));
+            this.groupBox5.BackColor = System.Drawing.Color.FromArgb(32, 32, 40);
             this.groupBox5.Controls.Add(this.C1numY);
             this.groupBox5.Controls.Add(this.C1numX);
             this.groupBox5.Controls.Add(this.label5);
             this.groupBox5.Controls.Add(this.label6);
             this.groupBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.groupBox5.ForeColor = System.Drawing.SystemColors.Control;
+            this.groupBox5.ForeColor = System.Drawing.Color.Silver;
             this.groupBox5.Location = new System.Drawing.Point(8, 6);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(92, 78);
@@ -265,13 +265,13 @@
             // 
             // groupBox4
             // 
-            this.groupBox4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(38)))));
+            this.groupBox4.BackColor = System.Drawing.Color.FromArgb(32, 32, 40);
             this.groupBox4.Controls.Add(this.C1dpdH);
             this.groupBox4.Controls.Add(this.C1dpdW);
             this.groupBox4.Controls.Add(this.label3);
             this.groupBox4.Controls.Add(this.label4);
             this.groupBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.groupBox4.ForeColor = System.Drawing.SystemColors.Control;
+            this.groupBox4.ForeColor = System.Drawing.Color.Silver;
             this.groupBox4.Location = new System.Drawing.Point(106, 6);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(92, 78);
@@ -334,12 +334,12 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(38)))));
+            this.groupBox3.BackColor = System.Drawing.Color.FromArgb(32, 32, 40);
             this.groupBox3.Controls.Add(this.C1numCY);
             this.groupBox3.Controls.Add(this.C1numCX);
             this.groupBox3.Controls.Add(this.label2);
             this.groupBox3.Controls.Add(this.label1);
-            this.groupBox3.ForeColor = System.Drawing.SystemColors.Control;
+            this.groupBox3.ForeColor = System.Drawing.Color.Silver;
             this.groupBox3.Location = new System.Drawing.Point(204, 6);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(92, 78);
@@ -399,10 +399,10 @@
             // groupBox2
             // 
             this.groupBox2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.groupBox2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(38)))));
+            this.groupBox2.BackColor = System.Drawing.Color.FromArgb(32, 32, 40);
             this.groupBox2.Controls.Add(this.C1dpdBlend);
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.groupBox2.ForeColor = System.Drawing.SystemColors.Control;
+            this.groupBox2.ForeColor = System.Drawing.Color.Silver;
             this.groupBox2.Location = new System.Drawing.Point(107, 89);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(131, 50);
@@ -429,10 +429,10 @@
             // groupBox1
             // 
             this.groupBox1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(38)))));
+            this.groupBox1.BackColor = System.Drawing.Color.FromArgb(32, 32, 40);
             this.groupBox1.Controls.Add(this.C1dpdColor);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.groupBox1.ForeColor = System.Drawing.SystemColors.Control;
+            this.groupBox1.ForeColor = System.Drawing.Color.Silver;
             this.groupBox1.Location = new System.Drawing.Point(8, 89);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(93, 50);
@@ -457,7 +457,7 @@
             // 
             // tabC2
             // 
-            this.tabC2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.tabC2.BackColor = System.Drawing.Color.FromArgb(30, 30, 35);
             this.tabC2.Controls.Add(this.C2SizeMax);
             this.tabC2.Controls.Add(this.C2Size64);
             this.tabC2.Controls.Add(this.C2Size32);
@@ -468,7 +468,7 @@
             this.tabC2.Controls.Add(this.groupBox9);
             this.tabC2.Controls.Add(this.groupBox10);
             this.tabC2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.tabC2.ForeColor = System.Drawing.SystemColors.Control;
+            this.tabC2.ForeColor = System.Drawing.Color.Silver;
             this.tabC2.Location = new System.Drawing.Point(4, 34);
             this.tabC2.Name = "tabC2";
             this.tabC2.Padding = new System.Windows.Forms.Padding(3);
@@ -483,7 +483,7 @@
             this.C2SizeMax.Padding = new System.Windows.Forms.Padding(5);
             this.C2SizeMax.Size = new System.Drawing.Size(70, 25);
             this.C2SizeMax.TabIndex = 0;
-            this.C2SizeMax.Text = "Max";
+            this.C2SizeMax.Text = "Maximize";
             this.C2SizeMax.Click += new System.EventHandler(this.C2SizeMax_Click);
             // 
             // C2Size64
@@ -519,12 +519,12 @@
             // groupBox6
             // 
             this.groupBox6.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.groupBox6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(38)))));
+            this.groupBox6.BackColor = System.Drawing.Color.FromArgb(32, 32, 40);
             this.groupBox6.Controls.Add(this.C2numY);
             this.groupBox6.Controls.Add(this.C2numX);
             this.groupBox6.Controls.Add(this.label7);
             this.groupBox6.Controls.Add(this.label8);
-            this.groupBox6.ForeColor = System.Drawing.SystemColors.Control;
+            this.groupBox6.ForeColor = System.Drawing.Color.Silver;
             this.groupBox6.Location = new System.Drawing.Point(8, 6);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(92, 78);
@@ -579,12 +579,12 @@
             // groupBox7
             // 
             this.groupBox7.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.groupBox7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(38)))));
+            this.groupBox7.BackColor = System.Drawing.Color.FromArgb(32, 32, 40);
             this.groupBox7.Controls.Add(this.C2numH);
             this.groupBox7.Controls.Add(this.label9);
             this.groupBox7.Controls.Add(this.C2numW);
             this.groupBox7.Controls.Add(this.label10);
-            this.groupBox7.ForeColor = System.Drawing.SystemColors.Control;
+            this.groupBox7.ForeColor = System.Drawing.Color.Silver;
             this.groupBox7.Location = new System.Drawing.Point(106, 6);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Size = new System.Drawing.Size(92, 78);
@@ -658,12 +658,12 @@
             // groupBox8
             // 
             this.groupBox8.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.groupBox8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(38)))));
+            this.groupBox8.BackColor = System.Drawing.Color.FromArgb(32, 32, 40);
             this.groupBox8.Controls.Add(this.C2numCY);
             this.groupBox8.Controls.Add(this.C2numCX);
             this.groupBox8.Controls.Add(this.label11);
             this.groupBox8.Controls.Add(this.label12);
-            this.groupBox8.ForeColor = System.Drawing.SystemColors.Control;
+            this.groupBox8.ForeColor = System.Drawing.Color.Silver;
             this.groupBox8.Location = new System.Drawing.Point(204, 6);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Size = new System.Drawing.Size(92, 78);
@@ -723,9 +723,9 @@
             // groupBox9
             // 
             this.groupBox9.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.groupBox9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(38)))));
+            this.groupBox9.BackColor = System.Drawing.Color.FromArgb(32, 32, 40);
             this.groupBox9.Controls.Add(this.C2dpdBlend);
-            this.groupBox9.ForeColor = System.Drawing.SystemColors.Control;
+            this.groupBox9.ForeColor = System.Drawing.Color.Silver;
             this.groupBox9.Location = new System.Drawing.Point(107, 89);
             this.groupBox9.Name = "groupBox9";
             this.groupBox9.Size = new System.Drawing.Size(131, 50);
@@ -752,9 +752,9 @@
             // groupBox10
             // 
             this.groupBox10.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.groupBox10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(38)))));
+            this.groupBox10.BackColor = System.Drawing.Color.FromArgb(32, 32, 40);
             this.groupBox10.Controls.Add(this.C2dpdColor);
-            this.groupBox10.ForeColor = System.Drawing.SystemColors.Control;
+            this.groupBox10.ForeColor = System.Drawing.Color.Silver;
             this.groupBox10.Location = new System.Drawing.Point(8, 89);
             this.groupBox10.Name = "groupBox10";
             this.groupBox10.Size = new System.Drawing.Size(93, 50);

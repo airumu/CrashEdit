@@ -57,13 +57,13 @@ namespace CrashEdit
                 PictureBox picture = new PictureBox();
                 picture.Dock = DockStyle.Fill;
                 picture.Image = bitmap;
-                picture.DoubleClick += new EventHandler(OpenViewer);
+                picture.Click += new EventHandler(OpenViewer);
                 picture.Cursor = Cursors.Hand;
                 tipClick = new ToolTip();
-                tipClick.SetToolTip(picture, "Double-click to open the viewer");
+                tipClick.SetToolTip(picture, "Click to open the viewer");
                 TabPage page = new TabPage("Monochrome 8");
                 page.Controls.Add(picture);
-                page.BackColor = Color.FromArgb(30, 30, 30);
+                page.BackColor = Color.FromArgb(25, 25, 30);
                 tbcTabs.TabPages.Add(page);
             }
             {
@@ -90,17 +90,18 @@ namespace CrashEdit
                 PictureBox picture = new PictureBox();
                 picture.Dock = DockStyle.Fill;
                 picture.Image = bitmap;
-                picture.DoubleClick += new EventHandler(OpenViewer);
+                picture.Click += new EventHandler(OpenViewer);
                 picture.Cursor = Cursors.Hand;
                 tipClick = new ToolTip();
-                tipClick.SetToolTip(picture, "Double-click to open the viewer");
+                tipClick.SetToolTip(picture, "Click to open the viewer");
                 TabPage page = new TabPage("BGR555");
                 page.Controls.Add(picture);
-                page.BackColor = Color.FromArgb(30, 30, 30);
+                page.BackColor = Color.FromArgb(25, 25, 30);
                 tbcTabs.TabPages.Add(page);
                 tbcTabs.SelectedTab = page;
             }
             Controls.Add(tbcTabs);
+            tbcTabs.SelectedIndex = 1;
         }
 
         private void OpenViewer(object sender, EventArgs e)

@@ -705,7 +705,7 @@
     <value>DRNSF returned an error. No region has been applied.</value>
   </data>
   <data name="MakeBIN_DRNSF_Success" xml:space="preserve">
-    <value>Region applied successfully.</value>
+    <value>Region applied successfully.                                                                           </value>
   </data>
   <data name="MakeBIN_DRNSF_Unavailable" xml:space="preserve">
     <value>Could not find DRNSF exe. Please place this in the same directory as CrashEdit.</value>

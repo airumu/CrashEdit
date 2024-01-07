@@ -166,5 +166,10 @@ namespace CrashEdit
             lblEIDErr.Text = Entry.CheckEIDErrors(txtEName.Text, false);
             lblEIDErr.Visible = lblEIDErr.Text != string.Empty;
         }
+
+        private void lblDesc_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

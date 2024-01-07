@@ -151,44 +151,44 @@ namespace CrashEdit
             };
             tbbFindNext.Click += new EventHandler(tbbFindNext_Click);
             tbbFindNext.Size = new Size(64, 36);
-            tbbFindNext.BackColor = Color.FromArgb(30, 30, 30);
-            tbbFindNext.ForeColor = SystemColors.Control;
+            tbbFindNext.BackColor = Color.FromArgb(30, 30, 35);
+            tbbFindNext.ForeColor = Color.Gainsboro;
 
             tbxMakeBIN = new ToolStripMenuItem();
             tbxMakeBIN.Text = Resources.OldMainForm_tbxMakeBIN;
             tbxMakeBIN.Click += new EventHandler(tbxMakeBIN_Click);
-            tbxMakeBIN.BackColor = Color.FromArgb(30, 30, 30);
-            tbxMakeBIN.ForeColor = SystemColors.Control;
+            tbxMakeBIN.BackColor = Color.FromArgb(30, 30, 35);
+            tbxMakeBIN.ForeColor = Color.Gainsboro;
 
             tbxMakeBINUSA = new ToolStripMenuItem();
             tbxMakeBINUSA.Text = Resources.OldMainForm_tbxMakeBINUSA;
             tbxMakeBINUSA.Click += new EventHandler(tbxMakeBIN_Click);
-            tbxMakeBINUSA.BackColor = Color.FromArgb(30, 30, 30);
-            tbxMakeBINUSA.ForeColor = SystemColors.Control;
+            tbxMakeBINUSA.BackColor = Color.FromArgb(30, 30, 35);
+            tbxMakeBINUSA.ForeColor = Color.Gainsboro;
 
             tbxMakeBINEUR = new ToolStripMenuItem();
             tbxMakeBINEUR.Text = Resources.OldMainForm_tbxMakeBINEUR;
             tbxMakeBINEUR.Click += new EventHandler(tbxMakeBIN_Click);
-            tbxMakeBINEUR.BackColor = Color.FromArgb(30, 30, 30);
-            tbxMakeBINEUR.ForeColor = SystemColors.Control;
+            tbxMakeBINEUR.BackColor = Color.FromArgb(30, 30, 35);
+            tbxMakeBINEUR.ForeColor = Color.Gainsboro;
 
             tbxMakeBINJAP = new ToolStripMenuItem();
             tbxMakeBINJAP.Text = Resources.OldMainForm_tbxMakeBINJAP;
             tbxMakeBINJAP.Click += new EventHandler(tbxMakeBIN_Click);
-            tbxMakeBINJAP.BackColor = Color.FromArgb(30, 30, 30);
-            tbxMakeBINJAP.ForeColor = SystemColors.Control;
+            tbxMakeBINJAP.BackColor = Color.FromArgb(30, 30, 35);
+            tbxMakeBINJAP.ForeColor = Color.Gainsboro;
 
             tbxConvertVHVB = new ToolStripMenuItem();
             tbxConvertVHVB.Text = Resources.OldMainForm_tbxConvertVHVB;
             tbxConvertVHVB.Click += new EventHandler(tbxConvertVHVB_Click);
-            tbxConvertVHVB.BackColor = Color.FromArgb(30, 30, 30);
-            tbxConvertVHVB.ForeColor = SystemColors.Control;
+            tbxConvertVHVB.BackColor = Color.FromArgb(30, 30, 35);
+            tbxConvertVHVB.ForeColor = Color.Gainsboro;
 
             tbxConvertVAB = new ToolStripMenuItem();
             tbxConvertVAB.Text = Resources.OldMainForm_tbxConvertVAB;
             tbxConvertVAB.Click += new EventHandler(tbxConvertVAB_Click);
-            tbxConvertVAB.BackColor = Color.FromArgb(30, 30, 30);
-            tbxConvertVAB.ForeColor = SystemColors.Control;
+            tbxConvertVAB.BackColor = Color.FromArgb(30, 30, 35);
+            tbxConvertVAB.ForeColor = Color.Gainsboro;
 
             tbbExtra = new ToolStripDropDownButton();
             tbbExtra.Text = Resources.OldMainForm_tbbExtra;
@@ -232,7 +232,7 @@ namespace CrashEdit
                 // WaterMark = Resources.Toolbar_Find,
                 WaterMark = "Find",
                 WaterMarkColor = Color.FromArgb(109, 109,109),
-                WaterMarkFont = new Font("Yu Gothic UI", 12F, FontStyle.Italic, GraphicsUnit.Pixel)
+                WaterMarkFont = new Font("Yu Gothic UI", 12F, GraphicsUnit.Pixel)
             };
             txtInput.TextChanged += new EventHandler(txtInput_Change);
             txtInput.Click += new EventHandler(txtInput_Click);
@@ -369,7 +369,7 @@ namespace CrashEdit
             Height = Settings.Default.DefaultFormH;
             Load += new EventHandler(OldMainForm_Load);
             FormClosing += new FormClosingEventHandler(OldMainForm_FormClosing);
-            Text = $"CrashEdit-tweaked v{Assembly.GetExecutingAssembly().GetName().Version.ToString()} - Crash 2 Time Trial Editor v6";
+            Text = $"CrashEdit-tweaked v{Assembly.GetExecutingAssembly().GetName().Version.ToString()} - Crash 2 Time Trial Editor v7";
             Controls.Add(txtInput);
             Controls.Add(tbcTabs);
             Controls.Add(tsToolbar);
@@ -487,6 +487,8 @@ namespace CrashEdit
             var fs = new CDBuilder();
             fs.AddFile("S0\\" + Path.GetFileName(nsfFilename) + ";1", nsfFilename);
             fs.AddFile("S0\\" + Path.GetFileName(nsdFilename) + ";1", nsdFilename);
+            fs.AddFile("M0\\" + Path.GetFileName(nsfFilename) + ";1", nsfFilename);
+            fs.AddFile("M0\\" + Path.GetFileName(nsdFilename) + ";1", nsdFilename);
             fs.AddFile("PSX.EXE;1", exeFilename);
             if (warpscusFilename != null) fs.AddFile("S0\\" + Path.GetFileName(warpscusFilename) + ";1", warpscusFilename);
             if (kdatFilename != null) fs.AddFile("S3\\" + Path.GetFileName(kdatFilename) + ";1", kdatFilename);
@@ -1506,7 +1508,7 @@ namespace CrashEdit
                     log.AppendLine();
                 } else {
                     log.AppendLine(Resources.MakeBIN_DRNSF_Success);
-                    log.AppendLine();
+                    //log.AppendLine();
                 }
             } catch (FileNotFoundException) {
                 log.AppendLine(Resources.MakeBIN_DRNSF_Unavailable);

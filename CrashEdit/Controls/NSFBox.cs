@@ -66,8 +66,8 @@ namespace CrashEdit
                 SelectedNode = NSFController.Node,
                 AllowDrop = true,
                 Font = new Font("Microsoft Sans Serif", 9F),
-                BackColor = Color.FromArgb(38, 38, 38),
-                ForeColor = Color.FromArgb(200, 200, 200)
+                BackColor = Color.FromArgb(30, 30, 35),
+                ForeColor = Color.Silver
             };
             trvMain.Nodes.Add(NSFController.Node);
             trvMain.AfterSelect += new TreeViewEventHandler(trvMain_AfterSelect);
@@ -77,7 +77,7 @@ namespace CrashEdit
 
             pnSplit = new SplitContainer { Dock = DockStyle.Fill };
             pnSplit.Panel1.Controls.Add(trvMain);
-            pnSplit.BackColor = Color.FromArgb(30, 30, 30);
+            pnSplit.BackColor = Color.FromArgb(25, 25, 30);
 
             Controls.Add(pnSplit);
         }

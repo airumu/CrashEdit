@@ -74,10 +74,11 @@
             // 
             this.cmdCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.cmdCancel.ForeColor = System.Drawing.Color.Gainsboro;
             this.cmdCancel.Location = new System.Drawing.Point(226, 306);
             this.cmdCancel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmdCancel.Name = "cmdCancel";
-            this.cmdCancel.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.cmdCancel.Padding = new System.Windows.Forms.Padding(6);
             this.cmdCancel.Size = new System.Drawing.Size(87, 26);
             this.cmdCancel.TabIndex = 3;
             this.cmdCancel.Text = "Cancel";
@@ -86,10 +87,11 @@
             // cmdOK
             // 
             this.cmdOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmdOK.ForeColor = System.Drawing.Color.Gainsboro;
             this.cmdOK.Location = new System.Drawing.Point(132, 306);
             this.cmdOK.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmdOK.Name = "cmdOK";
-            this.cmdOK.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.cmdOK.Padding = new System.Windows.Forms.Padding(6);
             this.cmdOK.Size = new System.Drawing.Size(87, 26);
             this.cmdOK.TabIndex = 4;
             this.cmdOK.Text = "Interpolate!";
@@ -111,7 +113,7 @@
             this.lblX.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblX.Location = new System.Drawing.Point(7, 40);
             this.lblX.Name = "lblX";
-            this.lblX.Size = new System.Drawing.Size(14, 15);
+            this.lblX.Size = new System.Drawing.Size(15, 15);
             this.lblX.TabIndex = 0;
             this.lblX.Text = "X";
             // 
@@ -195,19 +197,19 @@
             // lblAverage
             // 
             this.lblAverage.AutoSize = true;
-            this.lblAverage.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblAverage.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblAverage.Location = new System.Drawing.Point(14, 282);
             this.lblAverage.Name = "lblAverage";
-            this.lblAverage.Size = new System.Drawing.Size(144, 15);
+            this.lblAverage.Size = new System.Drawing.Size(143, 15);
             this.lblAverage.TabIndex = 11;
             this.lblAverage.Text = "Average Point Distance: -";
             // 
             // fraFunction
             // 
             this.fraFunction.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.fraFunction.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(38)))));
+            this.fraFunction.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
             this.fraFunction.Controls.Add(this.dpdFunc);
-            this.fraFunction.ForeColor = System.Drawing.SystemColors.Control;
+            this.fraFunction.ForeColor = System.Drawing.Color.Silver;
             this.fraFunction.Location = new System.Drawing.Point(159, 69);
             this.fraFunction.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.fraFunction.Name = "fraFunction";
@@ -220,7 +222,7 @@
             // fraPosition
             // 
             this.fraPosition.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.fraPosition.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(38)))));
+            this.fraPosition.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
             this.fraPosition.Controls.Add(this.lblPosition);
             this.fraPosition.Controls.Add(this.cmdNext);
             this.fraPosition.Controls.Add(this.lblX);
@@ -232,7 +234,7 @@
             this.fraPosition.Controls.Add(this.numX);
             this.fraPosition.Controls.Add(this.numZ);
             this.fraPosition.Controls.Add(this.numY);
-            this.fraPosition.ForeColor = System.Drawing.SystemColors.Control;
+            this.fraPosition.ForeColor = System.Drawing.Color.Silver;
             this.fraPosition.Location = new System.Drawing.Point(14, 14);
             this.fraPosition.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.fraPosition.Name = "fraPosition";
@@ -245,7 +247,7 @@
             // lblPosition
             // 
             this.lblPosition.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPosition.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblPosition.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblPosition.Location = new System.Drawing.Point(7, 19);
             this.lblPosition.Name = "lblPosition";
             this.lblPosition.Size = new System.Drawing.Size(124, 16);
@@ -255,10 +257,11 @@
             // 
             // cmdNext
             // 
+            this.cmdNext.ForeColor = System.Drawing.Color.Gainsboro;
             this.cmdNext.Location = new System.Drawing.Point(72, 129);
             this.cmdNext.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmdNext.Name = "cmdNext";
-            this.cmdNext.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.cmdNext.Padding = new System.Windows.Forms.Padding(6);
             this.cmdNext.Size = new System.Drawing.Size(58, 26);
             this.cmdNext.TabIndex = 0;
             this.cmdNext.Text = "Next";
@@ -266,10 +269,11 @@
             // 
             // cmdPrev
             // 
+            this.cmdPrev.ForeColor = System.Drawing.Color.Gainsboro;
             this.cmdPrev.Location = new System.Drawing.Point(7, 129);
             this.cmdPrev.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmdPrev.Name = "cmdPrev";
-            this.cmdPrev.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.cmdPrev.Padding = new System.Windows.Forms.Padding(6);
             this.cmdPrev.Size = new System.Drawing.Size(58, 26);
             this.cmdPrev.TabIndex = 1;
             this.cmdPrev.Text = "Prev";
@@ -277,10 +281,11 @@
             // 
             // cmdLast
             // 
+            this.cmdLast.ForeColor = System.Drawing.Color.Gainsboro;
             this.cmdLast.Location = new System.Drawing.Point(72, 176);
             this.cmdLast.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmdLast.Name = "cmdLast";
-            this.cmdLast.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.cmdLast.Padding = new System.Windows.Forms.Padding(6);
             this.cmdLast.Size = new System.Drawing.Size(58, 26);
             this.cmdLast.TabIndex = 3;
             this.cmdLast.Text = "Last";
@@ -288,10 +293,11 @@
             // 
             // cmdFirst
             // 
+            this.cmdFirst.ForeColor = System.Drawing.Color.Gainsboro;
             this.cmdFirst.Location = new System.Drawing.Point(7, 176);
             this.cmdFirst.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmdFirst.Name = "cmdFirst";
-            this.cmdFirst.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.cmdFirst.Padding = new System.Windows.Forms.Padding(6);
             this.cmdFirst.Size = new System.Drawing.Size(58, 26);
             this.cmdFirst.TabIndex = 2;
             this.cmdFirst.Text = "First";
@@ -299,10 +305,10 @@
             // 
             // fraBound
             // 
-            this.fraBound.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(38)))));
+            this.fraBound.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
             this.fraBound.Controls.Add(this.numEnd);
             this.fraBound.Controls.Add(this.numStart);
-            this.fraBound.ForeColor = System.Drawing.SystemColors.Control;
+            this.fraBound.ForeColor = System.Drawing.Color.Silver;
             this.fraBound.Location = new System.Drawing.Point(159, 14);
             this.fraBound.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.fraBound.Name = "fraBound";
@@ -352,9 +358,9 @@
             // 
             // fraAmount
             // 
-            this.fraAmount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(38)))));
+            this.fraAmount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
             this.fraAmount.Controls.Add(this.numAmount);
-            this.fraAmount.ForeColor = System.Drawing.SystemColors.Control;
+            this.fraAmount.ForeColor = System.Drawing.Color.Silver;
             this.fraAmount.Location = new System.Drawing.Point(14, 231);
             this.fraAmount.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.fraAmount.Name = "fraAmount";
@@ -390,9 +396,9 @@
             // 
             // fraTension
             // 
-            this.fraTension.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(38)))));
+            this.fraTension.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
             this.fraTension.Controls.Add(this.numTension);
-            this.fraTension.ForeColor = System.Drawing.SystemColors.Control;
+            this.fraTension.ForeColor = System.Drawing.Color.Silver;
             this.fraTension.Location = new System.Drawing.Point(159, 136);
             this.fraTension.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.fraTension.Name = "fraTension";
@@ -429,9 +435,9 @@
             // 
             // fraOrder
             // 
-            this.fraOrder.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(38)))));
+            this.fraOrder.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
             this.fraOrder.Controls.Add(this.numOrder);
-            this.fraOrder.ForeColor = System.Drawing.SystemColors.Control;
+            this.fraOrder.ForeColor = System.Drawing.Color.Silver;
             this.fraOrder.Location = new System.Drawing.Point(159, 196);
             this.fraOrder.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.fraOrder.Name = "fraOrder";
@@ -477,7 +483,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(35)))));
             this.ClientSize = new System.Drawing.Size(328, 344);
             this.Controls.Add(this.fraOrder);
             this.Controls.Add(this.fraTension);
@@ -489,7 +495,7 @@
             this.Controls.Add(this.cmdOK);
             this.Controls.Add(this.cmdCancel);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.ForeColor = System.Drawing.SystemColors.Control;
+            this.ForeColor = System.Drawing.Color.Gainsboro;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "InterpolatorForm";

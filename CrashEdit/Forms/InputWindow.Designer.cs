@@ -35,20 +35,24 @@ namespace CrashEdit
             // 
             // txtInput
             // 
-            this.txtInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtInput.Location = new System.Drawing.Point(12,12);
+            this.txtInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtInput.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(55)))), ((int)(((byte)(60)))));
+            this.txtInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtInput.ForeColor = System.Drawing.Color.Gainsboro;
+            this.txtInput.Location = new System.Drawing.Point(12, 11);
             this.txtInput.Name = "txtInput";
-            this.txtInput.Size = new System.Drawing.Size(258,20);
+            this.txtInput.Size = new System.Drawing.Size(258, 19);
             this.txtInput.TabIndex = 0;
             // 
             // cmdCancel
             // 
             this.cmdCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cmdCancel.Location = new System.Drawing.Point(195,52);
+            this.cmdCancel.Location = new System.Drawing.Point(195, 48);
             this.cmdCancel.Name = "cmdCancel";
-            this.cmdCancel.Size = new System.Drawing.Size(75,23);
+            this.cmdCancel.Padding = new System.Windows.Forms.Padding(5);
+            this.cmdCancel.Size = new System.Drawing.Size(75, 21);
             this.cmdCancel.TabIndex = 1;
             this.cmdCancel.Text = "Cancel";
             this.cmdCancel.Click += new System.EventHandler(this.cmdCancel_Click);
@@ -56,9 +60,10 @@ namespace CrashEdit
             // cmdOK
             // 
             this.cmdOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmdOK.Location = new System.Drawing.Point(114,52);
+            this.cmdOK.Location = new System.Drawing.Point(114, 48);
             this.cmdOK.Name = "cmdOK";
-            this.cmdOK.Size = new System.Drawing.Size(75,23);
+            this.cmdOK.Padding = new System.Windows.Forms.Padding(5);
+            this.cmdOK.Size = new System.Drawing.Size(75, 21);
             this.cmdOK.TabIndex = 2;
             this.cmdOK.Text = "OK";
             this.cmdOK.Click += new System.EventHandler(this.cmdOK_Click);
@@ -66,13 +71,15 @@ namespace CrashEdit
             // InputWindow
             // 
             this.AcceptButton = this.cmdOK;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F,13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(35)))));
             this.CancelButton = this.cmdCancel;
-            this.ClientSize = new System.Drawing.Size(282,87);
+            this.ClientSize = new System.Drawing.Size(282, 80);
             this.Controls.Add(this.cmdOK);
             this.Controls.Add(this.cmdCancel);
             this.Controls.Add(this.txtInput);
+            this.ForeColor = System.Drawing.Color.Gainsboro;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;

@@ -47,7 +47,7 @@ namespace CrashEdit
                 Value = 1024,
                 Dock = DockStyle.Fill,
                 BackColor = Color.FromArgb(30, 30, 30)
-        };
+             };
             trkSampleRate.ValueChanged += (object sender, EventArgs e) => {
                 int smpe = (int)(trkSampleRate.Value / 256.0 * (11025 / 4.0));
                 cmdPlay.Text = string.Format("Play ({0}Hz)", smpe);

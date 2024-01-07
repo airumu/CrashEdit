@@ -71,10 +71,10 @@
             // 
             // fraLang
             // 
-            this.fraLang.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.fraLang.BackColor = System.Drawing.Color.FromArgb(35, 35, 40);
             this.fraLang.Controls.Add(this.dpdLang);
             this.fraLang.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.fraLang.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraLang.ForeColor = System.Drawing.Color.Silver;
             this.fraLang.Location = new System.Drawing.Point(4, 4);
             this.fraLang.Name = "fraLang";
             this.fraLang.Size = new System.Drawing.Size(162, 49);
@@ -84,7 +84,7 @@
             // 
             // dpdLang
             // 
-            this.dpdLang.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(55)))), ((int)(((byte)(60)))));
+            this.dpdLang.BackColor = System.Drawing.Color.FromArgb(55, 55, 60);
             this.dpdLang.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.dpdLang.FontSize = MetroFramework.MetroComboBoxSize.Small;
             this.dpdLang.FormattingEnabled = true;
@@ -101,13 +101,13 @@
             // 
             // fraSize
             // 
-            this.fraSize.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.fraSize.BackColor = System.Drawing.Color.FromArgb(35, 35, 40);
             this.fraSize.Controls.Add(this.lblH);
             this.fraSize.Controls.Add(this.lblW);
             this.fraSize.Controls.Add(this.numH);
             this.fraSize.Controls.Add(this.numW);
             this.fraSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.fraSize.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraSize.ForeColor = System.Drawing.Color.Silver;
             this.fraSize.Location = new System.Drawing.Point(371, 59);
             this.fraSize.Name = "fraSize";
             this.fraSize.Size = new System.Drawing.Size(135, 68);
@@ -118,6 +118,7 @@
             // 
             // lblH
             // 
+            this.lblH.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblH.Location = new System.Drawing.Point(6, 45);
             this.lblH.Name = "lblH";
             this.lblH.Size = new System.Drawing.Size(44, 15);
@@ -126,6 +127,7 @@
             // 
             // lblW
             // 
+            this.lblW.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblW.Location = new System.Drawing.Point(6, 20);
             this.lblW.Name = "lblW";
             this.lblW.Size = new System.Drawing.Size(38, 15);
@@ -186,11 +188,11 @@
             // 
             // fraClearCol
             // 
-            this.fraClearCol.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.fraClearCol.BackColor = System.Drawing.Color.FromArgb(35, 35, 40);
             this.fraClearCol.Controls.Add(this.picClearCol);
             this.fraClearCol.Controls.Add(this.cmdClearCol);
             this.fraClearCol.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.fraClearCol.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraClearCol.ForeColor = System.Drawing.Color.Silver;
             this.fraClearCol.Location = new System.Drawing.Point(4, 59);
             this.fraClearCol.Name = "fraClearCol";
             this.fraClearCol.Size = new System.Drawing.Size(128, 68);
@@ -212,7 +214,7 @@
             // cmdClearCol
             // 
             this.cmdClearCol.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.cmdClearCol.ForeColor = System.Drawing.SystemColors.MenuText;
+            this.cmdClearCol.ForeColor = System.Drawing.Color.Gainsboro;
             this.cmdClearCol.Location = new System.Drawing.Point(72, 39);
             this.cmdClearCol.Name = "cmdClearCol";
             this.cmdClearCol.Padding = new System.Windows.Forms.Padding(5);
@@ -223,12 +225,12 @@
             // 
             // fraAnimGrid
             // 
-            this.fraAnimGrid.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.fraAnimGrid.BackColor = System.Drawing.Color.FromArgb(35, 35, 40);
             this.fraAnimGrid.Controls.Add(this.numAnimGrid);
             this.fraAnimGrid.Controls.Add(this.lblAnimGrid);
             this.fraAnimGrid.Controls.Add(this.chkAnimGrid);
             this.fraAnimGrid.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.fraAnimGrid.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraAnimGrid.ForeColor = System.Drawing.Color.Silver;
             this.fraAnimGrid.Location = new System.Drawing.Point(138, 59);
             this.fraAnimGrid.Name = "fraAnimGrid";
             this.fraAnimGrid.Size = new System.Drawing.Size(227, 68);
@@ -257,6 +259,7 @@
             // lblAnimGrid
             // 
             this.lblAnimGrid.AutoSize = true;
+            this.lblAnimGrid.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblAnimGrid.Location = new System.Drawing.Point(7, 42);
             this.lblAnimGrid.Name = "lblAnimGrid";
             this.lblAnimGrid.Size = new System.Drawing.Size(49, 15);
@@ -298,7 +301,7 @@
             this.chkPatchNSDSavesNSF.AutoSize = true;
             this.chkPatchNSDSavesNSF.Checked = true;
             this.chkPatchNSDSavesNSF.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkPatchNSDSavesNSF.ForeColor = System.Drawing.SystemColors.Window;
+            this.chkPatchNSDSavesNSF.ForeColor = System.Drawing.Color.Gainsboro;
             this.chkPatchNSDSavesNSF.Location = new System.Drawing.Point(4, 245);
             this.chkPatchNSDSavesNSF.Name = "chkPatchNSDSavesNSF";
             this.chkPatchNSDSavesNSF.Size = new System.Drawing.Size(280, 15);
@@ -312,6 +315,7 @@
             // chkDeleteInvalidEntries
             // 
             this.chkDeleteInvalidEntries.AutoSize = true;
+            this.chkDeleteInvalidEntries.ForeColor = System.Drawing.Color.Gainsboro;
             this.chkDeleteInvalidEntries.Location = new System.Drawing.Point(4, 224);
             this.chkDeleteInvalidEntries.Name = "chkDeleteInvalidEntries";
             this.chkDeleteInvalidEntries.Size = new System.Drawing.Size(309, 15);
@@ -327,6 +331,7 @@
             this.chkUseAnimLinks.AutoSize = true;
             this.chkUseAnimLinks.Checked = true;
             this.chkUseAnimLinks.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkUseAnimLinks.ForeColor = System.Drawing.Color.Gainsboro;
             this.chkUseAnimLinks.Location = new System.Drawing.Point(4, 196);
             this.chkUseAnimLinks.Name = "chkUseAnimLinks";
             this.chkUseAnimLinks.Size = new System.Drawing.Size(255, 15);
@@ -340,6 +345,7 @@
             // chkCollisionDisplay
             // 
             this.chkCollisionDisplay.AutoSize = true;
+            this.chkCollisionDisplay.ForeColor = System.Drawing.Color.Gainsboro;
             this.chkCollisionDisplay.Location = new System.Drawing.Point(4, 154);
             this.chkCollisionDisplay.Name = "chkCollisionDisplay";
             this.chkCollisionDisplay.Size = new System.Drawing.Size(198, 15);
@@ -353,7 +359,7 @@
             // chkNormalDisplay
             // 
             this.chkNormalDisplay.AutoSize = true;
-            this.chkNormalDisplay.ForeColor = System.Drawing.SystemColors.Window;
+            this.chkNormalDisplay.ForeColor = System.Drawing.Color.Gainsboro;
             this.chkNormalDisplay.Location = new System.Drawing.Point(4, 132);
             this.chkNormalDisplay.Name = "chkNormalDisplay";
             this.chkNormalDisplay.Size = new System.Drawing.Size(107, 15);
@@ -367,7 +373,7 @@
             // cmdReset
             // 
             this.cmdReset.AutoSize = true;
-            this.cmdReset.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.cmdReset.BackColor = System.Drawing.Color.FromArgb(50, 50, 50);
             this.cmdReset.FontSize = MetroFramework.MetroButtonSize.Medium;
             this.cmdReset.FontWeight = MetroFramework.MetroButtonWeight.Regular;
             this.cmdReset.ForeColor = System.Drawing.Color.DeepSkyBlue;
@@ -385,6 +391,7 @@
             // chkDetailedCollision
             // 
             this.chkDetailedCollision.AutoSize = true;
+            this.chkDetailedCollision.ForeColor = System.Drawing.Color.Gainsboro;
             this.chkDetailedCollision.Location = new System.Drawing.Point(4, 175);
             this.chkDetailedCollision.Name = "chkDetailedCollision";
             this.chkDetailedCollision.Size = new System.Drawing.Size(179, 15);
@@ -398,7 +405,7 @@
             // tglKeyBinds
             // 
             this.tglKeyBinds.AutoSize = true;
-            this.tglKeyBinds.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(30)))));
+            this.tglKeyBinds.BackColor = System.Drawing.Color.FromArgb(25, 25, 30);
             this.tglKeyBinds.Location = new System.Drawing.Point(15, 20);
             this.tglKeyBinds.Name = "tglKeyBinds";
             this.tglKeyBinds.Size = new System.Drawing.Size(80, 19);
@@ -412,10 +419,10 @@
             // 
             // fraKeyBinds
             // 
-            this.fraKeyBinds.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.fraKeyBinds.BackColor = System.Drawing.Color.FromArgb(35, 35, 40);
             this.fraKeyBinds.Controls.Add(this.tglKeyBinds);
             this.fraKeyBinds.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.fraKeyBinds.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraKeyBinds.ForeColor = System.Drawing.Color.Silver;
             this.fraKeyBinds.Location = new System.Drawing.Point(172, 4);
             this.fraKeyBinds.Name = "fraKeyBinds";
             this.fraKeyBinds.Size = new System.Drawing.Size(122, 49);
@@ -426,10 +433,10 @@
             // cmdHelp
             // 
             this.cmdHelp.AutoSize = true;
-            this.cmdHelp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.cmdHelp.BackColor = System.Drawing.Color.FromArgb(50, 50, 50);
             this.cmdHelp.FontSize = MetroFramework.MetroButtonSize.Medium;
             this.cmdHelp.FontWeight = MetroFramework.MetroButtonWeight.Regular;
-            this.cmdHelp.ForeColor = System.Drawing.SystemColors.InactiveCaption;
+            this.cmdHelp.ForeColor = System.Drawing.Color.Silver;
             this.cmdHelp.Location = new System.Drawing.Point(10, 357);
             this.cmdHelp.Name = "cmdHelp";
             this.cmdHelp.Size = new System.Drawing.Size(50, 23);
@@ -460,7 +467,7 @@
             // chkAnimViewPanel
             // 
             this.chkAnimViewPanel.AutoSize = true;
-            this.chkAnimViewPanel.ForeColor = System.Drawing.SystemColors.Window;
+            this.chkAnimViewPanel.ForeColor = System.Drawing.Color.Gainsboro;
             this.chkAnimViewPanel.Location = new System.Drawing.Point(256, 132);
             this.chkAnimViewPanel.Name = "chkAnimViewPanel";
             this.chkAnimViewPanel.Size = new System.Drawing.Size(189, 15);
@@ -499,7 +506,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.BackColor = System.Drawing.Color.FromArgb(30, 30, 35);
             this.Controls.Add(this.chkPatchNSDGoolMap);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.chkAnimViewPanel);
@@ -518,7 +525,7 @@
             this.Controls.Add(this.fraSize);
             this.Controls.Add(this.fraLang);
             this.Controls.Add(this.fraClearCol);
-            this.ForeColor = System.Drawing.SystemColors.Window;
+            this.ForeColor = System.Drawing.Color.Gainsboro;
             this.Name = "ConfigEditor";
             this.Size = new System.Drawing.Size(747, 560);
             this.fraLang.ResumeLayout(false);

@@ -129,8 +129,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="DarkUI">
-      <HintPath>..\..\..\..\..\Downloads\DarkUI-master\DarkUI-master\DarkUI\bin\Debug\DarkUI.dll</HintPath>
+    <Reference Include="DarkUI, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DarkUI.2.0.2\lib\DarkUI.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
@@ -159,5 +159,8 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

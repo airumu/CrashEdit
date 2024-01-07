@@ -405,5 +405,10 @@ namespace CrashEdit
                 frame.Collision[collisionindex] = new FrameCollision(pos.U, pos.XO, pos.YO, (int)numZG.Value, pos.X1, pos.Y1, pos.Z1, pos.X2, pos.Y2, pos.Z2);
             }
         }
+
+        private void fraVertice_Enter(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -36,20 +36,22 @@
             // lblDesc
             // 
             this.lblDesc.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDesc.Location = new System.Drawing.Point(0, 0);
             this.lblDesc.Name = "lblDesc";
-            this.lblDesc.Size = new System.Drawing.Size(350, 123);
+            this.lblDesc.Size = new System.Drawing.Size(350, 114);
             this.lblDesc.TabIndex = 0;
             this.lblDesc.Text = "Type in a Model (or Compressed Model) name and press Enter.";
             this.lblDesc.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.lblDesc.Click += new System.EventHandler(this.lblDesc_Click);
             // 
             // txtEName
             // 
             this.txtEName.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.txtEName.Location = new System.Drawing.Point(145, 126);
+            this.txtEName.Location = new System.Drawing.Point(145, 116);
             this.txtEName.MaxLength = 5;
             this.txtEName.Name = "txtEName";
-            this.txtEName.Size = new System.Drawing.Size(60, 20);
+            this.txtEName.Size = new System.Drawing.Size(60, 19);
             this.txtEName.TabIndex = 1;
             this.txtEName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtEName.TextChanged += new System.EventHandler(this.txtEName_TextChanged);
@@ -57,10 +59,11 @@
             // lblEIDErr
             // 
             this.lblEIDErr.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.lblEIDErr.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblEIDErr.ForeColor = System.Drawing.Color.Red;
-            this.lblEIDErr.Location = new System.Drawing.Point(15, 149);
+            this.lblEIDErr.Location = new System.Drawing.Point(15, 138);
             this.lblEIDErr.Name = "lblEIDErr";
-            this.lblEIDErr.Size = new System.Drawing.Size(320, 13);
+            this.lblEIDErr.Size = new System.Drawing.Size(320, 19);
             this.lblEIDErr.TabIndex = 7;
             this.lblEIDErr.Text = "VERY STUPIDLY INCREDIBLY LONG EID ERROR OH MY GOD";
             this.lblEIDErr.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -68,13 +71,13 @@
             // 
             // Crash3AnimationSelector
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.lblEIDErr);
             this.Controls.Add(this.txtEName);
             this.Controls.Add(this.lblDesc);
             this.Name = "Crash3AnimationSelector";
-            this.Size = new System.Drawing.Size(350, 280);
+            this.Size = new System.Drawing.Size(350, 258);
             this.ResumeLayout(false);
             this.PerformLayout();
 

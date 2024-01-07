@@ -45,10 +45,10 @@
             // 
             this.fraType.AutoSize = true;
             this.fraType.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.fraType.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(38)))));
+            this.fraType.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
             this.fraType.Controls.Add(this.numType);
             this.fraType.Controls.Add(this.dpdType);
-            this.fraType.ForeColor = System.Drawing.SystemColors.Control;
+            this.fraType.ForeColor = System.Drawing.Color.Silver;
             this.fraType.Location = new System.Drawing.Point(211, 14);
             this.fraType.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.fraType.Name = "fraType";
@@ -95,10 +95,10 @@
             // 
             // fraName
             // 
-            this.fraName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(38)))));
+            this.fraName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
             this.fraName.Controls.Add(this.lblEIDErr);
             this.fraName.Controls.Add(this.txtEID);
-            this.fraName.ForeColor = System.Drawing.SystemColors.Control;
+            this.fraName.ForeColor = System.Drawing.Color.Silver;
             this.fraName.Location = new System.Drawing.Point(14, 14);
             this.fraName.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.fraName.Name = "fraName";
@@ -114,7 +114,7 @@
             this.lblEIDErr.ForeColor = System.Drawing.Color.Red;
             this.lblEIDErr.Location = new System.Drawing.Point(7, 52);
             this.lblEIDErr.Name = "lblEIDErr";
-            this.lblEIDErr.Size = new System.Drawing.Size(175, 15);
+            this.lblEIDErr.Size = new System.Drawing.Size(177, 15);
             this.lblEIDErr.TabIndex = 6;
             this.lblEIDErr.Text = "VERY LONG EID ERROR OMG";
             this.lblEIDErr.Visible = false;
@@ -123,7 +123,7 @@
             // 
             this.txtEID.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(55)))), ((int)(((byte)(60)))));
             this.txtEID.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtEID.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.txtEID.ForeColor = System.Drawing.Color.Gainsboro;
             this.txtEID.Location = new System.Drawing.Point(8, 22);
             this.txtEID.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtEID.MaxLength = 5;
@@ -136,10 +136,11 @@
             // cmdOK
             // 
             this.cmdOK.Enabled = false;
+            this.cmdOK.ForeColor = System.Drawing.Color.Gainsboro;
             this.cmdOK.Location = new System.Drawing.Point(260, 89);
             this.cmdOK.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmdOK.Name = "cmdOK";
-            this.cmdOK.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.cmdOK.Padding = new System.Windows.Forms.Padding(6);
             this.cmdOK.Size = new System.Drawing.Size(87, 26);
             this.cmdOK.TabIndex = 4;
             this.cmdOK.Text = "OK";
@@ -148,10 +149,11 @@
             // cmdCancel
             // 
             this.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.cmdCancel.ForeColor = System.Drawing.Color.Gainsboro;
             this.cmdCancel.Location = new System.Drawing.Point(355, 89);
             this.cmdCancel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmdCancel.Name = "cmdCancel";
-            this.cmdCancel.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.cmdCancel.Padding = new System.Windows.Forms.Padding(6);
             this.cmdCancel.Size = new System.Drawing.Size(87, 26);
             this.cmdCancel.TabIndex = 3;
             this.cmdCancel.Text = "Cancel";
@@ -163,14 +165,14 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(35)))));
             this.ClientSize = new System.Drawing.Size(456, 128);
             this.Controls.Add(this.cmdOK);
             this.Controls.Add(this.cmdCancel);
             this.Controls.Add(this.fraName);
             this.Controls.Add(this.fraType);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.ForeColor = System.Drawing.SystemColors.Control;
+            this.ForeColor = System.Drawing.Color.Gainsboro;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "NewEntryForm";

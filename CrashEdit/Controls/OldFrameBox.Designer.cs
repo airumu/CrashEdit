@@ -125,7 +125,7 @@ namespace CrashEdit
             this.fraVertice.Controls.Add(this.numZ);
             this.fraVertice.Controls.Add(this.numY);
             this.fraVertice.Controls.Add(this.numX);
-            this.fraVertice.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraVertice.ForeColor = System.Drawing.Color.Silver;
             this.fraVertice.Location = new System.Drawing.Point(3, 4);
             this.fraVertice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.fraVertice.Name = "fraVertice";
@@ -138,7 +138,7 @@ namespace CrashEdit
             // lblNZ
             // 
             this.lblNZ.AutoSize = true;
-            this.lblNZ.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblNZ.ForeColor = System.Drawing.Color.GhostWhite;
             this.lblNZ.Location = new System.Drawing.Point(100, 122);
             this.lblNZ.Name = "lblNZ";
             this.lblNZ.Size = new System.Drawing.Size(58, 15);
@@ -148,7 +148,7 @@ namespace CrashEdit
             // lblNY
             // 
             this.lblNY.AutoSize = true;
-            this.lblNY.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblNY.ForeColor = System.Drawing.Color.GhostWhite;
             this.lblNY.Location = new System.Drawing.Point(100, 92);
             this.lblNY.Name = "lblNY";
             this.lblNY.Size = new System.Drawing.Size(58, 15);
@@ -158,10 +158,10 @@ namespace CrashEdit
             // lblNX
             // 
             this.lblNX.AutoSize = true;
-            this.lblNX.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblNX.ForeColor = System.Drawing.Color.GhostWhite;
             this.lblNX.Location = new System.Drawing.Point(100, 62);
             this.lblNX.Name = "lblNX";
-            this.lblNX.Size = new System.Drawing.Size(58, 15);
+            this.lblNX.Size = new System.Drawing.Size(59, 15);
             this.lblNX.TabIndex = 10;
             this.lblNX.Text = "Normal X";
             // 
@@ -240,7 +240,7 @@ namespace CrashEdit
             // lblVerticeIndex
             // 
             this.lblVerticeIndex.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblVerticeIndex.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblVerticeIndex.ForeColor = System.Drawing.Color.GhostWhite;
             this.lblVerticeIndex.Location = new System.Drawing.Point(57, 22);
             this.lblVerticeIndex.Name = "lblVerticeIndex";
             this.lblVerticeIndex.Size = new System.Drawing.Size(70, 26);
@@ -250,6 +250,7 @@ namespace CrashEdit
             // 
             // cmdNextVertice
             // 
+            this.cmdNextVertice.ForeColor = System.Drawing.Color.Gainsboro;
             this.cmdNextVertice.Location = new System.Drawing.Point(253, 22);
             this.cmdNextVertice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmdNextVertice.Name = "cmdNextVertice";
@@ -261,6 +262,7 @@ namespace CrashEdit
             // 
             // cmdPreviousVertice
             // 
+            this.cmdPreviousVertice.ForeColor = System.Drawing.Color.Gainsboro;
             this.cmdPreviousVertice.Location = new System.Drawing.Point(178, 22);
             this.cmdPreviousVertice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmdPreviousVertice.Name = "cmdPreviousVertice";
@@ -272,6 +274,7 @@ namespace CrashEdit
             // 
             // cmdInsertVertice
             // 
+            this.cmdInsertVertice.ForeColor = System.Drawing.Color.Gainsboro;
             this.cmdInsertVertice.Location = new System.Drawing.Point(242, 87);
             this.cmdInsertVertice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmdInsertVertice.Name = "cmdInsertVertice";
@@ -284,7 +287,7 @@ namespace CrashEdit
             // lblZ
             // 
             this.lblZ.AutoSize = true;
-            this.lblZ.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblZ.ForeColor = System.Drawing.Color.GhostWhite;
             this.lblZ.Location = new System.Drawing.Point(7, 122);
             this.lblZ.Name = "lblZ";
             this.lblZ.Size = new System.Drawing.Size(14, 15);
@@ -293,6 +296,7 @@ namespace CrashEdit
             // 
             // cmdRemoveVertice
             // 
+            this.cmdRemoveVertice.ForeColor = System.Drawing.Color.Gainsboro;
             this.cmdRemoveVertice.Location = new System.Drawing.Point(242, 118);
             this.cmdRemoveVertice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmdRemoveVertice.Name = "cmdRemoveVertice";
@@ -305,7 +309,7 @@ namespace CrashEdit
             // lblY
             // 
             this.lblY.AutoSize = true;
-            this.lblY.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblY.ForeColor = System.Drawing.Color.GhostWhite;
             this.lblY.Location = new System.Drawing.Point(7, 92);
             this.lblY.Name = "lblY";
             this.lblY.Size = new System.Drawing.Size(14, 15);
@@ -314,6 +318,7 @@ namespace CrashEdit
             // 
             // cmdAppendVertice
             // 
+            this.cmdAppendVertice.ForeColor = System.Drawing.Color.Gainsboro;
             this.cmdAppendVertice.Location = new System.Drawing.Point(242, 56);
             this.cmdAppendVertice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmdAppendVertice.Name = "cmdAppendVertice";
@@ -326,10 +331,10 @@ namespace CrashEdit
             // lblX
             // 
             this.lblX.AutoSize = true;
-            this.lblX.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblX.ForeColor = System.Drawing.Color.GhostWhite;
             this.lblX.Location = new System.Drawing.Point(7, 62);
             this.lblX.Name = "lblX";
-            this.lblX.Size = new System.Drawing.Size(14, 15);
+            this.lblX.Size = new System.Drawing.Size(15, 15);
             this.lblX.TabIndex = 3;
             this.lblX.Text = "X";
             // 
@@ -394,7 +399,7 @@ namespace CrashEdit
             // 
             this.fraUnknown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
             this.fraUnknown.Controls.Add(this.numUnknown);
-            this.fraUnknown.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraUnknown.ForeColor = System.Drawing.Color.Silver;
             this.fraUnknown.Location = new System.Drawing.Point(155, 282);
             this.fraUnknown.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.fraUnknown.Name = "fraUnknown";
@@ -432,7 +437,7 @@ namespace CrashEdit
             this.fraGG.Controls.Add(this.numZG);
             this.fraGG.Controls.Add(this.numYG);
             this.fraGG.Controls.Add(this.numXG);
-            this.fraGG.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraGG.ForeColor = System.Drawing.Color.Silver;
             this.fraGG.Location = new System.Drawing.Point(3, 282);
             this.fraGG.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.fraGG.Name = "fraGG";
@@ -445,7 +450,7 @@ namespace CrashEdit
             // lblZG
             // 
             this.lblZG.AutoSize = true;
-            this.lblZG.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblZG.ForeColor = System.Drawing.Color.GhostWhite;
             this.lblZG.Location = new System.Drawing.Point(7, 84);
             this.lblZG.Name = "lblZG";
             this.lblZG.Size = new System.Drawing.Size(14, 15);
@@ -455,7 +460,7 @@ namespace CrashEdit
             // lblYG
             // 
             this.lblYG.AutoSize = true;
-            this.lblYG.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblYG.ForeColor = System.Drawing.Color.GhostWhite;
             this.lblYG.Location = new System.Drawing.Point(7, 54);
             this.lblYG.Name = "lblYG";
             this.lblYG.Size = new System.Drawing.Size(14, 15);
@@ -465,10 +470,10 @@ namespace CrashEdit
             // lblXG
             // 
             this.lblXG.AutoSize = true;
-            this.lblXG.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblXG.ForeColor = System.Drawing.Color.GhostWhite;
             this.lblXG.Location = new System.Drawing.Point(7, 24);
             this.lblXG.Name = "lblXG";
-            this.lblXG.Size = new System.Drawing.Size(14, 15);
+            this.lblXG.Size = new System.Drawing.Size(15, 15);
             this.lblXG.TabIndex = 3;
             this.lblXG.Text = "X";
             // 
@@ -538,7 +543,7 @@ namespace CrashEdit
             this.fraG2.Controls.Add(this.numZ2);
             this.fraG2.Controls.Add(this.numY2);
             this.fraG2.Controls.Add(this.numX2);
-            this.fraG2.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraG2.ForeColor = System.Drawing.Color.Silver;
             this.fraG2.Location = new System.Drawing.Point(307, 162);
             this.fraG2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.fraG2.Name = "fraG2";
@@ -551,7 +556,7 @@ namespace CrashEdit
             // lblZ2
             // 
             this.lblZ2.AutoSize = true;
-            this.lblZ2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblZ2.ForeColor = System.Drawing.Color.GhostWhite;
             this.lblZ2.Location = new System.Drawing.Point(7, 84);
             this.lblZ2.Name = "lblZ2";
             this.lblZ2.Size = new System.Drawing.Size(14, 15);
@@ -561,7 +566,7 @@ namespace CrashEdit
             // lblY2
             // 
             this.lblY2.AutoSize = true;
-            this.lblY2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblY2.ForeColor = System.Drawing.Color.GhostWhite;
             this.lblY2.Location = new System.Drawing.Point(7, 54);
             this.lblY2.Name = "lblY2";
             this.lblY2.Size = new System.Drawing.Size(14, 15);
@@ -571,10 +576,10 @@ namespace CrashEdit
             // lblX2
             // 
             this.lblX2.AutoSize = true;
-            this.lblX2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblX2.ForeColor = System.Drawing.Color.GhostWhite;
             this.lblX2.Location = new System.Drawing.Point(7, 24);
             this.lblX2.Name = "lblX2";
-            this.lblX2.Size = new System.Drawing.Size(14, 15);
+            this.lblX2.Size = new System.Drawing.Size(15, 15);
             this.lblX2.TabIndex = 3;
             this.lblX2.Text = "X";
             // 
@@ -644,7 +649,7 @@ namespace CrashEdit
             this.fraG1.Controls.Add(this.numZ1);
             this.fraG1.Controls.Add(this.numY1);
             this.fraG1.Controls.Add(this.numX1);
-            this.fraG1.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraG1.ForeColor = System.Drawing.Color.Silver;
             this.fraG1.Location = new System.Drawing.Point(155, 162);
             this.fraG1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.fraG1.Name = "fraG1";
@@ -657,7 +662,7 @@ namespace CrashEdit
             // lblZ1
             // 
             this.lblZ1.AutoSize = true;
-            this.lblZ1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblZ1.ForeColor = System.Drawing.Color.GhostWhite;
             this.lblZ1.Location = new System.Drawing.Point(7, 84);
             this.lblZ1.Name = "lblZ1";
             this.lblZ1.Size = new System.Drawing.Size(14, 15);
@@ -667,7 +672,7 @@ namespace CrashEdit
             // lblY1
             // 
             this.lblY1.AutoSize = true;
-            this.lblY1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblY1.ForeColor = System.Drawing.Color.GhostWhite;
             this.lblY1.Location = new System.Drawing.Point(7, 54);
             this.lblY1.Name = "lblY1";
             this.lblY1.Size = new System.Drawing.Size(14, 15);
@@ -677,10 +682,10 @@ namespace CrashEdit
             // lblX1
             // 
             this.lblX1.AutoSize = true;
-            this.lblX1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblX1.ForeColor = System.Drawing.Color.GhostWhite;
             this.lblX1.Location = new System.Drawing.Point(7, 24);
             this.lblX1.Name = "lblX1";
-            this.lblX1.Size = new System.Drawing.Size(14, 15);
+            this.lblX1.Size = new System.Drawing.Size(15, 15);
             this.lblX1.TabIndex = 3;
             this.lblX1.Text = "X";
             // 
@@ -750,7 +755,7 @@ namespace CrashEdit
             this.fraOffset.Controls.Add(this.numZOffset);
             this.fraOffset.Controls.Add(this.numYOffset);
             this.fraOffset.Controls.Add(this.numXOffset);
-            this.fraOffset.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraOffset.ForeColor = System.Drawing.Color.Silver;
             this.fraOffset.Location = new System.Drawing.Point(3, 162);
             this.fraOffset.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.fraOffset.Name = "fraOffset";
@@ -763,7 +768,7 @@ namespace CrashEdit
             // lblZOffset
             // 
             this.lblZOffset.AutoSize = true;
-            this.lblZOffset.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblZOffset.ForeColor = System.Drawing.Color.GhostWhite;
             this.lblZOffset.Location = new System.Drawing.Point(7, 84);
             this.lblZOffset.Name = "lblZOffset";
             this.lblZOffset.Size = new System.Drawing.Size(14, 15);
@@ -773,7 +778,7 @@ namespace CrashEdit
             // lblYOffset
             // 
             this.lblYOffset.AutoSize = true;
-            this.lblYOffset.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblYOffset.ForeColor = System.Drawing.Color.GhostWhite;
             this.lblYOffset.Location = new System.Drawing.Point(7, 54);
             this.lblYOffset.Name = "lblYOffset";
             this.lblYOffset.Size = new System.Drawing.Size(14, 15);
@@ -783,10 +788,10 @@ namespace CrashEdit
             // lblXOffset
             // 
             this.lblXOffset.AutoSize = true;
-            this.lblXOffset.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblXOffset.ForeColor = System.Drawing.Color.GhostWhite;
             this.lblXOffset.Location = new System.Drawing.Point(7, 24);
             this.lblXOffset.Name = "lblXOffset";
-            this.lblXOffset.Size = new System.Drawing.Size(14, 15);
+            this.lblXOffset.Size = new System.Drawing.Size(15, 15);
             this.lblXOffset.TabIndex = 3;
             this.lblXOffset.Text = "X";
             // 
@@ -851,7 +856,7 @@ namespace CrashEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(35)))));
             this.Controls.Add(this.fraG1);
             this.Controls.Add(this.fraG2);
             this.Controls.Add(this.fraGG);
@@ -859,7 +864,7 @@ namespace CrashEdit
             this.Controls.Add(this.fraUnknown);
             this.Controls.Add(this.fraVertice);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.ForeColor = System.Drawing.SystemColors.Window;
+            this.ForeColor = System.Drawing.Color.Gainsboro;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "OldFrameBox";
             this.Size = new System.Drawing.Size(464, 524);

@@ -48,7 +48,7 @@
             this.darkLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.darkLabel1.Location = new System.Drawing.Point(12, 22);
             this.darkLabel1.Name = "darkLabel1";
-            this.darkLabel1.Size = new System.Drawing.Size(247, 112);
+            this.darkLabel1.Size = new System.Drawing.Size(246, 112);
             this.darkLabel1.TabIndex = 0;
             this.darkLabel1.Text = "Arrow keys: Move\r\nA: Up\r\nZ: Down\r\nD: Undock\r\n\r\nT: Toggle textures\r\nHold down righ" +
     "t mouse button: Move fast";
@@ -57,7 +57,7 @@
             // 
             this.darkLabel2.AutoSize = true;
             this.darkLabel2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.darkLabel2.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.darkLabel2.ForeColor = System.Drawing.Color.LightSeaGreen;
             this.darkLabel2.Location = new System.Drawing.Point(3, 4);
             this.darkLabel2.Name = "darkLabel2";
             this.darkLabel2.Size = new System.Drawing.Size(146, 20);
@@ -68,7 +68,7 @@
             // 
             this.darkLabel3.AutoSize = true;
             this.darkLabel3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.darkLabel3.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.darkLabel3.ForeColor = System.Drawing.Color.LightSeaGreen;
             this.darkLabel3.Location = new System.Drawing.Point(3, 148);
             this.darkLabel3.Name = "darkLabel3";
             this.darkLabel3.Size = new System.Drawing.Size(98, 20);
@@ -82,7 +82,7 @@
             this.darkLabel4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.darkLabel4.Location = new System.Drawing.Point(12, 168);
             this.darkLabel4.Name = "darkLabel4";
-            this.darkLabel4.Size = new System.Drawing.Size(181, 80);
+            this.darkLabel4.Size = new System.Drawing.Size(180, 80);
             this.darkLabel4.TabIndex = 3;
             this.darkLabel4.Text = "X: Display collision octrees\r\nC: Open collision type viewer\r\nV: Toggle wireframe\r" +
     "\nF: Display neighboring zones\r\nO: Toggle time trial mode\r\n";
@@ -94,7 +94,7 @@
             this.darkLabel5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.darkLabel5.Location = new System.Drawing.Point(12, 288);
             this.darkLabel5.Name = "darkLabel5";
-            this.darkLabel5.Size = new System.Drawing.Size(155, 48);
+            this.darkLabel5.Size = new System.Drawing.Size(154, 48);
             this.darkLabel5.TabIndex = 4;
             this.darkLabel5.Text = "C: Display frame collison\r\nN: Enable normals\r\nU: Change culling mode";
             // 
@@ -102,7 +102,7 @@
             // 
             this.darkLabel6.AutoSize = true;
             this.darkLabel6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.darkLabel6.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.darkLabel6.ForeColor = System.Drawing.Color.LightSeaGreen;
             this.darkLabel6.Location = new System.Drawing.Point(3, 248);
             this.darkLabel6.Name = "darkLabel6";
             this.darkLabel6.Size = new System.Drawing.Size(132, 40);
@@ -116,7 +116,7 @@
             this.darkLabel7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.darkLabel7.Location = new System.Drawing.Point(165, 22);
             this.darkLabel7.Name = "darkLabel7";
-            this.darkLabel7.Size = new System.Drawing.Size(161, 64);
+            this.darkLabel7.Size = new System.Drawing.Size(160, 64);
             this.darkLabel7.TabIndex = 6;
             this.darkLabel7.Text = "WASD, Arrow keys: Move\r\nSpace: Up\r\nShift: Down\r\nQ: Undock";
             // 
@@ -158,7 +158,7 @@
             this.darkLabel11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.darkLabel11.Location = new System.Drawing.Point(12, 376);
             this.darkLabel11.Name = "darkLabel11";
-            this.darkLabel11.Size = new System.Drawing.Size(133, 128);
+            this.darkLabel11.Size = new System.Drawing.Size(132, 128);
             this.darkLabel11.TabIndex = 10;
             this.darkLabel11.Text = "Open (Ctrl + O)\r\nSave (Ctrl + Shift + S)\r\nPatch NSD (Ctrl + S)\r\nClose (Ctrl + Shi" +
     "ft + C)\r\nFind (Ctrl + F)\r\nFind Next (F3)\r\nFind first node (Enter)\r\nPlay (F1)";
@@ -169,6 +169,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
             this.ClientSize = new System.Drawing.Size(329, 511);
             this.Controls.Add(this.darkLabel11);
             this.Controls.Add(this.darkLabel10);
@@ -181,6 +182,7 @@
             this.Controls.Add(this.darkLabel3);
             this.Controls.Add(this.darkLabel2);
             this.Controls.Add(this.darkLabel1);
+            this.ForeColor = System.Drawing.Color.Gainsboro;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;

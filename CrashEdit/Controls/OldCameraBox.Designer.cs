@@ -200,7 +200,7 @@ namespace CrashEdit
             this.fraPosition.Controls.Add(this.numZ);
             this.fraPosition.Controls.Add(this.numY);
             this.fraPosition.Controls.Add(this.numX);
-            this.fraPosition.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraPosition.ForeColor = System.Drawing.Color.Silver;
             this.fraPosition.Location = new System.Drawing.Point(3, 3);
             this.fraPosition.Name = "fraPosition";
             this.fraPosition.Size = new System.Drawing.Size(356, 178);
@@ -266,7 +266,7 @@ namespace CrashEdit
             this.lblXRot.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblXRot.Location = new System.Drawing.Point(118, 50);
             this.lblXRot.Name = "lblXRot";
-            this.lblXRot.Size = new System.Drawing.Size(63, 15);
+            this.lblXRot.Size = new System.Drawing.Size(64, 15);
             this.lblXRot.TabIndex = 9;
             this.lblXRot.Text = "X Rotation";
             // 
@@ -411,7 +411,7 @@ namespace CrashEdit
             this.lblX.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblX.Location = new System.Drawing.Point(6, 50);
             this.lblX.Name = "lblX";
-            this.lblX.Size = new System.Drawing.Size(14, 15);
+            this.lblX.Size = new System.Drawing.Size(15, 15);
             this.lblX.TabIndex = 3;
             this.lblX.Text = "X";
             // 
@@ -493,7 +493,7 @@ namespace CrashEdit
             this.tbcTabs.FontWeight = MetroFramework.MetroTabControlWeight.Regular;
             this.tbcTabs.Location = new System.Drawing.Point(0, 0);
             this.tbcTabs.Name = "tbcTabs";
-            this.tbcTabs.SelectedIndex = 0;
+            this.tbcTabs.SelectedIndex = 2;
             this.tbcTabs.Size = new System.Drawing.Size(400, 369);
             this.tbcTabs.Style = MetroFramework.MetroColorStyle.Teal;
             this.tbcTabs.TabIndex = 7;
@@ -539,7 +539,7 @@ namespace CrashEdit
             this.fraSLST.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
             this.fraSLST.Controls.Add(this.lblSLST);
             this.fraSLST.Controls.Add(this.txtSLST);
-            this.fraSLST.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraSLST.ForeColor = System.Drawing.Color.Silver;
             this.fraSLST.Location = new System.Drawing.Point(6, 179);
             this.fraSLST.Name = "fraSLST";
             this.fraSLST.Size = new System.Drawing.Size(149, 74);
@@ -579,7 +579,7 @@ namespace CrashEdit
             this.fraUnknown.Controls.Add(this.numUnk3);
             this.fraUnknown.Controls.Add(this.lblUnk3);
             this.fraUnknown.Controls.Add(this.lblUnk2);
-            this.fraUnknown.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraUnknown.ForeColor = System.Drawing.Color.Silver;
             this.fraUnknown.Location = new System.Drawing.Point(279, 6);
             this.fraUnknown.Name = "fraUnknown";
             this.fraUnknown.Size = new System.Drawing.Size(101, 95);
@@ -678,7 +678,7 @@ namespace CrashEdit
             this.fraLink.Controls.Add(this.numExitPoint);
             this.fraLink.Controls.Add(this.lblEntryPoint);
             this.fraLink.Controls.Add(this.numEntryPoint);
-            this.fraLink.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraLink.ForeColor = System.Drawing.Color.Silver;
             this.fraLink.Location = new System.Drawing.Point(6, 104);
             this.fraLink.Name = "fraLink";
             this.fraLink.Size = new System.Drawing.Size(99, 73);
@@ -692,7 +692,7 @@ namespace CrashEdit
             this.lblExitPoint.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblExitPoint.Location = new System.Drawing.Point(6, 43);
             this.lblExitPoint.Name = "lblExitPoint";
-            this.lblExitPoint.Size = new System.Drawing.Size(26, 15);
+            this.lblExitPoint.Size = new System.Drawing.Size(27, 15);
             this.lblExitPoint.TabIndex = 3;
             this.lblExitPoint.Text = "Exit";
             // 
@@ -737,7 +737,7 @@ namespace CrashEdit
             this.fraAvgDist.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
             this.fraAvgDist.Controls.Add(this.cmdAvgDistCalc);
             this.fraAvgDist.Controls.Add(this.numAvgDist);
-            this.fraAvgDist.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraAvgDist.ForeColor = System.Drawing.Color.Silver;
             this.fraAvgDist.Location = new System.Drawing.Point(6, 53);
             this.fraAvgDist.Name = "fraAvgDist";
             this.fraAvgDist.Size = new System.Drawing.Size(153, 48);
@@ -777,7 +777,7 @@ namespace CrashEdit
             // 
             this.fraZoom.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
             this.fraZoom.Controls.Add(this.numZoom);
-            this.fraZoom.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraZoom.ForeColor = System.Drawing.Color.Silver;
             this.fraZoom.Location = new System.Drawing.Point(84, 6);
             this.fraZoom.Name = "fraZoom";
             this.fraZoom.Size = new System.Drawing.Size(72, 47);
@@ -812,7 +812,7 @@ namespace CrashEdit
             // 
             this.fraMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
             this.fraMode.Controls.Add(this.numMode);
-            this.fraMode.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraMode.ForeColor = System.Drawing.Color.Silver;
             this.fraMode.Location = new System.Drawing.Point(6, 6);
             this.fraMode.Name = "fraMode";
             this.fraMode.Size = new System.Drawing.Size(72, 47);
@@ -847,7 +847,7 @@ namespace CrashEdit
             this.fraDirection.Controls.Add(this.numZDir);
             this.fraDirection.Controls.Add(this.lblZDir);
             this.fraDirection.Controls.Add(this.lblYDir);
-            this.fraDirection.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraDirection.ForeColor = System.Drawing.Color.Silver;
             this.fraDirection.Location = new System.Drawing.Point(165, 6);
             this.fraDirection.Name = "fraDirection";
             this.fraDirection.Size = new System.Drawing.Size(108, 95);
@@ -861,7 +861,7 @@ namespace CrashEdit
             this.lblXDir.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lblXDir.Location = new System.Drawing.Point(6, 19);
             this.lblXDir.Name = "lblXDir";
-            this.lblXDir.Size = new System.Drawing.Size(33, 15);
+            this.lblXDir.Size = new System.Drawing.Size(34, 15);
             this.lblXDir.TabIndex = 21;
             this.lblXDir.Text = "X Dir";
             // 
@@ -944,7 +944,7 @@ namespace CrashEdit
             // 
             // tabNeighbor
             // 
-            this.tabNeighbor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.tabNeighbor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(35)))));
             this.tabNeighbor.Controls.Add(this.fraNeighbor3);
             this.tabNeighbor.Controls.Add(this.fraNeighbor2);
             this.tabNeighbor.Controls.Add(this.fraNeighbor1);
@@ -970,7 +970,7 @@ namespace CrashEdit
             this.fraNeighbor3.Controls.Add(this.numRelative4);
             this.fraNeighbor3.Controls.Add(this.numPathItem4);
             this.fraNeighbor3.Controls.Add(this.numParentZone4);
-            this.fraNeighbor3.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraNeighbor3.ForeColor = System.Drawing.Color.Silver;
             this.fraNeighbor3.Location = new System.Drawing.Point(165, 180);
             this.fraNeighbor3.Name = "fraNeighbor3";
             this.fraNeighbor3.Size = new System.Drawing.Size(153, 119);
@@ -981,10 +981,10 @@ namespace CrashEdit
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.label5.ForeColor = System.Drawing.Color.Gainsboro;
             this.label5.Location = new System.Drawing.Point(6, 91);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(38, 15);
+            this.label5.Size = new System.Drawing.Size(37, 15);
             this.label5.TabIndex = 37;
             this.label5.Text = "Flags";
             // 
@@ -1004,17 +1004,17 @@ namespace CrashEdit
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.label6.ForeColor = System.Drawing.Color.Gainsboro;
             this.label6.Location = new System.Drawing.Point(6, 19);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(58, 15);
+            this.label6.Size = new System.Drawing.Size(59, 15);
             this.label6.TabIndex = 19;
             this.label6.Text = "Link Type";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.label7.ForeColor = System.Drawing.Color.Gainsboro;
             this.label7.Location = new System.Drawing.Point(6, 67);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(69, 15);
@@ -1024,10 +1024,10 @@ namespace CrashEdit
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.label8.ForeColor = System.Drawing.Color.Gainsboro;
             this.label8.Location = new System.Drawing.Point(6, 43);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(67, 15);
+            this.label8.Size = new System.Drawing.Size(68, 15);
             this.label8.TabIndex = 27;
             this.label8.Text = "Zone Index";
             // 
@@ -1081,7 +1081,7 @@ namespace CrashEdit
             this.fraNeighbor2.Controls.Add(this.numRelative3);
             this.fraNeighbor2.Controls.Add(this.numParentZone3);
             this.fraNeighbor2.Controls.Add(this.numPathItem3);
-            this.fraNeighbor2.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraNeighbor2.ForeColor = System.Drawing.Color.Silver;
             this.fraNeighbor2.Location = new System.Drawing.Point(6, 180);
             this.fraNeighbor2.Name = "fraNeighbor2";
             this.fraNeighbor2.Size = new System.Drawing.Size(153, 119);
@@ -1092,27 +1092,27 @@ namespace CrashEdit
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.label9.ForeColor = System.Drawing.Color.Gainsboro;
             this.label9.Location = new System.Drawing.Point(6, 91);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(38, 15);
+            this.label9.Size = new System.Drawing.Size(37, 15);
             this.label9.TabIndex = 37;
             this.label9.Text = "Flags";
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.label10.ForeColor = System.Drawing.Color.Gainsboro;
             this.label10.Location = new System.Drawing.Point(6, 19);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(58, 15);
+            this.label10.Size = new System.Drawing.Size(59, 15);
             this.label10.TabIndex = 19;
             this.label10.Text = "Link Type";
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.label11.ForeColor = System.Drawing.Color.Gainsboro;
             this.label11.Location = new System.Drawing.Point(6, 67);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(69, 15);
@@ -1122,10 +1122,10 @@ namespace CrashEdit
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.label12.ForeColor = System.Drawing.Color.Gainsboro;
             this.label12.Location = new System.Drawing.Point(6, 43);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(67, 15);
+            this.label12.Size = new System.Drawing.Size(68, 15);
             this.label12.TabIndex = 27;
             this.label12.Text = "Zone Index";
             // 
@@ -1192,7 +1192,7 @@ namespace CrashEdit
             this.fraNeighbor1.Controls.Add(this.numParentZone2);
             this.fraNeighbor1.Controls.Add(this.numRelative2);
             this.fraNeighbor1.Controls.Add(this.numPathItem2);
-            this.fraNeighbor1.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraNeighbor1.ForeColor = System.Drawing.Color.Silver;
             this.fraNeighbor1.Location = new System.Drawing.Point(165, 61);
             this.fraNeighbor1.Name = "fraNeighbor1";
             this.fraNeighbor1.Size = new System.Drawing.Size(153, 119);
@@ -1203,20 +1203,20 @@ namespace CrashEdit
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.label1.ForeColor = System.Drawing.Color.Gainsboro;
             this.label1.Location = new System.Drawing.Point(6, 91);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 15);
+            this.label1.Size = new System.Drawing.Size(37, 15);
             this.label1.TabIndex = 37;
             this.label1.Text = "Flags";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.label2.ForeColor = System.Drawing.Color.Gainsboro;
             this.label2.Location = new System.Drawing.Point(6, 19);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(58, 15);
+            this.label2.Size = new System.Drawing.Size(59, 15);
             this.label2.TabIndex = 19;
             this.label2.Text = "Link Type";
             // 
@@ -1236,7 +1236,7 @@ namespace CrashEdit
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.label3.ForeColor = System.Drawing.Color.Gainsboro;
             this.label3.Location = new System.Drawing.Point(6, 67);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(69, 15);
@@ -1246,10 +1246,10 @@ namespace CrashEdit
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.label4.ForeColor = System.Drawing.Color.Gainsboro;
             this.label4.Location = new System.Drawing.Point(6, 43);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(67, 15);
+            this.label4.Size = new System.Drawing.Size(68, 15);
             this.label4.TabIndex = 27;
             this.label4.Text = "Zone Index";
             // 
@@ -1303,7 +1303,7 @@ namespace CrashEdit
             this.fraNeighbor0.Controls.Add(this.numRelativeFlag1);
             this.fraNeighbor0.Controls.Add(this.numParentZone1);
             this.fraNeighbor0.Controls.Add(this.numPathItem1);
-            this.fraNeighbor0.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraNeighbor0.ForeColor = System.Drawing.Color.Silver;
             this.fraNeighbor0.Location = new System.Drawing.Point(6, 61);
             this.fraNeighbor0.Name = "fraNeighbor0";
             this.fraNeighbor0.Size = new System.Drawing.Size(153, 119);
@@ -1314,20 +1314,20 @@ namespace CrashEdit
             // lblRelativeFlag
             // 
             this.lblRelativeFlag.AutoSize = true;
-            this.lblRelativeFlag.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblRelativeFlag.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblRelativeFlag.Location = new System.Drawing.Point(6, 91);
             this.lblRelativeFlag.Name = "lblRelativeFlag";
-            this.lblRelativeFlag.Size = new System.Drawing.Size(38, 15);
+            this.lblRelativeFlag.Size = new System.Drawing.Size(37, 15);
             this.lblRelativeFlag.TabIndex = 37;
             this.lblRelativeFlag.Text = "Flags";
             // 
             // lblRelative
             // 
             this.lblRelative.AutoSize = true;
-            this.lblRelative.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblRelative.ForeColor = System.Drawing.Color.GhostWhite;
             this.lblRelative.Location = new System.Drawing.Point(6, 19);
             this.lblRelative.Name = "lblRelative";
-            this.lblRelative.Size = new System.Drawing.Size(58, 15);
+            this.lblRelative.Size = new System.Drawing.Size(59, 15);
             this.lblRelative.TabIndex = 19;
             this.lblRelative.Text = "Link Type";
             // 
@@ -1347,7 +1347,7 @@ namespace CrashEdit
             // lblPathItem
             // 
             this.lblPathItem.AutoSize = true;
-            this.lblPathItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblPathItem.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblPathItem.Location = new System.Drawing.Point(6, 67);
             this.lblPathItem.Name = "lblPathItem";
             this.lblPathItem.Size = new System.Drawing.Size(69, 15);
@@ -1357,10 +1357,10 @@ namespace CrashEdit
             // lblParentZone
             // 
             this.lblParentZone.AutoSize = true;
-            this.lblParentZone.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblParentZone.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblParentZone.Location = new System.Drawing.Point(6, 43);
             this.lblParentZone.Name = "lblParentZone";
-            this.lblParentZone.Size = new System.Drawing.Size(67, 15);
+            this.lblParentZone.Size = new System.Drawing.Size(68, 15);
             this.lblParentZone.TabIndex = 27;
             this.lblParentZone.Text = "Zone Index";
             // 
@@ -1407,7 +1407,7 @@ namespace CrashEdit
             // 
             this.fraCount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
             this.fraCount.Controls.Add(this.numNeighborCount);
-            this.fraCount.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraCount.ForeColor = System.Drawing.Color.Silver;
             this.fraCount.Location = new System.Drawing.Point(6, 6);
             this.fraCount.Name = "fraCount";
             this.fraCount.Size = new System.Drawing.Size(66, 48);

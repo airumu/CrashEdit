@@ -48,8 +48,8 @@
             // 
             this.lblMessage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblMessage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(38)))));
-            this.lblMessage.ForeColor = System.Drawing.SystemColors.Control;
+            this.lblMessage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.lblMessage.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblMessage.Location = new System.Drawing.Point(14, 10);
             this.lblMessage.Name = "lblMessage";
             this.lblMessage.Size = new System.Drawing.Size(376, 54);
@@ -61,7 +61,7 @@
             // 
             this.fraRelease.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.fraRelease.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(38)))));
+            this.fraRelease.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
             this.fraRelease.Controls.Add(this.cmdCrash3);
             this.fraRelease.Controls.Add(this.cmdCrash2);
             this.fraRelease.Controls.Add(this.cmdCrash1);
@@ -118,7 +118,7 @@
             // 
             this.fraPrerelease.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.fraPrerelease.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(38)))));
+            this.fraPrerelease.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
             this.fraPrerelease.Controls.Add(this.cmdCrash1Beta1995);
             this.fraPrerelease.Controls.Add(this.cmdCrash2Beta);
             this.fraPrerelease.Controls.Add(this.cmdCrash1BetaMAY11);
@@ -202,7 +202,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(35)))));
             this.CancelButton = this.cmdCancel;
             this.ClientSize = new System.Drawing.Size(404, 513);
             this.Controls.Add(this.cmdCancel);
@@ -210,7 +210,7 @@
             this.Controls.Add(this.fraRelease);
             this.Controls.Add(this.lblMessage);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.ForeColor = System.Drawing.SystemColors.Control;
+            this.ForeColor = System.Drawing.Color.Gainsboro;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);

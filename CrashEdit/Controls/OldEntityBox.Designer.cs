@@ -101,7 +101,7 @@ namespace CrashEdit
             this.fraType.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
             this.fraType.Controls.Add(this.lblCodeName);
             this.fraType.Controls.Add(this.numType);
-            this.fraType.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraType.ForeColor = System.Drawing.Color.Silver;
             this.fraType.Location = new System.Drawing.Point(217, 3);
             this.fraType.Name = "fraType";
             this.fraType.Size = new System.Drawing.Size(109, 62);
@@ -124,7 +124,7 @@ namespace CrashEdit
             // 
             this.fraSubtype.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
             this.fraSubtype.Controls.Add(this.numSubtype);
-            this.fraSubtype.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraSubtype.ForeColor = System.Drawing.Color.Silver;
             this.fraSubtype.Location = new System.Drawing.Point(217, 66);
             this.fraSubtype.Name = "fraSubtype";
             this.fraSubtype.Size = new System.Drawing.Size(109, 45);
@@ -156,7 +156,7 @@ namespace CrashEdit
             this.fraPosition.Controls.Add(this.numZ);
             this.fraPosition.Controls.Add(this.numY);
             this.fraPosition.Controls.Add(this.numX);
-            this.fraPosition.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraPosition.ForeColor = System.Drawing.Color.Silver;
             this.fraPosition.Location = new System.Drawing.Point(3, 3);
             this.fraPosition.Name = "fraPosition";
             this.fraPosition.Size = new System.Drawing.Size(208, 156);
@@ -166,6 +166,7 @@ namespace CrashEdit
             // 
             // cmdInterpolate
             // 
+            this.cmdInterpolate.ForeColor = System.Drawing.Color.Gainsboro;
             this.cmdInterpolate.Location = new System.Drawing.Point(9, 123);
             this.cmdInterpolate.Name = "cmdInterpolate";
             this.cmdInterpolate.Padding = new System.Windows.Forms.Padding(5);
@@ -177,7 +178,7 @@ namespace CrashEdit
             // lblPositionIndex
             // 
             this.lblPositionIndex.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPositionIndex.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblPositionIndex.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblPositionIndex.Location = new System.Drawing.Point(6, 18);
             this.lblPositionIndex.Name = "lblPositionIndex";
             this.lblPositionIndex.Size = new System.Drawing.Size(60, 21);
@@ -187,6 +188,7 @@ namespace CrashEdit
             // 
             // cmdNextPosition
             // 
+            this.cmdNextPosition.ForeColor = System.Drawing.Color.Gainsboro;
             this.cmdNextPosition.Location = new System.Drawing.Point(136, 18);
             this.cmdNextPosition.Name = "cmdNextPosition";
             this.cmdNextPosition.Padding = new System.Windows.Forms.Padding(5);
@@ -197,6 +199,7 @@ namespace CrashEdit
             // 
             // cmdPreviousPosition
             // 
+            this.cmdPreviousPosition.ForeColor = System.Drawing.Color.Gainsboro;
             this.cmdPreviousPosition.Location = new System.Drawing.Point(72, 18);
             this.cmdPreviousPosition.Name = "cmdPreviousPosition";
             this.cmdPreviousPosition.Padding = new System.Windows.Forms.Padding(5);
@@ -207,6 +210,7 @@ namespace CrashEdit
             // 
             // cmdInsertPosition
             // 
+            this.cmdInsertPosition.ForeColor = System.Drawing.Color.Gainsboro;
             this.cmdInsertPosition.Location = new System.Drawing.Point(126, 72);
             this.cmdInsertPosition.Name = "cmdInsertPosition";
             this.cmdInsertPosition.Padding = new System.Windows.Forms.Padding(5);
@@ -218,7 +222,7 @@ namespace CrashEdit
             // lblZ
             // 
             this.lblZ.AutoSize = true;
-            this.lblZ.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblZ.ForeColor = System.Drawing.Color.GhostWhite;
             this.lblZ.Location = new System.Drawing.Point(6, 98);
             this.lblZ.Name = "lblZ";
             this.lblZ.Size = new System.Drawing.Size(14, 15);
@@ -227,6 +231,7 @@ namespace CrashEdit
             // 
             // cmdRemovePosition
             // 
+            this.cmdRemovePosition.ForeColor = System.Drawing.Color.Gainsboro;
             this.cmdRemovePosition.Location = new System.Drawing.Point(126, 96);
             this.cmdRemovePosition.Name = "cmdRemovePosition";
             this.cmdRemovePosition.Padding = new System.Windows.Forms.Padding(5);
@@ -238,7 +243,7 @@ namespace CrashEdit
             // lblY
             // 
             this.lblY.AutoSize = true;
-            this.lblY.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblY.ForeColor = System.Drawing.Color.GhostWhite;
             this.lblY.Location = new System.Drawing.Point(6, 74);
             this.lblY.Name = "lblY";
             this.lblY.Size = new System.Drawing.Size(14, 15);
@@ -247,6 +252,7 @@ namespace CrashEdit
             // 
             // cmdAppendPosition
             // 
+            this.cmdAppendPosition.ForeColor = System.Drawing.Color.Gainsboro;
             this.cmdAppendPosition.Location = new System.Drawing.Point(126, 48);
             this.cmdAppendPosition.Name = "cmdAppendPosition";
             this.cmdAppendPosition.Padding = new System.Windows.Forms.Padding(5);
@@ -258,10 +264,10 @@ namespace CrashEdit
             // lblX
             // 
             this.lblX.AutoSize = true;
-            this.lblX.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblX.ForeColor = System.Drawing.Color.GhostWhite;
             this.lblX.Location = new System.Drawing.Point(6, 50);
             this.lblX.Name = "lblX";
-            this.lblX.Size = new System.Drawing.Size(14, 15);
+            this.lblX.Size = new System.Drawing.Size(15, 15);
             this.lblX.TabIndex = 3;
             this.lblX.Text = "X";
             // 
@@ -338,7 +344,7 @@ namespace CrashEdit
             // 
             this.fraID.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
             this.fraID.Controls.Add(this.numID);
-            this.fraID.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraID.ForeColor = System.Drawing.Color.Silver;
             this.fraID.Location = new System.Drawing.Point(217, 114);
             this.fraID.Name = "fraID";
             this.fraID.Size = new System.Drawing.Size(109, 45);
@@ -381,13 +387,14 @@ namespace CrashEdit
             // tabGeneral
             // 
             this.tabGeneral.AutoScroll = true;
-            this.tabGeneral.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.tabGeneral.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(35)))));
             this.tabGeneral.Controls.Add(this.fraSettings);
             this.tabGeneral.Controls.Add(this.fraType);
             this.tabGeneral.Controls.Add(this.fraSubtype);
             this.tabGeneral.Controls.Add(this.fraPosition);
             this.tabGeneral.Controls.Add(this.fraID);
             this.tabGeneral.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tabGeneral.ForeColor = System.Drawing.Color.Gainsboro;
             this.tabGeneral.Location = new System.Drawing.Point(4, 38);
             this.tabGeneral.Name = "tabGeneral";
             this.tabGeneral.Size = new System.Drawing.Size(390, 377);
@@ -409,7 +416,7 @@ namespace CrashEdit
             this.fraSettings.Controls.Add(this.numB);
             this.fraSettings.Controls.Add(this.numA);
             this.fraSettings.Controls.Add(this.numFlags);
-            this.fraSettings.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraSettings.ForeColor = System.Drawing.Color.Silver;
             this.fraSettings.Location = new System.Drawing.Point(3, 163);
             this.fraSettings.Name = "fraSettings";
             this.fraSettings.Size = new System.Drawing.Size(208, 123);
@@ -422,7 +429,7 @@ namespace CrashEdit
             this.chkHexC.AutoSize = true;
             this.chkHexC.Location = new System.Drawing.Point(154, 90);
             this.chkHexC.Name = "chkHexC";
-            this.chkHexC.Size = new System.Drawing.Size(47, 19);
+            this.chkHexC.Size = new System.Drawing.Size(48, 19);
             this.chkHexC.TabIndex = 11;
             this.chkHexC.Text = "Hex";
             this.chkHexC.CheckedChanged += new System.EventHandler(this.chkHexC_CheckedChanged);
@@ -432,7 +439,7 @@ namespace CrashEdit
             this.chkHexB.AutoSize = true;
             this.chkHexB.Location = new System.Drawing.Point(154, 66);
             this.chkHexB.Name = "chkHexB";
-            this.chkHexB.Size = new System.Drawing.Size(47, 19);
+            this.chkHexB.Size = new System.Drawing.Size(48, 19);
             this.chkHexB.TabIndex = 10;
             this.chkHexB.Text = "Hex";
             this.chkHexB.CheckedChanged += new System.EventHandler(this.chkHexB_CheckedChanged);
@@ -442,7 +449,7 @@ namespace CrashEdit
             this.chkHexA.AutoSize = true;
             this.chkHexA.Location = new System.Drawing.Point(154, 42);
             this.chkHexA.Name = "chkHexA";
-            this.chkHexA.Size = new System.Drawing.Size(47, 19);
+            this.chkHexA.Size = new System.Drawing.Size(48, 19);
             this.chkHexA.TabIndex = 9;
             this.chkHexA.Text = "Hex";
             this.chkHexA.CheckedChanged += new System.EventHandler(this.chkHexA_CheckedChanged);
@@ -454,7 +461,7 @@ namespace CrashEdit
             this.chkHexFlags.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkHexFlags.Location = new System.Drawing.Point(154, 18);
             this.chkHexFlags.Name = "chkHexFlags";
-            this.chkHexFlags.Size = new System.Drawing.Size(47, 19);
+            this.chkHexFlags.Size = new System.Drawing.Size(48, 19);
             this.chkHexFlags.TabIndex = 8;
             this.chkHexFlags.Text = "Hex";
             this.chkHexFlags.CheckedChanged += new System.EventHandler(this.chkHexUnknown_CheckedChanged);
@@ -462,10 +469,10 @@ namespace CrashEdit
             // lblC
             // 
             this.lblC.AutoSize = true;
-            this.lblC.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblC.ForeColor = System.Drawing.Color.GhostWhite;
             this.lblC.Location = new System.Drawing.Point(6, 91);
             this.lblC.Name = "lblC";
-            this.lblC.Size = new System.Drawing.Size(50, 15);
+            this.lblC.Size = new System.Drawing.Size(51, 15);
             this.lblC.TabIndex = 7;
             this.lblC.Text = "Vector Z";
             // 
@@ -490,30 +497,30 @@ namespace CrashEdit
             // lblB
             // 
             this.lblB.AutoSize = true;
-            this.lblB.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblB.ForeColor = System.Drawing.Color.GhostWhite;
             this.lblB.Location = new System.Drawing.Point(6, 67);
             this.lblB.Name = "lblB";
-            this.lblB.Size = new System.Drawing.Size(50, 15);
+            this.lblB.Size = new System.Drawing.Size(51, 15);
             this.lblB.TabIndex = 5;
             this.lblB.Text = "Vector Y";
             // 
             // lblA
             // 
             this.lblA.AutoSize = true;
-            this.lblA.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblA.ForeColor = System.Drawing.Color.GhostWhite;
             this.lblA.Location = new System.Drawing.Point(6, 43);
             this.lblA.Name = "lblA";
-            this.lblA.Size = new System.Drawing.Size(50, 15);
+            this.lblA.Size = new System.Drawing.Size(52, 15);
             this.lblA.TabIndex = 4;
             this.lblA.Text = "Vector X";
             // 
             // lblFlags
             // 
             this.lblFlags.AutoSize = true;
-            this.lblFlags.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblFlags.ForeColor = System.Drawing.Color.GhostWhite;
             this.lblFlags.Location = new System.Drawing.Point(6, 19);
             this.lblFlags.Name = "lblFlags";
-            this.lblFlags.Size = new System.Drawing.Size(38, 15);
+            this.lblFlags.Size = new System.Drawing.Size(37, 15);
             this.lblFlags.TabIndex = 3;
             this.lblFlags.Text = "Flags";
             // 

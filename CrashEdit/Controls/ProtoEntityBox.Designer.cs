@@ -90,7 +90,7 @@ namespace CrashEdit
             this.fraType.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
             this.fraType.Controls.Add(this.lblCodeName);
             this.fraType.Controls.Add(this.numType);
-            this.fraType.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraType.ForeColor = System.Drawing.Color.Silver;
             this.fraType.Location = new System.Drawing.Point(131, 3);
             this.fraType.Name = "fraType";
             this.fraType.Size = new System.Drawing.Size(132, 62);
@@ -113,7 +113,7 @@ namespace CrashEdit
             // 
             this.fraSubtype.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
             this.fraSubtype.Controls.Add(this.numSubtype);
-            this.fraSubtype.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraSubtype.ForeColor = System.Drawing.Color.Silver;
             this.fraSubtype.Location = new System.Drawing.Point(131, 70);
             this.fraSubtype.Name = "fraSubtype";
             this.fraSubtype.Size = new System.Drawing.Size(132, 47);
@@ -138,7 +138,7 @@ namespace CrashEdit
             this.fraPosition.Controls.Add(this.numZ);
             this.fraPosition.Controls.Add(this.numY);
             this.fraPosition.Controls.Add(this.numX);
-            this.fraPosition.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraPosition.ForeColor = System.Drawing.Color.Silver;
             this.fraPosition.Location = new System.Drawing.Point(3, 3);
             this.fraPosition.Name = "fraPosition";
             this.fraPosition.Size = new System.Drawing.Size(122, 92);
@@ -149,7 +149,7 @@ namespace CrashEdit
             // lblZ
             // 
             this.lblZ.AutoSize = true;
-            this.lblZ.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblZ.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblZ.Location = new System.Drawing.Point(6, 66);
             this.lblZ.Name = "lblZ";
             this.lblZ.Size = new System.Drawing.Size(14, 15);
@@ -159,7 +159,7 @@ namespace CrashEdit
             // lblY
             // 
             this.lblY.AutoSize = true;
-            this.lblY.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblY.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblY.Location = new System.Drawing.Point(6, 42);
             this.lblY.Name = "lblY";
             this.lblY.Size = new System.Drawing.Size(14, 15);
@@ -169,10 +169,10 @@ namespace CrashEdit
             // lblX
             // 
             this.lblX.AutoSize = true;
-            this.lblX.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblX.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblX.Location = new System.Drawing.Point(6, 18);
             this.lblX.Name = "lblX";
-            this.lblX.Size = new System.Drawing.Size(14, 15);
+            this.lblX.Size = new System.Drawing.Size(15, 15);
             this.lblX.TabIndex = 3;
             this.lblX.Text = "X";
             // 
@@ -249,7 +249,7 @@ namespace CrashEdit
             // 
             this.fraID.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
             this.fraID.Controls.Add(this.numID);
-            this.fraID.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraID.ForeColor = System.Drawing.Color.Silver;
             this.fraID.Location = new System.Drawing.Point(3, 101);
             this.fraID.Name = "fraID";
             this.fraID.Size = new System.Drawing.Size(122, 45);
@@ -317,7 +317,7 @@ namespace CrashEdit
             this.fraSettings.Controls.Add(this.numModeB);
             this.fraSettings.Controls.Add(this.numModeA);
             this.fraSettings.Controls.Add(this.numFlags);
-            this.fraSettings.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraSettings.ForeColor = System.Drawing.Color.Silver;
             this.fraSettings.Location = new System.Drawing.Point(3, 151);
             this.fraSettings.Name = "fraSettings";
             this.fraSettings.Size = new System.Drawing.Size(160, 123);
@@ -328,10 +328,10 @@ namespace CrashEdit
             // lblModeC
             // 
             this.lblModeC.AutoSize = true;
-            this.lblModeC.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblModeC.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblModeC.Location = new System.Drawing.Point(6, 91);
             this.lblModeC.Name = "lblModeC";
-            this.lblModeC.Size = new System.Drawing.Size(49, 15);
+            this.lblModeC.Size = new System.Drawing.Size(50, 15);
             this.lblModeC.TabIndex = 7;
             this.lblModeC.Text = "Mode C";
             // 
@@ -351,30 +351,30 @@ namespace CrashEdit
             // lblModeB
             // 
             this.lblModeB.AutoSize = true;
-            this.lblModeB.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblModeB.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblModeB.Location = new System.Drawing.Point(6, 67);
             this.lblModeB.Name = "lblModeB";
-            this.lblModeB.Size = new System.Drawing.Size(48, 15);
+            this.lblModeB.Size = new System.Drawing.Size(50, 15);
             this.lblModeB.TabIndex = 5;
             this.lblModeB.Text = "Mode B";
             // 
             // lblModeA
             // 
             this.lblModeA.AutoSize = true;
-            this.lblModeA.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblModeA.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblModeA.Location = new System.Drawing.Point(6, 43);
             this.lblModeA.Name = "lblModeA";
-            this.lblModeA.Size = new System.Drawing.Size(46, 15);
+            this.lblModeA.Size = new System.Drawing.Size(49, 15);
             this.lblModeA.TabIndex = 4;
             this.lblModeA.Text = "Mode A";
             // 
             // lblFlags
             // 
             this.lblFlags.AutoSize = true;
-            this.lblFlags.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblFlags.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblFlags.Location = new System.Drawing.Point(6, 19);
             this.lblFlags.Name = "lblFlags";
-            this.lblFlags.Size = new System.Drawing.Size(38, 15);
+            this.lblFlags.Size = new System.Drawing.Size(37, 15);
             this.lblFlags.TabIndex = 3;
             this.lblFlags.Text = "Flags";
             // 

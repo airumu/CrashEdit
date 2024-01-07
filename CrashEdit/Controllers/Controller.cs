@@ -64,8 +64,8 @@ namespace CrashEdit
         {
             Label label = new Label
             {
-                BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30))))),
-                ForeColor = SystemColors.Control,
+                BackColor = Color.FromArgb(25, 25, 30),
+                ForeColor = Color.Gainsboro,
                 Font = new Font("Microsoft Sans Serif", 9F),
                 TextAlign = ContentAlignment.MiddleCenter,
                 Text = Resources.Controller_NoOptionsAvailable

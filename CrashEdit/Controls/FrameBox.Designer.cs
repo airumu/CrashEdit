@@ -130,7 +130,7 @@ namespace CrashEdit
             this.fraVertice.Controls.Add(this.numZ);
             this.fraVertice.Controls.Add(this.numY);
             this.fraVertice.Controls.Add(this.numX);
-            this.fraVertice.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraVertice.ForeColor = System.Drawing.Color.Silver;
             this.fraVertice.Location = new System.Drawing.Point(3, 4);
             this.fraVertice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.fraVertice.Name = "fraVertice";
@@ -139,6 +139,7 @@ namespace CrashEdit
             this.fraVertice.TabIndex = 1;
             this.fraVertice.TabStop = false;
             this.fraVertice.Text = "Vertice(s)";
+            this.fraVertice.Enter += new System.EventHandler(this.fraVertice_Enter);
             // 
             // lblSPVertex
             // 
@@ -152,6 +153,7 @@ namespace CrashEdit
             // 
             // cmdNext10Vertice
             // 
+            this.cmdNext10Vertice.ForeColor = System.Drawing.Color.Gainsboro;
             this.cmdNext10Vertice.Location = new System.Drawing.Point(216, 62);
             this.cmdNext10Vertice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmdNext10Vertice.Name = "cmdNext10Vertice";
@@ -163,6 +165,7 @@ namespace CrashEdit
             // 
             // cmdPrevious10Vertice
             // 
+            this.cmdPrevious10Vertice.ForeColor = System.Drawing.Color.Gainsboro;
             this.cmdPrevious10Vertice.Location = new System.Drawing.Point(130, 62);
             this.cmdPrevious10Vertice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmdPrevious10Vertice.Name = "cmdPrevious10Vertice";
@@ -174,6 +177,7 @@ namespace CrashEdit
             // 
             // cmdLastVertice
             // 
+            this.cmdLastVertice.ForeColor = System.Drawing.Color.Gainsboro;
             this.cmdLastVertice.Location = new System.Drawing.Point(216, 122);
             this.cmdLastVertice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmdLastVertice.Name = "cmdLastVertice";
@@ -185,6 +189,7 @@ namespace CrashEdit
             // 
             // cmdFirstVertice
             // 
+            this.cmdFirstVertice.ForeColor = System.Drawing.Color.Gainsboro;
             this.cmdFirstVertice.Location = new System.Drawing.Point(130, 122);
             this.cmdFirstVertice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmdFirstVertice.Name = "cmdFirstVertice";
@@ -197,7 +202,7 @@ namespace CrashEdit
             // lblVerticeIndex
             // 
             this.lblVerticeIndex.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblVerticeIndex.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblVerticeIndex.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblVerticeIndex.Location = new System.Drawing.Point(27, 22);
             this.lblVerticeIndex.Name = "lblVerticeIndex";
             this.lblVerticeIndex.Size = new System.Drawing.Size(70, 26);
@@ -207,6 +212,7 @@ namespace CrashEdit
             // 
             // cmdNextVertice
             // 
+            this.cmdNextVertice.ForeColor = System.Drawing.Color.Gainsboro;
             this.cmdNextVertice.Location = new System.Drawing.Point(216, 22);
             this.cmdNextVertice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmdNextVertice.Name = "cmdNextVertice";
@@ -218,6 +224,7 @@ namespace CrashEdit
             // 
             // cmdPreviousVertice
             // 
+            this.cmdPreviousVertice.ForeColor = System.Drawing.Color.Gainsboro;
             this.cmdPreviousVertice.Location = new System.Drawing.Point(130, 22);
             this.cmdPreviousVertice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmdPreviousVertice.Name = "cmdPreviousVertice";
@@ -230,7 +237,7 @@ namespace CrashEdit
             // lblZ
             // 
             this.lblZ.AutoSize = true;
-            this.lblZ.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblZ.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblZ.Location = new System.Drawing.Point(7, 130);
             this.lblZ.Name = "lblZ";
             this.lblZ.Size = new System.Drawing.Size(14, 15);
@@ -240,7 +247,7 @@ namespace CrashEdit
             // lblY
             // 
             this.lblY.AutoSize = true;
-            this.lblY.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblY.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblY.Location = new System.Drawing.Point(7, 100);
             this.lblY.Name = "lblY";
             this.lblY.Size = new System.Drawing.Size(14, 15);
@@ -250,7 +257,7 @@ namespace CrashEdit
             // lblX
             // 
             this.lblX.AutoSize = true;
-            this.lblX.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblX.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblX.Location = new System.Drawing.Point(7, 70);
             this.lblX.Name = "lblX";
             this.lblX.Size = new System.Drawing.Size(15, 15);
@@ -316,6 +323,7 @@ namespace CrashEdit
             // 
             // cmdInsertVertice
             // 
+            this.cmdInsertVertice.ForeColor = System.Drawing.Color.Gainsboro;
             this.cmdInsertVertice.Location = new System.Drawing.Point(317, 267);
             this.cmdInsertVertice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmdInsertVertice.Name = "cmdInsertVertice";
@@ -328,6 +336,7 @@ namespace CrashEdit
             // 
             // cmdRemoveVertice
             // 
+            this.cmdRemoveVertice.ForeColor = System.Drawing.Color.Gainsboro;
             this.cmdRemoveVertice.Location = new System.Drawing.Point(317, 301);
             this.cmdRemoveVertice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmdRemoveVertice.Name = "cmdRemoveVertice";
@@ -341,6 +350,7 @@ namespace CrashEdit
             // cmdAppendVertice
             // 
             this.cmdAppendVertice.Enabled = false;
+            this.cmdAppendVertice.ForeColor = System.Drawing.Color.Gainsboro;
             this.cmdAppendVertice.Location = new System.Drawing.Point(317, 233);
             this.cmdAppendVertice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmdAppendVertice.Name = "cmdAppendVertice";
@@ -360,7 +370,7 @@ namespace CrashEdit
             this.fraGG.Controls.Add(this.numZG);
             this.fraGG.Controls.Add(this.numYG);
             this.fraGG.Controls.Add(this.numXG);
-            this.fraGG.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraGG.ForeColor = System.Drawing.Color.Gainsboro;
             this.fraGG.Location = new System.Drawing.Point(6, 52);
             this.fraGG.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.fraGG.Name = "fraGG";
@@ -373,7 +383,7 @@ namespace CrashEdit
             // lblZG
             // 
             this.lblZG.AutoSize = true;
-            this.lblZG.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblZG.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblZG.Location = new System.Drawing.Point(7, 84);
             this.lblZG.Name = "lblZG";
             this.lblZG.Size = new System.Drawing.Size(14, 15);
@@ -383,7 +393,7 @@ namespace CrashEdit
             // lblYG
             // 
             this.lblYG.AutoSize = true;
-            this.lblYG.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblYG.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblYG.Location = new System.Drawing.Point(7, 54);
             this.lblYG.Name = "lblYG";
             this.lblYG.Size = new System.Drawing.Size(14, 15);
@@ -393,7 +403,7 @@ namespace CrashEdit
             // lblXG
             // 
             this.lblXG.AutoSize = true;
-            this.lblXG.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblXG.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblXG.Location = new System.Drawing.Point(7, 24);
             this.lblXG.Name = "lblXG";
             this.lblXG.Size = new System.Drawing.Size(15, 15);
@@ -466,7 +476,7 @@ namespace CrashEdit
             this.fraG2.Controls.Add(this.numZ2);
             this.fraG2.Controls.Add(this.numY2);
             this.fraG2.Controls.Add(this.numX2);
-            this.fraG2.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraG2.ForeColor = System.Drawing.Color.Gainsboro;
             this.fraG2.Location = new System.Drawing.Point(157, 172);
             this.fraG2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.fraG2.Name = "fraG2";
@@ -479,7 +489,7 @@ namespace CrashEdit
             // lblZ2
             // 
             this.lblZ2.AutoSize = true;
-            this.lblZ2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblZ2.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblZ2.Location = new System.Drawing.Point(7, 84);
             this.lblZ2.Name = "lblZ2";
             this.lblZ2.Size = new System.Drawing.Size(14, 15);
@@ -489,7 +499,7 @@ namespace CrashEdit
             // lblY2
             // 
             this.lblY2.AutoSize = true;
-            this.lblY2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblY2.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblY2.Location = new System.Drawing.Point(7, 54);
             this.lblY2.Name = "lblY2";
             this.lblY2.Size = new System.Drawing.Size(14, 15);
@@ -499,7 +509,7 @@ namespace CrashEdit
             // lblX2
             // 
             this.lblX2.AutoSize = true;
-            this.lblX2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblX2.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblX2.Location = new System.Drawing.Point(7, 24);
             this.lblX2.Name = "lblX2";
             this.lblX2.Size = new System.Drawing.Size(15, 15);
@@ -572,7 +582,7 @@ namespace CrashEdit
             this.fraG1.Controls.Add(this.numZ1);
             this.fraG1.Controls.Add(this.numY1);
             this.fraG1.Controls.Add(this.numX1);
-            this.fraG1.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraG1.ForeColor = System.Drawing.Color.Gainsboro;
             this.fraG1.Location = new System.Drawing.Point(6, 172);
             this.fraG1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.fraG1.Name = "fraG1";
@@ -585,7 +595,7 @@ namespace CrashEdit
             // lblZ1
             // 
             this.lblZ1.AutoSize = true;
-            this.lblZ1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblZ1.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblZ1.Location = new System.Drawing.Point(7, 84);
             this.lblZ1.Name = "lblZ1";
             this.lblZ1.Size = new System.Drawing.Size(14, 15);
@@ -595,7 +605,7 @@ namespace CrashEdit
             // lblY1
             // 
             this.lblY1.AutoSize = true;
-            this.lblY1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblY1.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblY1.Location = new System.Drawing.Point(7, 54);
             this.lblY1.Name = "lblY1";
             this.lblY1.Size = new System.Drawing.Size(14, 15);
@@ -605,7 +615,7 @@ namespace CrashEdit
             // lblX1
             // 
             this.lblX1.AutoSize = true;
-            this.lblX1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblX1.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblX1.Location = new System.Drawing.Point(7, 24);
             this.lblX1.Name = "lblX1";
             this.lblX1.Size = new System.Drawing.Size(15, 15);
@@ -678,7 +688,7 @@ namespace CrashEdit
             this.fraOffset.Controls.Add(this.numZOffset);
             this.fraOffset.Controls.Add(this.numYOffset);
             this.fraOffset.Controls.Add(this.numXOffset);
-            this.fraOffset.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraOffset.ForeColor = System.Drawing.Color.Silver;
             this.fraOffset.Location = new System.Drawing.Point(317, 4);
             this.fraOffset.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.fraOffset.Name = "fraOffset";
@@ -691,7 +701,7 @@ namespace CrashEdit
             // lblZOffset
             // 
             this.lblZOffset.AutoSize = true;
-            this.lblZOffset.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblZOffset.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblZOffset.Location = new System.Drawing.Point(7, 84);
             this.lblZOffset.Name = "lblZOffset";
             this.lblZOffset.Size = new System.Drawing.Size(14, 15);
@@ -701,7 +711,7 @@ namespace CrashEdit
             // lblYOffset
             // 
             this.lblYOffset.AutoSize = true;
-            this.lblYOffset.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblYOffset.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblYOffset.Location = new System.Drawing.Point(7, 54);
             this.lblYOffset.Name = "lblYOffset";
             this.lblYOffset.Size = new System.Drawing.Size(14, 15);
@@ -711,7 +721,7 @@ namespace CrashEdit
             // lblXOffset
             // 
             this.lblXOffset.AutoSize = true;
-            this.lblXOffset.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblXOffset.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblXOffset.Location = new System.Drawing.Point(7, 24);
             this.lblXOffset.Name = "lblXOffset";
             this.lblXOffset.Size = new System.Drawing.Size(15, 15);
@@ -777,6 +787,7 @@ namespace CrashEdit
             // 
             // cmdPreviousCollision
             // 
+            this.cmdPreviousCollision.ForeColor = System.Drawing.Color.Gainsboro;
             this.cmdPreviousCollision.Location = new System.Drawing.Point(160, 22);
             this.cmdPreviousCollision.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmdPreviousCollision.Name = "cmdPreviousCollision";
@@ -788,6 +799,7 @@ namespace CrashEdit
             // 
             // cmdNextCollision
             // 
+            this.cmdNextCollision.ForeColor = System.Drawing.Color.Gainsboro;
             this.cmdNextCollision.Location = new System.Drawing.Point(234, 22);
             this.cmdNextCollision.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmdNextCollision.Name = "cmdNextCollision";
@@ -810,6 +822,7 @@ namespace CrashEdit
             // 
             // cmdAppendCollision
             // 
+            this.cmdAppendCollision.ForeColor = System.Drawing.Color.Gainsboro;
             this.cmdAppendCollision.Location = new System.Drawing.Point(184, 62);
             this.cmdAppendCollision.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmdAppendCollision.Name = "cmdAppendCollision";
@@ -831,7 +844,7 @@ namespace CrashEdit
             this.fraCollision.Controls.Add(this.cmdAppendCollision);
             this.fraCollision.Controls.Add(this.cmdPreviousCollision);
             this.fraCollision.Controls.Add(this.cmdNextCollision);
-            this.fraCollision.ForeColor = System.Drawing.SystemColors.Window;
+            this.fraCollision.ForeColor = System.Drawing.Color.Silver;
             this.fraCollision.Location = new System.Drawing.Point(3, 178);
             this.fraCollision.Name = "fraCollision";
             this.fraCollision.Size = new System.Drawing.Size(308, 290);
@@ -841,6 +854,7 @@ namespace CrashEdit
             // 
             // cmdRemoveCollision
             // 
+            this.cmdRemoveCollision.ForeColor = System.Drawing.Color.Gainsboro;
             this.cmdRemoveCollision.Location = new System.Drawing.Point(184, 130);
             this.cmdRemoveCollision.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmdRemoveCollision.Name = "cmdRemoveCollision";
@@ -852,6 +866,7 @@ namespace CrashEdit
             // 
             // cmdInsertCollision
             // 
+            this.cmdInsertCollision.ForeColor = System.Drawing.Color.Gainsboro;
             this.cmdInsertCollision.Location = new System.Drawing.Point(184, 96);
             this.cmdInsertCollision.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmdInsertCollision.Name = "cmdInsertCollision";
@@ -885,7 +900,7 @@ namespace CrashEdit
             // 
             this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
             this.groupBox1.Controls.Add(this.numHeader);
-            this.groupBox1.ForeColor = System.Drawing.SystemColors.Window;
+            this.groupBox1.ForeColor = System.Drawing.Color.Silver;
             this.groupBox1.Location = new System.Drawing.Point(317, 124);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(145, 48);
@@ -929,7 +944,7 @@ namespace CrashEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(35)))));
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.fraCollision);

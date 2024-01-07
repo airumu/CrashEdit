@@ -34,8 +34,8 @@ namespace CrashEdit
             totalsize = 0;
             lstEntryList.Items.Clear();
             lstEntryList.Font = new Font("Microsoft Sans Serif", 9F);
-            lstEntryList.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            lstEntryList.ForeColor = SystemColors.Control;
+            lstEntryList.BackColor = Color.FromArgb(25, 25, 30);
+            lstEntryList.ForeColor = Color.Gainsboro;
             foreach (Entry entry in controller.EntryChunk.Entries)
             {
                 this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
