@@ -115,7 +115,7 @@ namespace CrashEdit
             // 
             // fraVertice
             // 
-            this.fraVertice.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.fraVertice.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
             this.fraVertice.Controls.Add(this.lblSPVertex);
             this.fraVertice.Controls.Add(this.cmdNext10Vertice);
             this.fraVertice.Controls.Add(this.cmdPrevious10Vertice);
@@ -144,7 +144,7 @@ namespace CrashEdit
             // lblSPVertex
             // 
             this.lblSPVertex.AutoSize = true;
-            this.lblSPVertex.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(174)))), ((int)(((byte)(219)))));
+            this.lblSPVertex.ForeColor = System.Drawing.Color.DeepSkyBlue;
             this.lblSPVertex.Location = new System.Drawing.Point(23, 48);
             this.lblSPVertex.Name = "lblSPVertex";
             this.lblSPVertex.Size = new System.Drawing.Size(82, 15);
@@ -363,7 +363,7 @@ namespace CrashEdit
             // 
             // fraGG
             // 
-            this.fraGG.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.fraGG.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
             this.fraGG.Controls.Add(this.lblZG);
             this.fraGG.Controls.Add(this.lblYG);
             this.fraGG.Controls.Add(this.lblXG);
@@ -469,7 +469,7 @@ namespace CrashEdit
             // 
             // fraG2
             // 
-            this.fraG2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.fraG2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
             this.fraG2.Controls.Add(this.lblZ2);
             this.fraG2.Controls.Add(this.lblY2);
             this.fraG2.Controls.Add(this.lblX2);
@@ -575,7 +575,7 @@ namespace CrashEdit
             // 
             // fraG1
             // 
-            this.fraG1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.fraG1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
             this.fraG1.Controls.Add(this.lblZ1);
             this.fraG1.Controls.Add(this.lblY1);
             this.fraG1.Controls.Add(this.lblX1);
@@ -681,7 +681,7 @@ namespace CrashEdit
             // 
             // fraOffset
             // 
-            this.fraOffset.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.fraOffset.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
             this.fraOffset.Controls.Add(this.lblZOffset);
             this.fraOffset.Controls.Add(this.lblYOffset);
             this.fraOffset.Controls.Add(this.lblXOffset);
@@ -812,7 +812,7 @@ namespace CrashEdit
             // lblCollisionIndex
             // 
             this.lblCollisionIndex.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCollisionIndex.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lblCollisionIndex.ForeColor = System.Drawing.Color.Gainsboro;
             this.lblCollisionIndex.Location = new System.Drawing.Point(45, 22);
             this.lblCollisionIndex.Name = "lblCollisionIndex";
             this.lblCollisionIndex.Size = new System.Drawing.Size(70, 26);
@@ -834,7 +834,7 @@ namespace CrashEdit
             // 
             // fraCollision
             // 
-            this.fraCollision.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.fraCollision.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
             this.fraCollision.Controls.Add(this.cmdRemoveCollision);
             this.fraCollision.Controls.Add(this.cmdInsertCollision);
             this.fraCollision.Controls.Add(this.lblCollisionIndex);
@@ -898,7 +898,7 @@ namespace CrashEdit
             // 
             // groupBox1
             // 
-            this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
             this.groupBox1.Controls.Add(this.numHeader);
             this.groupBox1.ForeColor = System.Drawing.Color.Silver;
             this.groupBox1.Location = new System.Drawing.Point(317, 124);
@@ -910,9 +910,9 @@ namespace CrashEdit
             // 
             // groupBox2
             // 
-            this.groupBox2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(40)))));
+            this.groupBox2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
             this.groupBox2.Controls.Add(this.numSPVertex);
-            this.groupBox2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(174)))), ((int)(((byte)(219)))));
+            this.groupBox2.ForeColor = System.Drawing.Color.DeepSkyBlue;
             this.groupBox2.Location = new System.Drawing.Point(317, 178);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(145, 48);

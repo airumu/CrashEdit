@@ -36,8 +36,8 @@ namespace CrashEdit
             tsToolbar = new DarkToolStrip();
             tsToolbar.Dock = DockStyle.Top;
             tsToolbar.Items.Add(tbbExport);
-            tsToolbar.BackColor = Color.FromArgb(30, 30, 30);
-            tsToolbar.ForeColor = SystemColors.Control;
+            tsToolbar.BackColor = Color.FromArgb(25, 25, 30);
+            tsToolbar.ForeColor = Color.Gainsboro;
 
             trkSampleRate = new TrackBar()
             {
@@ -46,7 +46,7 @@ namespace CrashEdit
                 TickFrequency = 128,
                 Value = 1024,
                 Dock = DockStyle.Fill,
-                BackColor = Color.FromArgb(30, 30, 30)
+                BackColor = Color.FromArgb(25, 25, 30)
              };
             trkSampleRate.ValueChanged += (object sender, EventArgs e) => {
                 int smpe = (int)(trkSampleRate.Value / 256.0 * (11025 / 4.0));
@@ -85,8 +85,8 @@ namespace CrashEdit
             pnOptions.Controls.Add(cmdExport,1,0);
             pnOptions.Controls.Add(trkSampleRate,1,1);
             pnOptions.Controls.Add(lblSampleRate,0,1);
-            pnOptions.BackColor = Color.FromArgb(30, 30, 30);
-            pnOptions.ForeColor = SystemColors.Control;
+            pnOptions.BackColor = Color.FromArgb(25, 25, 30);
+            pnOptions.ForeColor = Color.Gainsboro;
             pnOptions.Font = new Font("Microsoft Sans Serif", 9F);
 
             Controls.Add(pnOptions);
