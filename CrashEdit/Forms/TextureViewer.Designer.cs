@@ -1,4 +1,7 @@
-﻿namespace CrashEdit.CE
+﻿using MetroSet_UI.Controls;
+using MetroSet_UI.Enums;
+
+namespace CrashEdit.CE
 {
     partial class TextureViewer
     {
@@ -28,685 +31,668 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabC1 = new System.Windows.Forms.TabPage();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.C1numY = new System.Windows.Forms.NumericUpDown();
-            this.C1numX = new System.Windows.Forms.NumericUpDown();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.C1dpdH = new System.Windows.Forms.ComboBox();
-            this.C1dpdW = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.C1numCY = new System.Windows.Forms.NumericUpDown();
-            this.C1numCX = new System.Windows.Forms.NumericUpDown();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.C1dpdBlend = new System.Windows.Forms.ComboBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.C1dpdColor = new System.Windows.Forms.ComboBox();
-            this.tabC2 = new System.Windows.Forms.TabPage();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.C2numY = new System.Windows.Forms.NumericUpDown();
-            this.C2numX = new System.Windows.Forms.NumericUpDown();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.C2numH = new System.Windows.Forms.NumericUpDown();
-            this.label9 = new System.Windows.Forms.Label();
-            this.C2numW = new System.Windows.Forms.NumericUpDown();
-            this.label10 = new System.Windows.Forms.Label();
-            this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.C2numCY = new System.Windows.Forms.NumericUpDown();
-            this.C2numCX = new System.Windows.Forms.NumericUpDown();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.groupBox9 = new System.Windows.Forms.GroupBox();
-            this.C2dpdBlend = new System.Windows.Forms.ComboBox();
-            this.groupBox10 = new System.Windows.Forms.GroupBox();
-            this.C2dpdColor = new System.Windows.Forms.ComboBox();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.tabControl1.SuspendLayout();
-            this.tabC1.SuspendLayout();
-            this.groupBox5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.C1numY)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.C1numX)).BeginInit();
-            this.groupBox4.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.C1numCY)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.C1numCX)).BeginInit();
-            this.groupBox2.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.tabC2.SuspendLayout();
-            this.groupBox6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.C2numY)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.C2numX)).BeginInit();
-            this.groupBox7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.C2numH)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.C2numW)).BeginInit();
-            this.groupBox8.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.C2numCY)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.C2numCX)).BeginInit();
-            this.groupBox9.SuspendLayout();
-            this.groupBox10.SuspendLayout();
-            this.SuspendLayout();
+            splitContainer1 = new SplitContainer();
+            pictureBox1 = new PictureBox();
+            tabControl1 = new MetroSetTabControl();
+            tabC1 = new TabPage();
+            groupBox5 = new GroupBox();
+            C1numY = new NumericUpDown();
+            C1numX = new NumericUpDown();
+            label5 = new Label();
+            label6 = new Label();
+            groupBox4 = new GroupBox();
+            C1dpdH = new ComboBox();
+            C1dpdW = new ComboBox();
+            label3 = new Label();
+            label4 = new Label();
+            groupBox3 = new GroupBox();
+            C1numCY = new NumericUpDown();
+            C1numCX = new NumericUpDown();
+            label2 = new Label();
+            label1 = new Label();
+            groupBox2 = new GroupBox();
+            C1dpdBlend = new ComboBox();
+            groupBox1 = new GroupBox();
+            C1dpdColor = new ComboBox();
+            tabC2 = new TabPage();
+            groupBox6 = new GroupBox();
+            C2numY = new NumericUpDown();
+            C2numX = new NumericUpDown();
+            label7 = new Label();
+            label8 = new Label();
+            groupBox7 = new GroupBox();
+            C2numH = new NumericUpDown();
+            label9 = new Label();
+            C2numW = new NumericUpDown();
+            label10 = new Label();
+            groupBox8 = new GroupBox();
+            C2numCY = new NumericUpDown();
+            C2numCX = new NumericUpDown();
+            label11 = new Label();
+            label12 = new Label();
+            groupBox9 = new GroupBox();
+            C2dpdBlend = new ComboBox();
+            groupBox10 = new GroupBox();
+            C2dpdColor = new ComboBox();
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
+            splitContainer1.Panel1.SuspendLayout();
+            splitContainer1.Panel2.SuspendLayout();
+            splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            tabControl1.SuspendLayout();
+            tabC1.SuspendLayout();
+            groupBox5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)C1numY).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)C1numX).BeginInit();
+            groupBox4.SuspendLayout();
+            groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)C1numCY).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)C1numCX).BeginInit();
+            groupBox2.SuspendLayout();
+            groupBox1.SuspendLayout();
+            tabC2.SuspendLayout();
+            groupBox6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)C2numY).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)C2numX).BeginInit();
+            groupBox7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)C2numH).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)C2numW).BeginInit();
+            groupBox8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)C2numCY).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)C2numCX).BeginInit();
+            groupBox9.SuspendLayout();
+            groupBox10.SuspendLayout();
+            SuspendLayout();
             // 
             // splitContainer1
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Name = "splitContainer1";
-            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            splitContainer1.Dock = DockStyle.Fill;
+            splitContainer1.Location = new Point(0, 0);
+            splitContainer1.Margin = new Padding(4, 3, 4, 3);
+            splitContainer1.Name = "splitContainer1";
+            splitContainer1.Orientation = Orientation.Horizontal;
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.pictureBox1);
-            this.splitContainer1.Panel1MinSize = 136;
+            splitContainer1.Panel1.Controls.Add(pictureBox1);
+            splitContainer1.Panel1MinSize = 136;
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
-            this.splitContainer1.Size = new System.Drawing.Size(1024, 361);
-            this.splitContainer1.SplitterDistance = 136;
-            this.splitContainer1.TabIndex = 0;
+            splitContainer1.Panel2.Controls.Add(tabControl1);
+            splitContainer1.Size = new Size(1195, 417);
+            splitContainer1.SplitterDistance = 157;
+            splitContainer1.SplitterWidth = 5;
+            splitContainer1.TabIndex = 0;
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(1024, 128);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
+            pictureBox1.Location = new Point(0, 0);
+            pictureBox1.Margin = new Padding(4, 3, 4, 3);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(1195, 148);
+            pictureBox1.TabIndex = 0;
+            pictureBox1.TabStop = false;
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.tabC1);
-            this.tabControl1.Controls.Add(this.tabC2);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1024, 221);
-            this.tabControl1.TabIndex = 0;
+            tabControl1.AnimateEasingType = EasingType.CubeOut;
+            tabControl1.AnimateTime = 200;
+            tabControl1.BackgroundColor = Color.FromArgb(30, 30, 30);
+            tabControl1.Controls.Add(tabC1);
+            tabControl1.Controls.Add(tabC2);
+            tabControl1.Dock = DockStyle.Fill;
+            tabControl1.IsDerivedStyle = true;
+            tabControl1.ItemSize = new Size(100, 28);
+            tabControl1.Location = new Point(0, 0);
+            tabControl1.Margin = new Padding(4, 3, 4, 3);
+            tabControl1.Name = "tabControl1";
+            tabControl1.SelectedIndex = 0;
+            tabControl1.SelectedTextColor = Color.White;
+            tabControl1.Size = new Size(1195, 255);
+            tabControl1.SizeMode = TabSizeMode.Fixed;
+            tabControl1.Speed = 100;
+            tabControl1.Style = Style.Dark;
+            tabControl1.StyleManager = null;
+            tabControl1.TabIndex = 0;
+            tabControl1.TabStyle = TabStyle.Style2;
+            tabControl1.ThemeAuthor = "Narwin";
+            tabControl1.ThemeName = "MetroDark";
+            tabControl1.UnselectedTextColor = Color.Gray;
+            tabControl1.UseAnimation = false;
             // 
             // tabC1
             // 
-            this.tabC1.Controls.Add(this.groupBox5);
-            this.tabC1.Controls.Add(this.groupBox4);
-            this.tabC1.Controls.Add(this.groupBox3);
-            this.tabC1.Controls.Add(this.groupBox2);
-            this.tabC1.Controls.Add(this.groupBox1);
-            this.tabC1.Location = new System.Drawing.Point(4, 22);
-            this.tabC1.Name = "tabC1";
-            this.tabC1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabC1.Size = new System.Drawing.Size(1016, 195);
-            this.tabC1.TabIndex = 0;
-            this.tabC1.Text = "Crash 1";
-            this.tabC1.UseVisualStyleBackColor = true;
+            tabC1.BackColor = SystemColors.Control;
+            tabC1.Controls.Add(groupBox5);
+            tabC1.Controls.Add(groupBox4);
+            tabC1.Controls.Add(groupBox3);
+            tabC1.Controls.Add(groupBox2);
+            tabC1.Controls.Add(groupBox1);
+            tabC1.ForeColor = SystemColors.ControlText;
+            tabC1.Location = new Point(4, 32);
+            tabC1.Margin = new Padding(4, 3, 4, 3);
+            tabC1.Name = "tabC1";
+            tabC1.Padding = new Padding(4, 3, 4, 3);
+            tabC1.Size = new Size(1187, 219);
+            tabC1.TabIndex = 0;
+            tabC1.Text = "Crash 1";
             // 
             // groupBox5
             // 
-            this.groupBox5.Controls.Add(this.C1numY);
-            this.groupBox5.Controls.Add(this.C1numX);
-            this.groupBox5.Controls.Add(this.label5);
-            this.groupBox5.Controls.Add(this.label6);
-            this.groupBox5.Location = new System.Drawing.Point(8, 6);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(92, 84);
-            this.groupBox5.TabIndex = 4;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Offset";
+            groupBox5.Controls.Add(C1numY);
+            groupBox5.Controls.Add(C1numX);
+            groupBox5.Controls.Add(label5);
+            groupBox5.Controls.Add(label6);
+            groupBox5.Location = new Point(9, 7);
+            groupBox5.Margin = new Padding(4, 3, 4, 3);
+            groupBox5.Name = "groupBox5";
+            groupBox5.Padding = new Padding(4, 3, 4, 3);
+            groupBox5.Size = new Size(107, 97);
+            groupBox5.TabIndex = 4;
+            groupBox5.TabStop = false;
+            groupBox5.Text = "Offset";
             // 
             // C1numY
             // 
-            this.C1numY.Location = new System.Drawing.Point(26, 45);
-            this.C1numY.Maximum = new decimal(new int[] {
-            31,
-            0,
-            0,
-            0});
-            this.C1numY.Name = "C1numY";
-            this.C1numY.Size = new System.Drawing.Size(60, 20);
-            this.C1numY.TabIndex = 3;
+            C1numY.Location = new Point(30, 52);
+            C1numY.Margin = new Padding(4, 3, 4, 3);
+            C1numY.Maximum = new decimal(new int[] { 31, 0, 0, 0 });
+            C1numY.Name = "C1numY";
+            C1numY.Size = new Size(70, 23);
+            C1numY.TabIndex = 3;
             // 
             // C1numX
             // 
-            this.C1numX.Location = new System.Drawing.Point(26, 19);
-            this.C1numX.Maximum = new decimal(new int[] {
-            127,
-            0,
-            0,
-            0});
-            this.C1numX.Name = "C1numX";
-            this.C1numX.Size = new System.Drawing.Size(60, 20);
-            this.C1numX.TabIndex = 2;
+            C1numX.Location = new Point(30, 22);
+            C1numX.Margin = new Padding(4, 3, 4, 3);
+            C1numX.Maximum = new decimal(new int[] { 127, 0, 0, 0 });
+            C1numX.Name = "C1numX";
+            C1numX.Size = new Size(70, 23);
+            C1numX.TabIndex = 2;
             // 
             // label5
             // 
-            this.label5.AutoSize = true;
-            this.label5.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label5.Location = new System.Drawing.Point(6, 47);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(14, 13);
-            this.label5.TabIndex = 1;
-            this.label5.Text = "Y";
+            label5.AutoSize = true;
+            label5.ImeMode = ImeMode.NoControl;
+            label5.Location = new Point(7, 54);
+            label5.Margin = new Padding(4, 0, 4, 0);
+            label5.Name = "label5";
+            label5.Size = new Size(14, 15);
+            label5.TabIndex = 1;
+            label5.Text = "Y";
             // 
             // label6
             // 
-            this.label6.AutoSize = true;
-            this.label6.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label6.Location = new System.Drawing.Point(6, 21);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(14, 13);
-            this.label6.TabIndex = 0;
-            this.label6.Text = "X";
+            label6.AutoSize = true;
+            label6.ImeMode = ImeMode.NoControl;
+            label6.Location = new Point(7, 24);
+            label6.Margin = new Padding(4, 0, 4, 0);
+            label6.Name = "label6";
+            label6.Size = new Size(14, 15);
+            label6.TabIndex = 0;
+            label6.Text = "X";
             // 
             // groupBox4
             // 
-            this.groupBox4.Controls.Add(this.C1dpdH);
-            this.groupBox4.Controls.Add(this.C1dpdW);
-            this.groupBox4.Controls.Add(this.label3);
-            this.groupBox4.Controls.Add(this.label4);
-            this.groupBox4.Location = new System.Drawing.Point(106, 6);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(92, 84);
-            this.groupBox4.TabIndex = 4;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Size";
+            groupBox4.Controls.Add(C1dpdH);
+            groupBox4.Controls.Add(C1dpdW);
+            groupBox4.Controls.Add(label3);
+            groupBox4.Controls.Add(label4);
+            groupBox4.Location = new Point(124, 7);
+            groupBox4.Margin = new Padding(4, 3, 4, 3);
+            groupBox4.Name = "groupBox4";
+            groupBox4.Padding = new Padding(4, 3, 4, 3);
+            groupBox4.Size = new Size(107, 97);
+            groupBox4.TabIndex = 4;
+            groupBox4.TabStop = false;
+            groupBox4.Text = "Size";
             // 
             // C1dpdH
             // 
-            this.C1dpdH.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.C1dpdH.FormattingEnabled = true;
-            this.C1dpdH.Items.AddRange(new object[] {
-            "4",
-            "8",
-            "16",
-            "32",
-            "64"});
-            this.C1dpdH.Location = new System.Drawing.Point(30, 46);
-            this.C1dpdH.Name = "C1dpdH";
-            this.C1dpdH.Size = new System.Drawing.Size(56, 21);
-            this.C1dpdH.TabIndex = 3;
+            C1dpdH.DropDownStyle = ComboBoxStyle.DropDownList;
+            C1dpdH.FormattingEnabled = true;
+            C1dpdH.Items.AddRange(new object[] { "4", "8", "16", "32", "64" });
+            C1dpdH.Location = new Point(35, 53);
+            C1dpdH.Margin = new Padding(4, 3, 4, 3);
+            C1dpdH.Name = "C1dpdH";
+            C1dpdH.Size = new Size(65, 23);
+            C1dpdH.TabIndex = 3;
             // 
             // C1dpdW
             // 
-            this.C1dpdW.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.C1dpdW.FormattingEnabled = true;
-            this.C1dpdW.Items.AddRange(new object[] {
-            "4",
-            "8",
-            "16",
-            "32",
-            "64"});
-            this.C1dpdW.Location = new System.Drawing.Point(30, 19);
-            this.C1dpdW.Name = "C1dpdW";
-            this.C1dpdW.Size = new System.Drawing.Size(56, 21);
-            this.C1dpdW.TabIndex = 2;
+            C1dpdW.DropDownStyle = ComboBoxStyle.DropDownList;
+            C1dpdW.FormattingEnabled = true;
+            C1dpdW.Items.AddRange(new object[] { "4", "8", "16", "32", "64" });
+            C1dpdW.Location = new Point(35, 22);
+            C1dpdW.Margin = new Padding(4, 3, 4, 3);
+            C1dpdW.Name = "C1dpdW";
+            C1dpdW.Size = new Size(65, 23);
+            C1dpdW.TabIndex = 2;
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label3.Location = new System.Drawing.Point(6, 49);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(15, 13);
-            this.label3.TabIndex = 1;
-            this.label3.Text = "H";
+            label3.AutoSize = true;
+            label3.ImeMode = ImeMode.NoControl;
+            label3.Location = new Point(7, 57);
+            label3.Margin = new Padding(4, 0, 4, 0);
+            label3.Name = "label3";
+            label3.Size = new Size(16, 15);
+            label3.TabIndex = 1;
+            label3.Text = "H";
             // 
             // label4
             // 
-            this.label4.AutoSize = true;
-            this.label4.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label4.Location = new System.Drawing.Point(6, 22);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(18, 13);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "W";
+            label4.AutoSize = true;
+            label4.ImeMode = ImeMode.NoControl;
+            label4.Location = new Point(7, 25);
+            label4.Margin = new Padding(4, 0, 4, 0);
+            label4.Name = "label4";
+            label4.Size = new Size(18, 15);
+            label4.TabIndex = 0;
+            label4.Text = "W";
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.C1numCY);
-            this.groupBox3.Controls.Add(this.C1numCX);
-            this.groupBox3.Controls.Add(this.label2);
-            this.groupBox3.Controls.Add(this.label1);
-            this.groupBox3.Location = new System.Drawing.Point(204, 6);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(82, 84);
-            this.groupBox3.TabIndex = 2;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "CLUT";
+            groupBox3.Controls.Add(C1numCY);
+            groupBox3.Controls.Add(C1numCX);
+            groupBox3.Controls.Add(label2);
+            groupBox3.Controls.Add(label1);
+            groupBox3.Location = new Point(238, 7);
+            groupBox3.Margin = new Padding(4, 3, 4, 3);
+            groupBox3.Name = "groupBox3";
+            groupBox3.Padding = new Padding(4, 3, 4, 3);
+            groupBox3.Size = new Size(96, 97);
+            groupBox3.TabIndex = 2;
+            groupBox3.TabStop = false;
+            groupBox3.Text = "CLUT";
             // 
             // C1numCY
             // 
-            this.C1numCY.Location = new System.Drawing.Point(26, 45);
-            this.C1numCY.Maximum = new decimal(new int[] {
-            127,
-            0,
-            0,
-            0});
-            this.C1numCY.Name = "C1numCY";
-            this.C1numCY.Size = new System.Drawing.Size(50, 20);
-            this.C1numCY.TabIndex = 3;
+            C1numCY.Location = new Point(30, 52);
+            C1numCY.Margin = new Padding(4, 3, 4, 3);
+            C1numCY.Maximum = new decimal(new int[] { 127, 0, 0, 0 });
+            C1numCY.Name = "C1numCY";
+            C1numCY.Size = new Size(58, 23);
+            C1numCY.TabIndex = 3;
             // 
             // C1numCX
             // 
-            this.C1numCX.Location = new System.Drawing.Point(26, 19);
-            this.C1numCX.Maximum = new decimal(new int[] {
-            15,
-            0,
-            0,
-            0});
-            this.C1numCX.Name = "C1numCX";
-            this.C1numCX.Size = new System.Drawing.Size(50, 20);
-            this.C1numCX.TabIndex = 2;
-            this.C1numCX.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+            C1numCX.Location = new Point(30, 22);
+            C1numCX.Margin = new Padding(4, 3, 4, 3);
+            C1numCX.Maximum = new decimal(new int[] { 15, 0, 0, 0 });
+            C1numCX.Name = "C1numCX";
+            C1numCX.Size = new Size(58, 23);
+            C1numCX.TabIndex = 2;
+            C1numCX.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 47);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(14, 13);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Y";
+            label2.AutoSize = true;
+            label2.Location = new Point(7, 54);
+            label2.Margin = new Padding(4, 0, 4, 0);
+            label2.Name = "label2";
+            label2.Size = new Size(14, 15);
+            label2.TabIndex = 1;
+            label2.Text = "Y";
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 21);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(14, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "X";
+            label1.AutoSize = true;
+            label1.Location = new Point(7, 24);
+            label1.Margin = new Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new Size(14, 15);
+            label1.TabIndex = 0;
+            label1.Text = "X";
             // 
             // groupBox2
             // 
-            this.groupBox2.AutoSize = true;
-            this.groupBox2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.groupBox2.Controls.Add(this.C1dpdBlend);
-            this.groupBox2.Location = new System.Drawing.Point(107, 96);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(123, 60);
-            this.groupBox2.TabIndex = 1;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Blend Mode";
+            groupBox2.AutoSize = true;
+            groupBox2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            groupBox2.Controls.Add(C1dpdBlend);
+            groupBox2.Location = new Point(125, 111);
+            groupBox2.Margin = new Padding(4, 3, 4, 3);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Padding = new Padding(4, 3, 4, 3);
+            groupBox2.Size = new Size(144, 68);
+            groupBox2.TabIndex = 1;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "Blend Mode";
             // 
             // C1dpdBlend
             // 
-            this.C1dpdBlend.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.C1dpdBlend.FormattingEnabled = true;
-            this.C1dpdBlend.Items.AddRange(new object[] {
-            "0 (Transparency)",
-            "1 (Additive)",
-            "2 (Subtractive)",
-            "3 (Solid)"});
-            this.C1dpdBlend.Location = new System.Drawing.Point(7, 20);
-            this.C1dpdBlend.Name = "C1dpdBlend";
-            this.C1dpdBlend.Size = new System.Drawing.Size(110, 21);
-            this.C1dpdBlend.TabIndex = 0;
+            C1dpdBlend.DropDownStyle = ComboBoxStyle.DropDownList;
+            C1dpdBlend.FormattingEnabled = true;
+            C1dpdBlend.Items.AddRange(new object[] { "0 (Transparency)", "1 (Additive)", "2 (Subtractive)", "3 (Solid)" });
+            C1dpdBlend.Location = new Point(8, 23);
+            C1dpdBlend.Margin = new Padding(4, 3, 4, 3);
+            C1dpdBlend.Name = "C1dpdBlend";
+            C1dpdBlend.Size = new Size(128, 23);
+            C1dpdBlend.TabIndex = 0;
             // 
             // groupBox1
             // 
-            this.groupBox1.AutoSize = true;
-            this.groupBox1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.groupBox1.Controls.Add(this.C1dpdColor);
-            this.groupBox1.Location = new System.Drawing.Point(8, 96);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(93, 60);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Color Mode";
+            groupBox1.AutoSize = true;
+            groupBox1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            groupBox1.Controls.Add(C1dpdColor);
+            groupBox1.Location = new Point(9, 111);
+            groupBox1.Margin = new Padding(4, 3, 4, 3);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Padding = new Padding(4, 3, 4, 3);
+            groupBox1.Size = new Size(109, 68);
+            groupBox1.TabIndex = 0;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Color Mode";
             // 
             // C1dpdColor
             // 
-            this.C1dpdColor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.C1dpdColor.FormattingEnabled = true;
-            this.C1dpdColor.Items.AddRange(new object[] {
-            "0 (4bpp)",
-            "1 (8bpp)",
-            "2 (16bpp)"});
-            this.C1dpdColor.Location = new System.Drawing.Point(7, 20);
-            this.C1dpdColor.Name = "C1dpdColor";
-            this.C1dpdColor.Size = new System.Drawing.Size(80, 21);
-            this.C1dpdColor.TabIndex = 0;
+            C1dpdColor.DropDownStyle = ComboBoxStyle.DropDownList;
+            C1dpdColor.FormattingEnabled = true;
+            C1dpdColor.Items.AddRange(new object[] { "0 (4bpp)", "1 (8bpp)", "2 (16bpp)" });
+            C1dpdColor.Location = new Point(8, 23);
+            C1dpdColor.Margin = new Padding(4, 3, 4, 3);
+            C1dpdColor.Name = "C1dpdColor";
+            C1dpdColor.Size = new Size(93, 23);
+            C1dpdColor.TabIndex = 0;
             // 
             // tabC2
             // 
-            this.tabC2.Controls.Add(this.groupBox6);
-            this.tabC2.Controls.Add(this.groupBox7);
-            this.tabC2.Controls.Add(this.groupBox8);
-            this.tabC2.Controls.Add(this.groupBox9);
-            this.tabC2.Controls.Add(this.groupBox10);
-            this.tabC2.Location = new System.Drawing.Point(4, 22);
-            this.tabC2.Name = "tabC2";
-            this.tabC2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabC2.Size = new System.Drawing.Size(1016, 195);
-            this.tabC2.TabIndex = 1;
-            this.tabC2.Text = "Crash 2";
-            this.tabC2.UseVisualStyleBackColor = true;
+            tabC2.BackColor = SystemColors.Control;
+            tabC2.Controls.Add(groupBox6);
+            tabC2.Controls.Add(groupBox7);
+            tabC2.Controls.Add(groupBox8);
+            tabC2.Controls.Add(groupBox9);
+            tabC2.Controls.Add(groupBox10);
+            tabC2.ForeColor = SystemColors.ControlText;
+            tabC2.Location = new Point(4, 32);
+            tabC2.Margin = new Padding(4, 3, 4, 3);
+            tabC2.Name = "tabC2";
+            tabC2.Padding = new Padding(4, 3, 4, 3);
+            tabC2.Size = new Size(1187, 219);
+            tabC2.TabIndex = 1;
+            tabC2.Text = "Crash 2";
             // 
             // groupBox6
             // 
-            this.groupBox6.AutoSize = true;
-            this.groupBox6.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.groupBox6.Controls.Add(this.C2numY);
-            this.groupBox6.Controls.Add(this.C2numX);
-            this.groupBox6.Controls.Add(this.label7);
-            this.groupBox6.Controls.Add(this.label8);
-            this.groupBox6.Location = new System.Drawing.Point(8, 6);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(92, 84);
-            this.groupBox6.TabIndex = 8;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Offset";
+            groupBox6.AutoSize = true;
+            groupBox6.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            groupBox6.Controls.Add(C2numY);
+            groupBox6.Controls.Add(C2numX);
+            groupBox6.Controls.Add(label7);
+            groupBox6.Controls.Add(label8);
+            groupBox6.Location = new Point(9, 7);
+            groupBox6.Margin = new Padding(4, 3, 4, 3);
+            groupBox6.Name = "groupBox6";
+            groupBox6.Padding = new Padding(4, 3, 4, 3);
+            groupBox6.Size = new Size(108, 97);
+            groupBox6.TabIndex = 8;
+            groupBox6.TabStop = false;
+            groupBox6.Text = "Offset";
             // 
             // C2numY
             // 
-            this.C2numY.Location = new System.Drawing.Point(26, 45);
-            this.C2numY.Maximum = new decimal(new int[] {
-            127,
-            0,
-            0,
-            0});
-            this.C2numY.Name = "C2numY";
-            this.C2numY.Size = new System.Drawing.Size(60, 20);
-            this.C2numY.TabIndex = 3;
+            C2numY.Location = new Point(30, 52);
+            C2numY.Margin = new Padding(4, 3, 4, 3);
+            C2numY.Maximum = new decimal(new int[] { 127, 0, 0, 0 });
+            C2numY.Name = "C2numY";
+            C2numY.Size = new Size(70, 23);
+            C2numY.TabIndex = 3;
             // 
             // C2numX
             // 
-            this.C2numX.Location = new System.Drawing.Point(26, 19);
-            this.C2numX.Maximum = new decimal(new int[] {
-            1023,
-            0,
-            0,
-            0});
-            this.C2numX.Name = "C2numX";
-            this.C2numX.Size = new System.Drawing.Size(60, 20);
-            this.C2numX.TabIndex = 2;
+            C2numX.Location = new Point(30, 22);
+            C2numX.Margin = new Padding(4, 3, 4, 3);
+            C2numX.Maximum = new decimal(new int[] { 1023, 0, 0, 0 });
+            C2numX.Name = "C2numX";
+            C2numX.Size = new Size(70, 23);
+            C2numX.TabIndex = 2;
             // 
             // label7
             // 
-            this.label7.AutoSize = true;
-            this.label7.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label7.Location = new System.Drawing.Point(6, 47);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(14, 13);
-            this.label7.TabIndex = 1;
-            this.label7.Text = "Y";
+            label7.AutoSize = true;
+            label7.ImeMode = ImeMode.NoControl;
+            label7.Location = new Point(7, 54);
+            label7.Margin = new Padding(4, 0, 4, 0);
+            label7.Name = "label7";
+            label7.Size = new Size(14, 15);
+            label7.TabIndex = 1;
+            label7.Text = "Y";
             // 
             // label8
             // 
-            this.label8.AutoSize = true;
-            this.label8.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label8.Location = new System.Drawing.Point(6, 21);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(14, 13);
-            this.label8.TabIndex = 0;
-            this.label8.Text = "X";
+            label8.AutoSize = true;
+            label8.ImeMode = ImeMode.NoControl;
+            label8.Location = new Point(7, 24);
+            label8.Margin = new Padding(4, 0, 4, 0);
+            label8.Name = "label8";
+            label8.Size = new Size(14, 15);
+            label8.TabIndex = 0;
+            label8.Text = "X";
             // 
             // groupBox7
             // 
-            this.groupBox7.AutoSize = true;
-            this.groupBox7.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.groupBox7.Controls.Add(this.C2numH);
-            this.groupBox7.Controls.Add(this.label9);
-            this.groupBox7.Controls.Add(this.C2numW);
-            this.groupBox7.Controls.Add(this.label10);
-            this.groupBox7.Location = new System.Drawing.Point(106, 6);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(92, 84);
-            this.groupBox7.TabIndex = 9;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "Size";
+            groupBox7.AutoSize = true;
+            groupBox7.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            groupBox7.Controls.Add(C2numH);
+            groupBox7.Controls.Add(label9);
+            groupBox7.Controls.Add(C2numW);
+            groupBox7.Controls.Add(label10);
+            groupBox7.Location = new Point(124, 7);
+            groupBox7.Margin = new Padding(4, 3, 4, 3);
+            groupBox7.Name = "groupBox7";
+            groupBox7.Padding = new Padding(4, 3, 4, 3);
+            groupBox7.Size = new Size(108, 97);
+            groupBox7.TabIndex = 9;
+            groupBox7.TabStop = false;
+            groupBox7.Text = "Size";
             // 
             // C2numH
             // 
-            this.C2numH.Location = new System.Drawing.Point(26, 45);
-            this.C2numH.Maximum = new decimal(new int[] {
-            128,
-            0,
-            0,
-            0});
-            this.C2numH.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.C2numH.Name = "C2numH";
-            this.C2numH.Size = new System.Drawing.Size(60, 20);
-            this.C2numH.TabIndex = 5;
-            this.C2numH.Value = new decimal(new int[] {
-            16,
-            0,
-            0,
-            0});
+            C2numH.Location = new Point(30, 52);
+            C2numH.Margin = new Padding(4, 3, 4, 3);
+            C2numH.Maximum = new decimal(new int[] { 128, 0, 0, 0 });
+            C2numH.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            C2numH.Name = "C2numH";
+            C2numH.Size = new Size(70, 23);
+            C2numH.TabIndex = 5;
+            C2numH.Value = new decimal(new int[] { 16, 0, 0, 0 });
             // 
             // label9
             // 
-            this.label9.AutoSize = true;
-            this.label9.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label9.Location = new System.Drawing.Point(6, 47);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(15, 13);
-            this.label9.TabIndex = 1;
-            this.label9.Text = "H";
+            label9.AutoSize = true;
+            label9.ImeMode = ImeMode.NoControl;
+            label9.Location = new Point(7, 54);
+            label9.Margin = new Padding(4, 0, 4, 0);
+            label9.Name = "label9";
+            label9.Size = new Size(16, 15);
+            label9.TabIndex = 1;
+            label9.Text = "H";
             // 
             // C2numW
             // 
-            this.C2numW.Location = new System.Drawing.Point(26, 19);
-            this.C2numW.Maximum = new decimal(new int[] {
-            1024,
-            0,
-            0,
-            0});
-            this.C2numW.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.C2numW.Name = "C2numW";
-            this.C2numW.Size = new System.Drawing.Size(60, 20);
-            this.C2numW.TabIndex = 4;
-            this.C2numW.Value = new decimal(new int[] {
-            16,
-            0,
-            0,
-            0});
+            C2numW.Location = new Point(30, 22);
+            C2numW.Margin = new Padding(4, 3, 4, 3);
+            C2numW.Maximum = new decimal(new int[] { 1024, 0, 0, 0 });
+            C2numW.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            C2numW.Name = "C2numW";
+            C2numW.Size = new Size(70, 23);
+            C2numW.TabIndex = 4;
+            C2numW.Value = new decimal(new int[] { 16, 0, 0, 0 });
             // 
             // label10
             // 
-            this.label10.AutoSize = true;
-            this.label10.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label10.Location = new System.Drawing.Point(6, 21);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(18, 13);
-            this.label10.TabIndex = 0;
-            this.label10.Text = "W";
+            label10.AutoSize = true;
+            label10.ImeMode = ImeMode.NoControl;
+            label10.Location = new Point(7, 24);
+            label10.Margin = new Padding(4, 0, 4, 0);
+            label10.Name = "label10";
+            label10.Size = new Size(18, 15);
+            label10.TabIndex = 0;
+            label10.Text = "W";
             // 
             // groupBox8
             // 
-            this.groupBox8.AutoSize = true;
-            this.groupBox8.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.groupBox8.Controls.Add(this.C2numCY);
-            this.groupBox8.Controls.Add(this.C2numCX);
-            this.groupBox8.Controls.Add(this.label11);
-            this.groupBox8.Controls.Add(this.label12);
-            this.groupBox8.Location = new System.Drawing.Point(204, 6);
-            this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(82, 84);
-            this.groupBox8.TabIndex = 7;
-            this.groupBox8.TabStop = false;
-            this.groupBox8.Text = "CLUT";
+            groupBox8.AutoSize = true;
+            groupBox8.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            groupBox8.Controls.Add(C2numCY);
+            groupBox8.Controls.Add(C2numCX);
+            groupBox8.Controls.Add(label11);
+            groupBox8.Controls.Add(label12);
+            groupBox8.Location = new Point(238, 7);
+            groupBox8.Margin = new Padding(4, 3, 4, 3);
+            groupBox8.Name = "groupBox8";
+            groupBox8.Padding = new Padding(4, 3, 4, 3);
+            groupBox8.Size = new Size(96, 97);
+            groupBox8.TabIndex = 7;
+            groupBox8.TabStop = false;
+            groupBox8.Text = "CLUT";
             // 
             // C2numCY
             // 
-            this.C2numCY.Location = new System.Drawing.Point(26, 45);
-            this.C2numCY.Maximum = new decimal(new int[] {
-            127,
-            0,
-            0,
-            0});
-            this.C2numCY.Name = "C2numCY";
-            this.C2numCY.Size = new System.Drawing.Size(50, 20);
-            this.C2numCY.TabIndex = 3;
+            C2numCY.Location = new Point(30, 52);
+            C2numCY.Margin = new Padding(4, 3, 4, 3);
+            C2numCY.Maximum = new decimal(new int[] { 127, 0, 0, 0 });
+            C2numCY.Name = "C2numCY";
+            C2numCY.Size = new Size(58, 23);
+            C2numCY.TabIndex = 3;
             // 
             // C2numCX
             // 
-            this.C2numCX.Location = new System.Drawing.Point(26, 19);
-            this.C2numCX.Maximum = new decimal(new int[] {
-            15,
-            0,
-            0,
-            0});
-            this.C2numCX.Name = "C2numCX";
-            this.C2numCX.Size = new System.Drawing.Size(50, 20);
-            this.C2numCX.TabIndex = 2;
-            this.C2numCX.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+            C2numCX.Location = new Point(30, 22);
+            C2numCX.Margin = new Padding(4, 3, 4, 3);
+            C2numCX.Maximum = new decimal(new int[] { 15, 0, 0, 0 });
+            C2numCX.Name = "C2numCX";
+            C2numCX.Size = new Size(58, 23);
+            C2numCX.TabIndex = 2;
+            C2numCX.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // label11
             // 
-            this.label11.AutoSize = true;
-            this.label11.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label11.Location = new System.Drawing.Point(6, 47);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(14, 13);
-            this.label11.TabIndex = 1;
-            this.label11.Text = "Y";
+            label11.AutoSize = true;
+            label11.ImeMode = ImeMode.NoControl;
+            label11.Location = new Point(7, 54);
+            label11.Margin = new Padding(4, 0, 4, 0);
+            label11.Name = "label11";
+            label11.Size = new Size(14, 15);
+            label11.TabIndex = 1;
+            label11.Text = "Y";
             // 
             // label12
             // 
-            this.label12.AutoSize = true;
-            this.label12.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label12.Location = new System.Drawing.Point(6, 21);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(14, 13);
-            this.label12.TabIndex = 0;
-            this.label12.Text = "X";
+            label12.AutoSize = true;
+            label12.ImeMode = ImeMode.NoControl;
+            label12.Location = new Point(7, 24);
+            label12.Margin = new Padding(4, 0, 4, 0);
+            label12.Name = "label12";
+            label12.Size = new Size(14, 15);
+            label12.TabIndex = 0;
+            label12.Text = "X";
             // 
             // groupBox9
             // 
-            this.groupBox9.AutoSize = true;
-            this.groupBox9.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.groupBox9.Controls.Add(this.C2dpdBlend);
-            this.groupBox9.Location = new System.Drawing.Point(107, 96);
-            this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(123, 60);
-            this.groupBox9.TabIndex = 6;
-            this.groupBox9.TabStop = false;
-            this.groupBox9.Text = "Blend Mode";
+            groupBox9.AutoSize = true;
+            groupBox9.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            groupBox9.Controls.Add(C2dpdBlend);
+            groupBox9.Location = new Point(125, 111);
+            groupBox9.Margin = new Padding(4, 3, 4, 3);
+            groupBox9.Name = "groupBox9";
+            groupBox9.Padding = new Padding(4, 3, 4, 3);
+            groupBox9.Size = new Size(144, 68);
+            groupBox9.TabIndex = 6;
+            groupBox9.TabStop = false;
+            groupBox9.Text = "Blend Mode";
             // 
             // C2dpdBlend
             // 
-            this.C2dpdBlend.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.C2dpdBlend.FormattingEnabled = true;
-            this.C2dpdBlend.Items.AddRange(new object[] {
-            "0 (Transparency)",
-            "1 (Additive)",
-            "2 (Subtractive)",
-            "3 (Solid)"});
-            this.C2dpdBlend.Location = new System.Drawing.Point(7, 20);
-            this.C2dpdBlend.Name = "C2dpdBlend";
-            this.C2dpdBlend.Size = new System.Drawing.Size(110, 21);
-            this.C2dpdBlend.TabIndex = 0;
+            C2dpdBlend.DropDownStyle = ComboBoxStyle.DropDownList;
+            C2dpdBlend.FormattingEnabled = true;
+            C2dpdBlend.Items.AddRange(new object[] { "0 (Transparency)", "1 (Additive)", "2 (Subtractive)", "3 (Solid)" });
+            C2dpdBlend.Location = new Point(8, 23);
+            C2dpdBlend.Margin = new Padding(4, 3, 4, 3);
+            C2dpdBlend.Name = "C2dpdBlend";
+            C2dpdBlend.Size = new Size(128, 23);
+            C2dpdBlend.TabIndex = 0;
             // 
             // groupBox10
             // 
-            this.groupBox10.AutoSize = true;
-            this.groupBox10.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.groupBox10.Controls.Add(this.C2dpdColor);
-            this.groupBox10.Location = new System.Drawing.Point(8, 96);
-            this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(93, 60);
-            this.groupBox10.TabIndex = 5;
-            this.groupBox10.TabStop = false;
-            this.groupBox10.Text = "Color Mode";
+            groupBox10.AutoSize = true;
+            groupBox10.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            groupBox10.Controls.Add(C2dpdColor);
+            groupBox10.Location = new Point(9, 111);
+            groupBox10.Margin = new Padding(4, 3, 4, 3);
+            groupBox10.Name = "groupBox10";
+            groupBox10.Padding = new Padding(4, 3, 4, 3);
+            groupBox10.Size = new Size(109, 68);
+            groupBox10.TabIndex = 5;
+            groupBox10.TabStop = false;
+            groupBox10.Text = "Color Mode";
             // 
             // C2dpdColor
             // 
-            this.C2dpdColor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.C2dpdColor.FormattingEnabled = true;
-            this.C2dpdColor.Items.AddRange(new object[] {
-            "0 (4bpp)",
-            "1 (8bpp)",
-            "2 (16bpp)"});
-            this.C2dpdColor.Location = new System.Drawing.Point(7, 20);
-            this.C2dpdColor.Name = "C2dpdColor";
-            this.C2dpdColor.Size = new System.Drawing.Size(80, 21);
-            this.C2dpdColor.TabIndex = 0;
+            C2dpdColor.DropDownStyle = ComboBoxStyle.DropDownList;
+            C2dpdColor.FormattingEnabled = true;
+            C2dpdColor.Items.AddRange(new object[] { "0 (4bpp)", "1 (8bpp)", "2 (16bpp)" });
+            C2dpdColor.Location = new Point(8, 23);
+            C2dpdColor.Margin = new Padding(4, 3, 4, 3);
+            C2dpdColor.Name = "C2dpdColor";
+            C2dpdColor.Size = new Size(93, 23);
+            C2dpdColor.TabIndex = 0;
             // 
             // TextureViewer
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1024, 361);
-            this.Controls.Add(this.splitContainer1);
-            this.DoubleBuffered = true;
-            this.Name = "TextureViewer";
-            this.ShowIcon = false;
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.tabControl1.ResumeLayout(false);
-            this.tabC1.ResumeLayout(false);
-            this.tabC1.PerformLayout();
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.C1numY)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.C1numX)).EndInit();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.C1numCY)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.C1numCX)).EndInit();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.tabC2.ResumeLayout(false);
-            this.tabC2.PerformLayout();
-            this.groupBox6.ResumeLayout(false);
-            this.groupBox6.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.C2numY)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.C2numX)).EndInit();
-            this.groupBox7.ResumeLayout(false);
-            this.groupBox7.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.C2numH)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.C2numW)).EndInit();
-            this.groupBox8.ResumeLayout(false);
-            this.groupBox8.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.C2numCY)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.C2numCX)).EndInit();
-            this.groupBox9.ResumeLayout(false);
-            this.groupBox10.ResumeLayout(false);
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1195, 417);
+            Controls.Add(splitContainer1);
+            DoubleBuffered = true;
+            Margin = new Padding(4, 3, 4, 3);
+            Name = "TextureViewer";
+            ShowIcon = false;
+            splitContainer1.Panel1.ResumeLayout(false);
+            splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
+            splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            tabControl1.ResumeLayout(false);
+            tabC1.ResumeLayout(false);
+            tabC1.PerformLayout();
+            groupBox5.ResumeLayout(false);
+            groupBox5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)C1numY).EndInit();
+            ((System.ComponentModel.ISupportInitialize)C1numX).EndInit();
+            groupBox4.ResumeLayout(false);
+            groupBox4.PerformLayout();
+            groupBox3.ResumeLayout(false);
+            groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)C1numCY).EndInit();
+            ((System.ComponentModel.ISupportInitialize)C1numCX).EndInit();
+            groupBox2.ResumeLayout(false);
+            groupBox1.ResumeLayout(false);
+            tabC2.ResumeLayout(false);
+            tabC2.PerformLayout();
+            groupBox6.ResumeLayout(false);
+            groupBox6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)C2numY).EndInit();
+            ((System.ComponentModel.ISupportInitialize)C2numX).EndInit();
+            groupBox7.ResumeLayout(false);
+            groupBox7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)C2numH).EndInit();
+            ((System.ComponentModel.ISupportInitialize)C2numW).EndInit();
+            groupBox8.ResumeLayout(false);
+            groupBox8.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)C2numCY).EndInit();
+            ((System.ComponentModel.ISupportInitialize)C2numCX).EndInit();
+            groupBox9.ResumeLayout(false);
+            groupBox10.ResumeLayout(false);
+            ResumeLayout(false);
         }
 
         #endregion
 
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.TabControl tabControl1;
+        private MetroSetTabControl tabControl1;
         private System.Windows.Forms.TabPage tabC1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.ComboBox C1dpdBlend;

@@ -1,4 +1,7 @@
-﻿namespace CrashEdit.CE
+﻿using AltUI.Controls;
+using MetroSet_UI.Controls;
+
+namespace CrashEdit.CE
 {
     partial class ConfigEditor
     {
@@ -29,37 +32,37 @@
         private void InitializeComponent()
         {
             TableLayoutPanel tableLayoutPanel4;
-            lblFontName = new Label();
-            lblFontSize = new Label();
-            dpdFont = new ComboBox();
-            numFontSize = new NumericUpDown();
+            lblFontName = new MetroSetLabel();
+            lblFontSize = new MetroSetLabel();
+            dpdFont = new MetroSetComboBox();
+            numFontSize = new DarkNumericUpDown();
             chkViewerShowHelp = new CheckBox();
             chkFont2DEnable = new CheckBox();
             chkFont3DEnable = new CheckBox();
             chkCollisionDisplay = new CheckBox();
             chkNormalDisplay = new CheckBox();
-            fraAnimGrid = new GroupBox();
-            numAnimGrid = new NumericUpDown();
-            lblAnimGrid = new Label();
+            fraAnimGrid = new DarkGroupBox();
+            numAnimGrid = new DarkNumericUpDown();
+            lblAnimGrid = new MetroSetLabel();
             chkAnimGrid = new CheckBox();
-            fraClearCol = new GroupBox();
+            fraClearCol = new DarkGroupBox();
             picClearCol = new PictureBox();
-            fraFont = new GroupBox();
+            fraFont = new DarkGroupBox();
             chkPatchNSDSavesNSF = new CheckBox();
             chkDeleteInvalidEntries = new CheckBox();
-            dpdLang = new ComboBox();
-            numH = new NumericUpDown();
-            lblWH = new Label();
-            numW = new NumericUpDown();
-            cmdReset = new Button();
-            fraSize = new GroupBox();
+            dpdLang = new MetroSetComboBox();
+            numH = new DarkNumericUpDown();
+            lblWH = new MetroSetLabel();
+            numW = new DarkNumericUpDown();
+            cmdReset = new DarkButton();
+            fraSize = new DarkGroupBox();
             cdlClearCol = new ColorDialog();
-            fraNodeShadeAmt = new GroupBox();
-            lblNodeShadeAmt = new Label();
+            fraNodeShadeAmt = new DarkGroupBox();
+            lblNodeShadeAmt = new MetroSetLabel();
             sldNodeShadeAmt = new TrackBar();
-            tbcSettings = new TabControl();
+            tbcSettings = new MetroSetTabControl();
             tbpGeneral = new TabPage();
-            fraLang = new GroupBox();
+            fraLang = new DarkGroupBox();
             tbp3D = new TabPage();
             tbpDebugDisplay = new TabPage();
             chkShowEntityParams = new CheckBox();
@@ -108,47 +111,78 @@
             tableLayoutPanel4.RowCount = 2;
             tableLayoutPanel4.RowStyles.Add(new RowStyle());
             tableLayoutPanel4.RowStyles.Add(new RowStyle());
-            tableLayoutPanel4.Size = new Size(261, 58);
+            tableLayoutPanel4.Size = new Size(261, 66);
             tableLayoutPanel4.TabIndex = 5;
             // 
             // lblFontName
             // 
             lblFontName.AutoSize = true;
             lblFontName.Dock = DockStyle.Fill;
+            lblFontName.Font = new Font("Microsoft Sans Serif", 10F);
+            lblFontName.IsDerivedStyle = true;
             lblFontName.Location = new Point(4, 0);
             lblFontName.Margin = new Padding(4, 0, 4, 0);
             lblFontName.Name = "lblFontName";
-            lblFontName.Size = new Size(54, 29);
+            lblFontName.Size = new Size(54, 32);
+            lblFontName.Style = MetroSet_UI.Enums.Style.Dark;
+            lblFontName.StyleManager = null;
             lblFontName.TabIndex = 3;
             lblFontName.Text = "Font";
             lblFontName.TextAlign = ContentAlignment.MiddleRight;
+            lblFontName.ThemeAuthor = "Narwin";
+            lblFontName.ThemeName = "MetroLite";
             // 
             // lblFontSize
             // 
             lblFontSize.AutoSize = true;
             lblFontSize.Dock = DockStyle.Fill;
-            lblFontSize.Location = new Point(4, 29);
+            lblFontSize.Font = new Font("Microsoft Sans Serif", 10F);
+            lblFontSize.IsDerivedStyle = true;
+            lblFontSize.Location = new Point(4, 32);
             lblFontSize.Margin = new Padding(4, 0, 4, 0);
             lblFontSize.Name = "lblFontSize";
-            lblFontSize.Size = new Size(54, 29);
+            lblFontSize.Size = new Size(54, 34);
+            lblFontSize.Style = MetroSet_UI.Enums.Style.Dark;
+            lblFontSize.StyleManager = null;
             lblFontSize.TabIndex = 4;
             lblFontSize.Text = "Font Size";
             lblFontSize.TextAlign = ContentAlignment.MiddleRight;
+            lblFontSize.ThemeAuthor = "Narwin";
+            lblFontSize.ThemeName = "MetroLite";
             // 
             // dpdFont
             // 
+            dpdFont.AllowDrop = true;
+            dpdFont.ArrowColor = Color.FromArgb(110, 110, 110);
+            dpdFont.BackColor = Color.Transparent;
+            dpdFont.BackgroundColor = Color.FromArgb(34, 34, 34);
+            dpdFont.BorderColor = Color.FromArgb(110, 110, 110);
+            dpdFont.CausesValidation = false;
+            dpdFont.DisabledBackColor = Color.FromArgb(80, 80, 80);
+            dpdFont.DisabledBorderColor = Color.FromArgb(109, 109, 109);
+            dpdFont.DisabledForeColor = Color.FromArgb(109, 109, 109);
+            dpdFont.DrawMode = DrawMode.OwnerDrawFixed;
             dpdFont.DropDownStyle = ComboBoxStyle.DropDownList;
+            dpdFont.Font = new Font("Microsoft Sans Serif", 11F);
             dpdFont.FormattingEnabled = true;
+            dpdFont.IsDerivedStyle = true;
+            dpdFont.ItemHeight = 20;
             dpdFont.Location = new Point(66, 3);
             dpdFont.Margin = new Padding(4, 3, 4, 3);
             dpdFont.Name = "dpdFont";
-            dpdFont.Size = new Size(191, 23);
+            dpdFont.SelectedItemBackColor = Color.FromArgb(65, 177, 225);
+            dpdFont.SelectedItemForeColor = Color.White;
+            dpdFont.Size = new Size(191, 26);
+            dpdFont.Style = MetroSet_UI.Enums.Style.Dark;
+            dpdFont.StyleManager = null;
             dpdFont.TabIndex = 1;
+            dpdFont.ThemeAuthor = "Narwin";
+            dpdFont.ThemeName = "MetroLite";
             // 
             // numFontSize
             // 
             numFontSize.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            numFontSize.Location = new Point(66, 32);
+            numFontSize.Location = new Point(66, 35);
             numFontSize.Margin = new Padding(4, 3, 4, 3);
             numFontSize.Maximum = new decimal(new int[] { 99, 0, 0, 0 });
             numFontSize.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
@@ -258,12 +292,18 @@
             // lblAnimGrid
             // 
             lblAnimGrid.AutoSize = true;
+            lblAnimGrid.Font = new Font("Microsoft Sans Serif", 10F);
+            lblAnimGrid.IsDerivedStyle = true;
             lblAnimGrid.Location = new Point(8, 50);
             lblAnimGrid.Margin = new Padding(4, 0, 4, 0);
             lblAnimGrid.Name = "lblAnimGrid";
-            lblAnimGrid.Size = new Size(27, 15);
+            lblAnimGrid.Size = new Size(35, 17);
+            lblAnimGrid.Style = MetroSet_UI.Enums.Style.Dark;
+            lblAnimGrid.StyleManager = null;
             lblAnimGrid.TabIndex = 1;
             lblAnimGrid.Text = "Size";
+            lblAnimGrid.ThemeAuthor = "Narwin";
+            lblAnimGrid.ThemeName = "MetroLite";
             // 
             // chkAnimGrid
             // 
@@ -311,7 +351,7 @@
             fraFont.Margin = new Padding(4, 3, 4, 3);
             fraFont.Name = "fraFont";
             fraFont.Padding = new Padding(4, 3, 4, 3);
-            fraFont.Size = new Size(276, 78);
+            fraFont.Size = new Size(276, 86);
             fraFont.TabIndex = 8;
             fraFont.TabStop = false;
             fraFont.Text = "3D Text";
@@ -346,14 +386,33 @@
             // 
             // dpdLang
             // 
+            dpdLang.AllowDrop = true;
+            dpdLang.ArrowColor = Color.FromArgb(110, 110, 110);
+            dpdLang.BackColor = Color.Transparent;
+            dpdLang.BackgroundColor = Color.FromArgb(34, 34, 34);
+            dpdLang.BorderColor = Color.FromArgb(110, 110, 110);
+            dpdLang.CausesValidation = false;
+            dpdLang.DisabledBackColor = Color.FromArgb(80, 80, 80);
+            dpdLang.DisabledBorderColor = Color.FromArgb(109, 109, 109);
+            dpdLang.DisabledForeColor = Color.FromArgb(109, 109, 109);
+            dpdLang.DrawMode = DrawMode.OwnerDrawFixed;
             dpdLang.DropDownStyle = ComboBoxStyle.DropDownList;
+            dpdLang.Font = new Font("Microsoft Sans Serif", 11F);
             dpdLang.FormattingEnabled = true;
+            dpdLang.IsDerivedStyle = true;
+            dpdLang.ItemHeight = 20;
             dpdLang.Location = new Point(7, 22);
             dpdLang.Margin = new Padding(4, 3, 4, 3);
             dpdLang.MaximumSize = new Size(154, 0);
             dpdLang.Name = "dpdLang";
-            dpdLang.Size = new Size(154, 23);
+            dpdLang.SelectedItemBackColor = Color.FromArgb(65, 177, 225);
+            dpdLang.SelectedItemForeColor = Color.White;
+            dpdLang.Size = new Size(154, 26);
+            dpdLang.Style = MetroSet_UI.Enums.Style.Dark;
+            dpdLang.StyleManager = null;
             dpdLang.TabIndex = 0;
+            dpdLang.ThemeAuthor = "Narwin";
+            dpdLang.ThemeName = "MetroDark";
             // 
             // numH
             // 
@@ -371,13 +430,19 @@
             // lblWH
             // 
             lblWH.AutoSize = true;
+            lblWH.Font = new Font("Microsoft Sans Serif", 10F);
+            lblWH.IsDerivedStyle = true;
             lblWH.Location = new Point(67, 24);
             lblWH.Margin = new Padding(4, 0, 4, 0);
             lblWH.Name = "lblWH";
-            lblWH.Size = new Size(13, 15);
+            lblWH.Size = new Size(14, 17);
+            lblWH.Style = MetroSet_UI.Enums.Style.Dark;
+            lblWH.StyleManager = null;
             lblWH.TabIndex = 2;
             lblWH.Text = "x";
             lblWH.TextAlign = ContentAlignment.MiddleRight;
+            lblWH.ThemeAuthor = "Narwin";
+            lblWH.ThemeName = "MetroDark";
             // 
             // numW
             // 
@@ -394,15 +459,18 @@
             // 
             // cmdReset
             // 
-            cmdReset.AutoSize = true;
-            cmdReset.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            cmdReset.BorderColour = Color.Empty;
+            cmdReset.CustomColour = false;
+            cmdReset.FlatBottom = false;
+            cmdReset.FlatTop = false;
+            cmdReset.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             cmdReset.Location = new Point(7, 149);
             cmdReset.Margin = new Padding(4, 3, 4, 3);
             cmdReset.Name = "cmdReset";
+            cmdReset.Padding = new Padding(5);
             cmdReset.Size = new Size(90, 25);
             cmdReset.TabIndex = 1;
             cmdReset.Text = "Reset Settings";
-            cmdReset.UseVisualStyleBackColor = true;
             cmdReset.Click += cmdReset_Click;
             // 
             // fraSize
@@ -444,16 +512,22 @@
             // lblNodeShadeAmt
             // 
             lblNodeShadeAmt.Dock = DockStyle.Top;
+            lblNodeShadeAmt.Font = new Font("Microsoft Sans Serif", 10F);
+            lblNodeShadeAmt.IsDerivedStyle = true;
             lblNodeShadeAmt.Location = new Point(4, 64);
             lblNodeShadeAmt.Name = "lblNodeShadeAmt";
             lblNodeShadeAmt.Size = new Size(268, 23);
+            lblNodeShadeAmt.Style = MetroSet_UI.Enums.Style.Dark;
+            lblNodeShadeAmt.StyleManager = null;
             lblNodeShadeAmt.TabIndex = 11;
             lblNodeShadeAmt.Text = "100%";
             lblNodeShadeAmt.TextAlign = ContentAlignment.TopCenter;
+            lblNodeShadeAmt.ThemeAuthor = "Narwin";
+            lblNodeShadeAmt.ThemeName = "MetroLite";
             // 
             // sldNodeShadeAmt
             // 
-            sldNodeShadeAmt.BackColor = SystemColors.ControlLightLight;
+            sldNodeShadeAmt.BackColor = Color.FromArgb(30, 30, 30);
             sldNodeShadeAmt.Dock = DockStyle.Top;
             sldNodeShadeAmt.LargeChange = 10;
             sldNodeShadeAmt.Location = new Point(4, 19);
@@ -468,27 +542,41 @@
             // 
             // tbcSettings
             // 
+            tbcSettings.AnimateEasingType = MetroSet_UI.Enums.EasingType.CubeOut;
+            tbcSettings.AnimateTime = 200;
+            tbcSettings.BackgroundColor = Color.FromArgb(30, 30, 30);
             tbcSettings.Controls.Add(tbpGeneral);
             tbcSettings.Controls.Add(tbp3D);
             tbcSettings.Controls.Add(tbpDebugDisplay);
             tbcSettings.Controls.Add(tbpPatchNSD);
             tbcSettings.Dock = DockStyle.Fill;
+            tbcSettings.IsDerivedStyle = true;
+            tbcSettings.ItemSize = new Size(100, 28);
             tbcSettings.Location = new Point(4, 3);
             tbcSettings.Name = "tbcSettings";
             tbcSettings.SelectedIndex = 0;
+            tbcSettings.SelectedTextColor = Color.White;
             tbcSettings.Size = new Size(425, 417);
+            tbcSettings.SizeMode = TabSizeMode.Fixed;
+            tbcSettings.Speed = 100;
+            tbcSettings.Style = MetroSet_UI.Enums.Style.Dark;
+            tbcSettings.StyleManager = null;
             tbcSettings.TabIndex = 14;
+            tbcSettings.ThemeAuthor = "Narwin";
+            tbcSettings.ThemeName = "MetroDark";
+            tbcSettings.UnselectedTextColor = Color.Gray;
+            tbcSettings.UseAnimation = false;
             // 
             // tbpGeneral
             // 
-            tbpGeneral.BackColor = SystemColors.Window;
+            tbpGeneral.BackColor = Color.FromArgb(30, 30, 30);
             tbpGeneral.Controls.Add(fraLang);
             tbpGeneral.Controls.Add(cmdReset);
             tbpGeneral.Controls.Add(fraSize);
-            tbpGeneral.Location = new Point(4, 24);
+            tbpGeneral.Location = new Point(4, 32);
             tbpGeneral.Name = "tbpGeneral";
             tbpGeneral.Padding = new Padding(3);
-            tbpGeneral.Size = new Size(417, 389);
+            tbpGeneral.Size = new Size(417, 381);
             tbpGeneral.TabIndex = 0;
             tbpGeneral.Text = "General";
             // 
@@ -504,21 +592,21 @@
             // 
             // tbp3D
             // 
-            tbp3D.BackColor = SystemColors.Window;
+            tbp3D.BackColor = Color.FromArgb(30, 30, 30);
             tbp3D.Controls.Add(fraNodeShadeAmt);
             tbp3D.Controls.Add(fraFont);
             tbp3D.Controls.Add(fraClearCol);
             tbp3D.Controls.Add(fraAnimGrid);
-            tbp3D.Location = new Point(4, 24);
+            tbp3D.Location = new Point(4, 32);
             tbp3D.Name = "tbp3D";
             tbp3D.Padding = new Padding(3);
-            tbp3D.Size = new Size(417, 389);
+            tbp3D.Size = new Size(417, 381);
             tbp3D.TabIndex = 1;
             tbp3D.Text = "3D Viewer";
             // 
             // tbpDebugDisplay
             // 
-            tbpDebugDisplay.BackColor = SystemColors.Window;
+            tbpDebugDisplay.BackColor = Color.FromArgb(30, 30, 30);
             tbpDebugDisplay.Controls.Add(chkShowEntityParams);
             tbpDebugDisplay.Controls.Add(chkDisableVisual);
             tbpDebugDisplay.Controls.Add(chkViewCamera);
@@ -530,10 +618,10 @@
             tbpDebugDisplay.Controls.Add(chkNormalDisplay);
             tbpDebugDisplay.Controls.Add(chkCollisionDisplay);
             tbpDebugDisplay.Controls.Add(chkFont3DEnable);
-            tbpDebugDisplay.Location = new Point(4, 24);
+            tbpDebugDisplay.Location = new Point(4, 32);
             tbpDebugDisplay.Name = "tbpDebugDisplay";
             tbpDebugDisplay.Padding = new Padding(3);
-            tbpDebugDisplay.Size = new Size(417, 389);
+            tbpDebugDisplay.Size = new Size(417, 381);
             tbpDebugDisplay.TabIndex = 3;
             tbpDebugDisplay.Text = "Debug Displays";
             // 
@@ -616,13 +704,13 @@
             // 
             // tbpPatchNSD
             // 
-            tbpPatchNSD.BackColor = SystemColors.Window;
+            tbpPatchNSD.BackColor = Color.FromArgb(30, 30, 30);
             tbpPatchNSD.Controls.Add(chkDeleteInvalidEntries);
             tbpPatchNSD.Controls.Add(chkPatchNSDSavesNSF);
-            tbpPatchNSD.Location = new Point(4, 24);
+            tbpPatchNSD.Location = new Point(4, 32);
             tbpPatchNSD.Name = "tbpPatchNSD";
             tbpPatchNSD.Padding = new Padding(3);
-            tbpPatchNSD.Size = new Size(417, 389);
+            tbpPatchNSD.Size = new Size(417, 381);
             tbpPatchNSD.TabIndex = 2;
             tbpPatchNSD.Text = "Patch NSD";
             // 
@@ -632,7 +720,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             AutoScroll = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            BackColor = SystemColors.ButtonHighlight;
+            BackColor = Color.FromArgb(30, 30, 30);
             Controls.Add(tbcSettings);
             Margin = new Padding(4, 3, 4, 3);
             Name = "ConfigEditor";
@@ -669,24 +757,24 @@
         }
 
         #endregion
-        private System.Windows.Forms.Button cmdReset;
-        private System.Windows.Forms.GroupBox fraSize;
-        private System.Windows.Forms.Label lblWH;
-        private System.Windows.Forms.NumericUpDown numH;
-        private System.Windows.Forms.NumericUpDown numW;
+        private DarkButton cmdReset;
+        private DarkGroupBox fraSize;
+        private MetroSetLabel lblWH;
+        private DarkNumericUpDown numH;
+        private DarkNumericUpDown numW;
         private System.Windows.Forms.ColorDialog cdlClearCol;
-        private System.Windows.Forms.GroupBox fraClearCol;
+        private DarkGroupBox fraClearCol;
         private System.Windows.Forms.PictureBox picClearCol;
-        private System.Windows.Forms.GroupBox fraAnimGrid;
-        private System.Windows.Forms.NumericUpDown numAnimGrid;
-        private System.Windows.Forms.Label lblAnimGrid;
+        private DarkGroupBox fraAnimGrid;
+        private DarkNumericUpDown numAnimGrid;
+        private MetroSetLabel lblAnimGrid;
         private System.Windows.Forms.CheckBox chkAnimGrid;
-        private System.Windows.Forms.ComboBox dpdFont;
-        private System.Windows.Forms.GroupBox fraFont;
-        private System.Windows.Forms.NumericUpDown numFontSize;
-        private System.Windows.Forms.Label lblFontSize;
-        private System.Windows.Forms.Label lblFontName;
-        private System.Windows.Forms.GroupBox fraNodeShadeAmt;
+        private MetroSetComboBox dpdFont;
+        private DarkGroupBox fraFont;
+        private DarkNumericUpDown numFontSize;
+        private MetroSetLabel lblFontSize;
+        private MetroSetLabel lblFontName;
+        private DarkGroupBox fraNodeShadeAmt;
         private System.Windows.Forms.TrackBar sldNodeShadeAmt;
         private System.Windows.Forms.CheckBox chkViewerShowHelp;
         private System.Windows.Forms.CheckBox chkFont2DEnable;
@@ -695,9 +783,9 @@
         private System.Windows.Forms.CheckBox chkNormalDisplay;
         private System.Windows.Forms.CheckBox chkPatchNSDSavesNSF;
         private System.Windows.Forms.CheckBox chkDeleteInvalidEntries;
-        private System.Windows.Forms.ComboBox dpdLang;
-        private Label lblNodeShadeAmt;
-        private TabControl tbcSettings;
+        private MetroSetComboBox dpdLang;
+        private MetroSetLabel lblNodeShadeAmt;
+        private MetroSetTabControl tbcSettings;
         private TabPage tbpGeneral;
         private TabPage tbp3D;
         private TabPage tbpPatchNSD;
@@ -707,7 +795,7 @@
         private CheckBox chkViewZoneName;
         private CheckBox chkViewCamera;
         private CheckBox chkDisableVisual;
-        private GroupBox fraLang;
+        private DarkGroupBox fraLang;
         private CheckBox chkShowEntityParams;
     }
 }

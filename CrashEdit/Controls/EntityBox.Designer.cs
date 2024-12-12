@@ -1,3 +1,6 @@
+using AltUI.Controls;
+using MetroSet_UI.Controls;
+
 namespace CrashEdit.CE
 {
     partial class EntityBox
@@ -29,208 +32,208 @@ namespace CrashEdit.CE
         private void InitializeComponent()
         {
             chkType = new CheckBox();
-            numType = new NumericUpDown();
-            fraType = new GroupBox();
+            numType = new DarkNumericUpDown();
+            fraType = new DarkGroupBox();
             chkSubtype = new CheckBox();
-            numSubtype = new NumericUpDown();
-            fraPosition = new GroupBox();
-            cmdInterpolate = new Button();
+            numSubtype = new DarkNumericUpDown();
+            fraPosition = new DarkGroupBox();
+            cmdInterpolate = new DarkButton();
             lblPositionIndex = new Label();
-            cmdNextPosition = new Button();
-            cmdPreviousPosition = new Button();
-            cmdInsertPosition = new Button();
+            cmdNextPosition = new DarkButton();
+            cmdPreviousPosition = new DarkButton();
+            cmdInsertPosition = new DarkButton();
             lblZ = new Label();
-            cmdRemovePosition = new Button();
+            cmdRemovePosition = new DarkButton();
             lblY = new Label();
-            cmdAppendPosition = new Button();
+            cmdAppendPosition = new DarkButton();
             lblX = new Label();
-            numZ = new NumericUpDown();
-            numY = new NumericUpDown();
-            numX = new NumericUpDown();
-            cmdInsertVictim = new Button();
-            fraID = new GroupBox();
+            numZ = new DarkNumericUpDown();
+            numY = new DarkNumericUpDown();
+            numX = new DarkNumericUpDown();
+            cmdInsertVictim = new DarkButton();
+            fraID = new DarkGroupBox();
             chkID2 = new CheckBox();
-            numID2 = new NumericUpDown();
+            numID2 = new DarkNumericUpDown();
             chkID = new CheckBox();
-            numID = new NumericUpDown();
-            fraSettings = new GroupBox();
+            numID = new DarkNumericUpDown();
+            fraSettings = new DarkGroupBox();
             lblArgAs = new Label();
             chkSettingHex = new CheckBox();
-            numSettingC = new NumericUpDown();
+            numSettingC = new DarkNumericUpDown();
             lblSettingIndex = new Label();
-            cmdNextSetting = new Button();
-            cmdPreviousSetting = new Button();
-            cmdAddSetting = new Button();
-            cmdRemoveSetting = new Button();
-            numSettingB = new NumericUpDown();
-            numSettingA = new NumericUpDown();
-            fraName = new GroupBox();
-            txtName = new TextBox();
+            cmdNextSetting = new DarkButton();
+            cmdPreviousSetting = new DarkButton();
+            cmdAddSetting = new DarkButton();
+            cmdRemoveSetting = new DarkButton();
+            numSettingB = new DarkNumericUpDown();
+            numSettingA = new DarkNumericUpDown();
+            fraName = new DarkGroupBox();
+            txtName = new DarkTextBox();
             chkName = new CheckBox();
-            tbcTabs = new TabControl();
+            tbcTabs = new MetroSetTabControl();
             tabGeneral = new TabPage();
             tabSpecial = new TabPage();
-            fraZMod = new GroupBox();
+            fraZMod = new DarkGroupBox();
             chkZMod = new CheckBox();
-            numZMod = new NumericUpDown();
-            fraTTReward = new GroupBox();
+            numZMod = new DarkNumericUpDown();
+            fraTTReward = new DarkGroupBox();
             chkTTReward = new CheckBox();
-            numTTReward = new NumericUpDown();
-            fraOtherSettings = new GroupBox();
+            numTTReward = new DarkNumericUpDown();
+            fraOtherSettings = new DarkGroupBox();
             chkOtherSettings = new CheckBox();
-            numOtherSettings = new NumericUpDown();
-            fraScaling = new GroupBox();
+            numOtherSettings = new DarkNumericUpDown();
+            fraScaling = new DarkGroupBox();
             chkScaling = new CheckBox();
-            numScaling = new NumericUpDown();
-            fraDDASection = new GroupBox();
+            numScaling = new DarkNumericUpDown();
+            fraDDASection = new DarkGroupBox();
             chkDDASection = new CheckBox();
-            numDDASection = new NumericUpDown();
-            fraDDASettings = new GroupBox();
+            numDDASection = new DarkNumericUpDown();
+            fraDDASettings = new DarkGroupBox();
             chkDDASettings = new CheckBox();
-            numDDASettings = new NumericUpDown();
-            fraBoxCount = new GroupBox();
+            numDDASettings = new DarkNumericUpDown();
+            fraBoxCount = new DarkGroupBox();
             chkBonusBoxCount = new CheckBox();
-            numBonusBoxCount = new NumericUpDown();
+            numBonusBoxCount = new DarkNumericUpDown();
             chkBoxCount = new CheckBox();
-            numBoxCount = new NumericUpDown();
-            fraVictims = new GroupBox();
-            cmdClearAllVictims = new Button();
-            numVictimID = new NumericUpDown();
-            cmdRemoveVictim = new Button();
-            cmdNextVictim = new Button();
-            cmdPreviousVictim = new Button();
+            numBoxCount = new DarkNumericUpDown();
+            fraVictims = new DarkGroupBox();
+            cmdClearAllVictims = new DarkButton();
+            numVictimID = new DarkNumericUpDown();
+            cmdRemoveVictim = new DarkButton();
+            cmdNextVictim = new DarkButton();
+            cmdPreviousVictim = new DarkButton();
             lblVictimIndex = new Label();
             tabCamera = new TabPage();
-            fraFOV = new GroupBox();
+            fraFOV = new DarkGroupBox();
             lblFOVPosition = new Label();
-            cmdRemoveFOVFrame = new Button();
-            cmdInsertFOVFrame = new Button();
-            numFOVPosition = new NumericUpDown();
+            cmdRemoveFOVFrame = new DarkButton();
+            cmdInsertFOVFrame = new DarkButton();
+            numFOVPosition = new DarkNumericUpDown();
             lblFOVFrame = new Label();
-            fraFOVFrame = new GroupBox();
+            fraFOVFrame = new DarkGroupBox();
             lblFOVIndex = new Label();
-            cmdRemoveFOV = new Button();
-            cmdInsertFOV = new Button();
-            cmdPrevFOV = new Button();
-            cmdNextFOV = new Button();
+            cmdRemoveFOV = new DarkButton();
+            cmdInsertFOV = new DarkButton();
+            cmdPrevFOV = new DarkButton();
+            cmdNextFOV = new DarkButton();
             lblFOV = new Label();
-            numFOV = new NumericUpDown();
-            cmdPrevFOVFrame = new Button();
-            cmdNextFOVFrame = new Button();
-            fraNeighbor = new GroupBox();
+            numFOV = new DarkNumericUpDown();
+            cmdPrevFOVFrame = new DarkButton();
+            cmdNextFOVFrame = new DarkButton();
+            fraNeighbor = new DarkGroupBox();
             lblNeighborPosition = new Label();
-            cmdRemoveNeighbor = new Button();
-            cmdInsertNeighbor = new Button();
-            numNeighborPosition = new NumericUpDown();
+            cmdRemoveNeighbor = new DarkButton();
+            cmdInsertNeighbor = new DarkButton();
+            numNeighborPosition = new DarkNumericUpDown();
             lblNeighbor = new Label();
-            fraNeighborSetting = new GroupBox();
+            fraNeighborSetting = new DarkGroupBox();
             lblNeighborSetting = new Label();
-            cmdRemoveNeighborSetting = new Button();
-            cmdInsertNeighborSetting = new Button();
-            cmdPrevNeighborSetting = new Button();
-            cmdNextNeighborSetting = new Button();
+            cmdRemoveNeighborSetting = new DarkButton();
+            cmdInsertNeighborSetting = new DarkButton();
+            cmdPrevNeighborSetting = new DarkButton();
+            cmdNextNeighborSetting = new DarkButton();
             lblNeighborLink = new Label();
             lblNeighborFlag = new Label();
-            numNeighborFlag = new NumericUpDown();
+            numNeighborFlag = new DarkNumericUpDown();
             lblNeighborCamera = new Label();
             lblNeighborZone = new Label();
-            numNeighborLink = new NumericUpDown();
-            numNeighborCamera = new NumericUpDown();
-            numNeighborZone = new NumericUpDown();
-            cmdPrevNeighbor = new Button();
-            cmdNextNeighbor = new Button();
-            fraAvgDist = new GroupBox();
+            numNeighborLink = new DarkNumericUpDown();
+            numNeighborCamera = new DarkNumericUpDown();
+            numNeighborZone = new DarkNumericUpDown();
+            cmdPrevNeighbor = new DarkButton();
+            cmdNextNeighbor = new DarkButton();
+            fraAvgDist = new DarkGroupBox();
             chkAvgDist = new CheckBox();
-            numAvgDist = new NumericUpDown();
-            fraMode = new GroupBox();
+            numAvgDist = new DarkNumericUpDown();
+            fraMode = new DarkGroupBox();
             chkMode = new CheckBox();
-            numMode = new NumericUpDown();
-            fraCameraSubIndex = new GroupBox();
+            numMode = new DarkNumericUpDown();
+            fraCameraSubIndex = new DarkGroupBox();
             chkCameraSubIndex = new CheckBox();
-            numCameraSubIndex = new NumericUpDown();
-            fraCameraIndex = new GroupBox();
+            numCameraSubIndex = new DarkNumericUpDown();
+            fraCameraIndex = new DarkGroupBox();
             chkCameraIndex = new CheckBox();
-            numCameraIndex = new NumericUpDown();
-            fraSLST = new GroupBox();
+            numCameraIndex = new DarkNumericUpDown();
+            fraSLST = new DarkGroupBox();
             lblEIDErr1 = new Label();
-            txtSLST = new TextBox();
+            txtSLST = new DarkTextBox();
             chkSLST = new CheckBox();
             tabLoadLists = new TabPage();
             lblEIDErrB = new Label();
-            fraLoadListPayload = new GroupBox();
+            fraLoadListPayload = new DarkGroupBox();
             lblPayload = new Label();
-            cmdLoadListVerify = new Button();
-            cmdPayload = new Button();
+            cmdLoadListVerify = new DarkButton();
+            cmdPayload = new DarkButton();
             lblPayloadPosition = new Label();
-            numPayloadPosition = new NumericUpDown();
-            fraLoadListB = new GroupBox();
+            numPayloadPosition = new DarkNumericUpDown();
+            fraLoadListB = new DarkGroupBox();
             lblMetavalueLoadB = new Label();
-            cmdRemoveRowB = new Button();
-            cmdInsertRowB = new Button();
-            numMetavalueLoadB = new NumericUpDown();
+            cmdRemoveRowB = new DarkButton();
+            cmdInsertRowB = new DarkButton();
+            numMetavalueLoadB = new DarkNumericUpDown();
             lblLoadListRowIndexB = new Label();
-            fraEIDB = new GroupBox();
-            txtEIDB = new TextBox();
+            fraEIDB = new DarkGroupBox();
+            txtEIDB = new DarkTextBox();
             lblEIDIndexB = new Label();
-            cmdAppendEIDB = new Button();
-            cmdRemoveEIDB = new Button();
-            cmdPrevEIDB = new Button();
-            cmdInsertEIDB = new Button();
-            cmdNextEIDB = new Button();
-            cmdPrevRowB = new Button();
-            cmdNextRowB = new Button();
+            cmdAppendEIDB = new DarkButton();
+            cmdRemoveEIDB = new DarkButton();
+            cmdPrevEIDB = new DarkButton();
+            cmdInsertEIDB = new DarkButton();
+            cmdNextEIDB = new DarkButton();
+            cmdPrevRowB = new DarkButton();
+            cmdNextRowB = new DarkButton();
             lblEIDErrA = new Label();
-            fraLoadListA = new GroupBox();
+            fraLoadListA = new DarkGroupBox();
             lblMetavalueLoadA = new Label();
-            cmdRemoveRowA = new Button();
-            cmdInsertRowA = new Button();
-            numMetavalueLoadA = new NumericUpDown();
+            cmdRemoveRowA = new DarkButton();
+            cmdInsertRowA = new DarkButton();
+            numMetavalueLoadA = new DarkNumericUpDown();
             lblLoadListRowIndexA = new Label();
-            fraEIDA = new GroupBox();
-            txtEIDA = new TextBox();
+            fraEIDA = new DarkGroupBox();
+            txtEIDA = new DarkTextBox();
             lblEIDIndexA = new Label();
-            cmdAppendEIDA = new Button();
-            cmdRemoveEIDA = new Button();
-            cmdPrevEIDA = new Button();
-            cmdInsertEIDA = new Button();
-            cmdNextEIDA = new Button();
-            cmdPrevRowA = new Button();
-            cmdNextRowA = new Button();
+            cmdAppendEIDA = new DarkButton();
+            cmdRemoveEIDA = new DarkButton();
+            cmdPrevEIDA = new DarkButton();
+            cmdInsertEIDA = new DarkButton();
+            cmdNextEIDA = new DarkButton();
+            cmdPrevRowA = new DarkButton();
+            cmdNextRowA = new DarkButton();
             tabDrawLists = new TabPage();
-            fraDrawListB = new GroupBox();
+            fraDrawListB = new DarkGroupBox();
             lblMetavalueDrawB = new Label();
-            cmdRemoveRowDrawB = new Button();
-            cmdInsertRowDrawB = new Button();
-            numMetavalueDrawB = new NumericUpDown();
+            cmdRemoveRowDrawB = new DarkButton();
+            cmdInsertRowDrawB = new DarkButton();
+            numMetavalueDrawB = new DarkNumericUpDown();
             lblDrawListRowIndexB = new Label();
-            fraEntityB = new GroupBox();
+            fraEntityB = new DarkGroupBox();
             lblEntityB = new Label();
-            numEntityB = new NumericUpDown();
+            numEntityB = new DarkNumericUpDown();
             lblEntityIndexB = new Label();
-            cmdAppendEntityB = new Button();
-            cmdRemoveEntityB = new Button();
-            cmdPrevEntityB = new Button();
-            cmdInsertEntityB = new Button();
-            cmdNextEntityB = new Button();
-            cmdPrevRowDrawB = new Button();
-            cmdNextRowDrawB = new Button();
-            fraDrawListA = new GroupBox();
+            cmdAppendEntityB = new DarkButton();
+            cmdRemoveEntityB = new DarkButton();
+            cmdPrevEntityB = new DarkButton();
+            cmdInsertEntityB = new DarkButton();
+            cmdNextEntityB = new DarkButton();
+            cmdPrevRowDrawB = new DarkButton();
+            cmdNextRowDrawB = new DarkButton();
+            fraDrawListA = new DarkGroupBox();
             lblMetavalueDrawA = new Label();
-            cmdRemoveRowDrawA = new Button();
-            cmdInsertRowDrawA = new Button();
-            numMetavalueDrawA = new NumericUpDown();
+            cmdRemoveRowDrawA = new DarkButton();
+            cmdInsertRowDrawA = new DarkButton();
+            numMetavalueDrawA = new DarkNumericUpDown();
             lblDrawListRowIndexA = new Label();
-            fraEntityA = new GroupBox();
+            fraEntityA = new DarkGroupBox();
             lblEntityA = new Label();
-            numEntityA = new NumericUpDown();
+            numEntityA = new DarkNumericUpDown();
             lblEntityIndexA = new Label();
-            cmdAppendEntityA = new Button();
-            cmdRemoveEntityA = new Button();
-            cmdPrevEntityA = new Button();
-            cmdInsertEntityA = new Button();
-            cmdNextEntityA = new Button();
-            cmdPrevRowDrawA = new Button();
-            cmdNextRowDrawA = new Button();
+            cmdAppendEntityA = new DarkButton();
+            cmdRemoveEntityA = new DarkButton();
+            cmdPrevEntityA = new DarkButton();
+            cmdInsertEntityA = new DarkButton();
+            cmdNextEntityA = new DarkButton();
+            cmdPrevRowDrawA = new DarkButton();
+            cmdNextRowDrawA = new DarkButton();
             ((System.ComponentModel.ISupportInitialize)numType).BeginInit();
             fraType.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numSubtype).BeginInit();
@@ -335,11 +338,11 @@ namespace CrashEdit.CE
             fraType.Controls.Add(numSubtype);
             fraType.Controls.Add(chkType);
             fraType.Controls.Add(numType);
-            fraType.Location = new Point(244, 93);
+            fraType.Location = new Point(384, 3);
             fraType.Margin = new Padding(4, 3, 4, 3);
             fraType.Name = "fraType";
             fraType.Padding = new Padding(4, 3, 4, 3);
-            fraType.Size = new Size(253, 83);
+            fraType.Size = new Size(132, 137);
             fraType.TabIndex = 4;
             fraType.TabStop = false;
             fraType.Text = "Type && Subtype";
@@ -347,7 +350,7 @@ namespace CrashEdit.CE
             // chkSubtype
             // 
             chkSubtype.AutoSize = true;
-            chkSubtype.Location = new Point(131, 22);
+            chkSubtype.Location = new Point(7, 77);
             chkSubtype.Margin = new Padding(4, 3, 4, 3);
             chkSubtype.Name = "chkSubtype";
             chkSubtype.Size = new Size(68, 19);
@@ -358,7 +361,7 @@ namespace CrashEdit.CE
             // 
             // numSubtype
             // 
-            numSubtype.Location = new Point(131, 48);
+            numSubtype.Location = new Point(7, 102);
             numSubtype.Margin = new Padding(4, 3, 4, 3);
             numSubtype.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
             numSubtype.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
@@ -386,7 +389,7 @@ namespace CrashEdit.CE
             fraPosition.Margin = new Padding(4, 3, 4, 3);
             fraPosition.Name = "fraPosition";
             fraPosition.Padding = new Padding(4, 3, 4, 3);
-            fraPosition.Size = new Size(233, 185);
+            fraPosition.Size = new Size(233, 194);
             fraPosition.TabIndex = 1;
             fraPosition.TabStop = false;
             fraPosition.Text = "Position(s)";
@@ -395,17 +398,22 @@ namespace CrashEdit.CE
             // 
             cmdInterpolate.AutoSize = true;
             cmdInterpolate.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            cmdInterpolate.BorderColour = Color.Empty;
+            cmdInterpolate.CustomColour = false;
+            cmdInterpolate.FlatBottom = false;
+            cmdInterpolate.FlatTop = false;
             cmdInterpolate.Location = new Point(7, 150);
             cmdInterpolate.Margin = new Padding(4, 3, 4, 3);
             cmdInterpolate.Name = "cmdInterpolate";
-            cmdInterpolate.Size = new Size(74, 25);
+            cmdInterpolate.Padding = new Padding(5);
+            cmdInterpolate.Size = new Size(84, 35);
             cmdInterpolate.TabIndex = 8;
             cmdInterpolate.Text = "Interpolate";
-            cmdInterpolate.UseVisualStyleBackColor = true;
             cmdInterpolate.Click += cmdInterpolate_Click;
             // 
             // lblPositionIndex
             // 
+            lblPositionIndex.BackColor = Color.Transparent;
             lblPositionIndex.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblPositionIndex.Location = new Point(82, 22);
             lblPositionIndex.Margin = new Padding(4, 0, 4, 0);
@@ -417,40 +425,53 @@ namespace CrashEdit.CE
             // 
             // cmdNextPosition
             // 
+            cmdNextPosition.BorderColour = Color.Empty;
+            cmdNextPosition.CustomColour = false;
+            cmdNextPosition.FlatBottom = false;
+            cmdNextPosition.FlatTop = false;
             cmdNextPosition.Location = new Point(159, 22);
             cmdNextPosition.Margin = new Padding(4, 3, 4, 3);
             cmdNextPosition.Name = "cmdNextPosition";
+            cmdNextPosition.Padding = new Padding(5);
             cmdNextPosition.Size = new Size(68, 27);
             cmdNextPosition.TabIndex = 1;
             cmdNextPosition.Text = "Next";
-            cmdNextPosition.UseVisualStyleBackColor = true;
             cmdNextPosition.Click += cmdNextPosition_Click;
             // 
             // cmdPreviousPosition
             // 
+            cmdPreviousPosition.BorderColour = Color.Empty;
+            cmdPreviousPosition.CustomColour = false;
+            cmdPreviousPosition.FlatBottom = false;
+            cmdPreviousPosition.FlatTop = false;
             cmdPreviousPosition.Location = new Point(7, 22);
             cmdPreviousPosition.Margin = new Padding(4, 3, 4, 3);
             cmdPreviousPosition.Name = "cmdPreviousPosition";
+            cmdPreviousPosition.Padding = new Padding(5);
             cmdPreviousPosition.Size = new Size(68, 27);
             cmdPreviousPosition.TabIndex = 0;
             cmdPreviousPosition.Text = "Previous";
-            cmdPreviousPosition.UseVisualStyleBackColor = true;
             cmdPreviousPosition.Click += cmdPreviousPosition_Click;
             // 
             // cmdInsertPosition
             // 
+            cmdInsertPosition.BorderColour = Color.Empty;
+            cmdInsertPosition.CustomColour = false;
+            cmdInsertPosition.FlatBottom = false;
+            cmdInsertPosition.FlatTop = false;
             cmdInsertPosition.Location = new Point(139, 87);
             cmdInsertPosition.Margin = new Padding(4, 3, 4, 3);
             cmdInsertPosition.Name = "cmdInsertPosition";
+            cmdInsertPosition.Padding = new Padding(5);
             cmdInsertPosition.Size = new Size(88, 27);
             cmdInsertPosition.TabIndex = 6;
             cmdInsertPosition.Text = "Insert";
-            cmdInsertPosition.UseVisualStyleBackColor = true;
             cmdInsertPosition.Click += cmdInsertPosition_Click;
             // 
             // lblZ
             // 
             lblZ.AutoSize = true;
+            lblZ.BackColor = Color.Transparent;
             lblZ.Location = new Point(7, 122);
             lblZ.Margin = new Padding(4, 0, 4, 0);
             lblZ.Name = "lblZ";
@@ -460,18 +481,23 @@ namespace CrashEdit.CE
             // 
             // cmdRemovePosition
             // 
+            cmdRemovePosition.BorderColour = Color.Empty;
+            cmdRemovePosition.CustomColour = false;
+            cmdRemovePosition.FlatBottom = false;
+            cmdRemovePosition.FlatTop = false;
             cmdRemovePosition.Location = new Point(139, 117);
             cmdRemovePosition.Margin = new Padding(4, 3, 4, 3);
             cmdRemovePosition.Name = "cmdRemovePosition";
+            cmdRemovePosition.Padding = new Padding(5);
             cmdRemovePosition.Size = new Size(88, 27);
             cmdRemovePosition.TabIndex = 7;
             cmdRemovePosition.Text = "Remove";
-            cmdRemovePosition.UseVisualStyleBackColor = true;
             cmdRemovePosition.Click += cmdRemovePosition_Click;
             // 
             // lblY
             // 
             lblY.AutoSize = true;
+            lblY.BackColor = Color.Transparent;
             lblY.Location = new Point(7, 92);
             lblY.Margin = new Padding(4, 0, 4, 0);
             lblY.Name = "lblY";
@@ -481,18 +507,23 @@ namespace CrashEdit.CE
             // 
             // cmdAppendPosition
             // 
+            cmdAppendPosition.BorderColour = Color.Empty;
+            cmdAppendPosition.CustomColour = false;
+            cmdAppendPosition.FlatBottom = false;
+            cmdAppendPosition.FlatTop = false;
             cmdAppendPosition.Location = new Point(139, 57);
             cmdAppendPosition.Margin = new Padding(4, 3, 4, 3);
             cmdAppendPosition.Name = "cmdAppendPosition";
+            cmdAppendPosition.Padding = new Padding(5);
             cmdAppendPosition.Size = new Size(88, 27);
             cmdAppendPosition.TabIndex = 5;
             cmdAppendPosition.Text = "Append";
-            cmdAppendPosition.UseVisualStyleBackColor = true;
             cmdAppendPosition.Click += cmdAppendPosition_Click;
             // 
             // lblX
             // 
             lblX.AutoSize = true;
+            lblX.BackColor = Color.Transparent;
             lblX.Location = new Point(7, 62);
             lblX.Margin = new Padding(4, 0, 4, 0);
             lblX.Name = "lblX";
@@ -538,13 +569,17 @@ namespace CrashEdit.CE
             // 
             // cmdInsertVictim
             // 
+            cmdInsertVictim.BorderColour = Color.Empty;
+            cmdInsertVictim.CustomColour = false;
+            cmdInsertVictim.FlatBottom = false;
+            cmdInsertVictim.FlatTop = false;
             cmdInsertVictim.Location = new Point(79, 111);
             cmdInsertVictim.Margin = new Padding(4, 3, 4, 3);
             cmdInsertVictim.Name = "cmdInsertVictim";
+            cmdInsertVictim.Padding = new Padding(5);
             cmdInsertVictim.Size = new Size(68, 27);
             cmdInsertVictim.TabIndex = 6;
             cmdInsertVictim.Text = "Insert";
-            cmdInsertVictim.UseVisualStyleBackColor = true;
             cmdInsertVictim.Click += cmdInsertVictim_Click;
             // 
             // fraID
@@ -557,7 +592,7 @@ namespace CrashEdit.CE
             fraID.Margin = new Padding(4, 3, 4, 3);
             fraID.Name = "fraID";
             fraID.Padding = new Padding(4, 3, 4, 3);
-            fraID.Size = new Size(253, 83);
+            fraID.Size = new Size(132, 137);
             fraID.TabIndex = 3;
             fraID.TabStop = false;
             fraID.Text = "ID && Look-up ID";
@@ -565,7 +600,7 @@ namespace CrashEdit.CE
             // chkID2
             // 
             chkID2.AutoSize = true;
-            chkID2.Location = new Point(131, 22);
+            chkID2.Location = new Point(7, 77);
             chkID2.Margin = new Padding(4, 3, 4, 3);
             chkID2.Name = "chkID2";
             chkID2.Size = new Size(68, 19);
@@ -576,7 +611,7 @@ namespace CrashEdit.CE
             // 
             // numID2
             // 
-            numID2.Location = new Point(131, 48);
+            numID2.Location = new Point(7, 102);
             numID2.Margin = new Padding(4, 3, 4, 3);
             numID2.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
             numID2.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
@@ -622,7 +657,7 @@ namespace CrashEdit.CE
             fraSettings.Controls.Add(cmdRemoveSetting);
             fraSettings.Controls.Add(numSettingB);
             fraSettings.Controls.Add(numSettingA);
-            fraSettings.Location = new Point(4, 283);
+            fraSettings.Location = new Point(4, 292);
             fraSettings.Margin = new Padding(4, 3, 4, 3);
             fraSettings.Name = "fraSettings";
             fraSettings.Padding = new Padding(4, 3, 4, 3);
@@ -634,6 +669,7 @@ namespace CrashEdit.CE
             // lblArgAs
             // 
             lblArgAs.AutoSize = true;
+            lblArgAs.BackColor = Color.Transparent;
             lblArgAs.Location = new Point(226, 52);
             lblArgAs.Margin = new Padding(4, 0, 4, 0);
             lblArgAs.Name = "lblArgAs";
@@ -646,7 +682,7 @@ namespace CrashEdit.CE
             chkSettingHex.AutoSize = true;
             chkSettingHex.Checked = true;
             chkSettingHex.CheckState = CheckState.Checked;
-            chkSettingHex.Location = new Point(160, 57);
+            chkSettingHex.Location = new Point(160, 87);
             chkSettingHex.Margin = new Padding(4, 3, 4, 3);
             chkSettingHex.Name = "chkSettingHex";
             chkSettingHex.Size = new Size(47, 19);
@@ -658,7 +694,7 @@ namespace CrashEdit.CE
             // numSettingC
             // 
             numSettingC.Hexadecimal = true;
-            numSettingC.Location = new Point(7, 55);
+            numSettingC.Location = new Point(7, 85);
             numSettingC.Margin = new Padding(4, 3, 4, 3);
             numSettingC.Maximum = new decimal(new int[] { -1, int.MaxValue, 0, 0 });
             numSettingC.Minimum = new decimal(new int[] { 0, int.MinValue, 0, int.MinValue });
@@ -669,6 +705,7 @@ namespace CrashEdit.CE
             // 
             // lblSettingIndex
             // 
+            lblSettingIndex.BackColor = Color.Transparent;
             lblSettingIndex.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblSettingIndex.Location = new Point(82, 22);
             lblSettingIndex.Margin = new Padding(4, 0, 4, 0);
@@ -680,66 +717,82 @@ namespace CrashEdit.CE
             // 
             // cmdNextSetting
             // 
+            cmdNextSetting.BorderColour = Color.Empty;
+            cmdNextSetting.CustomColour = false;
+            cmdNextSetting.FlatBottom = false;
+            cmdNextSetting.FlatTop = false;
             cmdNextSetting.Location = new Point(159, 22);
             cmdNextSetting.Margin = new Padding(4, 3, 4, 3);
             cmdNextSetting.Name = "cmdNextSetting";
+            cmdNextSetting.Padding = new Padding(5);
             cmdNextSetting.Size = new Size(68, 27);
             cmdNextSetting.TabIndex = 1;
             cmdNextSetting.Text = "Next";
-            cmdNextSetting.UseVisualStyleBackColor = true;
             cmdNextSetting.Click += cmdNextSetting_Click;
             // 
             // cmdPreviousSetting
             // 
+            cmdPreviousSetting.BorderColour = Color.Empty;
+            cmdPreviousSetting.CustomColour = false;
+            cmdPreviousSetting.FlatBottom = false;
+            cmdPreviousSetting.FlatTop = false;
             cmdPreviousSetting.Location = new Point(7, 22);
             cmdPreviousSetting.Margin = new Padding(4, 3, 4, 3);
             cmdPreviousSetting.Name = "cmdPreviousSetting";
+            cmdPreviousSetting.Padding = new Padding(5);
             cmdPreviousSetting.Size = new Size(68, 27);
             cmdPreviousSetting.TabIndex = 0;
             cmdPreviousSetting.Text = "Previous";
-            cmdPreviousSetting.UseVisualStyleBackColor = true;
             cmdPreviousSetting.Click += cmdPreviousSetting_Click;
             // 
             // cmdAddSetting
             // 
+            cmdAddSetting.BorderColour = Color.Empty;
+            cmdAddSetting.CustomColour = false;
+            cmdAddSetting.FlatBottom = false;
+            cmdAddSetting.FlatTop = false;
             cmdAddSetting.Location = new Point(102, 115);
             cmdAddSetting.Margin = new Padding(4, 3, 4, 3);
             cmdAddSetting.Name = "cmdAddSetting";
+            cmdAddSetting.Padding = new Padding(5);
             cmdAddSetting.Size = new Size(88, 27);
             cmdAddSetting.TabIndex = 4;
             cmdAddSetting.Text = "Add";
-            cmdAddSetting.UseVisualStyleBackColor = true;
             cmdAddSetting.Click += cmdAddSetting_Click;
             // 
             // cmdRemoveSetting
             // 
+            cmdRemoveSetting.BorderColour = Color.Empty;
+            cmdRemoveSetting.CustomColour = false;
+            cmdRemoveSetting.FlatBottom = false;
+            cmdRemoveSetting.FlatTop = false;
             cmdRemoveSetting.Location = new Point(7, 115);
             cmdRemoveSetting.Margin = new Padding(4, 3, 4, 3);
             cmdRemoveSetting.Name = "cmdRemoveSetting";
+            cmdRemoveSetting.Padding = new Padding(5);
             cmdRemoveSetting.Size = new Size(88, 27);
             cmdRemoveSetting.TabIndex = 5;
             cmdRemoveSetting.Text = "Remove";
-            cmdRemoveSetting.UseVisualStyleBackColor = true;
             cmdRemoveSetting.Click += cmdRemoveSetting_Click;
             // 
             // numSettingB
             // 
-            numSettingB.Location = new Point(7, 85);
+            numSettingB.Location = new Point(7, 55);
             numSettingB.Margin = new Padding(4, 3, 4, 3);
             numSettingB.Maximum = new decimal(new int[] { 8388607, 0, 0, 0 });
             numSettingB.Minimum = new decimal(new int[] { 8388608, 0, 0, int.MinValue });
             numSettingB.Name = "numSettingB";
-            numSettingB.Size = new Size(78, 23);
+            numSettingB.Size = new Size(70, 23);
             numSettingB.TabIndex = 3;
             numSettingB.ValueChanged += numSettingB_ValueChanged;
             // 
             // numSettingA
             // 
-            numSettingA.Location = new Point(92, 85);
+            numSettingA.Location = new Point(83, 55);
             numSettingA.Margin = new Padding(4, 3, 4, 3);
             numSettingA.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
             numSettingA.Name = "numSettingA";
-            numSettingA.Size = new Size(61, 23);
+            numSettingA.Size = new Size(70, 23);
             numSettingA.TabIndex = 2;
             numSettingA.ValueChanged += numSettingA_ValueChanged;
             // 
@@ -758,6 +811,9 @@ namespace CrashEdit.CE
             // 
             // txtName
             // 
+            txtName.BackColor = Color.FromArgb(26, 26, 28);
+            txtName.BorderStyle = BorderStyle.FixedSingle;
+            txtName.ForeColor = Color.FromArgb(213, 213, 213);
             txtName.Location = new Point(7, 48);
             txtName.Margin = new Padding(4, 3, 4, 3);
             txtName.Name = "txtName";
@@ -779,38 +835,53 @@ namespace CrashEdit.CE
             // 
             // tbcTabs
             // 
+            tbcTabs.AnimateEasingType = MetroSet_UI.Enums.EasingType.CubeOut;
+            tbcTabs.AnimateTime = 200;
+            tbcTabs.BackgroundColor = Color.FromArgb(30, 30, 30);
             tbcTabs.Controls.Add(tabGeneral);
             tbcTabs.Controls.Add(tabSpecial);
             tbcTabs.Controls.Add(tabCamera);
             tbcTabs.Controls.Add(tabLoadLists);
             tbcTabs.Controls.Add(tabDrawLists);
             tbcTabs.Dock = DockStyle.Fill;
+            tbcTabs.IsDerivedStyle = true;
+            tbcTabs.ItemSize = new Size(100, 28);
             tbcTabs.Location = new Point(0, 0);
             tbcTabs.Margin = new Padding(4, 3, 4, 3);
             tbcTabs.Name = "tbcTabs";
             tbcTabs.SelectedIndex = 0;
+            tbcTabs.SelectedTextColor = Color.White;
             tbcTabs.Size = new Size(583, 531);
+            tbcTabs.SizeMode = TabSizeMode.Fixed;
+            tbcTabs.Speed = 100;
+            tbcTabs.Style = MetroSet_UI.Enums.Style.Dark;
+            tbcTabs.StyleManager = null;
             tbcTabs.TabIndex = 7;
+            tbcTabs.ThemeAuthor = "Narwin";
+            tbcTabs.ThemeName = "MetroDark";
+            tbcTabs.UnselectedTextColor = Color.Gray;
+            tbcTabs.UseAnimation = false;
             // 
             // tabGeneral
             // 
             tabGeneral.AutoScroll = true;
-            tabGeneral.BackColor = SystemColors.Control;
+            tabGeneral.BackColor = Color.FromArgb(30, 30, 30);
             tabGeneral.Controls.Add(fraName);
             tabGeneral.Controls.Add(fraType);
             tabGeneral.Controls.Add(fraSettings);
             tabGeneral.Controls.Add(fraPosition);
             tabGeneral.Controls.Add(fraID);
-            tabGeneral.Location = new Point(4, 24);
+            tabGeneral.Location = new Point(4, 32);
             tabGeneral.Margin = new Padding(4, 3, 4, 3);
             tabGeneral.Name = "tabGeneral";
-            tabGeneral.Size = new Size(575, 503);
+            tabGeneral.Size = new Size(575, 495);
             tabGeneral.TabIndex = 0;
             tabGeneral.Text = "General";
             // 
             // tabSpecial
             // 
             tabSpecial.AutoScroll = true;
+            tabSpecial.BackColor = Color.FromArgb(30, 30, 30);
             tabSpecial.Controls.Add(fraZMod);
             tabSpecial.Controls.Add(fraTTReward);
             tabSpecial.Controls.Add(fraOtherSettings);
@@ -819,13 +890,12 @@ namespace CrashEdit.CE
             tabSpecial.Controls.Add(fraDDASettings);
             tabSpecial.Controls.Add(fraBoxCount);
             tabSpecial.Controls.Add(fraVictims);
-            tabSpecial.Location = new Point(4, 24);
+            tabSpecial.Location = new Point(4, 32);
             tabSpecial.Margin = new Padding(4, 3, 4, 3);
             tabSpecial.Name = "tabSpecial";
-            tabSpecial.Size = new Size(575, 503);
+            tabSpecial.Size = new Size(575, 495);
             tabSpecial.TabIndex = 1;
             tabSpecial.Text = "Special";
-            tabSpecial.UseVisualStyleBackColor = true;
             tabSpecial.Enter += tabSpecial_Enter;
             // 
             // fraZMod
@@ -1125,13 +1195,17 @@ namespace CrashEdit.CE
             // 
             // cmdClearAllVictims
             // 
+            cmdClearAllVictims.BorderColour = Color.Empty;
+            cmdClearAllVictims.CustomColour = false;
+            cmdClearAllVictims.FlatBottom = false;
+            cmdClearAllVictims.FlatTop = false;
             cmdClearAllVictims.Location = new Point(7, 144);
             cmdClearAllVictims.Margin = new Padding(4, 3, 4, 3);
             cmdClearAllVictims.Name = "cmdClearAllVictims";
+            cmdClearAllVictims.Padding = new Padding(5);
             cmdClearAllVictims.Size = new Size(140, 27);
             cmdClearAllVictims.TabIndex = 5;
             cmdClearAllVictims.Text = "Clear All";
-            cmdClearAllVictims.UseVisualStyleBackColor = true;
             cmdClearAllVictims.Click += cmdClearAllVictims_Click;
             // 
             // numVictimID
@@ -1146,39 +1220,52 @@ namespace CrashEdit.CE
             // 
             // cmdRemoveVictim
             // 
+            cmdRemoveVictim.BorderColour = Color.Empty;
+            cmdRemoveVictim.CustomColour = false;
+            cmdRemoveVictim.FlatBottom = false;
+            cmdRemoveVictim.FlatTop = false;
             cmdRemoveVictim.Location = new Point(7, 111);
             cmdRemoveVictim.Margin = new Padding(4, 3, 4, 3);
             cmdRemoveVictim.Name = "cmdRemoveVictim";
+            cmdRemoveVictim.Padding = new Padding(5);
             cmdRemoveVictim.Size = new Size(68, 27);
             cmdRemoveVictim.TabIndex = 4;
             cmdRemoveVictim.Text = "Remove";
-            cmdRemoveVictim.UseVisualStyleBackColor = true;
             cmdRemoveVictim.Click += cmdRemoveVictim_Click;
             // 
             // cmdNextVictim
             // 
+            cmdNextVictim.BorderColour = Color.Empty;
+            cmdNextVictim.CustomColour = false;
+            cmdNextVictim.FlatBottom = false;
+            cmdNextVictim.FlatTop = false;
             cmdNextVictim.Location = new Point(79, 22);
             cmdNextVictim.Margin = new Padding(4, 3, 4, 3);
             cmdNextVictim.Name = "cmdNextVictim";
+            cmdNextVictim.Padding = new Padding(5);
             cmdNextVictim.Size = new Size(68, 27);
             cmdNextVictim.TabIndex = 1;
             cmdNextVictim.Text = "Next";
-            cmdNextVictim.UseVisualStyleBackColor = true;
             cmdNextVictim.Click += cmdNextVictim_Click;
             // 
             // cmdPreviousVictim
             // 
+            cmdPreviousVictim.BorderColour = Color.Empty;
+            cmdPreviousVictim.CustomColour = false;
+            cmdPreviousVictim.FlatBottom = false;
+            cmdPreviousVictim.FlatTop = false;
             cmdPreviousVictim.Location = new Point(7, 22);
             cmdPreviousVictim.Margin = new Padding(4, 3, 4, 3);
             cmdPreviousVictim.Name = "cmdPreviousVictim";
+            cmdPreviousVictim.Padding = new Padding(5);
             cmdPreviousVictim.Size = new Size(68, 27);
             cmdPreviousVictim.TabIndex = 0;
             cmdPreviousVictim.Text = "Previous";
-            cmdPreviousVictim.UseVisualStyleBackColor = true;
             cmdPreviousVictim.Click += cmdPreviousVictim_Click;
             // 
             // lblVictimIndex
             // 
+            lblVictimIndex.BackColor = Color.Transparent;
             lblVictimIndex.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblVictimIndex.Location = new Point(7, 52);
             lblVictimIndex.Margin = new Padding(4, 0, 4, 0);
@@ -1190,6 +1277,7 @@ namespace CrashEdit.CE
             // 
             // tabCamera
             // 
+            tabCamera.BackColor = Color.FromArgb(30, 30, 30);
             tabCamera.Controls.Add(fraFOV);
             tabCamera.Controls.Add(fraNeighbor);
             tabCamera.Controls.Add(fraAvgDist);
@@ -1197,14 +1285,13 @@ namespace CrashEdit.CE
             tabCamera.Controls.Add(fraCameraSubIndex);
             tabCamera.Controls.Add(fraCameraIndex);
             tabCamera.Controls.Add(fraSLST);
-            tabCamera.Location = new Point(4, 24);
+            tabCamera.Location = new Point(4, 32);
             tabCamera.Margin = new Padding(4, 3, 4, 3);
             tabCamera.Name = "tabCamera";
             tabCamera.Padding = new Padding(4, 3, 4, 3);
-            tabCamera.Size = new Size(575, 503);
+            tabCamera.Size = new Size(575, 495);
             tabCamera.TabIndex = 2;
             tabCamera.Text = "Camera";
-            tabCamera.UseVisualStyleBackColor = true;
             tabCamera.Enter += tabCamera_Enter;
             // 
             // fraFOV
@@ -1229,6 +1316,7 @@ namespace CrashEdit.CE
             // lblFOVPosition
             // 
             lblFOVPosition.AutoSize = true;
+            lblFOVPosition.BackColor = Color.Transparent;
             lblFOVPosition.Location = new Point(7, 84);
             lblFOVPosition.Margin = new Padding(4, 0, 4, 0);
             lblFOVPosition.Name = "lblFOVPosition";
@@ -1238,24 +1326,32 @@ namespace CrashEdit.CE
             // 
             // cmdRemoveFOVFrame
             // 
+            cmdRemoveFOVFrame.BorderColour = Color.Empty;
+            cmdRemoveFOVFrame.CustomColour = false;
+            cmdRemoveFOVFrame.FlatBottom = false;
+            cmdRemoveFOVFrame.FlatTop = false;
             cmdRemoveFOVFrame.Location = new Point(8, 112);
             cmdRemoveFOVFrame.Margin = new Padding(4, 3, 4, 3);
             cmdRemoveFOVFrame.Name = "cmdRemoveFOVFrame";
+            cmdRemoveFOVFrame.Padding = new Padding(5);
             cmdRemoveFOVFrame.Size = new Size(77, 27);
             cmdRemoveFOVFrame.TabIndex = 16;
             cmdRemoveFOVFrame.Text = "Remove";
-            cmdRemoveFOVFrame.UseVisualStyleBackColor = true;
             cmdRemoveFOVFrame.Click += cmdRemoveFOVFrame_Click;
             // 
             // cmdInsertFOVFrame
             // 
+            cmdInsertFOVFrame.BorderColour = Color.Empty;
+            cmdInsertFOVFrame.CustomColour = false;
+            cmdInsertFOVFrame.FlatBottom = false;
+            cmdInsertFOVFrame.FlatTop = false;
             cmdInsertFOVFrame.Location = new Point(92, 112);
             cmdInsertFOVFrame.Margin = new Padding(4, 3, 4, 3);
             cmdInsertFOVFrame.Name = "cmdInsertFOVFrame";
+            cmdInsertFOVFrame.Padding = new Padding(5);
             cmdInsertFOVFrame.Size = new Size(77, 27);
             cmdInsertFOVFrame.TabIndex = 17;
             cmdInsertFOVFrame.Text = "Insert";
-            cmdInsertFOVFrame.UseVisualStyleBackColor = true;
             cmdInsertFOVFrame.Click += cmdInsertFOVFrame_Click;
             // 
             // numFOVPosition
@@ -1271,6 +1367,7 @@ namespace CrashEdit.CE
             // 
             // lblFOVFrame
             // 
+            lblFOVFrame.BackColor = Color.Transparent;
             lblFOVFrame.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblFOVFrame.Location = new Point(7, 52);
             lblFOVFrame.Margin = new Padding(4, 0, 4, 0);
@@ -1300,6 +1397,7 @@ namespace CrashEdit.CE
             // 
             // lblFOVIndex
             // 
+            lblFOVIndex.BackColor = Color.Transparent;
             lblFOVIndex.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblFOVIndex.Location = new Point(7, 52);
             lblFOVIndex.Margin = new Padding(4, 0, 4, 0);
@@ -1311,51 +1409,68 @@ namespace CrashEdit.CE
             // 
             // cmdRemoveFOV
             // 
+            cmdRemoveFOV.BorderColour = Color.Empty;
+            cmdRemoveFOV.CustomColour = false;
+            cmdRemoveFOV.FlatBottom = false;
+            cmdRemoveFOV.FlatTop = false;
             cmdRemoveFOV.Location = new Point(8, 82);
             cmdRemoveFOV.Margin = new Padding(4, 3, 4, 3);
             cmdRemoveFOV.Name = "cmdRemoveFOV";
+            cmdRemoveFOV.Padding = new Padding(5);
             cmdRemoveFOV.Size = new Size(70, 27);
             cmdRemoveFOV.TabIndex = 46;
             cmdRemoveFOV.Text = "Remove";
-            cmdRemoveFOV.UseVisualStyleBackColor = true;
             cmdRemoveFOV.Click += cmdRemoveFOV_Click;
             // 
             // cmdInsertFOV
             // 
+            cmdInsertFOV.BorderColour = Color.Empty;
+            cmdInsertFOV.CustomColour = false;
+            cmdInsertFOV.FlatBottom = false;
+            cmdInsertFOV.FlatTop = false;
             cmdInsertFOV.Location = new Point(85, 82);
             cmdInsertFOV.Margin = new Padding(4, 3, 4, 3);
             cmdInsertFOV.Name = "cmdInsertFOV";
+            cmdInsertFOV.Padding = new Padding(5);
             cmdInsertFOV.Size = new Size(70, 27);
             cmdInsertFOV.TabIndex = 47;
             cmdInsertFOV.Text = "Insert";
-            cmdInsertFOV.UseVisualStyleBackColor = true;
             cmdInsertFOV.Click += cmdInsertFOV_Click;
             // 
             // cmdPrevFOV
             // 
+            cmdPrevFOV.BorderColour = Color.Empty;
+            cmdPrevFOV.CustomColour = false;
+            cmdPrevFOV.FlatBottom = false;
+            cmdPrevFOV.FlatTop = false;
             cmdPrevFOV.Location = new Point(7, 22);
             cmdPrevFOV.Margin = new Padding(4, 3, 4, 3);
             cmdPrevFOV.Name = "cmdPrevFOV";
+            cmdPrevFOV.Padding = new Padding(5);
             cmdPrevFOV.Size = new Size(70, 27);
             cmdPrevFOV.TabIndex = 22;
             cmdPrevFOV.Text = "Previous";
-            cmdPrevFOV.UseVisualStyleBackColor = true;
             cmdPrevFOV.Click += cmdPrevFOV_Click;
             // 
             // cmdNextFOV
             // 
+            cmdNextFOV.BorderColour = Color.Empty;
+            cmdNextFOV.CustomColour = false;
+            cmdNextFOV.FlatBottom = false;
+            cmdNextFOV.FlatTop = false;
             cmdNextFOV.Location = new Point(84, 22);
             cmdNextFOV.Margin = new Padding(4, 3, 4, 3);
             cmdNextFOV.Name = "cmdNextFOV";
+            cmdNextFOV.Padding = new Padding(5);
             cmdNextFOV.Size = new Size(70, 27);
             cmdNextFOV.TabIndex = 23;
             cmdNextFOV.Text = "Next";
-            cmdNextFOV.UseVisualStyleBackColor = true;
             cmdNextFOV.Click += cmdNextFOV_Click;
             // 
             // lblFOV
             // 
             lblFOV.AutoSize = true;
+            lblFOV.BackColor = Color.Transparent;
             lblFOV.Location = new Point(7, 117);
             lblFOV.Margin = new Padding(4, 0, 4, 0);
             lblFOV.Name = "lblFOV";
@@ -1375,24 +1490,32 @@ namespace CrashEdit.CE
             // 
             // cmdPrevFOVFrame
             // 
+            cmdPrevFOVFrame.BorderColour = Color.Empty;
+            cmdPrevFOVFrame.CustomColour = false;
+            cmdPrevFOVFrame.FlatBottom = false;
+            cmdPrevFOVFrame.FlatTop = false;
             cmdPrevFOVFrame.Location = new Point(8, 22);
             cmdPrevFOVFrame.Margin = new Padding(4, 3, 4, 3);
             cmdPrevFOVFrame.Name = "cmdPrevFOVFrame";
+            cmdPrevFOVFrame.Padding = new Padding(5);
             cmdPrevFOVFrame.Size = new Size(77, 27);
             cmdPrevFOVFrame.TabIndex = 15;
             cmdPrevFOVFrame.Text = "Previous";
-            cmdPrevFOVFrame.UseVisualStyleBackColor = true;
             cmdPrevFOVFrame.Click += cmdPrevFOVFrame_Click;
             // 
             // cmdNextFOVFrame
             // 
+            cmdNextFOVFrame.BorderColour = Color.Empty;
+            cmdNextFOVFrame.CustomColour = false;
+            cmdNextFOVFrame.FlatBottom = false;
+            cmdNextFOVFrame.FlatTop = false;
             cmdNextFOVFrame.Location = new Point(92, 22);
             cmdNextFOVFrame.Margin = new Padding(4, 3, 4, 3);
             cmdNextFOVFrame.Name = "cmdNextFOVFrame";
+            cmdNextFOVFrame.Padding = new Padding(5);
             cmdNextFOVFrame.Size = new Size(77, 27);
             cmdNextFOVFrame.TabIndex = 16;
             cmdNextFOVFrame.Text = "Next";
-            cmdNextFOVFrame.UseVisualStyleBackColor = true;
             cmdNextFOVFrame.Click += cmdNextFOVFrame_Click;
             // 
             // fraNeighbor
@@ -1417,6 +1540,7 @@ namespace CrashEdit.CE
             // lblNeighborPosition
             // 
             lblNeighborPosition.AutoSize = true;
+            lblNeighborPosition.BackColor = Color.Transparent;
             lblNeighborPosition.Location = new Point(7, 84);
             lblNeighborPosition.Margin = new Padding(4, 0, 4, 0);
             lblNeighborPosition.Name = "lblNeighborPosition";
@@ -1426,24 +1550,32 @@ namespace CrashEdit.CE
             // 
             // cmdRemoveNeighbor
             // 
+            cmdRemoveNeighbor.BorderColour = Color.Empty;
+            cmdRemoveNeighbor.CustomColour = false;
+            cmdRemoveNeighbor.FlatBottom = false;
+            cmdRemoveNeighbor.FlatTop = false;
             cmdRemoveNeighbor.Location = new Point(8, 112);
             cmdRemoveNeighbor.Margin = new Padding(4, 3, 4, 3);
             cmdRemoveNeighbor.Name = "cmdRemoveNeighbor";
+            cmdRemoveNeighbor.Padding = new Padding(5);
             cmdRemoveNeighbor.Size = new Size(77, 27);
             cmdRemoveNeighbor.TabIndex = 16;
             cmdRemoveNeighbor.Text = "Remove";
-            cmdRemoveNeighbor.UseVisualStyleBackColor = true;
             cmdRemoveNeighbor.Click += cmdRemoveNeighbor_Click;
             // 
             // cmdInsertNeighbor
             // 
+            cmdInsertNeighbor.BorderColour = Color.Empty;
+            cmdInsertNeighbor.CustomColour = false;
+            cmdInsertNeighbor.FlatBottom = false;
+            cmdInsertNeighbor.FlatTop = false;
             cmdInsertNeighbor.Location = new Point(92, 112);
             cmdInsertNeighbor.Margin = new Padding(4, 3, 4, 3);
             cmdInsertNeighbor.Name = "cmdInsertNeighbor";
+            cmdInsertNeighbor.Padding = new Padding(5);
             cmdInsertNeighbor.Size = new Size(77, 27);
             cmdInsertNeighbor.TabIndex = 17;
             cmdInsertNeighbor.Text = "Insert";
-            cmdInsertNeighbor.UseVisualStyleBackColor = true;
             cmdInsertNeighbor.Click += cmdInsertNeighbor_Click;
             // 
             // numNeighborPosition
@@ -1459,6 +1591,7 @@ namespace CrashEdit.CE
             // 
             // lblNeighbor
             // 
+            lblNeighbor.BackColor = Color.Transparent;
             lblNeighbor.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblNeighbor.Location = new Point(7, 52);
             lblNeighbor.Margin = new Padding(4, 0, 4, 0);
@@ -1494,6 +1627,7 @@ namespace CrashEdit.CE
             // 
             // lblNeighborSetting
             // 
+            lblNeighborSetting.BackColor = Color.Transparent;
             lblNeighborSetting.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblNeighborSetting.Location = new Point(7, 52);
             lblNeighborSetting.Margin = new Padding(4, 0, 4, 0);
@@ -1505,51 +1639,68 @@ namespace CrashEdit.CE
             // 
             // cmdRemoveNeighborSetting
             // 
+            cmdRemoveNeighborSetting.BorderColour = Color.Empty;
+            cmdRemoveNeighborSetting.CustomColour = false;
+            cmdRemoveNeighborSetting.FlatBottom = false;
+            cmdRemoveNeighborSetting.FlatTop = false;
             cmdRemoveNeighborSetting.Location = new Point(8, 82);
             cmdRemoveNeighborSetting.Margin = new Padding(4, 3, 4, 3);
             cmdRemoveNeighborSetting.Name = "cmdRemoveNeighborSetting";
+            cmdRemoveNeighborSetting.Padding = new Padding(5);
             cmdRemoveNeighborSetting.Size = new Size(70, 27);
             cmdRemoveNeighborSetting.TabIndex = 46;
             cmdRemoveNeighborSetting.Text = "Remove";
-            cmdRemoveNeighborSetting.UseVisualStyleBackColor = true;
             cmdRemoveNeighborSetting.Click += cmdRemoveNeighborSetting_Click;
             // 
             // cmdInsertNeighborSetting
             // 
+            cmdInsertNeighborSetting.BorderColour = Color.Empty;
+            cmdInsertNeighborSetting.CustomColour = false;
+            cmdInsertNeighborSetting.FlatBottom = false;
+            cmdInsertNeighborSetting.FlatTop = false;
             cmdInsertNeighborSetting.Location = new Point(85, 82);
             cmdInsertNeighborSetting.Margin = new Padding(4, 3, 4, 3);
             cmdInsertNeighborSetting.Name = "cmdInsertNeighborSetting";
+            cmdInsertNeighborSetting.Padding = new Padding(5);
             cmdInsertNeighborSetting.Size = new Size(70, 27);
             cmdInsertNeighborSetting.TabIndex = 47;
             cmdInsertNeighborSetting.Text = "Insert";
-            cmdInsertNeighborSetting.UseVisualStyleBackColor = true;
             cmdInsertNeighborSetting.Click += cmdInsertNeighborSetting_Click;
             // 
             // cmdPrevNeighborSetting
             // 
+            cmdPrevNeighborSetting.BorderColour = Color.Empty;
+            cmdPrevNeighborSetting.CustomColour = false;
+            cmdPrevNeighborSetting.FlatBottom = false;
+            cmdPrevNeighborSetting.FlatTop = false;
             cmdPrevNeighborSetting.Location = new Point(7, 22);
             cmdPrevNeighborSetting.Margin = new Padding(4, 3, 4, 3);
             cmdPrevNeighborSetting.Name = "cmdPrevNeighborSetting";
+            cmdPrevNeighborSetting.Padding = new Padding(5);
             cmdPrevNeighborSetting.Size = new Size(70, 27);
             cmdPrevNeighborSetting.TabIndex = 22;
             cmdPrevNeighborSetting.Text = "Previous";
-            cmdPrevNeighborSetting.UseVisualStyleBackColor = true;
             cmdPrevNeighborSetting.Click += cmdPrevNeighborSetting_Click;
             // 
             // cmdNextNeighborSetting
             // 
+            cmdNextNeighborSetting.BorderColour = Color.Empty;
+            cmdNextNeighborSetting.CustomColour = false;
+            cmdNextNeighborSetting.FlatBottom = false;
+            cmdNextNeighborSetting.FlatTop = false;
             cmdNextNeighborSetting.Location = new Point(84, 22);
             cmdNextNeighborSetting.Margin = new Padding(4, 3, 4, 3);
             cmdNextNeighborSetting.Name = "cmdNextNeighborSetting";
+            cmdNextNeighborSetting.Padding = new Padding(5);
             cmdNextNeighborSetting.Size = new Size(70, 27);
             cmdNextNeighborSetting.TabIndex = 23;
             cmdNextNeighborSetting.Text = "Next";
-            cmdNextNeighborSetting.UseVisualStyleBackColor = true;
             cmdNextNeighborSetting.Click += cmdNextNeighborSetting_Click;
             // 
             // lblNeighborLink
             // 
             lblNeighborLink.AutoSize = true;
+            lblNeighborLink.BackColor = Color.Transparent;
             lblNeighborLink.Location = new Point(7, 207);
             lblNeighborLink.Margin = new Padding(4, 0, 4, 0);
             lblNeighborLink.Name = "lblNeighborLink";
@@ -1560,6 +1711,7 @@ namespace CrashEdit.CE
             // lblNeighborFlag
             // 
             lblNeighborFlag.AutoSize = true;
+            lblNeighborFlag.BackColor = Color.Transparent;
             lblNeighborFlag.Location = new Point(7, 117);
             lblNeighborFlag.Margin = new Padding(4, 0, 4, 0);
             lblNeighborFlag.Name = "lblNeighborFlag";
@@ -1580,6 +1732,7 @@ namespace CrashEdit.CE
             // lblNeighborCamera
             // 
             lblNeighborCamera.AutoSize = true;
+            lblNeighborCamera.BackColor = Color.Transparent;
             lblNeighborCamera.Location = new Point(7, 147);
             lblNeighborCamera.Margin = new Padding(4, 0, 4, 0);
             lblNeighborCamera.Name = "lblNeighborCamera";
@@ -1590,6 +1743,7 @@ namespace CrashEdit.CE
             // lblNeighborZone
             // 
             lblNeighborZone.AutoSize = true;
+            lblNeighborZone.BackColor = Color.Transparent;
             lblNeighborZone.Location = new Point(7, 177);
             lblNeighborZone.Margin = new Padding(4, 0, 4, 0);
             lblNeighborZone.Name = "lblNeighborZone";
@@ -1629,24 +1783,32 @@ namespace CrashEdit.CE
             // 
             // cmdPrevNeighbor
             // 
+            cmdPrevNeighbor.BorderColour = Color.Empty;
+            cmdPrevNeighbor.CustomColour = false;
+            cmdPrevNeighbor.FlatBottom = false;
+            cmdPrevNeighbor.FlatTop = false;
             cmdPrevNeighbor.Location = new Point(8, 22);
             cmdPrevNeighbor.Margin = new Padding(4, 3, 4, 3);
             cmdPrevNeighbor.Name = "cmdPrevNeighbor";
+            cmdPrevNeighbor.Padding = new Padding(5);
             cmdPrevNeighbor.Size = new Size(77, 27);
             cmdPrevNeighbor.TabIndex = 15;
             cmdPrevNeighbor.Text = "Previous";
-            cmdPrevNeighbor.UseVisualStyleBackColor = true;
             cmdPrevNeighbor.Click += cmdPrevNeighbor_Click;
             // 
             // cmdNextNeighbor
             // 
+            cmdNextNeighbor.BorderColour = Color.Empty;
+            cmdNextNeighbor.CustomColour = false;
+            cmdNextNeighbor.FlatBottom = false;
+            cmdNextNeighbor.FlatTop = false;
             cmdNextNeighbor.Location = new Point(92, 22);
             cmdNextNeighbor.Margin = new Padding(4, 3, 4, 3);
             cmdNextNeighbor.Name = "cmdNextNeighbor";
+            cmdNextNeighbor.Padding = new Padding(5);
             cmdNextNeighbor.Size = new Size(77, 27);
             cmdNextNeighbor.TabIndex = 16;
             cmdNextNeighbor.Text = "Next";
-            cmdNextNeighbor.UseVisualStyleBackColor = true;
             cmdNextNeighbor.Click += cmdNextNeighbor_Click;
             // 
             // fraAvgDist
@@ -1813,6 +1975,7 @@ namespace CrashEdit.CE
             // lblEIDErr1
             // 
             lblEIDErr1.AutoSize = true;
+            lblEIDErr1.BackColor = Color.Transparent;
             lblEIDErr1.ForeColor = Color.Red;
             lblEIDErr1.Location = new Point(86, 52);
             lblEIDErr1.Margin = new Padding(4, 0, 4, 0);
@@ -1823,6 +1986,9 @@ namespace CrashEdit.CE
             // 
             // txtSLST
             // 
+            txtSLST.BackColor = Color.FromArgb(26, 26, 28);
+            txtSLST.BorderStyle = BorderStyle.FixedSingle;
+            txtSLST.ForeColor = Color.FromArgb(213, 213, 213);
             txtSLST.Location = new Point(7, 48);
             txtSLST.Margin = new Padding(4, 3, 4, 3);
             txtSLST.MaxLength = 5;
@@ -1846,24 +2012,25 @@ namespace CrashEdit.CE
             // 
             // tabLoadLists
             // 
+            tabLoadLists.BackColor = Color.FromArgb(30, 30, 30);
             tabLoadLists.Controls.Add(lblEIDErrB);
             tabLoadLists.Controls.Add(fraLoadListPayload);
             tabLoadLists.Controls.Add(fraLoadListB);
             tabLoadLists.Controls.Add(lblEIDErrA);
             tabLoadLists.Controls.Add(fraLoadListA);
-            tabLoadLists.Location = new Point(4, 24);
+            tabLoadLists.Location = new Point(4, 32);
             tabLoadLists.Margin = new Padding(4, 3, 4, 3);
             tabLoadLists.Name = "tabLoadLists";
             tabLoadLists.Padding = new Padding(4, 3, 4, 3);
-            tabLoadLists.Size = new Size(575, 503);
+            tabLoadLists.Size = new Size(575, 495);
             tabLoadLists.TabIndex = 2;
             tabLoadLists.Text = "Load Lists";
-            tabLoadLists.UseVisualStyleBackColor = true;
             tabLoadLists.Enter += tabLoadLists_Enter;
             // 
             // lblEIDErrB
             // 
             lblEIDErrB.AutoSize = true;
+            lblEIDErrB.BackColor = Color.Transparent;
             lblEIDErrB.ForeColor = Color.Red;
             lblEIDErrB.Location = new Point(184, 346);
             lblEIDErrB.Margin = new Padding(4, 0, 4, 0);
@@ -1891,6 +2058,7 @@ namespace CrashEdit.CE
             // lblPayload
             // 
             lblPayload.AutoSize = true;
+            lblPayload.BackColor = Color.Transparent;
             lblPayload.Location = new Point(7, 92);
             lblPayload.Margin = new Padding(4, 0, 4, 0);
             lblPayload.Name = "lblPayload";
@@ -1901,29 +2069,38 @@ namespace CrashEdit.CE
             // 
             // cmdLoadListVerify
             // 
+            cmdLoadListVerify.BorderColour = Color.Empty;
+            cmdLoadListVerify.CustomColour = false;
+            cmdLoadListVerify.FlatBottom = false;
+            cmdLoadListVerify.FlatTop = false;
             cmdLoadListVerify.Location = new Point(7, 22);
             cmdLoadListVerify.Margin = new Padding(4, 3, 4, 3);
             cmdLoadListVerify.Name = "cmdLoadListVerify";
+            cmdLoadListVerify.Padding = new Padding(5);
             cmdLoadListVerify.Size = new Size(122, 27);
             cmdLoadListVerify.TabIndex = 0;
             cmdLoadListVerify.Text = "Verify List Integrity";
-            cmdLoadListVerify.UseVisualStyleBackColor = true;
             cmdLoadListVerify.Click += cmdLoadListVerify_Click;
             // 
             // cmdPayload
             // 
+            cmdPayload.BorderColour = Color.Empty;
+            cmdPayload.CustomColour = false;
+            cmdPayload.FlatBottom = false;
+            cmdPayload.FlatTop = false;
             cmdPayload.Location = new Point(152, 52);
             cmdPayload.Margin = new Padding(4, 3, 4, 3);
             cmdPayload.Name = "cmdPayload";
+            cmdPayload.Padding = new Padding(5);
             cmdPayload.Size = new Size(108, 27);
             cmdPayload.TabIndex = 23;
             cmdPayload.Text = "Check Payload";
-            cmdPayload.UseVisualStyleBackColor = true;
             cmdPayload.Click += cmdPayload_Click;
             // 
             // lblPayloadPosition
             // 
             lblPayloadPosition.AutoSize = true;
+            lblPayloadPosition.BackColor = Color.Transparent;
             lblPayloadPosition.Location = new Point(7, 58);
             lblPayloadPosition.Margin = new Padding(4, 0, 4, 0);
             lblPayloadPosition.Name = "lblPayloadPosition";
@@ -1962,6 +2139,7 @@ namespace CrashEdit.CE
             // lblMetavalueLoadB
             // 
             lblMetavalueLoadB.AutoSize = true;
+            lblMetavalueLoadB.BackColor = Color.Transparent;
             lblMetavalueLoadB.Location = new Point(7, 87);
             lblMetavalueLoadB.Margin = new Padding(4, 0, 4, 0);
             lblMetavalueLoadB.Name = "lblMetavalueLoadB";
@@ -1971,24 +2149,32 @@ namespace CrashEdit.CE
             // 
             // cmdRemoveRowB
             // 
+            cmdRemoveRowB.BorderColour = Color.Empty;
+            cmdRemoveRowB.CustomColour = false;
+            cmdRemoveRowB.FlatBottom = false;
+            cmdRemoveRowB.FlatTop = false;
             cmdRemoveRowB.Location = new Point(7, 114);
             cmdRemoveRowB.Margin = new Padding(4, 3, 4, 3);
             cmdRemoveRowB.Name = "cmdRemoveRowB";
+            cmdRemoveRowB.Padding = new Padding(5);
             cmdRemoveRowB.Size = new Size(75, 27);
             cmdRemoveRowB.TabIndex = 16;
             cmdRemoveRowB.Text = "Remove";
-            cmdRemoveRowB.UseVisualStyleBackColor = true;
             cmdRemoveRowB.Click += cmdRemoveRowB_Click;
             // 
             // cmdInsertRowB
             // 
+            cmdInsertRowB.BorderColour = Color.Empty;
+            cmdInsertRowB.CustomColour = false;
+            cmdInsertRowB.FlatBottom = false;
+            cmdInsertRowB.FlatTop = false;
             cmdInsertRowB.Location = new Point(86, 114);
             cmdInsertRowB.Margin = new Padding(4, 3, 4, 3);
             cmdInsertRowB.Name = "cmdInsertRowB";
+            cmdInsertRowB.Padding = new Padding(5);
             cmdInsertRowB.Size = new Size(74, 27);
             cmdInsertRowB.TabIndex = 17;
             cmdInsertRowB.Text = "Insert";
-            cmdInsertRowB.UseVisualStyleBackColor = true;
             cmdInsertRowB.Click += cmdInsertRowB_Click;
             // 
             // numMetavalueLoadB
@@ -2003,6 +2189,7 @@ namespace CrashEdit.CE
             // 
             // lblLoadListRowIndexB
             // 
+            lblLoadListRowIndexB.BackColor = Color.Transparent;
             lblLoadListRowIndexB.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblLoadListRowIndexB.Location = new Point(7, 52);
             lblLoadListRowIndexB.Margin = new Padding(4, 0, 4, 0);
@@ -2032,6 +2219,9 @@ namespace CrashEdit.CE
             // 
             // txtEIDB
             // 
+            txtEIDB.BackColor = Color.FromArgb(26, 26, 28);
+            txtEIDB.BorderStyle = BorderStyle.FixedSingle;
+            txtEIDB.ForeColor = Color.FromArgb(213, 213, 213);
             txtEIDB.Location = new Point(8, 81);
             txtEIDB.Margin = new Padding(4, 3, 4, 3);
             txtEIDB.MaxLength = 5;
@@ -2043,6 +2233,7 @@ namespace CrashEdit.CE
             // 
             // lblEIDIndexB
             // 
+            lblEIDIndexB.BackColor = Color.Transparent;
             lblEIDIndexB.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblEIDIndexB.Location = new Point(8, 52);
             lblEIDIndexB.Margin = new Padding(4, 0, 4, 0);
@@ -2054,84 +2245,113 @@ namespace CrashEdit.CE
             // 
             // cmdAppendEIDB
             // 
+            cmdAppendEIDB.BorderColour = Color.Empty;
+            cmdAppendEIDB.CustomColour = false;
+            cmdAppendEIDB.FlatBottom = false;
+            cmdAppendEIDB.FlatTop = false;
             cmdAppendEIDB.Location = new Point(7, 144);
             cmdAppendEIDB.Margin = new Padding(4, 3, 4, 3);
             cmdAppendEIDB.Name = "cmdAppendEIDB";
+            cmdAppendEIDB.Padding = new Padding(5);
             cmdAppendEIDB.Size = new Size(140, 27);
             cmdAppendEIDB.TabIndex = 12;
             cmdAppendEIDB.Text = "Append";
-            cmdAppendEIDB.UseVisualStyleBackColor = true;
             cmdAppendEIDB.Click += cmdAppendEIDB_Click;
             // 
             // cmdRemoveEIDB
             // 
+            cmdRemoveEIDB.BorderColour = Color.Empty;
+            cmdRemoveEIDB.CustomColour = false;
+            cmdRemoveEIDB.FlatBottom = false;
+            cmdRemoveEIDB.FlatTop = false;
             cmdRemoveEIDB.Location = new Point(7, 111);
             cmdRemoveEIDB.Margin = new Padding(4, 3, 4, 3);
             cmdRemoveEIDB.Name = "cmdRemoveEIDB";
+            cmdRemoveEIDB.Padding = new Padding(5);
             cmdRemoveEIDB.Size = new Size(68, 27);
             cmdRemoveEIDB.TabIndex = 11;
             cmdRemoveEIDB.Text = "Remove";
-            cmdRemoveEIDB.UseVisualStyleBackColor = true;
             cmdRemoveEIDB.Click += cmdRemoveEIDB_Click;
             // 
             // cmdPrevEIDB
             // 
+            cmdPrevEIDB.BorderColour = Color.Empty;
+            cmdPrevEIDB.CustomColour = false;
+            cmdPrevEIDB.FlatBottom = false;
+            cmdPrevEIDB.FlatTop = false;
             cmdPrevEIDB.Location = new Point(7, 22);
             cmdPrevEIDB.Margin = new Padding(4, 3, 4, 3);
             cmdPrevEIDB.Name = "cmdPrevEIDB";
+            cmdPrevEIDB.Padding = new Padding(5);
             cmdPrevEIDB.Size = new Size(68, 27);
             cmdPrevEIDB.TabIndex = 8;
             cmdPrevEIDB.Text = "Previous";
-            cmdPrevEIDB.UseVisualStyleBackColor = true;
             cmdPrevEIDB.Click += cmdPrevEIDB_Click;
             // 
             // cmdInsertEIDB
             // 
+            cmdInsertEIDB.BorderColour = Color.Empty;
+            cmdInsertEIDB.CustomColour = false;
+            cmdInsertEIDB.FlatBottom = false;
+            cmdInsertEIDB.FlatTop = false;
             cmdInsertEIDB.Location = new Point(79, 111);
             cmdInsertEIDB.Margin = new Padding(4, 3, 4, 3);
             cmdInsertEIDB.Name = "cmdInsertEIDB";
+            cmdInsertEIDB.Padding = new Padding(5);
             cmdInsertEIDB.Size = new Size(68, 27);
             cmdInsertEIDB.TabIndex = 13;
             cmdInsertEIDB.Text = "Insert";
-            cmdInsertEIDB.UseVisualStyleBackColor = true;
             cmdInsertEIDB.Click += cmdInsertEIDB_Click;
             // 
             // cmdNextEIDB
             // 
+            cmdNextEIDB.BorderColour = Color.Empty;
+            cmdNextEIDB.CustomColour = false;
+            cmdNextEIDB.FlatBottom = false;
+            cmdNextEIDB.FlatTop = false;
             cmdNextEIDB.Location = new Point(79, 22);
             cmdNextEIDB.Margin = new Padding(4, 3, 4, 3);
             cmdNextEIDB.Name = "cmdNextEIDB";
+            cmdNextEIDB.Padding = new Padding(5);
             cmdNextEIDB.Size = new Size(68, 27);
             cmdNextEIDB.TabIndex = 9;
             cmdNextEIDB.Text = "Next";
-            cmdNextEIDB.UseVisualStyleBackColor = true;
             cmdNextEIDB.Click += cmdNextEIDB_Click;
             // 
             // cmdPrevRowB
             // 
+            cmdPrevRowB.BorderColour = Color.Empty;
+            cmdPrevRowB.CustomColour = false;
+            cmdPrevRowB.FlatBottom = false;
+            cmdPrevRowB.FlatTop = false;
             cmdPrevRowB.Location = new Point(7, 22);
             cmdPrevRowB.Margin = new Padding(4, 3, 4, 3);
             cmdPrevRowB.Name = "cmdPrevRowB";
+            cmdPrevRowB.Padding = new Padding(5);
             cmdPrevRowB.Size = new Size(75, 27);
             cmdPrevRowB.TabIndex = 15;
             cmdPrevRowB.Text = "Previous";
-            cmdPrevRowB.UseVisualStyleBackColor = true;
             cmdPrevRowB.Click += cmdPrevRowB_Click;
             // 
             // cmdNextRowB
             // 
+            cmdNextRowB.BorderColour = Color.Empty;
+            cmdNextRowB.CustomColour = false;
+            cmdNextRowB.FlatBottom = false;
+            cmdNextRowB.FlatTop = false;
             cmdNextRowB.Location = new Point(86, 22);
             cmdNextRowB.Margin = new Padding(4, 3, 4, 3);
             cmdNextRowB.Name = "cmdNextRowB";
+            cmdNextRowB.Padding = new Padding(5);
             cmdNextRowB.Size = new Size(74, 27);
             cmdNextRowB.TabIndex = 16;
             cmdNextRowB.Text = "Next";
-            cmdNextRowB.UseVisualStyleBackColor = true;
             cmdNextRowB.Click += cmdNextRowB_Click;
             // 
             // lblEIDErrA
             // 
             lblEIDErrA.AutoSize = true;
+            lblEIDErrA.BackColor = Color.Transparent;
             lblEIDErrA.ForeColor = Color.Red;
             lblEIDErrA.Location = new Point(10, 346);
             lblEIDErrA.Margin = new Padding(4, 0, 4, 0);
@@ -2162,6 +2382,7 @@ namespace CrashEdit.CE
             // lblMetavalueLoadA
             // 
             lblMetavalueLoadA.AutoSize = true;
+            lblMetavalueLoadA.BackColor = Color.Transparent;
             lblMetavalueLoadA.Location = new Point(7, 87);
             lblMetavalueLoadA.Margin = new Padding(4, 0, 4, 0);
             lblMetavalueLoadA.Name = "lblMetavalueLoadA";
@@ -2171,24 +2392,32 @@ namespace CrashEdit.CE
             // 
             // cmdRemoveRowA
             // 
+            cmdRemoveRowA.BorderColour = Color.Empty;
+            cmdRemoveRowA.CustomColour = false;
+            cmdRemoveRowA.FlatBottom = false;
+            cmdRemoveRowA.FlatTop = false;
             cmdRemoveRowA.Location = new Point(7, 114);
             cmdRemoveRowA.Margin = new Padding(4, 3, 4, 3);
             cmdRemoveRowA.Name = "cmdRemoveRowA";
+            cmdRemoveRowA.Padding = new Padding(5);
             cmdRemoveRowA.Size = new Size(75, 27);
             cmdRemoveRowA.TabIndex = 16;
             cmdRemoveRowA.Text = "Remove";
-            cmdRemoveRowA.UseVisualStyleBackColor = true;
             cmdRemoveRowA.Click += cmdRemoveRowA_Click;
             // 
             // cmdInsertRowA
             // 
+            cmdInsertRowA.BorderColour = Color.Empty;
+            cmdInsertRowA.CustomColour = false;
+            cmdInsertRowA.FlatBottom = false;
+            cmdInsertRowA.FlatTop = false;
             cmdInsertRowA.Location = new Point(86, 114);
             cmdInsertRowA.Margin = new Padding(4, 3, 4, 3);
             cmdInsertRowA.Name = "cmdInsertRowA";
+            cmdInsertRowA.Padding = new Padding(5);
             cmdInsertRowA.Size = new Size(74, 27);
             cmdInsertRowA.TabIndex = 17;
             cmdInsertRowA.Text = "Insert";
-            cmdInsertRowA.UseVisualStyleBackColor = true;
             cmdInsertRowA.Click += cmdInsertRowA_Click;
             // 
             // numMetavalueLoadA
@@ -2203,6 +2432,7 @@ namespace CrashEdit.CE
             // 
             // lblLoadListRowIndexA
             // 
+            lblLoadListRowIndexA.BackColor = Color.Transparent;
             lblLoadListRowIndexA.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblLoadListRowIndexA.Location = new Point(7, 52);
             lblLoadListRowIndexA.Margin = new Padding(4, 0, 4, 0);
@@ -2232,6 +2462,9 @@ namespace CrashEdit.CE
             // 
             // txtEIDA
             // 
+            txtEIDA.BackColor = Color.FromArgb(26, 26, 28);
+            txtEIDA.BorderStyle = BorderStyle.FixedSingle;
+            txtEIDA.ForeColor = Color.FromArgb(213, 213, 213);
             txtEIDA.Location = new Point(8, 81);
             txtEIDA.Margin = new Padding(4, 3, 4, 3);
             txtEIDA.MaxLength = 5;
@@ -2243,6 +2476,7 @@ namespace CrashEdit.CE
             // 
             // lblEIDIndexA
             // 
+            lblEIDIndexA.BackColor = Color.Transparent;
             lblEIDIndexA.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblEIDIndexA.Location = new Point(7, 52);
             lblEIDIndexA.Margin = new Padding(4, 0, 4, 0);
@@ -2254,93 +2488,121 @@ namespace CrashEdit.CE
             // 
             // cmdAppendEIDA
             // 
+            cmdAppendEIDA.BorderColour = Color.Empty;
+            cmdAppendEIDA.CustomColour = false;
+            cmdAppendEIDA.FlatBottom = false;
+            cmdAppendEIDA.FlatTop = false;
             cmdAppendEIDA.Location = new Point(7, 144);
             cmdAppendEIDA.Margin = new Padding(4, 3, 4, 3);
             cmdAppendEIDA.Name = "cmdAppendEIDA";
+            cmdAppendEIDA.Padding = new Padding(5);
             cmdAppendEIDA.Size = new Size(140, 27);
             cmdAppendEIDA.TabIndex = 12;
             cmdAppendEIDA.Text = "Append";
-            cmdAppendEIDA.UseVisualStyleBackColor = true;
             cmdAppendEIDA.Click += cmdAppendEIDA_Click;
             // 
             // cmdRemoveEIDA
             // 
+            cmdRemoveEIDA.BorderColour = Color.Empty;
+            cmdRemoveEIDA.CustomColour = false;
+            cmdRemoveEIDA.FlatBottom = false;
+            cmdRemoveEIDA.FlatTop = false;
             cmdRemoveEIDA.Location = new Point(7, 111);
             cmdRemoveEIDA.Margin = new Padding(4, 3, 4, 3);
             cmdRemoveEIDA.Name = "cmdRemoveEIDA";
+            cmdRemoveEIDA.Padding = new Padding(5);
             cmdRemoveEIDA.Size = new Size(68, 27);
             cmdRemoveEIDA.TabIndex = 11;
             cmdRemoveEIDA.Text = "Remove";
-            cmdRemoveEIDA.UseVisualStyleBackColor = true;
             cmdRemoveEIDA.Click += cmdRemoveEIDA_Click;
             // 
             // cmdPrevEIDA
             // 
+            cmdPrevEIDA.BorderColour = Color.Empty;
+            cmdPrevEIDA.CustomColour = false;
+            cmdPrevEIDA.FlatBottom = false;
+            cmdPrevEIDA.FlatTop = false;
             cmdPrevEIDA.Location = new Point(7, 22);
             cmdPrevEIDA.Margin = new Padding(4, 3, 4, 3);
             cmdPrevEIDA.Name = "cmdPrevEIDA";
+            cmdPrevEIDA.Padding = new Padding(5);
             cmdPrevEIDA.Size = new Size(68, 27);
             cmdPrevEIDA.TabIndex = 8;
             cmdPrevEIDA.Text = "Previous";
-            cmdPrevEIDA.UseVisualStyleBackColor = true;
             cmdPrevEIDA.Click += cmdPrevEIDA_Click;
             // 
             // cmdInsertEIDA
             // 
+            cmdInsertEIDA.BorderColour = Color.Empty;
+            cmdInsertEIDA.CustomColour = false;
+            cmdInsertEIDA.FlatBottom = false;
+            cmdInsertEIDA.FlatTop = false;
             cmdInsertEIDA.Location = new Point(79, 111);
             cmdInsertEIDA.Margin = new Padding(4, 3, 4, 3);
             cmdInsertEIDA.Name = "cmdInsertEIDA";
+            cmdInsertEIDA.Padding = new Padding(5);
             cmdInsertEIDA.Size = new Size(68, 27);
             cmdInsertEIDA.TabIndex = 13;
             cmdInsertEIDA.Text = "Insert";
-            cmdInsertEIDA.UseVisualStyleBackColor = true;
             cmdInsertEIDA.Click += cmdInsertEIDA_Click;
             // 
             // cmdNextEIDA
             // 
+            cmdNextEIDA.BorderColour = Color.Empty;
+            cmdNextEIDA.CustomColour = false;
+            cmdNextEIDA.FlatBottom = false;
+            cmdNextEIDA.FlatTop = false;
             cmdNextEIDA.Location = new Point(79, 22);
             cmdNextEIDA.Margin = new Padding(4, 3, 4, 3);
             cmdNextEIDA.Name = "cmdNextEIDA";
+            cmdNextEIDA.Padding = new Padding(5);
             cmdNextEIDA.Size = new Size(68, 27);
             cmdNextEIDA.TabIndex = 9;
             cmdNextEIDA.Text = "Next";
-            cmdNextEIDA.UseVisualStyleBackColor = true;
             cmdNextEIDA.Click += cmdNextEIDA_Click;
             // 
             // cmdPrevRowA
             // 
+            cmdPrevRowA.BorderColour = Color.Empty;
+            cmdPrevRowA.CustomColour = false;
+            cmdPrevRowA.FlatBottom = false;
+            cmdPrevRowA.FlatTop = false;
             cmdPrevRowA.Location = new Point(7, 22);
             cmdPrevRowA.Margin = new Padding(4, 3, 4, 3);
             cmdPrevRowA.Name = "cmdPrevRowA";
+            cmdPrevRowA.Padding = new Padding(5);
             cmdPrevRowA.Size = new Size(75, 27);
             cmdPrevRowA.TabIndex = 15;
             cmdPrevRowA.Text = "Previous";
-            cmdPrevRowA.UseVisualStyleBackColor = true;
             cmdPrevRowA.Click += cmdPrevRowA_Click;
             // 
             // cmdNextRowA
             // 
+            cmdNextRowA.BorderColour = Color.Empty;
+            cmdNextRowA.CustomColour = false;
+            cmdNextRowA.FlatBottom = false;
+            cmdNextRowA.FlatTop = false;
             cmdNextRowA.Location = new Point(86, 22);
             cmdNextRowA.Margin = new Padding(4, 3, 4, 3);
             cmdNextRowA.Name = "cmdNextRowA";
+            cmdNextRowA.Padding = new Padding(5);
             cmdNextRowA.Size = new Size(74, 27);
             cmdNextRowA.TabIndex = 16;
             cmdNextRowA.Text = "Next";
-            cmdNextRowA.UseVisualStyleBackColor = true;
             cmdNextRowA.Click += cmdNextRowA_Click;
             // 
             // tabDrawLists
             // 
+            tabDrawLists.BackColor = Color.FromArgb(30, 30, 30);
             tabDrawLists.Controls.Add(fraDrawListB);
             tabDrawLists.Controls.Add(fraDrawListA);
-            tabDrawLists.Location = new Point(4, 24);
+            tabDrawLists.Location = new Point(4, 32);
             tabDrawLists.Margin = new Padding(4, 3, 4, 3);
             tabDrawLists.Name = "tabDrawLists";
             tabDrawLists.Padding = new Padding(4, 3, 4, 3);
-            tabDrawLists.Size = new Size(575, 503);
+            tabDrawLists.Size = new Size(575, 495);
             tabDrawLists.TabIndex = 3;
             tabDrawLists.Text = "Draw Lists";
-            tabDrawLists.UseVisualStyleBackColor = true;
             tabDrawLists.Enter += tabDrawLists_Enter;
             // 
             // fraDrawListB
@@ -2365,6 +2627,7 @@ namespace CrashEdit.CE
             // lblMetavalueDrawB
             // 
             lblMetavalueDrawB.AutoSize = true;
+            lblMetavalueDrawB.BackColor = Color.Transparent;
             lblMetavalueDrawB.Location = new Point(7, 87);
             lblMetavalueDrawB.Margin = new Padding(4, 0, 4, 0);
             lblMetavalueDrawB.Name = "lblMetavalueDrawB";
@@ -2374,24 +2637,32 @@ namespace CrashEdit.CE
             // 
             // cmdRemoveRowDrawB
             // 
+            cmdRemoveRowDrawB.BorderColour = Color.Empty;
+            cmdRemoveRowDrawB.CustomColour = false;
+            cmdRemoveRowDrawB.FlatBottom = false;
+            cmdRemoveRowDrawB.FlatTop = false;
             cmdRemoveRowDrawB.Location = new Point(7, 114);
             cmdRemoveRowDrawB.Margin = new Padding(4, 3, 4, 3);
             cmdRemoveRowDrawB.Name = "cmdRemoveRowDrawB";
+            cmdRemoveRowDrawB.Padding = new Padding(5);
             cmdRemoveRowDrawB.Size = new Size(75, 27);
             cmdRemoveRowDrawB.TabIndex = 16;
             cmdRemoveRowDrawB.Text = "Remove";
-            cmdRemoveRowDrawB.UseVisualStyleBackColor = true;
             cmdRemoveRowDrawB.Click += cmdRemoveRowDrawB_Click;
             // 
             // cmdInsertRowDrawB
             // 
+            cmdInsertRowDrawB.BorderColour = Color.Empty;
+            cmdInsertRowDrawB.CustomColour = false;
+            cmdInsertRowDrawB.FlatBottom = false;
+            cmdInsertRowDrawB.FlatTop = false;
             cmdInsertRowDrawB.Location = new Point(86, 114);
             cmdInsertRowDrawB.Margin = new Padding(4, 3, 4, 3);
             cmdInsertRowDrawB.Name = "cmdInsertRowDrawB";
+            cmdInsertRowDrawB.Padding = new Padding(5);
             cmdInsertRowDrawB.Size = new Size(74, 27);
             cmdInsertRowDrawB.TabIndex = 17;
             cmdInsertRowDrawB.Text = "Insert";
-            cmdInsertRowDrawB.UseVisualStyleBackColor = true;
             cmdInsertRowDrawB.Click += cmdInsertRowDrawB_Click;
             // 
             // numMetavalueDrawB
@@ -2407,6 +2678,7 @@ namespace CrashEdit.CE
             // 
             // lblDrawListRowIndexB
             // 
+            lblDrawListRowIndexB.BackColor = Color.Transparent;
             lblDrawListRowIndexB.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblDrawListRowIndexB.Location = new Point(7, 52);
             lblDrawListRowIndexB.Margin = new Padding(4, 0, 4, 0);
@@ -2438,6 +2710,7 @@ namespace CrashEdit.CE
             // lblEntityB
             // 
             lblEntityB.AutoSize = true;
+            lblEntityB.BackColor = Color.Transparent;
             lblEntityB.Location = new Point(4, 84);
             lblEntityB.Margin = new Padding(4, 0, 4, 0);
             lblEntityB.Name = "lblEntityB";
@@ -2458,6 +2731,7 @@ namespace CrashEdit.CE
             // 
             // lblEntityIndexB
             // 
+            lblEntityIndexB.BackColor = Color.Transparent;
             lblEntityIndexB.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblEntityIndexB.Location = new Point(7, 52);
             lblEntityIndexB.Margin = new Padding(4, 0, 4, 0);
@@ -2469,79 +2743,107 @@ namespace CrashEdit.CE
             // 
             // cmdAppendEntityB
             // 
+            cmdAppendEntityB.BorderColour = Color.Empty;
+            cmdAppendEntityB.CustomColour = false;
+            cmdAppendEntityB.FlatBottom = false;
+            cmdAppendEntityB.FlatTop = false;
             cmdAppendEntityB.Location = new Point(7, 144);
             cmdAppendEntityB.Margin = new Padding(4, 3, 4, 3);
             cmdAppendEntityB.Name = "cmdAppendEntityB";
+            cmdAppendEntityB.Padding = new Padding(5);
             cmdAppendEntityB.Size = new Size(140, 27);
             cmdAppendEntityB.TabIndex = 12;
             cmdAppendEntityB.Text = "Append";
-            cmdAppendEntityB.UseVisualStyleBackColor = true;
             cmdAppendEntityB.Click += cmdAppendEntityB_Click;
             // 
             // cmdRemoveEntityB
             // 
+            cmdRemoveEntityB.BorderColour = Color.Empty;
+            cmdRemoveEntityB.CustomColour = false;
+            cmdRemoveEntityB.FlatBottom = false;
+            cmdRemoveEntityB.FlatTop = false;
             cmdRemoveEntityB.Location = new Point(7, 111);
             cmdRemoveEntityB.Margin = new Padding(4, 3, 4, 3);
             cmdRemoveEntityB.Name = "cmdRemoveEntityB";
+            cmdRemoveEntityB.Padding = new Padding(5);
             cmdRemoveEntityB.Size = new Size(68, 27);
             cmdRemoveEntityB.TabIndex = 11;
             cmdRemoveEntityB.Text = "Remove";
-            cmdRemoveEntityB.UseVisualStyleBackColor = true;
             cmdRemoveEntityB.Click += cmdRemoveEntityB_Click;
             // 
             // cmdPrevEntityB
             // 
+            cmdPrevEntityB.BorderColour = Color.Empty;
+            cmdPrevEntityB.CustomColour = false;
+            cmdPrevEntityB.FlatBottom = false;
+            cmdPrevEntityB.FlatTop = false;
             cmdPrevEntityB.Location = new Point(7, 22);
             cmdPrevEntityB.Margin = new Padding(4, 3, 4, 3);
             cmdPrevEntityB.Name = "cmdPrevEntityB";
+            cmdPrevEntityB.Padding = new Padding(5);
             cmdPrevEntityB.Size = new Size(68, 27);
             cmdPrevEntityB.TabIndex = 8;
             cmdPrevEntityB.Text = "Previous";
-            cmdPrevEntityB.UseVisualStyleBackColor = true;
             cmdPrevEntityB.Click += cmdPrevEntityB_Click;
             // 
             // cmdInsertEntityB
             // 
+            cmdInsertEntityB.BorderColour = Color.Empty;
+            cmdInsertEntityB.CustomColour = false;
+            cmdInsertEntityB.FlatBottom = false;
+            cmdInsertEntityB.FlatTop = false;
             cmdInsertEntityB.Location = new Point(79, 111);
             cmdInsertEntityB.Margin = new Padding(4, 3, 4, 3);
             cmdInsertEntityB.Name = "cmdInsertEntityB";
+            cmdInsertEntityB.Padding = new Padding(5);
             cmdInsertEntityB.Size = new Size(68, 27);
             cmdInsertEntityB.TabIndex = 13;
             cmdInsertEntityB.Text = "Insert";
-            cmdInsertEntityB.UseVisualStyleBackColor = true;
             cmdInsertEntityB.Click += cmdInsertEntityB_Click;
             // 
             // cmdNextEntityB
             // 
+            cmdNextEntityB.BorderColour = Color.Empty;
+            cmdNextEntityB.CustomColour = false;
+            cmdNextEntityB.FlatBottom = false;
+            cmdNextEntityB.FlatTop = false;
             cmdNextEntityB.Location = new Point(79, 22);
             cmdNextEntityB.Margin = new Padding(4, 3, 4, 3);
             cmdNextEntityB.Name = "cmdNextEntityB";
+            cmdNextEntityB.Padding = new Padding(5);
             cmdNextEntityB.Size = new Size(68, 27);
             cmdNextEntityB.TabIndex = 9;
             cmdNextEntityB.Text = "Next";
-            cmdNextEntityB.UseVisualStyleBackColor = true;
             cmdNextEntityB.Click += cmdNextEntityB_Click;
             // 
             // cmdPrevRowDrawB
             // 
+            cmdPrevRowDrawB.BorderColour = Color.Empty;
+            cmdPrevRowDrawB.CustomColour = false;
+            cmdPrevRowDrawB.FlatBottom = false;
+            cmdPrevRowDrawB.FlatTop = false;
             cmdPrevRowDrawB.Location = new Point(7, 22);
             cmdPrevRowDrawB.Margin = new Padding(4, 3, 4, 3);
             cmdPrevRowDrawB.Name = "cmdPrevRowDrawB";
+            cmdPrevRowDrawB.Padding = new Padding(5);
             cmdPrevRowDrawB.Size = new Size(75, 27);
             cmdPrevRowDrawB.TabIndex = 15;
             cmdPrevRowDrawB.Text = "Previous";
-            cmdPrevRowDrawB.UseVisualStyleBackColor = true;
             cmdPrevRowDrawB.Click += cmdPrevRowDrawB_Click;
             // 
             // cmdNextRowDrawB
             // 
+            cmdNextRowDrawB.BorderColour = Color.Empty;
+            cmdNextRowDrawB.CustomColour = false;
+            cmdNextRowDrawB.FlatBottom = false;
+            cmdNextRowDrawB.FlatTop = false;
             cmdNextRowDrawB.Location = new Point(86, 22);
             cmdNextRowDrawB.Margin = new Padding(4, 3, 4, 3);
             cmdNextRowDrawB.Name = "cmdNextRowDrawB";
+            cmdNextRowDrawB.Padding = new Padding(5);
             cmdNextRowDrawB.Size = new Size(74, 27);
             cmdNextRowDrawB.TabIndex = 16;
             cmdNextRowDrawB.Text = "Next";
-            cmdNextRowDrawB.UseVisualStyleBackColor = true;
             cmdNextRowDrawB.Click += cmdNextRowDrawB_Click;
             // 
             // fraDrawListA
@@ -2566,6 +2868,7 @@ namespace CrashEdit.CE
             // lblMetavalueDrawA
             // 
             lblMetavalueDrawA.AutoSize = true;
+            lblMetavalueDrawA.BackColor = Color.Transparent;
             lblMetavalueDrawA.Location = new Point(7, 87);
             lblMetavalueDrawA.Margin = new Padding(4, 0, 4, 0);
             lblMetavalueDrawA.Name = "lblMetavalueDrawA";
@@ -2575,24 +2878,32 @@ namespace CrashEdit.CE
             // 
             // cmdRemoveRowDrawA
             // 
+            cmdRemoveRowDrawA.BorderColour = Color.Empty;
+            cmdRemoveRowDrawA.CustomColour = false;
+            cmdRemoveRowDrawA.FlatBottom = false;
+            cmdRemoveRowDrawA.FlatTop = false;
             cmdRemoveRowDrawA.Location = new Point(7, 114);
             cmdRemoveRowDrawA.Margin = new Padding(4, 3, 4, 3);
             cmdRemoveRowDrawA.Name = "cmdRemoveRowDrawA";
+            cmdRemoveRowDrawA.Padding = new Padding(5);
             cmdRemoveRowDrawA.Size = new Size(75, 27);
             cmdRemoveRowDrawA.TabIndex = 16;
             cmdRemoveRowDrawA.Text = "Remove";
-            cmdRemoveRowDrawA.UseVisualStyleBackColor = true;
             cmdRemoveRowDrawA.Click += cmdRemoveRowDrawA_Click;
             // 
             // cmdInsertRowDrawA
             // 
+            cmdInsertRowDrawA.BorderColour = Color.Empty;
+            cmdInsertRowDrawA.CustomColour = false;
+            cmdInsertRowDrawA.FlatBottom = false;
+            cmdInsertRowDrawA.FlatTop = false;
             cmdInsertRowDrawA.Location = new Point(86, 114);
             cmdInsertRowDrawA.Margin = new Padding(4, 3, 4, 3);
             cmdInsertRowDrawA.Name = "cmdInsertRowDrawA";
+            cmdInsertRowDrawA.Padding = new Padding(5);
             cmdInsertRowDrawA.Size = new Size(74, 27);
             cmdInsertRowDrawA.TabIndex = 17;
             cmdInsertRowDrawA.Text = "Insert";
-            cmdInsertRowDrawA.UseVisualStyleBackColor = true;
             cmdInsertRowDrawA.Click += cmdInsertRowDrawA_Click;
             // 
             // numMetavalueDrawA
@@ -2608,6 +2919,7 @@ namespace CrashEdit.CE
             // 
             // lblDrawListRowIndexA
             // 
+            lblDrawListRowIndexA.BackColor = Color.Transparent;
             lblDrawListRowIndexA.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblDrawListRowIndexA.Location = new Point(7, 52);
             lblDrawListRowIndexA.Margin = new Padding(4, 0, 4, 0);
@@ -2639,6 +2951,7 @@ namespace CrashEdit.CE
             // lblEntityA
             // 
             lblEntityA.AutoSize = true;
+            lblEntityA.BackColor = Color.Transparent;
             lblEntityA.Location = new Point(4, 84);
             lblEntityA.Margin = new Padding(4, 0, 4, 0);
             lblEntityA.Name = "lblEntityA";
@@ -2659,6 +2972,7 @@ namespace CrashEdit.CE
             // 
             // lblEntityIndexA
             // 
+            lblEntityIndexA.BackColor = Color.Transparent;
             lblEntityIndexA.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblEntityIndexA.Location = new Point(7, 52);
             lblEntityIndexA.Margin = new Padding(4, 0, 4, 0);
@@ -2670,79 +2984,107 @@ namespace CrashEdit.CE
             // 
             // cmdAppendEntityA
             // 
+            cmdAppendEntityA.BorderColour = Color.Empty;
+            cmdAppendEntityA.CustomColour = false;
+            cmdAppendEntityA.FlatBottom = false;
+            cmdAppendEntityA.FlatTop = false;
             cmdAppendEntityA.Location = new Point(7, 144);
             cmdAppendEntityA.Margin = new Padding(4, 3, 4, 3);
             cmdAppendEntityA.Name = "cmdAppendEntityA";
+            cmdAppendEntityA.Padding = new Padding(5);
             cmdAppendEntityA.Size = new Size(140, 27);
             cmdAppendEntityA.TabIndex = 12;
             cmdAppendEntityA.Text = "Append";
-            cmdAppendEntityA.UseVisualStyleBackColor = true;
             cmdAppendEntityA.Click += cmdAppendEntityA_Click;
             // 
             // cmdRemoveEntityA
             // 
+            cmdRemoveEntityA.BorderColour = Color.Empty;
+            cmdRemoveEntityA.CustomColour = false;
+            cmdRemoveEntityA.FlatBottom = false;
+            cmdRemoveEntityA.FlatTop = false;
             cmdRemoveEntityA.Location = new Point(7, 111);
             cmdRemoveEntityA.Margin = new Padding(4, 3, 4, 3);
             cmdRemoveEntityA.Name = "cmdRemoveEntityA";
+            cmdRemoveEntityA.Padding = new Padding(5);
             cmdRemoveEntityA.Size = new Size(68, 27);
             cmdRemoveEntityA.TabIndex = 11;
             cmdRemoveEntityA.Text = "Remove";
-            cmdRemoveEntityA.UseVisualStyleBackColor = true;
             cmdRemoveEntityA.Click += cmdRemoveEntityA_Click;
             // 
             // cmdPrevEntityA
             // 
+            cmdPrevEntityA.BorderColour = Color.Empty;
+            cmdPrevEntityA.CustomColour = false;
+            cmdPrevEntityA.FlatBottom = false;
+            cmdPrevEntityA.FlatTop = false;
             cmdPrevEntityA.Location = new Point(7, 22);
             cmdPrevEntityA.Margin = new Padding(4, 3, 4, 3);
             cmdPrevEntityA.Name = "cmdPrevEntityA";
+            cmdPrevEntityA.Padding = new Padding(5);
             cmdPrevEntityA.Size = new Size(68, 27);
             cmdPrevEntityA.TabIndex = 8;
             cmdPrevEntityA.Text = "Previous";
-            cmdPrevEntityA.UseVisualStyleBackColor = true;
             cmdPrevEntityA.Click += cmdPrevEntityA_Click;
             // 
             // cmdInsertEntityA
             // 
+            cmdInsertEntityA.BorderColour = Color.Empty;
+            cmdInsertEntityA.CustomColour = false;
+            cmdInsertEntityA.FlatBottom = false;
+            cmdInsertEntityA.FlatTop = false;
             cmdInsertEntityA.Location = new Point(79, 111);
             cmdInsertEntityA.Margin = new Padding(4, 3, 4, 3);
             cmdInsertEntityA.Name = "cmdInsertEntityA";
+            cmdInsertEntityA.Padding = new Padding(5);
             cmdInsertEntityA.Size = new Size(68, 27);
             cmdInsertEntityA.TabIndex = 13;
             cmdInsertEntityA.Text = "Insert";
-            cmdInsertEntityA.UseVisualStyleBackColor = true;
             cmdInsertEntityA.Click += cmdInsertEntityA_Click;
             // 
             // cmdNextEntityA
             // 
+            cmdNextEntityA.BorderColour = Color.Empty;
+            cmdNextEntityA.CustomColour = false;
+            cmdNextEntityA.FlatBottom = false;
+            cmdNextEntityA.FlatTop = false;
             cmdNextEntityA.Location = new Point(79, 22);
             cmdNextEntityA.Margin = new Padding(4, 3, 4, 3);
             cmdNextEntityA.Name = "cmdNextEntityA";
+            cmdNextEntityA.Padding = new Padding(5);
             cmdNextEntityA.Size = new Size(68, 27);
             cmdNextEntityA.TabIndex = 9;
             cmdNextEntityA.Text = "Next";
-            cmdNextEntityA.UseVisualStyleBackColor = true;
             cmdNextEntityA.Click += cmdNextEntityA_Click;
             // 
             // cmdPrevRowDrawA
             // 
+            cmdPrevRowDrawA.BorderColour = Color.Empty;
+            cmdPrevRowDrawA.CustomColour = false;
+            cmdPrevRowDrawA.FlatBottom = false;
+            cmdPrevRowDrawA.FlatTop = false;
             cmdPrevRowDrawA.Location = new Point(7, 22);
             cmdPrevRowDrawA.Margin = new Padding(4, 3, 4, 3);
             cmdPrevRowDrawA.Name = "cmdPrevRowDrawA";
+            cmdPrevRowDrawA.Padding = new Padding(5);
             cmdPrevRowDrawA.Size = new Size(75, 27);
             cmdPrevRowDrawA.TabIndex = 15;
             cmdPrevRowDrawA.Text = "Previous";
-            cmdPrevRowDrawA.UseVisualStyleBackColor = true;
             cmdPrevRowDrawA.Click += cmdPrevRowDrawA_Click;
             // 
             // cmdNextRowDrawA
             // 
+            cmdNextRowDrawA.BorderColour = Color.Empty;
+            cmdNextRowDrawA.CustomColour = false;
+            cmdNextRowDrawA.FlatBottom = false;
+            cmdNextRowDrawA.FlatTop = false;
             cmdNextRowDrawA.Location = new Point(86, 22);
             cmdNextRowDrawA.Margin = new Padding(4, 3, 4, 3);
             cmdNextRowDrawA.Name = "cmdNextRowDrawA";
+            cmdNextRowDrawA.Padding = new Padding(5);
             cmdNextRowDrawA.Size = new Size(74, 27);
             cmdNextRowDrawA.TabIndex = 16;
             cmdNextRowDrawA.Text = "Next";
-            cmdNextRowDrawA.UseVisualStyleBackColor = true;
             cmdNextRowDrawA.Click += cmdNextRowDrawA_Click;
             // 
             // EntityBox
@@ -2866,207 +3208,207 @@ namespace CrashEdit.CE
         #endregion
 
         private System.Windows.Forms.CheckBox chkType;
-        private System.Windows.Forms.NumericUpDown numType;
-        private System.Windows.Forms.GroupBox fraType;
+        private DarkNumericUpDown numType;
+        private DarkGroupBox fraType;
         private System.Windows.Forms.CheckBox chkSubtype;
-        private System.Windows.Forms.NumericUpDown numSubtype;
-        private System.Windows.Forms.GroupBox fraPosition;
+        private DarkNumericUpDown numSubtype;
+        private DarkGroupBox fraPosition;
         private System.Windows.Forms.Label lblZ;
         private System.Windows.Forms.Label lblY;
         private System.Windows.Forms.Label lblX;
-        private System.Windows.Forms.NumericUpDown numZ;
-        private System.Windows.Forms.NumericUpDown numY;
-        private System.Windows.Forms.NumericUpDown numX;
-        private System.Windows.Forms.Button cmdInsertPosition;
-        private System.Windows.Forms.Button cmdInsertVictim;
-        private System.Windows.Forms.Button cmdRemovePosition;
-        private System.Windows.Forms.Button cmdAppendPosition;
-        private System.Windows.Forms.Button cmdNextPosition;
-        private System.Windows.Forms.Button cmdPreviousPosition;
+        private DarkNumericUpDown numZ;
+        private DarkNumericUpDown numY;
+        private DarkNumericUpDown numX;
+        private DarkButton cmdInsertPosition;
+        private DarkButton cmdInsertVictim;
+        private DarkButton cmdRemovePosition;
+        private DarkButton cmdAppendPosition;
+        private DarkButton cmdNextPosition;
+        private DarkButton cmdPreviousPosition;
         private System.Windows.Forms.Label lblPositionIndex;
         private System.Windows.Forms.Label lblVictimIndex;
-        private System.Windows.Forms.GroupBox fraID;
+        private DarkGroupBox fraID;
         private System.Windows.Forms.CheckBox chkID2;
-        private System.Windows.Forms.NumericUpDown numID2;
+        private DarkNumericUpDown numID2;
         private System.Windows.Forms.CheckBox chkID;
-        private System.Windows.Forms.NumericUpDown numID;
-        private System.Windows.Forms.GroupBox fraSettings;
+        private DarkNumericUpDown numID;
+        private DarkGroupBox fraSettings;
         private System.Windows.Forms.Label lblSettingIndex;
-        private System.Windows.Forms.Button cmdNextSetting;
-        private System.Windows.Forms.Button cmdPreviousSetting;
-        private System.Windows.Forms.Button cmdAddSetting;
-        private System.Windows.Forms.Button cmdRemoveSetting;
-        private System.Windows.Forms.NumericUpDown numSettingB;
-        private System.Windows.Forms.NumericUpDown numSettingA;
-        private System.Windows.Forms.GroupBox fraName;
-        private System.Windows.Forms.TextBox txtName;
+        private DarkButton cmdNextSetting;
+        private DarkButton cmdPreviousSetting;
+        private DarkButton cmdAddSetting;
+        private DarkButton cmdRemoveSetting;
+        private DarkNumericUpDown numSettingB;
+        private DarkNumericUpDown numSettingA;
+        private DarkGroupBox fraName;
+        private DarkTextBox txtName;
         private System.Windows.Forms.CheckBox chkName;
-        private System.Windows.Forms.TabControl tbcTabs;
+        private MetroSetTabControl tbcTabs;
         private System.Windows.Forms.TabPage tabGeneral;
         private System.Windows.Forms.TabPage tabSpecial;
-        private System.Windows.Forms.GroupBox fraVictims;
-        private System.Windows.Forms.NumericUpDown numVictimID;
-        private System.Windows.Forms.Button cmdRemoveVictim;
-        private System.Windows.Forms.Button cmdNextVictim;
-        private System.Windows.Forms.Button cmdPreviousVictim;
-        private System.Windows.Forms.GroupBox fraBoxCount;
+        private DarkGroupBox fraVictims;
+        private DarkNumericUpDown numVictimID;
+        private DarkButton cmdRemoveVictim;
+        private DarkButton cmdNextVictim;
+        private DarkButton cmdPreviousVictim;
+        private DarkGroupBox fraBoxCount;
         private System.Windows.Forms.CheckBox chkBoxCount;
-        private System.Windows.Forms.NumericUpDown numBoxCount;
-        private System.Windows.Forms.Button cmdClearAllVictims;
-        private System.Windows.Forms.GroupBox fraDDASettings;
+        private DarkNumericUpDown numBoxCount;
+        private DarkButton cmdClearAllVictims;
+        private DarkGroupBox fraDDASettings;
         private System.Windows.Forms.CheckBox chkDDASettings;
-        private System.Windows.Forms.NumericUpDown numDDASettings;
-        private System.Windows.Forms.GroupBox fraDDASection;
+        private DarkNumericUpDown numDDASettings;
+        private DarkGroupBox fraDDASection;
         private System.Windows.Forms.CheckBox chkDDASection;
-        private System.Windows.Forms.NumericUpDown numDDASection;
+        private DarkNumericUpDown numDDASection;
         private System.Windows.Forms.TabPage tabLoadLists;
-        private System.Windows.Forms.GroupBox fraLoadListA;
-        private System.Windows.Forms.Button cmdRemoveEIDA;
-        private System.Windows.Forms.Button cmdInsertEIDA;
-        private System.Windows.Forms.Button cmdNextEIDA;
-        private System.Windows.Forms.Button cmdPrevEIDA;
+        private DarkGroupBox fraLoadListA;
+        private DarkButton cmdRemoveEIDA;
+        private DarkButton cmdInsertEIDA;
+        private DarkButton cmdNextEIDA;
+        private DarkButton cmdPrevEIDA;
         private System.Windows.Forms.Label lblEIDIndexA;
-        private System.Windows.Forms.Button cmdAppendEIDA;
+        private DarkButton cmdAppendEIDA;
         private System.Windows.Forms.Label lblLoadListRowIndexA;
-        private System.Windows.Forms.GroupBox fraEIDA;
-        private System.Windows.Forms.Button cmdPrevRowA;
-        private System.Windows.Forms.Button cmdNextRowA;
-        private System.Windows.Forms.TextBox txtEIDA;
-        private System.Windows.Forms.Button cmdRemoveRowA;
-        private System.Windows.Forms.Button cmdInsertRowA;
-        private System.Windows.Forms.NumericUpDown numMetavalueLoadA;
+        private DarkGroupBox fraEIDA;
+        private DarkButton cmdPrevRowA;
+        private DarkButton cmdNextRowA;
+        private DarkTextBox txtEIDA;
+        private DarkButton cmdRemoveRowA;
+        private DarkButton cmdInsertRowA;
+        private DarkNumericUpDown numMetavalueLoadA;
         private System.Windows.Forms.Label lblMetavalueLoadA;
-        private System.Windows.Forms.GroupBox fraScaling;
+        private DarkGroupBox fraScaling;
         private System.Windows.Forms.CheckBox chkScaling;
-        private System.Windows.Forms.NumericUpDown numScaling;
+        private DarkNumericUpDown numScaling;
         private System.Windows.Forms.CheckBox chkBonusBoxCount;
-        private System.Windows.Forms.NumericUpDown numBonusBoxCount;
-        private System.Windows.Forms.GroupBox fraOtherSettings;
+        private DarkNumericUpDown numBonusBoxCount;
+        private DarkGroupBox fraOtherSettings;
         private System.Windows.Forms.CheckBox chkOtherSettings;
-        private System.Windows.Forms.NumericUpDown numOtherSettings;
-        private System.Windows.Forms.GroupBox fraSLST;
-        private System.Windows.Forms.TextBox txtSLST;
+        private DarkNumericUpDown numOtherSettings;
+        private DarkGroupBox fraSLST;
+        private DarkTextBox txtSLST;
         private System.Windows.Forms.CheckBox chkSLST;
         private System.Windows.Forms.TabPage tabCamera;
         private System.Windows.Forms.Label lblEIDErr1;
         private System.Windows.Forms.Label lblEIDErrA;
-        private System.Windows.Forms.GroupBox fraLoadListB;
+        private DarkGroupBox fraLoadListB;
         private System.Windows.Forms.Label lblMetavalueLoadB;
-        private System.Windows.Forms.Button cmdRemoveRowB;
-        private System.Windows.Forms.Button cmdInsertRowB;
-        private System.Windows.Forms.NumericUpDown numMetavalueLoadB;
+        private DarkButton cmdRemoveRowB;
+        private DarkButton cmdInsertRowB;
+        private DarkNumericUpDown numMetavalueLoadB;
         private System.Windows.Forms.Label lblLoadListRowIndexB;
-        private System.Windows.Forms.GroupBox fraEIDB;
-        private System.Windows.Forms.TextBox txtEIDB;
+        private DarkGroupBox fraEIDB;
+        private DarkTextBox txtEIDB;
         private System.Windows.Forms.Label lblEIDIndexB;
-        private System.Windows.Forms.Button cmdAppendEIDB;
-        private System.Windows.Forms.Button cmdRemoveEIDB;
-        private System.Windows.Forms.Button cmdPrevEIDB;
-        private System.Windows.Forms.Button cmdInsertEIDB;
-        private System.Windows.Forms.Button cmdNextEIDB;
-        private System.Windows.Forms.Button cmdPrevRowB;
-        private System.Windows.Forms.Button cmdNextRowB;
+        private DarkButton cmdAppendEIDB;
+        private DarkButton cmdRemoveEIDB;
+        private DarkButton cmdPrevEIDB;
+        private DarkButton cmdInsertEIDB;
+        private DarkButton cmdNextEIDB;
+        private DarkButton cmdPrevRowB;
+        private DarkButton cmdNextRowB;
         private System.Windows.Forms.TabPage tabDrawLists;
-        private System.Windows.Forms.GroupBox fraDrawListA;
+        private DarkGroupBox fraDrawListA;
         private System.Windows.Forms.Label lblMetavalueDrawA;
-        private System.Windows.Forms.Button cmdRemoveRowDrawA;
-        private System.Windows.Forms.Button cmdInsertRowDrawA;
-        private System.Windows.Forms.NumericUpDown numMetavalueDrawA;
+        private DarkButton cmdRemoveRowDrawA;
+        private DarkButton cmdInsertRowDrawA;
+        private DarkNumericUpDown numMetavalueDrawA;
         private System.Windows.Forms.Label lblDrawListRowIndexA;
-        private System.Windows.Forms.GroupBox fraEntityA;
+        private DarkGroupBox fraEntityA;
         private System.Windows.Forms.Label lblEntityIndexA;
-        private System.Windows.Forms.Button cmdAppendEntityA;
-        private System.Windows.Forms.Button cmdRemoveEntityA;
-        private System.Windows.Forms.Button cmdPrevEntityA;
-        private System.Windows.Forms.Button cmdInsertEntityA;
-        private System.Windows.Forms.Button cmdNextEntityA;
-        private System.Windows.Forms.Button cmdPrevRowDrawA;
-        private System.Windows.Forms.Button cmdNextRowDrawA;
+        private DarkButton cmdAppendEntityA;
+        private DarkButton cmdRemoveEntityA;
+        private DarkButton cmdPrevEntityA;
+        private DarkButton cmdInsertEntityA;
+        private DarkButton cmdNextEntityA;
+        private DarkButton cmdPrevRowDrawA;
+        private DarkButton cmdNextRowDrawA;
         private System.Windows.Forms.Label lblEntityA;
-        private System.Windows.Forms.NumericUpDown numEntityA;
-        private System.Windows.Forms.GroupBox fraDrawListB;
+        private DarkNumericUpDown numEntityA;
+        private DarkGroupBox fraDrawListB;
         private System.Windows.Forms.Label lblMetavalueDrawB;
-        private System.Windows.Forms.Button cmdRemoveRowDrawB;
-        private System.Windows.Forms.Button cmdInsertRowDrawB;
-        private System.Windows.Forms.NumericUpDown numMetavalueDrawB;
+        private DarkButton cmdRemoveRowDrawB;
+        private DarkButton cmdInsertRowDrawB;
+        private DarkNumericUpDown numMetavalueDrawB;
         private System.Windows.Forms.Label lblDrawListRowIndexB;
-        private System.Windows.Forms.GroupBox fraEntityB;
+        private DarkGroupBox fraEntityB;
         private System.Windows.Forms.Label lblEntityB;
-        private System.Windows.Forms.NumericUpDown numEntityB;
+        private DarkNumericUpDown numEntityB;
         private System.Windows.Forms.Label lblEntityIndexB;
-        private System.Windows.Forms.Button cmdAppendEntityB;
-        private System.Windows.Forms.Button cmdRemoveEntityB;
-        private System.Windows.Forms.Button cmdPrevEntityB;
-        private System.Windows.Forms.Button cmdInsertEntityB;
-        private System.Windows.Forms.Button cmdNextEntityB;
-        private System.Windows.Forms.Button cmdPrevRowDrawB;
-        private System.Windows.Forms.Button cmdNextRowDrawB;
-        private System.Windows.Forms.Button cmdLoadListVerify;
-        private System.Windows.Forms.GroupBox fraLoadListPayload;
-        private System.Windows.Forms.Button cmdPayload;
+        private DarkButton cmdAppendEntityB;
+        private DarkButton cmdRemoveEntityB;
+        private DarkButton cmdPrevEntityB;
+        private DarkButton cmdInsertEntityB;
+        private DarkButton cmdNextEntityB;
+        private DarkButton cmdPrevRowDrawB;
+        private DarkButton cmdNextRowDrawB;
+        private DarkButton cmdLoadListVerify;
+        private DarkGroupBox fraLoadListPayload;
+        private DarkButton cmdPayload;
         private System.Windows.Forms.Label lblPayloadPosition;
-        private System.Windows.Forms.NumericUpDown numPayloadPosition;
+        private DarkNumericUpDown numPayloadPosition;
         private System.Windows.Forms.Label lblPayload;
-        private System.Windows.Forms.NumericUpDown numSettingC;
+        private DarkNumericUpDown numSettingC;
         private System.Windows.Forms.CheckBox chkSettingHex;
         private System.Windows.Forms.Label lblEIDErrB;
-        private System.Windows.Forms.Button cmdInterpolate;
-        private System.Windows.Forms.GroupBox fraTTReward;
+        private DarkButton cmdInterpolate;
+        private DarkGroupBox fraTTReward;
         private System.Windows.Forms.CheckBox chkTTReward;
-        private System.Windows.Forms.NumericUpDown numTTReward;
-        private System.Windows.Forms.GroupBox fraCameraSubIndex;
+        private DarkNumericUpDown numTTReward;
+        private DarkGroupBox fraCameraSubIndex;
         private System.Windows.Forms.CheckBox chkCameraSubIndex;
-        private System.Windows.Forms.NumericUpDown numCameraSubIndex;
-        private System.Windows.Forms.GroupBox fraCameraIndex;
+        private DarkNumericUpDown numCameraSubIndex;
+        private DarkGroupBox fraCameraIndex;
         private System.Windows.Forms.CheckBox chkCameraIndex;
-        private System.Windows.Forms.NumericUpDown numCameraIndex;
-        private System.Windows.Forms.GroupBox fraMode;
+        private DarkNumericUpDown numCameraIndex;
+        private DarkGroupBox fraMode;
         private System.Windows.Forms.CheckBox chkMode;
-        private System.Windows.Forms.NumericUpDown numMode;
-        private System.Windows.Forms.GroupBox fraAvgDist;
+        private DarkNumericUpDown numMode;
+        private DarkGroupBox fraAvgDist;
         private System.Windows.Forms.CheckBox chkAvgDist;
-        private System.Windows.Forms.NumericUpDown numAvgDist;
-        private System.Windows.Forms.GroupBox fraNeighbor;
+        private DarkNumericUpDown numAvgDist;
+        private DarkGroupBox fraNeighbor;
         private System.Windows.Forms.Label lblNeighborPosition;
-        private System.Windows.Forms.Button cmdRemoveNeighbor;
-        private System.Windows.Forms.Button cmdInsertNeighbor;
-        private System.Windows.Forms.NumericUpDown numNeighborPosition;
+        private DarkButton cmdRemoveNeighbor;
+        private DarkButton cmdInsertNeighbor;
+        private DarkNumericUpDown numNeighborPosition;
         private System.Windows.Forms.Label lblNeighbor;
-        private System.Windows.Forms.GroupBox fraNeighborSetting;
-        private System.Windows.Forms.Button cmdPrevNeighbor;
-        private System.Windows.Forms.Button cmdNextNeighbor;
+        private DarkGroupBox fraNeighborSetting;
+        private DarkButton cmdPrevNeighbor;
+        private DarkButton cmdNextNeighbor;
         private System.Windows.Forms.Label lblNeighborLink;
         private System.Windows.Forms.Label lblNeighborFlag;
-        private System.Windows.Forms.NumericUpDown numNeighborFlag;
+        private DarkNumericUpDown numNeighborFlag;
         private System.Windows.Forms.Label lblNeighborCamera;
         private System.Windows.Forms.Label lblNeighborZone;
-        private System.Windows.Forms.NumericUpDown numNeighborLink;
-        private System.Windows.Forms.NumericUpDown numNeighborCamera;
-        private System.Windows.Forms.NumericUpDown numNeighborZone;
+        private DarkNumericUpDown numNeighborLink;
+        private DarkNumericUpDown numNeighborCamera;
+        private DarkNumericUpDown numNeighborZone;
         private System.Windows.Forms.Label lblNeighborSetting;
-        private System.Windows.Forms.Button cmdRemoveNeighborSetting;
-        private System.Windows.Forms.Button cmdInsertNeighborSetting;
-        private System.Windows.Forms.Button cmdPrevNeighborSetting;
-        private System.Windows.Forms.Button cmdNextNeighborSetting;
-        private System.Windows.Forms.GroupBox fraZMod;
+        private DarkButton cmdRemoveNeighborSetting;
+        private DarkButton cmdInsertNeighborSetting;
+        private DarkButton cmdPrevNeighborSetting;
+        private DarkButton cmdNextNeighborSetting;
+        private DarkGroupBox fraZMod;
         private System.Windows.Forms.CheckBox chkZMod;
-        private System.Windows.Forms.NumericUpDown numZMod;
-        private System.Windows.Forms.GroupBox fraFOV;
+        private DarkNumericUpDown numZMod;
+        private DarkGroupBox fraFOV;
         private System.Windows.Forms.Label lblFOVPosition;
-        private System.Windows.Forms.Button cmdRemoveFOVFrame;
-        private System.Windows.Forms.Button cmdInsertFOVFrame;
-        private System.Windows.Forms.NumericUpDown numFOVPosition;
+        private DarkButton cmdRemoveFOVFrame;
+        private DarkButton cmdInsertFOVFrame;
+        private DarkNumericUpDown numFOVPosition;
         private System.Windows.Forms.Label lblFOVFrame;
-        private System.Windows.Forms.GroupBox fraFOVFrame;
+        private DarkGroupBox fraFOVFrame;
         private System.Windows.Forms.Label lblFOVIndex;
-        private System.Windows.Forms.Button cmdRemoveFOV;
-        private System.Windows.Forms.Button cmdInsertFOV;
-        private System.Windows.Forms.Button cmdPrevFOV;
-        private System.Windows.Forms.Button cmdNextFOV;
+        private DarkButton cmdRemoveFOV;
+        private DarkButton cmdInsertFOV;
+        private DarkButton cmdPrevFOV;
+        private DarkButton cmdNextFOV;
         private System.Windows.Forms.Label lblFOV;
-        private System.Windows.Forms.NumericUpDown numFOV;
-        private System.Windows.Forms.Button cmdPrevFOVFrame;
-        private System.Windows.Forms.Button cmdNextFOVFrame;
+        private DarkNumericUpDown numFOV;
+        private DarkButton cmdPrevFOVFrame;
+        private DarkButton cmdNextFOVFrame;
         private System.Windows.Forms.Label lblArgAs;
     }
 }

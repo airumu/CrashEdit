@@ -1,4 +1,6 @@
+using System.Runtime;
 using CrashEdit.Crash;
+using MetroSet_UI.Controls;
 
 namespace CrashEdit.CE
 {
@@ -8,13 +10,19 @@ namespace CrashEdit.CE
 
         private int totalsize;
 
-        private ListBox lstEntryList;
+        private MetroSetListBox lstEntryList;
 
         public EntryChunkBox(EntryChunkController controller)
         {
             this.controller = controller;
 
-            lstEntryList = new ListBox { Dock = DockStyle.Fill };
+            lstEntryList = new MetroSetListBox
+            {
+                Dock = DockStyle.Fill,
+                ItemHeight = 16,
+                ShowScrollBar = false,
+                Style = MetroSet_UI.Enums.Style.Dark
+            };
 
             Controls.Add(lstEntryList);
 

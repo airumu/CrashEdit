@@ -1,16 +1,22 @@
+using System.Drawing;
 using System.Windows.Forms;
+using AltUI.Forms;
+using MetroSet_UI.Controls;
 
 namespace CrashEdit
 {
 
-    public abstract class MainForm : Form, ICommandHost
+    public abstract class MainForm : DarkForm, ICommandHost
     {
 
         public MainForm()
         {
-            TabControl = new TabControl
+            TabControl = new MetroSetTabControl
             {
-                Dock = DockStyle.Fill
+                Dock = DockStyle.Fill,
+                ItemSize = new Size(100, 28),
+                TabStyle = MetroSet_UI.Enums.TabStyle.Style2,
+                Style = MetroSet_UI.Enums.Style.Dark,
             };
             TabControl.SelectedIndexChanged += (sender, e) =>
             {
@@ -202,7 +208,7 @@ namespace CrashEdit
             ExportDialog = new SaveFileDialog();
         }
 
-        public TabControl TabControl { get; }
+        public MetroSetTabControl TabControl { get; }
 
         public MenuStrip MenuStrip { get; }
 

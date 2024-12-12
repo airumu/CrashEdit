@@ -15,6 +15,7 @@ namespace CrashEdit
             AllowDrop = true;
             ImageList = Embeds.ImageList;
             DoubleBuffered = true; // why the hell is this not the default!!
+            BackColor = Color.FromArgb(38, 38, 38);
         }
 
         public IVerbExecutor Executor { get; }

@@ -1,5 +1,7 @@
 using System.Drawing;
+using System.Runtime;
 using System.Windows.Forms;
+using MetroSet_UI.Controls;
 
 namespace CrashEdit
 {
@@ -13,9 +15,12 @@ namespace CrashEdit
 
             Controller = ctlr;
 
-            TabControl = new TabControl
+            TabControl = new MetroSetTabControl
             {
-                Dock = DockStyle.Fill
+                Dock = DockStyle.Fill,
+                ItemSize = new Size(100, 28),
+                TabStyle = MetroSet_UI.Enums.TabStyle.Style2,
+                Style = MetroSet_UI.Enums.Style.Dark
             };
             Controls.Add(TabControl);
 
@@ -56,7 +61,7 @@ namespace CrashEdit
 
         public List<Editor> Editors { get; }
 
-        public TabControl TabControl { get; }
+        public MetroSetTabControl TabControl { get; }
 
         protected override void Dispose(bool disposing)
         {

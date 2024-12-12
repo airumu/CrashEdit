@@ -1,9 +1,10 @@
+using AltUI.Forms;
 using CrashEdit.Crash;
 using System.Windows.Forms;
 
 namespace CrashEdit.CrashUI
 {
-    public partial class GameVersionForm : Form
+    public partial class GameVersionForm : DarkForm
     {
         public GameVersionForm()
         {

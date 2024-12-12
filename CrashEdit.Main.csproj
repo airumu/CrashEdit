@@ -113,4 +113,9 @@
       <EmbeddedResource Include="Embeds\Images\ThingViolet.gif" />
       <EmbeddedResource Include="Embeds\Images\ThingYellow.gif" />
     </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AltUI" Version="1.0.0" />
+      <PackageReference Include="MetroSet_UI" Version="2.0.0" />
+    </ItemGroup>
 </Project>

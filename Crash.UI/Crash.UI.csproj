@@ -12,4 +12,8 @@
 	<FrameworkReference Include="Microsoft.WindowsDesktop.App" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AltUI" Version="1.0.0" />
+  </ItemGroup>
+
 </Project>
