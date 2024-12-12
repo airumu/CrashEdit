@@ -1,3 +1,4 @@
+using AltUI.Controls;
 using CrashEdit.Crash;
 using MetroSet_UI.Controls;
 using System.Drawing.Imaging;
@@ -12,6 +13,8 @@ namespace CrashEdit.CE
         private TextureViewer frmViewer = null;
 
         private TextureChunk texturechunk;
+
+        private DarkToolTip tipClick;
 
         public TextureChunkBox(TextureChunk chunk)
         {
@@ -54,7 +57,10 @@ namespace CrashEdit.CE
                 PictureBox picture = new PictureBox();
                 picture.Dock = DockStyle.Fill;
                 picture.Image = bitmap;
-                picture.DoubleClick += new EventHandler(OpenViewer);
+                picture.Click += new EventHandler(OpenViewer);
+                picture.Cursor = Cursors.Hand;
+                tipClick = new DarkToolTip();
+                tipClick.SetToolTip(picture, "Click to open the viewer");
                 TabPage page = new TabPage("Monochrome 8");
                 page.Controls.Add(picture);
                 tbcTabs.TabPages.Add(page);
@@ -83,13 +89,17 @@ namespace CrashEdit.CE
                 PictureBox picture = new PictureBox();
                 picture.Dock = DockStyle.Fill;
                 picture.Image = bitmap;
-                picture.DoubleClick += new EventHandler(OpenViewer);
+                picture.Click += new EventHandler(OpenViewer);
+                picture.Cursor = Cursors.Hand;
+                tipClick = new DarkToolTip();
+                tipClick.SetToolTip(picture, "Click to open the viewer");
                 TabPage page = new TabPage("BGR555");
                 page.Controls.Add(picture);
                 tbcTabs.TabPages.Add(page);
                 tbcTabs.SelectedTab = page;
             }
             Controls.Add(tbcTabs);
+            tbcTabs.SelectedIndex = 1;
         }
 
         private void OpenViewer(object sender, EventArgs e)
