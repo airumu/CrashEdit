@@ -481,6 +481,7 @@
             // 
             // tbpGeneral
             // 
+            tbpGeneral.BackColor = SystemColors.Window;
             tbpGeneral.Controls.Add(fraLang);
             tbpGeneral.Controls.Add(cmdReset);
             tbpGeneral.Controls.Add(fraSize);
@@ -490,7 +491,6 @@
             tbpGeneral.Size = new Size(417, 389);
             tbpGeneral.TabIndex = 0;
             tbpGeneral.Text = "General";
-            tbpGeneral.UseVisualStyleBackColor = true;
             // 
             // fraLang
             // 
@@ -504,6 +504,7 @@
             // 
             // tbp3D
             // 
+            tbp3D.BackColor = SystemColors.Window;
             tbp3D.Controls.Add(fraNodeShadeAmt);
             tbp3D.Controls.Add(fraFont);
             tbp3D.Controls.Add(fraClearCol);
@@ -514,10 +515,10 @@
             tbp3D.Size = new Size(417, 389);
             tbp3D.TabIndex = 1;
             tbp3D.Text = "3D Viewer";
-            tbp3D.UseVisualStyleBackColor = true;
             // 
             // tbpDebugDisplay
             // 
+            tbpDebugDisplay.BackColor = SystemColors.Window;
             tbpDebugDisplay.Controls.Add(chkShowEntityParams);
             tbpDebugDisplay.Controls.Add(chkDisableVisual);
             tbpDebugDisplay.Controls.Add(chkViewCamera);
@@ -535,7 +536,6 @@
             tbpDebugDisplay.Size = new Size(417, 389);
             tbpDebugDisplay.TabIndex = 3;
             tbpDebugDisplay.Text = "Debug Displays";
-            tbpDebugDisplay.UseVisualStyleBackColor = true;
             // 
             // chkShowEntityParams
             // 
@@ -616,6 +616,7 @@
             // 
             // tbpPatchNSD
             // 
+            tbpPatchNSD.BackColor = SystemColors.Window;
             tbpPatchNSD.Controls.Add(chkDeleteInvalidEntries);
             tbpPatchNSD.Controls.Add(chkPatchNSDSavesNSF);
             tbpPatchNSD.Location = new Point(4, 24);
@@ -624,7 +625,6 @@
             tbpPatchNSD.Size = new Size(417, 389);
             tbpPatchNSD.TabIndex = 2;
             tbpPatchNSD.Text = "Patch NSD";
-            tbpPatchNSD.UseVisualStyleBackColor = true;
             // 
             // ConfigEditor
             // 

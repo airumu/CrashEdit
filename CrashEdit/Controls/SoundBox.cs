@@ -25,6 +25,8 @@ namespace CrashEdit.CE
 
             tbbExport = new ToolStripButton();
             tbbExport.Text = "Export";
+            tbbExport.ForeColor = SystemColors.ControlText;
+            tbbExport.BackColor = SystemColors.Window;
             tbbExport.Click += new EventHandler(tbbExport_Click);
 
             tsToolbar = new ToolStrip();
@@ -50,16 +52,22 @@ namespace CrashEdit.CE
             int smp = (int)(trkSampleRate.Value / 256.0 * (11025 / 4.0));
             cmdPlay = new Button();
             cmdPlay.Dock = DockStyle.Fill;
+            cmdPlay.ForeColor = SystemColors.ControlText;
+            cmdPlay.BackColor = SystemColors.Window;
             cmdPlay.Text = string.Format("Play ({0}Hz)", smp);
             cmdPlay.Click += new EventHandler(cmdPlay_Click);
 
             cmdExport = new Button();
             cmdExport.Dock = DockStyle.Fill;
+            cmdExport.ForeColor = SystemColors.ControlText;
+            cmdExport.BackColor = SystemColors.Window;
             cmdExport.Text = string.Format("Export ({0}Hz)", smp);
             cmdExport.Click += new EventHandler(cmdExport_Click);
 
             lblSampleRate = new Label()
             {
+                ForeColor = SystemColors.ControlText,
+                BackColor = SystemColors.Window,
                 Text = string.Format("Sample Rate: {0:0.000}", trkSampleRate.Value / 256.0),
                 TextAlign = System.Drawing.ContentAlignment.TopRight,
                 Dock = DockStyle.Fill

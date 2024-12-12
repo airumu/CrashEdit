@@ -70,6 +70,7 @@ namespace CrashEdit.CE
                 FileUtil.Owner = mainform;
                 TopLevelGLViewer = new GLViewerLoader();
                 mainform.Controls.Add(TopLevelGLViewer);
+                Application.SetColorMode(SystemColorMode.Dark);
                 Application.Run(mainform);
             }
 
