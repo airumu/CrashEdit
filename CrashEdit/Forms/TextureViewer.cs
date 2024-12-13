@@ -70,10 +70,12 @@ namespace CrashEdit.CE
             C1numY.ValueChanged += new EventHandler(Control_UpdatePicture);
             C1numCX.ValueChanged += new EventHandler(Control_UpdatePicture);
             C1numCY.ValueChanged += new EventHandler(Control_UpdatePicture);
-            C2numX.ValueChanged += new EventHandler(Control_UpdatePicture);
-            C2numY.ValueChanged += new EventHandler(Control_UpdatePicture);
-            C2numCX.ValueChanged += new EventHandler(Control_UpdatePicture);
-            C2numCY.ValueChanged += new EventHandler(Control_UpdatePicture);
+            C2numX.ValueChanged += new EventHandler(Control_UpdatePicture_1);
+            C2numY.ValueChanged += new EventHandler(Control_UpdatePicture_1);
+            C2numX2.ValueChanged += new EventHandler(Control_UpdatePicture_2);
+            C2numY2.ValueChanged += new EventHandler(Control_UpdatePicture_2);
+            C2numCX.ValueChanged += new EventHandler(Control_UpdatePicture_3);
+            C2numCY.ValueChanged += new EventHandler(Control_UpdatePicture_3);
             C2numW.ValueChanged += new EventHandler(Control_UpdatePicture);
             C2numH.ValueChanged += new EventHandler(Control_UpdatePicture);
 
@@ -87,6 +89,8 @@ namespace CrashEdit.CE
             groupBox7.Text = Properties.Resources.TextureViewer_groupBox4;
             groupBox9.Text = Properties.Resources.TextureViewer_groupBox2;
             groupBox10.Text = Properties.Resources.TextureViewer_groupBox1;
+
+            MakeArgAsText();
         }
 
         internal int TexColorMode => textype == TextureType.Crash1 ? C1dpdColor.SelectedIndex : C2dpdColor.SelectedIndex;
@@ -98,8 +102,37 @@ namespace CrashEdit.CE
         internal int TexCX => textype == TextureType.Crash1 ? (int)C1numCX.Value : (int)C2numCX.Value;
         internal int TexCY => textype == TextureType.Crash1 ? (int)C1numCY.Value : (int)C2numCY.Value;
 
+        private void MakeArgAsText()
+        {
+            int clut_offset = ((int)C2numCX.Value * 0x20) + ((int)C2numCY.Value * 0x200);
+            int clut_val = (int)C2numCX.Value + ((int)C2numCY.Value * 0x40);
+            string clut_offset_hex = clut_offset.ToString("X");
+            string clut_val_hex = clut_val.ToString("X");
+            lblCLUT.Text = string.Format("Hex   0x{0}\r\nOffset 0x{1}", clut_val_hex, clut_offset_hex);
+        }
+
         private void Control_UpdatePicture(object sender, EventArgs e)
         {
+            UpdatePicture();
+        }
+
+        private void Control_UpdatePicture_1(object sender, EventArgs e)
+        {
+            C2numY2.Value = (int)C2numY.Value;
+            C2numX2.Value = (int)C2numX.Value;
+            UpdatePicture();
+        }
+
+        private void Control_UpdatePicture_2(object sender, EventArgs e)
+        {
+            C2numY.Value = (int)C2numY2.Value;
+            C2numX.Value = (int)C2numX2.Value;
+            UpdatePicture();
+        }
+
+        private void Control_UpdatePicture_3(object sender, EventArgs e)
+        {
+            MakeArgAsText();
             UpdatePicture();
         }
 
@@ -107,7 +140,8 @@ namespace CrashEdit.CE
         {
             int pw = 256 << (2 - TexColorMode);
             int ph = 128;
-            Bitmap bitmap = new Bitmap(pw + 64, ph + 64, PixelFormat.Format32bppArgb); // we give the image some buffer space for the selection graphic
+            // Bitmap bitmap = new Bitmap(pw + 64, ph + 64, PixelFormat.Format32bppArgb); // we give the image some buffer space for the selection graphic
+            Bitmap bitmap = new Bitmap(pw + 2, ph + 2, PixelFormat.Format32bppArgb);
             Rectangle brect = new Rectangle(Point.Empty, bitmap.Size);
             BitmapData bdata = bitmap.LockBits(brect, ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
             int[] palette = null;
@@ -182,8 +216,87 @@ namespace CrashEdit.CE
             }
             pictureBox1.Image = bitmap;
             pictureBox1.Size = bitmap.Size;
-            if (Width != pw + 16)
-                Width = pw + 16;
+            /*            if (Width != pw + 16)
+                            Width = pw + 16;*/
+            Width = 1024 + 32;
+        }
+
+        private void C2Size16_Click(object sender, EventArgs e)
+        {
+            C2numW.Value = 16;
+            C2numH.Value = 16;
+        }
+
+        private void C2Size32_Click(object sender, EventArgs e)
+        {
+            C2numW.Value = 32;
+            C2numH.Value = 32;
+        }
+
+        private void C2Size64_Click(object sender, EventArgs e)
+        {
+            C2numW.Value = 64;
+            C2numH.Value = 64;
+        }
+
+        private void C2SizeMax_Click(object sender, EventArgs e)
+        {
+            C2numW.Value = 1024;
+            C2numH.Value = 128;
+        }
+
+        private void C1Size16_Click(object sender, EventArgs e)
+        {
+            C1dpdW.SelectedItem = "16";
+            C1dpdH.SelectedItem = "16";
+        }
+
+        private void C1Size32_Click(object sender, EventArgs e)
+        {
+            C1dpdW.SelectedItem = "32";
+            C1dpdH.SelectedItem = "32";
+        }
+
+        private void C1Size64_Click(object sender, EventArgs e)
+        {
+            C1dpdW.SelectedItem = "64";
+            C1dpdH.SelectedItem = "64";
+        }
+
+        private void C2btnMoveX1_Click(object sender, EventArgs e)
+        {
+            int arg = (int)C2numMoveX.Value;
+            if ((int)C2numX.Value > arg)
+                C2numX.Value -= arg;
+            else
+                C2numX.Value = 0;
+        }
+
+        private void C2btnMoveX2_Click(object sender, EventArgs e)
+        {
+            int arg = (int)C2numMoveX.Value;
+            if ((int)C2numX.Value < 1023 - arg)
+                C2numX.Value += arg;
+            /*            else
+                            C2numX.Value = 1023;*/
+        }
+
+        private void C2btnMoveY1_Click(object sender, EventArgs e)
+        {
+            int arg = (int)C2numMoveY.Value;
+            if ((int)C2numY.Value > arg)
+                C2numY.Value -= arg;
+            else
+                C2numY.Value = 0;
+        }
+
+        private void C2btnMoveY2_Click(object sender, EventArgs e)
+        {
+            int arg = (int)C2numMoveY.Value;
+            if ((int)C2numY.Value < 127 - arg)
+                C2numY.Value += arg;
+            /*            else
+                            C2numY.Value = 127;*/
         }
     }
 }
