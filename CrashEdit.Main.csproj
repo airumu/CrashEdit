@@ -49,6 +49,7 @@
       <None Remove="Embeds\Images\JournalOrange.gif" />
       <None Remove="Embeds\Images\JournalRed.gif" />
       <None Remove="Embeds\Images\JournalWhite.gif" />
+      <None Remove="Embeds\Images\JournalGray.gif" />
       <None Remove="Embeds\Images\MagnifyingGlass.gif" />
       <None Remove="Embeds\Images\MusicNoteBlue.gif" />
       <None Remove="Embeds\Images\MusicNoteRed.gif" />
@@ -91,6 +92,7 @@
       <EmbeddedResource Include="Embeds\Images\JournalOrange.gif" />
       <EmbeddedResource Include="Embeds\Images\JournalRed.gif" />
       <EmbeddedResource Include="Embeds\Images\JournalWhite.gif" />
+      <EmbeddedResource Include="Embeds\Images\JournalGray.gif" />
       <EmbeddedResource Include="Embeds\Images\MagnifyingGlass.gif" />
       <EmbeddedResource Include="Embeds\Images\MusicNoteBlue.gif" />
       <EmbeddedResource Include="Embeds\Images\MusicNoteRed.gif" />
