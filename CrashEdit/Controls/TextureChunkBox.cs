@@ -3,6 +3,7 @@ using CrashEdit.Crash;
 using MetroSet_UI.Controls;
 using System.Drawing.Imaging;
 using System.Runtime;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
 namespace CrashEdit.CE
 {
@@ -27,10 +28,14 @@ namespace CrashEdit.CE
                 TabStyle = MetroSet_UI.Enums.TabStyle.Style2
             };
             {
-                MysteryBox mystery = new MysteryBox(chunk.Data);
-                mystery.Dock = DockStyle.Fill;
+                HexView hex = new HexView
+                {
+                    Data = chunk.Data,
+                    DataChangeHandler = HexView_DataChangeHandler,
+                    Dock = DockStyle.Fill
+                };
                 TabPage page = new TabPage("Hex");
-                page.Controls.Add(mystery);
+                page.Controls.Add(hex);
                 tbcTabs.TabPages.Add(page);
             }
             {
@@ -115,6 +120,19 @@ namespace CrashEdit.CE
             }
             else
                 frmViewer.Select();
+        }
+
+        private bool HexView_DataChangeHandler(int destOffset, int destLength, byte[] source)
+        {
+            var data = texturechunk.Data;
+
+            if (destLength != source.Length)
+                throw new ArgumentException();
+            if (destOffset < 0 || destOffset >= data.Length)
+                throw new ArgumentException();
+
+            Array.Copy(source, 0, data, destOffset, destLength);
+            return true;
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Media;
 using CrashEdit.Crash;
 
 namespace CrashEdit.CE
@@ -29,13 +30,15 @@ namespace CrashEdit.CE
         {
             int current_checksum = BitConv.FromInt32(TextureChunk.Data, 12);
             int correct_checksum = Chunk.CalculateChecksum(TextureChunk.Data);
-            if (current_checksum == correct_checksum)
-            {
-                MessageBox.Show("Checksum was already correct.");
-                return;
-            }
+            //if (current_checksum == correct_checksum)
+            //{
+            //    MessageBox.Show("Checksum was already correct.");
+            //    return;
+            //}
+            //BitConv.ToInt32(TextureChunk.Data, 12, correct_checksum);
+            //MessageBox.Show("Checksum was incorrect and has been corrected.");
             BitConv.ToInt32(TextureChunk.Data, 12, correct_checksum);
-            MessageBox.Show("Checksum was incorrect and has been corrected.");
+            SystemSounds.Asterisk.Play();
         }
 
         private void Menu_Rename_Entry()
