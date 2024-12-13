@@ -1,14 +1,15 @@
+using AltUI.Controls;
 using CrashEdit.Crash;
 
 namespace CrashEdit.CE
 {
     public sealed class GOOLBox : UserControl
     {
-        private readonly ListBox lstCode;
+        private readonly DarkListBox lstCode;
 
         public GOOLBox(GOOLEntry goolentry)
         {
-            lstCode = new ListBox
+            lstCode = new DarkListBox
             {
                 Dock = DockStyle.Fill,
                 Font = new System.Drawing.Font("Cascadia Code SemiLight", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)

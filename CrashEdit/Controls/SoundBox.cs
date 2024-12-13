@@ -14,8 +14,8 @@ namespace CrashEdit.CE
         private ToolStrip tsToolbar;
         private ToolStripButton tbbExport;
         private TableLayoutPanel pnOptions;
-        private MetroSetButton cmdPlay;
-        private MetroSetButton cmdExport;
+        private DarkButton cmdPlay;
+        private DarkButton cmdExport;
         private TrackBar trkSampleRate;
         private Label lblSampleRate;
         private DarkNumericUpDown numSampleRate;
@@ -73,20 +73,20 @@ namespace CrashEdit.CE
             };
 
             int smp = (int)(trkSampleRate.Value / 256.0 * (11025 / 4.0));
-            cmdPlay = new MetroSetButton()
+            cmdPlay = new DarkButton()
             {
                 Dock = DockStyle.Fill,
-                Style = MetroSet_UI.Enums.Style.Dark,
+                //Style = MetroSet_UI.Enums.Style.Dark,
                 Text = string.Format("Play ({0}Hz)", smp)
             };
             /*            cmdPlay.ForeColor = SystemColors.ControlText;
                         cmdPlay.BackColor = SystemColors.Window;*/
             cmdPlay.Click += new EventHandler(cmdPlay_Click);
 
-            cmdExport = new MetroSetButton()
+            cmdExport = new DarkButton()
             {
                 Dock = DockStyle.Fill,
-                Style = MetroSet_UI.Enums.Style.Dark,
+                //Style = MetroSet_UI.Enums.Style.Dark,
                 Text = string.Format("Export ({0}Hz)", smp)
             };
             /*            cmdExport.ForeColor = SystemColors.ControlText;

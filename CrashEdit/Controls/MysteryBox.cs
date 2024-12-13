@@ -1,3 +1,5 @@
+using AltUI.Controls;
+
 namespace CrashEdit.CE
 {
     public sealed class MysteryBox : UserControl
@@ -5,7 +7,7 @@ namespace CrashEdit.CE
         private byte[] data;
         private bool saving;
 
-        private ToolStrip tsToolbar;
+        private DarkToolStrip tsToolbar;
         private ToolStripButton tbbExport;
         private HexBox hbData;
 
@@ -18,7 +20,7 @@ namespace CrashEdit.CE
             tbbExport.Text = "Export";
             tbbExport.Click += new EventHandler(tbbExport_Click);
 
-            tsToolbar = new ToolStrip();
+            tsToolbar = new DarkToolStrip();
             tsToolbar.Dock = DockStyle.Top;
             tsToolbar.Items.Add(tbbExport);
 

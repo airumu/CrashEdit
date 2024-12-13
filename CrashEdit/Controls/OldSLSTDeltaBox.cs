@@ -1,14 +1,15 @@
+using AltUI.Controls;
 using CrashEdit.Crash;
 
 namespace CrashEdit.CE
 {
     public sealed class OldSLSTDeltaBox : UserControl
     {
-        private ListBox lstValues;
+        private DarkListBox lstValues;
 
         public OldSLSTDeltaBox(OldSLSTDelta slstitem)
         {
-            lstValues = new ListBox
+            lstValues = new DarkListBox
             {
                 Dock = DockStyle.Fill
             };
