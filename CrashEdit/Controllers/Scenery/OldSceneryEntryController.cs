@@ -1,3 +1,4 @@
+using AltUI.Forms;
 using CrashEdit.Crash;
 
 namespace CrashEdit.CE
@@ -24,7 +25,7 @@ namespace CrashEdit.CE
 
         private void Menu_Export_OBJ()
         {
-            if (MessageBox.Show("Exporting to OBJ is experimental.\nTexture and color information will not be exported.\n\nContinue anyway?", "Export as OBJ", MessageBoxButtons.YesNo) != DialogResult.Yes)
+            if (DarkMessageBox.ShowWarning("Exporting to OBJ is experimental.\nTexture and color information will not be exported.\n\nContinue anyway?", "Export as OBJ", DarkDialogButton.YesNo) != DialogResult.Yes)
             {
                 return;
             }
@@ -33,7 +34,7 @@ namespace CrashEdit.CE
 
         private void Menu_Export_COLLADA()
         {
-            if (MessageBox.Show("Exporting to COLLADA is experimental.\nTexture information will not be exported.\n\nContinue anyway?", "Export as COLLADA", MessageBoxButtons.YesNo) != DialogResult.Yes)
+            if (DarkMessageBox.ShowWarning("Exporting to COLLADA is experimental.\nTexture information will not be exported.\n\nContinue anyway?", "Export as COLLADA", DarkDialogButton.YesNo) != DialogResult.Yes)
             {
                 return;
             }

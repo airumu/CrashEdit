@@ -66,7 +66,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AltUI" Version="1.0.0" />
+    <PackageReference Include="AltUI" Version="1.0.1" />
     <PackageReference Include="DiscUtils.Iso9660" Version="0.16.13" />
     <PackageReference Include="MetroSet_UI" Version="2.0.0" />
     <PackageReference Include="OpenTK.WinForms" Version="4.0.0-pre.7" />

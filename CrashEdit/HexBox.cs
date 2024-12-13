@@ -1,3 +1,4 @@
+using AltUI.Forms;
 using CrashEdit.Crash;
 
 namespace CrashEdit.CE
@@ -315,7 +316,7 @@ namespace CrashEdit.CE
                 case Keys.Space:
                     if (e.Control)
                     {
-                        if (MessageBox.Show("Are you sure?", "Nullify", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                        if (DarkMessageBox.ShowWarning("Are you sure?", "Nullify", DarkDialogButton.YesNo) == DialogResult.Yes)
                         {
                             for (int i = 0; i < Data.Length; i++)
                             {

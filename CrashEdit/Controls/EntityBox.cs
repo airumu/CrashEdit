@@ -1,3 +1,4 @@
+using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 
@@ -1522,7 +1523,8 @@ namespace CrashEdit.CE
                         {
                             if (!loadedentries.Remove(eid))
                             {
-                                MessageBox.Show(this, $"Load lists are incorrect. {Entry.EIDToEName(eid)} was already deloaded by position {i}.", "Load list verification exception.");
+                                lblVerifyLoadLists.Visible = false;
+                                DarkMessageBox.ShowWarning($"Load lists are incorrect. {Entry.EIDToEName(eid)} was already deloaded by position {i}.", "Load list verification exception.");
                                 haserror = true;
                             }
                         }
@@ -1530,7 +1532,8 @@ namespace CrashEdit.CE
                 }
             }
             if (loadedentries.Count == 0 && !haserror)
-                MessageBox.Show(this, "Load lists are correct.", "Load list verification exception.");
+                //DarkMessageBox.ShowMessage("Load lists are correct.", "Load list verification exception.");
+                lblVerifyLoadLists.Visible = true;
             else if (loadedentries.Count != 0)
             {
                 string eidlist = string.Empty;
@@ -1538,7 +1541,8 @@ namespace CrashEdit.CE
                 {
                     eidlist += Entry.EIDToEName(eid) + Environment.NewLine;
                 }
-                MessageBox.Show(this, $"Load lists are incorrect. The following entries are never deloaded:\n{eidlist}", "Load list verification exception.");
+                lblVerifyLoadLists.Visible = false;
+                DarkMessageBox.ShowWarning($"Load lists are incorrect. The following entries are never deloaded:\n{eidlist}", "Load list verification exception.");
             }
         }
 
@@ -1567,7 +1571,8 @@ namespace CrashEdit.CE
                         {
                             if (!loadedentries.Remove(eid))
                             {
-                                MessageBox.Show(this, $"Load lists are incorrect. {Entry.EIDToEName(eid)} was already deloaded by position {i}.", "Load list verification exception.");
+                                lblVerifyLoadLists.Visible = false;
+                                DarkMessageBox.ShowWarning($"Load lists are incorrect. {Entry.EIDToEName(eid)} was already deloaded by position {i}.", "Load list verification exception.");
                                 return;
                             }
                         }

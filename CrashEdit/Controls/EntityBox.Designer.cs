@@ -234,6 +234,7 @@ namespace CrashEdit.CE
             cmdNextEntityA = new DarkButton();
             cmdPrevRowDrawA = new DarkButton();
             cmdNextRowDrawA = new DarkButton();
+            lblVerifyLoadLists = new Label();
             ((System.ComponentModel.ISupportInitialize)numType).BeginInit();
             fraType.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numSubtype).BeginInit();
@@ -849,7 +850,7 @@ namespace CrashEdit.CE
             tbcTabs.Location = new Point(0, 0);
             tbcTabs.Margin = new Padding(4, 3, 4, 3);
             tbcTabs.Name = "tbcTabs";
-            tbcTabs.SelectedIndex = 0;
+            tbcTabs.SelectedIndex = 3;
             tbcTabs.SelectedTextColor = Color.White;
             tbcTabs.Size = new Size(583, 531);
             tbcTabs.SizeMode = TabSizeMode.Fixed;
@@ -2041,6 +2042,7 @@ namespace CrashEdit.CE
             // 
             // fraLoadListPayload
             // 
+            fraLoadListPayload.Controls.Add(lblVerifyLoadLists);
             fraLoadListPayload.Controls.Add(lblPayload);
             fraLoadListPayload.Controls.Add(cmdLoadListVerify);
             fraLoadListPayload.Controls.Add(cmdPayload);
@@ -3087,6 +3089,19 @@ namespace CrashEdit.CE
             cmdNextRowDrawA.Text = "Next";
             cmdNextRowDrawA.Click += cmdNextRowDrawA_Click;
             // 
+            // lblVerifyLoadLists
+            // 
+            lblVerifyLoadLists.AutoSize = true;
+            lblVerifyLoadLists.BackColor = Color.Transparent;
+            lblVerifyLoadLists.ForeColor = Color.MediumTurquoise;
+            lblVerifyLoadLists.Location = new Point(137, 28);
+            lblVerifyLoadLists.Margin = new Padding(4, 0, 4, 0);
+            lblVerifyLoadLists.Name = "lblVerifyLoadLists";
+            lblVerifyLoadLists.Size = new Size(118, 15);
+            lblVerifyLoadLists.TabIndex = 25;
+            lblVerifyLoadLists.Text = "Load lists are correct.";
+            lblVerifyLoadLists.Visible = false;
+            // 
             // EntityBox
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -3410,5 +3425,6 @@ namespace CrashEdit.CE
         private DarkButton cmdPrevFOVFrame;
         private DarkButton cmdNextFOVFrame;
         private System.Windows.Forms.Label lblArgAs;
+        private Label lblVerifyLoadLists;
     }
 }

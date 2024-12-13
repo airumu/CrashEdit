@@ -231,12 +231,9 @@ namespace CrashEdit
 
         public void ShowError(string msg)
         {
-            MessageBox.Show(
-                this,
+            DarkMessageBox.ShowError(
                 msg,
-                "CrashEdit Error",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Error);
+                "CrashEdit Error");
         }
 
         public bool ShowImportDialog(out string? filename, string[] fileFilters)

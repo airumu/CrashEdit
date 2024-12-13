@@ -1,3 +1,4 @@
+using AltUI.Forms;
 using CrashEdit.Crash;
 
 namespace CrashEdit.CE
@@ -56,7 +57,7 @@ namespace CrashEdit.CE
 
         private void Menu_Export_Linked_VAB_DLS()
         {
-            if (MessageBox.Show("Exporting to DLS is experimental.\n\nContinue anyway?", "Export Linked VAB as DLS", MessageBoxButtons.YesNo) != DialogResult.Yes)
+            if (DarkMessageBox.ShowWarning("Exporting to DLS is experimental.\n\nContinue anyway?", "Export Linked VAB as DLS", DarkDialogButton.YesNo) != DialogResult.Yes)
             {
                 return;
             }

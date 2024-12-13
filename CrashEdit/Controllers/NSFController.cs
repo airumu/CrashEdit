@@ -1,3 +1,4 @@
+using AltUI.Forms;
 using CrashEdit.Crash;
 
 namespace CrashEdit.CE
@@ -313,7 +314,7 @@ namespace CrashEdit.CE
             byte[][] datas = FileUtil.OpenFiles(FileFilters.Any);
             if (datas == null)
                 return;
-            bool process = MessageBox.Show("Do you want to process the imported chunks?", "Import Chunk", MessageBoxButtons.YesNo) == DialogResult.Yes;
+            bool process = DarkMessageBox.ShowMessage("Do you want to process the imported chunks?", "Import Chunk", DarkDialogButton.YesNo) == DialogResult.Yes;
             foreach (var data in datas)
             {
                 try

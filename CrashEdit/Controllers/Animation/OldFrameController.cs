@@ -1,3 +1,4 @@
+using AltUI.Forms;
 using CrashEdit.Crash;
 
 namespace CrashEdit.CE
@@ -52,7 +53,7 @@ namespace CrashEdit.CE
             {
                 throw new GUIException("The linked model entry could not be found.");
             }
-            if (MessageBox.Show("Texture and color information will not be exported.\n\nContinue anyway?", "Export as OBJ", MessageBoxButtons.YesNo) != DialogResult.Yes)
+            if (DarkMessageBox.ShowWarning("Texture and color information will not be exported.\n\nContinue anyway?", "Export as OBJ", DarkDialogButton.YesNo) != DialogResult.Yes)
             {
                 return;
             }

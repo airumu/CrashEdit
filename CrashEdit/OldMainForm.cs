@@ -1,3 +1,4 @@
+using AltUI.Forms;
 using CrashEdit.CE.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
@@ -203,7 +204,7 @@ namespace CrashEdit.CE
             var nsfFilenameBase = Path.GetFileName(nsfFilename);
             if (nsfFilenameBase.Length != 12)
             {
-                MessageBox.Show(string.Format(Resources.Playtest_Error1, nsfFilename), Resources.Playtest_Title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                DarkMessageBox.ShowError(string.Format(Resources.Playtest_Error1, nsfFilename), Resources.Playtest_Title);
                 return;
             }
             var levelID = int.Parse(nsfFilenameBase.Substring(6, 2), System.Globalization.NumberStyles.HexNumber);
@@ -221,13 +222,13 @@ namespace CrashEdit.CE
             }
             else
             {
-                MessageBox.Show(string.Format(Resources.Playtest_Error2, nsfFilename), Resources.Playtest_Title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                DarkMessageBox.ShowError(string.Format(Resources.Playtest_Error2, nsfFilename), Resources.Playtest_Title);
                 return;
             }
 
             if (!File.Exists(nsdFilename))
             {
-                MessageBox.Show(string.Format(Resources.Playtest_Error3, nsdFilename), Resources.Playtest_Title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                DarkMessageBox.ShowError(string.Format(Resources.Playtest_Error3, nsdFilename), Resources.Playtest_Title);
                 return;
             }
 
@@ -243,7 +244,7 @@ namespace CrashEdit.CE
             }
             if (exeFilename == null)
             {
-                MessageBox.Show(Resources.Playtest_Error4, Resources.Playtest_Title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                DarkMessageBox.ShowError(Resources.Playtest_Error4, Resources.Playtest_Title);
                 return;
             }
 
@@ -405,11 +406,11 @@ namespace CrashEdit.CE
                             {
                                 if (entity.ID >= 0x130)
                                 {
-                                    MessageBox.Show(string.Format("An entity (ID {0}) exceeds maximum ID of 303.", entity.ID), "Entity ID Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                    DarkMessageBox.ShowWarning(string.Format("An entity (ID {0}) exceeds maximum ID of 303.", entity.ID), "Entity ID Error");
                                 }
                                 else if (entity.ID <= 0)
                                 {
-                                    MessageBox.Show(string.Format("An entity has invalid ID {0}.", entity.ID), "Entity ID Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                    DarkMessageBox.ShowWarning(string.Format("An entity has invalid ID {0}.", entity.ID), "Entity ID Error");
                                 }
                             }
                         }
@@ -423,22 +424,22 @@ namespace CrashEdit.CE
                                 {
                                     if (entity.Name != null)
                                     {
-                                        MessageBox.Show(string.Format("Entity {0} (ID {1}) exceeds maximum ID of 1023.", entity.Name, entity.ID != null ? entity.ID : entity.AlternateID), "Entity ID Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                        DarkMessageBox.ShowWarning(string.Format("Entity {0} (ID {1}) exceeds maximum ID of 1023.", entity.Name, entity.ID != null ? entity.ID : entity.AlternateID), "Entity ID Error");
                                     }
                                     else
                                     {
-                                        MessageBox.Show(string.Format("An entity (ID {0}) exceeds maximum ID of 1023.", entity.ID != null ? entity.ID : entity.AlternateID), "Entity ID Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                        DarkMessageBox.ShowWarning(string.Format("An entity (ID {0}) exceeds maximum ID of 1023.", entity.ID != null ? entity.ID : entity.AlternateID), "Entity ID Error");
                                     }
                                 }
                                 else if ((entity.ID != null && entity.ID <= 0) || (entity.AlternateID != null && entity.AlternateID <= 0))
                                 {
                                     if (entity.Name != null)
                                     {
-                                        MessageBox.Show(string.Format("Entity {0} has invalid ID {1}.", entity.Name, entity.ID != null ? entity.ID : entity.AlternateID), "Entity ID Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                        DarkMessageBox.ShowWarning(string.Format("Entity {0} has invalid ID {1}.", entity.Name, entity.ID != null ? entity.ID : entity.AlternateID), "Entity ID Error");
                                     }
                                     else
                                     {
-                                        MessageBox.Show(string.Format("An entity has invalid ID {0}.", entity.ID != null ? entity.ID : entity.AlternateID), "Entity ID Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                        DarkMessageBox.ShowWarning(string.Format("An entity has invalid ID {0}.", entity.ID != null ? entity.ID : entity.AlternateID), "Entity ID Error");
                                     }
                                 }
                             }
@@ -453,22 +454,22 @@ namespace CrashEdit.CE
             try
             {
                 byte[] nsfdata = nsf.Save();
-                if (ignore_warnings || MessageBox.Show(Resources.SaveNSF, Resources.Save_ConfirmationPrompt, MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (ignore_warnings || DarkMessageBox.ShowMessage(Resources.SaveNSF, Resources.Save_ConfirmationPrompt, DarkDialogButton.YesNo) == DialogResult.Yes)
                 {
                     File.WriteAllBytes(filename, nsfdata);
                 }
             }
             catch (PackingException ex)
             {
-                MessageBox.Show(string.Format(Resources.SaveNSF_Error1, Entry.EIDToEName(ex.EID)), Resources.SaveNSF_Title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                DarkMessageBox.ShowError(string.Format(Resources.SaveNSF_Error1, Entry.EIDToEName(ex.EID)), Resources.SaveNSF_Title);
             }
             catch (IOException ex)
             {
-                MessageBox.Show(Resources.SaveNSF_Error2 + ex.Message, Resources.SaveNSF_Title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                DarkMessageBox.ShowError(Resources.SaveNSF_Error2 + ex.Message, Resources.SaveNSF_Title);
             }
             catch (UnauthorizedAccessException ex)
             {
-                MessageBox.Show(Resources.SaveNSF_Error3 + ex.Message, Resources.SaveNSF_Title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                DarkMessageBox.ShowError(Resources.SaveNSF_Error3 + ex.Message, Resources.SaveNSF_Title);
             }
         }
 
@@ -489,7 +490,7 @@ namespace CrashEdit.CE
                 }
                 else
                 {
-                    MessageBox.Show(string.Format(Resources.PatchNSD_Error1, filename), Resources.PatchNSD_Title1, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    DarkMessageBox.ShowError(string.Format(Resources.PatchNSD_Error1, filename), Resources.PatchNSD_Title1);
                     return;
                 }
                 NSFBox nsfbox = (NSFBox)tbcTabs.SelectedTab.Tag;
@@ -537,7 +538,7 @@ namespace CrashEdit.CE
                         }
                         break;
                     default:
-                        if (!ignore_warnings) MessageBox.Show(Resources.PatchNSD_Error2, Resources.PatchNSD_Title1, MessageBoxButtons.OK);
+                        if (!ignore_warnings) DarkMessageBox.ShowWarning(Resources.PatchNSD_Error2, Resources.PatchNSD_Title1);
                         return;
                 }
                 bool order_updated = false;
@@ -561,7 +562,7 @@ namespace CrashEdit.CE
 #endif
                 if (!no_nsf_overwrite)
                 {
-                    if (ignore_warnings || Settings.Default.PatchNSDSavesNSF ? true : (order_updated && MessageBox.Show(Resources.PatchNSD3, Resources.PatchNSD_Title1, MessageBoxButtons.YesNo) == DialogResult.Yes))
+                    if (ignore_warnings || Settings.Default.PatchNSDSavesNSF ? true : (order_updated && DarkMessageBox.ShowMessage(Resources.PatchNSD3, Resources.PatchNSD_Title1, DarkDialogButton.YesNo) == DialogResult.Yes))
                     {
                         SaveNSF(ignore_warnings);
                     }
@@ -587,11 +588,11 @@ namespace CrashEdit.CE
                     if (ent.ID != null)
                         ++nsd.EntityCount;
 
-            if (ignore_warnings ? true : MessageBox.Show(Resources.PatchNSD1, Resources.Save_ConfirmationPrompt, MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (ignore_warnings ? true : DarkMessageBox.ShowMessage(Resources.PatchNSD1, Resources.Save_ConfirmationPrompt, DarkDialogButton.YesNo) == DialogResult.Yes)
             {
                 File.WriteAllBytes(path, nsd.Save());
             }
-            if (!ignore_warnings && MessageBox.Show(Resources.PatchNSD2, Resources.PatchNSD_Title2, MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (!ignore_warnings && DarkMessageBox.ShowMessage(Resources.PatchNSD2, Resources.PatchNSD_Title2, DarkDialogButton.YesNo) == DialogResult.Yes)
             {
                 int[] eids = new int[nsd.Index.Count];
                 for (int i = 0; i < eids.Length; ++i)
@@ -636,7 +637,7 @@ namespace CrashEdit.CE
             nsd.HashKeyMap = indexdata.Item1;
             nsd.Index = indexdata.Item2;
             PatchNSDGoolMap(nsd.GOOLMap, nsf, ignore_warnings);
-            if (ignore_warnings ? true : MessageBox.Show(Resources.PatchNSD1, Resources.Save_ConfirmationPrompt, MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (ignore_warnings ? true : DarkMessageBox.ShowMessage(Resources.PatchNSD1, Resources.Save_ConfirmationPrompt, DarkDialogButton.YesNo) == DialogResult.Yes)
             {
                 File.WriteAllBytes(path, nsd.Save());
             }
@@ -648,7 +649,7 @@ namespace CrashEdit.CE
             var indexdata = nsf.MakeNSDIndex();
             nsd.HashKeyMap = indexdata.Item1;
             nsd.Index = indexdata.Item2;
-            if (ignore_warnings ? true : MessageBox.Show(Resources.PatchNSD1, Resources.Save_ConfirmationPrompt, MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (ignore_warnings ? true : DarkMessageBox.ShowMessage(Resources.PatchNSD1, Resources.Save_ConfirmationPrompt, DarkDialogButton.YesNo) == DialogResult.Yes)
             {
                 File.WriteAllBytes(path, nsd.Save());
             }
@@ -667,11 +668,11 @@ namespace CrashEdit.CE
                     int gool_id = BitConv.FromInt32(gool.Header, 0);
                     if (gool_id >= map.Length)
                     {
-                        if (!ignore_warnings) MessageBox.Show(string.Format("GOOL entry {0} has invalid object typeID {1} (cannot be larger than {2}).", gool.EName, gool_id, map.Length - 1), Resources.Save_ConfirmationPrompt, MessageBoxButtons.OK);
+                        if (!ignore_warnings) DarkMessageBox.ShowWarning(string.Format("GOOL entry {0} has invalid object typeID {1} (cannot be larger than {2}).", gool.EName, gool_id, map.Length - 1), Resources.Save_ConfirmationPrompt);
                     }
                     else if (gool_id < 0)
                     {
-                        if (!ignore_warnings) MessageBox.Show(string.Format("GOOL entry {0} has invalid object typeID {1} (cannot be negative).", gool.EName, gool_id), Resources.Save_ConfirmationPrompt, MessageBoxButtons.OK);
+                        if (!ignore_warnings) DarkMessageBox.ShowWarning(string.Format("GOOL entry {0} has invalid object typeID {1} (cannot be negative).", gool.EName, gool_id), Resources.Save_ConfirmationPrompt);
                     }
                     else
                     {
@@ -695,7 +696,7 @@ namespace CrashEdit.CE
                 nsfdata = null;
             }
             byte[] olddata = File.Exists(filename) ? File.ReadAllBytes(filename) : null;
-            if ((olddata != null && (nsfdata == null || (nsfdata.Length == olddata.Length && nsfdata.SequenceEqual(olddata)))) || MessageBox.Show(Resources.CloseNSF, Resources.Close_ConfirmationPrompt, MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if ((olddata != null && (nsfdata == null || (nsfdata.Length == olddata.Length && nsfdata.SequenceEqual(olddata)))) || DarkMessageBox.ShowWarning(Resources.CloseNSF, Resources.Close_ConfirmationPrompt, DarkDialogButton.YesNo) == DialogResult.Yes)
             {
                 TabPage tab = tbcTabs.SelectedTab;
                 if (tab != null)
@@ -765,7 +766,7 @@ namespace CrashEdit.CE
 
             if (!File.Exists(cnffile) && !File.Exists(exefile))
             {
-                if (MessageBox.Show(Resources.MakeBIN_NoSystemFiles, Resources.MakeBIN_Title, MessageBoxButtons.YesNo, MessageBoxIcon.Stop) != DialogResult.Yes)
+                if (DarkMessageBox.ShowWarning(Resources.MakeBIN_NoSystemFiles, Resources.MakeBIN_Title, DarkDialogButton.YesNo) != DialogResult.Yes)
                     return;
             }
 
@@ -823,7 +824,7 @@ namespace CrashEdit.CE
             else
             {
                 log.Append(Resources.Done);
-                MessageBox.Show(log.ToString());
+                DarkMessageBox.ShowMessage(log.ToString(), Resources.MakeBIN_Title);
                 return;
             }
 
@@ -852,7 +853,7 @@ namespace CrashEdit.CE
                 log.AppendLine();
             }
             log.Append(Resources.Done);
-            MessageBox.Show(log.ToString());
+            DarkMessageBox.ShowMessage(log.ToString(), Resources.MakeBIN_Title);
         }
 
         void tbxConvertVHVB_Click(object sender, EventArgs e)
