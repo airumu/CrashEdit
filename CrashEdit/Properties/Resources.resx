@@ -256,8 +256,7 @@
     <value>DDA Death/1-Up Count</value>
   </data>
   <data name="EntityBox_FraID" xml:space="preserve">
-    <value>ID &amp;&amp; Look-up ID</value>
-    <comment>Two &amp; are used because &amp; is used to select the mnemonic character in titles.</comment>
+    <value>ID &amp; Look-up ID</value>
   </data>
   <data name="EntityBox_FraName" xml:space="preserve">
     <value>Name</value>
@@ -281,8 +280,7 @@
     <value>Time Trial Reward</value>
   </data>
   <data name="EntityBox_FraType" xml:space="preserve">
-    <value>Type &amp;&amp; Subtype</value>
-    <comment>Two &amp; are used because &amp; is used to select the mnemonic character in titles.</comment>
+    <value>Type &amp; Subtype</value>
   </data>
   <data name="EntityBox_FraVictims" xml:space="preserve">
     <value>Victims</value>
