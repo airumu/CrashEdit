@@ -34,7 +34,7 @@ namespace CrashEdit.CE
         private BackgroundWorker bgwMakeBIN;
         private ProgressBarForm dlgProgress;
 
-        public static bool PAL { get; private set; } = false;
+        public static bool PAL { get; private set; } = Settings.Default.ModePAL;
         private const int RateNTSC = 30;
         private const int RatePAL = 25;
 
@@ -114,7 +114,7 @@ namespace CrashEdit.CE
             {
                 Text = "PAL",
                 TextImageRelation = TextImageRelation.ImageAboveText,
-                Checked = false,
+                Checked = Settings.Default.ModePAL,
                 CheckOnClick = true
             };
             tbbPAL.Click += new EventHandler(tbbPAL_Click);
@@ -183,6 +183,8 @@ namespace CrashEdit.CE
         void tbbPAL_Click(object sender, EventArgs e)
         {
             PAL = tbbPAL.Checked;
+            Settings.Default.ModePAL = tbbPAL.Checked;
+            Settings.Default.Save();
         }
 
         void tbbPlay_Click(object sender, EventArgs e)
