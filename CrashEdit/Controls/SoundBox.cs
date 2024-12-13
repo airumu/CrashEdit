@@ -105,17 +105,14 @@ namespace CrashEdit.CE
             pnOptions = new TableLayoutPanel();
             pnOptions.Dock = DockStyle.Fill;
             pnOptions.ColumnCount = 2;
-            pnOptions.RowCount = 8;
+            pnOptions.RowCount = 4;
             pnOptions.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
             pnOptions.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
+            pnOptions.RowStyles.Add(new RowStyle(SizeType.Percent, 40));
+            pnOptions.RowStyles.Add(new RowStyle(SizeType.Percent, 5));
+            pnOptions.RowStyles.Add(new RowStyle(SizeType.Percent, 5));
             pnOptions.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
-            pnOptions.RowStyles.Add(new RowStyle(SizeType.Percent, 5));
-            pnOptions.RowStyles.Add(new RowStyle(SizeType.Percent, 5));
-            pnOptions.RowStyles.Add(new RowStyle(SizeType.Percent, 5));
-            pnOptions.RowStyles.Add(new RowStyle(SizeType.Percent, 5));
-            pnOptions.RowStyles.Add(new RowStyle(SizeType.Percent, 5));
-            pnOptions.RowStyles.Add(new RowStyle(SizeType.Percent, 5));
-            pnOptions.RowStyles.Add(new RowStyle(SizeType.Percent, 5));
+
             pnOptions.Controls.Add(cmdPlay, 0, 0);
             pnOptions.Controls.Add(cmdExport, 1, 0);
             pnOptions.Controls.Add(trkSampleRate, 1, 1);
