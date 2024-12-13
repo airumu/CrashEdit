@@ -1,4 +1,6 @@
+using AltUI.Controls;
 using CrashEdit.Crash;
+using MetroSet_UI.Controls;
 
 namespace CrashEdit.CE
 {
@@ -33,13 +35,13 @@ namespace CrashEdit.CE
         {
             lblTitle = new Label();
             lblMessage = new Label();
-            pnOptions = new Panel();
-            optIgnore = new RadioButton();
-            optIgnoreAll = new RadioButton();
-            optSkip = new RadioButton();
-            optAbort = new RadioButton();
-            optBreak = new RadioButton();
-            cmdOK = new Button();
+            pnOptions = new MetroSetPanel();
+            optIgnore = new DarkRadioButton();
+            optIgnoreAll = new DarkRadioButton();
+            optSkip = new DarkRadioButton();
+            optAbort = new DarkRadioButton();
+            optBreak = new DarkRadioButton();
+            cmdOK = new DarkButton();
             pnOptions.SuspendLayout();
             SuspendLayout();
             // 
@@ -68,16 +70,24 @@ namespace CrashEdit.CE
             // pnOptions
             // 
             pnOptions.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            pnOptions.BackgroundColor = Color.FromArgb(30, 30, 30);
+            pnOptions.BorderColor = Color.FromArgb(110, 110, 110);
+            pnOptions.BorderThickness = 1;
             pnOptions.Controls.Add(optIgnore);
             pnOptions.Controls.Add(optIgnoreAll);
             pnOptions.Controls.Add(optSkip);
             pnOptions.Controls.Add(optAbort);
             pnOptions.Controls.Add(optBreak);
+            pnOptions.IsDerivedStyle = true;
             pnOptions.Location = new Point(14, 97);
             pnOptions.Margin = new Padding(4, 3, 4, 3);
             pnOptions.Name = "pnOptions";
             pnOptions.Size = new Size(455, 141);
+            pnOptions.Style = MetroSet_UI.Enums.Style.Dark;
+            pnOptions.StyleManager = null;
             pnOptions.TabIndex = 2;
+            pnOptions.ThemeAuthor = "Narwin";
+            pnOptions.ThemeName = "MetroDark";
             // 
             // optIgnore
             // 
@@ -88,7 +98,6 @@ namespace CrashEdit.CE
             optIgnore.Size = new Size(226, 19);
             optIgnore.TabIndex = 3;
             optIgnore.Text = "Ignore the error and continue anyway.";
-            optIgnore.UseVisualStyleBackColor = true;
             // 
             // optIgnoreAll
             // 
@@ -99,7 +108,6 @@ namespace CrashEdit.CE
             optIgnoreAll.Size = new Size(260, 19);
             optIgnoreAll.TabIndex = 3;
             optIgnoreAll.Text = "Ignore the error and all others for this object.";
-            optIgnoreAll.UseVisualStyleBackColor = true;
             // 
             // optSkip
             // 
@@ -110,7 +118,6 @@ namespace CrashEdit.CE
             optSkip.Size = new Size(232, 19);
             optSkip.TabIndex = 2;
             optSkip.Text = "Skip this object, leaving it unprocessed.";
-            optSkip.UseVisualStyleBackColor = true;
             // 
             // optAbort
             // 
@@ -123,7 +130,6 @@ namespace CrashEdit.CE
             optAbort.TabIndex = 1;
             optAbort.TabStop = true;
             optAbort.Text = "Abort this operation.";
-            optAbort.UseVisualStyleBackColor = true;
             // 
             // optBreak
             // 
@@ -134,18 +140,21 @@ namespace CrashEdit.CE
             optBreak.Size = new Size(230, 19);
             optBreak.TabIndex = 0;
             optBreak.Text = "Break out to a debugger. (Experts only)";
-            optBreak.UseVisualStyleBackColor = true;
             // 
             // cmdOK
             // 
             cmdOK.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            cmdOK.BorderColour = Color.Empty;
+            cmdOK.CustomColour = false;
+            cmdOK.FlatBottom = false;
+            cmdOK.FlatTop = false;
             cmdOK.Location = new Point(382, 253);
             cmdOK.Margin = new Padding(4, 3, 4, 3);
             cmdOK.Name = "cmdOK";
+            cmdOK.Padding = new Padding(5);
             cmdOK.Size = new Size(88, 27);
             cmdOK.TabIndex = 3;
             cmdOK.Text = "OK";
-            cmdOK.UseVisualStyleBackColor = true;
             cmdOK.Click += cmdOK_Click;
             // 
             // ErrorReporter
@@ -154,12 +163,14 @@ namespace CrashEdit.CE
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
+            BackColor = Color.FromArgb(31, 31, 32);
             ClientSize = new Size(483, 293);
             ControlBox = false;
             Controls.Add(cmdOK);
             Controls.Add(pnOptions);
             Controls.Add(lblMessage);
             Controls.Add(lblTitle);
+            CornerStyle = CornerPreference.Default;
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Margin = new Padding(4, 3, 4, 3);
             MaximizeBox = false;
@@ -168,6 +179,7 @@ namespace CrashEdit.CE
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent;
             Text = "Error Reporter";
+            TransparencyKey = Color.FromArgb(31, 31, 32);
             pnOptions.ResumeLayout(false);
             pnOptions.PerformLayout();
             ResumeLayout(false);
@@ -177,12 +189,12 @@ namespace CrashEdit.CE
 
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Label lblMessage;
-        private System.Windows.Forms.Panel pnOptions;
-        private System.Windows.Forms.RadioButton optSkip;
-        private System.Windows.Forms.RadioButton optAbort;
-        private System.Windows.Forms.RadioButton optBreak;
-        private System.Windows.Forms.RadioButton optIgnore;
-        private System.Windows.Forms.RadioButton optIgnoreAll;
-        private System.Windows.Forms.Button cmdOK;
+        private MetroSetPanel pnOptions;
+        private DarkRadioButton optSkip;
+        private DarkRadioButton optAbort;
+        private DarkRadioButton optBreak;
+        private DarkRadioButton optIgnore;
+        private DarkRadioButton optIgnoreAll;
+        private DarkButton cmdOK;
     }
 }

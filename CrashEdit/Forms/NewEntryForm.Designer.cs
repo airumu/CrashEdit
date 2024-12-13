@@ -1,4 +1,6 @@
-﻿namespace CrashEdit.CE
+﻿using AltUI.Controls;
+
+namespace CrashEdit.CE
 {
     public partial class NewEntryForm
     {
@@ -28,14 +30,14 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.fraType = new System.Windows.Forms.GroupBox();
-            this.numType = new System.Windows.Forms.NumericUpDown();
-            this.dpdType = new System.Windows.Forms.ComboBox();
-            this.fraName = new System.Windows.Forms.GroupBox();
-            this.lblEIDErr = new System.Windows.Forms.Label();
-            this.txtEID = new System.Windows.Forms.TextBox();
-            this.cmdOK = new System.Windows.Forms.Button();
-            this.cmdCancel = new System.Windows.Forms.Button();
+            this.fraType = new DarkGroupBox();
+            this.numType = new DarkNumericUpDown();
+            this.dpdType = new DarkComboBox();
+            this.fraName = new DarkGroupBox();
+            this.lblEIDErr = new Label();
+            this.txtEID = new DarkTextBox();
+            this.cmdOK = new DarkButton();
+            this.cmdCancel = new DarkButton();
             this.fraType.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numType)).BeginInit();
             this.fraName.SuspendLayout();
@@ -44,7 +46,7 @@
             // fraType
             // 
             this.fraType.AutoSize = true;
-            this.fraType.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.fraType.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             this.fraType.Controls.Add(this.numType);
             this.fraType.Controls.Add(this.dpdType);
             this.fraType.Location = new System.Drawing.Point(181, 12);
@@ -79,7 +81,7 @@
             // 
             // dpdType
             // 
-            this.dpdType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.dpdType.DropDownStyle = ComboBoxStyle.DropDownList;
             this.dpdType.FormattingEnabled = true;
             this.dpdType.Location = new System.Drawing.Point(6, 19);
             this.dpdType.Name = "dpdType";
@@ -127,32 +129,30 @@
             this.cmdOK.Size = new System.Drawing.Size(75, 23);
             this.cmdOK.TabIndex = 4;
             this.cmdOK.Text = "OK";
-            this.cmdOK.UseVisualStyleBackColor = true;
             this.cmdOK.Click += new System.EventHandler(this.cmdOK_Click);
             // 
             // cmdCancel
             // 
-            this.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.cmdCancel.DialogResult = DialogResult.Cancel;
             this.cmdCancel.Location = new System.Drawing.Point(304, 77);
             this.cmdCancel.Name = "cmdCancel";
             this.cmdCancel.Size = new System.Drawing.Size(75, 23);
             this.cmdCancel.TabIndex = 3;
             this.cmdCancel.Text = "Cancel";
-            this.cmdCancel.UseVisualStyleBackColor = true;
             this.cmdCancel.Click += new System.EventHandler(this.cmdCancel_Click);
             // 
             // NewEntryForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = AutoScaleMode.Font;
             this.AutoSize = true;
-            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(391, 110);
             this.Controls.Add(this.cmdOK);
             this.Controls.Add(this.cmdCancel);
             this.Controls.Add(this.fraName);
             this.Controls.Add(this.fraType);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.Name = "NewEntryForm";
             this.Text = "New Entry";
             this.fraType.ResumeLayout(false);
@@ -165,13 +165,13 @@
         }
 
         #endregion
-        private System.Windows.Forms.GroupBox fraType;
-        private System.Windows.Forms.NumericUpDown numType;
-        private System.Windows.Forms.GroupBox fraName;
-        private System.Windows.Forms.TextBox txtEID;
-        private System.Windows.Forms.Label lblEIDErr;
-        private System.Windows.Forms.Button cmdOK;
-        private System.Windows.Forms.Button cmdCancel;
-        private System.Windows.Forms.ComboBox dpdType;
+        private DarkGroupBox fraType;
+        private DarkNumericUpDown numType;
+        private DarkGroupBox fraName;
+        private DarkTextBox txtEID;
+        private Label lblEIDErr;
+        private DarkButton cmdOK;
+        private DarkButton cmdCancel;
+        private DarkComboBox dpdType;
     }
 }

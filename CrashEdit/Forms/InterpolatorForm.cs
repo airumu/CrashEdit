@@ -1,8 +1,9 @@
-﻿using CrashEdit.Crash;
+﻿using AltUI.Forms;
+using CrashEdit.Crash;
 
 namespace CrashEdit.CE
 {
-    public partial class InterpolatorForm : Form
+    public partial class InterpolatorForm : DarkForm
     {
         public static Dictionary<string, MathCalc> MathFuncs = new Dictionary<string, MathCalc>()
         {

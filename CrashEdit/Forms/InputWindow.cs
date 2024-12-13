@@ -1,6 +1,8 @@
+using AltUI.Forms;
+
 namespace CrashEdit.CE
 {
-    public partial class InputWindow : Form
+    public partial class InputWindow : DarkForm
     {
         public InputWindow()
         {

@@ -743,8 +743,6 @@ namespace CrashEdit.CE
         {
             using (dlgProgress = new ProgressBarForm())
             {
-                dlgProgress.ProgressBar.ForeColor = Color.Red;
-                dlgProgress.ProgressBar.Style = ProgressBarStyle.Blocks;
                 dlgProgress.ProgressBar.Value = 0;
                 dlgProgress.Text = Resources.MakeBIN_Making;
                 bgwMakeBIN.RunWorkerAsync(new object[] { fs, filename });

@@ -1,4 +1,5 @@
-﻿using MetroSet_UI.Controls;
+﻿using AltUI.Controls;
+using MetroSet_UI.Controls;
 using MetroSet_UI.Enums;
 
 namespace CrashEdit.CE
@@ -35,45 +36,45 @@ namespace CrashEdit.CE
             pictureBox1 = new PictureBox();
             tabControl1 = new MetroSetTabControl();
             tabC1 = new TabPage();
-            groupBox5 = new GroupBox();
-            C1numY = new NumericUpDown();
-            C1numX = new NumericUpDown();
+            groupBox5 = new DarkGroupBox();
+            C1numY = new DarkNumericUpDown();
+            C1numX = new DarkNumericUpDown();
             label5 = new Label();
             label6 = new Label();
-            groupBox4 = new GroupBox();
-            C1dpdH = new ComboBox();
-            C1dpdW = new ComboBox();
+            groupBox4 = new DarkGroupBox();
+            C1dpdH = new DarkComboBox();
+            C1dpdW = new DarkComboBox();
             label3 = new Label();
             label4 = new Label();
-            groupBox3 = new GroupBox();
-            C1numCY = new NumericUpDown();
-            C1numCX = new NumericUpDown();
+            groupBox3 = new DarkGroupBox();
+            C1numCY = new DarkNumericUpDown();
+            C1numCX = new DarkNumericUpDown();
             label2 = new Label();
             label1 = new Label();
-            groupBox2 = new GroupBox();
-            C1dpdBlend = new ComboBox();
-            groupBox1 = new GroupBox();
-            C1dpdColor = new ComboBox();
+            groupBox2 = new DarkGroupBox();
+            C1dpdBlend = new DarkComboBox();
+            groupBox1 = new DarkGroupBox();
+            C1dpdColor = new DarkComboBox();
             tabC2 = new TabPage();
-            groupBox6 = new GroupBox();
-            C2numY = new NumericUpDown();
-            C2numX = new NumericUpDown();
+            groupBox6 = new DarkGroupBox();
+            C2numY = new DarkNumericUpDown();
+            C2numX = new DarkNumericUpDown();
             label7 = new Label();
             label8 = new Label();
-            groupBox7 = new GroupBox();
-            C2numH = new NumericUpDown();
+            groupBox7 = new DarkGroupBox();
+            C2numH = new DarkNumericUpDown();
             label9 = new Label();
-            C2numW = new NumericUpDown();
+            C2numW = new DarkNumericUpDown();
             label10 = new Label();
-            groupBox8 = new GroupBox();
-            C2numCY = new NumericUpDown();
-            C2numCX = new NumericUpDown();
+            groupBox8 = new DarkGroupBox();
+            C2numCY = new DarkNumericUpDown();
+            C2numCX = new DarkNumericUpDown();
             label11 = new Label();
             label12 = new Label();
-            groupBox9 = new GroupBox();
-            C2dpdBlend = new ComboBox();
-            groupBox10 = new GroupBox();
-            C2dpdColor = new ComboBox();
+            groupBox9 = new DarkGroupBox();
+            C2dpdBlend = new DarkComboBox();
+            groupBox10 = new DarkGroupBox();
+            C2dpdColor = new DarkComboBox();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -163,7 +164,7 @@ namespace CrashEdit.CE
             // 
             // tabC1
             // 
-            tabC1.BackColor = SystemColors.Control;
+            tabC1.BackColor = Color.Transparent;
             tabC1.Controls.Add(groupBox5);
             tabC1.Controls.Add(groupBox4);
             tabC1.Controls.Add(groupBox3);
@@ -188,7 +189,7 @@ namespace CrashEdit.CE
             groupBox5.Margin = new Padding(4, 3, 4, 3);
             groupBox5.Name = "groupBox5";
             groupBox5.Padding = new Padding(4, 3, 4, 3);
-            groupBox5.Size = new Size(107, 97);
+            groupBox5.Size = new Size(108, 97);
             groupBox5.TabIndex = 4;
             groupBox5.TabStop = false;
             groupBox5.Text = "Offset";
@@ -243,31 +244,31 @@ namespace CrashEdit.CE
             groupBox4.Margin = new Padding(4, 3, 4, 3);
             groupBox4.Name = "groupBox4";
             groupBox4.Padding = new Padding(4, 3, 4, 3);
-            groupBox4.Size = new Size(107, 97);
+            groupBox4.Size = new Size(108, 97);
             groupBox4.TabIndex = 4;
             groupBox4.TabStop = false;
             groupBox4.Text = "Size";
             // 
             // C1dpdH
             // 
-            C1dpdH.DropDownStyle = ComboBoxStyle.DropDownList;
+            C1dpdH.DrawMode = DrawMode.OwnerDrawVariable;
             C1dpdH.FormattingEnabled = true;
             C1dpdH.Items.AddRange(new object[] { "4", "8", "16", "32", "64" });
-            C1dpdH.Location = new Point(35, 53);
+            C1dpdH.Location = new Point(30, 52);
             C1dpdH.Margin = new Padding(4, 3, 4, 3);
             C1dpdH.Name = "C1dpdH";
-            C1dpdH.Size = new Size(65, 23);
+            C1dpdH.Size = new Size(65, 24);
             C1dpdH.TabIndex = 3;
             // 
             // C1dpdW
             // 
-            C1dpdW.DropDownStyle = ComboBoxStyle.DropDownList;
+            C1dpdW.DrawMode = DrawMode.OwnerDrawVariable;
             C1dpdW.FormattingEnabled = true;
             C1dpdW.Items.AddRange(new object[] { "4", "8", "16", "32", "64" });
-            C1dpdW.Location = new Point(35, 22);
+            C1dpdW.Location = new Point(30, 22);
             C1dpdW.Margin = new Padding(4, 3, 4, 3);
             C1dpdW.Name = "C1dpdW";
-            C1dpdW.Size = new Size(65, 23);
+            C1dpdW.Size = new Size(65, 24);
             C1dpdW.TabIndex = 2;
             // 
             // label3
@@ -355,20 +356,20 @@ namespace CrashEdit.CE
             groupBox2.Margin = new Padding(4, 3, 4, 3);
             groupBox2.Name = "groupBox2";
             groupBox2.Padding = new Padding(4, 3, 4, 3);
-            groupBox2.Size = new Size(144, 68);
+            groupBox2.Size = new Size(144, 69);
             groupBox2.TabIndex = 1;
             groupBox2.TabStop = false;
             groupBox2.Text = "Blend Mode";
             // 
             // C1dpdBlend
             // 
-            C1dpdBlend.DropDownStyle = ComboBoxStyle.DropDownList;
+            C1dpdBlend.DrawMode = DrawMode.OwnerDrawVariable;
             C1dpdBlend.FormattingEnabled = true;
             C1dpdBlend.Items.AddRange(new object[] { "0 (Transparency)", "1 (Additive)", "2 (Subtractive)", "3 (Solid)" });
             C1dpdBlend.Location = new Point(8, 23);
             C1dpdBlend.Margin = new Padding(4, 3, 4, 3);
             C1dpdBlend.Name = "C1dpdBlend";
-            C1dpdBlend.Size = new Size(128, 23);
+            C1dpdBlend.Size = new Size(128, 24);
             C1dpdBlend.TabIndex = 0;
             // 
             // groupBox1
@@ -380,25 +381,25 @@ namespace CrashEdit.CE
             groupBox1.Margin = new Padding(4, 3, 4, 3);
             groupBox1.Name = "groupBox1";
             groupBox1.Padding = new Padding(4, 3, 4, 3);
-            groupBox1.Size = new Size(109, 68);
+            groupBox1.Size = new Size(109, 69);
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "Color Mode";
             // 
             // C1dpdColor
             // 
-            C1dpdColor.DropDownStyle = ComboBoxStyle.DropDownList;
+            C1dpdColor.DrawMode = DrawMode.OwnerDrawVariable;
             C1dpdColor.FormattingEnabled = true;
             C1dpdColor.Items.AddRange(new object[] { "0 (4bpp)", "1 (8bpp)", "2 (16bpp)" });
             C1dpdColor.Location = new Point(8, 23);
             C1dpdColor.Margin = new Padding(4, 3, 4, 3);
             C1dpdColor.Name = "C1dpdColor";
-            C1dpdColor.Size = new Size(93, 23);
+            C1dpdColor.Size = new Size(93, 24);
             C1dpdColor.TabIndex = 0;
             // 
             // tabC2
             // 
-            tabC2.BackColor = SystemColors.Control;
+            tabC2.BackColor = Color.Transparent;
             tabC2.Controls.Add(groupBox6);
             tabC2.Controls.Add(groupBox7);
             tabC2.Controls.Add(groupBox8);
@@ -502,7 +503,7 @@ namespace CrashEdit.CE
             // 
             label9.AutoSize = true;
             label9.ImeMode = ImeMode.NoControl;
-            label9.Location = new Point(7, 54);
+            label9.Location = new Point(7, 57);
             label9.Margin = new Padding(4, 0, 4, 0);
             label9.Name = "label9";
             label9.Size = new Size(16, 15);
@@ -524,7 +525,7 @@ namespace CrashEdit.CE
             // 
             label10.AutoSize = true;
             label10.ImeMode = ImeMode.NoControl;
-            label10.Location = new Point(7, 24);
+            label10.Location = new Point(7, 25);
             label10.Margin = new Padding(4, 0, 4, 0);
             label10.Name = "label10";
             label10.Size = new Size(18, 15);
@@ -598,21 +599,22 @@ namespace CrashEdit.CE
             groupBox9.Margin = new Padding(4, 3, 4, 3);
             groupBox9.Name = "groupBox9";
             groupBox9.Padding = new Padding(4, 3, 4, 3);
-            groupBox9.Size = new Size(144, 68);
+            groupBox9.Size = new Size(144, 69);
             groupBox9.TabIndex = 6;
             groupBox9.TabStop = false;
             groupBox9.Text = "Blend Mode";
             // 
             // C2dpdBlend
             // 
-            C2dpdBlend.DropDownStyle = ComboBoxStyle.DropDownList;
+            C2dpdBlend.DrawMode = DrawMode.OwnerDrawVariable;
             C2dpdBlend.FormattingEnabled = true;
             C2dpdBlend.Items.AddRange(new object[] { "0 (Transparency)", "1 (Additive)", "2 (Subtractive)", "3 (Solid)" });
             C2dpdBlend.Location = new Point(8, 23);
             C2dpdBlend.Margin = new Padding(4, 3, 4, 3);
             C2dpdBlend.Name = "C2dpdBlend";
-            C2dpdBlend.Size = new Size(128, 23);
+            C2dpdBlend.Size = new Size(128, 24);
             C2dpdBlend.TabIndex = 0;
+            C2dpdBlend.SelectedIndex = 3;
             // 
             // groupBox10
             // 
@@ -623,21 +625,22 @@ namespace CrashEdit.CE
             groupBox10.Margin = new Padding(4, 3, 4, 3);
             groupBox10.Name = "groupBox10";
             groupBox10.Padding = new Padding(4, 3, 4, 3);
-            groupBox10.Size = new Size(109, 68);
+            groupBox10.Size = new Size(109, 69);
             groupBox10.TabIndex = 5;
             groupBox10.TabStop = false;
             groupBox10.Text = "Color Mode";
             // 
             // C2dpdColor
             // 
-            C2dpdColor.DropDownStyle = ComboBoxStyle.DropDownList;
+            C2dpdColor.DrawMode = DrawMode.OwnerDrawVariable;
             C2dpdColor.FormattingEnabled = true;
             C2dpdColor.Items.AddRange(new object[] { "0 (4bpp)", "1 (8bpp)", "2 (16bpp)" });
             C2dpdColor.Location = new Point(8, 23);
             C2dpdColor.Margin = new Padding(4, 3, 4, 3);
             C2dpdColor.Name = "C2dpdColor";
-            C2dpdColor.Size = new Size(93, 23);
+            C2dpdColor.Size = new Size(93, 24);
             C2dpdColor.TabIndex = 0;
+            C2dpdColor.SelectedIndex = 0;
             // 
             // TextureViewer
             // 
@@ -645,10 +648,12 @@ namespace CrashEdit.CE
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1195, 417);
             Controls.Add(splitContainer1);
+            CornerStyle = CornerPreference.Default;
             DoubleBuffered = true;
             Margin = new Padding(4, 3, 4, 3);
             Name = "TextureViewer";
             ShowIcon = false;
+            TransparencyKey = Color.FromArgb(31, 31, 32);
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
@@ -690,48 +695,48 @@ namespace CrashEdit.CE
 
         #endregion
 
-        private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private SplitContainer splitContainer1;
+        private PictureBox pictureBox1;
         private MetroSetTabControl tabControl1;
-        private System.Windows.Forms.TabPage tabC1;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.ComboBox C1dpdBlend;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.ComboBox C1dpdColor;
-        private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.NumericUpDown C1numCY;
-        private System.Windows.Forms.NumericUpDown C1numCX;
-        private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.ComboBox C1dpdH;
-        private System.Windows.Forms.ComboBox C1dpdW;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.NumericUpDown C1numY;
-        private System.Windows.Forms.NumericUpDown C1numX;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TabPage tabC2;
-        private System.Windows.Forms.GroupBox groupBox6;
-        private System.Windows.Forms.NumericUpDown C2numY;
-        private System.Windows.Forms.NumericUpDown C2numX;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.GroupBox groupBox7;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.GroupBox groupBox8;
-        private System.Windows.Forms.NumericUpDown C2numCY;
-        private System.Windows.Forms.NumericUpDown C2numCX;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.GroupBox groupBox9;
-        private System.Windows.Forms.ComboBox C2dpdBlend;
-        private System.Windows.Forms.GroupBox groupBox10;
-        private System.Windows.Forms.ComboBox C2dpdColor;
-        private System.Windows.Forms.NumericUpDown C2numH;
-        private System.Windows.Forms.NumericUpDown C2numW;
+        private TabPage tabC1;
+        private DarkGroupBox groupBox2;
+        private DarkComboBox C1dpdBlend;
+        private DarkGroupBox groupBox1;
+        private DarkComboBox C1dpdColor;
+        private DarkGroupBox groupBox3;
+        private Label label2;
+        private Label label1;
+        private DarkNumericUpDown C1numCY;
+        private DarkNumericUpDown C1numCX;
+        private DarkGroupBox groupBox4;
+        private DarkComboBox C1dpdH;
+        private DarkComboBox C1dpdW;
+        private Label label3;
+        private Label label4;
+        private DarkGroupBox groupBox5;
+        private DarkNumericUpDown C1numY;
+        private DarkNumericUpDown C1numX;
+        private Label label5;
+        private Label label6;
+        private TabPage tabC2;
+        private DarkGroupBox groupBox6;
+        private DarkNumericUpDown C2numY;
+        private DarkNumericUpDown C2numX;
+        private Label label7;
+        private Label label8;
+        private DarkGroupBox groupBox7;
+        private Label label9;
+        private Label label10;
+        private DarkGroupBox groupBox8;
+        private DarkNumericUpDown C2numCY;
+        private DarkNumericUpDown C2numCX;
+        private Label label11;
+        private Label label12;
+        private DarkGroupBox groupBox9;
+        private DarkComboBox C2dpdBlend;
+        private DarkGroupBox groupBox10;
+        private DarkComboBox C2dpdColor;
+        private DarkNumericUpDown C2numH;
+        private DarkNumericUpDown C2numW;
     }
 }

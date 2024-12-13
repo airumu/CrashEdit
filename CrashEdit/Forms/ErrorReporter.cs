@@ -1,8 +1,9 @@
+using AltUI.Forms;
 using CrashEdit.Crash;
 
 namespace CrashEdit.CE
 {
-    public partial class ErrorReporter : Form
+    public partial class ErrorReporter : DarkForm
     {
         private IWin32Window owner = null;
 

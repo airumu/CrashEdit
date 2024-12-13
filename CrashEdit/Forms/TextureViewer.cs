@@ -1,9 +1,10 @@
-﻿using CrashEdit.Crash;
+﻿using AltUI.Forms;
+using CrashEdit.Crash;
 using System.Drawing.Imaging;
 
 namespace CrashEdit.CE
 {
-    public partial class TextureViewer : Form
+    public partial class TextureViewer : DarkForm
     {
         internal enum TextureType
         {
@@ -35,6 +36,12 @@ namespace CrashEdit.CE
                 UpdatePicture();
             };
             tabControl1.SelectedTab = tabC2;
+            C1dpdW.SelectedIndex = 0;
+            C1dpdH.SelectedIndex = 0;
+            C1dpdColor.SelectedIndex = 0;
+            C1dpdBlend.SelectedIndex = 3;
+            C2dpdColor.SelectedIndex = 0;
+            C2dpdBlend.SelectedIndex = 3;
 
             pictureBox1.MouseClick += delegate (object sender, MouseEventArgs e)
             {

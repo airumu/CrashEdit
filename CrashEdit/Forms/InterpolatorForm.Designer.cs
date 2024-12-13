@@ -1,4 +1,6 @@
-﻿namespace CrashEdit.CE
+﻿using AltUI.Controls;
+
+namespace CrashEdit.CE
 {
     public partial class InterpolatorForm
     {
@@ -28,32 +30,32 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.cmdCancel = new System.Windows.Forms.Button();
-            this.cmdOK = new System.Windows.Forms.Button();
-            this.dpdFunc = new System.Windows.Forms.ComboBox();
-            this.lblX = new System.Windows.Forms.Label();
-            this.lblY = new System.Windows.Forms.Label();
-            this.lblZ = new System.Windows.Forms.Label();
-            this.numX = new System.Windows.Forms.NumericUpDown();
-            this.numY = new System.Windows.Forms.NumericUpDown();
-            this.numZ = new System.Windows.Forms.NumericUpDown();
-            this.lblAverage = new System.Windows.Forms.Label();
-            this.fraFunction = new System.Windows.Forms.GroupBox();
-            this.fraPosition = new System.Windows.Forms.GroupBox();
-            this.lblPosition = new System.Windows.Forms.Label();
-            this.cmdNext = new System.Windows.Forms.Button();
-            this.cmdPrev = new System.Windows.Forms.Button();
-            this.cmdLast = new System.Windows.Forms.Button();
-            this.cmdFirst = new System.Windows.Forms.Button();
-            this.fraBound = new System.Windows.Forms.GroupBox();
-            this.numEnd = new System.Windows.Forms.NumericUpDown();
-            this.numStart = new System.Windows.Forms.NumericUpDown();
-            this.fraAmount = new System.Windows.Forms.GroupBox();
-            this.numAmount = new System.Windows.Forms.NumericUpDown();
-            this.fraTension = new System.Windows.Forms.GroupBox();
-            this.numTension = new System.Windows.Forms.NumericUpDown();
-            this.fraOrder = new System.Windows.Forms.GroupBox();
-            this.numOrder = new System.Windows.Forms.NumericUpDown();
+            this.cmdCancel = new DarkButton();
+            this.cmdOK = new DarkButton();
+            this.dpdFunc = new DarkComboBox();
+            this.lblX = new Label();
+            this.lblY = new Label();
+            this.lblZ = new Label();
+            this.numX = new DarkNumericUpDown();
+            this.numY = new DarkNumericUpDown();
+            this.numZ = new DarkNumericUpDown();
+            this.lblAverage = new Label();
+            this.fraFunction = new DarkGroupBox();
+            this.fraPosition = new DarkGroupBox();
+            this.lblPosition = new Label();
+            this.cmdNext = new DarkButton();
+            this.cmdPrev = new DarkButton();
+            this.cmdLast = new DarkButton();
+            this.cmdFirst = new DarkButton();
+            this.fraBound = new DarkGroupBox();
+            this.numEnd = new DarkNumericUpDown();
+            this.numStart = new DarkNumericUpDown();
+            this.fraAmount = new DarkGroupBox();
+            this.numAmount = new DarkNumericUpDown();
+            this.fraTension = new DarkGroupBox();
+            this.numTension = new DarkNumericUpDown();
+            this.fraOrder = new DarkGroupBox();
+            this.numOrder = new DarkNumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.numX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numZ)).BeginInit();
@@ -72,30 +74,28 @@
             // 
             // cmdCancel
             // 
-            this.cmdCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.cmdCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | AnchorStyles.Right)));
+            this.cmdCancel.DialogResult = DialogResult.Cancel;
             this.cmdCancel.Location = new System.Drawing.Point(194, 265);
             this.cmdCancel.Name = "cmdCancel";
             this.cmdCancel.Size = new System.Drawing.Size(75, 23);
             this.cmdCancel.TabIndex = 3;
             this.cmdCancel.Text = "Cancel";
-            this.cmdCancel.UseVisualStyleBackColor = true;
             this.cmdCancel.Click += new System.EventHandler(this.cmdCancel_Click);
             // 
             // cmdOK
             // 
-            this.cmdOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmdOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | AnchorStyles.Right)));
             this.cmdOK.Location = new System.Drawing.Point(113, 265);
             this.cmdOK.Name = "cmdOK";
             this.cmdOK.Size = new System.Drawing.Size(75, 23);
             this.cmdOK.TabIndex = 4;
             this.cmdOK.Text = "Interpolate!";
-            this.cmdOK.UseVisualStyleBackColor = true;
             this.cmdOK.Click += new System.EventHandler(this.cmdOK_Click);
             // 
             // dpdFunc
             // 
-            this.dpdFunc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.dpdFunc.DropDownStyle = ComboBoxStyle.DropDownList;
             this.dpdFunc.FormattingEnabled = true;
             this.dpdFunc.Location = new System.Drawing.Point(6, 19);
             this.dpdFunc.Name = "dpdFunc";
@@ -195,7 +195,7 @@
             // fraFunction
             // 
             this.fraFunction.AutoSize = true;
-            this.fraFunction.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.fraFunction.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             this.fraFunction.Controls.Add(this.dpdFunc);
             this.fraFunction.Location = new System.Drawing.Point(136, 60);
             this.fraFunction.Name = "fraFunction";
@@ -207,7 +207,7 @@
             // fraPosition
             // 
             this.fraPosition.AutoSize = true;
-            this.fraPosition.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.fraPosition.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             this.fraPosition.Controls.Add(this.lblPosition);
             this.fraPosition.Controls.Add(this.cmdNext);
             this.fraPosition.Controls.Add(this.lblX);
@@ -243,7 +243,6 @@
             this.cmdNext.Size = new System.Drawing.Size(50, 23);
             this.cmdNext.TabIndex = 0;
             this.cmdNext.Text = "Next";
-            this.cmdNext.UseVisualStyleBackColor = true;
             this.cmdNext.Click += new System.EventHandler(this.cmdNext_Click);
             // 
             // cmdPrev
@@ -253,7 +252,6 @@
             this.cmdPrev.Size = new System.Drawing.Size(50, 23);
             this.cmdPrev.TabIndex = 1;
             this.cmdPrev.Text = "Prev";
-            this.cmdPrev.UseVisualStyleBackColor = true;
             this.cmdPrev.Click += new System.EventHandler(this.cmdPrev_Click);
             // 
             // cmdLast
@@ -263,7 +261,6 @@
             this.cmdLast.Size = new System.Drawing.Size(50, 23);
             this.cmdLast.TabIndex = 3;
             this.cmdLast.Text = "Last";
-            this.cmdLast.UseVisualStyleBackColor = true;
             this.cmdLast.Click += new System.EventHandler(this.cmdLast_Click);
             // 
             // cmdFirst
@@ -273,7 +270,6 @@
             this.cmdFirst.Size = new System.Drawing.Size(50, 23);
             this.cmdFirst.TabIndex = 2;
             this.cmdFirst.Text = "First";
-            this.cmdFirst.UseVisualStyleBackColor = true;
             this.cmdFirst.Click += new System.EventHandler(this.cmdFirst_Click);
             // 
             // fraBound
@@ -432,9 +428,9 @@
             // InterpolatorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = AutoScaleMode.Font;
             this.AutoSize = true;
-            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(281, 298);
             this.Controls.Add(this.fraOrder);
             this.Controls.Add(this.fraTension);
@@ -445,7 +441,7 @@
             this.Controls.Add(this.fraPosition);
             this.Controls.Add(this.cmdOK);
             this.Controls.Add(this.cmdCancel);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.Name = "InterpolatorForm";
             this.Text = "Interpolate Path";
             ((System.ComponentModel.ISupportInitialize)(this.numX)).EndInit();
@@ -470,31 +466,31 @@
 
         #endregion
 
-        private System.Windows.Forms.Button cmdCancel;
-        private System.Windows.Forms.Button cmdOK;
-        private System.Windows.Forms.ComboBox dpdFunc;
-        private System.Windows.Forms.Label lblX;
-        private System.Windows.Forms.Label lblY;
-        private System.Windows.Forms.Label lblZ;
-        private System.Windows.Forms.NumericUpDown numX;
-        private System.Windows.Forms.NumericUpDown numY;
-        private System.Windows.Forms.NumericUpDown numZ;
-        private System.Windows.Forms.Label lblAverage;
-        private System.Windows.Forms.GroupBox fraFunction;
-        private System.Windows.Forms.GroupBox fraPosition;
-        private System.Windows.Forms.Button cmdLast;
-        private System.Windows.Forms.Button cmdFirst;
-        private System.Windows.Forms.Button cmdPrev;
-        private System.Windows.Forms.Button cmdNext;
-        private System.Windows.Forms.Label lblPosition;
-        private System.Windows.Forms.GroupBox fraBound;
-        private System.Windows.Forms.NumericUpDown numEnd;
-        private System.Windows.Forms.NumericUpDown numStart;
-        private System.Windows.Forms.GroupBox fraAmount;
-        private System.Windows.Forms.NumericUpDown numAmount;
-        private System.Windows.Forms.GroupBox fraTension;
-        private System.Windows.Forms.NumericUpDown numTension;
-        private System.Windows.Forms.GroupBox fraOrder;
-        private System.Windows.Forms.NumericUpDown numOrder;
+        private DarkButton cmdCancel;
+        private DarkButton cmdOK;
+        private DarkComboBox dpdFunc;
+        private Label lblX;
+        private Label lblY;
+        private Label lblZ;
+        private DarkNumericUpDown numX;
+        private DarkNumericUpDown numY;
+        private DarkNumericUpDown numZ;
+        private Label lblAverage;
+        private DarkGroupBox fraFunction;
+        private DarkGroupBox fraPosition;
+        private DarkButton cmdLast;
+        private DarkButton cmdFirst;
+        private DarkButton cmdPrev;
+        private DarkButton cmdNext;
+        private Label lblPosition;
+        private DarkGroupBox fraBound;
+        private DarkNumericUpDown numEnd;
+        private DarkNumericUpDown numStart;
+        private DarkGroupBox fraAmount;
+        private DarkNumericUpDown numAmount;
+        private DarkGroupBox fraTension;
+        private DarkNumericUpDown numTension;
+        private DarkGroupBox fraOrder;
+        private DarkNumericUpDown numOrder;
     }
 }
