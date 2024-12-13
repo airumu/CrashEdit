@@ -161,6 +161,9 @@ namespace CrashEdit.CE
             tabLoadLists = new TabPage();
             lblEIDErrB = new Label();
             fraLoadListPayload = new DarkGroupBox();
+            lblPayloadSound = new Label();
+            lblPayloadTexture = new Label();
+            lblVerifyLoadLists = new Label();
             lblPayload = new Label();
             cmdLoadListVerify = new DarkButton();
             cmdPayload = new DarkButton();
@@ -234,7 +237,6 @@ namespace CrashEdit.CE
             cmdNextEntityA = new DarkButton();
             cmdPrevRowDrawA = new DarkButton();
             cmdNextRowDrawA = new DarkButton();
-            lblVerifyLoadLists = new Label();
             ((System.ComponentModel.ISupportInitialize)numType).BeginInit();
             fraType.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numSubtype).BeginInit();
@@ -850,7 +852,7 @@ namespace CrashEdit.CE
             tbcTabs.Location = new Point(0, 0);
             tbcTabs.Margin = new Padding(4, 3, 4, 3);
             tbcTabs.Name = "tbcTabs";
-            tbcTabs.SelectedIndex = 3;
+            tbcTabs.SelectedIndex = 0;
             tbcTabs.SelectedTextColor = Color.White;
             tbcTabs.Size = new Size(583, 531);
             tbcTabs.SizeMode = TabSizeMode.Fixed;
@@ -2042,6 +2044,8 @@ namespace CrashEdit.CE
             // 
             // fraLoadListPayload
             // 
+            fraLoadListPayload.Controls.Add(lblPayloadSound);
+            fraLoadListPayload.Controls.Add(lblPayloadTexture);
             fraLoadListPayload.Controls.Add(lblVerifyLoadLists);
             fraLoadListPayload.Controls.Add(lblPayload);
             fraLoadListPayload.Controls.Add(cmdLoadListVerify);
@@ -2057,11 +2061,48 @@ namespace CrashEdit.CE
             fraLoadListPayload.TabStop = false;
             fraLoadListPayload.Text = "Verify Load Lists";
             // 
+            // lblPayloadSound
+            // 
+            lblPayloadSound.AutoSize = true;
+            lblPayloadSound.BackColor = Color.Transparent;
+            lblPayloadSound.Location = new Point(7, 116);
+            lblPayloadSound.Margin = new Padding(4, 0, 4, 0);
+            lblPayloadSound.Name = "lblPayloadSound";
+            lblPayloadSound.Size = new Size(155, 15);
+            lblPayloadSound.TabIndex = 27;
+            lblPayloadSound.Text = "Payload is ?? normal chunks";
+            lblPayloadSound.Visible = false;
+            // 
+            // lblPayloadTexture
+            // 
+            lblPayloadTexture.AutoSize = true;
+            lblPayloadTexture.BackColor = Color.Transparent;
+            lblPayloadTexture.Location = new Point(7, 100);
+            lblPayloadTexture.Margin = new Padding(4, 0, 4, 0);
+            lblPayloadTexture.Name = "lblPayloadTexture";
+            lblPayloadTexture.Size = new Size(155, 15);
+            lblPayloadTexture.TabIndex = 26;
+            lblPayloadTexture.Text = "Payload is ?? normal chunks";
+            lblPayloadTexture.Visible = false;
+            // 
+            // lblVerifyLoadLists
+            // 
+            lblVerifyLoadLists.AutoSize = true;
+            lblVerifyLoadLists.BackColor = Color.Transparent;
+            lblVerifyLoadLists.ForeColor = Color.MediumTurquoise;
+            lblVerifyLoadLists.Location = new Point(137, 28);
+            lblVerifyLoadLists.Margin = new Padding(4, 0, 4, 0);
+            lblVerifyLoadLists.Name = "lblVerifyLoadLists";
+            lblVerifyLoadLists.Size = new Size(118, 15);
+            lblVerifyLoadLists.TabIndex = 25;
+            lblVerifyLoadLists.Text = "Load lists are correct.";
+            lblVerifyLoadLists.Visible = false;
+            // 
             // lblPayload
             // 
             lblPayload.AutoSize = true;
             lblPayload.BackColor = Color.Transparent;
-            lblPayload.Location = new Point(7, 92);
+            lblPayload.Location = new Point(7, 84);
             lblPayload.Margin = new Padding(4, 0, 4, 0);
             lblPayload.Name = "lblPayload";
             lblPayload.Size = new Size(155, 15);
@@ -3089,19 +3130,6 @@ namespace CrashEdit.CE
             cmdNextRowDrawA.Text = "Next";
             cmdNextRowDrawA.Click += cmdNextRowDrawA_Click;
             // 
-            // lblVerifyLoadLists
-            // 
-            lblVerifyLoadLists.AutoSize = true;
-            lblVerifyLoadLists.BackColor = Color.Transparent;
-            lblVerifyLoadLists.ForeColor = Color.MediumTurquoise;
-            lblVerifyLoadLists.Location = new Point(137, 28);
-            lblVerifyLoadLists.Margin = new Padding(4, 0, 4, 0);
-            lblVerifyLoadLists.Name = "lblVerifyLoadLists";
-            lblVerifyLoadLists.Size = new Size(118, 15);
-            lblVerifyLoadLists.TabIndex = 25;
-            lblVerifyLoadLists.Text = "Load lists are correct.";
-            lblVerifyLoadLists.Visible = false;
-            // 
             // EntityBox
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -3426,5 +3454,7 @@ namespace CrashEdit.CE
         private DarkButton cmdNextFOVFrame;
         private System.Windows.Forms.Label lblArgAs;
         private Label lblVerifyLoadLists;
+        private Label lblPayloadSound;
+        private Label lblPayloadTexture;
     }
 }

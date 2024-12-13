@@ -1477,6 +1477,7 @@ namespace CrashEdit.CE
         {
             UpdateLoadListA();
             UpdateLoadListB();
+            CheckPayload();
             tabLoadLists.Enter -= tabLoadLists_Enter;
         }
 
@@ -1548,6 +1549,11 @@ namespace CrashEdit.CE
 
         private void cmdPayload_Click(object sender, EventArgs e)
         {
+            CheckPayload();
+        }
+
+        private void CheckPayload()
+        {
             List<int> loadedentries = new List<int>();
             for (int i = 0; i < numPayloadPosition.Value + 1; ++i)
             {
@@ -1588,6 +1594,9 @@ namespace CrashEdit.CE
                 entries.Add(controller.GetEntry<Entry>(eid));
             }
             HashSet<Chunk> loadedchunks = new HashSet<Chunk>();
+            HashSet<Chunk> loadedsoundchunks = new HashSet<Chunk>();
+            HashSet<Chunk> loadedtexturechunks = new HashSet<Chunk>();
+            HashSet<Chunk> loadedwavebankchunks = new HashSet<Chunk>();
             foreach (Chunk chunk in chunks)
             {
                 if (chunk is NormalChunk c)
@@ -1598,12 +1607,39 @@ namespace CrashEdit.CE
                             loadedchunks.Add(chunk);
                     }
                 }
+                else if (chunk is SoundChunk s)
+                {
+                    foreach (Entry entry in entries)
+                    {
+                        if (s.Entries.Contains(entry))
+                            loadedsoundchunks.Add(chunk);
+                    }
+                }
+                else if (chunk is TextureChunk t)
+                {
+                    foreach (Entry entry in entries)
+                    {
+                        if (loadedentries.Contains(t.EID))
+                            loadedtexturechunks.Add(chunk);
+                    }
+                }
+                else if (chunk is WavebankChunk w)
+                {
+                    foreach (Entry entry in entries)
+                    {
+                        loadedwavebankchunks.Add(chunk);
+                    }
+                }
             }
             lblPayload.Visible = true;
-            lblPayload.Text = $"Payload is ~{loadedchunks.Count} normal chunks";
+            lblPayload.Text = $"Payload is {loadedchunks.Count} normal chunks";
+            lblPayloadTexture.Visible = true;
+            lblPayloadTexture.Text = $"Payload is {loadedtexturechunks.Count} texture chunks";
+            //lblPayloadSound.Visible = true;
+            lblPayloadSound.Text = $"Payload is {loadedsoundchunks.Count} sound chunks / {loadedwavebankchunks.Count} wavebank chunks";
             if (loadedchunks.Count < 20)
             {
-                lblPayload.ForeColor = Color.Green;
+                lblPayload.ForeColor = Color.LimeGreen;
             }
             else if (loadedchunks.Count <= 21)
             {
@@ -1612,6 +1648,28 @@ namespace CrashEdit.CE
             else
             {
                 lblPayload.ForeColor = Color.Red;
+            }
+
+            if (loadedtexturechunks.Count <= 7)
+            {
+                lblPayloadTexture.ForeColor = Color.LimeGreen;
+            }
+            else if (loadedtexturechunks.Count == 8)
+            {
+                lblPayloadTexture.ForeColor = Color.Goldenrod;
+            }
+            else
+            {
+                lblPayloadTexture.ForeColor = Color.Red;
+            }
+
+            if (loadedsoundchunks.Count + loadedwavebankchunks.Count <= 8)
+            {
+                lblPayloadSound.ForeColor = Color.CornflowerBlue;
+            }
+            else
+            {
+                lblPayloadSound.ForeColor = Color.Red;
             }
         }
 
