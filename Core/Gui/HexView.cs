@@ -394,38 +394,43 @@ namespace CrashEdit
             }
         }
 
+        private static Brush brush_border1 = new SolidBrush(Color.FromArgb(40, 40, 44));
+        private static Brush brush_border2 = new SolidBrush(Color.FromArgb(36, 36, 40));
+        private static Brush brush_bg1 = new SolidBrush(Color.FromArgb(31, 31, 32));
+        private static Brush brush_bg2 = new SolidBrush(Color.FromArgb(27, 27, 28));
+
         // Border color drawn around cells.
-        private static Brush _borderBrush = Brushes.Black;
+        private static Brush _borderBrush = brush_border1;
 
         // Border color drawn around cells of the same word.
-        private static Brush _borderWordBrush = Brushes.DarkGray;
+        private static Brush _borderWordBrush = brush_border2;
 
         // Border color drawn around the selected cell.
-        private static Brush _selectedBorderBrush = Brushes.Red;
+        private static Brush _selectedBorderBrush = Brushes.LightSeaGreen;
 
         // Color for data being typed in.
-        private static Brush _inputBrush = Brushes.Red;
+        private static Brush _inputBrush = Brushes.DarkCyan;
 
         // Colors for normal cells.
-        private static Brush _fgNormalBrush = Brushes.Navy;
-        private static Brush _bgNormalBrush = Brushes.White;
+        private static Brush _fgNormalBrush = Brushes.GhostWhite;
+        private static Brush _bgNormalBrush = brush_bg1;
 
         // Colors for normal cells, but for every-other column group.
-        private static Brush _fgAlternateBrush = Brushes.Navy;
-        private static Brush _bgAlternateBrush = Brushes.LightGray;
+        private static Brush _fgAlternateBrush = Brushes.GhostWhite;
+        private static Brush _bgAlternateBrush = brush_bg2;
 
         // Color for zero-value cells.
         private static Brush _fgZeroBrush = Brushes.DimGray;
         //private static Brush _bgZeroBrush = Brushes.White;
 
         // Color for the selected cell. This overrides the other colors.
-        private static Brush _fgSelectedBrush = Brushes.White;
-        private static Brush _bgSelectedBrush = Brushes.Navy;
+        private static Brush _fgSelectedBrush = Brushes.Black;
+        private static Brush _bgSelectedBrush = Brushes.DarkGray;
 
         // Color for cells when they're being displayed as chunk names
-        private static Brush _fgChunkBrush = Brushes.White;
-        private static Brush _bgChunkBrush = Brushes.Chocolate;
-        private static Brush _bgSelectedChunkBrush = Brushes.Brown;
+        private static Brush _fgChunkBrush = Brushes.Black;
+        private static Brush _bgChunkBrush = Brushes.CornflowerBlue;
+        private static Brush _bgSelectedChunkBrush = Brushes.LightSkyBlue;
 
         // Size of borders between and around cells, in pixels.
         private static int _borderSize = 2;
@@ -434,7 +439,7 @@ namespace CrashEdit
         private static int _padding = 4;
 
         // Font used for displaying numbers.
-        private static Font _font = new Font(FontFamily.GenericMonospace, 8);
+        private static Font _font = new Font(FontFamily.GenericMonospace, 10);
 
         // The space occupied by one character of text. This assumes a fixed-width font.
         private Size CharSize { get; set; }
