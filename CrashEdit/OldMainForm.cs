@@ -164,8 +164,10 @@ namespace CrashEdit.CE
             dlgProgress = null;
 
             Icon = OldResources.CBHacksIcon;
-            Width = Settings.Default.DefaultFormW;
-            Height = Settings.Default.DefaultFormH;
+            // Width = Settings.Default.DefaultFormW;
+            // Height = Settings.Default.DefaultFormH;
+            Load += new EventHandler(OldMainForm_Load);
+            FormClosing += new FormClosingEventHandler(OldMainForm_FormClosing);
             Text = $"CrashEdit v{Assembly.GetExecutingAssembly().GetName().Version}";
 
             dlgMakeBINFile.Filter = "Playstation Disc Images (*.bin)|*.bin";
@@ -927,6 +929,24 @@ namespace CrashEdit.CE
                 configtab.Tag = new ConfigEditor() { Dock = DockStyle.Fill };
                 configtab.Controls.Add((ConfigEditor)configtab.Tag);
             }
+        }
+
+        private void OldMainForm_Load(object sender, EventArgs e)
+        {
+            Bounds = Settings.Default.FormBounds;
+            WindowState = Settings.Default.FormWindowState;
+        }
+
+        private void OldMainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (WindowState == FormWindowState.Normal)
+                Settings.Default.FormBounds = Bounds;
+            else
+                Settings.Default.FormBounds = RestoreBounds;
+
+            Settings.Default.FormWindowState = WindowState;
+
+            Settings.Default.Save();
         }
     }
 }
