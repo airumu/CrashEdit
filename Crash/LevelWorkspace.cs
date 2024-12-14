@@ -58,13 +58,13 @@ namespace CrashEdit.Crash
                         AllEntriesByEid.Add(ientry.EID, ientry);
                     }
 
-                    if (chunk is EntryChunk ec)
-                    {
-                        foreach (var entry in ec.Entries)
-                        {
-                            AllEntriesByEid.Add(entry.EID, entry);
-                        }
-                    }
+                    //if (chunk is EntryChunk ec)
+                    //{
+                    //    foreach (var entry in ec.Entries)
+                    //    {
+                    //        AllEntriesByEid.Add(entry.EID, entry);
+                    //    }
+                    //}
                 }
             }
         }

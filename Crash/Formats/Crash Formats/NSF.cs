@@ -386,7 +386,7 @@ namespace CrashEdit.Crash
                             newindex.Add(entry.HashKey, new SortedDictionary<string, int>(new ENameComparer()));
                         if (newindex[entry.HashKey].ContainsKey(entry.EName))
                         {
-                            ErrorManager.SignalIgnorableError(string.Format("NSF.MakeNSDIndex: Duplicate entry {0}", entry.EName));
+                            ErrorManager.SignalError(string.Format("NSF.MakeNSDIndex: Duplicate entry {0}", entry.EName));
                         }
                         else
                         {
