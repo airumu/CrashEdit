@@ -1,3 +1,6 @@
+using AltUI.Controls;
+using MetroSet_UI.Controls;
+
 namespace CrashEdit.CE
 {
     partial class ProtoEntityBox
@@ -28,427 +31,415 @@ namespace CrashEdit.CE
         /// </summary>
         private void InitializeComponent()
         {
-            this.numType = new System.Windows.Forms.NumericUpDown();
-            this.fraType = new System.Windows.Forms.GroupBox();
-            this.lblCodeName = new System.Windows.Forms.Label();
-            this.fraSubtype = new System.Windows.Forms.GroupBox();
-            this.numSubtype = new System.Windows.Forms.NumericUpDown();
-            this.fraPosition = new System.Windows.Forms.GroupBox();
-            this.lblZ = new System.Windows.Forms.Label();
-            this.lblY = new System.Windows.Forms.Label();
-            this.lblX = new System.Windows.Forms.Label();
-            this.numZ = new System.Windows.Forms.NumericUpDown();
-            this.numY = new System.Windows.Forms.NumericUpDown();
-            this.numX = new System.Windows.Forms.NumericUpDown();
-            this.fraID = new System.Windows.Forms.GroupBox();
-            this.numID = new System.Windows.Forms.NumericUpDown();
-            this.tbcTabs = new System.Windows.Forms.TabControl();
-            this.tabGeneral = new System.Windows.Forms.TabPage();
-            this.fraSettings = new System.Windows.Forms.GroupBox();
-            this.lblModeC = new System.Windows.Forms.Label();
-            this.numModeC = new System.Windows.Forms.NumericUpDown();
-            this.lblModeB = new System.Windows.Forms.Label();
-            this.lblModeA = new System.Windows.Forms.Label();
-            this.lblFlags = new System.Windows.Forms.Label();
-            this.numModeB = new System.Windows.Forms.NumericUpDown();
-            this.numModeA = new System.Windows.Forms.NumericUpDown();
-            this.numFlags = new System.Windows.Forms.NumericUpDown();
-            ((System.ComponentModel.ISupportInitialize)(this.numType)).BeginInit();
-            this.fraType.SuspendLayout();
-            this.fraSubtype.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numSubtype)).BeginInit();
-            this.fraPosition.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numZ)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numY)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numX)).BeginInit();
-            this.fraID.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numID)).BeginInit();
-            this.tbcTabs.SuspendLayout();
-            this.tabGeneral.SuspendLayout();
-            this.fraSettings.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numModeC)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numModeB)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numModeA)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numFlags)).BeginInit();
-            this.SuspendLayout();
+            numType = new DarkNumericUpDown();
+            fraType = new DarkGroupBox();
+            lblCodeName = new Label();
+            fraSubtype = new DarkGroupBox();
+            numSubtype = new DarkNumericUpDown();
+            fraPosition = new DarkGroupBox();
+            lblZ = new Label();
+            lblY = new Label();
+            lblX = new Label();
+            numZ = new DarkNumericUpDown();
+            numY = new DarkNumericUpDown();
+            numX = new DarkNumericUpDown();
+            fraID = new DarkGroupBox();
+            numID = new DarkNumericUpDown();
+            tbcTabs = new MetroSetTabControl();
+            tabGeneral = new TabPage();
+            fraSettings = new DarkGroupBox();
+            lblModeC = new Label();
+            numModeC = new DarkNumericUpDown();
+            lblModeB = new Label();
+            lblModeA = new Label();
+            lblFlags = new Label();
+            numModeB = new DarkNumericUpDown();
+            numModeA = new DarkNumericUpDown();
+            numFlags = new DarkNumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)numType).BeginInit();
+            fraType.SuspendLayout();
+            fraSubtype.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numSubtype).BeginInit();
+            fraPosition.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numZ).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numY).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numX).BeginInit();
+            fraID.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numID).BeginInit();
+            tbcTabs.SuspendLayout();
+            tabGeneral.SuspendLayout();
+            fraSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numModeC).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numModeB).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numModeA).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numFlags).BeginInit();
+            SuspendLayout();
             // 
             // numType
             // 
-            this.numType.Location = new System.Drawing.Point(6, 22);
-            this.numType.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numType.Name = "numType";
-            this.numType.Size = new System.Drawing.Size(120, 20);
-            this.numType.TabIndex = 1;
-            this.numType.ValueChanged += new System.EventHandler(this.numType_ValueChanged);
+            numType.Location = new Point(7, 25);
+            numType.Margin = new Padding(4, 3, 4, 3);
+            numType.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numType.Name = "numType";
+            numType.Size = new Size(140, 23);
+            numType.TabIndex = 1;
+            numType.ValueChanged += numType_ValueChanged;
             // 
             // fraType
             // 
-            this.fraType.Controls.Add(this.lblCodeName);
-            this.fraType.Controls.Add(this.numType);
-            this.fraType.Location = new System.Drawing.Point(131, 3);
-            this.fraType.Name = "fraType";
-            this.fraType.Size = new System.Drawing.Size(132, 67);
-            this.fraType.TabIndex = 4;
-            this.fraType.TabStop = false;
-            this.fraType.Text = "Type";
+            fraType.Controls.Add(lblCodeName);
+            fraType.Controls.Add(numType);
+            fraType.Location = new Point(153, 3);
+            fraType.Margin = new Padding(4, 3, 4, 3);
+            fraType.Name = "fraType";
+            fraType.Padding = new Padding(4, 3, 4, 3);
+            fraType.Size = new Size(154, 77);
+            fraType.TabIndex = 4;
+            fraType.TabStop = false;
+            fraType.Text = "Type";
             // 
             // lblCodeName
             // 
-            this.lblCodeName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCodeName.Location = new System.Drawing.Point(2, 45);
-            this.lblCodeName.Name = "lblCodeName";
-            this.lblCodeName.Size = new System.Drawing.Size(120, 19);
-            this.lblCodeName.TabIndex = 9;
-            this.lblCodeName.Text = "CodeC";
-            this.lblCodeName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            lblCodeName.BackColor = Color.Transparent;
+            lblCodeName.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblCodeName.Location = new Point(2, 52);
+            lblCodeName.Margin = new Padding(4, 0, 4, 0);
+            lblCodeName.Name = "lblCodeName";
+            lblCodeName.Size = new Size(140, 22);
+            lblCodeName.TabIndex = 9;
+            lblCodeName.Text = "CodeC";
+            lblCodeName.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // fraSubtype
             // 
-            this.fraSubtype.Controls.Add(this.numSubtype);
-            this.fraSubtype.Location = new System.Drawing.Point(131, 76);
-            this.fraSubtype.Name = "fraSubtype";
-            this.fraSubtype.Size = new System.Drawing.Size(132, 46);
-            this.fraSubtype.TabIndex = 5;
-            this.fraSubtype.TabStop = false;
-            this.fraSubtype.Text = "Subtype";
+            fraSubtype.Controls.Add(numSubtype);
+            fraSubtype.Location = new Point(153, 88);
+            fraSubtype.Margin = new Padding(4, 3, 4, 3);
+            fraSubtype.Name = "fraSubtype";
+            fraSubtype.Padding = new Padding(4, 3, 4, 3);
+            fraSubtype.Size = new Size(154, 53);
+            fraSubtype.TabIndex = 5;
+            fraSubtype.TabStop = false;
+            fraSubtype.Text = "Subtype";
             // 
             // numSubtype
             // 
-            this.numSubtype.Location = new System.Drawing.Point(6, 20);
-            this.numSubtype.Name = "numSubtype";
-            this.numSubtype.Size = new System.Drawing.Size(120, 20);
-            this.numSubtype.TabIndex = 1;
-            this.numSubtype.ValueChanged += new System.EventHandler(this.numSubtype_ValueChanged);
+            numSubtype.Location = new Point(7, 23);
+            numSubtype.Margin = new Padding(4, 3, 4, 3);
+            numSubtype.Name = "numSubtype";
+            numSubtype.Size = new Size(140, 23);
+            numSubtype.TabIndex = 1;
+            numSubtype.ValueChanged += numSubtype_ValueChanged;
             // 
             // fraPosition
             // 
-            this.fraPosition.Controls.Add(this.lblZ);
-            this.fraPosition.Controls.Add(this.lblY);
-            this.fraPosition.Controls.Add(this.lblX);
-            this.fraPosition.Controls.Add(this.numZ);
-            this.fraPosition.Controls.Add(this.numY);
-            this.fraPosition.Controls.Add(this.numX);
-            this.fraPosition.Location = new System.Drawing.Point(3, 3);
-            this.fraPosition.Name = "fraPosition";
-            this.fraPosition.Size = new System.Drawing.Size(122, 100);
-            this.fraPosition.TabIndex = 1;
-            this.fraPosition.TabStop = false;
-            this.fraPosition.Text = "Start Position";
+            fraPosition.Controls.Add(lblZ);
+            fraPosition.Controls.Add(lblY);
+            fraPosition.Controls.Add(lblX);
+            fraPosition.Controls.Add(numZ);
+            fraPosition.Controls.Add(numY);
+            fraPosition.Controls.Add(numX);
+            fraPosition.Location = new Point(4, 3);
+            fraPosition.Margin = new Padding(4, 3, 4, 3);
+            fraPosition.Name = "fraPosition";
+            fraPosition.Padding = new Padding(4, 3, 4, 3);
+            fraPosition.Size = new Size(142, 115);
+            fraPosition.TabIndex = 1;
+            fraPosition.TabStop = false;
+            fraPosition.Text = "Start Position";
             // 
             // lblZ
             // 
-            this.lblZ.AutoSize = true;
-            this.lblZ.Location = new System.Drawing.Point(6, 72);
-            this.lblZ.Name = "lblZ";
-            this.lblZ.Size = new System.Drawing.Size(14, 13);
-            this.lblZ.TabIndex = 5;
-            this.lblZ.Text = "Z";
+            lblZ.AutoSize = true;
+            lblZ.BackColor = Color.Transparent;
+            lblZ.Location = new Point(7, 83);
+            lblZ.Margin = new Padding(4, 0, 4, 0);
+            lblZ.Name = "lblZ";
+            lblZ.Size = new Size(14, 15);
+            lblZ.TabIndex = 5;
+            lblZ.Text = "Z";
             // 
             // lblY
             // 
-            this.lblY.AutoSize = true;
-            this.lblY.Location = new System.Drawing.Point(6, 46);
-            this.lblY.Name = "lblY";
-            this.lblY.Size = new System.Drawing.Size(14, 13);
-            this.lblY.TabIndex = 4;
-            this.lblY.Text = "Y";
+            lblY.AutoSize = true;
+            lblY.BackColor = Color.Transparent;
+            lblY.Location = new Point(7, 53);
+            lblY.Margin = new Padding(4, 0, 4, 0);
+            lblY.Name = "lblY";
+            lblY.Size = new Size(14, 15);
+            lblY.TabIndex = 4;
+            lblY.Text = "Y";
             // 
             // lblX
             // 
-            this.lblX.AutoSize = true;
-            this.lblX.Location = new System.Drawing.Point(6, 20);
-            this.lblX.Name = "lblX";
-            this.lblX.Size = new System.Drawing.Size(14, 13);
-            this.lblX.TabIndex = 3;
-            this.lblX.Text = "X";
+            lblX.AutoSize = true;
+            lblX.BackColor = Color.Transparent;
+            lblX.Location = new Point(7, 23);
+            lblX.Margin = new Padding(4, 0, 4, 0);
+            lblX.Name = "lblX";
+            lblX.Size = new Size(14, 15);
+            lblX.TabIndex = 3;
+            lblX.Text = "X";
             // 
             // numZ
             // 
-            this.numZ.Increment = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            this.numZ.Location = new System.Drawing.Point(26, 70);
-            this.numZ.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numZ.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numZ.Name = "numZ";
-            this.numZ.Size = new System.Drawing.Size(86, 20);
-            this.numZ.TabIndex = 4;
-            this.numZ.ValueChanged += new System.EventHandler(this.numZ_ValueChanged);
+            numZ.Increment = new decimal(new int[] { 50, 0, 0, 0 });
+            numZ.Location = new Point(30, 81);
+            numZ.Margin = new Padding(4, 3, 4, 3);
+            numZ.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numZ.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numZ.Name = "numZ";
+            numZ.Size = new Size(100, 23);
+            numZ.TabIndex = 4;
+            numZ.ValueChanged += numZ_ValueChanged;
             // 
             // numY
             // 
-            this.numY.Increment = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            this.numY.Location = new System.Drawing.Point(26, 44);
-            this.numY.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numY.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numY.Name = "numY";
-            this.numY.Size = new System.Drawing.Size(86, 20);
-            this.numY.TabIndex = 3;
-            this.numY.ValueChanged += new System.EventHandler(this.numY_ValueChanged);
+            numY.Increment = new decimal(new int[] { 50, 0, 0, 0 });
+            numY.Location = new Point(30, 51);
+            numY.Margin = new Padding(4, 3, 4, 3);
+            numY.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numY.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numY.Name = "numY";
+            numY.Size = new Size(100, 23);
+            numY.TabIndex = 3;
+            numY.ValueChanged += numY_ValueChanged;
             // 
             // numX
             // 
-            this.numX.Increment = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            this.numX.Location = new System.Drawing.Point(26, 18);
-            this.numX.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numX.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numX.Name = "numX";
-            this.numX.Size = new System.Drawing.Size(86, 20);
-            this.numX.TabIndex = 2;
-            this.numX.ValueChanged += new System.EventHandler(this.numX_ValueChanged);
+            numX.Increment = new decimal(new int[] { 50, 0, 0, 0 });
+            numX.Location = new Point(30, 21);
+            numX.Margin = new Padding(4, 3, 4, 3);
+            numX.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numX.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numX.Name = "numX";
+            numX.Size = new Size(100, 23);
+            numX.TabIndex = 2;
+            numX.ValueChanged += numX_ValueChanged;
             // 
             // fraID
             // 
-            this.fraID.Controls.Add(this.numID);
-            this.fraID.Location = new System.Drawing.Point(3, 109);
-            this.fraID.Name = "fraID";
-            this.fraID.Size = new System.Drawing.Size(122, 49);
-            this.fraID.TabIndex = 3;
-            this.fraID.TabStop = false;
-            this.fraID.Text = "ID";
+            fraID.Controls.Add(numID);
+            fraID.Location = new Point(4, 126);
+            fraID.Margin = new Padding(4, 3, 4, 3);
+            fraID.Name = "fraID";
+            fraID.Padding = new Padding(4, 3, 4, 3);
+            fraID.Size = new Size(142, 57);
+            fraID.TabIndex = 3;
+            fraID.TabStop = false;
+            fraID.Text = "ID";
             // 
             // numID
             // 
-            this.numID.Location = new System.Drawing.Point(6, 19);
-            this.numID.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
-            this.numID.Minimum = new decimal(new int[] {
-            -2147483648,
-            0,
-            0,
-            -2147483648});
-            this.numID.Name = "numID";
-            this.numID.Size = new System.Drawing.Size(106, 20);
-            this.numID.TabIndex = 1;
-            this.numID.ValueChanged += new System.EventHandler(this.numID_ValueChanged);
+            numID.Location = new Point(7, 22);
+            numID.Margin = new Padding(4, 3, 4, 3);
+            numID.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numID.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numID.Name = "numID";
+            numID.Size = new Size(124, 23);
+            numID.TabIndex = 1;
+            numID.ValueChanged += numID_ValueChanged;
             // 
             // tbcTabs
             // 
-            this.tbcTabs.Controls.Add(this.tabGeneral);
-            this.tbcTabs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbcTabs.Location = new System.Drawing.Point(0, 0);
-            this.tbcTabs.Name = "tbcTabs";
-            this.tbcTabs.SelectedIndex = 0;
-            this.tbcTabs.Size = new System.Drawing.Size(398, 454);
-            this.tbcTabs.TabIndex = 7;
+            tbcTabs.AnimateEasingType = MetroSet_UI.Enums.EasingType.CubeOut;
+            tbcTabs.AnimateTime = 200;
+            tbcTabs.BackgroundColor = Color.FromArgb(30, 30, 30);
+            tbcTabs.Controls.Add(tabGeneral);
+            tbcTabs.Dock = DockStyle.Fill;
+            tbcTabs.IsDerivedStyle = true;
+            tbcTabs.ItemSize = new Size(100, 28);
+            tbcTabs.Location = new Point(0, 0);
+            tbcTabs.Margin = new Padding(4, 3, 4, 3);
+            tbcTabs.Name = "tbcTabs";
+            tbcTabs.SelectedIndex = 0;
+            tbcTabs.SelectedTextColor = Color.White;
+            tbcTabs.Size = new Size(464, 524);
+            tbcTabs.SizeMode = TabSizeMode.Fixed;
+            tbcTabs.Speed = 100;
+            tbcTabs.Style = MetroSet_UI.Enums.Style.Dark;
+            tbcTabs.StyleManager = null;
+            tbcTabs.TabIndex = 7;
+            tbcTabs.ThemeAuthor = "Narwin";
+            tbcTabs.ThemeName = "MetroDark";
+            tbcTabs.UnselectedTextColor = Color.Gray;
+            tbcTabs.UseAnimation = false;
             // 
             // tabGeneral
             // 
-            this.tabGeneral.AutoScroll = true;
-            this.tabGeneral.Controls.Add(this.fraSettings);
-            this.tabGeneral.Controls.Add(this.fraType);
-            this.tabGeneral.Controls.Add(this.fraSubtype);
-            this.tabGeneral.Controls.Add(this.fraPosition);
-            this.tabGeneral.Controls.Add(this.fraID);
-            this.tabGeneral.Location = new System.Drawing.Point(4, 22);
-            this.tabGeneral.Name = "tabGeneral";
-            this.tabGeneral.Size = new System.Drawing.Size(390, 428);
-            this.tabGeneral.TabIndex = 0;
-            this.tabGeneral.Text = "General";
-            this.tabGeneral.UseVisualStyleBackColor = true;
+            tabGeneral.AutoScroll = true;
+            tabGeneral.BackColor = Color.FromArgb(30, 30, 30);
+            tabGeneral.Controls.Add(fraSettings);
+            tabGeneral.Controls.Add(fraType);
+            tabGeneral.Controls.Add(fraSubtype);
+            tabGeneral.Controls.Add(fraPosition);
+            tabGeneral.Controls.Add(fraID);
+            tabGeneral.Location = new Point(4, 32);
+            tabGeneral.Margin = new Padding(4, 3, 4, 3);
+            tabGeneral.Name = "tabGeneral";
+            tabGeneral.Size = new Size(456, 488);
+            tabGeneral.TabIndex = 0;
+            tabGeneral.Text = "General";
             // 
             // fraSettings
             // 
-            this.fraSettings.Controls.Add(this.lblModeC);
-            this.fraSettings.Controls.Add(this.numModeC);
-            this.fraSettings.Controls.Add(this.lblModeB);
-            this.fraSettings.Controls.Add(this.lblModeA);
-            this.fraSettings.Controls.Add(this.lblFlags);
-            this.fraSettings.Controls.Add(this.numModeB);
-            this.fraSettings.Controls.Add(this.numModeA);
-            this.fraSettings.Controls.Add(this.numFlags);
-            this.fraSettings.Location = new System.Drawing.Point(3, 164);
-            this.fraSettings.Name = "fraSettings";
-            this.fraSettings.Size = new System.Drawing.Size(160, 133);
-            this.fraSettings.TabIndex = 8;
-            this.fraSettings.TabStop = false;
-            this.fraSettings.Text = "Special Settings";
+            fraSettings.Controls.Add(lblModeC);
+            fraSettings.Controls.Add(numModeC);
+            fraSettings.Controls.Add(lblModeB);
+            fraSettings.Controls.Add(lblModeA);
+            fraSettings.Controls.Add(lblFlags);
+            fraSettings.Controls.Add(numModeB);
+            fraSettings.Controls.Add(numModeA);
+            fraSettings.Controls.Add(numFlags);
+            fraSettings.Location = new Point(4, 189);
+            fraSettings.Margin = new Padding(4, 3, 4, 3);
+            fraSettings.Name = "fraSettings";
+            fraSettings.Padding = new Padding(4, 3, 4, 3);
+            fraSettings.Size = new Size(187, 153);
+            fraSettings.TabIndex = 8;
+            fraSettings.TabStop = false;
+            fraSettings.Text = "Special Settings";
             // 
             // lblModeC
             // 
-            this.lblModeC.AutoSize = true;
-            this.lblModeC.Location = new System.Drawing.Point(6, 99);
-            this.lblModeC.Name = "lblModeC";
-            this.lblModeC.Size = new System.Drawing.Size(44, 13);
-            this.lblModeC.TabIndex = 7;
-            this.lblModeC.Text = "Mode C";
+            lblModeC.AutoSize = true;
+            lblModeC.BackColor = Color.Transparent;
+            lblModeC.Location = new Point(7, 114);
+            lblModeC.Margin = new Padding(4, 0, 4, 0);
+            lblModeC.Name = "lblModeC";
+            lblModeC.Size = new Size(49, 15);
+            lblModeC.TabIndex = 7;
+            lblModeC.Text = "Mode C";
             // 
             // numModeC
             // 
-            this.numModeC.Location = new System.Drawing.Point(62, 97);
-            this.numModeC.Maximum = new decimal(new int[] {
-            65535,
-            0,
-            0,
-            0});
-            this.numModeC.Name = "numModeC";
-            this.numModeC.Size = new System.Drawing.Size(86, 20);
-            this.numModeC.TabIndex = 6;
-            this.numModeC.ValueChanged += new System.EventHandler(this.numD_ValueChanged);
+            numModeC.Location = new Point(72, 112);
+            numModeC.Margin = new Padding(4, 3, 4, 3);
+            numModeC.Maximum = new decimal(new int[] { 65535, 0, 0, 0 });
+            numModeC.Name = "numModeC";
+            numModeC.Size = new Size(100, 23);
+            numModeC.TabIndex = 6;
+            numModeC.ValueChanged += numD_ValueChanged;
             // 
             // lblModeB
             // 
-            this.lblModeB.AutoSize = true;
-            this.lblModeB.Location = new System.Drawing.Point(6, 73);
-            this.lblModeB.Name = "lblModeB";
-            this.lblModeB.Size = new System.Drawing.Size(44, 13);
-            this.lblModeB.TabIndex = 5;
-            this.lblModeB.Text = "Mode B";
+            lblModeB.AutoSize = true;
+            lblModeB.BackColor = Color.Transparent;
+            lblModeB.Location = new Point(7, 84);
+            lblModeB.Margin = new Padding(4, 0, 4, 0);
+            lblModeB.Name = "lblModeB";
+            lblModeB.Size = new Size(48, 15);
+            lblModeB.TabIndex = 5;
+            lblModeB.Text = "Mode B";
             // 
             // lblModeA
             // 
-            this.lblModeA.AutoSize = true;
-            this.lblModeA.Location = new System.Drawing.Point(6, 47);
-            this.lblModeA.Name = "lblModeA";
-            this.lblModeA.Size = new System.Drawing.Size(44, 13);
-            this.lblModeA.TabIndex = 4;
-            this.lblModeA.Text = "Mode A";
+            lblModeA.AutoSize = true;
+            lblModeA.BackColor = Color.Transparent;
+            lblModeA.Location = new Point(7, 54);
+            lblModeA.Margin = new Padding(4, 0, 4, 0);
+            lblModeA.Name = "lblModeA";
+            lblModeA.Size = new Size(49, 15);
+            lblModeA.TabIndex = 4;
+            lblModeA.Text = "Mode A";
             // 
             // lblFlags
             // 
-            this.lblFlags.AutoSize = true;
-            this.lblFlags.Location = new System.Drawing.Point(6, 21);
-            this.lblFlags.Name = "lblFlags";
-            this.lblFlags.Size = new System.Drawing.Size(32, 13);
-            this.lblFlags.TabIndex = 3;
-            this.lblFlags.Text = "Flags";
+            lblFlags.AutoSize = true;
+            lblFlags.BackColor = Color.Transparent;
+            lblFlags.Location = new Point(7, 24);
+            lblFlags.Margin = new Padding(4, 0, 4, 0);
+            lblFlags.Name = "lblFlags";
+            lblFlags.Size = new Size(34, 15);
+            lblFlags.TabIndex = 3;
+            lblFlags.Text = "Flags";
             // 
             // numModeB
             // 
-            this.numModeB.Location = new System.Drawing.Point(62, 71);
-            this.numModeB.Maximum = new decimal(new int[] {
-            65535,
-            0,
-            0,
-            0});
-            this.numModeB.Name = "numModeB";
-            this.numModeB.Size = new System.Drawing.Size(86, 20);
-            this.numModeB.TabIndex = 4;
-            this.numModeB.ValueChanged += new System.EventHandler(this.numC_ValueChanged);
+            numModeB.Location = new Point(72, 82);
+            numModeB.Margin = new Padding(4, 3, 4, 3);
+            numModeB.Maximum = new decimal(new int[] { 65535, 0, 0, 0 });
+            numModeB.Name = "numModeB";
+            numModeB.Size = new Size(100, 23);
+            numModeB.TabIndex = 4;
+            numModeB.ValueChanged += numC_ValueChanged;
             // 
             // numModeA
             // 
-            this.numModeA.Location = new System.Drawing.Point(62, 45);
-            this.numModeA.Maximum = new decimal(new int[] {
-            65535,
-            0,
-            0,
-            0});
-            this.numModeA.Name = "numModeA";
-            this.numModeA.Size = new System.Drawing.Size(86, 20);
-            this.numModeA.TabIndex = 3;
-            this.numModeA.ValueChanged += new System.EventHandler(this.numB_ValueChanged);
+            numModeA.Location = new Point(72, 52);
+            numModeA.Margin = new Padding(4, 3, 4, 3);
+            numModeA.Maximum = new decimal(new int[] { 65535, 0, 0, 0 });
+            numModeA.Name = "numModeA";
+            numModeA.Size = new Size(100, 23);
+            numModeA.TabIndex = 3;
+            numModeA.ValueChanged += numB_ValueChanged;
             // 
             // numFlags
             // 
-            this.numFlags.Location = new System.Drawing.Point(62, 19);
-            this.numFlags.Maximum = new decimal(new int[] {
-            -1,
-            0,
-            0,
-            0});
-            this.numFlags.Name = "numFlags";
-            this.numFlags.Size = new System.Drawing.Size(86, 20);
-            this.numFlags.TabIndex = 2;
-            this.numFlags.ValueChanged += new System.EventHandler(this.numA_ValueChanged);
+            numFlags.Location = new Point(72, 22);
+            numFlags.Margin = new Padding(4, 3, 4, 3);
+            numFlags.Maximum = new decimal(new int[] { -1, 0, 0, 0 });
+            numFlags.Name = "numFlags";
+            numFlags.Size = new Size(100, 23);
+            numFlags.TabIndex = 2;
+            numFlags.ValueChanged += numA_ValueChanged;
             // 
             // ProtoEntityBox
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.tbcTabs);
-            this.Name = "ProtoEntityBox";
-            this.Size = new System.Drawing.Size(398, 454);
-            ((System.ComponentModel.ISupportInitialize)(this.numType)).EndInit();
-            this.fraType.ResumeLayout(false);
-            this.fraSubtype.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numSubtype)).EndInit();
-            this.fraPosition.ResumeLayout(false);
-            this.fraPosition.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numZ)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numY)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numX)).EndInit();
-            this.fraID.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numID)).EndInit();
-            this.tbcTabs.ResumeLayout(false);
-            this.tabGeneral.ResumeLayout(false);
-            this.fraSettings.ResumeLayout(false);
-            this.fraSettings.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numModeC)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numModeB)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numModeA)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numFlags)).EndInit();
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(tbcTabs);
+            Margin = new Padding(4, 3, 4, 3);
+            Name = "ProtoEntityBox";
+            Size = new Size(464, 524);
+            ((System.ComponentModel.ISupportInitialize)numType).EndInit();
+            fraType.ResumeLayout(false);
+            fraSubtype.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)numSubtype).EndInit();
+            fraPosition.ResumeLayout(false);
+            fraPosition.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numZ).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numY).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numX).EndInit();
+            fraID.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)numID).EndInit();
+            tbcTabs.ResumeLayout(false);
+            tabGeneral.ResumeLayout(false);
+            fraSettings.ResumeLayout(false);
+            fraSettings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numModeC).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numModeB).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numModeA).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numFlags).EndInit();
+            ResumeLayout(false);
         }
 
         #endregion
 
-        private System.Windows.Forms.NumericUpDown numType;
-        private System.Windows.Forms.GroupBox fraType;
-        private System.Windows.Forms.GroupBox fraSubtype;
-        private System.Windows.Forms.NumericUpDown numSubtype;
-        private System.Windows.Forms.GroupBox fraPosition;
-        private System.Windows.Forms.Label lblZ;
-        private System.Windows.Forms.Label lblY;
-        private System.Windows.Forms.Label lblX;
-        private System.Windows.Forms.NumericUpDown numZ;
-        private System.Windows.Forms.NumericUpDown numY;
-        private System.Windows.Forms.NumericUpDown numX;
-        private System.Windows.Forms.GroupBox fraID;
-        private System.Windows.Forms.NumericUpDown numID;
-        private System.Windows.Forms.TabControl tbcTabs;
-        private System.Windows.Forms.TabPage tabGeneral;
-        private System.Windows.Forms.GroupBox fraSettings;
-        private System.Windows.Forms.Label lblModeC;
-        private System.Windows.Forms.NumericUpDown numModeC;
-        private System.Windows.Forms.Label lblModeB;
-        private System.Windows.Forms.Label lblModeA;
-        private System.Windows.Forms.Label lblFlags;
-        private System.Windows.Forms.NumericUpDown numModeB;
-        private System.Windows.Forms.NumericUpDown numModeA;
-        private System.Windows.Forms.NumericUpDown numFlags;
-        private System.Windows.Forms.Label lblCodeName;
+        private DarkNumericUpDown numType;
+        private DarkGroupBox fraType;
+        private DarkGroupBox fraSubtype;
+        private DarkNumericUpDown numSubtype;
+        private DarkGroupBox fraPosition;
+        private Label lblZ;
+        private Label lblY;
+        private Label lblX;
+        private DarkNumericUpDown numZ;
+        private DarkNumericUpDown numY;
+        private DarkNumericUpDown numX;
+        private DarkGroupBox fraID;
+        private DarkNumericUpDown numID;
+        private MetroSetTabControl tbcTabs;
+        private TabPage tabGeneral;
+        private DarkGroupBox fraSettings;
+        private Label lblModeC;
+        private DarkNumericUpDown numModeC;
+        private Label lblModeB;
+        private Label lblModeA;
+        private Label lblFlags;
+        private DarkNumericUpDown numModeB;
+        private DarkNumericUpDown numModeA;
+        private DarkNumericUpDown numFlags;
+        private Label lblCodeName;
     }
 }

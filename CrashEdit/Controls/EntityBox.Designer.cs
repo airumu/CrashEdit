@@ -316,13 +316,14 @@ namespace CrashEdit.CE
             // chkType
             // 
             chkType.AutoSize = true;
+            chkType.BackColor = Color.Transparent;
             chkType.Location = new Point(7, 22);
             chkType.Margin = new Padding(4, 3, 4, 3);
             chkType.Name = "chkType";
             chkType.Size = new Size(68, 19);
             chkType.TabIndex = 0;
             chkType.Text = "Enabled";
-            chkType.UseVisualStyleBackColor = true;
+            chkType.UseVisualStyleBackColor = false;
             chkType.CheckedChanged += chkType_CheckedChanged;
             // 
             // numType
@@ -353,13 +354,14 @@ namespace CrashEdit.CE
             // chkSubtype
             // 
             chkSubtype.AutoSize = true;
+            chkSubtype.BackColor = Color.Transparent;
             chkSubtype.Location = new Point(7, 77);
             chkSubtype.Margin = new Padding(4, 3, 4, 3);
             chkSubtype.Name = "chkSubtype";
             chkSubtype.Size = new Size(68, 19);
             chkSubtype.TabIndex = 0;
             chkSubtype.Text = "Enabled";
-            chkSubtype.UseVisualStyleBackColor = true;
+            chkSubtype.UseVisualStyleBackColor = false;
             chkSubtype.CheckedChanged += chkSubtype_CheckedChanged;
             // 
             // numSubtype
@@ -603,13 +605,14 @@ namespace CrashEdit.CE
             // chkID2
             // 
             chkID2.AutoSize = true;
+            chkID2.BackColor = Color.Transparent;
             chkID2.Location = new Point(7, 77);
             chkID2.Margin = new Padding(4, 3, 4, 3);
             chkID2.Name = "chkID2";
             chkID2.Size = new Size(68, 19);
             chkID2.TabIndex = 2;
             chkID2.Text = "Enabled";
-            chkID2.UseVisualStyleBackColor = true;
+            chkID2.UseVisualStyleBackColor = false;
             chkID2.CheckedChanged += chkID2_CheckedChanged;
             // 
             // numID2
@@ -626,13 +629,14 @@ namespace CrashEdit.CE
             // chkID
             // 
             chkID.AutoSize = true;
+            chkID.BackColor = Color.Transparent;
             chkID.Location = new Point(7, 22);
             chkID.Margin = new Padding(4, 3, 4, 3);
             chkID.Name = "chkID";
             chkID.Size = new Size(68, 19);
             chkID.TabIndex = 0;
             chkID.Text = "Enabled";
-            chkID.UseVisualStyleBackColor = true;
+            chkID.UseVisualStyleBackColor = false;
             chkID.CheckedChanged += chkID_CheckedChanged;
             // 
             // numID
@@ -683,6 +687,7 @@ namespace CrashEdit.CE
             // chkSettingHex
             // 
             chkSettingHex.AutoSize = true;
+            chkSettingHex.BackColor = Color.Transparent;
             chkSettingHex.Checked = true;
             chkSettingHex.CheckState = CheckState.Checked;
             chkSettingHex.Location = new Point(160, 87);
@@ -691,7 +696,7 @@ namespace CrashEdit.CE
             chkSettingHex.Size = new Size(47, 19);
             chkSettingHex.TabIndex = 8;
             chkSettingHex.Text = "Hex";
-            chkSettingHex.UseVisualStyleBackColor = true;
+            chkSettingHex.UseVisualStyleBackColor = false;
             chkSettingHex.CheckedChanged += chkSettingHex_CheckedChanged;
             // 
             // numSettingC
@@ -827,13 +832,14 @@ namespace CrashEdit.CE
             // chkName
             // 
             chkName.AutoSize = true;
+            chkName.BackColor = Color.Transparent;
             chkName.Location = new Point(7, 22);
             chkName.Margin = new Padding(4, 3, 4, 3);
             chkName.Name = "chkName";
             chkName.Size = new Size(68, 19);
             chkName.TabIndex = 0;
             chkName.Text = "Enabled";
-            chkName.UseVisualStyleBackColor = true;
+            chkName.UseVisualStyleBackColor = false;
             chkName.CheckedChanged += chkName_CheckedChanged;
             // 
             // tbcTabs
@@ -917,13 +923,14 @@ namespace CrashEdit.CE
             // chkZMod
             // 
             chkZMod.AutoSize = true;
+            chkZMod.BackColor = Color.Transparent;
             chkZMod.Location = new Point(7, 22);
             chkZMod.Margin = new Padding(4, 3, 4, 3);
             chkZMod.Name = "chkZMod";
             chkZMod.Size = new Size(68, 19);
             chkZMod.TabIndex = 0;
             chkZMod.Text = "Enabled";
-            chkZMod.UseVisualStyleBackColor = true;
+            chkZMod.UseVisualStyleBackColor = false;
             chkZMod.CheckedChanged += chkZMod_CheckedChanged;
             // 
             // numZMod
@@ -953,13 +960,14 @@ namespace CrashEdit.CE
             // chkTTReward
             // 
             chkTTReward.AutoSize = true;
+            chkTTReward.BackColor = Color.Transparent;
             chkTTReward.Location = new Point(7, 22);
             chkTTReward.Margin = new Padding(4, 3, 4, 3);
             chkTTReward.Name = "chkTTReward";
             chkTTReward.Size = new Size(68, 19);
             chkTTReward.TabIndex = 0;
             chkTTReward.Text = "Enabled";
-            chkTTReward.UseVisualStyleBackColor = true;
+            chkTTReward.UseVisualStyleBackColor = false;
             chkTTReward.CheckedChanged += chkTTReward_CheckedChanged;
             // 
             // numTTReward
@@ -989,13 +997,14 @@ namespace CrashEdit.CE
             // chkOtherSettings
             // 
             chkOtherSettings.AutoSize = true;
+            chkOtherSettings.BackColor = Color.Transparent;
             chkOtherSettings.Location = new Point(7, 22);
             chkOtherSettings.Margin = new Padding(4, 3, 4, 3);
             chkOtherSettings.Name = "chkOtherSettings";
             chkOtherSettings.Size = new Size(68, 19);
             chkOtherSettings.TabIndex = 0;
             chkOtherSettings.Text = "Enabled";
-            chkOtherSettings.UseVisualStyleBackColor = true;
+            chkOtherSettings.UseVisualStyleBackColor = false;
             chkOtherSettings.CheckedChanged += chkOtherSettings_CheckedChanged;
             // 
             // numOtherSettings
@@ -1025,13 +1034,14 @@ namespace CrashEdit.CE
             // chkScaling
             // 
             chkScaling.AutoSize = true;
+            chkScaling.BackColor = Color.Transparent;
             chkScaling.Location = new Point(7, 22);
             chkScaling.Margin = new Padding(4, 3, 4, 3);
             chkScaling.Name = "chkScaling";
             chkScaling.Size = new Size(68, 19);
             chkScaling.TabIndex = 0;
             chkScaling.Text = "Enabled";
-            chkScaling.UseVisualStyleBackColor = true;
+            chkScaling.UseVisualStyleBackColor = false;
             chkScaling.CheckedChanged += chkScaling_CheckedChanged;
             // 
             // numScaling
@@ -1061,13 +1071,14 @@ namespace CrashEdit.CE
             // chkDDASection
             // 
             chkDDASection.AutoSize = true;
+            chkDDASection.BackColor = Color.Transparent;
             chkDDASection.Location = new Point(7, 22);
             chkDDASection.Margin = new Padding(4, 3, 4, 3);
             chkDDASection.Name = "chkDDASection";
             chkDDASection.Size = new Size(68, 19);
             chkDDASection.TabIndex = 0;
             chkDDASection.Text = "Enabled";
-            chkDDASection.UseVisualStyleBackColor = true;
+            chkDDASection.UseVisualStyleBackColor = false;
             chkDDASection.CheckedChanged += chkDDASection_CheckedChanged;
             // 
             // numDDASection
@@ -1097,13 +1108,14 @@ namespace CrashEdit.CE
             // chkDDASettings
             // 
             chkDDASettings.AutoSize = true;
+            chkDDASettings.BackColor = Color.Transparent;
             chkDDASettings.Location = new Point(7, 22);
             chkDDASettings.Margin = new Padding(4, 3, 4, 3);
             chkDDASettings.Name = "chkDDASettings";
             chkDDASettings.Size = new Size(68, 19);
             chkDDASettings.TabIndex = 0;
             chkDDASettings.Text = "Enabled";
-            chkDDASettings.UseVisualStyleBackColor = true;
+            chkDDASettings.UseVisualStyleBackColor = false;
             chkDDASettings.CheckedChanged += chkDDASettings_CheckedChanged;
             // 
             // numDDASettings
@@ -1135,13 +1147,14 @@ namespace CrashEdit.CE
             // chkBonusBoxCount
             // 
             chkBonusBoxCount.AutoSize = true;
+            chkBonusBoxCount.BackColor = Color.Transparent;
             chkBonusBoxCount.Location = new Point(7, 78);
             chkBonusBoxCount.Margin = new Padding(4, 3, 4, 3);
             chkBonusBoxCount.Name = "chkBonusBoxCount";
             chkBonusBoxCount.Size = new Size(112, 19);
             chkBonusBoxCount.TabIndex = 2;
             chkBonusBoxCount.Text = "Enabled (Bonus)";
-            chkBonusBoxCount.UseVisualStyleBackColor = true;
+            chkBonusBoxCount.UseVisualStyleBackColor = false;
             chkBonusBoxCount.CheckedChanged += chkBonusBoxCount_CheckedChanged;
             // 
             // numBonusBoxCount
@@ -1158,13 +1171,14 @@ namespace CrashEdit.CE
             // chkBoxCount
             // 
             chkBoxCount.AutoSize = true;
+            chkBoxCount.BackColor = Color.Transparent;
             chkBoxCount.Location = new Point(7, 22);
             chkBoxCount.Margin = new Padding(4, 3, 4, 3);
             chkBoxCount.Name = "chkBoxCount";
             chkBoxCount.Size = new Size(68, 19);
             chkBoxCount.TabIndex = 0;
             chkBoxCount.Text = "Enabled";
-            chkBoxCount.UseVisualStyleBackColor = true;
+            chkBoxCount.UseVisualStyleBackColor = false;
             chkBoxCount.CheckedChanged += chkBoxCount_CheckedChanged;
             // 
             // numBoxCount
@@ -1830,13 +1844,14 @@ namespace CrashEdit.CE
             // chkAvgDist
             // 
             chkAvgDist.AutoSize = true;
+            chkAvgDist.BackColor = Color.Transparent;
             chkAvgDist.Location = new Point(7, 22);
             chkAvgDist.Margin = new Padding(4, 3, 4, 3);
             chkAvgDist.Name = "chkAvgDist";
             chkAvgDist.Size = new Size(68, 19);
             chkAvgDist.TabIndex = 0;
             chkAvgDist.Text = "Enabled";
-            chkAvgDist.UseVisualStyleBackColor = true;
+            chkAvgDist.UseVisualStyleBackColor = false;
             chkAvgDist.CheckedChanged += chkAvgDist_CheckedChanged;
             // 
             // numAvgDist
@@ -1867,13 +1882,14 @@ namespace CrashEdit.CE
             // chkMode
             // 
             chkMode.AutoSize = true;
+            chkMode.BackColor = Color.Transparent;
             chkMode.Location = new Point(7, 22);
             chkMode.Margin = new Padding(4, 3, 4, 3);
             chkMode.Name = "chkMode";
             chkMode.Size = new Size(68, 19);
             chkMode.TabIndex = 0;
             chkMode.Text = "Enabled";
-            chkMode.UseVisualStyleBackColor = true;
+            chkMode.UseVisualStyleBackColor = false;
             chkMode.CheckedChanged += chkMode_CheckedChanged;
             // 
             // numMode
@@ -1903,13 +1919,14 @@ namespace CrashEdit.CE
             // chkCameraSubIndex
             // 
             chkCameraSubIndex.AutoSize = true;
+            chkCameraSubIndex.BackColor = Color.Transparent;
             chkCameraSubIndex.Location = new Point(7, 22);
             chkCameraSubIndex.Margin = new Padding(4, 3, 4, 3);
             chkCameraSubIndex.Name = "chkCameraSubIndex";
             chkCameraSubIndex.Size = new Size(68, 19);
             chkCameraSubIndex.TabIndex = 0;
             chkCameraSubIndex.Text = "Enabled";
-            chkCameraSubIndex.UseVisualStyleBackColor = true;
+            chkCameraSubIndex.UseVisualStyleBackColor = false;
             chkCameraSubIndex.CheckedChanged += chkCameraSubIndex_CheckedChanged;
             // 
             // numCameraSubIndex
@@ -1939,13 +1956,14 @@ namespace CrashEdit.CE
             // chkCameraIndex
             // 
             chkCameraIndex.AutoSize = true;
+            chkCameraIndex.BackColor = Color.Transparent;
             chkCameraIndex.Location = new Point(7, 22);
             chkCameraIndex.Margin = new Padding(4, 3, 4, 3);
             chkCameraIndex.Name = "chkCameraIndex";
             chkCameraIndex.Size = new Size(68, 19);
             chkCameraIndex.TabIndex = 0;
             chkCameraIndex.Text = "Enabled";
-            chkCameraIndex.UseVisualStyleBackColor = true;
+            chkCameraIndex.UseVisualStyleBackColor = false;
             chkCameraIndex.CheckedChanged += chkCameraIndex_CheckedChanged;
             // 
             // numCameraIndex
@@ -2004,13 +2022,14 @@ namespace CrashEdit.CE
             // chkSLST
             // 
             chkSLST.AutoSize = true;
+            chkSLST.BackColor = Color.Transparent;
             chkSLST.Location = new Point(7, 22);
             chkSLST.Margin = new Padding(4, 3, 4, 3);
             chkSLST.Name = "chkSLST";
             chkSLST.Size = new Size(68, 19);
             chkSLST.TabIndex = 0;
             chkSLST.Text = "Enabled";
-            chkSLST.UseVisualStyleBackColor = true;
+            chkSLST.UseVisualStyleBackColor = false;
             chkSLST.CheckedChanged += chkSLST_CheckedChanged;
             // 
             // tabLoadLists
@@ -2052,11 +2071,11 @@ namespace CrashEdit.CE
             fraLoadListPayload.Controls.Add(cmdPayload);
             fraLoadListPayload.Controls.Add(lblPayloadPosition);
             fraLoadListPayload.Controls.Add(numPayloadPosition);
-            fraLoadListPayload.Location = new Point(7, 365);
+            fraLoadListPayload.Location = new Point(7, 362);
             fraLoadListPayload.Margin = new Padding(4, 3, 4, 3);
             fraLoadListPayload.Name = "fraLoadListPayload";
             fraLoadListPayload.Padding = new Padding(4, 3, 4, 3);
-            fraLoadListPayload.Size = new Size(270, 126);
+            fraLoadListPayload.Size = new Size(270, 130);
             fraLoadListPayload.TabIndex = 22;
             fraLoadListPayload.TabStop = false;
             fraLoadListPayload.Text = "Verify Load Lists";
@@ -2065,7 +2084,7 @@ namespace CrashEdit.CE
             // 
             lblPayloadSound.AutoSize = true;
             lblPayloadSound.BackColor = Color.Transparent;
-            lblPayloadSound.Location = new Point(7, 116);
+            lblPayloadSound.Location = new Point(7, 112);
             lblPayloadSound.Margin = new Padding(4, 0, 4, 0);
             lblPayloadSound.Name = "lblPayloadSound";
             lblPayloadSound.Size = new Size(155, 15);
@@ -2077,7 +2096,7 @@ namespace CrashEdit.CE
             // 
             lblPayloadTexture.AutoSize = true;
             lblPayloadTexture.BackColor = Color.Transparent;
-            lblPayloadTexture.Location = new Point(7, 100);
+            lblPayloadTexture.Location = new Point(7, 96);
             lblPayloadTexture.Margin = new Padding(4, 0, 4, 0);
             lblPayloadTexture.Name = "lblPayloadTexture";
             lblPayloadTexture.Size = new Size(155, 15);
@@ -2102,7 +2121,7 @@ namespace CrashEdit.CE
             // 
             lblPayload.AutoSize = true;
             lblPayload.BackColor = Color.Transparent;
-            lblPayload.Location = new Point(7, 84);
+            lblPayload.Location = new Point(7, 80);
             lblPayload.Margin = new Padding(4, 0, 4, 0);
             lblPayload.Name = "lblPayload";
             lblPayload.Size = new Size(155, 15);

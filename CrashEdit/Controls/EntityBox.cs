@@ -1477,7 +1477,7 @@ namespace CrashEdit.CE
         {
             UpdateLoadListA();
             UpdateLoadListB();
-            CheckPayload();
+            //CheckPayload();
             tabLoadLists.Enter -= tabLoadLists_Enter;
         }
 
@@ -1635,7 +1635,7 @@ namespace CrashEdit.CE
             lblPayload.Text = $"Payload is {loadedchunks.Count} normal chunks";
             lblPayloadTexture.Visible = true;
             lblPayloadTexture.Text = $"Payload is {loadedtexturechunks.Count} texture chunks";
-            //lblPayloadSound.Visible = true;
+            lblPayloadSound.Visible = true;
             lblPayloadSound.Text = $"Payload is {loadedsoundchunks.Count} sound chunks / {loadedwavebankchunks.Count} wavebank chunks";
             if (loadedchunks.Count < 20)
             {
