@@ -340,17 +340,14 @@ namespace CrashEdit.CE
                             ok |= RenderEntityVisual(visual, trans + new Vector3(MathF.Cos(deg) * plat_distance, 0, MathF.Sin(deg) * plat_distance));
                         }
                     }
-                    if (entity.Settings[2].Value == 0x100)
+                    if (map.TryGetVisual(type, subtype + entity.Settings[2].Value, out visual))
                     {
-                        if (map.TryGetVisual(type, subtype + 1000, out visual))
+                        float deg_per_plat = MathHelper.TwoPi / 4;
+                        float plat_distance = entity.Settings[0].Value / 256f / 400f;
+                        for (int i = 0; i < 4; i++)
                         {
-                            float deg_per_plat = MathHelper.TwoPi / 4;
-                            float plat_distance = entity.Settings[0].Value / 256f / 400f;
-                            for (int i = 0; i < 4; i++)
-                            {
-                                float deg = deg_per_plat * i;
-                                ok |= RenderEntityVisual(visual, trans + new Vector3(MathF.Cos(deg) * plat_distance, 0, MathF.Sin(deg) * plat_distance));
-                            }
+                            float deg = deg_per_plat * i;
+                            ok |= RenderEntityVisual(visual, trans + new Vector3(MathF.Cos(deg) * plat_distance, 0, MathF.Sin(deg) * plat_distance));
                         }
                     }
                     return ok;

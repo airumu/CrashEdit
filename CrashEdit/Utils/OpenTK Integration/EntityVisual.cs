@@ -183,7 +183,7 @@ namespace CrashEdit.CE
             MapCrash2.AddVisual(26, 0 + 3000, new("Pr3fV")); // leaner
             MapCrash2.AddVisual(26, 0 + 4000, new("Pr4fV")); // spinner
             MapCrash2.AddVisual(26, 4, new("PlafV")); // pillar array
-            MapCrash2.AddVisual(26, 4 + 1000, new("Pb2mV")); // pillar array with possum
+            MapCrash2.AddVisual(26, 4 + 0x100, new("Pb2mV")); // pillar array with possum
             MapCrash2.AddVisual(26, 7, new("Si0fV")); // easy/hard sign
             MapCrash2.AddVisual(27, 0, new("Po1eV")); // porcupine
             MapCrash2.AddVisual(28, 2, new("Pb2cV")); // possum night jungle
@@ -230,13 +230,13 @@ namespace CrashEdit.CE
             MapCrash2.AddVisual(38, 0 + 1000, new("Ep5nV", 0)); // spore plant
             MapCrash2.AddVisual(38, 4, new("JuPpV")); // evil plant
             MapCrash2.AddVisual(39, 0, new("Mi1lV", 0)); // mine
-            MapCrash2.AddVisual(39, 1, new("Fe1lV", 0)); // fence
+            MapCrash2.AddVisual(39, 1, new("Fe1lV")); // fence
             MapCrash2.AddVisual(39, 2, new("pl1lV")); // plank
             MapCrash2.AddVisual(39, 4, new("Fe3lV", 6)); // timed spark long
             MapCrash2.AddVisual(39, 6, new("Fe4lV", 3)); // timed spark
             MapCrash2.AddVisual(39, 7, new("Ti1lV", 0)); // tiki
-            MapCrash2.AddVisual(39, 9, new("Ft1lV", 0)); // fence tile
-            MapCrash2.AddVisual(41, 0, new("Bo1lV", 0)); // boulder
+            MapCrash2.AddVisual(39, 9, new("Ft1lV")); // fence tile
+            MapCrash2.AddVisual(41, 0, new("Bo1lV")); // boulder
             MapCrash2.AddVisual(42, 0, new("SL1iV")); // space lab ass
             MapCrash2.AddVisual(42, 2, new("SF1iV")); // space fire
             MapCrash2.AddVisual(45, 1, new("LJ1lV")); // labjack
