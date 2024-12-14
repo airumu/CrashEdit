@@ -275,12 +275,12 @@ namespace CrashEdit.CE
                     if (map.TryGetVisual(type, subtype, out visual))
                         return RenderEntityVisual(visual, trans + new Vector3(0, -1900f / 400f, 0));
                 }
-                else if (type == 9 && subtype == 6 && entity.Settings.Count > 7) // elevator
+                else if (type == 9 && subtype == 6 && entity.Settings.Count == 8) // elevator
                 {
                     if (map.TryGetVisual(type, subtype + (entity.Settings[4].Value >> 8), out visual))
                         return RenderEntityVisual(visual, trans);
                 }
-                else if (type == 9 && subtype == 32 && entity.Settings.Count > 1) // elevator catch
+                else if (type == 9 && subtype == 32 && entity.Settings.Count == 2) // elevator catch
                 {
                     bool ok = false;
                     if (entity.Settings[1].Value == 0) // regular/bonus elevator
@@ -295,7 +295,14 @@ namespace CrashEdit.CE
                     }
                     return ok;
                 }
-                else if (type == 9 && subtype == 39 && entity.Settings.Count > 3) // bonus guard
+                else if (type == 9 && subtype == 33 && entity.Settings.Count == 2) // hole gate
+                {
+                    bool ok = false;
+                    if (map.TryGetVisual(type, subtype + entity.Settings[1].Value, out visual))
+                        ok |= RenderEntityVisual(visual, trans);
+                    return ok;
+                }
+                else if (type == 9 && subtype == 39 && entity.Settings.Count == 4) // bonus guard
                 {
                     if (map.TryGetVisual(type, subtype, out visual))
                         return RenderEntityVisual(visual, trans, scale: new Vector3(entity.Settings[1].Value / 4096f));
@@ -320,10 +327,47 @@ namespace CrashEdit.CE
                     if (map.TryGetVisual(type, (entity.Settings[0].ValueB + 1) * 1000, out visual))
                         return RenderEntityVisual(visual, trans);
                 }
+                else if (type == 26 && subtype == 4 && entity.Settings.Count == 3) // pillar array
+                {
+                    bool ok = false;
+                    if (map.TryGetVisual(type, subtype, out visual))
+                    {
+                        float deg_per_plat = MathHelper.TwoPi / 4;
+                        float plat_distance = entity.Settings[0].Value / 256f / 400f;
+                        for (int i = 0; i < 4; i++)
+                        {
+                            float deg = deg_per_plat * i;
+                            ok |= RenderEntityVisual(visual, trans + new Vector3(MathF.Cos(deg) * plat_distance, 0, MathF.Sin(deg) * plat_distance));
+                        }
+                    }
+                    if (entity.Settings[2].Value == 0x100)
+                    {
+                        if (map.TryGetVisual(type, subtype + 1000, out visual))
+                        {
+                            float deg_per_plat = MathHelper.TwoPi / 4;
+                            float plat_distance = entity.Settings[0].Value / 256f / 400f;
+                            for (int i = 0; i < 4; i++)
+                            {
+                                float deg = deg_per_plat * i;
+                                ok |= RenderEntityVisual(visual, trans + new Vector3(MathF.Cos(deg) * plat_distance, 0, MathF.Sin(deg) * plat_distance));
+                            }
+                        }
+                    }
+                    return ok;
+                }
                 else if (type == 27 && subtype == 0) // porcupine
                 {
                     if (map.TryGetVisual(type, subtype, out visual))
                         return RenderEntityVisual(visual, trans, scale: new Vector3(2457f / 4096f));
+                }
+                else if (type == 28 && subtype == 2) // possum
+                {
+                    bool ok = false;
+                    if (map.TryGetVisual(type, subtype, out visual))
+                        ok |= RenderEntityVisual(visual, trans, scale: new Vector3(4915f / 4096f));
+                    if (map.TryGetVisual(type, subtype + 1000, out visual))
+                        ok |= RenderEntityVisual(visual, trans, scale: new Vector3(4915f / 4096f));
+                    return ok;
                 }
                 else if (type == 35 && subtype == 15 && entity.Settings.Count == 9) // space bomb ring
                 {
@@ -387,7 +431,9 @@ namespace CrashEdit.CE
                     (type == 8 && subtype == 0) || // swarmer
                     (type == 14 && (subtype == 1 || subtype == 2)) || // drop plat
                     (type == 15 && (subtype == 0 || subtype == 1 || subtype == 2)) || // butterfly
-                    (type == 20 && (subtype == 0 || subtype == 1)) // armadillo
+                    (type == 20 && (subtype == 0 || subtype == 1)) || // armadillo
+                    (type == 28 && subtype == 3) || // lizard
+                    (type == 34 && subtype == 4) // box continue
                     )
                 {
                     bool ok = false;

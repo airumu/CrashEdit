@@ -134,6 +134,9 @@ namespace CrashEdit.CE
             MapCrash2.AddVisual(9, 32 + 0x100, new("El2eV", 6)); // elevator bonus catch snow
             MapCrash2.AddVisual(9, 32 + 0x3E00, new("El1pV", 6)); // elevator catch gem yellow
 
+            MapCrash2.AddVisual(9, 33, new("HG1bV", 0)); // hole gate jungle
+            MapCrash2.AddVisual(9, 33 + 0x100, new("HG2bV", 0)); // hole gate bonus jungle
+
             MapCrash2.AddVisual(9, 35, new("El2eV", 6)); // elevator bonus catch snow
 
             MapCrash2.AddVisual(9, 39, new("El2eV", 6)); // bonus guard snow
@@ -150,11 +153,8 @@ namespace CrashEdit.CE
             MapCrash2.AddVisual(14, 3 + 1000, new("Pl2fV")); // drop plat
             MapCrash2.AddVisual(14, 4 + 0000, new("Pl1fV")); // drop plat
             MapCrash2.AddVisual(14, 4 + 1000, new("Pl2fV")); // drop plat
-            MapCrash2.AddVisual(14, 4 + 2000, new("Pl3fV")); // drop plat
-            MapCrash2.AddVisual(14, 4 + 5000, new("Pl50V")); // drop plat
-            MapCrash2.AddVisual(14, 4 + 6000, new("Pl60V")); // drop plat
             MapCrash2.AddVisual(14, 6, new("Pl2eV")); // drop plank
-            MapCrash2.AddVisual(14, 7, new("Pl2lV")); // plat hard
+            MapCrash2.AddVisual(14, 7, new("Pl2lV")); // plat touch hard alpine
             MapCrash2.AddVisual(14, 8, new("Pl50V")); // plat gem
             MapCrash2.AddVisual(15, 0, new("JuBbV")); // butterfly 1 jungle
             MapCrash2.AddVisual(15, 1, new("JubbV")); // butterfly 2 jungle
@@ -182,7 +182,14 @@ namespace CrashEdit.CE
             MapCrash2.AddVisual(26, 0 + 2000, new("Pr2fV", 0)); // crumbler plat 2
             MapCrash2.AddVisual(26, 0 + 3000, new("Pr3fV")); // leaner
             MapCrash2.AddVisual(26, 0 + 4000, new("Pr4fV")); // spinner
+            MapCrash2.AddVisual(26, 4, new("PlafV")); // pillar array
+            MapCrash2.AddVisual(26, 4 + 1000, new("Pb2mV")); // pillar array with possum
+            MapCrash2.AddVisual(26, 7, new("Si0fV")); // easy/hard sign
             MapCrash2.AddVisual(27, 0, new("Po1eV")); // porcupine
+            MapCrash2.AddVisual(28, 2, new("Pb2cV")); // possum night jungle
+            MapCrash2.AddVisual(28, 3, new("Lp1cV")); // lizard night jungle
+            MapCrash2.AddVisual(28, 2 + 1000, new("Pb2mV")); // possum ruins
+            MapCrash2.AddVisual(28, 3 + 1000, new("Lp1mV")); // lizard ruins
             MapCrash2.AddVisual(30, 0, new("Ob2bV")); // ostrich
             MapCrash2.AddVisual(32, 0, new("Sm1eV")); // smasher
             MapCrash2.AddVisual(32, 1, new("Sm2eV")); // constant smasher
@@ -200,7 +207,7 @@ namespace CrashEdit.CE
             MapCrash2.AddVisual(34, 8, new("BL10V")); // box life
             MapCrash2.AddVisual(34, 9, new("BD10V")); // box doctor
             MapCrash2.AddVisual(34, 10, new("Bp10V")); // box pickup
-            MapCrash2.AddVisual(34, 11, new("BP10V")); // box pow
+            MapCrash2.AddVisual(34, 11, new("BP10V", 0)); // box pow
             MapCrash2.AddVisual(34, 13, new("BG10V")); // box ghost
             MapCrash2.AddVisual(34, 15, new("BS20V", 0)); // box iron spring
             MapCrash2.AddVisual(34, 16, new("BT10V")); // box tnt (auto grav)
@@ -228,6 +235,7 @@ namespace CrashEdit.CE
             MapCrash2.AddVisual(39, 4, new("Fe3lV", 6)); // timed spark long
             MapCrash2.AddVisual(39, 6, new("Fe4lV", 3)); // timed spark
             MapCrash2.AddVisual(39, 7, new("Ti1lV", 0)); // tiki
+            MapCrash2.AddVisual(39, 9, new("Ft1lV", 0)); // fence tile
             MapCrash2.AddVisual(41, 0, new("Bo1lV", 0)); // boulder
             MapCrash2.AddVisual(42, 0, new("SL1iV")); // space lab ass
             MapCrash2.AddVisual(42, 2, new("SF1iV")); // space fire
