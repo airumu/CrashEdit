@@ -562,10 +562,10 @@ namespace CrashEdit.CE
 #endif
                 if (!no_nsf_overwrite)
                 {
-                    if (ignore_warnings || Settings.Default.PatchNSDSavesNSF ? true : (order_updated && DarkMessageBox.ShowMessage(Resources.PatchNSD3, Resources.PatchNSD_Title1, DarkDialogButton.YesNo) == DialogResult.Yes))
-                    {
-                        SaveNSF(ignore_warnings);
-                    }
+                    //if (ignore_warnings || Settings.Default.PatchNSDSavesNSF ? true : (order_updated && DarkMessageBox.ShowMessage(Resources.PatchNSD3, Resources.PatchNSD_Title1, DarkDialogButton.YesNo) == DialogResult.Yes))
+                    //{
+                        SaveNSF(true);
+                    //}
                 }
             }
             catch (LoadAbortedException)
@@ -592,8 +592,8 @@ namespace CrashEdit.CE
             {
                 File.WriteAllBytes(path, nsd.Save());
             }
-            if (!ignore_warnings && DarkMessageBox.ShowMessage(Resources.PatchNSD2, Resources.PatchNSD_Title2, DarkDialogButton.YesNo) == DialogResult.Yes)
-            {
+            //if (!ignore_warnings && DarkMessageBox.ShowMessage(Resources.PatchNSD2, Resources.PatchNSD_Title2, DarkDialogButton.YesNo) == DialogResult.Yes)
+            //{
                 int[] eids = new int[nsd.Index.Count];
                 for (int i = 0; i < eids.Length; ++i)
                     eids[i] = nsd.Index[i].EntryID;
@@ -627,7 +627,7 @@ namespace CrashEdit.CE
                         }
                     }
                 }
-            }
+            //}
         }
 
         public void PatchNSD(OldNSD nsd, NSF nsf, string path, bool ignore_warnings)
