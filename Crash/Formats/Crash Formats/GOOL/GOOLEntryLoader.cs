@@ -57,7 +57,10 @@ namespace CrashEdit.Crash
                         {
                             int begin = i;
                             int type = BitConv.FromInt16(items[5], i);
+
+                            // check offset 10 to determine if it's a gool ported from crash 3 to crash 2
                             int is3to2 = BitConv.FromInt16(items[5], i + 10);
+
                             switch (type)
                             {
                                 case 1:
