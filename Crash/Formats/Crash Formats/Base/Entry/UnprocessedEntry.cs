@@ -54,7 +54,7 @@ namespace CrashEdit.Crash
                         if (shorterData[j] == longerData[j])
                             continue;
 
-                        ErrorManager.SignalIgnorableError("Entry: Processed entry deprocesses to different item data");
+                        ErrorManager.SignalIgnorableError(string.Format("Entry: Processed entry {0} deprocesses to different item data", Entry.EIDToEName(EID)));
                         return result;
                     }
 
@@ -68,7 +68,7 @@ namespace CrashEdit.Crash
                         if (longerData[j] == 0)
                             continue;
 
-                        ErrorManager.SignalIgnorableError("Entry: Processed entry deprocesses to different item data");
+                        ErrorManager.SignalIgnorableError(string.Format("Entry: Processed entry {0} deprocesses to different item data", Entry.EIDToEName(EID)));
                         return result;
                     }
                 }
