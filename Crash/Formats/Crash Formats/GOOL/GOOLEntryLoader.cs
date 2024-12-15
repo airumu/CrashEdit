@@ -57,13 +57,19 @@ namespace CrashEdit.Crash
                         {
                             int begin = i;
                             int type = BitConv.FromInt16(items[5], i);
+                            int is3to2 = BitConv.FromInt16(items[5], i + 10);
                             switch (type)
                             {
                                 case 1:
                                     if (goolver == GOOLVersion.Version1)
                                         fgroups.Add(VertexGroup.Load(items[5], ref i));
                                     else if (goolver == GOOLVersion.Version2)
-                                        fgroups.Add(VertexGroup2.Load(items[5], ref i));
+                                    {
+                                        if (is3to2 == 0)
+                                            fgroups.Add(VertexGroup2.Load(items[5], ref i));
+                                        else
+                                            fgroups.Add(VertexGroup3to2.Load(items[5], ref i));
+                                    }
                                     else if (goolver == GOOLVersion.Version3)
                                         fgroups.Add(VertexGroup3.Load(items[5], ref i));
                                     break;
