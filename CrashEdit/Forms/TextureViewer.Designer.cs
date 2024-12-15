@@ -574,7 +574,7 @@ namespace CrashEdit.CE
             // 
             label14.AutoSize = true;
             label14.ImeMode = ImeMode.NoControl;
-            label14.Location = new Point(105, 64);
+            label14.Location = new Point(108, 64);
             label14.Margin = new Padding(4, 0, 4, 0);
             label14.Name = "label14";
             label14.Size = new Size(19, 15);
@@ -585,7 +585,7 @@ namespace CrashEdit.CE
             // 
             label13.AutoSize = true;
             label13.ImeMode = ImeMode.NoControl;
-            label13.Location = new Point(105, 28);
+            label13.Location = new Point(108, 28);
             label13.Margin = new Padding(4, 0, 4, 0);
             label13.Name = "label13";
             label13.Size = new Size(19, 15);
@@ -720,11 +720,12 @@ namespace CrashEdit.CE
             groupBox8.Controls.Add(label11);
             groupBox8.Controls.Add(label12);
             groupBox8.Controls.Add(lblCLUT);
+            groupBox8.Font = new Font("Cascadia Code SemiLight", 8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             groupBox8.Location = new Point(336, 8);
             groupBox8.Margin = new Padding(4);
             groupBox8.Name = "groupBox8";
             groupBox8.Padding = new Padding(4);
-            groupBox8.Size = new Size(107, 139);
+            groupBox8.Size = new Size(107, 131);
             groupBox8.TabIndex = 7;
             groupBox8.TabStop = false;
             groupBox8.Text = "CLUT";
@@ -735,7 +736,7 @@ namespace CrashEdit.CE
             C2numCY.Margin = new Padding(4);
             C2numCY.Maximum = new decimal(new int[] { 127, 0, 0, 0 });
             C2numCY.Name = "C2numCY";
-            C2numCY.Size = new Size(70, 23);
+            C2numCY.Size = new Size(70, 20);
             C2numCY.TabIndex = 3;
             // 
             // C2numCX
@@ -744,13 +745,14 @@ namespace CrashEdit.CE
             C2numCX.Margin = new Padding(4);
             C2numCX.Maximum = new decimal(new int[] { 15, 0, 0, 0 });
             C2numCX.Name = "C2numCX";
-            C2numCX.Size = new Size(70, 23);
+            C2numCX.Size = new Size(70, 20);
             C2numCX.TabIndex = 2;
             C2numCX.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // label11
             // 
             label11.AutoSize = true;
+            label11.Font = new Font("Segoe UI", 9F);
             label11.ImeMode = ImeMode.NoControl;
             label11.Location = new Point(7, 64);
             label11.Margin = new Padding(4, 0, 4, 0);
@@ -762,6 +764,7 @@ namespace CrashEdit.CE
             // label12
             // 
             label12.AutoSize = true;
+            label12.Font = new Font("Segoe UI", 9F);
             label12.ImeMode = ImeMode.NoControl;
             label12.Location = new Point(7, 28);
             label12.Margin = new Padding(4, 0, 4, 0);
@@ -772,13 +775,12 @@ namespace CrashEdit.CE
             // 
             // lblCLUT
             // 
-            lblCLUT.AutoSize = true;
             lblCLUT.ImeMode = ImeMode.NoControl;
-            lblCLUT.Location = new Point(7, 91);
+            lblCLUT.Location = new Point(10, 88);
             lblCLUT.Margin = new Padding(4, 0, 4, 0);
             lblCLUT.Name = "lblCLUT";
             lblCLUT.RightToLeft = RightToLeft.No;
-            lblCLUT.Size = new Size(62, 30);
+            lblCLUT.Size = new Size(90, 30);
             lblCLUT.TabIndex = 4;
             lblCLUT.Text = "clut_hex\r\nclut_offset";
             // 

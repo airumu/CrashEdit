@@ -36,11 +36,11 @@ namespace CrashEdit.CE
             lblTitle = new Label();
             lblMessage = new Label();
             pnOptions = new MetroSetPanel();
-            optIgnore = new DarkRadioButton();
-            optIgnoreAll = new DarkRadioButton();
-            optSkip = new DarkRadioButton();
-            optAbort = new DarkRadioButton();
-            optBreak = new DarkRadioButton();
+            optIgnore = new RadioButton();
+            optIgnoreAll = new RadioButton();
+            optSkip = new RadioButton();
+            optAbort = new RadioButton();
+            optBreak = new RadioButton();
             cmdOK = new DarkButton();
             pnOptions.SuspendLayout();
             SuspendLayout();
@@ -187,14 +187,14 @@ namespace CrashEdit.CE
 
         #endregion
 
-        private System.Windows.Forms.Label lblTitle;
-        private System.Windows.Forms.Label lblMessage;
+        private Label lblTitle;
+        private Label lblMessage;
         private MetroSetPanel pnOptions;
-        private DarkRadioButton optSkip;
-        private DarkRadioButton optAbort;
-        private DarkRadioButton optBreak;
-        private DarkRadioButton optIgnore;
-        private DarkRadioButton optIgnoreAll;
+        private RadioButton optSkip;
+        private RadioButton optAbort;
+        private RadioButton optBreak;
+        private RadioButton optIgnore;
+        private RadioButton optIgnoreAll;
         private DarkButton cmdOK;
     }
 }

@@ -108,7 +108,7 @@ namespace CrashEdit.CE
             int clut_val = (int)C2numCX.Value + ((int)C2numCY.Value * 0x40);
             string clut_offset_hex = clut_offset.ToString("X");
             string clut_val_hex = clut_val.ToString("X");
-            lblCLUT.Text = string.Format("Hex   0x{0}\r\nOffset 0x{1}", clut_val_hex, clut_offset_hex);
+            lblCLUT.Text = string.Format("Hex    0x{0}\r\nOffset 0x{1}", clut_val_hex, clut_offset_hex);
         }
 
         private void Control_UpdatePicture(object sender, EventArgs e)
