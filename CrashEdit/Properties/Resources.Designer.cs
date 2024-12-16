@@ -1576,6 +1576,24 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
+        ///   This requires a restart. Do you want to restart now? に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Restart {
+            get {
+                return ResourceManager.GetString("Restart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Restart Confirmation Prompt に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Restart_ConfirmationPrompt {
+            get {
+                return ResourceManager.GetString("Restart_ConfirmationPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Save Confirmation Prompt に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Save_ConfirmationPrompt {

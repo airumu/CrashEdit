@@ -777,4 +777,10 @@ as Meters: {3:F3}m</value>
   <data name="Config_chkShowEntityParams" xml:space="preserve">
     <value>Show entity parameters</value>
   </data>
+  <data name="Restart" xml:space="preserve">
+    <value>This requires a restart. Do you want to restart now?</value>
+  </data>
+  <data name="Restart_ConfirmationPrompt" xml:space="preserve">
+    <value>Restart Confirmation Prompt</value>
+  </data>
 </root>

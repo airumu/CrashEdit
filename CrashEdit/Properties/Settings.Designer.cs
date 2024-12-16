@@ -382,5 +382,17 @@ namespace CrashEdit.CE.Properties {
                 this["EnableC2TTEditor"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool PatchGOOLC3toC2 {
+            get {
+                return ((bool)(this["PatchGOOLC3toC2"]));
+            }
+            set {
+                this["PatchGOOLC3toC2"] = value;
+            }
+        }
     }
 }

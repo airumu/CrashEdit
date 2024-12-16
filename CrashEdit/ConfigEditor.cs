@@ -1,4 +1,5 @@
-﻿using CrashEdit.CE.Properties;
+﻿using AltUI.Forms;
+using CrashEdit.CE.Properties;
 
 namespace CrashEdit.CE
 {
@@ -42,6 +43,15 @@ namespace CrashEdit.CE
                 ex is DirectoryNotFoundException
                 )
             {
+            }
+        }
+
+        private void RestartProgram()
+        {
+            if (DarkMessageBox.ShowInformation(Resources.Restart, Resources.Restart_ConfirmationPrompt, DarkDialogButton.YesNo) == DialogResult.Yes)
+            {
+                Application.Restart();
+                Environment.Exit(0);
             }
         }
 
@@ -94,6 +104,7 @@ namespace CrashEdit.CE
             chkDetailedCollision.Checked = Settings.Default.ShowDetailedCollision;
             chkShowCustomCrates.Checked = Settings.Default.ShowCustomCrates;
             chkEnableC2TT.Checked = Settings.Default.EnableC2TTEditor;
+            chkPatchGOOLC3toC2.Checked = Settings.Default.PatchGOOLC3toC2;
 
             fraSize.Text = Resources.Config_fraSize;
             fraClearCol.Text = Resources.Config_fraClearCol;
@@ -126,6 +137,7 @@ namespace CrashEdit.CE
         {
             Settings.Default.Language = Languages[dpdLang.SelectedIndex];
             Settings.Default.Save();
+            RestartProgram();
         }
 
         private void dpdFont_SelectedIndexChanged(object sender, EventArgs e)
@@ -286,6 +298,19 @@ namespace CrashEdit.CE
         {
             Settings.Default.EnableC2TTEditor = chkEnableC2TT.Checked;
             Settings.Default.Save();
+        }
+
+        private void chkPatchGOOLC3toC2_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.PatchGOOLC3toC2 = chkPatchGOOLC3toC2.Checked;
+            Settings.Default.Save();
+        }
+
+        private void chkPatchGOOLC3toC2_Click(object sender, EventArgs e)
+        {
+            Settings.Default.PatchGOOLC3toC2 = chkPatchGOOLC3toC2.Checked;
+            Settings.Default.Save();
+            RestartProgram();
         }
     }
 }

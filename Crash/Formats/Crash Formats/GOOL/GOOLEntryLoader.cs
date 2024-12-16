@@ -1,3 +1,5 @@
+using CrashEdit.CE.Properties;
+
 namespace CrashEdit.Crash
 {
     internal static class GOOLEntryLoader
@@ -57,10 +59,6 @@ namespace CrashEdit.Crash
                         {
                             int begin = i;
                             int type = BitConv.FromInt16(items[5], i);
-
-                            // check offset 10 to determine if it's a gool ported from crash 3 to crash 2
-                            int is3to2 = BitConv.FromInt16(items[5], i + 10);
-
                             switch (type)
                             {
                                 case 1:
@@ -68,10 +66,26 @@ namespace CrashEdit.Crash
                                         fgroups.Add(VertexGroup.Load(items[5], ref i));
                                     else if (goolver == GOOLVersion.Version2)
                                     {
-                                        if (is3to2 == 0)
-                                            fgroups.Add(VertexGroup2.Load(items[5], ref i));
-                                        else
-                                            fgroups.Add(VertexGroup3to2.Load(items[5], ref i));
+                                        // check if it's ported from Crash 3 to Crash 2
+                                        if (Settings.Default.PatchGOOLC3toC2)
+                                        {
+                                            int offset10 = BitConv.FromInt16(items[5], i + 10);
+                                            if (i + 12 < items[5].Length)
+                                            {
+                                                int offset12 = BitConv.FromInt16(items[5], i + 12);
+                                                if (offset12 == 0 || offset12 > 5)
+                                                {
+                                                    fgroups.Add(VertexGroup3to2.Load(items[5], ref i));
+                                                    break;
+                                                }
+                                            }
+                                            if (offset10 != 0)
+                                            {
+                                                fgroups.Add(VertexGroup3to2.Load(items[5], ref i));
+                                                break;
+                                            }
+                                        }
+                                        fgroups.Add(VertexGroup2.Load(items[5], ref i));
                                     }
                                     else if (goolver == GOOLVersion.Version3)
                                         fgroups.Add(VertexGroup3.Load(items[5], ref i));

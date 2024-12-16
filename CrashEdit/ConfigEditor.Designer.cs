@@ -75,6 +75,7 @@ namespace CrashEdit.CE
             chkViewZoneName = new CheckBox();
             chkViewZoneBox = new CheckBox();
             tbpPatchNSD = new TabPage();
+            chkPatchGOOLC3toC2 = new CheckBox();
             chkOldPatchNSD = new CheckBox();
             tableLayoutPanel4 = new TableLayoutPanel();
             tableLayoutPanel4.SuspendLayout();
@@ -681,6 +682,7 @@ namespace CrashEdit.CE
             // tbpPatchNSD
             // 
             tbpPatchNSD.BackColor = Color.FromArgb(30, 30, 30);
+            tbpPatchNSD.Controls.Add(chkPatchGOOLC3toC2);
             tbpPatchNSD.Controls.Add(chkOldPatchNSD);
             tbpPatchNSD.Controls.Add(chkDeleteInvalidEntries);
             tbpPatchNSD.Controls.Add(chkPatchNSDSavesNSF);
@@ -691,14 +693,27 @@ namespace CrashEdit.CE
             tbpPatchNSD.TabIndex = 2;
             tbpPatchNSD.Text = "Patch NSD";
             // 
+            // chkPatchGOOLC3toC2
+            // 
+            chkPatchGOOLC3toC2.AutoSize = true;
+            chkPatchGOOLC3toC2.Location = new Point(7, 56);
+            chkPatchGOOLC3toC2.Margin = new Padding(4, 3, 4, 3);
+            chkPatchGOOLC3toC2.Name = "chkPatchGOOLC3toC2";
+            chkPatchGOOLC3toC2.Size = new Size(421, 19);
+            chkPatchGOOLC3toC2.TabIndex = 8;
+            chkPatchGOOLC3toC2.Text = "(Crash 2 ) Patch GOOLs frame groups ported from Crash 3 (requires restart)";
+            chkPatchGOOLC3toC2.UseVisualStyleBackColor = true;
+            chkPatchGOOLC3toC2.CheckedChanged += chkPatchGOOLC3toC2_CheckedChanged;
+            chkPatchGOOLC3toC2.Click += chkPatchGOOLC3toC2_Click;
+            // 
             // chkOldPatchNSD
             // 
             chkOldPatchNSD.AutoSize = true;
-            chkOldPatchNSD.Location = new Point(7, 56);
+            chkOldPatchNSD.Location = new Point(7, 81);
             chkOldPatchNSD.Margin = new Padding(4, 3, 4, 3);
             chkOldPatchNSD.Name = "chkOldPatchNSD";
             chkOldPatchNSD.Size = new Size(271, 19);
-            chkOldPatchNSD.TabIndex = 8;
+            chkOldPatchNSD.TabIndex = 9;
             chkOldPatchNSD.Text = "Use old NSD patching from CrashEdit v0.2.49.0";
             chkOldPatchNSD.UseVisualStyleBackColor = true;
             chkOldPatchNSD.CheckedChanged += chkOldPatchNSD_CheckedChanged;
@@ -790,5 +805,6 @@ namespace CrashEdit.CE
         private CheckBox chkDetailedCollision;
         private CheckBox chkShowCustomCrates;
         private CheckBox chkEnableC2TT;
+        private CheckBox chkPatchGOOLC3toC2;
     }
 }

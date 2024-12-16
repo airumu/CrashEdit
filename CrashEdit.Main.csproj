@@ -78,6 +78,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Compile Include="CrashEdit\Properties\Settings.Designer.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
       <EmbeddedResource Include="Embeds\Images\Anchor.gif" />
       <EmbeddedResource Include="Embeds\Images\Arrow.gif" />
       <EmbeddedResource Include="Embeds\Images\Erase.gif" />
