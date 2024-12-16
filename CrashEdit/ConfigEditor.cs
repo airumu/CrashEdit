@@ -66,13 +66,17 @@ namespace CrashEdit.CE
                 dpdFont.SelectedIndex = FontFileNames.IndexOf(Settings.Default.FontName);
             else
                 dpdFont.SelectedIndex = 0;
+
             numFontSize.Value = (decimal)Settings.Default.FontSize;
             numW.Value = Settings.Default.DefaultFormW;
             numH.Value = Settings.Default.DefaultFormH;
             numAnimGrid.Value = Settings.Default.AnimGridLen;
+            sldNodeShadeAmt.Value = (int)(Settings.Default.NodeShadeMax * 100);
+            cdlClearCol.Color = picClearCol.BackColor = Color.FromArgb(Settings.Default.ClearColorRGB);
+            cdlClearCol.Color = picClearCol.BackColor = Color.FromArgb(Settings.Default.ClearColorRGB);
+
             chkNormalDisplay.Checked = Settings.Default.DisplayNormals;
             chkCollisionDisplay.Checked = Settings.Default.DisplayFrameCollision;
-            cdlClearCol.Color = picClearCol.BackColor = System.Drawing.Color.FromArgb(Settings.Default.ClearColorRGB);
             chkDeleteInvalidEntries.Checked = Settings.Default.DeleteInvalidEntries;
             chkAnimGrid.Checked = Settings.Default.DisplayAnimGrid;
             chkFont3DEnable.Checked = Settings.Default.Font3DEnable;
@@ -83,9 +87,13 @@ namespace CrashEdit.CE
             chkViewCamera.Checked = Settings.Default.ViewCamera;
             chkViewCameraAngle.Checked = Settings.Default.ViewCameraAngle;
             chkShowEntityParams.Checked = Settings.Default.ShowEntityParams;
-            cdlClearCol.Color = picClearCol.BackColor = Color.FromArgb(Settings.Default.ClearColorRGB);
-            sldNodeShadeAmt.Value = (int)(Settings.Default.NodeShadeMax * 100);
-            lblNodeShadeAmt.Text = string.Format("{0:F0}%", sldNodeShadeAmt.Value);
+            chkPatchNSDSavesNSF.Checked = Settings.Default.PatchNSDSavesNSF;
+            chkDisableVisual.Checked = Settings.Default.DisableVisual;
+            // added
+            chkOldPatchNSD.Checked = Settings.Default.UseOldPatchNSD;
+            chkDetailedCollision.Checked = Settings.Default.ShowDetailedCollision;
+            chkShowCustomCrates.Checked = Settings.Default.ShowCustomCrates;
+            chkEnableC2TT.Checked = Settings.Default.EnableC2TTEditor;
 
             fraSize.Text = Resources.Config_fraSize;
             fraClearCol.Text = Resources.Config_fraClearCol;
@@ -110,6 +118,7 @@ namespace CrashEdit.CE
             chkViewCamera.Text = Resources.Config_chkViewCamera;
             chkViewCameraAngle.Text = Resources.Config_chkViewCameraAngle;
             chkShowEntityParams.Text = Resources.Config_chkShowEntityParams;
+            lblNodeShadeAmt.Text = string.Format("{0:F0}%", sldNodeShadeAmt.Value);
             cmdReset.Text = Resources.Config_cmdReset;
         }
 
@@ -257,13 +266,25 @@ namespace CrashEdit.CE
 
         private void chkOldPatchNSD_CheckedChanged(object sender, EventArgs e)
         {
-            Settings.Default.OldPatchNSD = chkOldPatchNSD.Checked;
+            Settings.Default.UseOldPatchNSD = chkOldPatchNSD.Checked;
             Settings.Default.Save();
         }
 
         private void chkDetailedCollision_CheckedChanged(object sender, EventArgs e)
         {
-            Settings.Default.DetailedCollision = chkDetailedCollision.Checked;
+            Settings.Default.ShowDetailedCollision = chkDetailedCollision.Checked;
+            Settings.Default.Save();
+        }
+
+        private void chkShowCustomCrates_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.ShowCustomCrates = chkShowCustomCrates.Checked;
+            Settings.Default.Save();
+        }
+
+        private void chkEnableC2TT_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.EnableC2TTEditor = chkEnableC2TT.Checked;
             Settings.Default.Save();
         }
     }

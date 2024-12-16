@@ -57,6 +57,8 @@ namespace CrashEdit.CE
             chkID = new CheckBox();
             numID = new DarkNumericUpDown();
             fraSettings = new DarkGroupBox();
+            lblSettingB = new Label();
+            lblSettingA = new Label();
             lblArgAs = new Label();
             chkSettingHex = new CheckBox();
             numSettingC = new DarkNumericUpDown();
@@ -72,10 +74,23 @@ namespace CrashEdit.CE
             chkName = new CheckBox();
             tbcTabs = new MetroSetTabControl();
             tabGeneral = new TabPage();
-            tabSpecial = new TabPage();
+            fraC2TTSet = new DarkGroupBox();
+            fraC2TTGhostTarget = new DarkGroupBox();
+            numC2TTGhostTarget = new DarkNumericUpDown();
+            chkC2TTGhostTarget = new CheckBox();
+            fraC2TTFlags = new DarkGroupBox();
+            numC2TTFlags = new DarkNumericUpDown();
+            chkC2TTFlags = new CheckBox();
+            fraC2TTYRot = new DarkGroupBox();
+            numC2TTYRot = new DarkNumericUpDown();
+            chkC2TTYRot = new CheckBox();
+            fraC2TTType = new DarkGroupBox();
+            numC2TTType = new DarkNumericUpDown();
+            chkC2TTType = new CheckBox();
             fraZMod = new DarkGroupBox();
             chkZMod = new CheckBox();
             numZMod = new DarkNumericUpDown();
+            tabSpecial = new TabPage();
             fraTTReward = new DarkGroupBox();
             chkTTReward = new CheckBox();
             numTTReward = new DarkNumericUpDown();
@@ -254,9 +269,18 @@ namespace CrashEdit.CE
             fraName.SuspendLayout();
             tbcTabs.SuspendLayout();
             tabGeneral.SuspendLayout();
-            tabSpecial.SuspendLayout();
+            fraC2TTSet.SuspendLayout();
+            fraC2TTGhostTarget.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numC2TTGhostTarget).BeginInit();
+            fraC2TTFlags.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numC2TTFlags).BeginInit();
+            fraC2TTYRot.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numC2TTYRot).BeginInit();
+            fraC2TTType.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numC2TTType).BeginInit();
             fraZMod.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numZMod).BeginInit();
+            tabSpecial.SuspendLayout();
             fraTTReward.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numTTReward).BeginInit();
             fraOtherSettings.SuspendLayout();
@@ -349,7 +373,7 @@ namespace CrashEdit.CE
             fraType.Size = new Size(132, 137);
             fraType.TabIndex = 4;
             fraType.TabStop = false;
-            fraType.Text = "Type && Subtype";
+            fraType.Text = "Type & Subtype";
             // 
             // chkSubtype
             // 
@@ -600,7 +624,7 @@ namespace CrashEdit.CE
             fraID.Size = new Size(132, 137);
             fraID.TabIndex = 3;
             fraID.TabStop = false;
-            fraID.Text = "ID && Look-up ID";
+            fraID.Text = "ID & Look-up ID";
             // 
             // chkID2
             // 
@@ -652,8 +676,9 @@ namespace CrashEdit.CE
             // 
             // fraSettings
             // 
-            fraSettings.AutoSize = true;
             fraSettings.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraSettings.Controls.Add(lblSettingB);
+            fraSettings.Controls.Add(lblSettingA);
             fraSettings.Controls.Add(lblArgAs);
             fraSettings.Controls.Add(chkSettingHex);
             fraSettings.Controls.Add(numSettingC);
@@ -668,16 +693,42 @@ namespace CrashEdit.CE
             fraSettings.Margin = new Padding(4, 3, 4, 3);
             fraSettings.Name = "fraSettings";
             fraSettings.Padding = new Padding(4, 3, 4, 3);
-            fraSettings.Size = new Size(357, 164);
+            fraSettings.Size = new Size(233, 210);
             fraSettings.TabIndex = 2;
             fraSettings.TabStop = false;
             fraSettings.Text = "Argument(s)";
+            // 
+            // lblSettingB
+            // 
+            lblSettingB.AutoSize = true;
+            lblSettingB.BackColor = Color.Transparent;
+            lblSettingB.Font = new Font("Segoe UI", 9F);
+            lblSettingB.Location = new Point(8, 82);
+            lblSettingB.Margin = new Padding(4, 0, 4, 0);
+            lblSettingB.Name = "lblSettingB";
+            lblSettingB.Size = new Size(14, 15);
+            lblSettingB.TabIndex = 11;
+            lblSettingB.Text = "B";
+            lblSettingB.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // lblSettingA
+            // 
+            lblSettingA.AutoSize = true;
+            lblSettingA.BackColor = Color.Transparent;
+            lblSettingA.Font = new Font("Segoe UI", 9F);
+            lblSettingA.Location = new Point(8, 58);
+            lblSettingA.Margin = new Padding(4, 0, 4, 0);
+            lblSettingA.Name = "lblSettingA";
+            lblSettingA.Size = new Size(15, 15);
+            lblSettingA.TabIndex = 10;
+            lblSettingA.Text = "A";
+            lblSettingA.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // lblArgAs
             // 
             lblArgAs.AutoSize = true;
             lblArgAs.BackColor = Color.Transparent;
-            lblArgAs.Location = new Point(226, 52);
+            lblArgAs.Location = new Point(8, 138);
             lblArgAs.Margin = new Padding(4, 0, 4, 0);
             lblArgAs.Name = "lblArgAs";
             lblArgAs.Size = new Size(123, 60);
@@ -690,7 +741,7 @@ namespace CrashEdit.CE
             chkSettingHex.BackColor = Color.Transparent;
             chkSettingHex.Checked = true;
             chkSettingHex.CheckState = CheckState.Checked;
-            chkSettingHex.Location = new Point(160, 87);
+            chkSettingHex.Location = new Point(120, 110);
             chkSettingHex.Margin = new Padding(4, 3, 4, 3);
             chkSettingHex.Name = "chkSettingHex";
             chkSettingHex.Size = new Size(47, 19);
@@ -702,12 +753,12 @@ namespace CrashEdit.CE
             // numSettingC
             // 
             numSettingC.Hexadecimal = true;
-            numSettingC.Location = new Point(7, 85);
+            numSettingC.Location = new Point(7, 108);
             numSettingC.Margin = new Padding(4, 3, 4, 3);
             numSettingC.Maximum = new decimal(new int[] { -1, int.MaxValue, 0, 0 });
             numSettingC.Minimum = new decimal(new int[] { 0, int.MinValue, 0, int.MinValue });
             numSettingC.Name = "numSettingC";
-            numSettingC.Size = new Size(146, 23);
+            numSettingC.Size = new Size(105, 23);
             numSettingC.TabIndex = 7;
             numSettingC.ValueChanged += numSettingC_ValueChanged;
             // 
@@ -759,7 +810,7 @@ namespace CrashEdit.CE
             cmdAddSetting.CustomColour = false;
             cmdAddSetting.FlatBottom = false;
             cmdAddSetting.FlatTop = false;
-            cmdAddSetting.Location = new Point(102, 115);
+            cmdAddSetting.Location = new Point(120, 52);
             cmdAddSetting.Margin = new Padding(4, 3, 4, 3);
             cmdAddSetting.Name = "cmdAddSetting";
             cmdAddSetting.Padding = new Padding(5);
@@ -774,7 +825,7 @@ namespace CrashEdit.CE
             cmdRemoveSetting.CustomColour = false;
             cmdRemoveSetting.FlatBottom = false;
             cmdRemoveSetting.FlatTop = false;
-            cmdRemoveSetting.Location = new Point(7, 115);
+            cmdRemoveSetting.Location = new Point(120, 80);
             cmdRemoveSetting.Margin = new Padding(4, 3, 4, 3);
             cmdRemoveSetting.Name = "cmdRemoveSetting";
             cmdRemoveSetting.Padding = new Padding(5);
@@ -785,22 +836,22 @@ namespace CrashEdit.CE
             // 
             // numSettingB
             // 
-            numSettingB.Location = new Point(7, 55);
+            numSettingB.Location = new Point(30, 55);
             numSettingB.Margin = new Padding(4, 3, 4, 3);
             numSettingB.Maximum = new decimal(new int[] { 8388607, 0, 0, 0 });
             numSettingB.Minimum = new decimal(new int[] { 8388608, 0, 0, int.MinValue });
             numSettingB.Name = "numSettingB";
-            numSettingB.Size = new Size(70, 23);
+            numSettingB.Size = new Size(82, 23);
             numSettingB.TabIndex = 3;
             numSettingB.ValueChanged += numSettingB_ValueChanged;
             // 
             // numSettingA
             // 
-            numSettingA.Location = new Point(83, 55);
+            numSettingA.Location = new Point(30, 80);
             numSettingA.Margin = new Padding(4, 3, 4, 3);
             numSettingA.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
             numSettingA.Name = "numSettingA";
-            numSettingA.Size = new Size(70, 23);
+            numSettingA.Size = new Size(82, 23);
             numSettingA.TabIndex = 2;
             numSettingA.ValueChanged += numSettingA_ValueChanged;
             // 
@@ -860,7 +911,7 @@ namespace CrashEdit.CE
             tbcTabs.Name = "tbcTabs";
             tbcTabs.SelectedIndex = 0;
             tbcTabs.SelectedTextColor = Color.White;
-            tbcTabs.Size = new Size(583, 531);
+            tbcTabs.Size = new Size(800, 800);
             tbcTabs.SizeMode = TabSizeMode.Fixed;
             tbcTabs.Speed = 100;
             tbcTabs.Style = MetroSet_UI.Enums.Style.Dark;
@@ -875,48 +926,190 @@ namespace CrashEdit.CE
             // 
             tabGeneral.AutoScroll = true;
             tabGeneral.BackColor = Color.FromArgb(30, 30, 30);
+            tabGeneral.Controls.Add(fraC2TTSet);
             tabGeneral.Controls.Add(fraName);
             tabGeneral.Controls.Add(fraType);
             tabGeneral.Controls.Add(fraSettings);
             tabGeneral.Controls.Add(fraPosition);
             tabGeneral.Controls.Add(fraID);
+            tabGeneral.Controls.Add(fraZMod);
             tabGeneral.Location = new Point(4, 32);
             tabGeneral.Margin = new Padding(4, 3, 4, 3);
             tabGeneral.Name = "tabGeneral";
-            tabGeneral.Size = new Size(575, 495);
+            tabGeneral.Size = new Size(792, 764);
             tabGeneral.TabIndex = 0;
             tabGeneral.Text = "General";
             // 
-            // tabSpecial
+            // fraC2TTSet
             // 
-            tabSpecial.AutoScroll = true;
-            tabSpecial.BackColor = Color.FromArgb(30, 30, 30);
-            tabSpecial.Controls.Add(fraZMod);
-            tabSpecial.Controls.Add(fraTTReward);
-            tabSpecial.Controls.Add(fraOtherSettings);
-            tabSpecial.Controls.Add(fraScaling);
-            tabSpecial.Controls.Add(fraDDASection);
-            tabSpecial.Controls.Add(fraDDASettings);
-            tabSpecial.Controls.Add(fraBoxCount);
-            tabSpecial.Controls.Add(fraVictims);
-            tabSpecial.Location = new Point(4, 32);
-            tabSpecial.Margin = new Padding(4, 3, 4, 3);
-            tabSpecial.Name = "tabSpecial";
-            tabSpecial.Size = new Size(575, 495);
-            tabSpecial.TabIndex = 1;
-            tabSpecial.Text = "Special";
-            tabSpecial.Enter += tabSpecial_Enter;
+            fraC2TTSet.Controls.Add(fraC2TTGhostTarget);
+            fraC2TTSet.Controls.Add(fraC2TTFlags);
+            fraC2TTSet.Controls.Add(fraC2TTYRot);
+            fraC2TTSet.Controls.Add(fraC2TTType);
+            fraC2TTSet.Location = new Point(245, 146);
+            fraC2TTSet.Margin = new Padding(4, 3, 4, 3);
+            fraC2TTSet.Name = "fraC2TTSet";
+            fraC2TTSet.Padding = new Padding(4, 3, 4, 3);
+            fraC2TTSet.Size = new Size(132, 356);
+            fraC2TTSet.TabIndex = 6;
+            fraC2TTSet.TabStop = false;
+            fraC2TTSet.Text = "C2 Time Trials";
+            fraC2TTSet.Visible = false;
+            // 
+            // fraC2TTGhostTarget
+            // 
+            fraC2TTGhostTarget.BackColor = Color.Transparent;
+            fraC2TTGhostTarget.Controls.Add(numC2TTGhostTarget);
+            fraC2TTGhostTarget.Controls.Add(chkC2TTGhostTarget);
+            fraC2TTGhostTarget.Location = new Point(7, 268);
+            fraC2TTGhostTarget.Name = "fraC2TTGhostTarget";
+            fraC2TTGhostTarget.Size = new Size(116, 76);
+            fraC2TTGhostTarget.TabIndex = 5;
+            fraC2TTGhostTarget.TabStop = false;
+            fraC2TTGhostTarget.Text = "Ghost Target";
+            // 
+            // numC2TTGhostTarget
+            // 
+            numC2TTGhostTarget.Location = new Point(7, 47);
+            numC2TTGhostTarget.Margin = new Padding(4, 3, 4, 3);
+            numC2TTGhostTarget.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numC2TTGhostTarget.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numC2TTGhostTarget.Name = "numC2TTGhostTarget";
+            numC2TTGhostTarget.Size = new Size(102, 23);
+            numC2TTGhostTarget.TabIndex = 1;
+            numC2TTGhostTarget.ValueChanged += numC2TTGhostTarget_ValueChanged;
+            // 
+            // chkC2TTGhostTarget
+            // 
+            chkC2TTGhostTarget.AutoSize = true;
+            chkC2TTGhostTarget.BackColor = Color.Transparent;
+            chkC2TTGhostTarget.Location = new Point(7, 22);
+            chkC2TTGhostTarget.Margin = new Padding(4, 3, 4, 3);
+            chkC2TTGhostTarget.Name = "chkC2TTGhostTarget";
+            chkC2TTGhostTarget.Size = new Size(68, 19);
+            chkC2TTGhostTarget.TabIndex = 0;
+            chkC2TTGhostTarget.Text = "Enabled";
+            chkC2TTGhostTarget.UseVisualStyleBackColor = false;
+            chkC2TTGhostTarget.CheckedChanged += chkC2TTGhostTarget_CheckedChanged;
+            // 
+            // fraC2TTFlags
+            // 
+            fraC2TTFlags.BackColor = Color.Transparent;
+            fraC2TTFlags.Controls.Add(numC2TTFlags);
+            fraC2TTFlags.Controls.Add(chkC2TTFlags);
+            fraC2TTFlags.Location = new Point(7, 186);
+            fraC2TTFlags.Name = "fraC2TTFlags";
+            fraC2TTFlags.Size = new Size(116, 76);
+            fraC2TTFlags.TabIndex = 6;
+            fraC2TTFlags.TabStop = false;
+            fraC2TTFlags.Text = "Flags";
+            // 
+            // numC2TTFlags
+            // 
+            numC2TTFlags.Location = new Point(7, 47);
+            numC2TTFlags.Margin = new Padding(4, 3, 4, 3);
+            numC2TTFlags.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numC2TTFlags.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numC2TTFlags.Name = "numC2TTFlags";
+            numC2TTFlags.Size = new Size(102, 23);
+            numC2TTFlags.TabIndex = 1;
+            numC2TTFlags.ValueChanged += numC2TTFlags_ValueChanged;
+            // 
+            // chkC2TTFlags
+            // 
+            chkC2TTFlags.AutoSize = true;
+            chkC2TTFlags.BackColor = Color.Transparent;
+            chkC2TTFlags.Location = new Point(7, 22);
+            chkC2TTFlags.Margin = new Padding(4, 3, 4, 3);
+            chkC2TTFlags.Name = "chkC2TTFlags";
+            chkC2TTFlags.Size = new Size(68, 19);
+            chkC2TTFlags.TabIndex = 0;
+            chkC2TTFlags.Text = "Enabled";
+            chkC2TTFlags.UseVisualStyleBackColor = false;
+            chkC2TTFlags.CheckedChanged += chkC2TTFlags_CheckedChanged;
+            // 
+            // fraC2TTYRot
+            // 
+            fraC2TTYRot.BackColor = Color.Transparent;
+            fraC2TTYRot.Controls.Add(numC2TTYRot);
+            fraC2TTYRot.Controls.Add(chkC2TTYRot);
+            fraC2TTYRot.Location = new Point(7, 104);
+            fraC2TTYRot.Name = "fraC2TTYRot";
+            fraC2TTYRot.Size = new Size(116, 76);
+            fraC2TTYRot.TabIndex = 5;
+            fraC2TTYRot.TabStop = false;
+            fraC2TTYRot.Text = "RotY";
+            // 
+            // numC2TTYRot
+            // 
+            numC2TTYRot.Location = new Point(7, 47);
+            numC2TTYRot.Margin = new Padding(4, 3, 4, 3);
+            numC2TTYRot.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numC2TTYRot.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numC2TTYRot.Name = "numC2TTYRot";
+            numC2TTYRot.Size = new Size(102, 23);
+            numC2TTYRot.TabIndex = 1;
+            numC2TTYRot.ValueChanged += numC2TTYRot_ValueChanged;
+            // 
+            // chkC2TTYRot
+            // 
+            chkC2TTYRot.AutoSize = true;
+            chkC2TTYRot.BackColor = Color.Transparent;
+            chkC2TTYRot.Location = new Point(7, 22);
+            chkC2TTYRot.Margin = new Padding(4, 3, 4, 3);
+            chkC2TTYRot.Name = "chkC2TTYRot";
+            chkC2TTYRot.Size = new Size(68, 19);
+            chkC2TTYRot.TabIndex = 0;
+            chkC2TTYRot.Text = "Enabled";
+            chkC2TTYRot.UseVisualStyleBackColor = false;
+            chkC2TTYRot.CheckedChanged += chkC2TTYRot_CheckedChanged;
+            // 
+            // fraC2TTType
+            // 
+            fraC2TTType.BackColor = Color.Transparent;
+            fraC2TTType.Controls.Add(numC2TTType);
+            fraC2TTType.Controls.Add(chkC2TTType);
+            fraC2TTType.Location = new Point(7, 22);
+            fraC2TTType.Name = "fraC2TTType";
+            fraC2TTType.Size = new Size(116, 76);
+            fraC2TTType.TabIndex = 4;
+            fraC2TTType.TabStop = false;
+            fraC2TTType.Text = "Type";
+            // 
+            // numC2TTType
+            // 
+            numC2TTType.Location = new Point(7, 47);
+            numC2TTType.Margin = new Padding(4, 3, 4, 3);
+            numC2TTType.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numC2TTType.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numC2TTType.Name = "numC2TTType";
+            numC2TTType.Size = new Size(102, 23);
+            numC2TTType.TabIndex = 1;
+            numC2TTType.ValueChanged += numC2TTType_ValueChanged;
+            // 
+            // chkC2TTType
+            // 
+            chkC2TTType.AutoSize = true;
+            chkC2TTType.BackColor = Color.Transparent;
+            chkC2TTType.Location = new Point(7, 22);
+            chkC2TTType.Margin = new Padding(4, 3, 4, 3);
+            chkC2TTType.Name = "chkC2TTType";
+            chkC2TTType.Size = new Size(68, 19);
+            chkC2TTType.TabIndex = 0;
+            chkC2TTType.Text = "Enabled";
+            chkC2TTType.UseVisualStyleBackColor = false;
+            chkC2TTType.CheckedChanged += chkC2TTType_CheckedChanged;
             // 
             // fraZMod
             // 
             fraZMod.Controls.Add(chkZMod);
             fraZMod.Controls.Add(numZMod);
-            fraZMod.Location = new Point(4, 276);
+            fraZMod.Location = new Point(384, 146);
             fraZMod.Margin = new Padding(4, 3, 4, 3);
             fraZMod.Name = "fraZMod";
             fraZMod.Padding = new Padding(4, 3, 4, 3);
-            fraZMod.Size = new Size(140, 81);
-            fraZMod.TabIndex = 11;
+            fraZMod.Size = new Size(132, 81);
+            fraZMod.TabIndex = 6;
             fraZMod.TabStop = false;
             fraZMod.Text = "Depth Modifier";
             // 
@@ -940,15 +1133,34 @@ namespace CrashEdit.CE
             numZMod.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
             numZMod.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
             numZMod.Name = "numZMod";
-            numZMod.Size = new Size(126, 23);
+            numZMod.Size = new Size(117, 23);
             numZMod.TabIndex = 1;
             numZMod.ValueChanged += numZMod_ValueChanged;
+            // 
+            // tabSpecial
+            // 
+            tabSpecial.AutoScroll = true;
+            tabSpecial.BackColor = Color.FromArgb(30, 30, 30);
+            tabSpecial.Controls.Add(fraTTReward);
+            tabSpecial.Controls.Add(fraOtherSettings);
+            tabSpecial.Controls.Add(fraScaling);
+            tabSpecial.Controls.Add(fraDDASection);
+            tabSpecial.Controls.Add(fraDDASettings);
+            tabSpecial.Controls.Add(fraBoxCount);
+            tabSpecial.Controls.Add(fraVictims);
+            tabSpecial.Location = new Point(4, 32);
+            tabSpecial.Margin = new Padding(4, 3, 4, 3);
+            tabSpecial.Name = "tabSpecial";
+            tabSpecial.Size = new Size(792, 764);
+            tabSpecial.TabIndex = 1;
+            tabSpecial.Text = "Special";
+            tabSpecial.Enter += tabSpecial_Enter;
             // 
             // fraTTReward
             // 
             fraTTReward.Controls.Add(chkTTReward);
             fraTTReward.Controls.Add(numTTReward);
-            fraTTReward.Location = new Point(298, 276);
+            fraTTReward.Location = new Point(150, 188);
             fraTTReward.Margin = new Padding(4, 3, 4, 3);
             fraTTReward.Name = "fraTTReward";
             fraTTReward.Padding = new Padding(4, 3, 4, 3);
@@ -1096,7 +1308,7 @@ namespace CrashEdit.CE
             // 
             fraDDASettings.Controls.Add(chkDDASettings);
             fraDDASettings.Controls.Add(numDDASettings);
-            fraDDASettings.Location = new Point(150, 188);
+            fraDDASettings.Location = new Point(4, 276);
             fraDDASettings.Margin = new Padding(4, 3, 4, 3);
             fraDDASettings.Name = "fraDDASettings";
             fraDDASettings.Padding = new Padding(4, 3, 4, 3);
@@ -1306,7 +1518,7 @@ namespace CrashEdit.CE
             tabCamera.Margin = new Padding(4, 3, 4, 3);
             tabCamera.Name = "tabCamera";
             tabCamera.Padding = new Padding(4, 3, 4, 3);
-            tabCamera.Size = new Size(575, 495);
+            tabCamera.Size = new Size(792, 764);
             tabCamera.TabIndex = 2;
             tabCamera.Text = "Camera";
             tabCamera.Enter += tabCamera_Enter;
@@ -2044,7 +2256,7 @@ namespace CrashEdit.CE
             tabLoadLists.Margin = new Padding(4, 3, 4, 3);
             tabLoadLists.Name = "tabLoadLists";
             tabLoadLists.Padding = new Padding(4, 3, 4, 3);
-            tabLoadLists.Size = new Size(575, 495);
+            tabLoadLists.Size = new Size(792, 764);
             tabLoadLists.TabIndex = 2;
             tabLoadLists.Text = "Load Lists";
             tabLoadLists.Enter += tabLoadLists_Enter;
@@ -2662,7 +2874,7 @@ namespace CrashEdit.CE
             tabDrawLists.Margin = new Padding(4, 3, 4, 3);
             tabDrawLists.Name = "tabDrawLists";
             tabDrawLists.Padding = new Padding(4, 3, 4, 3);
-            tabDrawLists.Size = new Size(575, 495);
+            tabDrawLists.Size = new Size(792, 764);
             tabDrawLists.TabIndex = 3;
             tabDrawLists.Text = "Draw Lists";
             tabDrawLists.Enter += tabDrawLists_Enter;
@@ -3156,7 +3368,7 @@ namespace CrashEdit.CE
             Controls.Add(tbcTabs);
             Margin = new Padding(4, 3, 4, 3);
             Name = "EntityBox";
-            Size = new Size(583, 531);
+            Size = new Size(600, 600);
             ((System.ComponentModel.ISupportInitialize)numType).EndInit();
             fraType.ResumeLayout(false);
             fraType.PerformLayout();
@@ -3179,11 +3391,23 @@ namespace CrashEdit.CE
             fraName.PerformLayout();
             tbcTabs.ResumeLayout(false);
             tabGeneral.ResumeLayout(false);
-            tabGeneral.PerformLayout();
-            tabSpecial.ResumeLayout(false);
+            fraC2TTSet.ResumeLayout(false);
+            fraC2TTGhostTarget.ResumeLayout(false);
+            fraC2TTGhostTarget.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numC2TTGhostTarget).EndInit();
+            fraC2TTFlags.ResumeLayout(false);
+            fraC2TTFlags.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numC2TTFlags).EndInit();
+            fraC2TTYRot.ResumeLayout(false);
+            fraC2TTYRot.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numC2TTYRot).EndInit();
+            fraC2TTType.ResumeLayout(false);
+            fraC2TTType.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numC2TTType).EndInit();
             fraZMod.ResumeLayout(false);
             fraZMod.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numZMod).EndInit();
+            tabSpecial.ResumeLayout(false);
             fraTTReward.ResumeLayout(false);
             fraTTReward.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numTTReward).EndInit();
@@ -3475,5 +3699,21 @@ namespace CrashEdit.CE
         private Label lblVerifyLoadLists;
         private Label lblPayloadSound;
         private Label lblPayloadTexture;
+        private DarkGroupBox fraC2TTSet;
+        private CheckBox chkC2TTType;
+        private DarkNumericUpDown numC2TTYrot;
+        private DarkNumericUpDown numC2TTType;
+        private DarkGroupBox fraC2TTType;
+        private DarkGroupBox fraC2TTGhostTarget;
+        private DarkNumericUpDown numC2TTGhostTarget;
+        private CheckBox chkC2TTGhostTarget;
+        private DarkGroupBox fraC2TTFlags;
+        private DarkGroupBox fraC2TTYRot;
+        private DarkNumericUpDown numC2TTYRot;
+        private CheckBox chkC2TTYRot;
+        private Label lblSettingB;
+        private Label lblSettingA;
+        private DarkNumericUpDown numC2TTFlags;
+        private CheckBox chkC2TTFlags;
     }
 }

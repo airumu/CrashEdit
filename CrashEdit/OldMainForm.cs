@@ -581,7 +581,7 @@ namespace CrashEdit.CE
 
         public void PatchNSD(NSD nsd, NSF nsf, string path, bool ignore_warnings)
         {
-            if (!Settings.Default.OldPatchNSD)
+            if (!Settings.Default.UseOldPatchNSD)
             {
                 nsd.ChunkCount = nsf.Chunks.Count;
                 var indexdata = nsf.MakeNSDIndex();

@@ -202,4 +202,52 @@
   <data name="Time1BoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\Textures\Time1BoxTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="POWBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Textures\POW.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="POWBoxTopTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Textures\POWTop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PurpleBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Textures\PurpleBox.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PurpleBoxTopTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Textures\PurpleBoxTop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SteelPickupBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Textures\SteelPickupBox.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SteelFruitBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Textures\SteelFruitBox.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SwitchOFFBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Textures\SwitchOFF.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SwitchONBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Textures\SwitchON.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SwitchGhostBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Textures\SwitchGhost.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SwitchGhostToGreenBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Textures\SwitchGhostToGreen.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SwitchSolidGreenBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Textures\SwitchSolidGreen.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SwitchGhostToRedBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Textures\SwitchGhostToRed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SwitchSolidRedBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Textures\SwitchSolidRed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SlotBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Textures\SlotBox.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ClockBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Textures\ClockBox.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IronContinueBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Textures\IronCheckpoint.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

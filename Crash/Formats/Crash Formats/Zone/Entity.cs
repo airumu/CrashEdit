@@ -129,6 +129,16 @@ namespace CrashEdit.Crash
         [EntityPropertyField(0x337)]
         private EntitySetting? bonusboxcount = null;
 
+        // added
+        [EntityPropertyField(0x338)]
+        private int? C2TTtype = null;
+        [EntityPropertyField(0x339)]
+        private int? C2TTroty = null;
+        [EntityPropertyField(0x33A)]
+        private int? C2TTboxflag = null;
+        [EntityPropertyField(0x33B)]
+        private int? C2TTghosttarget = null;
+
         private readonly Dictionary<short, EntityProperty> extraproperties;
 
         public Entity(IDictionary<short, EntityProperty> properties)
@@ -344,6 +354,28 @@ namespace CrashEdit.Crash
         {
             get => bonusboxcount;
             set => bonusboxcount = value;
+        }
+
+        // added
+        public int? C2TTType
+        {
+            get => C2TTtype;
+            set => C2TTtype = value;
+        }
+        public int? C2TTYRot
+        {
+            get => C2TTroty;
+            set => C2TTroty = value;
+        }
+        public int? C2TTBoxFlag
+        {
+            get => C2TTboxflag;
+            set => C2TTboxflag = value;
+        }
+        public int? C2TTGhostTarget
+        {
+            get => C2TTghosttarget;
+            set => C2TTghosttarget = value;
         }
 
         public IDictionary<short, EntityProperty> ExtraProperties => extraproperties;

@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using CrashEdit.CE.Properties;
 
 namespace CrashEdit.CE
 {
@@ -196,27 +197,38 @@ namespace CrashEdit.CE
             MapCrash2.AddVisual(32, 2, new("Ro1eV")); // roller
             MapCrash2.AddVisual(32, 3, new("Ic3eV", 0)); // icicle
             MapCrash2.AddVisual(33, 0, new("AB10V")); // ass banger
-            MapCrash2.AddVisual(34, 0, new("BT10V")); // box tnt
-            MapCrash2.AddVisual(34, 2, new("BN10V")); // box empty
-            MapCrash2.AddVisual(34, 3, new("BS10V", 0)); // box spring
-            MapCrash2.AddVisual(34, 4, new("BC10V", 0)); // box continue
-            MapCrash2.AddVisual(34, 4 + 1000, new("BC1iV", 0)); // box continue (space level)
-            MapCrash2.AddVisual(34, 5, new("BI10V")); // box iron
-            MapCrash2.AddVisual(34, 6, new("BF10V", 0)); // box fruit
-            MapCrash2.AddVisual(34, 7, new("BA10V", 0)); // box action
-            MapCrash2.AddVisual(34, 8, new("BL10V")); // box life
-            MapCrash2.AddVisual(34, 9, new("BD10V")); // box doctor
-            MapCrash2.AddVisual(34, 10, new("Bp10V")); // box pickup
-            MapCrash2.AddVisual(34, 11, new("BP10V", 0)); // box pow
-            MapCrash2.AddVisual(34, 13, new("BG10V")); // box ghost
-            MapCrash2.AddVisual(34, 15, new("BS20V", 0)); // box iron spring
-            MapCrash2.AddVisual(34, 16, new("BT10V")); // box tnt (auto grav)
-            MapCrash2.AddVisual(34, 17, new("Bp10V")); // box pickup (auto grav)
-            MapCrash2.AddVisual(34, 18, new("Bn10V")); // box nitro
-            MapCrash2.AddVisual(34, 19, new("BG10V")); // box ghost iron
-            MapCrash2.AddVisual(34, 20, new("BN10V")); // box empty (auto grav)
-            MapCrash2.AddVisual(34, 23, new("Bs10V", 0)); // box steel
-            MapCrash2.AddVisual(34, 24, new("Ba10V", 0)); // box action nitro
+            //MapCrash2.AddVisual(34, 0, new("BT10V")); // box tnt
+            //MapCrash2.AddVisual(34, 2, new("BN10V")); // box empty
+            //MapCrash2.AddVisual(34, 3, new("BS10V", 0)); // box spring
+            //MapCrash2.AddVisual(34, 4, new("BC10V", 0)); // box continue
+            //MapCrash2.AddVisual(34, 4 + 1000, new("BC1iV", 0)); // box continue (space level)
+            //MapCrash2.AddVisual(34, 5, new("BI10V")); // box iron
+            //MapCrash2.AddVisual(34, 6, new("BF10V", 0)); // box fruit
+            //MapCrash2.AddVisual(34, 7, new("BA10V", 0)); // box action
+            //MapCrash2.AddVisual(34, 8, new("BL10V")); // box life
+            //MapCrash2.AddVisual(34, 9, new("BD10V")); // box doctor
+            //MapCrash2.AddVisual(34, 10, new("Bp10V")); // box pickup
+            //MapCrash2.AddVisual(34, 13, new("BG10V")); // box ghost
+            //MapCrash2.AddVisual(34, 15, new("BS20V", 0)); // box iron spring
+            //MapCrash2.AddVisual(34, 18, new("Bn10V")); // box nitro
+            //MapCrash2.AddVisual(34, 19, new("BG10V")); // box ghost iron
+            //MapCrash2.AddVisual(34, 23, new("Bs10V", 0)); // box steel
+            //MapCrash2.AddVisual(34, 24, new("Ba10V", 0)); // box action nitro
+            //if (Settings.Default.ShowCustomCrates)
+            //{
+            //    MapCrash2.AddVisual(34, 11, new("BP10V", 0)); // box pow
+            //    MapCrash2.AddVisual(34, 12, new("Bp20V")); // box action purple
+            //    MapCrash2.AddVisual(34, 17, new("Bl10V")); // box slot
+            //    MapCrash2.AddVisual(34, 25, new("Bs20V", 0)); // box steel pickup
+            //    MapCrash2.AddVisual(34, 26, new("BF20V", 0)); // box steel fruit
+            //    MapCrash2.AddVisual(34, 27, new("Bc20V", 0)); // box iron continue
+            //    MapCrash2.AddVisual(34, 28, new("BW10V", 0)); // box action switch off
+            //    MapCrash2.AddVisual(34, 29, new("BW20V", 0)); // box action switch on
+            //    MapCrash2.AddVisual(34, 30, new("Bw10V")); // box switch off (red)
+            //    MapCrash2.AddVisual(34, 31, new("Bw30V")); // box switch on (green)
+            //    MapCrash2.AddVisual(34, 32, new("Bw10V")); // box switch off (green)
+            //    MapCrash2.AddVisual(34, 33, new("Bw20V")); // box switch on (red)
+            //}
             MapCrash2.AddVisual(35, 1, new("Je1iV")); // space jetpack
             MapCrash2.AddVisual(35, 1 + 1000, new("Je2iV")); // space jetpack
             MapCrash2.AddVisual(35, 3, new("Do1iV", 0)); // space door

@@ -132,7 +132,7 @@ namespace CrashEdit.CE
                 foreach (var node in node_types)
                 {
                     ListViewItem lsi = new();
-                    if (Settings.Default.DetailedCollision)
+                    if (Settings.Default.ShowDetailedCollision)
                         lsi.Text = string.Format("{2:X2}:{1:X2}:{0:X1}", node >> 1 & 0x7, node >> 4 & 0x3F, node >> 10 & 0x3F);
                     else
                         lsi.Text = node.ToString("X4");

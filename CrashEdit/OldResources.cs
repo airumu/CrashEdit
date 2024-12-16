@@ -67,10 +67,6 @@ namespace CrashEdit.CE
         [ExternalTexture(0, 1)]
         private static readonly Bitmap pickupboxtexture = null;
 
-        [Resource("UnknownBoxTexture")]
-        [ExternalTexture(1, 1)]
-        private static readonly Bitmap powboxtexture = null;
-
         [Resource("IronSpringBoxTexture")]
         [ExternalTexture(2, 1)]
         private static readonly Bitmap ironspringboxtexture = null;
@@ -95,7 +91,7 @@ namespace CrashEdit.CE
         [ExternalTexture(8, 0)]
         private static readonly Bitmap actionnitroboxtoptexture = null;
 
-        [Resource("UnknownBoxTexture")]
+        [Resource("SlotBoxTexture")]
         [ExternalTexture(9, 1)]
         private static readonly Bitmap slotboxtexture = null;
 
@@ -115,11 +111,11 @@ namespace CrashEdit.CE
         [ExternalTexture(2, 2)]
         private static readonly Bitmap timeboxtoptexture = null;
 
-        [Resource("UnknownBoxTexture")]
+        [Resource("IronContinueBoxTexture")]
         [ExternalTexture(6, 2)]
         private static readonly Bitmap ironcontinueboxtexture = null;
 
-        [Resource("UnknownBoxTexture")]
+        [Resource("ClockBoxTexture")]
         [ExternalTexture(7, 2)]
         private static readonly Bitmap clockboxtexture = null;
 
@@ -177,6 +173,59 @@ namespace CrashEdit.CE
         private static readonly Bitmap fruittawna = null;
 
         private static readonly Bitmap alltex = null;
+
+        // added
+        [Resource("POWBoxTexture")]
+        [ExternalTexture(1, 1)]
+        private static readonly Bitmap powboxtexture = null;
+
+        [Resource("POWBoxTopTexture")]
+        [ExternalTexture(10, 5)]
+        private static readonly Bitmap powboxtoptexture = null;
+
+        [Resource("PurpleBoxTopTexture")]
+        [ExternalTexture(11, 5)]
+        private static readonly Bitmap purpleboxtop = null;
+
+        [Resource("PurpleBoxTexture")]
+        [ExternalTexture(12, 5)]
+        private static readonly Bitmap purplebox = null;
+
+        [Resource("SteelPickupBoxTexture")]
+        [ExternalTexture(0, 5)]
+        private static readonly Bitmap steelpickupboxtexture = null;
+
+        [Resource("SteelFruitBoxTexture")]
+        [ExternalTexture(1, 5)]
+        private static readonly Bitmap steelfruitboxtexture = null;
+
+        [Resource("SwitchOFFBoxTexture")]
+        [ExternalTexture(2, 5)]
+        private static readonly Bitmap switchoffboxtexture = null;
+
+        [Resource("SwitchONBoxTexture")]
+        [ExternalTexture(3, 5)]
+        private static readonly Bitmap switchonboxtexture = null;
+
+        [Resource("SwitchGhostBoxTexture")]
+        [ExternalTexture(4, 5)]
+        private static readonly Bitmap switchghostboxtexture = null;
+
+        [Resource("SwitchGhostToGreenBoxTexture")]
+        [ExternalTexture(7, 5)]
+        private static readonly Bitmap switchghosttogreenboxtexture = null;
+
+        [Resource("SwitchSolidGreenBoxTexture")]
+        [ExternalTexture(5, 5)]
+        private static readonly Bitmap switchsolidgreenboxtexture = null;
+
+        [Resource("SwitchGhostToRedBoxTexture")]
+        [ExternalTexture(8, 5)]
+        private static readonly Bitmap switchghosttoredboxtexture = null;
+
+        [Resource("SwitchSolidRedBoxTexture")]
+        [ExternalTexture(6, 5)]
+        private static readonly Bitmap switchsolidredboxtexture = null;
 
         static OldResources()
         {
@@ -309,6 +358,20 @@ namespace CrashEdit.CE
         public static Bitmap CortexTexture => fruitcortex;
         public static Bitmap BrioTexture => fruitbrio;
         public static Bitmap TawnaTexture => fruittawna;
+
+        // added
+        public static Bitmap POWBoxTopTexture => powboxtoptexture;
+        public static Bitmap PurpleBoxTopTexture => purpleboxtop;
+        public static Bitmap PurpleBoxTexture => purplebox;
+        public static Bitmap SteelPickupBoxTexture => steelpickupboxtexture;
+        public static Bitmap SteelFruitBoxTexture => steelfruitboxtexture;
+        public static Bitmap SwitchOFFBoxTexture => switchoffboxtexture;
+        public static Bitmap SwitchONBoxTexture => switchonboxtexture;
+        public static Bitmap SwitchGhostBoxTexture => switchghostboxtexture;
+        public static Bitmap SwitchGhostToGreenBoxTexture => switchghosttogreenboxtexture;
+        public static Bitmap SwitchSolidGreenBoxTexture => switchsolidgreenboxtexture;
+        public static Bitmap SwitchGhostToRedBoxTexture => switchghosttoredboxtexture;
+        public static Bitmap SwitchSolidRedBoxTexture => switchsolidredboxtexture;
 
         [AttributeUsage(AttributeTargets.Field)]
         private class ResourceAttribute : Attribute

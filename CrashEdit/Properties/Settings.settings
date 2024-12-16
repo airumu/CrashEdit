@@ -80,10 +80,16 @@
     <Setting Name="ModePAL" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="OldPatchNSD" Type="System.Boolean" Scope="User">
+    <Setting Name="UseOldPatchNSD" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="DetailedCollision" Type="System.Boolean" Scope="User">
+    <Setting Name="ShowDetailedCollision" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ShowCustomCrates" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="EnableC2TTEditor" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>

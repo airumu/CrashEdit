@@ -65,6 +65,8 @@ namespace CrashEdit.CE
             fraLang = new DarkGroupBox();
             tbp3D = new TabPage();
             tbpDebugDisplay = new TabPage();
+            chkEnableC2TT = new CheckBox();
+            chkShowCustomCrates = new CheckBox();
             chkDetailedCollision = new CheckBox();
             chkShowEntityParams = new CheckBox();
             chkDisableVisual = new CheckBox();
@@ -545,6 +547,8 @@ namespace CrashEdit.CE
             // tbpDebugDisplay
             // 
             tbpDebugDisplay.BackColor = Color.FromArgb(30, 30, 30);
+            tbpDebugDisplay.Controls.Add(chkEnableC2TT);
+            tbpDebugDisplay.Controls.Add(chkShowCustomCrates);
             tbpDebugDisplay.Controls.Add(chkDetailedCollision);
             tbpDebugDisplay.Controls.Add(chkShowEntityParams);
             tbpDebugDisplay.Controls.Add(chkDisableVisual);
@@ -563,6 +567,28 @@ namespace CrashEdit.CE
             tbpDebugDisplay.Size = new Size(417, 381);
             tbpDebugDisplay.TabIndex = 3;
             tbpDebugDisplay.Text = "Debug Displays";
+            // 
+            // chkEnableC2TT
+            // 
+            chkEnableC2TT.AutoSize = true;
+            chkEnableC2TT.Location = new Point(7, 331);
+            chkEnableC2TT.Name = "chkEnableC2TT";
+            chkEnableC2TT.Size = new Size(187, 19);
+            chkEnableC2TT.TabIndex = 16;
+            chkEnableC2TT.Text = "Enable Crash 2 time trial editor";
+            chkEnableC2TT.UseVisualStyleBackColor = true;
+            chkEnableC2TT.CheckedChanged += chkEnableC2TT_CheckedChanged;
+            // 
+            // chkShowCustomCrates
+            // 
+            chkShowCustomCrates.AutoSize = true;
+            chkShowCustomCrates.Location = new Point(7, 306);
+            chkShowCustomCrates.Name = "chkShowCustomCrates";
+            chkShowCustomCrates.Size = new Size(132, 19);
+            chkShowCustomCrates.TabIndex = 15;
+            chkShowCustomCrates.Text = "Show custom crates";
+            chkShowCustomCrates.UseVisualStyleBackColor = true;
+            chkShowCustomCrates.CheckedChanged += chkShowCustomCrates_CheckedChanged;
             // 
             // chkDetailedCollision
             // 
@@ -762,5 +788,7 @@ namespace CrashEdit.CE
         private CheckBox chkShowEntityParams;
         private CheckBox chkOldPatchNSD;
         private CheckBox chkDetailedCollision;
+        private CheckBox chkShowCustomCrates;
+        private CheckBox chkEnableC2TT;
     }
 }

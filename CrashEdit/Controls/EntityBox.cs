@@ -39,6 +39,11 @@ namespace CrashEdit.CE
             UpdateSubtype();
             UpdateSettings();
             UpdateID();
+            UpdateZMod();
+
+            // added
+            UpdateC2TTSet();
+
             positionindex = 0;
             victimindex = 0;
             loadlistarowindex = 0;
@@ -1448,6 +1453,12 @@ namespace CrashEdit.CE
             entity.SLST.Rows[0].Values[0] = Entry.ENameToEID(txtSLST.Text);
         }
 
+        //private void tabGeneral_Enter(object sender, EventArgs e)
+        //{
+        //    UpdateC2TTSet();
+        //    tabGeneral.Enter -= tabGeneral_Enter;
+        //}
+
         private void tabSpecial_Enter(object sender, EventArgs e)
         {
             UpdateVictim();
@@ -1456,7 +1467,6 @@ namespace CrashEdit.CE
             UpdateDDASection();
             UpdateDDASettings();
             UpdateOtherSettings();
-            UpdateZMod();
             UpdateTTReward();
             tabSpecial.Enter -= tabSpecial_Enter;
         }
@@ -1729,6 +1739,139 @@ namespace CrashEdit.CE
         private void numTTReward_ValueChanged(object sender, EventArgs e)
         {
             entity.TimeTrialReward = (int)numTTReward.Value << 8;
+        }
+
+        // added
+        private void UpdateC2TTSet()
+        {
+            if (Settings.Default.EnableC2TTEditor)
+            {
+                fraC2TTSet.Visible = true;
+                fraC2TTSet.Location = new Point(245, 146);
+                fraZMod.Location = new Point(384, 146);
+                UpdateC2TTType();
+                UpdateC2TTYRot();
+                UpdateC2TTBoxFlag();
+                UpdateC2TTGhostTarget();
+            }
+            else
+            {
+                fraC2TTSet.Visible = false;
+                fraC2TTSet.Location = new Point(245, 146);
+                fraZMod.Location = new Point(245, 146);
+            }
+        }
+
+        private void UpdateC2TTType()
+        {
+            if (entity.C2TTType.HasValue)
+            {
+                numC2TTType.Value = entity.C2TTType.Value >> 8;
+            }
+            numC2TTType.Enabled = entity.C2TTType.HasValue;
+            chkC2TTType.Checked = entity.C2TTType.HasValue;
+        }
+
+        private void chkC2TTType_CheckedChanged(object sender, EventArgs e)
+        {
+            numC2TTType.Enabled = chkC2TTType.Checked;
+            if (chkC2TTType.Checked)
+            {
+                entity.C2TTType = (int)numC2TTType.Value << 8;
+            }
+            else
+            {
+                entity.C2TTType = null;
+            }
+        }
+
+        private void numC2TTType_ValueChanged(object sender, EventArgs e)
+        {
+            entity.C2TTType = (int)numC2TTType.Value << 8;
+        }
+
+        private void UpdateC2TTYRot()
+        {
+            if (entity.C2TTYRot.HasValue)
+            {
+                numC2TTYRot.Value = entity.C2TTYRot.Value >> 8;
+            }
+            numC2TTYRot.Enabled = entity.C2TTYRot.HasValue;
+            chkC2TTYRot.Checked = entity.C2TTYRot.HasValue;
+        }
+
+        private void chkC2TTYRot_CheckedChanged(object sender, EventArgs e)
+        {
+            numC2TTYRot.Enabled = chkC2TTYRot.Checked;
+            if (chkC2TTYRot.Checked)
+            {
+                entity.C2TTYRot = (int)numC2TTYRot.Value << 8;
+            }
+            else
+            {
+                entity.C2TTYRot = null;
+            }
+        }
+
+        private void numC2TTYRot_ValueChanged(object sender, EventArgs e)
+        {
+            entity.C2TTYRot = (int)numC2TTYRot.Value << 8;
+        }
+
+        private void UpdateC2TTBoxFlag()
+        {
+            if (entity.C2TTBoxFlag.HasValue)
+            {
+                numC2TTFlags.Value = entity.C2TTBoxFlag.Value >> 8;
+            }
+            numC2TTFlags.Enabled = entity.C2TTBoxFlag.HasValue;
+            chkC2TTFlags.Checked = entity.C2TTBoxFlag.HasValue;
+        }
+
+        private void chkC2TTFlags_CheckedChanged(object sender, EventArgs e)
+        {
+            numC2TTFlags.Enabled = chkC2TTFlags.Checked;
+            if (chkC2TTFlags.Checked)
+            {
+                entity.C2TTBoxFlag = (int)numC2TTFlags.Value << 8;
+            }
+            else
+            {
+                entity.C2TTBoxFlag = null;
+            }
+        }
+
+        private void numC2TTFlags_ValueChanged(object sender, EventArgs e)
+        {
+            entity.C2TTBoxFlag = (int)numC2TTFlags.Value << 8;
+        }
+
+        private void UpdateC2TTGhostTarget()
+        {
+            if (entity.C2TTGhostTarget.HasValue)
+            {
+                numC2TTGhostTarget.Value = entity.C2TTGhostTarget.Value >> 8;
+            }
+            numC2TTGhostTarget.Enabled = entity.C2TTGhostTarget.HasValue;
+            chkC2TTGhostTarget.Checked = entity.C2TTGhostTarget.HasValue;
+        }
+
+        private void chkC2TTGhostTarget_CheckedChanged(object sender, EventArgs e)
+        {
+            numC2TTGhostTarget.Enabled = chkC2TTGhostTarget.Checked;
+            if (chkC2TTGhostTarget.Checked)
+            {
+                entity.C2TTGhostTarget = (int)numC2TTGhostTarget.Value << 8;
+            }
+            else
+            {
+                entity.C2TTGhostTarget = null;
+            }
+        }
+
+        private void numC2TTGhostTarget_ValueChanged(object sender, EventArgs e)
+        {
+            entity.C2TTGhostTarget = (int)numC2TTGhostTarget.Value << 8;
         }
 
         private void UpdateCameraIndex()

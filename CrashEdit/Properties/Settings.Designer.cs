@@ -338,24 +338,48 @@ namespace CrashEdit.CE.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool OldPatchNSD {
+        public bool UseOldPatchNSD {
             get {
-                return ((bool)(this["OldPatchNSD"]));
+                return ((bool)(this["UseOldPatchNSD"]));
             }
             set {
-                this["OldPatchNSD"] = value;
+                this["UseOldPatchNSD"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool DetailedCollision {
+        public bool ShowDetailedCollision {
             get {
-                return ((bool)(this["DetailedCollision"]));
+                return ((bool)(this["ShowDetailedCollision"]));
             }
             set {
-                this["DetailedCollision"] = value;
+                this["ShowDetailedCollision"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowCustomCrates {
+            get {
+                return ((bool)(this["ShowCustomCrates"]));
+            }
+            set {
+                this["ShowCustomCrates"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool EnableC2TTEditor {
+            get {
+                return ((bool)(this["EnableC2TTEditor"]));
+            }
+            set {
+                this["EnableC2TTEditor"] = value;
             }
         }
     }
