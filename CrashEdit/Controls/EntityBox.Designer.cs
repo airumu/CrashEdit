@@ -836,7 +836,7 @@ namespace CrashEdit.CE
             // 
             // numSettingB
             // 
-            numSettingB.Location = new Point(30, 55);
+            numSettingB.Location = new Point(30, 80);
             numSettingB.Margin = new Padding(4, 3, 4, 3);
             numSettingB.Maximum = new decimal(new int[] { 8388607, 0, 0, 0 });
             numSettingB.Minimum = new decimal(new int[] { 8388608, 0, 0, int.MinValue });
@@ -847,7 +847,7 @@ namespace CrashEdit.CE
             // 
             // numSettingA
             // 
-            numSettingA.Location = new Point(30, 80);
+            numSettingA.Location = new Point(30, 55);
             numSettingA.Margin = new Padding(4, 3, 4, 3);
             numSettingA.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
             numSettingA.Name = "numSettingA";
