@@ -260,5 +260,11 @@ namespace CrashEdit.CE
             Settings.Default.OldPatchNSD = chkOldPatchNSD.Checked;
             Settings.Default.Save();
         }
+
+        private void chkDetailedCollision_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.DetailedCollision = chkDetailedCollision.Checked;
+            Settings.Default.Save();
+        }
     }
 }

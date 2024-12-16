@@ -1,4 +1,5 @@
-﻿using CrashEdit.CE.Properties;
+﻿using AltUI.Forms;
+using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
@@ -19,7 +20,7 @@ namespace CrashEdit.CE
 
         private readonly GLViewer viewer;
 
-        private Form octree_form;
+        private DarkForm octree_form;
         private bool form_want_update = false;
         private bool form_want_select = false;
 
@@ -103,7 +104,7 @@ namespace CrashEdit.CE
                 {
                     if (octree_form == null || octree_form.IsDisposed)
                     {
-                        octree_form = new Form();
+                        octree_form = new DarkForm();
                         octree_form.FormClosing += (sender, e) =>
                         {
                             node_filter = 0;
@@ -131,7 +132,11 @@ namespace CrashEdit.CE
                 foreach (var node in node_types)
                 {
                     ListViewItem lsi = new();
-                    lsi.Text = string.Format("{2:X2}:{1:X2}:{0:X1}", node >> 1 & 0x7, node >> 4 & 0x3F, node >> 10 & 0x3F);
+                    if (Settings.Default.DetailedCollision)
+                        lsi.Text = string.Format("{2:X2}:{1:X2}:{0:X1}", node >> 1 & 0x7, node >> 4 & 0x3F, node >> 10 & 0x3F);
+                    else
+                        lsi.Text = node.ToString("X4");
+                   
                     lsi.BackColor = (Color)(Color4)node_colors[node >> 1];
                     lsi.ForeColor = lsi.BackColor.GetBrightness() >= 0.5 ? Color.Black : Color.White;
                     lsi.Tag = node;

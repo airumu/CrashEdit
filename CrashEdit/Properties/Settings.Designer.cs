@@ -22,37 +22,31 @@ namespace CrashEdit.CE.Properties {
                 return defaultInstance;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("100, 100, 747, 560")]
-        public global::System.Drawing.Rectangle FormBounds
-        {
-            get
-            {
+        public global::System.Drawing.Rectangle FormBounds {
+            get {
                 return ((global::System.Drawing.Rectangle)(this["FormBounds"]));
             }
-            set
-            {
+            set {
                 this["FormBounds"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Normal")]
-        public global::System.Windows.Forms.FormWindowState FormWindowState
-        {
-            get
-            {
+        public global::System.Windows.Forms.FormWindowState FormWindowState {
+            get {
                 return ((global::System.Windows.Forms.FormWindowState)(this["FormWindowState"]));
             }
-            set
-            {
+            set {
                 this["FormWindowState"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("en")]
@@ -350,6 +344,18 @@ namespace CrashEdit.CE.Properties {
             }
             set {
                 this["OldPatchNSD"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DetailedCollision {
+            get {
+                return ((bool)(this["DetailedCollision"]));
+            }
+            set {
+                this["DetailedCollision"] = value;
             }
         }
     }

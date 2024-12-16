@@ -65,6 +65,7 @@ namespace CrashEdit.CE
             fraLang = new DarkGroupBox();
             tbp3D = new TabPage();
             tbpDebugDisplay = new TabPage();
+            chkDetailedCollision = new CheckBox();
             chkShowEntityParams = new CheckBox();
             chkDisableVisual = new CheckBox();
             chkViewCamera = new CheckBox();
@@ -544,6 +545,7 @@ namespace CrashEdit.CE
             // tbpDebugDisplay
             // 
             tbpDebugDisplay.BackColor = Color.FromArgb(30, 30, 30);
+            tbpDebugDisplay.Controls.Add(chkDetailedCollision);
             tbpDebugDisplay.Controls.Add(chkShowEntityParams);
             tbpDebugDisplay.Controls.Add(chkDisableVisual);
             tbpDebugDisplay.Controls.Add(chkViewCamera);
@@ -561,6 +563,17 @@ namespace CrashEdit.CE
             tbpDebugDisplay.Size = new Size(417, 381);
             tbpDebugDisplay.TabIndex = 3;
             tbpDebugDisplay.Text = "Debug Displays";
+            // 
+            // chkDetailedCollision
+            // 
+            chkDetailedCollision.AutoSize = true;
+            chkDetailedCollision.Location = new Point(7, 281);
+            chkDetailedCollision.Name = "chkDetailedCollision";
+            chkDetailedCollision.Size = new Size(206, 19);
+            chkDetailedCollision.TabIndex = 14;
+            chkDetailedCollision.Text = "Show detailed zone collision types";
+            chkDetailedCollision.UseVisualStyleBackColor = true;
+            chkDetailedCollision.CheckedChanged += chkDetailedCollision_CheckedChanged;
             // 
             // chkShowEntityParams
             // 
@@ -748,5 +761,6 @@ namespace CrashEdit.CE
         private DarkGroupBox fraLang;
         private CheckBox chkShowEntityParams;
         private CheckBox chkOldPatchNSD;
+        private CheckBox chkDetailedCollision;
     }
 }
