@@ -72,6 +72,7 @@ namespace CrashEdit.CE
             chkViewZoneName = new CheckBox();
             chkViewZoneBox = new CheckBox();
             tbpPatchNSD = new TabPage();
+            chkOldPatchNSD = new CheckBox();
             tableLayoutPanel4 = new TableLayoutPanel();
             tableLayoutPanel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numFontSize).BeginInit();
@@ -641,6 +642,7 @@ namespace CrashEdit.CE
             // tbpPatchNSD
             // 
             tbpPatchNSD.BackColor = Color.FromArgb(30, 30, 30);
+            tbpPatchNSD.Controls.Add(chkOldPatchNSD);
             tbpPatchNSD.Controls.Add(chkDeleteInvalidEntries);
             tbpPatchNSD.Controls.Add(chkPatchNSDSavesNSF);
             tbpPatchNSD.Location = new Point(4, 32);
@@ -649,6 +651,18 @@ namespace CrashEdit.CE
             tbpPatchNSD.Size = new Size(417, 381);
             tbpPatchNSD.TabIndex = 2;
             tbpPatchNSD.Text = "Patch NSD";
+            // 
+            // chkOldPatchNSD
+            // 
+            chkOldPatchNSD.AutoSize = true;
+            chkOldPatchNSD.Location = new Point(7, 56);
+            chkOldPatchNSD.Margin = new Padding(4, 3, 4, 3);
+            chkOldPatchNSD.Name = "chkOldPatchNSD";
+            chkOldPatchNSD.Size = new Size(271, 19);
+            chkOldPatchNSD.TabIndex = 8;
+            chkOldPatchNSD.Text = "Use old NSD patching from CrashEdit v0.2.49.0";
+            chkOldPatchNSD.UseVisualStyleBackColor = true;
+            chkOldPatchNSD.CheckedChanged += chkOldPatchNSD_CheckedChanged;
             // 
             // ConfigEditor
             // 
@@ -733,5 +747,6 @@ namespace CrashEdit.CE
         private CheckBox chkDisableVisual;
         private DarkGroupBox fraLang;
         private CheckBox chkShowEntityParams;
+        private CheckBox chkOldPatchNSD;
     }
 }

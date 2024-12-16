@@ -254,5 +254,11 @@ namespace CrashEdit.CE
             Settings.Default.ShowEntityParams = chkShowEntityParams.Checked;
             Settings.Default.Save();
         }
+
+        private void chkOldPatchNSD_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.OldPatchNSD = chkOldPatchNSD.Checked;
+            Settings.Default.Save();
+        }
     }
 }

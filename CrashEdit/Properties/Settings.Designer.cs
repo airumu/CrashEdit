@@ -115,7 +115,7 @@ namespace CrashEdit.CE.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool DeleteInvalidEntries {
             get {
                 return ((bool)(this["DeleteInvalidEntries"]));
@@ -338,6 +338,18 @@ namespace CrashEdit.CE.Properties {
             }
             set {
                 this["ModePAL"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool OldPatchNSD {
+            get {
+                return ((bool)(this["OldPatchNSD"]));
+            }
+            set {
+                this["OldPatchNSD"] = value;
             }
         }
     }

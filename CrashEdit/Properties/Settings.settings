@@ -18,7 +18,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="DeleteInvalidEntries" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="DisplayAnimGrid" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -72,6 +72,9 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="ModePAL" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="OldPatchNSD" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>

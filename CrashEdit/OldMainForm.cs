@@ -507,43 +507,45 @@ namespace CrashEdit.CE
 
         public void PatchNSD(string filename, bool exists, NSFController nsfc, bool ignore_warnings, bool no_nsf_overwrite = false)
         {
-            NSF nsf = nsfc.NSF;
-            byte[] data = exists ? File.ReadAllBytes(filename) : null;
-            try
+            if (ignore_warnings ? true : DarkMessageBox.ShowMessage(Resources.PatchNSD1, Resources.Save_ConfirmationPrompt, DarkDialogButton.YesNo) == DialogResult.Yes)
             {
-                switch (nsfc.GameVersion)
+                NSF nsf = nsfc.NSF;
+                byte[] data = exists ? File.ReadAllBytes(filename) : null;
+                try
                 {
-                    case GameVersion.Crash1BetaMAR08:
-                        {
-                            ProtoNSD nsd = data != null ? ProtoNSD.Load(data) : new ProtoNSD(new int[256], 0, new NSDLink[0]);
-                            PatchNSD(nsd, nsf, filename, ignore_warnings);
-                        }
-                        break;
-                    case GameVersion.Crash1:
-                        {
-                            OldNSD nsd = data != null ? OldNSD.Load(data) : new OldNSD(new int[256], 0, new int[4], 0, 0, new int[64], new NSDLink[0], 1, 0x3F, Entry.NullEID, 0, 0, new int[64], new byte[0xFC]);
-                            PatchNSD(nsd, nsf, filename, ignore_warnings);
-                        }
-                        break;
-                    case GameVersion.Crash2:
-                        {
-                            NSD nsd = data != null ? NSD.Load(data) : new NSD(new int[256], 0, new int[4], 0, 0, new int[64], new NSDLink[0], 0, 0x3F, 0, new int[64], new byte[0xFC], new NSDSpawnPoint[1] { new NSDSpawnPoint(Entry.NullEID, 0, 0, 0, 0, 0) }, new byte[0]);
-                            PatchNSD(nsd, nsf, filename, ignore_warnings);
-                        }
-                        break;
-                    case GameVersion.Crash3:
-                        {
-                            NSD nsd = data != null ? NSD.LoadC3(data) : new NSD(new int[256], 0, new int[4], 0, 0, new int[64], new NSDLink[0], 0, 0x3F, 0, new int[128], new byte[0xFC], new NSDSpawnPoint[1] { new NSDSpawnPoint(Entry.NullEID, 0, 0, 0, 0, 0) }, new byte[0]);
-                            PatchNSD(nsd, nsf, filename, ignore_warnings);
-                        }
-                        break;
-                    default:
-                        if (!ignore_warnings) DarkMessageBox.ShowWarning(Resources.PatchNSD_Error2, Resources.PatchNSD_Title1);
-                        return;
-                }
-                bool order_updated = false;
-                // FIXME - reimplement below to not use controller tree, or better yet rework entire NSD patching system
-                order_updated = true;
+                    switch (nsfc.GameVersion)
+                    {
+                        case GameVersion.Crash1BetaMAR08:
+                            {
+                                ProtoNSD nsd = data != null ? ProtoNSD.Load(data) : new ProtoNSD(new int[256], 0, new NSDLink[0]);
+                                PatchNSD(nsd, nsf, filename, ignore_warnings);
+                            }
+                            break;
+                        case GameVersion.Crash1:
+                            {
+                                OldNSD nsd = data != null ? OldNSD.Load(data) : new OldNSD(new int[256], 0, new int[4], 0, 0, new int[64], new NSDLink[0], 1, 0x3F, Entry.NullEID, 0, 0, new int[64], new byte[0xFC]);
+                                PatchNSD(nsd, nsf, filename, ignore_warnings);
+                            }
+                            break;
+                        case GameVersion.Crash2:
+                            {
+                                NSD nsd = data != null ? NSD.Load(data) : new NSD(new int[256], 0, new int[4], 0, 0, new int[64], new NSDLink[0], 0, 0x3F, 0, new int[64], new byte[0xFC], new NSDSpawnPoint[1] { new NSDSpawnPoint(Entry.NullEID, 0, 0, 0, 0, 0) }, new byte[0]);
+                                PatchNSD(nsd, nsf, filename, ignore_warnings);
+                            }
+                            break;
+                        case GameVersion.Crash3:
+                            {
+                                NSD nsd = data != null ? NSD.LoadC3(data) : new NSD(new int[256], 0, new int[4], 0, 0, new int[64], new NSDLink[0], 0, 0x3F, 0, new int[128], new byte[0xFC], new NSDSpawnPoint[1] { new NSDSpawnPoint(Entry.NullEID, 0, 0, 0, 0, 0) }, new byte[0]);
+                                PatchNSD(nsd, nsf, filename, ignore_warnings);
+                            }
+                            break;
+                        default:
+                            if (!ignore_warnings) DarkMessageBox.ShowWarning(Resources.PatchNSD_Error2, Resources.PatchNSD_Title1);
+                            return;
+                    }
+                    bool order_updated = false;
+                    // FIXME - reimplement below to not use controller tree, or better yet rework entire NSD patching system
+                    order_updated = true;
 #if false
                 foreach (var ecc in nsfc.LegacySubcontrollers.OfType<EntryChunkController>()) // nsd patching might have moved entries, recreate moved entry chunks if that's the case
                 {
@@ -560,25 +562,32 @@ namespace CrashEdit.CE
                     }
                 }
 #endif
-                if (!no_nsf_overwrite)
+                    if (!no_nsf_overwrite)
+                    {
+                        //if (ignore_warnings || Settings.Default.PatchNSDSavesNSF ? true : (order_updated && DarkMessageBox.ShowMessage(Resources.PatchNSD3, Resources.PatchNSD_Title1, DarkDialogButton.YesNo) == DialogResult.Yes))
+                        //{
+                        //    SaveNSF(true);
+                        //}
+                        if (ignore_warnings || Settings.Default.PatchNSDSavesNSF)
+                            SaveNSF(true);
+                    }
+                }
+                catch (LoadAbortedException)
                 {
-                    //if (ignore_warnings || Settings.Default.PatchNSDSavesNSF ? true : (order_updated && DarkMessageBox.ShowMessage(Resources.PatchNSD3, Resources.PatchNSD_Title1, DarkDialogButton.YesNo) == DialogResult.Yes))
-                    //{
-                        SaveNSF(true);
-                    //}
                 }
             }
-            catch (LoadAbortedException)
-            {
-            }
+
         }
 
         public void PatchNSD(NSD nsd, NSF nsf, string path, bool ignore_warnings)
         {
-            nsd.ChunkCount = nsf.Chunks.Count;
-            var indexdata = nsf.MakeNSDIndex();
-            nsd.HashKeyMap = indexdata.Item1;
-            nsd.Index = indexdata.Item2;
+            if (!Settings.Default.OldPatchNSD)
+            {
+                nsd.ChunkCount = nsf.Chunks.Count;
+                var indexdata = nsf.MakeNSDIndex();
+                nsd.HashKeyMap = indexdata.Item1;
+                nsd.Index = indexdata.Item2;
+            }
             PatchNSDGoolMap(nsd.GOOLMap, nsf, ignore_warnings);
 
             // patch object entity count
@@ -588,45 +597,42 @@ namespace CrashEdit.CE
                     if (ent.ID != null)
                         ++nsd.EntityCount;
 
-            if (ignore_warnings ? true : DarkMessageBox.ShowMessage(Resources.PatchNSD1, Resources.Save_ConfirmationPrompt, DarkDialogButton.YesNo) == DialogResult.Yes)
-            {
-                File.WriteAllBytes(path, nsd.Save());
-            }
+            File.WriteAllBytes(path, nsd.Save());
             //if (!ignore_warnings && DarkMessageBox.ShowMessage(Resources.PatchNSD2, Resources.PatchNSD_Title2, DarkDialogButton.YesNo) == DialogResult.Yes)
             //{
-                int[] eids = new int[nsd.Index.Count];
-                for (int i = 0; i < eids.Length; ++i)
-                    eids[i] = nsd.Index[i].EntryID;
-                foreach (ZoneEntry zone in nsf.GetEntries<ZoneEntry>())
+            int[] eids = new int[nsd.Index.Count];
+            for (int i = 0; i < eids.Length; ++i)
+                eids[i] = nsd.Index[i].EntryID;
+            foreach (ZoneEntry zone in nsf.GetEntries<ZoneEntry>())
+            {
+                foreach (Entity ent in zone.Entities)
                 {
-                    foreach (Entity ent in zone.Entities)
+                    if (ent.LoadListA != null)
                     {
-                        if (ent.LoadListA != null)
+                        foreach (EntityPropertyRow<int> row in ent.LoadListA.Rows)
                         {
-                            foreach (EntityPropertyRow<int> row in ent.LoadListA.Rows)
+                            List<int> values = (List<int>)row.Values;
+                            values.Sort(delegate (int a, int b)
                             {
-                                List<int> values = (List<int>)row.Values;
-                                values.Sort(delegate (int a, int b)
-                                {
-                                    return Array.IndexOf(eids, a) - Array.IndexOf(eids, b);
-                                });
-                                if (Settings.Default.DeleteInvalidEntries) values.RemoveAll(eid => nsf.GetEntry<IEntry>(eid) == null);
-                            }
+                                return Array.IndexOf(eids, a) - Array.IndexOf(eids, b);
+                            });
+                            if (Settings.Default.DeleteInvalidEntries) values.RemoveAll(eid => nsf.GetEntry<IEntry>(eid) == null);
                         }
-                        if (ent.LoadListB != null)
+                    }
+                    if (ent.LoadListB != null)
+                    {
+                        foreach (EntityPropertyRow<int> row in ent.LoadListB.Rows)
                         {
-                            foreach (EntityPropertyRow<int> row in ent.LoadListB.Rows)
+                            List<int> values = (List<int>)row.Values;
+                            values.Sort(delegate (int a, int b)
                             {
-                                List<int> values = (List<int>)row.Values;
-                                values.Sort(delegate (int a, int b)
-                                {
-                                    return Array.IndexOf(eids, a) - Array.IndexOf(eids, b);
-                                });
-                                if (Settings.Default.DeleteInvalidEntries) values.RemoveAll(eid => nsf.GetEntry<IEntry>(eid) == null);
-                            }
+                                return Array.IndexOf(eids, a) - Array.IndexOf(eids, b);
+                            });
+                            if (Settings.Default.DeleteInvalidEntries) values.RemoveAll(eid => nsf.GetEntry<IEntry>(eid) == null);
                         }
                     }
                 }
+            }
             //}
         }
 
