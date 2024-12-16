@@ -72,7 +72,7 @@ namespace CrashEdit.CE
                     {
                         Entity entity = zone.Entities[i];
                         float scale = GameScales.ZoneEntityC1;
-                        if (entity.Scaling.HasValue)
+                        if (entity.Scaling.HasValue && nsf.Version == GameVersion.Crash3)
                         {
                             scale *= 4;
                             scale /= 1 << entity.Scaling.Value;
@@ -458,7 +458,7 @@ namespace CrashEdit.CE
             float text_size = 0.65f;
             bool draw_type = entity.Type.HasValue && entity.Subtype.HasValue;
             float scale = GameScales.ZoneEntityC1;
-            if (entity.Scaling.HasValue)
+            if (entity.Scaling.HasValue && nsf.Version == GameVersion.Crash3)
             {
                 scale *= 4;
                 scale /= 1 << entity.Scaling.Value;
