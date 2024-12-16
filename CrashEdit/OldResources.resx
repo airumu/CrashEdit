@@ -119,13 +119,13 @@
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="ActionBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Textures/ActivatorBox.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources\Textures\ActivatorBox.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="AppleTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Textures/Apple.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources\Textures\Apple.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="FruitBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Textures/AppleBox.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources\Textures\AppleBox.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SpringBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources/Textures/ArrowBox.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
@@ -134,40 +134,40 @@
     <value>Resources/Textures/BodyslamBox.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
   </data>
   <data name="EmptyBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Textures/Box.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources\Textures\Box.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ContinueBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Textures/Checkpoint.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources\Textures\Checkpoint.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ActionNitroBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Textures/DetonatorBox.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources\Textures\DetonatorBox.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ActionNitroBoxTopTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Textures/DetonatorBoxTop.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources\Textures\DetonatorBoxTop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="IronSpringBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Textures/IronArrowBox.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources\Textures\IronArrowBox.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="IronBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Textures/IronBox.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources\Textures\IronBox.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="LifeTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Textures/Life.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources\Textures\Life.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="LifeBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Textures/LifeBox.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources\Textures\LifeBox.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="MaskTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Textures/Mask.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources\Textures\Mask.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="DoctorBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Textures/MaskBox.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources\Textures\MaskBox.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="NitroBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Textures/Nitro.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources\Textures\Nitro.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="NitroBoxTopTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Textures/NitroTop.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources\Textures\DetonatorBoxTop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="PointTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources/Textures/Point.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
