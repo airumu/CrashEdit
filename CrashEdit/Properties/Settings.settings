@@ -2,6 +2,12 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CrashEdit.CE.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
+    <Setting Name="FormBounds" Type="System.Drawing.Rectangle" Scope="User">
+      <Value Profile="(Default)">100, 100, 747, 560</Value>
+    </Setting>
+    <Setting Name="FormWindowState" Type="System.Windows.Forms.FormWindowState" Scope="User">
+      <Value Profile="(Default)">Normal</Value>
+    </Setting>
     <Setting Name="Language" Type="System.String" Scope="User">
       <Value Profile="(Default)">en</Value>
     </Setting>
