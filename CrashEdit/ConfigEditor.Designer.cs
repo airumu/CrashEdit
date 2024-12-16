@@ -65,9 +65,6 @@ namespace CrashEdit.CE
             fraLang = new DarkGroupBox();
             tbp3D = new TabPage();
             tbpDebugDisplay = new TabPage();
-            chkEnableC2TT = new CheckBox();
-            chkShowCustomCrates = new CheckBox();
-            chkDetailedCollision = new CheckBox();
             chkShowEntityParams = new CheckBox();
             chkDisableVisual = new CheckBox();
             chkViewCamera = new CheckBox();
@@ -75,6 +72,10 @@ namespace CrashEdit.CE
             chkViewZoneName = new CheckBox();
             chkViewZoneBox = new CheckBox();
             tbpPatchNSD = new TabPage();
+            tbpMisc = new TabPage();
+            chkEnableC2TT = new CheckBox();
+            chkShowCustomCrates = new CheckBox();
+            chkLiteralCollisionTypes = new CheckBox();
             chkPatchGOOLC3toC2 = new CheckBox();
             chkOldPatchNSD = new CheckBox();
             tableLayoutPanel4 = new TableLayoutPanel();
@@ -96,6 +97,7 @@ namespace CrashEdit.CE
             tbp3D.SuspendLayout();
             tbpDebugDisplay.SuspendLayout();
             tbpPatchNSD.SuspendLayout();
+            tbpMisc.SuspendLayout();
             SuspendLayout();
             // 
             // tableLayoutPanel4
@@ -320,7 +322,7 @@ namespace CrashEdit.CE
             fraFont.Margin = new Padding(4, 3, 4, 3);
             fraFont.Name = "fraFont";
             fraFont.Padding = new Padding(4, 3, 4, 3);
-            fraFont.Size = new Size(206, 82);
+            fraFont.Size = new Size(206, 79);
             fraFont.TabIndex = 8;
             fraFont.TabStop = false;
             fraFont.Text = "3D Text";
@@ -490,6 +492,7 @@ namespace CrashEdit.CE
             tbcSettings.Controls.Add(tbp3D);
             tbcSettings.Controls.Add(tbpDebugDisplay);
             tbcSettings.Controls.Add(tbpPatchNSD);
+            tbcSettings.Controls.Add(tbpMisc);
             tbcSettings.Dock = DockStyle.Fill;
             tbcSettings.IsDerivedStyle = true;
             tbcSettings.ItemSize = new Size(100, 28);
@@ -548,9 +551,6 @@ namespace CrashEdit.CE
             // tbpDebugDisplay
             // 
             tbpDebugDisplay.BackColor = Color.FromArgb(30, 30, 30);
-            tbpDebugDisplay.Controls.Add(chkEnableC2TT);
-            tbpDebugDisplay.Controls.Add(chkShowCustomCrates);
-            tbpDebugDisplay.Controls.Add(chkDetailedCollision);
             tbpDebugDisplay.Controls.Add(chkShowEntityParams);
             tbpDebugDisplay.Controls.Add(chkDisableVisual);
             tbpDebugDisplay.Controls.Add(chkViewCamera);
@@ -568,39 +568,6 @@ namespace CrashEdit.CE
             tbpDebugDisplay.Size = new Size(417, 381);
             tbpDebugDisplay.TabIndex = 3;
             tbpDebugDisplay.Text = "Debug Displays";
-            // 
-            // chkEnableC2TT
-            // 
-            chkEnableC2TT.AutoSize = true;
-            chkEnableC2TT.Location = new Point(7, 331);
-            chkEnableC2TT.Name = "chkEnableC2TT";
-            chkEnableC2TT.Size = new Size(187, 19);
-            chkEnableC2TT.TabIndex = 16;
-            chkEnableC2TT.Text = "Enable Crash 2 time trial editor";
-            chkEnableC2TT.UseVisualStyleBackColor = true;
-            chkEnableC2TT.CheckedChanged += chkEnableC2TT_CheckedChanged;
-            // 
-            // chkShowCustomCrates
-            // 
-            chkShowCustomCrates.AutoSize = true;
-            chkShowCustomCrates.Location = new Point(7, 306);
-            chkShowCustomCrates.Name = "chkShowCustomCrates";
-            chkShowCustomCrates.Size = new Size(132, 19);
-            chkShowCustomCrates.TabIndex = 15;
-            chkShowCustomCrates.Text = "Show custom crates";
-            chkShowCustomCrates.UseVisualStyleBackColor = true;
-            chkShowCustomCrates.CheckedChanged += chkShowCustomCrates_CheckedChanged;
-            // 
-            // chkDetailedCollision
-            // 
-            chkDetailedCollision.AutoSize = true;
-            chkDetailedCollision.Location = new Point(7, 281);
-            chkDetailedCollision.Name = "chkDetailedCollision";
-            chkDetailedCollision.Size = new Size(206, 19);
-            chkDetailedCollision.TabIndex = 14;
-            chkDetailedCollision.Text = "Show detailed zone collision types";
-            chkDetailedCollision.UseVisualStyleBackColor = true;
-            chkDetailedCollision.CheckedChanged += chkDetailedCollision_CheckedChanged;
             // 
             // chkShowEntityParams
             // 
@@ -682,8 +649,6 @@ namespace CrashEdit.CE
             // tbpPatchNSD
             // 
             tbpPatchNSD.BackColor = Color.FromArgb(30, 30, 30);
-            tbpPatchNSD.Controls.Add(chkPatchGOOLC3toC2);
-            tbpPatchNSD.Controls.Add(chkOldPatchNSD);
             tbpPatchNSD.Controls.Add(chkDeleteInvalidEntries);
             tbpPatchNSD.Controls.Add(chkPatchNSDSavesNSF);
             tbpPatchNSD.Location = new Point(4, 32);
@@ -693,10 +658,58 @@ namespace CrashEdit.CE
             tbpPatchNSD.TabIndex = 2;
             tbpPatchNSD.Text = "Patch NSD";
             // 
+            // tbpMisc
+            // 
+            tbpMisc.BackColor = Color.FromArgb(30, 30, 30);
+            tbpMisc.Controls.Add(chkEnableC2TT);
+            tbpMisc.Controls.Add(chkShowCustomCrates);
+            tbpMisc.Controls.Add(chkLiteralCollisionTypes);
+            tbpMisc.Controls.Add(chkPatchGOOLC3toC2);
+            tbpMisc.Controls.Add(chkOldPatchNSD);
+            tbpMisc.Location = new Point(4, 32);
+            tbpMisc.Name = "tbpMisc";
+            tbpMisc.Padding = new Padding(3);
+            tbpMisc.Size = new Size(417, 381);
+            tbpMisc.TabIndex = 2;
+            tbpMisc.Text = "Misc";
+            // 
+            // chkEnableC2TT
+            // 
+            chkEnableC2TT.AutoSize = true;
+            chkEnableC2TT.Location = new Point(7, 81);
+            chkEnableC2TT.Name = "chkEnableC2TT";
+            chkEnableC2TT.Size = new Size(187, 19);
+            chkEnableC2TT.TabIndex = 16;
+            chkEnableC2TT.Text = "Enable Crash 2 time trial editor";
+            chkEnableC2TT.UseVisualStyleBackColor = true;
+            chkEnableC2TT.CheckedChanged += chkEnableC2TT_CheckedChanged;
+            // 
+            // chkShowCustomCrates
+            // 
+            chkShowCustomCrates.AutoSize = true;
+            chkShowCustomCrates.Location = new Point(7, 56);
+            chkShowCustomCrates.Name = "chkShowCustomCrates";
+            chkShowCustomCrates.Size = new Size(132, 19);
+            chkShowCustomCrates.TabIndex = 15;
+            chkShowCustomCrates.Text = "Show custom crates";
+            chkShowCustomCrates.UseVisualStyleBackColor = true;
+            chkShowCustomCrates.CheckedChanged += chkShowCustomCrates_CheckedChanged;
+            // 
+            // chkLiteralCollisionTypes
+            // 
+            chkLiteralCollisionTypes.AutoSize = true;
+            chkLiteralCollisionTypes.Location = new Point(7, 31);
+            chkLiteralCollisionTypes.Name = "chkLiteralCollisionTypes";
+            chkLiteralCollisionTypes.Size = new Size(193, 19);
+            chkLiteralCollisionTypes.TabIndex = 14;
+            chkLiteralCollisionTypes.Text = "Show literal zone collision types";
+            chkLiteralCollisionTypes.UseVisualStyleBackColor = true;
+            chkLiteralCollisionTypes.CheckedChanged += chkDetailedCollision_CheckedChanged;
+            // 
             // chkPatchGOOLC3toC2
             // 
             chkPatchGOOLC3toC2.AutoSize = true;
-            chkPatchGOOLC3toC2.Location = new Point(7, 56);
+            chkPatchGOOLC3toC2.Location = new Point(7, 6);
             chkPatchGOOLC3toC2.Margin = new Padding(4, 3, 4, 3);
             chkPatchGOOLC3toC2.Name = "chkPatchGOOLC3toC2";
             chkPatchGOOLC3toC2.Size = new Size(421, 19);
@@ -709,7 +722,7 @@ namespace CrashEdit.CE
             // chkOldPatchNSD
             // 
             chkOldPatchNSD.AutoSize = true;
-            chkOldPatchNSD.Location = new Point(7, 81);
+            chkOldPatchNSD.Location = new Point(7, 106);
             chkOldPatchNSD.Margin = new Padding(4, 3, 4, 3);
             chkOldPatchNSD.Name = "chkOldPatchNSD";
             chkOldPatchNSD.Size = new Size(271, 19);
@@ -757,6 +770,8 @@ namespace CrashEdit.CE
             tbpDebugDisplay.PerformLayout();
             tbpPatchNSD.ResumeLayout(false);
             tbpPatchNSD.PerformLayout();
+            tbpMisc.ResumeLayout(false);
+            tbpMisc.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -794,6 +809,7 @@ namespace CrashEdit.CE
         private TabPage tbp3D;
         private TabPage tbpPatchNSD;
         private TabPage tbpDebugDisplay;
+        private TabPage tbpMisc;
         private CheckBox chkViewZoneBox;
         private CheckBox chkViewCameraAngle;
         private CheckBox chkViewZoneName;
@@ -802,7 +818,7 @@ namespace CrashEdit.CE
         private DarkGroupBox fraLang;
         private CheckBox chkShowEntityParams;
         private CheckBox chkOldPatchNSD;
-        private CheckBox chkDetailedCollision;
+        private CheckBox chkLiteralCollisionTypes;
         private CheckBox chkShowCustomCrates;
         private CheckBox chkEnableC2TT;
         private CheckBox chkPatchGOOLC3toC2;

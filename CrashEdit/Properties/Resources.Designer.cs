@@ -115,6 +115,15 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
+        ///   Enable Crash 2 time trial editor に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Config_chkEnableC2TT {
+            get {
+                return ResourceManager.GetString("Config_chkEnableC2TT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Show debug console に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Config_chkFont2DEnable {
@@ -133,6 +142,15 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
+        ///   Show literal zone collision types に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Config_chkLiteralCollisionTypes {
+            get {
+                return ResourceManager.GetString("Config_chkLiteralCollisionTypes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   (Crash 1) Show normals in animations に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Config_chkNormalDisplay {
@@ -142,11 +160,38 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
+        ///   Use old NSD patching from CrashEdit v0.2.49.0 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Config_chkOldPatchNSD {
+            get {
+                return ResourceManager.GetString("Config_chkOldPatchNSD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   (Crash 2 ) Patch GOOLs frame groups ported from Crash 3 (requires restart) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Config_chkPatchGOOLC3toC2 {
+            get {
+                return ResourceManager.GetString("Config_chkPatchGOOLC3toC2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Save NSF after NSD patching に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Config_chkPatchNSDSavesNSF {
             get {
                 return ResourceManager.GetString("Config_chkPatchNSDSavesNSF", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Show custom crates に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Config_chkShowCustomCrates {
+            get {
+                return ResourceManager.GetString("Config_chkShowCustomCrates", resourceCulture);
             }
         }
         

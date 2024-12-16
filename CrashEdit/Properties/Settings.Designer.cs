@@ -350,12 +350,12 @@ namespace CrashEdit.CE.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool ShowDetailedCollision {
+        public bool ShowliteralCollisionTypes {
             get {
-                return ((bool)(this["ShowDetailedCollision"]));
+                return ((bool)(this["ShowliteralCollisionTypes"]));
             }
             set {
-                this["ShowDetailedCollision"] = value;
+                this["ShowliteralCollisionTypes"] = value;
             }
         }
         

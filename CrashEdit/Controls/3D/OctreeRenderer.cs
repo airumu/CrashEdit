@@ -132,11 +132,10 @@ namespace CrashEdit.CE
                 foreach (var node in node_types)
                 {
                     ListViewItem lsi = new();
-                    if (Settings.Default.ShowDetailedCollision)
-                        lsi.Text = string.Format("{2:X2}:{1:X2}:{0:X1}", node >> 1 & 0x7, node >> 4 & 0x3F, node >> 10 & 0x3F);
-                    else
+                    if (Settings.Default.ShowliteralCollisionTypes)
                         lsi.Text = node.ToString("X4");
-                   
+                    else
+                        lsi.Text = string.Format("{2:X2}:{1:X2}:{0:X1}", node >> 1 & 0x7, node >> 4 & 0x3F, node >> 10 & 0x3F);
                     lsi.BackColor = (Color)(Color4)node_colors[node >> 1];
                     lsi.ForeColor = lsi.BackColor.GetBrightness() >= 0.5 ? Color.Black : Color.White;
                     lsi.Tag = node;

@@ -101,7 +101,7 @@ namespace CrashEdit.CE
             chkDisableVisual.Checked = Settings.Default.DisableVisual;
             // added
             chkOldPatchNSD.Checked = Settings.Default.UseOldPatchNSD;
-            chkDetailedCollision.Checked = Settings.Default.ShowDetailedCollision;
+            chkLiteralCollisionTypes.Checked = Settings.Default.ShowliteralCollisionTypes;
             chkShowCustomCrates.Checked = Settings.Default.ShowCustomCrates;
             chkEnableC2TT.Checked = Settings.Default.EnableC2TTEditor;
             chkPatchGOOLC3toC2.Checked = Settings.Default.PatchGOOLC3toC2;
@@ -131,6 +131,12 @@ namespace CrashEdit.CE
             chkShowEntityParams.Text = Resources.Config_chkShowEntityParams;
             lblNodeShadeAmt.Text = string.Format("{0:F0}%", sldNodeShadeAmt.Value);
             cmdReset.Text = Resources.Config_cmdReset;
+            // added
+            chkOldPatchNSD.Text = Resources.Config_chkOldPatchNSD;
+            chkLiteralCollisionTypes.Text = Resources.Config_chkLiteralCollisionTypes;
+            chkShowCustomCrates.Text = Resources.Config_chkShowCustomCrates;
+            chkEnableC2TT.Text = Resources.Config_chkEnableC2TT;
+            chkPatchGOOLC3toC2.Text = Resources.Config_chkPatchGOOLC3toC2;
         }
 
         private void dpdLang_SelectedIndexChanged(object sender, EventArgs e)
@@ -284,7 +290,7 @@ namespace CrashEdit.CE
 
         private void chkDetailedCollision_CheckedChanged(object sender, EventArgs e)
         {
-            Settings.Default.ShowDetailedCollision = chkDetailedCollision.Checked;
+            Settings.Default.ShowliteralCollisionTypes = chkLiteralCollisionTypes.Checked;
             Settings.Default.Save();
         }
 
