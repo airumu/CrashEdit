@@ -72,12 +72,12 @@ namespace CrashEdit
                 numZ.Value = frame.Vertices[vertexindex].Z;
                 if (vertexindex <= frame.SpecialVertexCount - 1)
                 {
-                    lblVerticeIndex.ForeColor = Color.FromArgb(0, 174, 219);
+                    lblVerticeIndex.ForeColor = Color.MediumTurquoise;
                     lblSPVertex.Visible = true;
                 }
                 else
                 {
-                    lblVerticeIndex.ForeColor = Color.FromArgb(220, 220, 220);
+                    lblVerticeIndex.ForeColor = SystemColors.ControlText;
                     lblSPVertex.Visible = false;
                 }
             }

@@ -148,7 +148,7 @@ namespace CrashEdit
             // 
             lblSPVertex.AutoSize = true;
             lblSPVertex.BackColor = Color.Transparent;
-            lblSPVertex.ForeColor = Color.DeepSkyBlue;
+            lblSPVertex.ForeColor = Color.MediumTurquoise;
             lblSPVertex.Location = new Point(23, 48);
             lblSPVertex.Name = "lblSPVertex";
             lblSPVertex.Size = new Size(76, 15);
@@ -223,7 +223,7 @@ namespace CrashEdit
             // 
             lblVerticeIndex.BackColor = Color.Transparent;
             lblVerticeIndex.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblVerticeIndex.ForeColor = Color.Gainsboro;
+            lblVerticeIndex.ForeColor = SystemColors.ControlText;
             lblVerticeIndex.Location = new Point(27, 22);
             lblVerticeIndex.Name = "lblVerticeIndex";
             lblVerticeIndex.Size = new Size(70, 26);
@@ -767,7 +767,7 @@ namespace CrashEdit
             // 
             lblCollisionIndex.BackColor = Color.Transparent;
             lblCollisionIndex.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblCollisionIndex.ForeColor = Color.Gainsboro;
+            lblCollisionIndex.ForeColor = SystemColors.ControlText;
             lblCollisionIndex.Location = new Point(45, 22);
             lblCollisionIndex.Name = "lblCollisionIndex";
             lblCollisionIndex.Size = new Size(70, 26);

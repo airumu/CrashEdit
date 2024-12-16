@@ -911,7 +911,7 @@ namespace CrashEdit.CE
             tbcTabs.Name = "tbcTabs";
             tbcTabs.SelectedIndex = 0;
             tbcTabs.SelectedTextColor = Color.White;
-            tbcTabs.Size = new Size(800, 800);
+            tbcTabs.Size = new Size(600, 600);
             tbcTabs.SizeMode = TabSizeMode.Fixed;
             tbcTabs.Speed = 100;
             tbcTabs.Style = MetroSet_UI.Enums.Style.Dark;
@@ -936,7 +936,7 @@ namespace CrashEdit.CE
             tabGeneral.Location = new Point(4, 32);
             tabGeneral.Margin = new Padding(4, 3, 4, 3);
             tabGeneral.Name = "tabGeneral";
-            tabGeneral.Size = new Size(792, 764);
+            tabGeneral.Size = new Size(592, 564);
             tabGeneral.TabIndex = 0;
             tabGeneral.Text = "General";
             // 
