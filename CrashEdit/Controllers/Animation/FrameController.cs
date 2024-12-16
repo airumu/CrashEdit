@@ -1,4 +1,5 @@
 using CrashEdit.Crash;
+using MetroSet_UI.Controls;
 
 namespace CrashEdit.CE
 {
@@ -14,7 +15,44 @@ namespace CrashEdit.CE
 
         public override Control CreateEditor()
         {
-            return new AnimationEntryViewer(GetNSF(), AnimationEntryController.AnimationEntry.EID, AnimationEntryController.AnimationEntry.Frames.IndexOf(Frame));
+            if (!Frame.IsNew)
+            {
+                MetroSetTabControl tbcTabs = new MetroSetTabControl()
+                {
+                    Dock = DockStyle.Fill,
+                    ItemSize = new Size(100, 28),
+                    TabStyle = MetroSet_UI.Enums.TabStyle.Style1,
+                    Style = MetroSet_UI.Enums.Style.Dark
+                };
+                ModelEntry modelentry = GetEntry<ModelEntry>(Frame.ModelEID);
+
+                var framebox = new FrameBox(this)
+                {
+                    Dock = DockStyle.Fill
+                };
+                var entry = AnimationEntryController.AnimationEntry;
+                var viewerbox = new AnimationEntryViewer(GetNSF(), entry.EID, entry.Frames.IndexOf(Frame))
+                {
+                    Dock = DockStyle.Fill
+                };
+                framebox.Dock = DockStyle.Fill;
+
+                TabPage edittab = new TabPage("Editor");
+                edittab.Controls.Add(framebox);
+                TabPage viewertab = new TabPage("Viewer");
+                viewertab.Controls.Add(viewerbox);
+
+                tbcTabs.TabPages.Add(viewertab);
+                tbcTabs.TabPages.Add(edittab);
+                tbcTabs.SelectedTab = viewertab;
+
+                return tbcTabs;
+            }
+            else
+            {
+                var entry = AnimationEntryController.AnimationEntry;
+                return new AnimationEntryViewer(GetNSF(), entry.EID, entry.Frames.IndexOf(Frame));
+            }
         }
 
         public AnimationEntryController AnimationEntryController => (AnimationEntryController)Modern.Parent.Legacy;

@@ -231,10 +231,10 @@ namespace CrashEdit.Crash
         }
 
         public int ModelEID { get; }
-        public short XOffset { get; }
-        public short YOffset { get; }
-        public short ZOffset { get; }
-        public int HeaderSize { get; }
+        public short XOffset { get; set; }
+        public short YOffset { get; set; }
+        public short ZOffset { get; set; }
+        public int HeaderSize { get; set; }
         public IList<FrameCollision> Collision => collision;
         public IList<FrameVertex> Vertices => vertices;
         public int SpecialVertexCount { get; }
