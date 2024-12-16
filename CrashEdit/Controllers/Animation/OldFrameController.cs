@@ -1,5 +1,6 @@
 using AltUI.Forms;
 using CrashEdit.Crash;
+using MetroSet_UI.Controls;
 
 namespace CrashEdit.CE
 {
@@ -16,7 +17,13 @@ namespace CrashEdit.CE
 
         public override Control CreateEditor()
         {
-            TabControl tbcTabs = new TabControl() { Dock = DockStyle.Fill };
+            MetroSetTabControl tbcTabs = new MetroSetTabControl()
+            {
+                Dock = DockStyle.Fill,
+                ItemSize = new Size(100, 28),
+                TabStyle = MetroSet_UI.Enums.TabStyle.Style1,
+                Style = MetroSet_UI.Enums.Style.Dark
+            };
             OldModelEntry modelentry = GetEntry<OldModelEntry>(OldFrame.ModelEID);
 
             var framebox = new OldFrameBox(this)

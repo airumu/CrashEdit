@@ -1,3 +1,5 @@
+using AltUI.Controls;
+
 namespace CrashEdit.CE
 {
     partial class OldFrameBox
@@ -28,854 +30,787 @@ namespace CrashEdit.CE
         /// </summary>
         private void InitializeComponent()
         {
-            this.fraVertice = new System.Windows.Forms.GroupBox();
-            this.lblNZ = new System.Windows.Forms.Label();
-            this.lblNY = new System.Windows.Forms.Label();
-            this.lblNX = new System.Windows.Forms.Label();
-            this.numNZ = new System.Windows.Forms.NumericUpDown();
-            this.numNY = new System.Windows.Forms.NumericUpDown();
-            this.numNX = new System.Windows.Forms.NumericUpDown();
-            this.lblVerticeIndex = new System.Windows.Forms.Label();
-            this.cmdNextVertice = new System.Windows.Forms.Button();
-            this.cmdPreviousVertice = new System.Windows.Forms.Button();
-            this.cmdInsertVertice = new System.Windows.Forms.Button();
-            this.lblZ = new System.Windows.Forms.Label();
-            this.cmdRemoveVertice = new System.Windows.Forms.Button();
-            this.lblY = new System.Windows.Forms.Label();
-            this.cmdAppendVertice = new System.Windows.Forms.Button();
-            this.lblX = new System.Windows.Forms.Label();
-            this.numZ = new System.Windows.Forms.NumericUpDown();
-            this.numY = new System.Windows.Forms.NumericUpDown();
-            this.numX = new System.Windows.Forms.NumericUpDown();
-            this.fraUnknown = new System.Windows.Forms.GroupBox();
-            this.numUnknown = new System.Windows.Forms.NumericUpDown();
-            this.fraGG = new System.Windows.Forms.GroupBox();
-            this.lblZG = new System.Windows.Forms.Label();
-            this.lblYG = new System.Windows.Forms.Label();
-            this.lblXG = new System.Windows.Forms.Label();
-            this.numZOffsetCollision = new System.Windows.Forms.NumericUpDown();
-            this.numYOffsetCollision = new System.Windows.Forms.NumericUpDown();
-            this.numXOffsetCollision = new System.Windows.Forms.NumericUpDown();
-            this.fraG2 = new System.Windows.Forms.GroupBox();
-            this.lblZ2 = new System.Windows.Forms.Label();
-            this.lblY2 = new System.Windows.Forms.Label();
-            this.lblX2 = new System.Windows.Forms.Label();
-            this.numZ2 = new System.Windows.Forms.NumericUpDown();
-            this.numY2 = new System.Windows.Forms.NumericUpDown();
-            this.numX2 = new System.Windows.Forms.NumericUpDown();
-            this.fraG1 = new System.Windows.Forms.GroupBox();
-            this.lblZ1 = new System.Windows.Forms.Label();
-            this.lblY1 = new System.Windows.Forms.Label();
-            this.lblX1 = new System.Windows.Forms.Label();
-            this.numZ1 = new System.Windows.Forms.NumericUpDown();
-            this.numY1 = new System.Windows.Forms.NumericUpDown();
-            this.numX1 = new System.Windows.Forms.NumericUpDown();
-            this.fraOffset = new System.Windows.Forms.GroupBox();
-            this.lblZOffset = new System.Windows.Forms.Label();
-            this.lblYOffset = new System.Windows.Forms.Label();
-            this.lblXOffset = new System.Windows.Forms.Label();
-            this.numZOffset = new System.Windows.Forms.NumericUpDown();
-            this.numYOffset = new System.Windows.Forms.NumericUpDown();
-            this.numXOffset = new System.Windows.Forms.NumericUpDown();
-            this.fraVertice.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numNZ)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numNY)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numNX)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numZ)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numY)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numX)).BeginInit();
-            this.fraUnknown.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numUnknown)).BeginInit();
-            this.fraGG.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numZOffsetCollision)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numYOffsetCollision)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numXOffsetCollision)).BeginInit();
-            this.fraG2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numZ2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numY2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numX2)).BeginInit();
-            this.fraG1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numZ1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numY1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numX1)).BeginInit();
-            this.fraOffset.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numZOffset)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numYOffset)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numXOffset)).BeginInit();
-            this.SuspendLayout();
+            fraVertice = new DarkGroupBox();
+            lblNZ = new Label();
+            lblNY = new Label();
+            lblNX = new Label();
+            numNZ = new DarkNumericUpDown();
+            numNY = new DarkNumericUpDown();
+            numNX = new DarkNumericUpDown();
+            lblVerticeIndex = new Label();
+            cmdNextVertice = new DarkButton();
+            cmdPreviousVertice = new DarkButton();
+            cmdInsertVertice = new DarkButton();
+            lblZ = new Label();
+            cmdRemoveVertice = new DarkButton();
+            lblY = new Label();
+            cmdAppendVertice = new DarkButton();
+            lblX = new Label();
+            numZ = new DarkNumericUpDown();
+            numY = new DarkNumericUpDown();
+            numX = new DarkNumericUpDown();
+            fraUnknown = new DarkGroupBox();
+            numUnknown = new DarkNumericUpDown();
+            fraGG = new DarkGroupBox();
+            lblZG = new Label();
+            lblYG = new Label();
+            lblXG = new Label();
+            numZOffsetCollision = new DarkNumericUpDown();
+            numYOffsetCollision = new DarkNumericUpDown();
+            numXOffsetCollision = new DarkNumericUpDown();
+            fraG2 = new DarkGroupBox();
+            lblZ2 = new Label();
+            lblY2 = new Label();
+            lblX2 = new Label();
+            numZ2 = new DarkNumericUpDown();
+            numY2 = new DarkNumericUpDown();
+            numX2 = new DarkNumericUpDown();
+            fraG1 = new DarkGroupBox();
+            lblZ1 = new Label();
+            lblY1 = new Label();
+            lblX1 = new Label();
+            numZ1 = new DarkNumericUpDown();
+            numY1 = new DarkNumericUpDown();
+            numX1 = new DarkNumericUpDown();
+            fraOffset = new DarkGroupBox();
+            lblZOffset = new Label();
+            lblYOffset = new Label();
+            lblXOffset = new Label();
+            numZOffset = new DarkNumericUpDown();
+            numYOffset = new DarkNumericUpDown();
+            numXOffset = new DarkNumericUpDown();
+            fraVertice.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numNZ).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numNY).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numNX).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numZ).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numY).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numX).BeginInit();
+            fraUnknown.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numUnknown).BeginInit();
+            fraGG.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numZOffsetCollision).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numYOffsetCollision).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numXOffsetCollision).BeginInit();
+            fraG2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numZ2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numY2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numX2).BeginInit();
+            fraG1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numZ1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numY1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numX1).BeginInit();
+            fraOffset.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numZOffset).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numYOffset).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numXOffset).BeginInit();
+            SuspendLayout();
             // 
             // fraVertice
             // 
-            this.fraVertice.Controls.Add(this.lblNZ);
-            this.fraVertice.Controls.Add(this.lblNY);
-            this.fraVertice.Controls.Add(this.lblNX);
-            this.fraVertice.Controls.Add(this.numNZ);
-            this.fraVertice.Controls.Add(this.numNY);
-            this.fraVertice.Controls.Add(this.numNX);
-            this.fraVertice.Controls.Add(this.lblVerticeIndex);
-            this.fraVertice.Controls.Add(this.cmdNextVertice);
-            this.fraVertice.Controls.Add(this.cmdPreviousVertice);
-            this.fraVertice.Controls.Add(this.cmdInsertVertice);
-            this.fraVertice.Controls.Add(this.lblZ);
-            this.fraVertice.Controls.Add(this.cmdRemoveVertice);
-            this.fraVertice.Controls.Add(this.lblY);
-            this.fraVertice.Controls.Add(this.cmdAppendVertice);
-            this.fraVertice.Controls.Add(this.lblX);
-            this.fraVertice.Controls.Add(this.numZ);
-            this.fraVertice.Controls.Add(this.numY);
-            this.fraVertice.Controls.Add(this.numX);
-            this.fraVertice.Location = new System.Drawing.Point(3, 3);
-            this.fraVertice.Name = "fraVertice";
-            this.fraVertice.Size = new System.Drawing.Size(287, 132);
-            this.fraVertice.TabIndex = 1;
-            this.fraVertice.TabStop = false;
-            this.fraVertice.Text = "Vertice(s)";
+            fraVertice.BackColor = Color.Transparent;
+            fraVertice.Controls.Add(lblNZ);
+            fraVertice.Controls.Add(lblNY);
+            fraVertice.Controls.Add(lblNX);
+            fraVertice.Controls.Add(numNZ);
+            fraVertice.Controls.Add(numNY);
+            fraVertice.Controls.Add(numNX);
+            fraVertice.Controls.Add(lblVerticeIndex);
+            fraVertice.Controls.Add(cmdNextVertice);
+            fraVertice.Controls.Add(cmdPreviousVertice);
+            fraVertice.Controls.Add(cmdInsertVertice);
+            fraVertice.Controls.Add(lblZ);
+            fraVertice.Controls.Add(cmdRemoveVertice);
+            fraVertice.Controls.Add(lblY);
+            fraVertice.Controls.Add(cmdAppendVertice);
+            fraVertice.Controls.Add(lblX);
+            fraVertice.Controls.Add(numZ);
+            fraVertice.Controls.Add(numY);
+            fraVertice.Controls.Add(numX);
+            fraVertice.Location = new Point(4, 3);
+            fraVertice.Margin = new Padding(4, 3, 4, 3);
+            fraVertice.Name = "fraVertice";
+            fraVertice.Padding = new Padding(4, 3, 4, 3);
+            fraVertice.Size = new Size(335, 152);
+            fraVertice.TabIndex = 1;
+            fraVertice.TabStop = false;
+            fraVertice.Text = "Vertice(s)";
             // 
             // lblNZ
             // 
-            this.lblNZ.AutoSize = true;
-            this.lblNZ.Location = new System.Drawing.Point(86, 106);
-            this.lblNZ.Name = "lblNZ";
-            this.lblNZ.Size = new System.Drawing.Size(50, 13);
-            this.lblNZ.TabIndex = 14;
-            this.lblNZ.Text = "Normal Z";
+            lblNZ.AutoSize = true;
+            lblNZ.Location = new Point(100, 122);
+            lblNZ.Margin = new Padding(4, 0, 4, 0);
+            lblNZ.Name = "lblNZ";
+            lblNZ.Size = new Size(57, 15);
+            lblNZ.TabIndex = 14;
+            lblNZ.Text = "Normal Z";
             // 
             // lblNY
             // 
-            this.lblNY.AutoSize = true;
-            this.lblNY.Location = new System.Drawing.Point(86, 80);
-            this.lblNY.Name = "lblNY";
-            this.lblNY.Size = new System.Drawing.Size(50, 13);
-            this.lblNY.TabIndex = 12;
-            this.lblNY.Text = "Normal Y";
+            lblNY.AutoSize = true;
+            lblNY.Location = new Point(100, 92);
+            lblNY.Margin = new Padding(4, 0, 4, 0);
+            lblNY.Name = "lblNY";
+            lblNY.Size = new Size(57, 15);
+            lblNY.TabIndex = 12;
+            lblNY.Text = "Normal Y";
             // 
             // lblNX
             // 
-            this.lblNX.AutoSize = true;
-            this.lblNX.Location = new System.Drawing.Point(86, 54);
-            this.lblNX.Name = "lblNX";
-            this.lblNX.Size = new System.Drawing.Size(50, 13);
-            this.lblNX.TabIndex = 10;
-            this.lblNX.Text = "Normal X";
+            lblNX.AutoSize = true;
+            lblNX.Location = new Point(100, 62);
+            lblNX.Margin = new Padding(4, 0, 4, 0);
+            lblNX.Name = "lblNX";
+            lblNX.Size = new Size(57, 15);
+            lblNX.TabIndex = 10;
+            lblNX.Text = "Normal X";
             // 
             // numNZ
             // 
-            this.numNZ.Increment = new decimal(new int[] {
-            8,
-            0,
-            0,
-            0});
-            this.numNZ.Location = new System.Drawing.Point(142, 104);
-            this.numNZ.Maximum = new decimal(new int[] {
-            127,
-            0,
-            0,
-            0});
-            this.numNZ.Minimum = new decimal(new int[] {
-            128,
-            0,
-            0,
-            -2147483648});
-            this.numNZ.Name = "numNZ";
-            this.numNZ.Size = new System.Drawing.Size(52, 20);
-            this.numNZ.TabIndex = 13;
-            this.numNZ.ValueChanged += new System.EventHandler(this.numZNormal_ValueChanged);
+            numNZ.Increment = new decimal(new int[] { 8, 0, 0, 0 });
+            numNZ.Location = new Point(166, 120);
+            numNZ.Margin = new Padding(4, 3, 4, 3);
+            numNZ.Maximum = new decimal(new int[] { 127, 0, 0, 0 });
+            numNZ.Minimum = new decimal(new int[] { 128, 0, 0, int.MinValue });
+            numNZ.Name = "numNZ";
+            numNZ.Size = new Size(61, 23);
+            numNZ.TabIndex = 13;
+            numNZ.ValueChanged += numZNormal_ValueChanged;
             // 
             // numNY
             // 
-            this.numNY.Increment = new decimal(new int[] {
-            8,
-            0,
-            0,
-            0});
-            this.numNY.Location = new System.Drawing.Point(142, 78);
-            this.numNY.Maximum = new decimal(new int[] {
-            127,
-            0,
-            0,
-            0});
-            this.numNY.Minimum = new decimal(new int[] {
-            128,
-            0,
-            0,
-            -2147483648});
-            this.numNY.Name = "numNY";
-            this.numNY.Size = new System.Drawing.Size(52, 20);
-            this.numNY.TabIndex = 11;
-            this.numNY.ValueChanged += new System.EventHandler(this.numYNormal_ValueChanged);
+            numNY.Increment = new decimal(new int[] { 8, 0, 0, 0 });
+            numNY.Location = new Point(166, 90);
+            numNY.Margin = new Padding(4, 3, 4, 3);
+            numNY.Maximum = new decimal(new int[] { 127, 0, 0, 0 });
+            numNY.Minimum = new decimal(new int[] { 128, 0, 0, int.MinValue });
+            numNY.Name = "numNY";
+            numNY.Size = new Size(61, 23);
+            numNY.TabIndex = 11;
+            numNY.ValueChanged += numYNormal_ValueChanged;
             // 
             // numNX
             // 
-            this.numNX.Increment = new decimal(new int[] {
-            8,
-            0,
-            0,
-            0});
-            this.numNX.Location = new System.Drawing.Point(142, 52);
-            this.numNX.Maximum = new decimal(new int[] {
-            127,
-            0,
-            0,
-            0});
-            this.numNX.Minimum = new decimal(new int[] {
-            128,
-            0,
-            0,
-            -2147483648});
-            this.numNX.Name = "numNX";
-            this.numNX.Size = new System.Drawing.Size(52, 20);
-            this.numNX.TabIndex = 9;
-            this.numNX.ValueChanged += new System.EventHandler(this.numXNormal_ValueChanged);
+            numNX.Increment = new decimal(new int[] { 8, 0, 0, 0 });
+            numNX.Location = new Point(166, 60);
+            numNX.Margin = new Padding(4, 3, 4, 3);
+            numNX.Maximum = new decimal(new int[] { 127, 0, 0, 0 });
+            numNX.Minimum = new decimal(new int[] { 128, 0, 0, int.MinValue });
+            numNX.Name = "numNX";
+            numNX.Size = new Size(61, 23);
+            numNX.TabIndex = 9;
+            numNX.ValueChanged += numXNormal_ValueChanged;
             // 
             // lblVerticeIndex
             // 
-            this.lblVerticeIndex.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblVerticeIndex.Location = new System.Drawing.Point(49, 19);
-            this.lblVerticeIndex.Name = "lblVerticeIndex";
-            this.lblVerticeIndex.Size = new System.Drawing.Size(60, 23);
-            this.lblVerticeIndex.TabIndex = 5;
-            this.lblVerticeIndex.Text = "?? / ??";
-            this.lblVerticeIndex.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            lblVerticeIndex.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblVerticeIndex.Location = new Point(57, 22);
+            lblVerticeIndex.Margin = new Padding(4, 0, 4, 0);
+            lblVerticeIndex.Name = "lblVerticeIndex";
+            lblVerticeIndex.Size = new Size(70, 27);
+            lblVerticeIndex.TabIndex = 5;
+            lblVerticeIndex.Text = "?? / ??";
+            lblVerticeIndex.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // cmdNextVertice
             // 
-            this.cmdNextVertice.Location = new System.Drawing.Point(217, 19);
-            this.cmdNextVertice.Name = "cmdNextVertice";
-            this.cmdNextVertice.Size = new System.Drawing.Size(58, 23);
-            this.cmdNextVertice.TabIndex = 1;
-            this.cmdNextVertice.Text = "Next";
-            this.cmdNextVertice.UseVisualStyleBackColor = true;
-            this.cmdNextVertice.Click += new System.EventHandler(this.cmdNextVertice_Click);
+            cmdNextVertice.BorderColour = Color.Empty;
+            cmdNextVertice.CustomColour = false;
+            cmdNextVertice.FlatBottom = false;
+            cmdNextVertice.FlatTop = false;
+            cmdNextVertice.Location = new Point(253, 22);
+            cmdNextVertice.Margin = new Padding(4, 3, 4, 3);
+            cmdNextVertice.Name = "cmdNextVertice";
+            cmdNextVertice.Padding = new Padding(5);
+            cmdNextVertice.Size = new Size(68, 27);
+            cmdNextVertice.TabIndex = 1;
+            cmdNextVertice.Text = "Next";
+            cmdNextVertice.Click += cmdNextVertice_Click;
             // 
             // cmdPreviousVertice
             // 
-            this.cmdPreviousVertice.Location = new System.Drawing.Point(153, 19);
-            this.cmdPreviousVertice.Name = "cmdPreviousVertice";
-            this.cmdPreviousVertice.Size = new System.Drawing.Size(58, 23);
-            this.cmdPreviousVertice.TabIndex = 0;
-            this.cmdPreviousVertice.Text = "Previous";
-            this.cmdPreviousVertice.UseVisualStyleBackColor = true;
-            this.cmdPreviousVertice.Click += new System.EventHandler(this.cmdPreviousVertice_Click);
+            cmdPreviousVertice.BorderColour = Color.Empty;
+            cmdPreviousVertice.CustomColour = false;
+            cmdPreviousVertice.FlatBottom = false;
+            cmdPreviousVertice.FlatTop = false;
+            cmdPreviousVertice.Location = new Point(178, 22);
+            cmdPreviousVertice.Margin = new Padding(4, 3, 4, 3);
+            cmdPreviousVertice.Name = "cmdPreviousVertice";
+            cmdPreviousVertice.Padding = new Padding(5);
+            cmdPreviousVertice.Size = new Size(68, 27);
+            cmdPreviousVertice.TabIndex = 0;
+            cmdPreviousVertice.Text = "Previous";
+            cmdPreviousVertice.Click += cmdPreviousVertice_Click;
             // 
             // cmdInsertVertice
             // 
-            this.cmdInsertVertice.Location = new System.Drawing.Point(200, 75);
-            this.cmdInsertVertice.Name = "cmdInsertVertice";
-            this.cmdInsertVertice.Size = new System.Drawing.Size(75, 23);
-            this.cmdInsertVertice.TabIndex = 6;
-            this.cmdInsertVertice.Text = "Insert";
-            this.cmdInsertVertice.UseVisualStyleBackColor = true;
-            this.cmdInsertVertice.Click += new System.EventHandler(this.cmdInsertVertice_Click);
+            cmdInsertVertice.BorderColour = Color.Empty;
+            cmdInsertVertice.CustomColour = false;
+            cmdInsertVertice.FlatBottom = false;
+            cmdInsertVertice.FlatTop = false;
+            cmdInsertVertice.Location = new Point(233, 87);
+            cmdInsertVertice.Margin = new Padding(4, 3, 4, 3);
+            cmdInsertVertice.Name = "cmdInsertVertice";
+            cmdInsertVertice.Padding = new Padding(5);
+            cmdInsertVertice.Size = new Size(88, 27);
+            cmdInsertVertice.TabIndex = 6;
+            cmdInsertVertice.Text = "Insert";
+            cmdInsertVertice.Click += cmdInsertVertice_Click;
             // 
             // lblZ
             // 
-            this.lblZ.AutoSize = true;
-            this.lblZ.Location = new System.Drawing.Point(6, 106);
-            this.lblZ.Name = "lblZ";
-            this.lblZ.Size = new System.Drawing.Size(14, 13);
-            this.lblZ.TabIndex = 5;
-            this.lblZ.Text = "Z";
+            lblZ.AutoSize = true;
+            lblZ.BackColor = Color.Transparent;
+            lblZ.Location = new Point(7, 122);
+            lblZ.Margin = new Padding(4, 0, 4, 0);
+            lblZ.Name = "lblZ";
+            lblZ.Size = new Size(14, 15);
+            lblZ.TabIndex = 5;
+            lblZ.Text = "Z";
             // 
             // cmdRemoveVertice
             // 
-            this.cmdRemoveVertice.Location = new System.Drawing.Point(200, 101);
-            this.cmdRemoveVertice.Name = "cmdRemoveVertice";
-            this.cmdRemoveVertice.Size = new System.Drawing.Size(75, 23);
-            this.cmdRemoveVertice.TabIndex = 7;
-            this.cmdRemoveVertice.Text = "Remove";
-            this.cmdRemoveVertice.UseVisualStyleBackColor = true;
-            this.cmdRemoveVertice.Click += new System.EventHandler(this.cmdRemoveVertice_Click);
+            cmdRemoveVertice.BorderColour = Color.Empty;
+            cmdRemoveVertice.CustomColour = false;
+            cmdRemoveVertice.FlatBottom = false;
+            cmdRemoveVertice.FlatTop = false;
+            cmdRemoveVertice.Location = new Point(233, 117);
+            cmdRemoveVertice.Margin = new Padding(4, 3, 4, 3);
+            cmdRemoveVertice.Name = "cmdRemoveVertice";
+            cmdRemoveVertice.Padding = new Padding(5);
+            cmdRemoveVertice.Size = new Size(88, 27);
+            cmdRemoveVertice.TabIndex = 7;
+            cmdRemoveVertice.Text = "Remove";
+            cmdRemoveVertice.Click += cmdRemoveVertice_Click;
             // 
             // lblY
             // 
-            this.lblY.AutoSize = true;
-            this.lblY.Location = new System.Drawing.Point(6, 80);
-            this.lblY.Name = "lblY";
-            this.lblY.Size = new System.Drawing.Size(14, 13);
-            this.lblY.TabIndex = 4;
-            this.lblY.Text = "Y";
+            lblY.AutoSize = true;
+            lblY.BackColor = Color.Transparent;
+            lblY.Location = new Point(7, 92);
+            lblY.Margin = new Padding(4, 0, 4, 0);
+            lblY.Name = "lblY";
+            lblY.Size = new Size(14, 15);
+            lblY.TabIndex = 4;
+            lblY.Text = "Y";
             // 
             // cmdAppendVertice
             // 
-            this.cmdAppendVertice.Location = new System.Drawing.Point(200, 49);
-            this.cmdAppendVertice.Name = "cmdAppendVertice";
-            this.cmdAppendVertice.Size = new System.Drawing.Size(75, 23);
-            this.cmdAppendVertice.TabIndex = 5;
-            this.cmdAppendVertice.Text = "Append";
-            this.cmdAppendVertice.UseVisualStyleBackColor = true;
-            this.cmdAppendVertice.Click += new System.EventHandler(this.cmdAppendVertice_Click);
+            cmdAppendVertice.BorderColour = Color.Empty;
+            cmdAppendVertice.CustomColour = false;
+            cmdAppendVertice.FlatBottom = false;
+            cmdAppendVertice.FlatTop = false;
+            cmdAppendVertice.Location = new Point(233, 57);
+            cmdAppendVertice.Margin = new Padding(4, 3, 4, 3);
+            cmdAppendVertice.Name = "cmdAppendVertice";
+            cmdAppendVertice.Padding = new Padding(5);
+            cmdAppendVertice.Size = new Size(88, 27);
+            cmdAppendVertice.TabIndex = 5;
+            cmdAppendVertice.Text = "Append";
+            cmdAppendVertice.Click += cmdAppendVertice_Click;
             // 
             // lblX
             // 
-            this.lblX.AutoSize = true;
-            this.lblX.Location = new System.Drawing.Point(6, 54);
-            this.lblX.Name = "lblX";
-            this.lblX.Size = new System.Drawing.Size(14, 13);
-            this.lblX.TabIndex = 3;
-            this.lblX.Text = "X";
+            lblX.AutoSize = true;
+            lblX.BackColor = Color.Transparent;
+            lblX.Location = new Point(7, 62);
+            lblX.Margin = new Padding(4, 0, 4, 0);
+            lblX.Name = "lblX";
+            lblX.Size = new Size(14, 15);
+            lblX.TabIndex = 3;
+            lblX.Text = "X";
             // 
             // numZ
             // 
-            this.numZ.Increment = new decimal(new int[] {
-            8,
-            0,
-            0,
-            0});
-            this.numZ.Location = new System.Drawing.Point(26, 104);
-            this.numZ.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numZ.Name = "numZ";
-            this.numZ.Size = new System.Drawing.Size(52, 20);
-            this.numZ.TabIndex = 4;
-            this.numZ.ValueChanged += new System.EventHandler(this.numZ_ValueChanged);
+            numZ.Increment = new decimal(new int[] { 8, 0, 0, 0 });
+            numZ.Location = new Point(30, 120);
+            numZ.Margin = new Padding(4, 3, 4, 3);
+            numZ.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numZ.Name = "numZ";
+            numZ.Size = new Size(61, 23);
+            numZ.TabIndex = 4;
+            numZ.ValueChanged += numZ_ValueChanged;
             // 
             // numY
             // 
-            this.numY.Increment = new decimal(new int[] {
-            8,
-            0,
-            0,
-            0});
-            this.numY.Location = new System.Drawing.Point(26, 78);
-            this.numY.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numY.Name = "numY";
-            this.numY.Size = new System.Drawing.Size(52, 20);
-            this.numY.TabIndex = 3;
-            this.numY.ValueChanged += new System.EventHandler(this.numY_ValueChanged);
+            numY.Increment = new decimal(new int[] { 8, 0, 0, 0 });
+            numY.Location = new Point(30, 90);
+            numY.Margin = new Padding(4, 3, 4, 3);
+            numY.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numY.Name = "numY";
+            numY.Size = new Size(61, 23);
+            numY.TabIndex = 3;
+            numY.ValueChanged += numY_ValueChanged;
             // 
             // numX
             // 
-            this.numX.Increment = new decimal(new int[] {
-            8,
-            0,
-            0,
-            0});
-            this.numX.Location = new System.Drawing.Point(26, 52);
-            this.numX.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numX.Name = "numX";
-            this.numX.Size = new System.Drawing.Size(52, 20);
-            this.numX.TabIndex = 2;
-            this.numX.ValueChanged += new System.EventHandler(this.numX_ValueChanged);
+            numX.Increment = new decimal(new int[] { 8, 0, 0, 0 });
+            numX.Location = new Point(30, 60);
+            numX.Margin = new Padding(4, 3, 4, 3);
+            numX.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numX.Name = "numX";
+            numX.Size = new Size(61, 23);
+            numX.TabIndex = 2;
+            numX.ValueChanged += numX_ValueChanged;
             // 
             // fraUnknown
             // 
-            this.fraUnknown.Controls.Add(this.numUnknown);
-            this.fraUnknown.Location = new System.Drawing.Point(3, 245);
-            this.fraUnknown.Name = "fraUnknown";
-            this.fraUnknown.Size = new System.Drawing.Size(124, 51);
-            this.fraUnknown.TabIndex = 12;
-            this.fraUnknown.TabStop = false;
-            this.fraUnknown.Text = "Unknown";
+            fraUnknown.BackColor = Color.Transparent;
+            fraUnknown.Controls.Add(numUnknown);
+            fraUnknown.Location = new Point(4, 283);
+            fraUnknown.Margin = new Padding(4, 3, 4, 3);
+            fraUnknown.Name = "fraUnknown";
+            fraUnknown.Padding = new Padding(4, 3, 4, 3);
+            fraUnknown.Size = new Size(145, 59);
+            fraUnknown.TabIndex = 12;
+            fraUnknown.TabStop = false;
+            fraUnknown.Text = "Unknown";
             // 
             // numUnknown
             // 
-            this.numUnknown.Location = new System.Drawing.Point(6, 19);
-            this.numUnknown.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numUnknown.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numUnknown.Name = "numUnknown";
-            this.numUnknown.Size = new System.Drawing.Size(112, 20);
-            this.numUnknown.TabIndex = 2;
-            this.numUnknown.ValueChanged += new System.EventHandler(this.numUnknown_ValueChanged);
+            numUnknown.Location = new Point(7, 22);
+            numUnknown.Margin = new Padding(4, 3, 4, 3);
+            numUnknown.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numUnknown.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numUnknown.Name = "numUnknown";
+            numUnknown.Size = new Size(131, 23);
+            numUnknown.TabIndex = 2;
+            numUnknown.ValueChanged += numUnknown_ValueChanged;
             // 
             // fraGG
             // 
-            this.fraGG.Controls.Add(this.lblZG);
-            this.fraGG.Controls.Add(this.lblYG);
-            this.fraGG.Controls.Add(this.lblXG);
-            this.fraGG.Controls.Add(this.numZOffsetCollision);
-            this.fraGG.Controls.Add(this.numYOffsetCollision);
-            this.fraGG.Controls.Add(this.numXOffsetCollision);
-            this.fraGG.Location = new System.Drawing.Point(133, 245);
-            this.fraGG.Name = "fraGG";
-            this.fraGG.Size = new System.Drawing.Size(124, 98);
-            this.fraGG.TabIndex = 11;
-            this.fraGG.TabStop = false;
-            this.fraGG.Text = "Collision Offset";
+            fraGG.BackColor = Color.Transparent;
+            fraGG.Controls.Add(lblZG);
+            fraGG.Controls.Add(lblYG);
+            fraGG.Controls.Add(lblXG);
+            fraGG.Controls.Add(numZOffsetCollision);
+            fraGG.Controls.Add(numYOffsetCollision);
+            fraGG.Controls.Add(numXOffsetCollision);
+            fraGG.Location = new Point(155, 283);
+            fraGG.Margin = new Padding(4, 3, 4, 3);
+            fraGG.Name = "fraGG";
+            fraGG.Padding = new Padding(4, 3, 4, 3);
+            fraGG.Size = new Size(145, 113);
+            fraGG.TabIndex = 11;
+            fraGG.TabStop = false;
+            fraGG.Text = "Collision Offset";
             // 
             // lblZG
             // 
-            this.lblZG.AutoSize = true;
-            this.lblZG.Location = new System.Drawing.Point(6, 73);
-            this.lblZG.Name = "lblZG";
-            this.lblZG.Size = new System.Drawing.Size(14, 13);
-            this.lblZG.TabIndex = 5;
-            this.lblZG.Text = "Z";
+            lblZG.AutoSize = true;
+            lblZG.BackColor = Color.Transparent;
+            lblZG.Location = new Point(7, 84);
+            lblZG.Margin = new Padding(4, 0, 4, 0);
+            lblZG.Name = "lblZG";
+            lblZG.Size = new Size(14, 15);
+            lblZG.TabIndex = 5;
+            lblZG.Text = "Z";
             // 
             // lblYG
             // 
-            this.lblYG.AutoSize = true;
-            this.lblYG.Location = new System.Drawing.Point(6, 47);
-            this.lblYG.Name = "lblYG";
-            this.lblYG.Size = new System.Drawing.Size(14, 13);
-            this.lblYG.TabIndex = 4;
-            this.lblYG.Text = "Y";
+            lblYG.AutoSize = true;
+            lblYG.BackColor = Color.Transparent;
+            lblYG.Location = new Point(7, 54);
+            lblYG.Margin = new Padding(4, 0, 4, 0);
+            lblYG.Name = "lblYG";
+            lblYG.Size = new Size(14, 15);
+            lblYG.TabIndex = 4;
+            lblYG.Text = "Y";
             // 
             // lblXG
             // 
-            this.lblXG.AutoSize = true;
-            this.lblXG.Location = new System.Drawing.Point(6, 21);
-            this.lblXG.Name = "lblXG";
-            this.lblXG.Size = new System.Drawing.Size(14, 13);
-            this.lblXG.TabIndex = 3;
-            this.lblXG.Text = "X";
+            lblXG.AutoSize = true;
+            lblXG.BackColor = Color.Transparent;
+            lblXG.Location = new Point(7, 24);
+            lblXG.Margin = new Padding(4, 0, 4, 0);
+            lblXG.Name = "lblXG";
+            lblXG.Size = new Size(14, 15);
+            lblXG.TabIndex = 3;
+            lblXG.Text = "X";
             // 
             // numZOffsetCollision
             // 
-            this.numZOffsetCollision.Location = new System.Drawing.Point(23, 71);
-            this.numZOffsetCollision.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
-            this.numZOffsetCollision.Minimum = new decimal(new int[] {
-            -2147483648,
-            0,
-            0,
-            -2147483648});
-            this.numZOffsetCollision.Name = "numZOffsetCollision";
-            this.numZOffsetCollision.Size = new System.Drawing.Size(95, 20);
-            this.numZOffsetCollision.TabIndex = 4;
-            this.numZOffsetCollision.ValueChanged += new System.EventHandler(this.numZOffsetCollision_ValueChanged);
+            numZOffsetCollision.Location = new Point(27, 82);
+            numZOffsetCollision.Margin = new Padding(4, 3, 4, 3);
+            numZOffsetCollision.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numZOffsetCollision.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numZOffsetCollision.Name = "numZOffsetCollision";
+            numZOffsetCollision.Size = new Size(111, 23);
+            numZOffsetCollision.TabIndex = 4;
+            numZOffsetCollision.ValueChanged += numZOffsetCollision_ValueChanged;
             // 
             // numYOffsetCollision
             // 
-            this.numYOffsetCollision.Location = new System.Drawing.Point(23, 45);
-            this.numYOffsetCollision.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
-            this.numYOffsetCollision.Minimum = new decimal(new int[] {
-            -2147483648,
-            0,
-            0,
-            -2147483648});
-            this.numYOffsetCollision.Name = "numYOffsetCollision";
-            this.numYOffsetCollision.Size = new System.Drawing.Size(95, 20);
-            this.numYOffsetCollision.TabIndex = 3;
-            this.numYOffsetCollision.ValueChanged += new System.EventHandler(this.numYOffsetCollision_ValueChanged);
+            numYOffsetCollision.Location = new Point(27, 52);
+            numYOffsetCollision.Margin = new Padding(4, 3, 4, 3);
+            numYOffsetCollision.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numYOffsetCollision.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numYOffsetCollision.Name = "numYOffsetCollision";
+            numYOffsetCollision.Size = new Size(111, 23);
+            numYOffsetCollision.TabIndex = 3;
+            numYOffsetCollision.ValueChanged += numYOffsetCollision_ValueChanged;
             // 
             // numXOffsetCollision
             // 
-            this.numXOffsetCollision.Location = new System.Drawing.Point(23, 19);
-            this.numXOffsetCollision.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
-            this.numXOffsetCollision.Minimum = new decimal(new int[] {
-            -2147483648,
-            0,
-            0,
-            -2147483648});
-            this.numXOffsetCollision.Name = "numXOffsetCollision";
-            this.numXOffsetCollision.Size = new System.Drawing.Size(95, 20);
-            this.numXOffsetCollision.TabIndex = 2;
-            this.numXOffsetCollision.ValueChanged += new System.EventHandler(this.numXOffsetCollision_ValueChanged);
+            numXOffsetCollision.Location = new Point(27, 22);
+            numXOffsetCollision.Margin = new Padding(4, 3, 4, 3);
+            numXOffsetCollision.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numXOffsetCollision.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numXOffsetCollision.Name = "numXOffsetCollision";
+            numXOffsetCollision.Size = new Size(111, 23);
+            numXOffsetCollision.TabIndex = 2;
+            numXOffsetCollision.ValueChanged += numXOffsetCollision_ValueChanged;
             // 
             // fraG2
             // 
-            this.fraG2.Controls.Add(this.lblZ2);
-            this.fraG2.Controls.Add(this.lblY2);
-            this.fraG2.Controls.Add(this.lblX2);
-            this.fraG2.Controls.Add(this.numZ2);
-            this.fraG2.Controls.Add(this.numY2);
-            this.fraG2.Controls.Add(this.numX2);
-            this.fraG2.Location = new System.Drawing.Point(263, 141);
-            this.fraG2.Name = "fraG2";
-            this.fraG2.Size = new System.Drawing.Size(124, 98);
-            this.fraG2.TabIndex = 10;
-            this.fraG2.TabStop = false;
-            this.fraG2.Text = "Collision Point 2";
+            fraG2.BackColor = Color.Transparent;
+            fraG2.Controls.Add(lblZ2);
+            fraG2.Controls.Add(lblY2);
+            fraG2.Controls.Add(lblX2);
+            fraG2.Controls.Add(numZ2);
+            fraG2.Controls.Add(numY2);
+            fraG2.Controls.Add(numX2);
+            fraG2.Location = new Point(307, 163);
+            fraG2.Margin = new Padding(4, 3, 4, 3);
+            fraG2.Name = "fraG2";
+            fraG2.Padding = new Padding(4, 3, 4, 3);
+            fraG2.Size = new Size(145, 113);
+            fraG2.TabIndex = 10;
+            fraG2.TabStop = false;
+            fraG2.Text = "Collision Point 2";
             // 
             // lblZ2
             // 
-            this.lblZ2.AutoSize = true;
-            this.lblZ2.Location = new System.Drawing.Point(6, 73);
-            this.lblZ2.Name = "lblZ2";
-            this.lblZ2.Size = new System.Drawing.Size(14, 13);
-            this.lblZ2.TabIndex = 5;
-            this.lblZ2.Text = "Z";
+            lblZ2.AutoSize = true;
+            lblZ2.BackColor = Color.Transparent;
+            lblZ2.Location = new Point(7, 84);
+            lblZ2.Margin = new Padding(4, 0, 4, 0);
+            lblZ2.Name = "lblZ2";
+            lblZ2.Size = new Size(14, 15);
+            lblZ2.TabIndex = 5;
+            lblZ2.Text = "Z";
             // 
             // lblY2
             // 
-            this.lblY2.AutoSize = true;
-            this.lblY2.Location = new System.Drawing.Point(6, 47);
-            this.lblY2.Name = "lblY2";
-            this.lblY2.Size = new System.Drawing.Size(14, 13);
-            this.lblY2.TabIndex = 4;
-            this.lblY2.Text = "Y";
+            lblY2.AutoSize = true;
+            lblY2.BackColor = Color.Transparent;
+            lblY2.Location = new Point(7, 54);
+            lblY2.Margin = new Padding(4, 0, 4, 0);
+            lblY2.Name = "lblY2";
+            lblY2.Size = new Size(14, 15);
+            lblY2.TabIndex = 4;
+            lblY2.Text = "Y";
             // 
             // lblX2
             // 
-            this.lblX2.AutoSize = true;
-            this.lblX2.Location = new System.Drawing.Point(6, 21);
-            this.lblX2.Name = "lblX2";
-            this.lblX2.Size = new System.Drawing.Size(14, 13);
-            this.lblX2.TabIndex = 3;
-            this.lblX2.Text = "X";
+            lblX2.AutoSize = true;
+            lblX2.BackColor = Color.Transparent;
+            lblX2.Location = new Point(7, 24);
+            lblX2.Margin = new Padding(4, 0, 4, 0);
+            lblX2.Name = "lblX2";
+            lblX2.Size = new Size(14, 15);
+            lblX2.TabIndex = 3;
+            lblX2.Text = "X";
             // 
             // numZ2
             // 
-            this.numZ2.Location = new System.Drawing.Point(23, 71);
-            this.numZ2.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
-            this.numZ2.Minimum = new decimal(new int[] {
-            -2147483648,
-            0,
-            0,
-            -2147483648});
-            this.numZ2.Name = "numZ2";
-            this.numZ2.Size = new System.Drawing.Size(95, 20);
-            this.numZ2.TabIndex = 4;
-            this.numZ2.ValueChanged += new System.EventHandler(this.numZ2_ValueChanged);
+            numZ2.Location = new Point(27, 82);
+            numZ2.Margin = new Padding(4, 3, 4, 3);
+            numZ2.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numZ2.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numZ2.Name = "numZ2";
+            numZ2.Size = new Size(111, 23);
+            numZ2.TabIndex = 4;
+            numZ2.ValueChanged += numZ2_ValueChanged;
             // 
             // numY2
             // 
-            this.numY2.Location = new System.Drawing.Point(23, 45);
-            this.numY2.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
-            this.numY2.Minimum = new decimal(new int[] {
-            -2147483648,
-            0,
-            0,
-            -2147483648});
-            this.numY2.Name = "numY2";
-            this.numY2.Size = new System.Drawing.Size(95, 20);
-            this.numY2.TabIndex = 3;
-            this.numY2.ValueChanged += new System.EventHandler(this.numY2_ValueChanged);
+            numY2.Location = new Point(27, 52);
+            numY2.Margin = new Padding(4, 3, 4, 3);
+            numY2.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numY2.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numY2.Name = "numY2";
+            numY2.Size = new Size(111, 23);
+            numY2.TabIndex = 3;
+            numY2.ValueChanged += numY2_ValueChanged;
             // 
             // numX2
             // 
-            this.numX2.Location = new System.Drawing.Point(23, 19);
-            this.numX2.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
-            this.numX2.Minimum = new decimal(new int[] {
-            -2147483648,
-            0,
-            0,
-            -2147483648});
-            this.numX2.Name = "numX2";
-            this.numX2.Size = new System.Drawing.Size(95, 20);
-            this.numX2.TabIndex = 2;
-            this.numX2.ValueChanged += new System.EventHandler(this.numX2_ValueChanged);
+            numX2.Location = new Point(27, 22);
+            numX2.Margin = new Padding(4, 3, 4, 3);
+            numX2.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numX2.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numX2.Name = "numX2";
+            numX2.Size = new Size(111, 23);
+            numX2.TabIndex = 2;
+            numX2.ValueChanged += numX2_ValueChanged;
             // 
             // fraG1
             // 
-            this.fraG1.Controls.Add(this.lblZ1);
-            this.fraG1.Controls.Add(this.lblY1);
-            this.fraG1.Controls.Add(this.lblX1);
-            this.fraG1.Controls.Add(this.numZ1);
-            this.fraG1.Controls.Add(this.numY1);
-            this.fraG1.Controls.Add(this.numX1);
-            this.fraG1.Location = new System.Drawing.Point(133, 141);
-            this.fraG1.Name = "fraG1";
-            this.fraG1.Size = new System.Drawing.Size(124, 98);
-            this.fraG1.TabIndex = 9;
-            this.fraG1.TabStop = false;
-            this.fraG1.Text = "Collision Point 1";
+            fraG1.BackColor = Color.Transparent;
+            fraG1.Controls.Add(lblZ1);
+            fraG1.Controls.Add(lblY1);
+            fraG1.Controls.Add(lblX1);
+            fraG1.Controls.Add(numZ1);
+            fraG1.Controls.Add(numY1);
+            fraG1.Controls.Add(numX1);
+            fraG1.Location = new Point(155, 163);
+            fraG1.Margin = new Padding(4, 3, 4, 3);
+            fraG1.Name = "fraG1";
+            fraG1.Padding = new Padding(4, 3, 4, 3);
+            fraG1.Size = new Size(145, 113);
+            fraG1.TabIndex = 9;
+            fraG1.TabStop = false;
+            fraG1.Text = "Collision Point 1";
             // 
             // lblZ1
             // 
-            this.lblZ1.AutoSize = true;
-            this.lblZ1.Location = new System.Drawing.Point(6, 73);
-            this.lblZ1.Name = "lblZ1";
-            this.lblZ1.Size = new System.Drawing.Size(14, 13);
-            this.lblZ1.TabIndex = 5;
-            this.lblZ1.Text = "Z";
+            lblZ1.AutoSize = true;
+            lblZ1.BackColor = Color.Transparent;
+            lblZ1.Location = new Point(7, 84);
+            lblZ1.Margin = new Padding(4, 0, 4, 0);
+            lblZ1.Name = "lblZ1";
+            lblZ1.Size = new Size(14, 15);
+            lblZ1.TabIndex = 5;
+            lblZ1.Text = "Z";
             // 
             // lblY1
             // 
-            this.lblY1.AutoSize = true;
-            this.lblY1.Location = new System.Drawing.Point(6, 47);
-            this.lblY1.Name = "lblY1";
-            this.lblY1.Size = new System.Drawing.Size(14, 13);
-            this.lblY1.TabIndex = 4;
-            this.lblY1.Text = "Y";
+            lblY1.AutoSize = true;
+            lblY1.BackColor = Color.Transparent;
+            lblY1.Location = new Point(7, 54);
+            lblY1.Margin = new Padding(4, 0, 4, 0);
+            lblY1.Name = "lblY1";
+            lblY1.Size = new Size(14, 15);
+            lblY1.TabIndex = 4;
+            lblY1.Text = "Y";
             // 
             // lblX1
             // 
-            this.lblX1.AutoSize = true;
-            this.lblX1.Location = new System.Drawing.Point(6, 21);
-            this.lblX1.Name = "lblX1";
-            this.lblX1.Size = new System.Drawing.Size(14, 13);
-            this.lblX1.TabIndex = 3;
-            this.lblX1.Text = "X";
+            lblX1.AutoSize = true;
+            lblX1.BackColor = Color.Transparent;
+            lblX1.Location = new Point(7, 24);
+            lblX1.Margin = new Padding(4, 0, 4, 0);
+            lblX1.Name = "lblX1";
+            lblX1.Size = new Size(14, 15);
+            lblX1.TabIndex = 3;
+            lblX1.Text = "X";
             // 
             // numZ1
             // 
-            this.numZ1.Location = new System.Drawing.Point(23, 71);
-            this.numZ1.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
-            this.numZ1.Minimum = new decimal(new int[] {
-            -2147483648,
-            0,
-            0,
-            -2147483648});
-            this.numZ1.Name = "numZ1";
-            this.numZ1.Size = new System.Drawing.Size(95, 20);
-            this.numZ1.TabIndex = 4;
-            this.numZ1.ValueChanged += new System.EventHandler(this.numZ1_ValueChanged);
+            numZ1.Location = new Point(27, 82);
+            numZ1.Margin = new Padding(4, 3, 4, 3);
+            numZ1.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numZ1.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numZ1.Name = "numZ1";
+            numZ1.Size = new Size(111, 23);
+            numZ1.TabIndex = 4;
+            numZ1.ValueChanged += numZ1_ValueChanged;
             // 
             // numY1
             // 
-            this.numY1.Location = new System.Drawing.Point(23, 45);
-            this.numY1.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
-            this.numY1.Minimum = new decimal(new int[] {
-            -2147483648,
-            0,
-            0,
-            -2147483648});
-            this.numY1.Name = "numY1";
-            this.numY1.Size = new System.Drawing.Size(95, 20);
-            this.numY1.TabIndex = 3;
-            this.numY1.ValueChanged += new System.EventHandler(this.numY1_ValueChanged);
+            numY1.Location = new Point(27, 52);
+            numY1.Margin = new Padding(4, 3, 4, 3);
+            numY1.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numY1.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numY1.Name = "numY1";
+            numY1.Size = new Size(111, 23);
+            numY1.TabIndex = 3;
+            numY1.ValueChanged += numY1_ValueChanged;
             // 
             // numX1
             // 
-            this.numX1.Location = new System.Drawing.Point(23, 19);
-            this.numX1.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
-            this.numX1.Minimum = new decimal(new int[] {
-            -2147483648,
-            0,
-            0,
-            -2147483648});
-            this.numX1.Name = "numX1";
-            this.numX1.Size = new System.Drawing.Size(95, 20);
-            this.numX1.TabIndex = 2;
-            this.numX1.ValueChanged += new System.EventHandler(this.numX1_ValueChanged);
+            numX1.Location = new Point(27, 22);
+            numX1.Margin = new Padding(4, 3, 4, 3);
+            numX1.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numX1.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numX1.Name = "numX1";
+            numX1.Size = new Size(111, 23);
+            numX1.TabIndex = 2;
+            numX1.ValueChanged += numX1_ValueChanged;
             // 
             // fraOffset
             // 
-            this.fraOffset.Controls.Add(this.lblZOffset);
-            this.fraOffset.Controls.Add(this.lblYOffset);
-            this.fraOffset.Controls.Add(this.lblXOffset);
-            this.fraOffset.Controls.Add(this.numZOffset);
-            this.fraOffset.Controls.Add(this.numYOffset);
-            this.fraOffset.Controls.Add(this.numXOffset);
-            this.fraOffset.Location = new System.Drawing.Point(3, 141);
-            this.fraOffset.Name = "fraOffset";
-            this.fraOffset.Size = new System.Drawing.Size(124, 98);
-            this.fraOffset.TabIndex = 8;
-            this.fraOffset.TabStop = false;
-            this.fraOffset.Text = "Offset";
+            fraOffset.BackColor = Color.Transparent;
+            fraOffset.Controls.Add(lblZOffset);
+            fraOffset.Controls.Add(lblYOffset);
+            fraOffset.Controls.Add(lblXOffset);
+            fraOffset.Controls.Add(numZOffset);
+            fraOffset.Controls.Add(numYOffset);
+            fraOffset.Controls.Add(numXOffset);
+            fraOffset.Location = new Point(4, 163);
+            fraOffset.Margin = new Padding(4, 3, 4, 3);
+            fraOffset.Name = "fraOffset";
+            fraOffset.Padding = new Padding(4, 3, 4, 3);
+            fraOffset.Size = new Size(145, 113);
+            fraOffset.TabIndex = 8;
+            fraOffset.TabStop = false;
+            fraOffset.Text = "Offset";
             // 
             // lblZOffset
             // 
-            this.lblZOffset.AutoSize = true;
-            this.lblZOffset.Location = new System.Drawing.Point(6, 73);
-            this.lblZOffset.Name = "lblZOffset";
-            this.lblZOffset.Size = new System.Drawing.Size(14, 13);
-            this.lblZOffset.TabIndex = 5;
-            this.lblZOffset.Text = "Z";
+            lblZOffset.AutoSize = true;
+            lblZOffset.BackColor = Color.Transparent;
+            lblZOffset.Location = new Point(7, 84);
+            lblZOffset.Margin = new Padding(4, 0, 4, 0);
+            lblZOffset.Name = "lblZOffset";
+            lblZOffset.Size = new Size(14, 15);
+            lblZOffset.TabIndex = 5;
+            lblZOffset.Text = "Z";
             // 
             // lblYOffset
             // 
-            this.lblYOffset.AutoSize = true;
-            this.lblYOffset.Location = new System.Drawing.Point(6, 47);
-            this.lblYOffset.Name = "lblYOffset";
-            this.lblYOffset.Size = new System.Drawing.Size(14, 13);
-            this.lblYOffset.TabIndex = 4;
-            this.lblYOffset.Text = "Y";
+            lblYOffset.AutoSize = true;
+            lblYOffset.BackColor = Color.Transparent;
+            lblYOffset.Location = new Point(7, 54);
+            lblYOffset.Margin = new Padding(4, 0, 4, 0);
+            lblYOffset.Name = "lblYOffset";
+            lblYOffset.Size = new Size(14, 15);
+            lblYOffset.TabIndex = 4;
+            lblYOffset.Text = "Y";
             // 
             // lblXOffset
             // 
-            this.lblXOffset.AutoSize = true;
-            this.lblXOffset.Location = new System.Drawing.Point(6, 21);
-            this.lblXOffset.Name = "lblXOffset";
-            this.lblXOffset.Size = new System.Drawing.Size(14, 13);
-            this.lblXOffset.TabIndex = 3;
-            this.lblXOffset.Text = "X";
+            lblXOffset.AutoSize = true;
+            lblXOffset.BackColor = Color.Transparent;
+            lblXOffset.Location = new Point(7, 24);
+            lblXOffset.Margin = new Padding(4, 0, 4, 0);
+            lblXOffset.Name = "lblXOffset";
+            lblXOffset.Size = new Size(14, 15);
+            lblXOffset.TabIndex = 3;
+            lblXOffset.Text = "X";
             // 
             // numZOffset
             // 
-            this.numZOffset.Location = new System.Drawing.Point(23, 71);
-            this.numZOffset.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
-            this.numZOffset.Minimum = new decimal(new int[] {
-            -2147483648,
-            0,
-            0,
-            -2147483648});
-            this.numZOffset.Name = "numZOffset";
-            this.numZOffset.Size = new System.Drawing.Size(95, 20);
-            this.numZOffset.TabIndex = 4;
-            this.numZOffset.ValueChanged += new System.EventHandler(this.numZOffset_ValueChanged);
+            numZOffset.Location = new Point(27, 82);
+            numZOffset.Margin = new Padding(4, 3, 4, 3);
+            numZOffset.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numZOffset.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numZOffset.Name = "numZOffset";
+            numZOffset.Size = new Size(111, 23);
+            numZOffset.TabIndex = 4;
+            numZOffset.ValueChanged += numZOffset_ValueChanged;
             // 
             // numYOffset
             // 
-            this.numYOffset.Location = new System.Drawing.Point(23, 45);
-            this.numYOffset.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
-            this.numYOffset.Minimum = new decimal(new int[] {
-            -2147483648,
-            0,
-            0,
-            -2147483648});
-            this.numYOffset.Name = "numYOffset";
-            this.numYOffset.Size = new System.Drawing.Size(95, 20);
-            this.numYOffset.TabIndex = 3;
-            this.numYOffset.ValueChanged += new System.EventHandler(this.numYOffset_ValueChanged);
+            numYOffset.Location = new Point(27, 52);
+            numYOffset.Margin = new Padding(4, 3, 4, 3);
+            numYOffset.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numYOffset.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numYOffset.Name = "numYOffset";
+            numYOffset.Size = new Size(111, 23);
+            numYOffset.TabIndex = 3;
+            numYOffset.ValueChanged += numYOffset_ValueChanged;
             // 
             // numXOffset
             // 
-            this.numXOffset.Location = new System.Drawing.Point(23, 19);
-            this.numXOffset.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
-            this.numXOffset.Minimum = new decimal(new int[] {
-            -2147483648,
-            0,
-            0,
-            -2147483648});
-            this.numXOffset.Name = "numXOffset";
-            this.numXOffset.Size = new System.Drawing.Size(95, 20);
-            this.numXOffset.TabIndex = 2;
-            this.numXOffset.ValueChanged += new System.EventHandler(this.numXOffset_ValueChanged);
+            numXOffset.Location = new Point(27, 22);
+            numXOffset.Margin = new Padding(4, 3, 4, 3);
+            numXOffset.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numXOffset.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numXOffset.Name = "numXOffset";
+            numXOffset.Size = new Size(111, 23);
+            numXOffset.TabIndex = 2;
+            numXOffset.ValueChanged += numXOffset_ValueChanged;
             // 
             // OldFrameBox
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.fraG1);
-            this.Controls.Add(this.fraG2);
-            this.Controls.Add(this.fraGG);
-            this.Controls.Add(this.fraOffset);
-            this.Controls.Add(this.fraUnknown);
-            this.Controls.Add(this.fraVertice);
-            this.Name = "OldFrameBox";
-            this.Size = new System.Drawing.Size(398, 454);
-            this.fraVertice.ResumeLayout(false);
-            this.fraVertice.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numNZ)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numNY)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numNX)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numZ)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numY)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numX)).EndInit();
-            this.fraUnknown.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numUnknown)).EndInit();
-            this.fraGG.ResumeLayout(false);
-            this.fraGG.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numZOffsetCollision)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numYOffsetCollision)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numXOffsetCollision)).EndInit();
-            this.fraG2.ResumeLayout(false);
-            this.fraG2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numZ2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numY2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numX2)).EndInit();
-            this.fraG1.ResumeLayout(false);
-            this.fraG1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numZ1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numY1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numX1)).EndInit();
-            this.fraOffset.ResumeLayout(false);
-            this.fraOffset.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numZOffset)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numYOffset)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numXOffset)).EndInit();
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(30, 30, 30);
+            Controls.Add(fraG1);
+            Controls.Add(fraG2);
+            Controls.Add(fraGG);
+            Controls.Add(fraOffset);
+            Controls.Add(fraUnknown);
+            Controls.Add(fraVertice);
+            Margin = new Padding(4, 3, 4, 3);
+            Name = "OldFrameBox";
+            Size = new Size(464, 524);
+            fraVertice.ResumeLayout(false);
+            fraVertice.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numNZ).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numNY).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numNX).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numZ).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numY).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numX).EndInit();
+            fraUnknown.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)numUnknown).EndInit();
+            fraGG.ResumeLayout(false);
+            fraGG.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numZOffsetCollision).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numYOffsetCollision).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numXOffsetCollision).EndInit();
+            fraG2.ResumeLayout(false);
+            fraG2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numZ2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numY2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numX2).EndInit();
+            fraG1.ResumeLayout(false);
+            fraG1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numZ1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numY1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numX1).EndInit();
+            fraOffset.ResumeLayout(false);
+            fraOffset.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numZOffset).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numYOffset).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numXOffset).EndInit();
+            ResumeLayout(false);
         }
 
         #endregion
 
-        private System.Windows.Forms.GroupBox fraVertice;
-        private System.Windows.Forms.Label lblZ;
-        private System.Windows.Forms.Label lblY;
-        private System.Windows.Forms.Label lblX;
-        private System.Windows.Forms.NumericUpDown numZ;
-        private System.Windows.Forms.NumericUpDown numY;
-        private System.Windows.Forms.NumericUpDown numX;
-        private System.Windows.Forms.Button cmdInsertVertice;
-        private System.Windows.Forms.Button cmdRemoveVertice;
-        private System.Windows.Forms.Button cmdAppendVertice;
-        private System.Windows.Forms.Button cmdNextVertice;
-        private System.Windows.Forms.Button cmdPreviousVertice;
-        private System.Windows.Forms.Label lblVerticeIndex;
-        private System.Windows.Forms.GroupBox fraOffset;
-        private System.Windows.Forms.Label lblZOffset;
-        private System.Windows.Forms.Label lblYOffset;
-        private System.Windows.Forms.Label lblXOffset;
-        private System.Windows.Forms.NumericUpDown numZOffset;
-        private System.Windows.Forms.NumericUpDown numYOffset;
-        private System.Windows.Forms.NumericUpDown numXOffset;
-        private System.Windows.Forms.Label lblNZ;
-        private System.Windows.Forms.Label lblNY;
-        private System.Windows.Forms.Label lblNX;
-        private System.Windows.Forms.NumericUpDown numNZ;
-        private System.Windows.Forms.NumericUpDown numNY;
-        private System.Windows.Forms.NumericUpDown numNX;
-        private System.Windows.Forms.GroupBox fraG2;
-        private System.Windows.Forms.Label lblZ2;
-        private System.Windows.Forms.Label lblY2;
-        private System.Windows.Forms.Label lblX2;
-        private System.Windows.Forms.NumericUpDown numZ2;
-        private System.Windows.Forms.NumericUpDown numY2;
-        private System.Windows.Forms.NumericUpDown numX2;
-        private System.Windows.Forms.GroupBox fraG1;
-        private System.Windows.Forms.Label lblZ1;
-        private System.Windows.Forms.Label lblY1;
-        private System.Windows.Forms.Label lblX1;
-        private System.Windows.Forms.NumericUpDown numZ1;
-        private System.Windows.Forms.NumericUpDown numY1;
-        private System.Windows.Forms.NumericUpDown numX1;
-        private System.Windows.Forms.GroupBox fraGG;
-        private System.Windows.Forms.Label lblZG;
-        private System.Windows.Forms.Label lblYG;
-        private System.Windows.Forms.Label lblXG;
-        private System.Windows.Forms.NumericUpDown numZOffsetCollision;
-        private System.Windows.Forms.NumericUpDown numYOffsetCollision;
-        private System.Windows.Forms.NumericUpDown numXOffsetCollision;
-        private System.Windows.Forms.GroupBox fraUnknown;
-        private System.Windows.Forms.NumericUpDown numUnknown;
+        private DarkGroupBox fraVertice;
+        private Label lblZ;
+        private Label lblY;
+        private Label lblX;
+        private DarkNumericUpDown numZ;
+        private DarkNumericUpDown numY;
+        private DarkNumericUpDown numX;
+        private DarkButton cmdInsertVertice;
+        private DarkButton cmdRemoveVertice;
+        private DarkButton cmdAppendVertice;
+        private DarkButton cmdNextVertice;
+        private DarkButton cmdPreviousVertice;
+        private Label lblVerticeIndex;
+        private DarkGroupBox fraOffset;
+        private Label lblZOffset;
+        private Label lblYOffset;
+        private Label lblXOffset;
+        private DarkNumericUpDown numZOffset;
+        private DarkNumericUpDown numYOffset;
+        private DarkNumericUpDown numXOffset;
+        private Label lblNZ;
+        private Label lblNY;
+        private Label lblNX;
+        private DarkNumericUpDown numNZ;
+        private DarkNumericUpDown numNY;
+        private DarkNumericUpDown numNX;
+        private DarkGroupBox fraG2;
+        private Label lblZ2;
+        private Label lblY2;
+        private Label lblX2;
+        private DarkNumericUpDown numZ2;
+        private DarkNumericUpDown numY2;
+        private DarkNumericUpDown numX2;
+        private DarkGroupBox fraG1;
+        private Label lblZ1;
+        private Label lblY1;
+        private Label lblX1;
+        private DarkNumericUpDown numZ1;
+        private DarkNumericUpDown numY1;
+        private DarkNumericUpDown numX1;
+        private DarkGroupBox fraGG;
+        private Label lblZG;
+        private Label lblYG;
+        private Label lblXG;
+        private DarkNumericUpDown numZOffsetCollision;
+        private DarkNumericUpDown numYOffsetCollision;
+        private DarkNumericUpDown numXOffsetCollision;
+        private DarkGroupBox fraUnknown;
+        private DarkNumericUpDown numUnknown;
     }
 }
