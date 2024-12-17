@@ -1,3 +1,4 @@
+using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 using MetroSet_UI.Controls;
 
@@ -6,6 +7,7 @@ namespace CrashEdit.CE
     [OrphanLegacyController(typeof(Frame))]
     public sealed class FrameController : LegacyController
     {
+        private SplitContainer pnSplit;
         public FrameController(Frame frame, SubcontrollerGroup parentGroup) : base(parentGroup, frame)
         {
             Frame = frame;
@@ -35,18 +37,31 @@ namespace CrashEdit.CE
                 {
                     Dock = DockStyle.Fill
                 };
-                framebox.Dock = DockStyle.Fill;
 
-                TabPage edittab = new TabPage("Editor");
-                edittab.Controls.Add(framebox);
-                TabPage viewertab = new TabPage("Viewer");
-                viewertab.Controls.Add(viewerbox);
+                if (Settings.Default.SplitViewerPanels)
+                {
+                    pnSplit = new SplitContainer
+                    {
+                        Orientation = Orientation.Horizontal,
+                        SplitterDistance = 35,
+                        Dock = DockStyle.Fill 
+                    };
+                    pnSplit.Panel1.Controls.Add(framebox);
+                    pnSplit.Panel2.Controls.Add(viewerbox);
+                    return pnSplit;
+                }
+                else
+                {
+                    TabPage edittab = new TabPage("Editor");
+                    edittab.Controls.Add(framebox);
+                    TabPage viewertab = new TabPage("Viewer");
+                    viewertab.Controls.Add(viewerbox);
 
-                tbcTabs.TabPages.Add(viewertab);
-                tbcTabs.TabPages.Add(edittab);
-                tbcTabs.SelectedTab = viewertab;
-
-                return tbcTabs;
+                    tbcTabs.TabPages.Add(viewertab);
+                    tbcTabs.TabPages.Add(edittab);
+                    tbcTabs.SelectedTab = viewertab;
+                    return tbcTabs;
+                }
             }
             else
             {

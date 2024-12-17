@@ -105,6 +105,7 @@ namespace CrashEdit.CE
             chkShowCustomCrates.Checked = Settings.Default.ShowCustomCrates;
             chkEnableC2TT.Checked = Settings.Default.EnableC2TTEditor;
             chkPatchGOOLC3toC2.Checked = Settings.Default.PatchGOOLC3toC2;
+            chkSplitViewerPanels.Checked = Settings.Default.SplitViewerPanels;
 
             fraSize.Text = Resources.Config_fraSize;
             fraClearCol.Text = Resources.Config_fraClearCol;
@@ -317,6 +318,12 @@ namespace CrashEdit.CE
             Settings.Default.PatchGOOLC3toC2 = chkPatchGOOLC3toC2.Checked;
             Settings.Default.Save();
             RestartProgram();
+        }
+
+        private void chkSplitViewerPanels_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.SplitViewerPanels = chkSplitViewerPanels.Checked;
+            Settings.Default.Save();
         }
     }
 }

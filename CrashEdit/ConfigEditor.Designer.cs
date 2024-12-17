@@ -78,6 +78,7 @@ namespace CrashEdit.CE
             chkLiteralCollisionTypes = new CheckBox();
             chkPatchGOOLC3toC2 = new CheckBox();
             chkOldPatchNSD = new CheckBox();
+            chkSplitViewerPanels = new CheckBox();
             tableLayoutPanel4 = new TableLayoutPanel();
             tableLayoutPanel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numFontSize).BeginInit();
@@ -661,6 +662,7 @@ namespace CrashEdit.CE
             // tbpMisc
             // 
             tbpMisc.BackColor = Color.FromArgb(30, 30, 30);
+            tbpMisc.Controls.Add(chkSplitViewerPanels);
             tbpMisc.Controls.Add(chkEnableC2TT);
             tbpMisc.Controls.Add(chkShowCustomCrates);
             tbpMisc.Controls.Add(chkLiteralCollisionTypes);
@@ -730,6 +732,18 @@ namespace CrashEdit.CE
             chkOldPatchNSD.Text = "Use old NSD patching from CrashEdit v0.2.49.0";
             chkOldPatchNSD.UseVisualStyleBackColor = true;
             chkOldPatchNSD.CheckedChanged += chkOldPatchNSD_CheckedChanged;
+            // 
+            // chkSplitViewerPanels
+            // 
+            chkSplitViewerPanels.AutoSize = true;
+            chkSplitViewerPanels.Location = new Point(7, 131);
+            chkSplitViewerPanels.Margin = new Padding(4, 3, 4, 3);
+            chkSplitViewerPanels.Name = "chkSplitViewerPanels";
+            chkSplitViewerPanels.Size = new Size(123, 19);
+            chkSplitViewerPanels.TabIndex = 17;
+            chkSplitViewerPanels.Text = "Split viewer panels";
+            chkSplitViewerPanels.UseVisualStyleBackColor = true;
+            chkSplitViewerPanels.CheckedChanged += chkSplitViewerPanels_CheckedChanged;
             // 
             // ConfigEditor
             // 
@@ -822,5 +836,6 @@ namespace CrashEdit.CE
         private CheckBox chkShowCustomCrates;
         private CheckBox chkEnableC2TT;
         private CheckBox chkPatchGOOLC3toC2;
+        private CheckBox chkSplitViewerPanels;
     }
 }

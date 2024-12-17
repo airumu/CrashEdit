@@ -394,5 +394,17 @@ namespace CrashEdit.CE.Properties {
                 this["PatchGOOLC3toC2"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SplitViewerPanels {
+            get {
+                return ((bool)(this["SplitViewerPanels"]));
+            }
+            set {
+                this["SplitViewerPanels"] = value;
+            }
+        }
     }
 }
