@@ -1,4 +1,5 @@
-﻿using AltUI.Controls;
+﻿using System.Windows.Forms;
+using AltUI.Controls;
 using MetroSet_UI.Controls;
 using MetroSet_UI.Enums;
 
@@ -147,10 +148,12 @@ namespace CrashEdit.CE
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.Controls.Add(tabControl1);
-            splitContainer1.Size = new Size(915, 416);
-            splitContainer1.SplitterDistance = 169;
+            splitContainer1.Size = new Size(916, 359);
+            splitContainer1.SplitterDistance = 136;
             splitContainer1.SplitterWidth = 5;
             splitContainer1.TabIndex = 0;
+            splitContainer1.TabStop = false;
+            splitContainer1.GotFocus += splitContainer1_GotFocus;
             // 
             // pictureBox1
             // 
@@ -176,7 +179,7 @@ namespace CrashEdit.CE
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 1;
             tabControl1.SelectedTextColor = Color.White;
-            tabControl1.Size = new Size(915, 242);
+            tabControl1.Size = new Size(916, 218);
             tabControl1.SizeMode = TabSizeMode.Fixed;
             tabControl1.Speed = 100;
             tabControl1.Style = Style.Dark;
@@ -203,7 +206,7 @@ namespace CrashEdit.CE
             tabC1.Margin = new Padding(5, 4, 5, 4);
             tabC1.Name = "tabC1";
             tabC1.Padding = new Padding(5, 4, 5, 4);
-            tabC1.Size = new Size(907, 206);
+            tabC1.Size = new Size(908, 182);
             tabC1.TabIndex = 0;
             tabC1.Text = "Crash 1";
             // 
@@ -486,7 +489,7 @@ namespace CrashEdit.CE
             tabC2.Margin = new Padding(4);
             tabC2.Name = "tabC2";
             tabC2.Padding = new Padding(4);
-            tabC2.Size = new Size(907, 206);
+            tabC2.Size = new Size(908, 182);
             tabC2.TabIndex = 1;
             tabC2.Text = "Crash 2";
             // 
@@ -842,14 +845,14 @@ namespace CrashEdit.CE
             groupBox11.Margin = new Padding(4);
             groupBox11.Name = "groupBox11";
             groupBox11.Padding = new Padding(4);
-            groupBox11.Size = new Size(103, 90);
+            groupBox11.Size = new Size(103, 84);
             groupBox11.TabIndex = 10;
             groupBox11.TabStop = false;
-            groupBox11.Text = "Move X";
+            groupBox11.Text = "Move to X";
             // 
             // C2numMoveX
             // 
-            C2numMoveX.Location = new Point(7, 25);
+            C2numMoveX.Location = new Point(7, 21);
             C2numMoveX.Margin = new Padding(4);
             C2numMoveX.Maximum = new decimal(new int[] { 1023, 0, 0, 0 });
             C2numMoveX.Name = "C2numMoveX";
@@ -863,7 +866,7 @@ namespace CrashEdit.CE
             C2btnMoveX1.CustomColour = false;
             C2btnMoveX1.FlatBottom = false;
             C2btnMoveX1.FlatTop = false;
-            C2btnMoveX1.Location = new Point(7, 55);
+            C2btnMoveX1.Location = new Point(7, 49);
             C2btnMoveX1.Margin = new Padding(4);
             C2btnMoveX1.Name = "C2btnMoveX1";
             C2btnMoveX1.Padding = new Padding(6);
@@ -878,7 +881,7 @@ namespace CrashEdit.CE
             C2btnMoveX2.CustomColour = false;
             C2btnMoveX2.FlatBottom = false;
             C2btnMoveX2.FlatTop = false;
-            C2btnMoveX2.Location = new Point(54, 55);
+            C2btnMoveX2.Location = new Point(54, 49);
             C2btnMoveX2.Margin = new Padding(4);
             C2btnMoveX2.Name = "C2btnMoveX2";
             C2btnMoveX2.Padding = new Padding(6);
@@ -893,18 +896,18 @@ namespace CrashEdit.CE
             groupBox12.Controls.Add(C2numMoveY);
             groupBox12.Controls.Add(C2btnMoveY1);
             groupBox12.Controls.Add(C2btnMoveY2);
-            groupBox12.Location = new Point(541, 99);
+            groupBox12.Location = new Point(541, 93);
             groupBox12.Margin = new Padding(4);
             groupBox12.Name = "groupBox12";
             groupBox12.Padding = new Padding(4);
-            groupBox12.Size = new Size(103, 90);
+            groupBox12.Size = new Size(103, 84);
             groupBox12.TabIndex = 15;
             groupBox12.TabStop = false;
-            groupBox12.Text = "Move Y";
+            groupBox12.Text = "Move to Y";
             // 
             // C2numMoveY
             // 
-            C2numMoveY.Location = new Point(7, 25);
+            C2numMoveY.Location = new Point(7, 21);
             C2numMoveY.Margin = new Padding(4);
             C2numMoveY.Maximum = new decimal(new int[] { 1023, 0, 0, 0 });
             C2numMoveY.Name = "C2numMoveY";
@@ -918,7 +921,7 @@ namespace CrashEdit.CE
             C2btnMoveY1.CustomColour = false;
             C2btnMoveY1.FlatBottom = false;
             C2btnMoveY1.FlatTop = false;
-            C2btnMoveY1.Location = new Point(7, 55);
+            C2btnMoveY1.Location = new Point(7, 49);
             C2btnMoveY1.Margin = new Padding(4);
             C2btnMoveY1.Name = "C2btnMoveY1";
             C2btnMoveY1.Padding = new Padding(6);
@@ -933,7 +936,7 @@ namespace CrashEdit.CE
             C2btnMoveY2.CustomColour = false;
             C2btnMoveY2.FlatBottom = false;
             C2btnMoveY2.FlatTop = false;
-            C2btnMoveY2.Location = new Point(54, 55);
+            C2btnMoveY2.Location = new Point(54, 49);
             C2btnMoveY2.Margin = new Padding(4);
             C2btnMoveY2.Name = "C2btnMoveY2";
             C2btnMoveY2.Padding = new Padding(6);
@@ -946,7 +949,7 @@ namespace CrashEdit.CE
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(915, 416);
+            ClientSize = new Size(916, 359);
             Controls.Add(splitContainer1);
             CornerStyle = CornerPreference.Default;
             DoubleBuffered = true;

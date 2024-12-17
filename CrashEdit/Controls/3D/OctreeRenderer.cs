@@ -104,7 +104,10 @@ namespace CrashEdit.CE
                 {
                     if (octree_form == null || octree_form.IsDisposed)
                     {
-                        octree_form = new DarkForm();
+                        octree_form = new DarkForm()
+                        {
+                            Icon = Embeds.GetIcon("ThingViolet")
+                        };
                         octree_form.FormClosing += (sender, e) =>
                         {
                             node_filter = 0;

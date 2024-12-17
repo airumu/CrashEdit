@@ -19,6 +19,8 @@ namespace CrashEdit.CE
 
         public NewEntryForm(NSF nsf, GameVersion gameVersion)
         {
+            Icon = Embeds.GetIcon("ThingOrange");
+
             this.nsf = nsf;
             InitializeComponent();
             dpdType.Items.Add(EntryTypeUnprocessed);

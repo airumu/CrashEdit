@@ -128,10 +128,10 @@
     <value>Resources\Textures\AppleBox.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SpringBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Textures/ArrowBox.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources\Textures\AppleBox.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SteelBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Textures/BodyslamBox.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources\Textures\BodyslamBox.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="EmptyBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\Textures\Box.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -170,25 +170,25 @@
     <value>Resources\Textures\DetonatorBoxTop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="PointTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Textures/Point.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources\Textures\Point.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="PickupBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Textures/QuestionMarkBox.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources\Textures\QuestionMarkBox.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="TNTBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Textures/TNT.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources\Textures\TNT.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="TNTBoxTopTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Textures/TNTTop.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources\Textures\TNTTop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="UnknownBoxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Textures/UnknownBox.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources\Textures\UnknownBox.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="UnknownBoxTopTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Textures/UnknownBoxTop.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources\Textures\UnknownBoxTop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="UnknownPickupTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources/Textures/UnknownPickup.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral</value>
+    <value>Resources\Textures\UnknownPickup.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="TimeBoxTopTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\Textures\TimeBoxTopTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

@@ -1693,6 +1693,60 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
+        ///   Exporting to COLLADA is experimental. Texture information will not be exported. Continue anyway? に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Scenery_ExportCOLLADA {
+            get {
+                return ResourceManager.GetString("Scenery_ExportCOLLADA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Export as COLLADA に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Scenery_ExportCOLLADA_Title {
+            get {
+                return ResourceManager.GetString("Scenery_ExportCOLLADA_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Exporting to Wavefront OBJ (.obj) is experimental. Texture and color information will not be exported. Continue anyway? に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Scenery_ExportOBJ {
+            get {
+                return ResourceManager.GetString("Scenery_ExportOBJ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Export as OBJ に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Scenery_ExportOBJ_Title {
+            get {
+                return ResourceManager.GetString("Scenery_ExportOBJ_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Exporting to Stanford PLY (.ply) is experimental. Texture information will not be exported. Continue anyway? に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Scenery_ExportPLY {
+            get {
+                return ResourceManager.GetString("Scenery_ExportPLY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Export as PLY に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Scenery_ExportPLY_Title {
+            get {
+                return ResourceManager.GetString("Scenery_ExportPLY_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   The file &quot;{0}&quot; has not been saved since it was last modified. Continue anyway? に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Text_CloseDirtyFilePrompt {

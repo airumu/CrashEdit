@@ -18,6 +18,8 @@ namespace CrashEdit.CE
 
         public InterpolatorForm(ICollection<Position> positions)
         {
+            Icon = Embeds.GetIcon("ThingViolet");
+
             if (positions.Count < 2)
             {
                 DialogResult = DialogResult.Cancel;

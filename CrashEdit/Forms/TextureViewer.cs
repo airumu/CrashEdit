@@ -1,5 +1,7 @@
 ﻿using AltUI.Forms;
+using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
+using System.Drawing;
 using System.Drawing.Imaging;
 
 namespace CrashEdit.CE
@@ -21,6 +23,7 @@ namespace CrashEdit.CE
             chunk = texturechunk;
             textype = TextureType.Crash2;
 
+            Icon = Embeds.GetIcon("Painting");
             Text = string.Format("Texture Viewer [{0}] - Right-click to save texture region to file", texturechunk.EName);
 
             InitializeComponent();
@@ -297,6 +300,11 @@ namespace CrashEdit.CE
                 C2numY.Value += arg;
             /*            else
                             C2numY.Value = 127;*/
+        }
+
+        private void splitContainer1_GotFocus(object sender, EventArgs e)
+        {
+            tabControl1.Focus();
         }
     }
 }

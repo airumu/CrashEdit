@@ -803,4 +803,22 @@ as Meters: {3:F3}m</value>
     <value>Show literal zone collision types</value>
     <comment>CE-tweaked</comment>
   </data>
+  <data name="Scenery_ExportOBJ" xml:space="preserve">
+    <value>Exporting to Wavefront OBJ (.obj) is experimental. Texture and color information will not be exported. Continue anyway?</value>
+  </data>
+  <data name="Scenery_ExportPLY" xml:space="preserve">
+    <value>Exporting to Stanford PLY (.ply) is experimental. Texture information will not be exported. Continue anyway?</value>
+  </data>
+  <data name="Scenery_ExportOBJ_Title" xml:space="preserve">
+    <value>Export as OBJ</value>
+  </data>
+  <data name="Scenery_ExportPLY_Title" xml:space="preserve">
+    <value>Export as PLY</value>
+  </data>
+  <data name="Scenery_ExportCOLLADA" xml:space="preserve">
+    <value>Exporting to COLLADA is experimental. Texture information will not be exported. Continue anyway?</value>
+  </data>
+  <data name="Scenery_ExportCOLLADA_Title" xml:space="preserve">
+    <value>Export as COLLADA</value>
+  </data>
 </root>
