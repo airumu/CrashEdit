@@ -6,6 +6,7 @@ namespace CrashEdit.CE
     {
         private FrameController controller;
         private Frame frame;
+        private ModelEntry model;
 
         private bool vertexdirty;
         private bool collisiondirty;
@@ -16,6 +17,7 @@ namespace CrashEdit.CE
         {
             this.controller = controller;
             frame = controller.Frame;
+            model= controller.Model;
             InitializeComponent();
             UpdateVertice();
             UpdateCollision();
@@ -66,9 +68,13 @@ namespace CrashEdit.CE
                 numX.Enabled = true;
                 numY.Enabled = true;
                 numZ.Enabled = true;
-                numX.Value = frame.Vertices[vertexindex].X;
-                numY.Value = frame.Vertices[vertexindex].Y;
-                numZ.Value = frame.Vertices[vertexindex].Z;
+                //numX.Value = frame.Vertices[vertexindex].X;
+                //numY.Value = frame.Vertices[vertexindex].Y;
+                //numZ.Value = frame.Vertices[vertexindex].Z;
+                var verts = frame.MakeVertices(model);
+                numX.Value = (decimal)verts[vertexindex].X;
+                numY.Value = (decimal)verts[vertexindex].Y;
+                numZ.Value = (decimal)verts[vertexindex].Z;
                 if (vertexindex <= frame.SpecialVertexCount - 1)
                 {
                     lblVerticeIndex.ForeColor = Color.MediumTurquoise;

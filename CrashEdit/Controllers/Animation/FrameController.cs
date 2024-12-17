@@ -72,5 +72,6 @@ namespace CrashEdit.CE
 
         public AnimationEntryController AnimationEntryController => (AnimationEntryController)Modern.Parent.Legacy;
         public Frame Frame { get; }
+        public ModelEntry Model { get; }
     }
 }
