@@ -43,8 +43,8 @@ namespace CrashEdit.CE
 
         public NSF NSF { get; }
 
-        private Form? ShowLevelForm { get; set; }
-        private Form? ShowLevelZonesForm { get; set; }
+        private DarkForm? ShowLevelForm { get; set; }
+        private DarkForm? ShowLevelZonesForm { get; set; }
 
         public void Kill()
         {
