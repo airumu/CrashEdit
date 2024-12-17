@@ -735,20 +735,22 @@ namespace CrashEdit.CE
             // 
             // C2numCY
             // 
+            C2numCY.Font = new Font("Segoe UI", 9F);
             C2numCY.Location = new Point(30, 61);
             C2numCY.Margin = new Padding(4);
             C2numCY.Maximum = new decimal(new int[] { 127, 0, 0, 0 });
             C2numCY.Name = "C2numCY";
-            C2numCY.Size = new Size(70, 20);
+            C2numCY.Size = new Size(70, 23);
             C2numCY.TabIndex = 3;
             // 
             // C2numCX
             // 
+            C2numCX.Font = new Font("Segoe UI", 9F);
             C2numCX.Location = new Point(30, 25);
             C2numCX.Margin = new Padding(4);
             C2numCX.Maximum = new decimal(new int[] { 15, 0, 0, 0 });
             C2numCX.Name = "C2numCX";
-            C2numCX.Size = new Size(70, 20);
+            C2numCX.Size = new Size(70, 23);
             C2numCX.TabIndex = 2;
             C2numCX.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
