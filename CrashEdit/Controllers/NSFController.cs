@@ -1,4 +1,5 @@
 using AltUI.Forms;
+using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 
 namespace CrashEdit.CE
@@ -130,6 +131,47 @@ namespace CrashEdit.CE
                     }
                     else if (entity.Type == 34)
                     {
+                        if (GameVersion != GameVersion.Crash2 && GameVersion != GameVersion.Crash3)
+                        {
+                            switch (entity.Subtype)
+                            {
+                                case 11: // pow
+                                case 16: // auto tnt
+                                case 17: // auto pickup
+                                case 20: // auto empty
+                                case 21: // empty 2
+                                    boxcount++;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                        else if (GameVersion == GameVersion.Crash3)
+                        {
+                            switch (entity.Subtype)
+                            {
+                                case 25: // slot
+                                    boxcount++;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                        else if (Settings.Default.ShowCustomCrates)
+                        {
+                            switch (entity.Subtype)
+                            {
+                                case 11: // pow
+                                case 12: // purple
+                                case 17: // slot
+                                case 25: // steel pickup
+                                case 26: // steel fruit
+                                    boxcount++;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
                         switch (entity.Subtype)
                         {
                             case 0: // tnt
@@ -140,13 +182,9 @@ namespace CrashEdit.CE
                             case 8: // life
                             case 9: // doctor
                             case 10: // pickup
-                            case 11: // pow
                             case 13: // ghost
-                            case 17: // auto pickup
                             case 18: // nitro
-                            case 20: // auto empty
-                            case 21: // empty 2
-                            case 25: // slot
+                            case 23: // steel
                                 boxcount++;
                                 break;
                             default:
