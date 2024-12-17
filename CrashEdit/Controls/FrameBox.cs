@@ -1,7 +1,6 @@
-using CrashEdit.CE;
 using CrashEdit.Crash;
 
-namespace CrashEdit
+namespace CrashEdit.CE
 {
     public partial class FrameBox : UserControl
     {

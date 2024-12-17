@@ -1,6 +1,6 @@
 using AltUI.Controls;
 
-namespace CrashEdit
+namespace CrashEdit.CE
 {
     partial class FrameBox
     {
@@ -134,7 +134,7 @@ namespace CrashEdit
             fraVertice.Controls.Add(numX);
             fraVertice.Font = new Font("Segoe UI", 9F);
             fraVertice.ForeColor = Color.Silver;
-            fraVertice.Location = new Point(3, 304);
+            fraVertice.Location = new Point(3, 301);
             fraVertice.Margin = new Padding(3, 4, 3, 4);
             fraVertice.Name = "fraVertice";
             fraVertice.Padding = new Padding(3, 4, 3, 4);
@@ -151,9 +151,9 @@ namespace CrashEdit
             lblSPVertex.ForeColor = Color.MediumTurquoise;
             lblSPVertex.Location = new Point(23, 48);
             lblSPVertex.Name = "lblSPVertex";
-            lblSPVertex.Size = new Size(76, 15);
+            lblSPVertex.Size = new Size(79, 15);
             lblSPVertex.TabIndex = 12;
-            lblSPVertex.Text = "SpecialVertex";
+            lblSPVertex.Text = "Special Vertex";
             // 
             // cmdNext10Vertice
             // 
@@ -299,12 +299,10 @@ namespace CrashEdit
             // numZ
             // 
             numZ.Increment = new decimal(new int[] { 8, 0, 0, 0 });
-            numZ.InterceptArrowKeys = false;
             numZ.Location = new Point(30, 128);
             numZ.Margin = new Padding(3, 4, 3, 4);
             numZ.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
             numZ.Name = "numZ";
-            numZ.ReadOnly = true;
             numZ.Size = new Size(85, 23);
             numZ.TabIndex = 4;
             numZ.ValueChanged += numZ_ValueChanged;
@@ -312,12 +310,10 @@ namespace CrashEdit
             // numY
             // 
             numY.Increment = new decimal(new int[] { 8, 0, 0, 0 });
-            numY.InterceptArrowKeys = false;
             numY.Location = new Point(30, 98);
             numY.Margin = new Padding(3, 4, 3, 4);
             numY.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
             numY.Name = "numY";
-            numY.ReadOnly = true;
             numY.Size = new Size(85, 23);
             numY.TabIndex = 3;
             numY.ValueChanged += numY_ValueChanged;
@@ -325,12 +321,10 @@ namespace CrashEdit
             // numX
             // 
             numX.Increment = new decimal(new int[] { 8, 0, 0, 0 });
-            numX.InterceptArrowKeys = false;
             numX.Location = new Point(30, 68);
             numX.Margin = new Padding(3, 4, 3, 4);
             numX.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
             numX.Name = "numX";
-            numX.ReadOnly = true;
             numX.Size = new Size(85, 23);
             numX.TabIndex = 2;
             numX.ValueChanged += numX_ValueChanged;
@@ -350,7 +344,6 @@ namespace CrashEdit
             cmdInsertVertice.Size = new Size(86, 26);
             cmdInsertVertice.TabIndex = 6;
             cmdInsertVertice.Text = "Insert";
-            cmdInsertVertice.Visible = false;
             cmdInsertVertice.Click += cmdInsertVertice_Click;
             // 
             // cmdRemoveVertice
@@ -368,14 +361,12 @@ namespace CrashEdit
             cmdRemoveVertice.Size = new Size(86, 26);
             cmdRemoveVertice.TabIndex = 7;
             cmdRemoveVertice.Text = "Remove";
-            cmdRemoveVertice.Visible = false;
             cmdRemoveVertice.Click += cmdRemoveVertice_Click;
             // 
             // cmdAppendVertice
             // 
             cmdAppendVertice.BorderColour = Color.Empty;
             cmdAppendVertice.CustomColour = false;
-            cmdAppendVertice.Enabled = false;
             cmdAppendVertice.FlatBottom = false;
             cmdAppendVertice.FlatTop = false;
             cmdAppendVertice.Font = new Font("Segoe UI", 9F);
@@ -387,7 +378,6 @@ namespace CrashEdit
             cmdAppendVertice.Size = new Size(86, 26);
             cmdAppendVertice.TabIndex = 5;
             cmdAppendVertice.Text = "Append";
-            cmdAppendVertice.Visible = false;
             cmdAppendVertice.Click += cmdAppendVertice_Click;
             // 
             // fraGG
