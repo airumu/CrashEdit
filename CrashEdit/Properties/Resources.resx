@@ -788,7 +788,7 @@ as Meters: {3:F3}m</value>
     <comment>CE-tweaked</comment>
   </data>
   <data name="Config_chkPatchGOOLC3toC2" xml:space="preserve">
-    <value>(Crash 2 ) Patch GOOLs frame groups ported from Crash 3 (requires restart)</value>
+    <value>(Crash 2) Patch GOOL frame groups imported from Crash 3 (requires restart)</value>
     <comment>CE-tweaked</comment>
   </data>
   <data name="Config_chkEnableC2TT" xml:space="preserve">
