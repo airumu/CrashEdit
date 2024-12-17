@@ -36,7 +36,10 @@ namespace CrashEdit.CE
             cmdPrevious10Vertice = new DarkButton();
             cmdLastVertice = new DarkButton();
             cmdFirstVertice = new DarkButton();
+            cmdAppendVertice = new DarkButton();
+            cmdInsertVertice = new DarkButton();
             lblVerticeIndex = new Label();
+            cmdRemoveVertice = new DarkButton();
             cmdNextVertice = new DarkButton();
             cmdPreviousVertice = new DarkButton();
             lblZ = new Label();
@@ -45,9 +48,6 @@ namespace CrashEdit.CE
             numZ = new DarkNumericUpDown();
             numY = new DarkNumericUpDown();
             numX = new DarkNumericUpDown();
-            cmdInsertVertice = new DarkButton();
-            cmdRemoveVertice = new DarkButton();
-            cmdAppendVertice = new DarkButton();
             fraGG = new DarkGroupBox();
             lblZG = new Label();
             lblYG = new Label();
@@ -123,7 +123,10 @@ namespace CrashEdit.CE
             fraVertice.Controls.Add(cmdPrevious10Vertice);
             fraVertice.Controls.Add(cmdLastVertice);
             fraVertice.Controls.Add(cmdFirstVertice);
+            fraVertice.Controls.Add(cmdAppendVertice);
+            fraVertice.Controls.Add(cmdInsertVertice);
             fraVertice.Controls.Add(lblVerticeIndex);
+            fraVertice.Controls.Add(cmdRemoveVertice);
             fraVertice.Controls.Add(cmdNextVertice);
             fraVertice.Controls.Add(cmdPreviousVertice);
             fraVertice.Controls.Add(lblZ);
@@ -138,7 +141,7 @@ namespace CrashEdit.CE
             fraVertice.Margin = new Padding(3, 4, 3, 4);
             fraVertice.Name = "fraVertice";
             fraVertice.Padding = new Padding(3, 4, 3, 4);
-            fraVertice.Size = new Size(308, 168);
+            fraVertice.Size = new Size(417, 168);
             fraVertice.TabIndex = 1;
             fraVertice.TabStop = false;
             fraVertice.Text = "Vertice(s)";
@@ -162,7 +165,7 @@ namespace CrashEdit.CE
             cmdNext10Vertice.FlatBottom = false;
             cmdNext10Vertice.FlatTop = false;
             cmdNext10Vertice.ForeColor = SystemColors.ControlText;
-            cmdNext10Vertice.Location = new Point(216, 62);
+            cmdNext10Vertice.Location = new Point(216, 56);
             cmdNext10Vertice.Margin = new Padding(3, 4, 3, 4);
             cmdNext10Vertice.Name = "cmdNext10Vertice";
             cmdNext10Vertice.Padding = new Padding(5);
@@ -178,7 +181,7 @@ namespace CrashEdit.CE
             cmdPrevious10Vertice.FlatBottom = false;
             cmdPrevious10Vertice.FlatTop = false;
             cmdPrevious10Vertice.ForeColor = SystemColors.ControlText;
-            cmdPrevious10Vertice.Location = new Point(130, 62);
+            cmdPrevious10Vertice.Location = new Point(130, 56);
             cmdPrevious10Vertice.Margin = new Padding(3, 4, 3, 4);
             cmdPrevious10Vertice.Name = "cmdPrevious10Vertice";
             cmdPrevious10Vertice.Padding = new Padding(5);
@@ -219,6 +222,40 @@ namespace CrashEdit.CE
             cmdFirstVertice.Text = "First";
             cmdFirstVertice.Click += cmdFirstVertice_Click;
             // 
+            // cmdAppendVertice
+            // 
+            cmdAppendVertice.BorderColour = Color.Empty;
+            cmdAppendVertice.CustomColour = false;
+            cmdAppendVertice.FlatBottom = false;
+            cmdAppendVertice.FlatTop = false;
+            cmdAppendVertice.Font = new Font("Segoe UI", 9F);
+            cmdAppendVertice.ForeColor = SystemColors.ControlText;
+            cmdAppendVertice.Location = new Point(321, 22);
+            cmdAppendVertice.Margin = new Padding(3, 4, 3, 4);
+            cmdAppendVertice.Name = "cmdAppendVertice";
+            cmdAppendVertice.Padding = new Padding(5);
+            cmdAppendVertice.Size = new Size(86, 26);
+            cmdAppendVertice.TabIndex = 5;
+            cmdAppendVertice.Text = "Append";
+            cmdAppendVertice.Click += cmdAppendVertice_Click;
+            // 
+            // cmdInsertVertice
+            // 
+            cmdInsertVertice.BorderColour = Color.Empty;
+            cmdInsertVertice.CustomColour = false;
+            cmdInsertVertice.FlatBottom = false;
+            cmdInsertVertice.FlatTop = false;
+            cmdInsertVertice.Font = new Font("Segoe UI", 9F);
+            cmdInsertVertice.ForeColor = SystemColors.ControlText;
+            cmdInsertVertice.Location = new Point(321, 56);
+            cmdInsertVertice.Margin = new Padding(3, 4, 3, 4);
+            cmdInsertVertice.Name = "cmdInsertVertice";
+            cmdInsertVertice.Padding = new Padding(5);
+            cmdInsertVertice.Size = new Size(86, 26);
+            cmdInsertVertice.TabIndex = 6;
+            cmdInsertVertice.Text = "Insert";
+            cmdInsertVertice.Click += cmdInsertVertice_Click;
+            // 
             // lblVerticeIndex
             // 
             lblVerticeIndex.BackColor = Color.Transparent;
@@ -230,6 +267,23 @@ namespace CrashEdit.CE
             lblVerticeIndex.TabIndex = 5;
             lblVerticeIndex.Text = "?? / ??";
             lblVerticeIndex.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // cmdRemoveVertice
+            // 
+            cmdRemoveVertice.BorderColour = Color.Empty;
+            cmdRemoveVertice.CustomColour = false;
+            cmdRemoveVertice.FlatBottom = false;
+            cmdRemoveVertice.FlatTop = false;
+            cmdRemoveVertice.Font = new Font("Segoe UI", 9F);
+            cmdRemoveVertice.ForeColor = SystemColors.ControlText;
+            cmdRemoveVertice.Location = new Point(321, 90);
+            cmdRemoveVertice.Margin = new Padding(3, 4, 3, 4);
+            cmdRemoveVertice.Name = "cmdRemoveVertice";
+            cmdRemoveVertice.Padding = new Padding(5);
+            cmdRemoveVertice.Size = new Size(86, 26);
+            cmdRemoveVertice.TabIndex = 7;
+            cmdRemoveVertice.Text = "Remove";
+            cmdRemoveVertice.Click += cmdRemoveVertice_Click;
             // 
             // cmdNextVertice
             // 
@@ -328,57 +382,6 @@ namespace CrashEdit.CE
             numX.Size = new Size(85, 23);
             numX.TabIndex = 2;
             numX.ValueChanged += numX_ValueChanged;
-            // 
-            // cmdInsertVertice
-            // 
-            cmdInsertVertice.BorderColour = Color.Empty;
-            cmdInsertVertice.CustomColour = false;
-            cmdInsertVertice.FlatBottom = false;
-            cmdInsertVertice.FlatTop = false;
-            cmdInsertVertice.Font = new Font("Segoe UI", 9F);
-            cmdInsertVertice.ForeColor = SystemColors.ControlText;
-            cmdInsertVertice.Location = new Point(317, 267);
-            cmdInsertVertice.Margin = new Padding(3, 4, 3, 4);
-            cmdInsertVertice.Name = "cmdInsertVertice";
-            cmdInsertVertice.Padding = new Padding(5);
-            cmdInsertVertice.Size = new Size(86, 26);
-            cmdInsertVertice.TabIndex = 6;
-            cmdInsertVertice.Text = "Insert";
-            cmdInsertVertice.Click += cmdInsertVertice_Click;
-            // 
-            // cmdRemoveVertice
-            // 
-            cmdRemoveVertice.BorderColour = Color.Empty;
-            cmdRemoveVertice.CustomColour = false;
-            cmdRemoveVertice.FlatBottom = false;
-            cmdRemoveVertice.FlatTop = false;
-            cmdRemoveVertice.Font = new Font("Segoe UI", 9F);
-            cmdRemoveVertice.ForeColor = SystemColors.ControlText;
-            cmdRemoveVertice.Location = new Point(317, 301);
-            cmdRemoveVertice.Margin = new Padding(3, 4, 3, 4);
-            cmdRemoveVertice.Name = "cmdRemoveVertice";
-            cmdRemoveVertice.Padding = new Padding(5);
-            cmdRemoveVertice.Size = new Size(86, 26);
-            cmdRemoveVertice.TabIndex = 7;
-            cmdRemoveVertice.Text = "Remove";
-            cmdRemoveVertice.Click += cmdRemoveVertice_Click;
-            // 
-            // cmdAppendVertice
-            // 
-            cmdAppendVertice.BorderColour = Color.Empty;
-            cmdAppendVertice.CustomColour = false;
-            cmdAppendVertice.FlatBottom = false;
-            cmdAppendVertice.FlatTop = false;
-            cmdAppendVertice.Font = new Font("Segoe UI", 9F);
-            cmdAppendVertice.ForeColor = SystemColors.ControlText;
-            cmdAppendVertice.Location = new Point(317, 233);
-            cmdAppendVertice.Margin = new Padding(3, 4, 3, 4);
-            cmdAppendVertice.Name = "cmdAppendVertice";
-            cmdAppendVertice.Padding = new Padding(5);
-            cmdAppendVertice.Size = new Size(86, 26);
-            cmdAppendVertice.TabIndex = 5;
-            cmdAppendVertice.Text = "Append";
-            cmdAppendVertice.Click += cmdAppendVertice_Click;
             // 
             // fraGG
             // 
@@ -870,7 +873,7 @@ namespace CrashEdit.CE
             groupBox2.Size = new Size(145, 48);
             groupBox2.TabIndex = 15;
             groupBox2.TabStop = false;
-            groupBox2.Text = "SpecialVertex Count";
+            groupBox2.Text = "Special Vertex Count";
             // 
             // numSPVertex
             // 
@@ -894,9 +897,6 @@ namespace CrashEdit.CE
             Controls.Add(fraCollision);
             Controls.Add(fraOffset);
             Controls.Add(fraVertice);
-            Controls.Add(cmdInsertVertice);
-            Controls.Add(cmdRemoveVertice);
-            Controls.Add(cmdAppendVertice);
             Font = new Font("Microsoft Sans Serif", 9F);
             ForeColor = SystemColors.Window;
             Margin = new Padding(3, 4, 3, 4);
