@@ -1397,6 +1397,7 @@ namespace CrashEdit.CE
         {
             if (entity.DrawListA != null && entity.DrawListA.RowCount != 0)
             {
+                fraVerifyDrawList.Enabled = entity.DrawListB != null;
                 if (drawlistarowindex >= entity.DrawListA.RowCount)
                     drawlistarowindex = entity.DrawListA.RowCount - 1;
                 lblMetavalueDrawA.Enabled = true;
@@ -1427,6 +1428,7 @@ namespace CrashEdit.CE
             }
             else
             {
+                fraVerifyDrawList.Enabled = false;
                 entity.DrawListA = null;
                 lblDrawListRowIndexA.Text = "-- / --";
                 lblEntityIndexA.Text = "-- / --";
@@ -1664,6 +1666,7 @@ namespace CrashEdit.CE
         {
             if (entity.DrawListB != null && entity.DrawListB.RowCount != 0)
             {
+                fraVerifyDrawList.Enabled = entity.DrawListB != null;
                 if (drawlistbrowindex >= entity.DrawListB.RowCount)
                     drawlistbrowindex = entity.DrawListB.RowCount - 1;
                 lblMetavalueDrawB.Enabled = true;
@@ -1694,6 +1697,7 @@ namespace CrashEdit.CE
             }
             else
             {
+                fraVerifyDrawList.Enabled = false;
                 entity.DrawListB = null;
                 lblDrawListRowIndexB.Text = "-- / --";
                 lblEntityIndexB.Text = "-- / --";
