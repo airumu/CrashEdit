@@ -669,28 +669,25 @@ namespace CrashEdit.CE
             if (e.KeyData == Keys.F2)
                 EnableVictimEditor(sender);
 
-            if (e.KeyCode == Keys.C)
+            if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control)
             {
                 string list = "";
                 foreach (object item in lbVictimID.Items) list += item.ToString() + "\n";
                 Clipboard.SetText(list);
             }
 
-            if (e.KeyCode == Keys.V)
+            if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
             {
                 List<string> list = Clipboard.GetText().Split('\n').ToList();
-                var i = 0;
                 foreach (string line in list)
                 {
+                    if (lbVictimID.Items.Count >= 1023) break;
                     var stripped = Regex.Replace(line, "[^0-9]", "");
                     if (stripped.Length > 0)
                     {
                         short victimid = Convert.ToInt16(stripped);
                         entity.Victims.Add(new(victimid));
                         lbVictimID.Items.Add(victimid);
-                        i += 1;
-                        if (i >= 1024)
-                            break;
                     }
                 };
 
@@ -702,13 +699,16 @@ namespace CrashEdit.CE
 
         private void EnableVictimEditor(object sender)
         {
-            lbVictimID = (DarkListBox)sender;
-            numEditVictimID.Enabled = true;
-            numEditVictimID.Value = entity.Victims[victimlistindex].VictimID;
-            numEditVictimID.Focus();
-            numEditVictimID.Select(0, numEditVictimID.Text.Length);
-            numEditVictimID.KeyPress += new KeyPressEventHandler(VictimEditor_EditOver);
-            numEditVictimID.LostFocus += VictimEditor_FocusOver;
+            if (lbVictimID.Items.Count > 0)
+            {
+                lbVictimID = (DarkListBox)sender;
+                numEditVictimID.Enabled = true;
+                numEditVictimID.Value = entity.Victims[victimlistindex].VictimID;
+                numEditVictimID.Focus();
+                numEditVictimID.Select(0, numEditVictimID.Text.Length);
+                numEditVictimID.KeyPress += new KeyPressEventHandler(VictimEditor_EditOver);
+                numEditVictimID.LostFocus += VictimEditor_FocusOver;
+            }
         }
 
         private void VictimEditor_FocusOver(object sender, EventArgs e)
@@ -774,14 +774,16 @@ namespace CrashEdit.CE
 
         private void cmdRemoveVictim_Click(object sender, EventArgs e)
         {
-            int selectitem = victimlistindex - 1 < 0 ? 0 : victimlistindex - 1;
+            int selectedindex = victimlistindex;
             entity.Victims.RemoveAt(victimlistindex);
             lbVictimID.Items.RemoveAt(victimlistindex);
             UpdateVictim();
             if (lbVictimID.Items.Count > 0)
             {
+                if (selectedindex >= lbVictimID.Items.Count)
+                    selectedindex = lbVictimID.Items.Count - 1;
                 lbVictimID.Focus();
-                lbVictimID.SelectedIndex = selectitem;
+                lbVictimID.SelectedIndex = selectedindex;
             }
         }
 
@@ -915,9 +917,6 @@ namespace CrashEdit.CE
                     {
                         entity.LoadListA.Rows[loadlistarowindex].Values.Add(Entry.ENameToEID(line));
                         lbEIDA.Items.Add(line);
-
-                        loadlistaeidindex = entity.LoadListA.Rows[loadlistarowindex].Values.Count - 1;
-                        lbEIDA.SelectedIndex = loadlistaeidindex;
                     }
                 };
 
@@ -1194,8 +1193,6 @@ namespace CrashEdit.CE
                         entity.LoadListB.Rows[loadlistbrowindex].Values.Add(Entry.ENameToEID(line));
                         lbEIDB.Items.Add(line);
                     }
-                    loadlistbeidindex = entity.LoadListB.Rows[loadlistbrowindex].Values.Count - 1;
-                    lbEIDB.SelectedIndex = loadlistbeidindex;
                 };
 
                 if (lbEIDB.SelectedIndex == -1)
