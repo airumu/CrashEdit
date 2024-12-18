@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
@@ -24,8 +26,11 @@ namespace CrashEdit.CE
         private int neighborsettingindex;
         private int fovframeindex;
         private int fovindex;
+        private int victimlistindex => lbVictimID.SelectedIndex;
 
         private System.Windows.Forms.Timer argtexttimer;
+
+        private DarkToolTip tipVictim;
 
         internal Stack<bool> dirty = new Stack<bool>();
         internal bool Dirty => dirty.Count > 0 && dirty.Peek();
@@ -147,6 +152,9 @@ namespace CrashEdit.CE
             fraEntityB.Text = Resources.EntityBox_fraEntityB;
             lblArgAs.Text = MakeArgAsText();
             chkSettingHex_CheckedChanged(null, null);
+
+            tipVictim = new DarkToolTip();
+            tipVictim.SetToolTip(lbVictimID, "Press C to copy\nPress V to paste");
 
             // use a Timer because of PAL switch
             argtexttimer = new()
@@ -599,87 +607,182 @@ namespace CrashEdit.CE
             entity.BonusBoxCount = new EntitySetting(0, (int)numBonusBoxCount.Value);
         }
 
-        private void cmdClearAllVictims_Click(object sender, EventArgs e)
-        {
-            entity.Victims.Clear();
-            UpdateVictim();
-        }
-
         private void UpdateVictim()
         {
             dirty.Push(true);
             if (victimindex >= entity.Victims.Count)
-            {
                 victimindex = entity.Victims.Count - 1;
-            }
             // Do not make this else if,
             // sometimes both will run.
             // (this is intentional)
             if (victimindex < 0)
-            {
                 victimindex = 0;
-            }
             if (victimindex >= entity.Victims.Count)
             {
                 lblVictimIndex.Text = "-- / --";
-                cmdPreviousVictim.Enabled =
-                cmdNextVictim.Enabled =
                 cmdRemoveVictim.Enabled =
-                numVictimID.Enabled =
                 cmdClearAllVictims.Enabled = false;
             }
             else
             {
                 lblVictimIndex.Text = $"{victimindex + 1} / {entity.Victims.Count}";
-                cmdPreviousVictim.Enabled = victimindex > 0;
-                cmdNextVictim.Enabled = victimindex < entity.Victims.Count - 1;
                 cmdRemoveVictim.Enabled =
-                numVictimID.Enabled =
                 cmdClearAllVictims.Enabled = true;
-                numVictimID.Value = entity.Victims[victimindex].VictimID;
             }
             dirty.Pop();
         }
 
-        private void cmdPreviousVictim_Click(object sender, EventArgs e)
+        private void LoadVictimList()
         {
-            --victimindex;
-            UpdateVictim();
+            if (entity.Victims.Count > 0)
+            {
+                for (int i = 0; i < entity.Victims.Count; ++i)
+                {
+                    lbVictimID.Items.Add(entity.Victims[i].VictimID);
+                }
+                lbVictimID.SelectedIndex = 0;
+            }
         }
 
-        private void cmdNextVictim_Click(object sender, EventArgs e)
+        private void lbVictimID_KeyPress(object sender, KeyPressEventArgs e)
         {
-            ++victimindex;
-            UpdateVictim();
+            if (e.KeyChar == (char)Keys.Return)
+                EnableVictimEditor(sender);
         }
+
+        private void lbVictimID_DoubleClick(object sender, EventArgs e)
+        {
+            EnableVictimEditor(sender);
+        }
+
+        private void lbVictimID_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData == Keys.F2)
+                EnableVictimEditor(sender);
+
+            if (e.KeyCode == Keys.C)
+            {
+                string list = "";
+                foreach (object item in lbVictimID.Items) list += item.ToString() + "\n";
+                Clipboard.SetText(list);
+            }
+
+            if (e.KeyCode == Keys.V)
+            {
+                List<string> list = Clipboard.GetText().Split('\n').ToList();
+                var i = 0;
+                foreach (string line in list)
+                {
+                    var stripped = Regex.Replace(line, "[^0-9]", "");
+                    if (stripped.Length > 0)
+                    {
+                        short victimid = Convert.ToInt16(stripped);
+                        entity.Victims.Add(new(victimid));
+                        lbVictimID.Items.Add(victimid);
+                        i += 1;
+                        if (i >= 1024)
+                            break;
+                    }
+                };
+                
+                if (lbVictimID.SelectedIndex == -1)
+                    lbVictimID.SelectedIndex = 0;
+                UpdateVictim();
+            }
+        }
+
+        private void EnableVictimEditor(object sender)
+        {
+            lbVictimID = (DarkListBox)sender;
+            numEditVictimID.Enabled = true;
+            numEditVictimID.Value = entity.Victims[victimlistindex].VictimID;
+            numEditVictimID.Focus();
+            numEditVictimID.Select(0, numEditVictimID.Text.Length);
+            numEditVictimID.KeyPress += new KeyPressEventHandler(VictimEditor_EditOver);
+            numEditVictimID.LostFocus += VictimEditor_FocusOver;
+        }
+
+        private void VictimEditor_FocusOver(object sender, EventArgs e)
+        {
+            UpdateVictimList(false);
+        }
+
+        private void VictimEditor_EditOver(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Return)
+            {
+                // avoid to play "Ding" sound
+                e.Handled = true;
+                e.KeyChar = (char)Keys.D0;
+
+                UpdateVictimList(false);
+            }
+            if (e.KeyChar == (char)Keys.Escape)
+            {
+                UpdateVictimList(true);
+            }
+        }
+
+        private void UpdateVictimList(bool cancel)
+        {
+            // if the input is empty
+            if (numEditVictimID.Text == "")
+            {
+                numEditVictimID.Value = 0;
+            }
+            // if the number is invalid or pressed escape key
+            else if (numEditVictimID.Value > 32767 || cancel)
+            {
+                numEditVictimID.Value = entity.Victims[victimlistindex].VictimID;
+            }
+            else
+            {
+                entity.Victims[victimlistindex] = new EntityVictim((short)numEditVictimID.Value);
+                lbVictimID.Items[victimlistindex] = numEditVictimID.Value;
+            }
+            UpdateVictim();
+            numEditVictimID.Enabled = false;
+            lbVictimID.Focus();
+        }
+
 
         private void cmdInsertVictim_Click(object sender, EventArgs e)
         {
             if (entity.Victims.Count > 0)
             {
-                entity.Victims.Insert(victimindex, entity.Victims[victimindex]);
+                entity.Victims.Insert(victimlistindex, entity.Victims[victimlistindex]);
+                lbVictimID.Items.Insert(victimlistindex, entity.Victims[victimlistindex].VictimID);
             }
             else
             {
-                victimindex = 0;
                 entity.Victims.Add(new EntityVictim(10));
+                lbVictimID.Items.Add(10);
+                victimindex = 0;
+                lbVictimID.SelectedIndex = 0;
             }
             UpdateVictim();
         }
 
         private void cmdRemoveVictim_Click(object sender, EventArgs e)
         {
-            entity.Victims.RemoveAt(victimindex);
+            int selectitem = victimlistindex - 1 < 0 ? 0 : victimlistindex - 1;
+            entity.Victims.RemoveAt(victimlistindex);
+            lbVictimID.Items.RemoveAt(victimlistindex);
+            UpdateVictim();
+            if (lbVictimID.Items.Count > 0)
+            {
+                lbVictimID.Focus();
+                lbVictimID.SelectedIndex = selectitem;
+            }
+        }
+
+        private void cmdClearAllVictims_Click(object sender, EventArgs e)
+        {
+            entity.Victims.Clear();
+            lbVictimID.Items.Clear();
             UpdateVictim();
         }
 
-        private void numVictimID_ValueChanged(object sender, EventArgs e)
-        {
-            if (!Dirty)
-            {
-                entity.Victims[victimindex] = new EntityVictim((short)numVictimID.Value);
-            }
-        }
 
         private void UpdateLoadListA()
         {
@@ -1461,6 +1564,7 @@ namespace CrashEdit.CE
 
         private void tabSpecial_Enter(object sender, EventArgs e)
         {
+            LoadVictimList();
             UpdateVictim();
             UpdateScaling();
             UpdateBoxCount();

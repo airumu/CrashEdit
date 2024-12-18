@@ -112,11 +112,10 @@ namespace CrashEdit.CE
             chkBoxCount = new CheckBox();
             numBoxCount = new DarkNumericUpDown();
             fraVictims = new DarkGroupBox();
+            numEditVictimID = new DarkNumericUpDown();
+            lbVictimID = new DarkListBox();
             cmdClearAllVictims = new DarkButton();
-            numVictimID = new DarkNumericUpDown();
             cmdRemoveVictim = new DarkButton();
-            cmdNextVictim = new DarkButton();
-            cmdPreviousVictim = new DarkButton();
             lblVictimIndex = new Label();
             tabCamera = new TabPage();
             fraFOV = new DarkGroupBox();
@@ -295,7 +294,7 @@ namespace CrashEdit.CE
             ((System.ComponentModel.ISupportInitialize)numBonusBoxCount).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numBoxCount).BeginInit();
             fraVictims.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numVictimID).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numEditVictimID).BeginInit();
             tabCamera.SuspendLayout();
             fraFOV.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numFOVPosition).BeginInit();
@@ -602,11 +601,11 @@ namespace CrashEdit.CE
             cmdInsertVictim.CustomColour = false;
             cmdInsertVictim.FlatBottom = false;
             cmdInsertVictim.FlatTop = false;
-            cmdInsertVictim.Location = new Point(79, 111);
+            cmdInsertVictim.Location = new Point(79, 49);
             cmdInsertVictim.Margin = new Padding(4, 3, 4, 3);
             cmdInsertVictim.Name = "cmdInsertVictim";
             cmdInsertVictim.Padding = new Padding(5);
-            cmdInsertVictim.Size = new Size(68, 27);
+            cmdInsertVictim.Size = new Size(67, 27);
             cmdInsertVictim.TabIndex = 6;
             cmdInsertVictim.Text = "Insert";
             cmdInsertVictim.Click += cmdInsertVictim_Click;
@@ -728,6 +727,7 @@ namespace CrashEdit.CE
             // 
             lblArgAs.AutoSize = true;
             lblArgAs.BackColor = Color.Transparent;
+            lblArgAs.ForeColor = SystemColors.MenuText;
             lblArgAs.Location = new Point(8, 138);
             lblArgAs.Margin = new Padding(4, 0, 4, 0);
             lblArgAs.Name = "lblArgAs";
@@ -1151,7 +1151,7 @@ namespace CrashEdit.CE
             tabSpecial.Location = new Point(4, 32);
             tabSpecial.Margin = new Padding(4, 3, 4, 3);
             tabSpecial.Name = "tabSpecial";
-            tabSpecial.Size = new Size(792, 764);
+            tabSpecial.Size = new Size(592, 564);
             tabSpecial.TabIndex = 1;
             tabSpecial.Text = "Special";
             tabSpecial.Enter += tabSpecial_Enter;
@@ -1160,7 +1160,7 @@ namespace CrashEdit.CE
             // 
             fraTTReward.Controls.Add(chkTTReward);
             fraTTReward.Controls.Add(numTTReward);
-            fraTTReward.Location = new Point(150, 188);
+            fraTTReward.Location = new Point(310, 186);
             fraTTReward.Margin = new Padding(4, 3, 4, 3);
             fraTTReward.Name = "fraTTReward";
             fraTTReward.Padding = new Padding(4, 3, 4, 3);
@@ -1197,7 +1197,7 @@ namespace CrashEdit.CE
             // 
             fraOtherSettings.Controls.Add(chkOtherSettings);
             fraOtherSettings.Controls.Add(numOtherSettings);
-            fraOtherSettings.Location = new Point(298, 188);
+            fraOtherSettings.Location = new Point(310, 361);
             fraOtherSettings.Margin = new Padding(4, 3, 4, 3);
             fraOtherSettings.Name = "fraOtherSettings";
             fraOtherSettings.Padding = new Padding(4, 3, 4, 3);
@@ -1234,7 +1234,7 @@ namespace CrashEdit.CE
             // 
             fraScaling.Controls.Add(chkScaling);
             fraScaling.Controls.Add(numScaling);
-            fraScaling.Location = new Point(150, 276);
+            fraScaling.Location = new Point(310, 274);
             fraScaling.Margin = new Padding(4, 3, 4, 3);
             fraScaling.Name = "fraScaling";
             fraScaling.Padding = new Padding(4, 3, 4, 3);
@@ -1271,7 +1271,7 @@ namespace CrashEdit.CE
             // 
             fraDDASection.Controls.Add(chkDDASection);
             fraDDASection.Controls.Add(numDDASection);
-            fraDDASection.Location = new Point(4, 188);
+            fraDDASection.Location = new Point(164, 186);
             fraDDASection.Margin = new Padding(4, 3, 4, 3);
             fraDDASection.Name = "fraDDASection";
             fraDDASection.Padding = new Padding(4, 3, 4, 3);
@@ -1308,7 +1308,7 @@ namespace CrashEdit.CE
             // 
             fraDDASettings.Controls.Add(chkDDASettings);
             fraDDASettings.Controls.Add(numDDASettings);
-            fraDDASettings.Location = new Point(4, 276);
+            fraDDASettings.Location = new Point(164, 274);
             fraDDASettings.Margin = new Padding(4, 3, 4, 3);
             fraDDASettings.Name = "fraDDASettings";
             fraDDASettings.Padding = new Padding(4, 3, 4, 3);
@@ -1351,7 +1351,7 @@ namespace CrashEdit.CE
             fraBoxCount.Margin = new Padding(4, 3, 4, 3);
             fraBoxCount.Name = "fraBoxCount";
             fraBoxCount.Padding = new Padding(4, 3, 4, 3);
-            fraBoxCount.Size = new Size(154, 137);
+            fraBoxCount.Size = new Size(140, 137);
             fraBoxCount.TabIndex = 8;
             fraBoxCount.TabStop = false;
             fraBoxCount.Text = "Box Count";
@@ -1376,7 +1376,7 @@ namespace CrashEdit.CE
             numBonusBoxCount.Maximum = new decimal(new int[] { 8388607, 0, 0, 0 });
             numBonusBoxCount.Minimum = new decimal(new int[] { 8388608, 0, 0, int.MinValue });
             numBonusBoxCount.Name = "numBonusBoxCount";
-            numBonusBoxCount.Size = new Size(140, 23);
+            numBonusBoxCount.Size = new Size(126, 23);
             numBonusBoxCount.TabIndex = 3;
             numBonusBoxCount.ValueChanged += numBonusBoxCount_ValueChanged;
             // 
@@ -1400,27 +1400,48 @@ namespace CrashEdit.CE
             numBoxCount.Maximum = new decimal(new int[] { 8388607, 0, 0, 0 });
             numBoxCount.Minimum = new decimal(new int[] { 8388608, 0, 0, int.MinValue });
             numBoxCount.Name = "numBoxCount";
-            numBoxCount.Size = new Size(140, 23);
+            numBoxCount.Size = new Size(126, 23);
             numBoxCount.TabIndex = 1;
             numBoxCount.ValueChanged += numBoxCount_ValueChanged;
             // 
             // fraVictims
             // 
+            fraVictims.Controls.Add(numEditVictimID);
+            fraVictims.Controls.Add(lbVictimID);
             fraVictims.Controls.Add(cmdClearAllVictims);
-            fraVictims.Controls.Add(numVictimID);
             fraVictims.Controls.Add(cmdRemoveVictim);
             fraVictims.Controls.Add(cmdInsertVictim);
-            fraVictims.Controls.Add(cmdNextVictim);
-            fraVictims.Controls.Add(cmdPreviousVictim);
             fraVictims.Controls.Add(lblVictimIndex);
             fraVictims.Location = new Point(4, 3);
             fraVictims.Margin = new Padding(4, 3, 4, 3);
             fraVictims.Name = "fraVictims";
             fraVictims.Padding = new Padding(4, 3, 4, 3);
-            fraVictims.Size = new Size(154, 178);
+            fraVictims.Size = new Size(154, 439);
             fraVictims.TabIndex = 7;
             fraVictims.TabStop = false;
             fraVictims.Text = "Victims";
+            // 
+            // numEditVictimID
+            // 
+            numEditVictimID.Enabled = false;
+            numEditVictimID.Location = new Point(8, 115);
+            numEditVictimID.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numEditVictimID.Name = "numEditVictimID";
+            numEditVictimID.Size = new Size(138, 23);
+            numEditVictimID.TabIndex = 15;
+            // 
+            // lbVictimID
+            // 
+            lbVictimID.BackColor = Color.FromArgb(26, 26, 28);
+            lbVictimID.BorderStyle = BorderStyle.FixedSingle;
+            lbVictimID.ForeColor = Color.FromArgb(213, 213, 213);
+            lbVictimID.Location = new Point(8, 142);
+            lbVictimID.Name = "lbVictimID";
+            lbVictimID.Size = new Size(138, 287);
+            lbVictimID.TabIndex = 14;
+            lbVictimID.DoubleClick += lbVictimID_DoubleClick;
+            lbVictimID.KeyDown += lbVictimID_KeyDown;
+            lbVictimID.KeyPress += lbVictimID_KeyPress;
             // 
             // cmdClearAllVictims
             // 
@@ -1428,24 +1449,14 @@ namespace CrashEdit.CE
             cmdClearAllVictims.CustomColour = false;
             cmdClearAllVictims.FlatBottom = false;
             cmdClearAllVictims.FlatTop = false;
-            cmdClearAllVictims.Location = new Point(7, 144);
+            cmdClearAllVictims.Location = new Point(8, 82);
             cmdClearAllVictims.Margin = new Padding(4, 3, 4, 3);
             cmdClearAllVictims.Name = "cmdClearAllVictims";
             cmdClearAllVictims.Padding = new Padding(5);
-            cmdClearAllVictims.Size = new Size(140, 27);
+            cmdClearAllVictims.Size = new Size(138, 27);
             cmdClearAllVictims.TabIndex = 5;
             cmdClearAllVictims.Text = "Clear All";
             cmdClearAllVictims.Click += cmdClearAllVictims_Click;
-            // 
-            // numVictimID
-            // 
-            numVictimID.Location = new Point(7, 82);
-            numVictimID.Margin = new Padding(4, 3, 4, 3);
-            numVictimID.Maximum = new decimal(new int[] { 65535, 0, 0, 0 });
-            numVictimID.Name = "numVictimID";
-            numVictimID.Size = new Size(140, 23);
-            numVictimID.TabIndex = 2;
-            numVictimID.ValueChanged += numVictimID_ValueChanged;
             // 
             // cmdRemoveVictim
             // 
@@ -1453,53 +1464,23 @@ namespace CrashEdit.CE
             cmdRemoveVictim.CustomColour = false;
             cmdRemoveVictim.FlatBottom = false;
             cmdRemoveVictim.FlatTop = false;
-            cmdRemoveVictim.Location = new Point(7, 111);
+            cmdRemoveVictim.Location = new Point(8, 49);
             cmdRemoveVictim.Margin = new Padding(4, 3, 4, 3);
             cmdRemoveVictim.Name = "cmdRemoveVictim";
             cmdRemoveVictim.Padding = new Padding(5);
-            cmdRemoveVictim.Size = new Size(68, 27);
+            cmdRemoveVictim.Size = new Size(67, 27);
             cmdRemoveVictim.TabIndex = 4;
             cmdRemoveVictim.Text = "Remove";
             cmdRemoveVictim.Click += cmdRemoveVictim_Click;
-            // 
-            // cmdNextVictim
-            // 
-            cmdNextVictim.BorderColour = Color.Empty;
-            cmdNextVictim.CustomColour = false;
-            cmdNextVictim.FlatBottom = false;
-            cmdNextVictim.FlatTop = false;
-            cmdNextVictim.Location = new Point(79, 22);
-            cmdNextVictim.Margin = new Padding(4, 3, 4, 3);
-            cmdNextVictim.Name = "cmdNextVictim";
-            cmdNextVictim.Padding = new Padding(5);
-            cmdNextVictim.Size = new Size(68, 27);
-            cmdNextVictim.TabIndex = 1;
-            cmdNextVictim.Text = "Next";
-            cmdNextVictim.Click += cmdNextVictim_Click;
-            // 
-            // cmdPreviousVictim
-            // 
-            cmdPreviousVictim.BorderColour = Color.Empty;
-            cmdPreviousVictim.CustomColour = false;
-            cmdPreviousVictim.FlatBottom = false;
-            cmdPreviousVictim.FlatTop = false;
-            cmdPreviousVictim.Location = new Point(7, 22);
-            cmdPreviousVictim.Margin = new Padding(4, 3, 4, 3);
-            cmdPreviousVictim.Name = "cmdPreviousVictim";
-            cmdPreviousVictim.Padding = new Padding(5);
-            cmdPreviousVictim.Size = new Size(68, 27);
-            cmdPreviousVictim.TabIndex = 0;
-            cmdPreviousVictim.Text = "Previous";
-            cmdPreviousVictim.Click += cmdPreviousVictim_Click;
             // 
             // lblVictimIndex
             // 
             lblVictimIndex.BackColor = Color.Transparent;
             lblVictimIndex.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblVictimIndex.Location = new Point(7, 52);
+            lblVictimIndex.Location = new Point(8, 19);
             lblVictimIndex.Margin = new Padding(4, 0, 4, 0);
             lblVictimIndex.Name = "lblVictimIndex";
-            lblVictimIndex.Size = new Size(140, 27);
+            lblVictimIndex.Size = new Size(138, 27);
             lblVictimIndex.TabIndex = 7;
             lblVictimIndex.Text = "?? / ??";
             lblVictimIndex.TextAlign = ContentAlignment.MiddleCenter;
@@ -1518,7 +1499,7 @@ namespace CrashEdit.CE
             tabCamera.Margin = new Padding(4, 3, 4, 3);
             tabCamera.Name = "tabCamera";
             tabCamera.Padding = new Padding(4, 3, 4, 3);
-            tabCamera.Size = new Size(792, 764);
+            tabCamera.Size = new Size(592, 564);
             tabCamera.TabIndex = 2;
             tabCamera.Text = "Camera";
             tabCamera.Enter += tabCamera_Enter;
@@ -2256,7 +2237,7 @@ namespace CrashEdit.CE
             tabLoadLists.Margin = new Padding(4, 3, 4, 3);
             tabLoadLists.Name = "tabLoadLists";
             tabLoadLists.Padding = new Padding(4, 3, 4, 3);
-            tabLoadLists.Size = new Size(792, 764);
+            tabLoadLists.Size = new Size(592, 564);
             tabLoadLists.TabIndex = 2;
             tabLoadLists.Text = "Load Lists";
             tabLoadLists.Enter += tabLoadLists_Enter;
@@ -2874,7 +2855,7 @@ namespace CrashEdit.CE
             tabDrawLists.Margin = new Padding(4, 3, 4, 3);
             tabDrawLists.Name = "tabDrawLists";
             tabDrawLists.Padding = new Padding(4, 3, 4, 3);
-            tabDrawLists.Size = new Size(792, 764);
+            tabDrawLists.Size = new Size(592, 564);
             tabDrawLists.TabIndex = 3;
             tabDrawLists.Text = "Draw Lists";
             tabDrawLists.Enter += tabDrawLists_Enter;
@@ -3428,7 +3409,7 @@ namespace CrashEdit.CE
             ((System.ComponentModel.ISupportInitialize)numBonusBoxCount).EndInit();
             ((System.ComponentModel.ISupportInitialize)numBoxCount).EndInit();
             fraVictims.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)numVictimID).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numEditVictimID).EndInit();
             tabCamera.ResumeLayout(false);
             tabCamera.PerformLayout();
             fraFOV.ResumeLayout(false);
@@ -3533,10 +3514,7 @@ namespace CrashEdit.CE
         private System.Windows.Forms.TabPage tabGeneral;
         private System.Windows.Forms.TabPage tabSpecial;
         private DarkGroupBox fraVictims;
-        private DarkNumericUpDown numVictimID;
         private DarkButton cmdRemoveVictim;
-        private DarkButton cmdNextVictim;
-        private DarkButton cmdPreviousVictim;
         private DarkGroupBox fraBoxCount;
         private System.Windows.Forms.CheckBox chkBoxCount;
         private DarkNumericUpDown numBoxCount;
@@ -3715,5 +3693,7 @@ namespace CrashEdit.CE
         private Label lblSettingA;
         private DarkNumericUpDown numC2TTFlags;
         private CheckBox chkC2TTFlags;
+        private DarkListBox lbVictimID;
+        private DarkNumericUpDown numEditVictimID;
     }
 }
