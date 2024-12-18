@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Text.RegularExpressions;
 using AltUI.Controls;
 using AltUI.Forms;
@@ -27,10 +28,14 @@ namespace CrashEdit.CE
         private int fovframeindex;
         private int fovindex;
         private int victimlistindex => lbVictimID.SelectedIndex;
+        private int lbeidalindex => lbEIDA.SelectedIndex;
+        private int lbeidblindex => lbEIDB.SelectedIndex;
 
         private System.Windows.Forms.Timer argtexttimer;
 
         private DarkToolTip tipVictim;
+        private DarkToolTip tipEIDA;
+        private DarkToolTip tipEIDB;
 
         internal Stack<bool> dirty = new Stack<bool>();
         internal bool Dirty => dirty.Count > 0 && dirty.Peek();
@@ -154,7 +159,11 @@ namespace CrashEdit.CE
             chkSettingHex_CheckedChanged(null, null);
 
             tipVictim = new DarkToolTip();
-            tipVictim.SetToolTip(lbVictimID, "Press C to copy\nPress V to paste");
+            tipVictim.SetToolTip(lbVictimID, Resources.EntityBox_tipLists);
+            tipEIDA = new DarkToolTip();
+            tipEIDA.SetToolTip(lbEIDA, Resources.EntityBox_tipLists);
+            tipEIDB = new DarkToolTip();
+            tipEIDB.SetToolTip(lbEIDB, Resources.EntityBox_tipLists);
 
             // use a Timer because of PAL switch
             argtexttimer = new()
@@ -684,7 +693,7 @@ namespace CrashEdit.CE
                             break;
                     }
                 };
-                
+
                 if (lbVictimID.SelectedIndex == -1)
                     lbVictimID.SelectedIndex = 0;
                 UpdateVictim();
@@ -783,6 +792,23 @@ namespace CrashEdit.CE
             UpdateVictim();
         }
 
+        public static string CheckEname(string ename)
+        {
+            if (ename.Length != 5)
+            {
+                return string.Empty;
+            }
+            int eid = Entry.NullEID;
+            try
+            {
+                eid = Entry.ENameToEID(ename);
+            }
+            catch (ArgumentException)
+            {
+                return string.Empty;
+            }
+            return ename;
+        }
 
         private void UpdateLoadListA()
         {
@@ -804,12 +830,10 @@ namespace CrashEdit.CE
                         loadlistaeidindex = entity.LoadListA.Rows[loadlistarowindex].Values.Count - 1;
                     cmdInsertEIDA.Enabled = true;
                     cmdRemoveEIDA.Enabled = true;
-                    txtEIDA.Enabled = true;
+                    //txtEIDA.Enabled = true;
                     lblEIDErrA.Visible = true;
-                    cmdPrevEIDA.Enabled = loadlistaeidindex > 0;
-                    cmdNextEIDA.Enabled = loadlistaeidindex + 1 < entity.LoadListA.Rows[loadlistarowindex].Values.Count;
-                    lblEIDIndexA.Text = $"{loadlistaeidindex + 1} / {entity.LoadListA.Rows[loadlistarowindex].Values.Count}";
-                    txtEIDA.Text = Entry.EIDToEName(entity.LoadListA.Rows[loadlistarowindex].Values[loadlistaeidindex]);
+                    lblEIDIndexA.Text = $"{lbeidalindex + 1} / {entity.LoadListA.Rows[loadlistarowindex].Values.Count}";
+                    //txtEIDA.Text = Entry.EIDToEName(entity.LoadListA.Rows[loadlistarowindex].Values[lbeidalindex]);
                 }
                 else
                 {
@@ -817,8 +841,6 @@ namespace CrashEdit.CE
                     cmdInsertEIDA.Enabled = false;
                     cmdRemoveEIDA.Enabled = false;
                     txtEIDA.Enabled = false;
-                    cmdPrevEIDA.Enabled = false;
-                    cmdNextEIDA.Enabled = false;
                     lblEIDErrA.Visible = false;
                     lblEIDIndexA.Text = "-- / --";
                 }
@@ -835,8 +857,6 @@ namespace CrashEdit.CE
                 cmdNextRowA.Enabled = false;
                 cmdRemoveRowA.Enabled = false;
                 txtEIDA.Enabled = false;
-                cmdPrevEIDA.Enabled = false;
-                cmdNextEIDA.Enabled = false;
                 cmdRemoveEIDA.Enabled = false;
                 cmdInsertEIDA.Enabled = false;
                 cmdAppendEIDA.Enabled = false;
@@ -844,39 +864,152 @@ namespace CrashEdit.CE
             }
         }
 
-        private void cmdPrevEIDA_Click(object sender, EventArgs e)
+        private void LoadEIDAList()
         {
-            --loadlistaeidindex;
-            UpdateLoadListA();
+            lbEIDA.Items.Clear();
+            if (entity.LoadListA != null && entity.LoadListA.RowCount != 0)
+            {
+                if (entity.LoadListA.Rows[loadlistarowindex].Values.Count != 0)
+                {
+                    for (int i = 0; i < entity.LoadListA.Rows[loadlistarowindex].Values.Count; ++i)
+                    {
+                        string item = Entry.EIDToEName(entity.LoadListA.Rows[loadlistarowindex].Values[i]);
+                        lbEIDA.Items.Add(item);
+                    }
+                    lbEIDA.SelectedIndex = 0;
+                    UpdatetxtEIDA();
+                }
+            }
         }
 
-        private void cmdNextEIDA_Click(object sender, EventArgs e)
+        private void lbEIDA_KeyPress(object sender, KeyPressEventArgs e)
         {
-            ++loadlistaeidindex;
-            UpdateLoadListA();
+            if (e.KeyChar == (char)Keys.Return)
+                EnableEIDAEditor(sender);
         }
 
-        private void cmdPrevRowA_Click(object sender, EventArgs e)
+        private void lbEIDA_DoubleClick(object sender, EventArgs e)
         {
-            --loadlistarowindex;
-            UpdateLoadListA();
+            EnableEIDAEditor(sender);
         }
 
-        private void cmdNextRowA_Click(object sender, EventArgs e)
+        private void lbEIDA_KeyDown(object sender, KeyEventArgs e)
         {
-            ++loadlistarowindex;
-            UpdateLoadListA();
+            if (e.KeyData == Keys.F2)
+                EnableEIDAEditor(sender);
+
+            if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control)
+            {
+                string list = "";
+                foreach (object item in lbEIDA.Items) list += item.ToString() + "\n";
+                Clipboard.SetText(list);
+            }
+
+            if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
+            {
+                List<string> list = Clipboard.GetText().Split('\n').ToList();
+                foreach (string line in list)
+                {
+                    if (entity.LoadListA.Rows[loadlistarowindex].Values.Count >= 1023) break;
+                    if (CheckEname(line).Length > 0)
+                    {
+                        entity.LoadListA.Rows[loadlistarowindex].Values.Add(Entry.ENameToEID(line));
+                        lbEIDA.Items.Add(line);
+
+                        loadlistaeidindex = entity.LoadListA.Rows[loadlistarowindex].Values.Count - 1;
+                        lbEIDA.SelectedIndex = loadlistaeidindex;
+                    }
+                };
+
+                if (lbEIDA.SelectedIndex == -1)
+                    lbEIDA.SelectedIndex = 0;
+                UpdateLoadListA();
+            }
+        }
+
+        private void EnableEIDAEditor(object sender)
+        {
+            if (lbEIDA.Items.Count > 0)
+            {
+                lbEIDA = (DarkListBox)sender;
+                txtEIDA.Enabled = true;
+                UpdatetxtEIDA();
+                txtEIDA.Focus();
+                txtEIDA.SelectAll();
+                txtEIDA.KeyPress += new KeyPressEventHandler(EIDAEditor_EditOver);
+                txtEIDA.LostFocus += EIDAEditor_FocusOver;
+            }
+        }
+
+        private void EIDAEditor_FocusOver(object sender, EventArgs e)
+        {
+            UpdateEIDAList(false);
+        }
+
+        private void EIDAEditor_EditOver(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Return)
+            {
+                // prevent "Ding" sound
+                e.Handled = true;
+                e.KeyChar = (char)Keys.D0;
+
+                UpdateEIDAList(false);
+            }
+            if (e.KeyChar == (char)Keys.Escape)
+            {
+                UpdateEIDAList(true);
+            }
+        }
+
+        private void UpdateEIDAList(bool cancel)
+        {
+            lblEIDErrA.Text = Entry.CheckEIDErrors(txtEIDA.Text, true);
+            if (lblEIDErrA.Text != string.Empty || cancel)
+            {
+                UpdatetxtEIDA();
+            }
+            else
+            {
+                entity.LoadListA.Rows[loadlistarowindex].Values[lbeidalindex] = Entry.ENameToEID(txtEIDA.Text);
+                lbEIDA.Items[lbeidalindex] = txtEIDA.Text;
+                UpdateLoadListA();
+            }
+            txtEIDA.Enabled = false;
+            lbEIDA.Focus();
+        }
+
+        private void lbEIDA_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            lblEIDIndexA.Text = $"{lbeidalindex + 1} / {entity.LoadListA.Rows[loadlistarowindex].Values.Count}";
+        }
+
+        private void UpdatetxtEIDA()
+        {
+            txtEIDA.Text = Entry.EIDToEName(entity.LoadListA.Rows[loadlistarowindex].Values[lbeidalindex]);
         }
 
         private void cmdRemoveEIDA_Click(object sender, EventArgs e)
         {
-            entity.LoadListA.Rows[loadlistarowindex].Values.RemoveAt(loadlistaeidindex);
+            int selectedindex = lbeidalindex;
+            entity.LoadListA.Rows[loadlistarowindex].Values.RemoveAt(lbeidalindex);
+            lbEIDA.Items.RemoveAt(lbeidalindex);
             UpdateLoadListA();
+            if (lbEIDA.Items.Count > 0)
+            {
+                if (selectedindex >= lbEIDA.Items.Count)
+                    selectedindex = lbEIDA.Items.Count - 1;
+                lbEIDA.SelectedIndex = selectedindex;
+                lbEIDA.Focus();
+            }
         }
 
         private void cmdInsertEIDA_Click(object sender, EventArgs e)
         {
-            entity.LoadListA.Rows[loadlistarowindex].Values.Insert(loadlistaeidindex, entity.LoadListA.Rows[loadlistarowindex].Values[loadlistaeidindex]);
+            int item = entity.LoadListA.Rows[loadlistarowindex].Values[lbeidalindex];
+            string item_n = Entry.EIDToEName(item);
+            entity.LoadListA.Rows[loadlistarowindex].Values.Insert(lbeidalindex, item);
+            lbEIDA.Items.Insert(lbeidalindex, item_n);
             UpdateLoadListA();
         }
 
@@ -885,11 +1018,17 @@ namespace CrashEdit.CE
             loadlistaeidindex = entity.LoadListA.Rows[loadlistarowindex].Values.Count;
             if (entity.LoadListA.Rows[loadlistarowindex].Values.Count > 0)
             {
-                entity.LoadListA.Rows[loadlistarowindex].Values.Add(entity.LoadListA.Rows[loadlistarowindex].Values[loadlistaeidindex - 1]);
+                int item = entity.LoadListA.Rows[loadlistarowindex].Values[loadlistaeidindex - 1];
+                string item_n = Entry.EIDToEName(item);
+                entity.LoadListA.Rows[loadlistarowindex].Values.Add(item);
+                lbEIDA.Items.Add(item_n);
+                lbEIDA.SelectedIndex = loadlistaeidindex;
             }
             else
             {
                 entity.LoadListA.Rows[loadlistarowindex].Values.Add(Entry.NullEID);
+                lbEIDA.Items.Add(Entry.EIDToEName(Entry.NullEID));
+                lbEIDA.SelectedIndex = 0;
             }
             UpdateLoadListA();
         }
@@ -898,13 +1037,28 @@ namespace CrashEdit.CE
         {
             lblEIDErrA.Text = Entry.CheckEIDErrors(txtEIDA.Text, true);
             if (lblEIDErrA.Text != string.Empty) return;
-            entity.LoadListA.Rows[loadlistarowindex].Values[loadlistaeidindex] = Entry.ENameToEID(txtEIDA.Text);
+            //entity.LoadListA.Rows[loadlistarowindex].Values[lbeidalindex] = Entry.ENameToEID(txtEIDA.Text);
+        }
+
+        private void cmdPrevRowA_Click(object sender, EventArgs e)
+        {
+            --loadlistarowindex;
+            UpdateLoadListA();
+            LoadEIDAList();
+        }
+
+        private void cmdNextRowA_Click(object sender, EventArgs e)
+        {
+            ++loadlistarowindex;
+            UpdateLoadListA();
+            LoadEIDAList();
         }
 
         private void cmdRemoveRowA_Click(object sender, EventArgs e)
         {
             entity.LoadListA.Rows.RemoveAt(loadlistarowindex);
             UpdateLoadListA();
+            LoadEIDAList();
         }
 
         private void cmdInsertRowA_Click(object sender, EventArgs e)
@@ -926,6 +1080,7 @@ namespace CrashEdit.CE
                 entity.LoadListA.Rows.Insert(loadlistarowindex, newrow);
             }
             UpdateLoadListA();
+            LoadEIDAList();
         }
 
         private void numMetavalueLoadA_ValueChanged(object sender, EventArgs e)
@@ -937,7 +1092,7 @@ namespace CrashEdit.CE
         {
             if (entity.LoadListB != null && entity.LoadListB.RowCount != 0)
             {
-                fraLoadListPayload.Enabled = entity.LoadListA != null;
+                fraLoadListPayload.Enabled = entity.LoadListB != null;
                 if (loadlistbrowindex >= entity.LoadListB.RowCount)
                     loadlistbrowindex = entity.LoadListB.RowCount - 1;
                 lblMetavalueLoadB.Enabled = true;
@@ -953,12 +1108,10 @@ namespace CrashEdit.CE
                         loadlistbeidindex = entity.LoadListB.Rows[loadlistbrowindex].Values.Count - 1;
                     cmdInsertEIDB.Enabled = true;
                     cmdRemoveEIDB.Enabled = true;
-                    txtEIDB.Enabled = true;
+                    //txtEIDB.Enabled = true;
                     lblEIDErrB.Visible = true;
-                    cmdPrevEIDB.Enabled = loadlistbeidindex > 0;
-                    cmdNextEIDB.Enabled = loadlistbeidindex + 1 < entity.LoadListB.Rows[loadlistbrowindex].Values.Count;
                     lblEIDIndexB.Text = $"{loadlistbeidindex + 1} / {entity.LoadListB.Rows[loadlistbrowindex].Values.Count}";
-                    txtEIDB.Text = Entry.EIDToEName(entity.LoadListB.Rows[loadlistbrowindex].Values[loadlistbeidindex]);
+                    //txtEIDB.Text = Entry.EIDToEName(entity.LoadListB.Rows[loadlistbrowindex].Values[loadlistbeidindex]);
                 }
                 else
                 {
@@ -966,8 +1119,6 @@ namespace CrashEdit.CE
                     cmdInsertEIDB.Enabled = false;
                     cmdRemoveEIDB.Enabled = false;
                     txtEIDB.Enabled = false;
-                    cmdPrevEIDB.Enabled = false;
-                    cmdNextEIDB.Enabled = false;
                     lblEIDErrB.Visible = false;
                     lblEIDIndexB.Text = "-- / --";
                 }
@@ -984,8 +1135,6 @@ namespace CrashEdit.CE
                 cmdNextRowB.Enabled = false;
                 cmdRemoveRowB.Enabled = false;
                 txtEIDB.Enabled = false;
-                cmdPrevEIDB.Enabled = false;
-                cmdNextEIDB.Enabled = false;
                 cmdRemoveEIDB.Enabled = false;
                 cmdInsertEIDB.Enabled = false;
                 cmdAppendEIDB.Enabled = false;
@@ -993,39 +1142,151 @@ namespace CrashEdit.CE
             }
         }
 
-        private void cmdPrevEIDB_Click(object sender, EventArgs e)
+        private void LoadEIDBList()
         {
-            --loadlistbeidindex;
-            UpdateLoadListB();
+            lbEIDB.Items.Clear();
+            if (entity.LoadListB != null && entity.LoadListB.RowCount != 0)
+            {
+                if (entity.LoadListB.Rows[loadlistbrowindex].Values.Count != 0)
+                {
+                    for (int i = 0; i < entity.LoadListB.Rows[loadlistbrowindex].Values.Count; ++i)
+                    {
+                        string item = Entry.EIDToEName(entity.LoadListB.Rows[loadlistbrowindex].Values[i]);
+                        lbEIDB.Items.Add(item);
+                    }
+                    lbEIDB.SelectedIndex = 0;
+                    UpdatetxtEIDB();
+                }
+            }
         }
 
-        private void cmdNextEIDB_Click(object sender, EventArgs e)
+        private void lbEIDB_KeyPress(object sender, KeyPressEventArgs e)
         {
-            ++loadlistbeidindex;
-            UpdateLoadListB();
+            if (e.KeyChar == (char)Keys.Return)
+                EnableEIDBEditor(sender);
         }
 
-        private void cmdPrevRowB_Click(object sender, EventArgs e)
+        private void lbEIDB_DoubleClick(object sender, EventArgs e)
         {
-            --loadlistbrowindex;
-            UpdateLoadListB();
+            EnableEIDBEditor(sender);
         }
 
-        private void cmdNextRowB_Click(object sender, EventArgs e)
+        private void lbEIDB_KeyDown(object sender, KeyEventArgs e)
         {
-            ++loadlistbrowindex;
-            UpdateLoadListB();
+            if (e.KeyData == Keys.F2)
+                EnableEIDBEditor(sender);
+
+            if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control)
+            {
+                string list = "";
+                foreach (object item in lbEIDB.Items) list += item.ToString() + "\n";
+                Clipboard.SetText(list);
+            }
+
+            if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
+            {
+                List<string> list = Clipboard.GetText().Split('\n').ToList();
+                foreach (string line in list)
+                {
+                    if (entity.LoadListB.Rows[loadlistbrowindex].Values.Count >= 1023) break;
+                    if (CheckEname(line).Length > 0)
+                    {
+                        entity.LoadListB.Rows[loadlistbrowindex].Values.Add(Entry.ENameToEID(line));
+                        lbEIDB.Items.Add(line);
+                    }
+                    loadlistbeidindex = entity.LoadListB.Rows[loadlistbrowindex].Values.Count - 1;
+                    lbEIDB.SelectedIndex = loadlistbeidindex;
+                };
+
+                if (lbEIDB.SelectedIndex == -1)
+                    lbEIDB.SelectedIndex = 0;
+                UpdateLoadListB();
+            }
+        }
+
+        private void EnableEIDBEditor(object sender)
+        {
+            if (lbEIDB.Items.Count > 0)
+            {
+                lbEIDB = (DarkListBox)sender;
+                txtEIDB.Enabled = true;
+                UpdatetxtEIDB();
+                txtEIDB.Focus();
+                txtEIDB.SelectAll();
+                txtEIDB.KeyPress += new KeyPressEventHandler(EIDBEditor_EditOver);
+                txtEIDB.LostFocus += EIDBEditor_FocusOver;
+            }
+        }
+
+        private void EIDBEditor_FocusOver(object sender, EventArgs e)
+        {
+            UpdateEIDBList(false);
+        }
+
+        private void EIDBEditor_EditOver(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Return)
+            {
+                // prevent "Ding" sound
+                e.Handled = true;
+                e.KeyChar = (char)Keys.D0;
+
+                UpdateEIDBList(false);
+            }
+            if (e.KeyChar == (char)Keys.Escape)
+            {
+                UpdateEIDBList(true);
+            }
+        }
+
+        private void UpdateEIDBList(bool cancel)
+        {
+            lblEIDErrB.Text = Entry.CheckEIDErrors(txtEIDB.Text, true);
+            if (lblEIDErrB.Text != string.Empty || cancel)
+            {
+                UpdatetxtEIDB();
+            }
+            else
+            {
+                entity.LoadListB.Rows[loadlistbrowindex].Values[lbeidblindex] = Entry.ENameToEID(txtEIDB.Text);
+                lbEIDB.Items[lbeidblindex] = txtEIDB.Text;
+                UpdateLoadListB();
+            }
+            txtEIDB.Enabled = false;
+            lbEIDB.Focus();
+        }
+
+        private void lbEIDB_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            lblEIDIndexB.Text = $"{lbeidblindex + 1} / {entity.LoadListB.Rows[loadlistbrowindex].Values.Count}";
+        }
+
+        private void UpdatetxtEIDB()
+        {
+            txtEIDB.Text = Entry.EIDToEName(entity.LoadListB.Rows[loadlistbrowindex].Values[lbeidblindex]);
         }
 
         private void cmdRemoveEIDB_Click(object sender, EventArgs e)
         {
-            entity.LoadListB.Rows[loadlistbrowindex].Values.RemoveAt(loadlistbeidindex);
+            int selectedindex = lbeidblindex;
+            entity.LoadListB.Rows[loadlistbrowindex].Values.RemoveAt(lbeidblindex);
+            lbEIDB.Items.RemoveAt(lbeidblindex);
             UpdateLoadListB();
+            if (lbEIDB.Items.Count > 0)
+            {
+                if (selectedindex >= lbEIDB.Items.Count)
+                    selectedindex = lbEIDB.Items.Count - 1;
+                lbEIDB.SelectedIndex = selectedindex;
+                lbEIDB.Focus();
+            }
         }
 
         private void cmdInsertEIDB_Click(object sender, EventArgs e)
         {
-            entity.LoadListB.Rows[loadlistbrowindex].Values.Insert(loadlistbeidindex, entity.LoadListB.Rows[loadlistbrowindex].Values[loadlistbeidindex]);
+            int item = entity.LoadListB.Rows[loadlistbrowindex].Values[lbeidblindex];
+            string item_n = Entry.EIDToEName(item);
+            entity.LoadListB.Rows[loadlistbrowindex].Values.Insert(lbeidblindex, item);
+            lbEIDB.Items.Insert(lbeidblindex, item_n);
             UpdateLoadListB();
         }
 
@@ -1034,11 +1295,17 @@ namespace CrashEdit.CE
             loadlistbeidindex = entity.LoadListB.Rows[loadlistbrowindex].Values.Count;
             if (entity.LoadListB.Rows[loadlistbrowindex].Values.Count > 0)
             {
-                entity.LoadListB.Rows[loadlistbrowindex].Values.Add(entity.LoadListB.Rows[loadlistbrowindex].Values[loadlistbeidindex - 1]);
+                int item = entity.LoadListB.Rows[loadlistbrowindex].Values[loadlistbeidindex - 1];
+                string item_n = Entry.EIDToEName(item);
+                entity.LoadListB.Rows[loadlistbrowindex].Values.Add(item);
+                lbEIDB.Items.Add(item_n);
+                lbEIDB.SelectedIndex = loadlistbeidindex;
             }
             else
             {
                 entity.LoadListB.Rows[loadlistbrowindex].Values.Add(Entry.NullEID);
+                lbEIDB.Items.Add(Entry.EIDToEName(Entry.NullEID));
+                lbEIDB.SelectedIndex = 0;
             }
             UpdateLoadListB();
         }
@@ -1047,13 +1314,28 @@ namespace CrashEdit.CE
         {
             lblEIDErrB.Text = Entry.CheckEIDErrors(txtEIDB.Text, true);
             if (lblEIDErrB.Text != string.Empty) return;
-            entity.LoadListB.Rows[loadlistbrowindex].Values[loadlistbeidindex] = Entry.ENameToEID(txtEIDB.Text);
+            //entity.LoadListB.Rows[loadlistbrowindex].Values[lbeidblindex] = Entry.ENameToEID(txtEIDB.Text);
+        }
+
+        private void cmdPrevRowB_Click(object sender, EventArgs e)
+        {
+            --loadlistbrowindex;
+            UpdateLoadListB();
+            LoadEIDBList();
+        }
+
+        private void cmdNextRowB_Click(object sender, EventArgs e)
+        {
+            ++loadlistbrowindex;
+            UpdateLoadListB();
+            LoadEIDBList();
         }
 
         private void cmdRemoveRowB_Click(object sender, EventArgs e)
         {
             entity.LoadListB.Rows.RemoveAt(loadlistbrowindex);
             UpdateLoadListB();
+            LoadEIDBList();
         }
 
         private void cmdInsertRowB_Click(object sender, EventArgs e)
@@ -1075,6 +1357,7 @@ namespace CrashEdit.CE
                 entity.LoadListB.Rows.Insert(loadlistbrowindex, newrow);
             }
             UpdateLoadListB();
+            LoadEIDBList();
         }
 
         private void numMetavalueLoadB_ValueChanged(object sender, EventArgs e)
@@ -1589,6 +1872,8 @@ namespace CrashEdit.CE
 
         private void tabLoadLists_Enter(object sender, EventArgs e)
         {
+            LoadEIDAList();
+            LoadEIDBList();
             UpdateLoadListA();
             UpdateLoadListB();
             //CheckPayload();
@@ -1750,7 +2035,7 @@ namespace CrashEdit.CE
             lblPayloadTexture.Visible = true;
             lblPayloadTexture.Text = $"Payload is {loadedtexturechunks.Count} texture chunks";
             lblPayloadSound.Visible = true;
-            lblPayloadSound.Text = $"Payload is {loadedsoundchunks.Count} sound chunks / {loadedwavebankchunks.Count} wavebank chunks";
+            lblPayloadSound.Text = $"Payload is {loadedsoundchunks.Count} - {loadedwavebankchunks.Count}\nsound - wavebank chunks";
             if (loadedchunks.Count < 20)
             {
                 lblPayload.ForeColor = Color.LimeGreen;
@@ -2397,6 +2682,11 @@ namespace CrashEdit.CE
         private void numFOV_ValueChanged(object sender, EventArgs e)
         {
             entity.FOV.Rows[fovframeindex].Values[fovindex] = new EntityVictim((short)numFOV.Value);
+        }
+
+        private void lblPayloadTexture_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -937,6 +937,15 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
+        ///   Press Ctrl+C to copy, Ctrl+V to paste に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_tipLists {
+            get {
+                return ResourceManager.GetString("EntityBox_tipLists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Abort this operation. に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string ErrorReporter_Abort {

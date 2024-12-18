@@ -190,13 +190,12 @@ namespace CrashEdit.CE
             numMetavalueLoadB = new DarkNumericUpDown();
             lblLoadListRowIndexB = new Label();
             fraEIDB = new DarkGroupBox();
+            lbEIDB = new DarkListBox();
             txtEIDB = new DarkTextBox();
             lblEIDIndexB = new Label();
             cmdAppendEIDB = new DarkButton();
             cmdRemoveEIDB = new DarkButton();
-            cmdPrevEIDB = new DarkButton();
             cmdInsertEIDB = new DarkButton();
-            cmdNextEIDB = new DarkButton();
             cmdPrevRowB = new DarkButton();
             cmdNextRowB = new DarkButton();
             lblEIDErrA = new Label();
@@ -207,13 +206,12 @@ namespace CrashEdit.CE
             numMetavalueLoadA = new DarkNumericUpDown();
             lblLoadListRowIndexA = new Label();
             fraEIDA = new DarkGroupBox();
+            lbEIDA = new DarkListBox();
             txtEIDA = new DarkTextBox();
             lblEIDIndexA = new Label();
             cmdAppendEIDA = new DarkButton();
             cmdRemoveEIDA = new DarkButton();
-            cmdPrevEIDA = new DarkButton();
             cmdInsertEIDA = new DarkButton();
-            cmdNextEIDA = new DarkButton();
             cmdPrevRowA = new DarkButton();
             cmdNextRowA = new DarkButton();
             tabDrawLists = new TabPage();
@@ -2247,7 +2245,7 @@ namespace CrashEdit.CE
             lblEIDErrB.AutoSize = true;
             lblEIDErrB.BackColor = Color.Transparent;
             lblEIDErrB.ForeColor = Color.Red;
-            lblEIDErrB.Location = new Point(184, 346);
+            lblEIDErrB.Location = new Point(184, 524);
             lblEIDErrB.Margin = new Padding(4, 0, 4, 0);
             lblEIDErrB.Name = "lblEIDErrB";
             lblEIDErrB.Size = new Size(124, 15);
@@ -2264,11 +2262,11 @@ namespace CrashEdit.CE
             fraLoadListPayload.Controls.Add(cmdPayload);
             fraLoadListPayload.Controls.Add(lblPayloadPosition);
             fraLoadListPayload.Controls.Add(numPayloadPosition);
-            fraLoadListPayload.Location = new Point(7, 362);
+            fraLoadListPayload.Location = new Point(356, 7);
             fraLoadListPayload.Margin = new Padding(4, 3, 4, 3);
             fraLoadListPayload.Name = "fraLoadListPayload";
             fraLoadListPayload.Padding = new Padding(4, 3, 4, 3);
-            fraLoadListPayload.Size = new Size(270, 130);
+            fraLoadListPayload.Size = new Size(181, 214);
             fraLoadListPayload.TabIndex = 22;
             fraLoadListPayload.TabStop = false;
             fraLoadListPayload.Text = "Verify Load Lists";
@@ -2277,32 +2275,33 @@ namespace CrashEdit.CE
             // 
             lblPayloadSound.AutoSize = true;
             lblPayloadSound.BackColor = Color.Transparent;
-            lblPayloadSound.Location = new Point(7, 112);
+            lblPayloadSound.Location = new Point(5, 178);
             lblPayloadSound.Margin = new Padding(4, 0, 4, 0);
             lblPayloadSound.Name = "lblPayloadSound";
-            lblPayloadSound.Size = new Size(155, 15);
+            lblPayloadSound.Size = new Size(139, 30);
             lblPayloadSound.TabIndex = 27;
-            lblPayloadSound.Text = "Payload is ?? normal chunks";
+            lblPayloadSound.Text = "Payload is ?? - ??\r\nsound/wavebank chunks";
             lblPayloadSound.Visible = false;
             // 
             // lblPayloadTexture
             // 
             lblPayloadTexture.AutoSize = true;
             lblPayloadTexture.BackColor = Color.Transparent;
-            lblPayloadTexture.Location = new Point(7, 96);
+            lblPayloadTexture.Location = new Point(5, 162);
             lblPayloadTexture.Margin = new Padding(4, 0, 4, 0);
             lblPayloadTexture.Name = "lblPayloadTexture";
-            lblPayloadTexture.Size = new Size(155, 15);
+            lblPayloadTexture.Size = new Size(154, 15);
             lblPayloadTexture.TabIndex = 26;
-            lblPayloadTexture.Text = "Payload is ?? normal chunks";
+            lblPayloadTexture.Text = "Payload is ?? texture chunks";
             lblPayloadTexture.Visible = false;
+            lblPayloadTexture.Click += lblPayloadTexture_Click;
             // 
             // lblVerifyLoadLists
             // 
             lblVerifyLoadLists.AutoSize = true;
             lblVerifyLoadLists.BackColor = Color.Transparent;
             lblVerifyLoadLists.ForeColor = Color.MediumTurquoise;
-            lblVerifyLoadLists.Location = new Point(137, 28);
+            lblVerifyLoadLists.Location = new Point(7, 52);
             lblVerifyLoadLists.Margin = new Padding(4, 0, 4, 0);
             lblVerifyLoadLists.Name = "lblVerifyLoadLists";
             lblVerifyLoadLists.Size = new Size(118, 15);
@@ -2314,7 +2313,7 @@ namespace CrashEdit.CE
             // 
             lblPayload.AutoSize = true;
             lblPayload.BackColor = Color.Transparent;
-            lblPayload.Location = new Point(7, 80);
+            lblPayload.Location = new Point(5, 146);
             lblPayload.Margin = new Padding(4, 0, 4, 0);
             lblPayload.Name = "lblPayload";
             lblPayload.Size = new Size(155, 15);
@@ -2343,7 +2342,7 @@ namespace CrashEdit.CE
             cmdPayload.CustomColour = false;
             cmdPayload.FlatBottom = false;
             cmdPayload.FlatTop = false;
-            cmdPayload.Location = new Point(152, 52);
+            cmdPayload.Location = new Point(7, 87);
             cmdPayload.Margin = new Padding(4, 3, 4, 3);
             cmdPayload.Name = "cmdPayload";
             cmdPayload.Padding = new Padding(5);
@@ -2356,7 +2355,7 @@ namespace CrashEdit.CE
             // 
             lblPayloadPosition.AutoSize = true;
             lblPayloadPosition.BackColor = Color.Transparent;
-            lblPayloadPosition.Location = new Point(7, 58);
+            lblPayloadPosition.Location = new Point(5, 123);
             lblPayloadPosition.Margin = new Padding(4, 0, 4, 0);
             lblPayloadPosition.Name = "lblPayloadPosition";
             lblPayloadPosition.Size = new Size(50, 15);
@@ -2365,7 +2364,7 @@ namespace CrashEdit.CE
             // 
             // numPayloadPosition
             // 
-            numPayloadPosition.Location = new Point(65, 55);
+            numPayloadPosition.Location = new Point(63, 120);
             numPayloadPosition.Margin = new Padding(4, 3, 4, 3);
             numPayloadPosition.Maximum = new decimal(new int[] { 65535, 0, 0, 0 });
             numPayloadPosition.Name = "numPayloadPosition";
@@ -2386,7 +2385,7 @@ namespace CrashEdit.CE
             fraLoadListB.Margin = new Padding(4, 3, 4, 3);
             fraLoadListB.Name = "fraLoadListB";
             fraLoadListB.Padding = new Padding(4, 3, 4, 3);
-            fraLoadListB.Size = new Size(167, 336);
+            fraLoadListB.Size = new Size(167, 514);
             fraLoadListB.TabIndex = 21;
             fraLoadListB.TabStop = false;
             fraLoadListB.Text = "Load List B";
@@ -2456,32 +2455,47 @@ namespace CrashEdit.CE
             // 
             // fraEIDB
             // 
+            fraEIDB.Controls.Add(lbEIDB);
             fraEIDB.Controls.Add(txtEIDB);
             fraEIDB.Controls.Add(lblEIDIndexB);
             fraEIDB.Controls.Add(cmdAppendEIDB);
             fraEIDB.Controls.Add(cmdRemoveEIDB);
-            fraEIDB.Controls.Add(cmdPrevEIDB);
             fraEIDB.Controls.Add(cmdInsertEIDB);
-            fraEIDB.Controls.Add(cmdNextEIDB);
             fraEIDB.Location = new Point(7, 152);
             fraEIDB.Margin = new Padding(4, 3, 4, 3);
             fraEIDB.Name = "fraEIDB";
             fraEIDB.Padding = new Padding(4, 3, 4, 3);
-            fraEIDB.Size = new Size(153, 177);
+            fraEIDB.Size = new Size(153, 356);
             fraEIDB.TabIndex = 15;
             fraEIDB.TabStop = false;
             fraEIDB.Text = "Entries";
+            // 
+            // lbEIDB
+            // 
+            lbEIDB.BackColor = Color.FromArgb(26, 26, 28);
+            lbEIDB.BorderStyle = BorderStyle.FixedSingle;
+            lbEIDB.ForeColor = Color.FromArgb(213, 213, 213);
+            lbEIDB.FormattingEnabled = true;
+            lbEIDB.Location = new Point(7, 58);
+            lbEIDB.Name = "lbEIDB";
+            lbEIDB.Size = new Size(140, 227);
+            lbEIDB.TabIndex = 25;
+            lbEIDB.SelectedIndexChanged += lbEIDB_SelectedIndexChanged;
+            lbEIDB.DoubleClick += lbEIDB_DoubleClick;
+            lbEIDB.KeyDown += lbEIDB_KeyDown;
+            lbEIDB.KeyPress += lbEIDB_KeyPress;
             // 
             // txtEIDB
             // 
             txtEIDB.BackColor = Color.FromArgb(26, 26, 28);
             txtEIDB.BorderStyle = BorderStyle.FixedSingle;
+            txtEIDB.Enabled = false;
             txtEIDB.ForeColor = Color.FromArgb(213, 213, 213);
-            txtEIDB.Location = new Point(8, 81);
+            txtEIDB.Location = new Point(7, 35);
             txtEIDB.Margin = new Padding(4, 3, 4, 3);
             txtEIDB.MaxLength = 5;
             txtEIDB.Name = "txtEIDB";
-            txtEIDB.Size = new Size(137, 23);
+            txtEIDB.Size = new Size(140, 23);
             txtEIDB.TabIndex = 15;
             txtEIDB.TextChanged += txtEIDB_TextChanged;
             txtEIDB.LostFocus += txtEIDB_LostFocus;
@@ -2490,7 +2504,7 @@ namespace CrashEdit.CE
             // 
             lblEIDIndexB.BackColor = Color.Transparent;
             lblEIDIndexB.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblEIDIndexB.Location = new Point(8, 52);
+            lblEIDIndexB.Location = new Point(8, 9);
             lblEIDIndexB.Margin = new Padding(4, 0, 4, 0);
             lblEIDIndexB.Name = "lblEIDIndexB";
             lblEIDIndexB.Size = new Size(135, 27);
@@ -2504,7 +2518,7 @@ namespace CrashEdit.CE
             cmdAppendEIDB.CustomColour = false;
             cmdAppendEIDB.FlatBottom = false;
             cmdAppendEIDB.FlatTop = false;
-            cmdAppendEIDB.Location = new Point(7, 144);
+            cmdAppendEIDB.Location = new Point(7, 323);
             cmdAppendEIDB.Margin = new Padding(4, 3, 4, 3);
             cmdAppendEIDB.Name = "cmdAppendEIDB";
             cmdAppendEIDB.Padding = new Padding(5);
@@ -2519,7 +2533,7 @@ namespace CrashEdit.CE
             cmdRemoveEIDB.CustomColour = false;
             cmdRemoveEIDB.FlatBottom = false;
             cmdRemoveEIDB.FlatTop = false;
-            cmdRemoveEIDB.Location = new Point(7, 111);
+            cmdRemoveEIDB.Location = new Point(7, 290);
             cmdRemoveEIDB.Margin = new Padding(4, 3, 4, 3);
             cmdRemoveEIDB.Name = "cmdRemoveEIDB";
             cmdRemoveEIDB.Padding = new Padding(5);
@@ -2528,28 +2542,13 @@ namespace CrashEdit.CE
             cmdRemoveEIDB.Text = "Remove";
             cmdRemoveEIDB.Click += cmdRemoveEIDB_Click;
             // 
-            // cmdPrevEIDB
-            // 
-            cmdPrevEIDB.BorderColour = Color.Empty;
-            cmdPrevEIDB.CustomColour = false;
-            cmdPrevEIDB.FlatBottom = false;
-            cmdPrevEIDB.FlatTop = false;
-            cmdPrevEIDB.Location = new Point(7, 22);
-            cmdPrevEIDB.Margin = new Padding(4, 3, 4, 3);
-            cmdPrevEIDB.Name = "cmdPrevEIDB";
-            cmdPrevEIDB.Padding = new Padding(5);
-            cmdPrevEIDB.Size = new Size(68, 27);
-            cmdPrevEIDB.TabIndex = 8;
-            cmdPrevEIDB.Text = "Previous";
-            cmdPrevEIDB.Click += cmdPrevEIDB_Click;
-            // 
             // cmdInsertEIDB
             // 
             cmdInsertEIDB.BorderColour = Color.Empty;
             cmdInsertEIDB.CustomColour = false;
             cmdInsertEIDB.FlatBottom = false;
             cmdInsertEIDB.FlatTop = false;
-            cmdInsertEIDB.Location = new Point(79, 111);
+            cmdInsertEIDB.Location = new Point(79, 290);
             cmdInsertEIDB.Margin = new Padding(4, 3, 4, 3);
             cmdInsertEIDB.Name = "cmdInsertEIDB";
             cmdInsertEIDB.Padding = new Padding(5);
@@ -2557,21 +2556,6 @@ namespace CrashEdit.CE
             cmdInsertEIDB.TabIndex = 13;
             cmdInsertEIDB.Text = "Insert";
             cmdInsertEIDB.Click += cmdInsertEIDB_Click;
-            // 
-            // cmdNextEIDB
-            // 
-            cmdNextEIDB.BorderColour = Color.Empty;
-            cmdNextEIDB.CustomColour = false;
-            cmdNextEIDB.FlatBottom = false;
-            cmdNextEIDB.FlatTop = false;
-            cmdNextEIDB.Location = new Point(79, 22);
-            cmdNextEIDB.Margin = new Padding(4, 3, 4, 3);
-            cmdNextEIDB.Name = "cmdNextEIDB";
-            cmdNextEIDB.Padding = new Padding(5);
-            cmdNextEIDB.Size = new Size(68, 27);
-            cmdNextEIDB.TabIndex = 9;
-            cmdNextEIDB.Text = "Next";
-            cmdNextEIDB.Click += cmdNextEIDB_Click;
             // 
             // cmdPrevRowB
             // 
@@ -2608,7 +2592,7 @@ namespace CrashEdit.CE
             lblEIDErrA.AutoSize = true;
             lblEIDErrA.BackColor = Color.Transparent;
             lblEIDErrA.ForeColor = Color.Red;
-            lblEIDErrA.Location = new Point(10, 346);
+            lblEIDErrA.Location = new Point(10, 524);
             lblEIDErrA.Margin = new Padding(4, 0, 4, 0);
             lblEIDErrA.Name = "lblEIDErrA";
             lblEIDErrA.Size = new Size(124, 15);
@@ -2629,7 +2613,7 @@ namespace CrashEdit.CE
             fraLoadListA.Margin = new Padding(4, 3, 4, 3);
             fraLoadListA.Name = "fraLoadListA";
             fraLoadListA.Padding = new Padding(4, 3, 4, 3);
-            fraLoadListA.Size = new Size(167, 336);
+            fraLoadListA.Size = new Size(167, 514);
             fraLoadListA.TabIndex = 0;
             fraLoadListA.TabStop = false;
             fraLoadListA.Text = "Load List A";
@@ -2699,32 +2683,47 @@ namespace CrashEdit.CE
             // 
             // fraEIDA
             // 
+            fraEIDA.Controls.Add(lbEIDA);
             fraEIDA.Controls.Add(txtEIDA);
             fraEIDA.Controls.Add(lblEIDIndexA);
             fraEIDA.Controls.Add(cmdAppendEIDA);
             fraEIDA.Controls.Add(cmdRemoveEIDA);
-            fraEIDA.Controls.Add(cmdPrevEIDA);
             fraEIDA.Controls.Add(cmdInsertEIDA);
-            fraEIDA.Controls.Add(cmdNextEIDA);
             fraEIDA.Location = new Point(7, 152);
             fraEIDA.Margin = new Padding(4, 3, 4, 3);
             fraEIDA.Name = "fraEIDA";
             fraEIDA.Padding = new Padding(4, 3, 4, 3);
-            fraEIDA.Size = new Size(153, 177);
+            fraEIDA.Size = new Size(153, 356);
             fraEIDA.TabIndex = 15;
             fraEIDA.TabStop = false;
             fraEIDA.Text = "Entries";
+            // 
+            // lbEIDA
+            // 
+            lbEIDA.BackColor = Color.FromArgb(26, 26, 28);
+            lbEIDA.BorderStyle = BorderStyle.FixedSingle;
+            lbEIDA.ForeColor = Color.FromArgb(213, 213, 213);
+            lbEIDA.FormattingEnabled = true;
+            lbEIDA.Location = new Point(7, 58);
+            lbEIDA.Name = "lbEIDA";
+            lbEIDA.Size = new Size(140, 227);
+            lbEIDA.TabIndex = 24;
+            lbEIDA.SelectedIndexChanged += lbEIDA_SelectedIndexChanged;
+            lbEIDA.DoubleClick += lbEIDA_DoubleClick;
+            lbEIDA.KeyDown += lbEIDA_KeyDown;
+            lbEIDA.KeyPress += lbEIDA_KeyPress;
             // 
             // txtEIDA
             // 
             txtEIDA.BackColor = Color.FromArgb(26, 26, 28);
             txtEIDA.BorderStyle = BorderStyle.FixedSingle;
+            txtEIDA.Enabled = false;
             txtEIDA.ForeColor = Color.FromArgb(213, 213, 213);
-            txtEIDA.Location = new Point(8, 81);
+            txtEIDA.Location = new Point(7, 35);
             txtEIDA.Margin = new Padding(4, 3, 4, 3);
             txtEIDA.MaxLength = 5;
             txtEIDA.Name = "txtEIDA";
-            txtEIDA.Size = new Size(137, 23);
+            txtEIDA.Size = new Size(140, 23);
             txtEIDA.TabIndex = 15;
             txtEIDA.TextChanged += txtEIDA_TextChanged;
             txtEIDA.LostFocus += txtEIDA_LostFocus;
@@ -2733,7 +2732,7 @@ namespace CrashEdit.CE
             // 
             lblEIDIndexA.BackColor = Color.Transparent;
             lblEIDIndexA.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblEIDIndexA.Location = new Point(7, 52);
+            lblEIDIndexA.Location = new Point(8, 9);
             lblEIDIndexA.Margin = new Padding(4, 0, 4, 0);
             lblEIDIndexA.Name = "lblEIDIndexA";
             lblEIDIndexA.Size = new Size(140, 27);
@@ -2747,7 +2746,7 @@ namespace CrashEdit.CE
             cmdAppendEIDA.CustomColour = false;
             cmdAppendEIDA.FlatBottom = false;
             cmdAppendEIDA.FlatTop = false;
-            cmdAppendEIDA.Location = new Point(7, 144);
+            cmdAppendEIDA.Location = new Point(7, 323);
             cmdAppendEIDA.Margin = new Padding(4, 3, 4, 3);
             cmdAppendEIDA.Name = "cmdAppendEIDA";
             cmdAppendEIDA.Padding = new Padding(5);
@@ -2762,7 +2761,7 @@ namespace CrashEdit.CE
             cmdRemoveEIDA.CustomColour = false;
             cmdRemoveEIDA.FlatBottom = false;
             cmdRemoveEIDA.FlatTop = false;
-            cmdRemoveEIDA.Location = new Point(7, 111);
+            cmdRemoveEIDA.Location = new Point(7, 290);
             cmdRemoveEIDA.Margin = new Padding(4, 3, 4, 3);
             cmdRemoveEIDA.Name = "cmdRemoveEIDA";
             cmdRemoveEIDA.Padding = new Padding(5);
@@ -2771,28 +2770,13 @@ namespace CrashEdit.CE
             cmdRemoveEIDA.Text = "Remove";
             cmdRemoveEIDA.Click += cmdRemoveEIDA_Click;
             // 
-            // cmdPrevEIDA
-            // 
-            cmdPrevEIDA.BorderColour = Color.Empty;
-            cmdPrevEIDA.CustomColour = false;
-            cmdPrevEIDA.FlatBottom = false;
-            cmdPrevEIDA.FlatTop = false;
-            cmdPrevEIDA.Location = new Point(7, 22);
-            cmdPrevEIDA.Margin = new Padding(4, 3, 4, 3);
-            cmdPrevEIDA.Name = "cmdPrevEIDA";
-            cmdPrevEIDA.Padding = new Padding(5);
-            cmdPrevEIDA.Size = new Size(68, 27);
-            cmdPrevEIDA.TabIndex = 8;
-            cmdPrevEIDA.Text = "Previous";
-            cmdPrevEIDA.Click += cmdPrevEIDA_Click;
-            // 
             // cmdInsertEIDA
             // 
             cmdInsertEIDA.BorderColour = Color.Empty;
             cmdInsertEIDA.CustomColour = false;
             cmdInsertEIDA.FlatBottom = false;
             cmdInsertEIDA.FlatTop = false;
-            cmdInsertEIDA.Location = new Point(79, 111);
+            cmdInsertEIDA.Location = new Point(79, 290);
             cmdInsertEIDA.Margin = new Padding(4, 3, 4, 3);
             cmdInsertEIDA.Name = "cmdInsertEIDA";
             cmdInsertEIDA.Padding = new Padding(5);
@@ -2800,21 +2784,6 @@ namespace CrashEdit.CE
             cmdInsertEIDA.TabIndex = 13;
             cmdInsertEIDA.Text = "Insert";
             cmdInsertEIDA.Click += cmdInsertEIDA_Click;
-            // 
-            // cmdNextEIDA
-            // 
-            cmdNextEIDA.BorderColour = Color.Empty;
-            cmdNextEIDA.CustomColour = false;
-            cmdNextEIDA.FlatBottom = false;
-            cmdNextEIDA.FlatTop = false;
-            cmdNextEIDA.Location = new Point(79, 22);
-            cmdNextEIDA.Margin = new Padding(4, 3, 4, 3);
-            cmdNextEIDA.Name = "cmdNextEIDA";
-            cmdNextEIDA.Padding = new Padding(5);
-            cmdNextEIDA.Size = new Size(68, 27);
-            cmdNextEIDA.TabIndex = 9;
-            cmdNextEIDA.Text = "Next";
-            cmdNextEIDA.Click += cmdNextEIDA_Click;
             // 
             // cmdPrevRowA
             // 
@@ -3529,8 +3498,6 @@ namespace CrashEdit.CE
         private DarkGroupBox fraLoadListA;
         private DarkButton cmdRemoveEIDA;
         private DarkButton cmdInsertEIDA;
-        private DarkButton cmdNextEIDA;
-        private DarkButton cmdPrevEIDA;
         private System.Windows.Forms.Label lblEIDIndexA;
         private DarkButton cmdAppendEIDA;
         private System.Windows.Forms.Label lblLoadListRowIndexA;
@@ -3567,9 +3534,7 @@ namespace CrashEdit.CE
         private System.Windows.Forms.Label lblEIDIndexB;
         private DarkButton cmdAppendEIDB;
         private DarkButton cmdRemoveEIDB;
-        private DarkButton cmdPrevEIDB;
         private DarkButton cmdInsertEIDB;
-        private DarkButton cmdNextEIDB;
         private DarkButton cmdPrevRowB;
         private DarkButton cmdNextRowB;
         private System.Windows.Forms.TabPage tabDrawLists;
@@ -3695,5 +3660,7 @@ namespace CrashEdit.CE
         private CheckBox chkC2TTFlags;
         private DarkListBox lbVictimID;
         private DarkNumericUpDown numEditVictimID;
+        private DarkListBox lbEIDA;
+        private DarkListBox lbEIDB;
     }
 }
