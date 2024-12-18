@@ -763,6 +763,15 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
+        ///   Verify Draw Lists に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_fraVerifyDrawList {
+            get {
+                return ResourceManager.GetString("EntityBox_fraVerifyDrawList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Victims に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string EntityBox_FraVictims {

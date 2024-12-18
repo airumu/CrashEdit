@@ -154,6 +154,8 @@ namespace CrashEdit.CE
             lblMetavalueDrawB.Text = Resources.EntityBox_lblMetavalueDrawB;
             fraEntityA.Text = Resources.EntityBox_fraEntityA;
             fraEntityB.Text = Resources.EntityBox_fraEntityB;
+            fraVerifyDrawList.Text = Resources.EntityBox_fraVerifyDrawList;
+            cmdVerifyDrawList.Text = Resources.EntityBox_cmdLoadListVerify;
             lblArgAs.Text = MakeArgAsText();
             chkSettingHex_CheckedChanged(null, null);
 
@@ -2685,9 +2687,71 @@ namespace CrashEdit.CE
             entity.FOV.Rows[fovframeindex].Values[fovindex] = new EntityVictim((short)numFOV.Value);
         }
 
-        private void lblPayloadTexture_Click(object sender, EventArgs e)
+        private void cmdVerifyDrawList_Click(object sender, EventArgs e)
         {
-
+            {
+                bool haserror = false;
+                List<int> drawnids = new List<int>();
+                string idlist = string.Empty;
+                for (int i = 0; i < entity.Positions.Count; ++i)
+                {
+                    foreach (var row in entity.DrawListB.Rows)
+                    {
+                        if (row.MetaValue == i)
+                        {
+                            // draw
+                            foreach (int id in row.Values)
+                            {
+                                drawnids.Add(id);
+                            }
+                        }
+                    }
+                    foreach (var row in entity.DrawListA.Rows)
+                    {
+                        if (row.MetaValue == i)
+                        {
+                            // undraw
+                            foreach (int id in row.Values)
+                            {
+                                if (!drawnids.Remove(id))
+                                {
+                                    idlist += "[position " + i + "] " + (id >> 8 & 0xFFFF) + Environment.NewLine;
+                                }
+                            }
+                        }
+                    }
+                }
+                if (idlist != string.Empty)
+                {
+                    lblVerifyDrawLists.Visible = false;
+                    DarkMessageBox.ShowWarning($"Draw lists are incorrect. The following entries were already undrawn:\n{idlist}", "Draw list verification exception");
+                    haserror = true;
+                }
+                if (drawnids.Count == 0 && !haserror)
+                    lblVerifyDrawLists.Visible = true;
+                else if (drawnids.Count != 0)
+                {
+                    string idlist2 = string.Empty;
+                    for (int i = 0; i < entity.Positions.Count; ++i)
+                    {
+                        foreach (var row in entity.DrawListB.Rows)
+                        {
+                            if (row.MetaValue == i)
+                            {
+                                foreach (int id in row.Values)
+                                {
+                                    if (drawnids.Remove(id))
+                                    {
+                                        idlist2 += "[position " + i + "] " + (id >> 8 & 0xFFFF) + Environment.NewLine;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    lblVerifyDrawLists.Visible = false;
+                    DarkMessageBox.ShowWarning($"Draw lists are incorrect. The following entries are never undrawn:\n{idlist2}", "Draw list verification exception");
+                }
+            }
         }
     }
 }

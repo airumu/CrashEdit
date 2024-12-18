@@ -215,6 +215,9 @@ namespace CrashEdit.CE
             cmdPrevRowA = new DarkButton();
             cmdNextRowA = new DarkButton();
             tabDrawLists = new TabPage();
+            fraVerifyDrawList = new DarkGroupBox();
+            lblVerifyDrawLists = new Label();
+            cmdVerifyDrawList = new DarkButton();
             fraDrawListB = new DarkGroupBox();
             lblMetavalueDrawB = new Label();
             cmdRemoveRowDrawB = new DarkButton();
@@ -324,6 +327,7 @@ namespace CrashEdit.CE
             ((System.ComponentModel.ISupportInitialize)numMetavalueLoadA).BeginInit();
             fraEIDA.SuspendLayout();
             tabDrawLists.SuspendLayout();
+            fraVerifyDrawList.SuspendLayout();
             fraDrawListB.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numMetavalueDrawB).BeginInit();
             fraEntityB.SuspendLayout();
@@ -2294,7 +2298,6 @@ namespace CrashEdit.CE
             lblPayloadTexture.TabIndex = 26;
             lblPayloadTexture.Text = "Payload is ?? texture chunks";
             lblPayloadTexture.Visible = false;
-            lblPayloadTexture.Click += lblPayloadTexture_Click;
             // 
             // lblVerifyLoadLists
             // 
@@ -2818,6 +2821,7 @@ namespace CrashEdit.CE
             // tabDrawLists
             // 
             tabDrawLists.BackColor = Color.FromArgb(30, 30, 30);
+            tabDrawLists.Controls.Add(fraVerifyDrawList);
             tabDrawLists.Controls.Add(fraDrawListB);
             tabDrawLists.Controls.Add(fraDrawListA);
             tabDrawLists.Location = new Point(4, 32);
@@ -2828,6 +2832,44 @@ namespace CrashEdit.CE
             tabDrawLists.TabIndex = 3;
             tabDrawLists.Text = "Draw Lists";
             tabDrawLists.Enter += tabDrawLists_Enter;
+            // 
+            // fraVerifyDrawList
+            // 
+            fraVerifyDrawList.Controls.Add(lblVerifyDrawLists);
+            fraVerifyDrawList.Controls.Add(cmdVerifyDrawList);
+            fraVerifyDrawList.Location = new Point(355, 7);
+            fraVerifyDrawList.Name = "fraVerifyDrawList";
+            fraVerifyDrawList.Size = new Size(136, 79);
+            fraVerifyDrawList.TabIndex = 22;
+            fraVerifyDrawList.TabStop = false;
+            fraVerifyDrawList.Text = "Verify Draw Lists";
+            // 
+            // lblVerifyDrawLists
+            // 
+            lblVerifyDrawLists.AutoSize = true;
+            lblVerifyDrawLists.BackColor = Color.Transparent;
+            lblVerifyDrawLists.ForeColor = Color.Turquoise;
+            lblVerifyDrawLists.Location = new Point(7, 52);
+            lblVerifyDrawLists.Margin = new Padding(4, 0, 4, 0);
+            lblVerifyDrawLists.Name = "lblVerifyDrawLists";
+            lblVerifyDrawLists.Size = new Size(119, 15);
+            lblVerifyDrawLists.TabIndex = 21;
+            lblVerifyDrawLists.Text = "Draw lists are correct.";
+            lblVerifyDrawLists.Visible = false;
+            // 
+            // cmdVerifyDrawList
+            // 
+            cmdVerifyDrawList.BorderColour = Color.Empty;
+            cmdVerifyDrawList.CustomColour = false;
+            cmdVerifyDrawList.FlatBottom = false;
+            cmdVerifyDrawList.FlatTop = false;
+            cmdVerifyDrawList.Location = new Point(6, 22);
+            cmdVerifyDrawList.Name = "cmdVerifyDrawList";
+            cmdVerifyDrawList.Padding = new Padding(5);
+            cmdVerifyDrawList.Size = new Size(122, 27);
+            cmdVerifyDrawList.TabIndex = 0;
+            cmdVerifyDrawList.Text = "Verify List Integrity";
+            cmdVerifyDrawList.Click += cmdVerifyDrawList_Click;
             // 
             // fraDrawListB
             // 
@@ -3426,6 +3468,8 @@ namespace CrashEdit.CE
             fraEIDA.ResumeLayout(false);
             fraEIDA.PerformLayout();
             tabDrawLists.ResumeLayout(false);
+            fraVerifyDrawList.ResumeLayout(false);
+            fraVerifyDrawList.PerformLayout();
             fraDrawListB.ResumeLayout(false);
             fraDrawListB.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numMetavalueDrawB).EndInit();
@@ -3662,5 +3706,8 @@ namespace CrashEdit.CE
         private DarkNumericUpDown numEditVictimID;
         private DarkListBox lbEIDA;
         private DarkListBox lbEIDB;
+        private DarkGroupBox fraVerifyDrawList;
+        private Label lblVerifyDrawLists;
+        private DarkButton cmdVerifyDrawList;
     }
 }
