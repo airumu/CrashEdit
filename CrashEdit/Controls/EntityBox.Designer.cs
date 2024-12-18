@@ -225,14 +225,12 @@ namespace CrashEdit.CE
             numMetavalueDrawB = new DarkNumericUpDown();
             lblDrawListRowIndexB = new Label();
             fraEntityB = new DarkGroupBox();
-            lblEntityB = new Label();
+            lbEntityB = new DarkListBox();
             numEntityB = new DarkNumericUpDown();
             lblEntityIndexB = new Label();
             cmdAppendEntityB = new DarkButton();
             cmdRemoveEntityB = new DarkButton();
-            cmdPrevEntityB = new DarkButton();
             cmdInsertEntityB = new DarkButton();
-            cmdNextEntityB = new DarkButton();
             cmdPrevRowDrawB = new DarkButton();
             cmdNextRowDrawB = new DarkButton();
             fraDrawListA = new DarkGroupBox();
@@ -242,14 +240,12 @@ namespace CrashEdit.CE
             numMetavalueDrawA = new DarkNumericUpDown();
             lblDrawListRowIndexA = new Label();
             fraEntityA = new DarkGroupBox();
-            lblEntityA = new Label();
+            lbEntityA = new DarkListBox();
             numEntityA = new DarkNumericUpDown();
             lblEntityIndexA = new Label();
             cmdAppendEntityA = new DarkButton();
             cmdRemoveEntityA = new DarkButton();
-            cmdPrevEntityA = new DarkButton();
             cmdInsertEntityA = new DarkButton();
-            cmdNextEntityA = new DarkButton();
             cmdPrevRowDrawA = new DarkButton();
             cmdNextRowDrawA = new DarkButton();
             ((System.ComponentModel.ISupportInitialize)numType).BeginInit();
@@ -2507,7 +2503,7 @@ namespace CrashEdit.CE
             // 
             lblEIDIndexB.BackColor = Color.Transparent;
             lblEIDIndexB.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblEIDIndexB.Location = new Point(8, 9);
+            lblEIDIndexB.Location = new Point(7, 9);
             lblEIDIndexB.Margin = new Padding(4, 0, 4, 0);
             lblEIDIndexB.Name = "lblEIDIndexB";
             lblEIDIndexB.Size = new Size(135, 27);
@@ -2735,7 +2731,7 @@ namespace CrashEdit.CE
             // 
             lblEIDIndexA.BackColor = Color.Transparent;
             lblEIDIndexA.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblEIDIndexA.Location = new Point(8, 9);
+            lblEIDIndexA.Location = new Point(7, 9);
             lblEIDIndexA.Margin = new Padding(4, 0, 4, 0);
             lblEIDIndexA.Name = "lblEIDIndexA";
             lblEIDIndexA.Size = new Size(140, 27);
@@ -2885,7 +2881,7 @@ namespace CrashEdit.CE
             fraDrawListB.Margin = new Padding(4, 3, 4, 3);
             fraDrawListB.Name = "fraDrawListB";
             fraDrawListB.Padding = new Padding(4, 3, 4, 3);
-            fraDrawListB.Size = new Size(167, 336);
+            fraDrawListB.Size = new Size(167, 514);
             fraDrawListB.TabIndex = 21;
             fraDrawListB.TabStop = false;
             fraDrawListB.Text = "Draw List B";
@@ -2956,42 +2952,45 @@ namespace CrashEdit.CE
             // 
             // fraEntityB
             // 
-            fraEntityB.Controls.Add(lblEntityB);
+            fraEntityB.Controls.Add(lbEntityB);
             fraEntityB.Controls.Add(numEntityB);
             fraEntityB.Controls.Add(lblEntityIndexB);
             fraEntityB.Controls.Add(cmdAppendEntityB);
             fraEntityB.Controls.Add(cmdRemoveEntityB);
-            fraEntityB.Controls.Add(cmdPrevEntityB);
             fraEntityB.Controls.Add(cmdInsertEntityB);
-            fraEntityB.Controls.Add(cmdNextEntityB);
             fraEntityB.Location = new Point(7, 152);
             fraEntityB.Margin = new Padding(4, 3, 4, 3);
             fraEntityB.Name = "fraEntityB";
             fraEntityB.Padding = new Padding(4, 3, 4, 3);
-            fraEntityB.Size = new Size(153, 177);
+            fraEntityB.Size = new Size(153, 356);
             fraEntityB.TabIndex = 15;
             fraEntityB.TabStop = false;
             fraEntityB.Text = "Entities";
             // 
-            // lblEntityB
+            // lbEntityB
             // 
-            lblEntityB.AutoSize = true;
-            lblEntityB.BackColor = Color.Transparent;
-            lblEntityB.Location = new Point(4, 84);
-            lblEntityB.Margin = new Padding(4, 0, 4, 0);
-            lblEntityB.Name = "lblEntityB";
-            lblEntityB.Size = new Size(18, 15);
-            lblEntityB.TabIndex = 22;
-            lblEntityB.Text = "ID";
+            lbEntityB.BackColor = Color.FromArgb(26, 26, 28);
+            lbEntityB.BorderStyle = BorderStyle.FixedSingle;
+            lbEntityB.ForeColor = Color.FromArgb(213, 213, 213);
+            lbEntityB.FormattingEnabled = true;
+            lbEntityB.Location = new Point(7, 58);
+            lbEntityB.Name = "lbEntityB";
+            lbEntityB.Size = new Size(139, 227);
+            lbEntityB.TabIndex = 22;
+            lbEntityB.SelectedIndexChanged += lbEntityB_SelectedIndexChanged;
+            lbEntityB.DoubleClick += lbEntityB_DoubleClick;
+            lbEntityB.KeyDown += lbEntityB_KeyDown;
+            lbEntityB.KeyPress += lbEntityB_KeyPress;
             // 
             // numEntityB
             // 
-            numEntityB.Location = new Point(31, 82);
+            numEntityB.Enabled = false;
+            numEntityB.Location = new Point(7, 35);
             numEntityB.Margin = new Padding(4, 3, 4, 3);
             numEntityB.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
             numEntityB.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
             numEntityB.Name = "numEntityB";
-            numEntityB.Size = new Size(115, 23);
+            numEntityB.Size = new Size(140, 23);
             numEntityB.TabIndex = 21;
             numEntityB.ValueChanged += numEntityB_ValueChanged;
             // 
@@ -2999,7 +2998,7 @@ namespace CrashEdit.CE
             // 
             lblEntityIndexB.BackColor = Color.Transparent;
             lblEntityIndexB.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblEntityIndexB.Location = new Point(7, 52);
+            lblEntityIndexB.Location = new Point(7, 9);
             lblEntityIndexB.Margin = new Padding(4, 0, 4, 0);
             lblEntityIndexB.Name = "lblEntityIndexB";
             lblEntityIndexB.Size = new Size(140, 27);
@@ -3013,7 +3012,7 @@ namespace CrashEdit.CE
             cmdAppendEntityB.CustomColour = false;
             cmdAppendEntityB.FlatBottom = false;
             cmdAppendEntityB.FlatTop = false;
-            cmdAppendEntityB.Location = new Point(7, 144);
+            cmdAppendEntityB.Location = new Point(7, 323);
             cmdAppendEntityB.Margin = new Padding(4, 3, 4, 3);
             cmdAppendEntityB.Name = "cmdAppendEntityB";
             cmdAppendEntityB.Padding = new Padding(5);
@@ -3028,7 +3027,7 @@ namespace CrashEdit.CE
             cmdRemoveEntityB.CustomColour = false;
             cmdRemoveEntityB.FlatBottom = false;
             cmdRemoveEntityB.FlatTop = false;
-            cmdRemoveEntityB.Location = new Point(7, 111);
+            cmdRemoveEntityB.Location = new Point(7, 290);
             cmdRemoveEntityB.Margin = new Padding(4, 3, 4, 3);
             cmdRemoveEntityB.Name = "cmdRemoveEntityB";
             cmdRemoveEntityB.Padding = new Padding(5);
@@ -3037,28 +3036,13 @@ namespace CrashEdit.CE
             cmdRemoveEntityB.Text = "Remove";
             cmdRemoveEntityB.Click += cmdRemoveEntityB_Click;
             // 
-            // cmdPrevEntityB
-            // 
-            cmdPrevEntityB.BorderColour = Color.Empty;
-            cmdPrevEntityB.CustomColour = false;
-            cmdPrevEntityB.FlatBottom = false;
-            cmdPrevEntityB.FlatTop = false;
-            cmdPrevEntityB.Location = new Point(7, 22);
-            cmdPrevEntityB.Margin = new Padding(4, 3, 4, 3);
-            cmdPrevEntityB.Name = "cmdPrevEntityB";
-            cmdPrevEntityB.Padding = new Padding(5);
-            cmdPrevEntityB.Size = new Size(68, 27);
-            cmdPrevEntityB.TabIndex = 8;
-            cmdPrevEntityB.Text = "Previous";
-            cmdPrevEntityB.Click += cmdPrevEntityB_Click;
-            // 
             // cmdInsertEntityB
             // 
             cmdInsertEntityB.BorderColour = Color.Empty;
             cmdInsertEntityB.CustomColour = false;
             cmdInsertEntityB.FlatBottom = false;
             cmdInsertEntityB.FlatTop = false;
-            cmdInsertEntityB.Location = new Point(79, 111);
+            cmdInsertEntityB.Location = new Point(79, 290);
             cmdInsertEntityB.Margin = new Padding(4, 3, 4, 3);
             cmdInsertEntityB.Name = "cmdInsertEntityB";
             cmdInsertEntityB.Padding = new Padding(5);
@@ -3066,21 +3050,6 @@ namespace CrashEdit.CE
             cmdInsertEntityB.TabIndex = 13;
             cmdInsertEntityB.Text = "Insert";
             cmdInsertEntityB.Click += cmdInsertEntityB_Click;
-            // 
-            // cmdNextEntityB
-            // 
-            cmdNextEntityB.BorderColour = Color.Empty;
-            cmdNextEntityB.CustomColour = false;
-            cmdNextEntityB.FlatBottom = false;
-            cmdNextEntityB.FlatTop = false;
-            cmdNextEntityB.Location = new Point(79, 22);
-            cmdNextEntityB.Margin = new Padding(4, 3, 4, 3);
-            cmdNextEntityB.Name = "cmdNextEntityB";
-            cmdNextEntityB.Padding = new Padding(5);
-            cmdNextEntityB.Size = new Size(68, 27);
-            cmdNextEntityB.TabIndex = 9;
-            cmdNextEntityB.Text = "Next";
-            cmdNextEntityB.Click += cmdNextEntityB_Click;
             // 
             // cmdPrevRowDrawB
             // 
@@ -3126,7 +3095,7 @@ namespace CrashEdit.CE
             fraDrawListA.Margin = new Padding(4, 3, 4, 3);
             fraDrawListA.Name = "fraDrawListA";
             fraDrawListA.Padding = new Padding(4, 3, 4, 3);
-            fraDrawListA.Size = new Size(167, 336);
+            fraDrawListA.Size = new Size(167, 514);
             fraDrawListA.TabIndex = 1;
             fraDrawListA.TabStop = false;
             fraDrawListA.Text = "Draw List A";
@@ -3197,42 +3166,45 @@ namespace CrashEdit.CE
             // 
             // fraEntityA
             // 
-            fraEntityA.Controls.Add(lblEntityA);
+            fraEntityA.Controls.Add(lbEntityA);
             fraEntityA.Controls.Add(numEntityA);
             fraEntityA.Controls.Add(lblEntityIndexA);
             fraEntityA.Controls.Add(cmdAppendEntityA);
             fraEntityA.Controls.Add(cmdRemoveEntityA);
-            fraEntityA.Controls.Add(cmdPrevEntityA);
             fraEntityA.Controls.Add(cmdInsertEntityA);
-            fraEntityA.Controls.Add(cmdNextEntityA);
             fraEntityA.Location = new Point(7, 152);
             fraEntityA.Margin = new Padding(4, 3, 4, 3);
             fraEntityA.Name = "fraEntityA";
             fraEntityA.Padding = new Padding(4, 3, 4, 3);
-            fraEntityA.Size = new Size(153, 177);
+            fraEntityA.Size = new Size(153, 356);
             fraEntityA.TabIndex = 15;
             fraEntityA.TabStop = false;
             fraEntityA.Text = "Entities";
             // 
-            // lblEntityA
+            // lbEntityA
             // 
-            lblEntityA.AutoSize = true;
-            lblEntityA.BackColor = Color.Transparent;
-            lblEntityA.Location = new Point(4, 84);
-            lblEntityA.Margin = new Padding(4, 0, 4, 0);
-            lblEntityA.Name = "lblEntityA";
-            lblEntityA.Size = new Size(18, 15);
-            lblEntityA.TabIndex = 22;
-            lblEntityA.Text = "ID";
+            lbEntityA.BackColor = Color.FromArgb(26, 26, 28);
+            lbEntityA.BorderStyle = BorderStyle.FixedSingle;
+            lbEntityA.ForeColor = Color.FromArgb(213, 213, 213);
+            lbEntityA.FormattingEnabled = true;
+            lbEntityA.Location = new Point(7, 58);
+            lbEntityA.Name = "lbEntityA";
+            lbEntityA.Size = new Size(139, 227);
+            lbEntityA.TabIndex = 22;
+            lbEntityA.SelectedIndexChanged += lbEntityA_SelectedIndexChanged;
+            lbEntityA.DoubleClick += lbEntityA_DoubleClick;
+            lbEntityA.KeyDown += lbEntityA_KeyDown;
+            lbEntityA.KeyPress += lbEntityA_KeyPress;
             // 
             // numEntityA
             // 
-            numEntityA.Location = new Point(31, 82);
+            numEntityA.Enabled = false;
+            numEntityA.Location = new Point(7, 35);
             numEntityA.Margin = new Padding(4, 3, 4, 3);
             numEntityA.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
             numEntityA.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
             numEntityA.Name = "numEntityA";
-            numEntityA.Size = new Size(115, 23);
+            numEntityA.Size = new Size(140, 23);
             numEntityA.TabIndex = 21;
             numEntityA.ValueChanged += numEntityA_ValueChanged;
             // 
@@ -3240,7 +3212,7 @@ namespace CrashEdit.CE
             // 
             lblEntityIndexA.BackColor = Color.Transparent;
             lblEntityIndexA.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblEntityIndexA.Location = new Point(7, 52);
+            lblEntityIndexA.Location = new Point(7, 9);
             lblEntityIndexA.Margin = new Padding(4, 0, 4, 0);
             lblEntityIndexA.Name = "lblEntityIndexA";
             lblEntityIndexA.Size = new Size(140, 27);
@@ -3254,7 +3226,7 @@ namespace CrashEdit.CE
             cmdAppendEntityA.CustomColour = false;
             cmdAppendEntityA.FlatBottom = false;
             cmdAppendEntityA.FlatTop = false;
-            cmdAppendEntityA.Location = new Point(7, 144);
+            cmdAppendEntityA.Location = new Point(6, 323);
             cmdAppendEntityA.Margin = new Padding(4, 3, 4, 3);
             cmdAppendEntityA.Name = "cmdAppendEntityA";
             cmdAppendEntityA.Padding = new Padding(5);
@@ -3269,7 +3241,7 @@ namespace CrashEdit.CE
             cmdRemoveEntityA.CustomColour = false;
             cmdRemoveEntityA.FlatBottom = false;
             cmdRemoveEntityA.FlatTop = false;
-            cmdRemoveEntityA.Location = new Point(7, 111);
+            cmdRemoveEntityA.Location = new Point(6, 290);
             cmdRemoveEntityA.Margin = new Padding(4, 3, 4, 3);
             cmdRemoveEntityA.Name = "cmdRemoveEntityA";
             cmdRemoveEntityA.Padding = new Padding(5);
@@ -3278,28 +3250,13 @@ namespace CrashEdit.CE
             cmdRemoveEntityA.Text = "Remove";
             cmdRemoveEntityA.Click += cmdRemoveEntityA_Click;
             // 
-            // cmdPrevEntityA
-            // 
-            cmdPrevEntityA.BorderColour = Color.Empty;
-            cmdPrevEntityA.CustomColour = false;
-            cmdPrevEntityA.FlatBottom = false;
-            cmdPrevEntityA.FlatTop = false;
-            cmdPrevEntityA.Location = new Point(7, 22);
-            cmdPrevEntityA.Margin = new Padding(4, 3, 4, 3);
-            cmdPrevEntityA.Name = "cmdPrevEntityA";
-            cmdPrevEntityA.Padding = new Padding(5);
-            cmdPrevEntityA.Size = new Size(68, 27);
-            cmdPrevEntityA.TabIndex = 8;
-            cmdPrevEntityA.Text = "Previous";
-            cmdPrevEntityA.Click += cmdPrevEntityA_Click;
-            // 
             // cmdInsertEntityA
             // 
             cmdInsertEntityA.BorderColour = Color.Empty;
             cmdInsertEntityA.CustomColour = false;
             cmdInsertEntityA.FlatBottom = false;
             cmdInsertEntityA.FlatTop = false;
-            cmdInsertEntityA.Location = new Point(79, 111);
+            cmdInsertEntityA.Location = new Point(78, 290);
             cmdInsertEntityA.Margin = new Padding(4, 3, 4, 3);
             cmdInsertEntityA.Name = "cmdInsertEntityA";
             cmdInsertEntityA.Padding = new Padding(5);
@@ -3307,21 +3264,6 @@ namespace CrashEdit.CE
             cmdInsertEntityA.TabIndex = 13;
             cmdInsertEntityA.Text = "Insert";
             cmdInsertEntityA.Click += cmdInsertEntityA_Click;
-            // 
-            // cmdNextEntityA
-            // 
-            cmdNextEntityA.BorderColour = Color.Empty;
-            cmdNextEntityA.CustomColour = false;
-            cmdNextEntityA.FlatBottom = false;
-            cmdNextEntityA.FlatTop = false;
-            cmdNextEntityA.Location = new Point(79, 22);
-            cmdNextEntityA.Margin = new Padding(4, 3, 4, 3);
-            cmdNextEntityA.Name = "cmdNextEntityA";
-            cmdNextEntityA.Padding = new Padding(5);
-            cmdNextEntityA.Size = new Size(68, 27);
-            cmdNextEntityA.TabIndex = 9;
-            cmdNextEntityA.Text = "Next";
-            cmdNextEntityA.Click += cmdNextEntityA_Click;
             // 
             // cmdPrevRowDrawA
             // 
@@ -3474,13 +3416,11 @@ namespace CrashEdit.CE
             fraDrawListB.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numMetavalueDrawB).EndInit();
             fraEntityB.ResumeLayout(false);
-            fraEntityB.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numEntityB).EndInit();
             fraDrawListA.ResumeLayout(false);
             fraDrawListA.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numMetavalueDrawA).EndInit();
             fraEntityA.ResumeLayout(false);
-            fraEntityA.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numEntityA).EndInit();
             ResumeLayout(false);
         }
@@ -3592,12 +3532,9 @@ namespace CrashEdit.CE
         private System.Windows.Forms.Label lblEntityIndexA;
         private DarkButton cmdAppendEntityA;
         private DarkButton cmdRemoveEntityA;
-        private DarkButton cmdPrevEntityA;
         private DarkButton cmdInsertEntityA;
-        private DarkButton cmdNextEntityA;
         private DarkButton cmdPrevRowDrawA;
         private DarkButton cmdNextRowDrawA;
-        private System.Windows.Forms.Label lblEntityA;
         private DarkNumericUpDown numEntityA;
         private DarkGroupBox fraDrawListB;
         private System.Windows.Forms.Label lblMetavalueDrawB;
@@ -3606,14 +3543,11 @@ namespace CrashEdit.CE
         private DarkNumericUpDown numMetavalueDrawB;
         private System.Windows.Forms.Label lblDrawListRowIndexB;
         private DarkGroupBox fraEntityB;
-        private System.Windows.Forms.Label lblEntityB;
         private DarkNumericUpDown numEntityB;
         private System.Windows.Forms.Label lblEntityIndexB;
         private DarkButton cmdAppendEntityB;
         private DarkButton cmdRemoveEntityB;
-        private DarkButton cmdPrevEntityB;
         private DarkButton cmdInsertEntityB;
-        private DarkButton cmdNextEntityB;
         private DarkButton cmdPrevRowDrawB;
         private DarkButton cmdNextRowDrawB;
         private DarkButton cmdLoadListVerify;
@@ -3709,5 +3643,7 @@ namespace CrashEdit.CE
         private DarkGroupBox fraVerifyDrawList;
         private Label lblVerifyDrawLists;
         private DarkButton cmdVerifyDrawList;
+        private DarkListBox lbEntityA;
+        private DarkListBox lbEntityB;
     }
 }
