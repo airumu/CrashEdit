@@ -2326,7 +2326,7 @@ namespace CrashEdit.CE
             cmdLoadListVerify.CustomColour = false;
             cmdLoadListVerify.FlatBottom = false;
             cmdLoadListVerify.FlatTop = false;
-            cmdLoadListVerify.Location = new Point(7, 22);
+            cmdLoadListVerify.Location = new Point(6, 22);
             cmdLoadListVerify.Margin = new Padding(4, 3, 4, 3);
             cmdLoadListVerify.Name = "cmdLoadListVerify";
             cmdLoadListVerify.Padding = new Padding(5);
@@ -2833,7 +2833,7 @@ namespace CrashEdit.CE
             // 
             fraVerifyDrawList.Controls.Add(lblVerifyDrawLists);
             fraVerifyDrawList.Controls.Add(cmdVerifyDrawList);
-            fraVerifyDrawList.Location = new Point(355, 7);
+            fraVerifyDrawList.Location = new Point(356, 7);
             fraVerifyDrawList.Name = "fraVerifyDrawList";
             fraVerifyDrawList.Size = new Size(136, 79);
             fraVerifyDrawList.TabIndex = 22;

@@ -37,6 +37,8 @@ namespace CrashEdit.CE
         private DarkToolTip tipVictim;
         private DarkToolTip tipEIDA;
         private DarkToolTip tipEIDB;
+        private DarkToolTip tipEntityA;
+        private DarkToolTip tipEntityB;
 
         internal Stack<bool> dirty = new Stack<bool>();
         internal bool Dirty => dirty.Count > 0 && dirty.Peek();
@@ -167,6 +169,10 @@ namespace CrashEdit.CE
             tipEIDA.SetToolTip(lbEIDA, Resources.EntityBox_tipLists);
             tipEIDB = new DarkToolTip();
             tipEIDB.SetToolTip(lbEIDB, Resources.EntityBox_tipLists);
+            tipEntityA = new DarkToolTip();
+            tipEntityA.SetToolTip(lbEntityA, Resources.EntityBox_tipLists);
+            tipEntityB = new DarkToolTip();
+            tipEntityB.SetToolTip(lbEntityB, Resources.EntityBox_tipLists);
 
             // use a Timer because of PAL switch
             argtexttimer = new()
