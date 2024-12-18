@@ -1112,7 +1112,7 @@ namespace CrashEdit.CE
                     cmdRemoveEIDB.Enabled = true;
                     //txtEIDB.Enabled = true;
                     lblEIDErrB.Visible = true;
-                    lblEIDIndexB.Text = $"{loadlistbeidindex + 1} / {entity.LoadListB.Rows[loadlistbrowindex].Values.Count}";
+                    lblEIDIndexB.Text = $"{lbeidblindex + 1} / {entity.LoadListB.Rows[loadlistbrowindex].Values.Count}";
                     //txtEIDB.Text = Entry.EIDToEName(entity.LoadListB.Rows[loadlistbrowindex].Values[loadlistbeidindex]);
                 }
                 else
