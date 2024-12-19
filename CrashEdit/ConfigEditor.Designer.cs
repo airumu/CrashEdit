@@ -62,6 +62,7 @@ namespace CrashEdit.CE
             sldNodeShadeAmt = new TrackBar();
             tbcSettings = new MetroSetTabControl();
             tbpGeneral = new TabPage();
+            cmdHelp = new DarkButton();
             fraLang = new DarkGroupBox();
             tbp3D = new TabPage();
             tbpDebugDisplay = new TabPage();
@@ -411,7 +412,6 @@ namespace CrashEdit.CE
             cmdReset.CustomColour = false;
             cmdReset.FlatBottom = false;
             cmdReset.FlatTop = false;
-            cmdReset.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             cmdReset.Location = new Point(7, 149);
             cmdReset.Margin = new Padding(4, 3, 4, 3);
             cmdReset.Name = "cmdReset";
@@ -516,6 +516,7 @@ namespace CrashEdit.CE
             // tbpGeneral
             // 
             tbpGeneral.BackColor = Color.FromArgb(30, 30, 30);
+            tbpGeneral.Controls.Add(cmdHelp);
             tbpGeneral.Controls.Add(fraLang);
             tbpGeneral.Controls.Add(cmdReset);
             tbpGeneral.Controls.Add(fraSize);
@@ -525,6 +526,21 @@ namespace CrashEdit.CE
             tbpGeneral.Size = new Size(417, 381);
             tbpGeneral.TabIndex = 0;
             tbpGeneral.Text = "General";
+            // 
+            // cmdHelp
+            // 
+            cmdHelp.BorderColour = Color.Empty;
+            cmdHelp.CustomColour = false;
+            cmdHelp.FlatBottom = false;
+            cmdHelp.FlatTop = false;
+            cmdHelp.Location = new Point(7, 180);
+            cmdHelp.Margin = new Padding(4, 3, 4, 3);
+            cmdHelp.Name = "cmdHelp";
+            cmdHelp.Padding = new Padding(5);
+            cmdHelp.Size = new Size(90, 25);
+            cmdHelp.TabIndex = 3;
+            cmdHelp.Text = "Help";
+            cmdHelp.Click += cmdHelp_Click;
             // 
             // fraLang
             // 
@@ -853,5 +869,6 @@ namespace CrashEdit.CE
         private CheckBox chkPatchGOOLC3toC2;
         private CheckBox chkSplitViewerPanels;
         private DarkGroupBox fraExtra;
+        private DarkButton cmdHelp;
     }
 }

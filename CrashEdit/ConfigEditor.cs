@@ -10,6 +10,8 @@ namespace CrashEdit.CE
         private static readonly List<string> FontFileNames = new();
         private static readonly List<string> FontExtensions = new() { ".ttf", ".otf" };
 
+        public HelpWindow frmhelp = null;
+
         private void MakeFontsList()
         {
             var add_font = (string f) =>
@@ -324,6 +326,22 @@ namespace CrashEdit.CE
         {
             Settings.Default.SplitViewerPanels = chkSplitViewerPanels.Checked;
             Settings.Default.Save();
+        }
+
+        private void cmdHelp_Click(object sender, EventArgs e)
+        {
+            if (frmhelp == null || frmhelp.IsDisposed)
+            {
+                frmhelp = new HelpWindow();
+            }
+            if (!frmhelp.Visible)
+            {
+                frmhelp.Show();
+            }
+            else
+            {
+                frmhelp.Activate();
+            }
         }
     }
 }
