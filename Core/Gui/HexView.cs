@@ -286,151 +286,171 @@ namespace CrashEdit
         // Handle keyboard inputs.
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            switch (e.KeyCode)
+            if (e.Control)
             {
-                case Keys.Up:
-                    // Move up by one cell.
-                    MoveBy(-ColumnCount);
-                    break;
+                switch (e.KeyCode) 
+                {
+                    case Keys.C:
+                        // Copy EID
+                        CopyEID(ByteCursorColumn, ByteCursorRow);
+                        break;
 
-                case Keys.Down:
-                    // Move down by one cell.
-                    MoveBy(ColumnCount);
-                    break;
+                    case Keys.V:
+                        // Paste EID
+                        PasteEID();
+                        break;
 
-                case Keys.Left:
-                    // Move backward by one cell.
-                    MoveBy(-1);
-                    break;
-
-                case Keys.Right:
-                    // Move forward by one cell.
-                    MoveBy(1);
-                    break;
-
-                case Keys.PageUp:
-                    // Move up by one "page".
-                    MoveBy(-ColumnCount * RowsPerPage);
-                    break;
-
-                case Keys.PageDown:
-                    // Move down by one "page".
-                    MoveBy(ColumnCount * RowsPerPage);
-                    break;
-
-                case Keys.Home:
-                    // Move to the start ...
-                    if (e.Control)
-                    {
-                        // ... of the entire data.
-                        MoveTo(0);
-                    }
-                    else
-                    {
-                        // ... of the current row.
-                        MoveBy(-ByteCursorColumn);
-                    }
-                    break;
-
-                case Keys.End:
-                    // Move to the end ...
-                    if (e.Control)
-                    {
-                        // ... of the entire data.
-                        MoveTo(Data.Length);
-                    }
-                    else
-                    {
-                        // ... of the current row.
-                        MoveBy(ColumnCount - ByteCursorColumn - 1);
-                    }
-                    break;
-
-                case Keys k when (k >= Keys.D0 && k <= Keys.D9):
-                    // Input hex digit 0-9.
-                    InputNybble(k - Keys.D0);
-                    break;
-
-                case Keys k when (k >= Keys.NumPad0 && k <= Keys.NumPad9):
-                    // Input hex digit 0-9 on numpad.
-                    InputNybble(k - Keys.NumPad0);
-                    break;
-
-                case Keys k when (k >= Keys.A && k <= Keys.F):
-                    // Input hex digit A-F.
-                    InputNybble(k - Keys.A + 0xA);
-                    break;
-
-                case Keys.Back:
-                    // Backspace input, if possible.
-                    ClearInput();
-                    break;
-
-                case Keys.N:
-                    // Input the EID for "NONE!"
-                    InputNone();
-                    break;
-
-                case Keys.Space:
-                    // Input zero
-                    // (lazy)
-                    if (_pendingInput != null)
-                    {
-                        _pendingInput = null;
-                    }
-                    InputNybble(0);
-                    InputNybble(0);
-                    break;
-
-                case Keys.Z:
-                    // Toggle chunk name view mode
-                    _modeChunkName = !_modeChunkName;
-                    Invalidate();
-                    break;
-
-                default:
-                    base.OnKeyDown(e);
-                    break;
+                    case Keys.Space:
+                        // Input zero
+                        InputZero(4);
+                        break;
+                }
             }
+            else
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.Up:
+                        // Move up by one cell.
+                        MoveBy(-ColumnCount);
+                        break;
+
+                    case Keys.Down:
+                        // Move down by one cell.
+                        MoveBy(ColumnCount);
+                        break;
+
+                    case Keys.Left:
+                        // Move backward by one cell.
+                        MoveBy(-1);
+                        break;
+
+                    case Keys.Right:
+                        // Move forward by one cell.
+                        MoveBy(1);
+                        break;
+
+                    case Keys.PageUp:
+                        // Move up by one "page".
+                        MoveBy(-ColumnCount * RowsPerPage);
+                        break;
+
+                    case Keys.PageDown:
+                        // Move down by one "page".
+                        MoveBy(ColumnCount * RowsPerPage);
+                        break;
+
+                    case Keys.Home:
+                        // Move to the start ...
+                        if (e.Control)
+                        {
+                            // ... of the entire data.
+                            MoveTo(0);
+                        }
+                        else
+                        {
+                            // ... of the current row.
+                            MoveBy(-ByteCursorColumn);
+                        }
+                        break;
+
+                    case Keys.End:
+                        // Move to the end ...
+                        if (e.Control)
+                        {
+                            // ... of the entire data.
+                            MoveTo(Data.Length);
+                        }
+                        else
+                        {
+                            // ... of the current row.
+                            MoveBy(ColumnCount - ByteCursorColumn - 1);
+                        }
+                        break;
+
+                    case Keys k when (k >= Keys.D0 && k <= Keys.D9):
+                        // Input hex digit 0-9.
+                        InputNybble(k - Keys.D0);
+                        break;
+
+                    case Keys k when (k >= Keys.NumPad0 && k <= Keys.NumPad9):
+                        // Input hex digit 0-9 on numpad.
+                        InputNybble(k - Keys.NumPad0);
+                        break;
+
+                    case Keys k when (k >= Keys.A && k <= Keys.F):
+                        // Input hex digit A-F.
+                        InputNybble(k - Keys.A + 0xA);
+                        break;
+
+                    case Keys.Back:
+                        // Backspace input, if possible.
+                        ClearInput();
+                        break;
+
+                    case Keys.N:
+                        // Input the EID for "NONE!"
+                        InputNone();
+                        break;
+
+                    case Keys.Space:
+                        // Input zero
+                        InputZero(1);
+                        break;
+
+                    case Keys.Z:
+                        // Toggle chunk name view mode
+                        _modeChunkName = !_modeChunkName;
+                        Invalidate();
+                        break;
+
+                    default:
+                        base.OnKeyDown(e);
+                        break;
+                }
+            }
+         
         }
 
-        private static Brush brush_border1 = new SolidBrush(Color.FromArgb(40, 40, 44));
-        private static Brush brush_border2 = new SolidBrush(Color.FromArgb(36, 36, 40));
-        private static Brush brush_bg1 = new SolidBrush(Color.FromArgb(31, 31, 32));
-        private static Brush brush_bg2 = new SolidBrush(Color.FromArgb(27, 27, 28));
+        private static Brush brush_borderBrush = new SolidBrush(Color.FromArgb(36, 36, 40));
+        private static Brush brush_borderWordBrush = new SolidBrush(Color.FromArgb(40, 40, 44));
+        private static Brush brush_bgNormalBrush = new SolidBrush(Color.FromArgb(31, 31, 32));
+        private static Brush brush_bgAlternateBrush = new SolidBrush(Color.FromArgb(27, 27, 28));
+        private static Brush brush_bgSelectedBrush = new SolidBrush(Color.FromArgb(35, 35, 38));
+        private static Brush brush_bgChunkBrush = new SolidBrush(Color.FromArgb(38, 75, 104));
+        private static Brush brush_bgSelectedChunkBrush = new SolidBrush(Color.FromArgb(41, 91, 132));
 
         // Border color drawn around cells.
-        private static Brush _borderBrush = brush_border1;
+        private static Brush _borderBrush = brush_borderBrush;
 
         // Border color drawn around cells of the same word.
-        private static Brush _borderWordBrush = brush_border2;
+        private static Brush _borderWordBrush = brush_borderWordBrush;
 
         // Border color drawn around the selected cell.
-        private static Brush _selectedBorderBrush = Brushes.LightSeaGreen;
+        private static Brush _selectedBorderBrush = Brushes.DarkCyan;
 
         // Color for data being typed in.
-        private static Brush _inputBrush = Brushes.DarkCyan;
+        private static Brush _inputBrush = Brushes.Turquoise;
 
         // Colors for normal cells.
         private static Brush _fgNormalBrush = Brushes.GhostWhite;
-        private static Brush _bgNormalBrush = brush_bg1;
+        private static Brush _bgNormalBrush = brush_bgNormalBrush;
 
         // Colors for normal cells, but for every-other column group.
         private static Brush _fgAlternateBrush = Brushes.GhostWhite;
-        private static Brush _bgAlternateBrush = brush_bg2;
+        private static Brush _bgAlternateBrush = brush_bgAlternateBrush;
 
         // Color for zero-value cells.
         private static Brush _fgZeroBrush = Brushes.DimGray;
-        //private static Brush _bgZeroBrush = Brushes.White;
 
         // Color for the selected cell. This overrides the other colors.
-        private static Brush _fgSelectedBrush = Brushes.Black;
-        private static Brush _bgSelectedBrush = Brushes.DarkGray;
+        private static Brush _fgSelectedBrush = Brushes.GhostWhite;
+        private static Brush _bgSelectedBrush = brush_bgSelectedBrush;
 
         // Color for cells when they're being displayed as chunk names
-        private static Brush _fgChunkBrush = Brushes.Black;
-        private static Brush _bgChunkBrush = Brushes.CornflowerBlue;
-        private static Brush _bgSelectedChunkBrush = Brushes.LightSkyBlue;
+        private static Brush _fgChunkBrush = Brushes.GhostWhite;
+        private static Brush _bgChunkBrush = brush_bgChunkBrush;
+        private static Brush _bgSelectedChunkBrush = brush_bgSelectedChunkBrush;
 
         // Size of borders between and around cells, in pixels.
         private static int _borderSize = 2;
@@ -858,8 +878,9 @@ namespace CrashEdit
                 return false;
 
             // If cursor is not word-aligned
-            if (ByteCursor % 4 != 0)
-                return false;
+            while (ByteCursor % 4 != 0)
+                MoveBy(-1);
+                //return false;
 
             if (_pendingInput != null)
             {
@@ -887,6 +908,72 @@ namespace CrashEdit
             }
         }
 
+        public bool InputZero(int length)
+        {
+            // If edits are not allowed, fail now.
+            if (DataChangeHandler == null)
+                return false;
+
+            // If cursor is not word-aligned
+            while (ByteCursor % 4 != 0 && length > 1)
+                MoveBy(-1);
+
+            if (_pendingInput != null)
+                _pendingInput = null;
+
+            for (int i = 0; i < length; ++i)
+            {
+                InputNybble(0);
+                InputNybble(0);
+            }
+
+            return true;
+        }
+
+        public void CopyEID(int col, int row)
+        {
+            var data = Data.Span;
+            int cellByte = row * ColumnCount - FirstByteColumn + col;
+            int cellByteChunkNameOfs = cellByte % 4;
+            string eid = Entry.EIDToEName(BitConv.FromInt32(data, cellByte - cellByteChunkNameOfs));
+            Clipboard.SetText(eid);
+        }
+
+        public bool PasteEID()
+        {
+            // If edits are not allowed, fail now.
+            if (DataChangeHandler == null)
+                return false;
+
+            // If cursor is not word-aligned
+            while (ByteCursor % 4 != 0)
+                MoveBy(-1);
+
+            if (_pendingInput != null)
+                _pendingInput = null;
+
+            string text = Clipboard.GetText();
+            int eid = Entry.ENameToEID(text);
+
+            // todo something nicer
+            int temp = 0;
+            for (int i = 0; i < 8; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    temp = eid & 0xF;
+                    eid >>= 4;
+                    InputNybble(eid & 0xF);
+                }
+                else
+                {
+                    InputNybble(temp);
+                    eid >>= 4;
+                }
+            }
+
+            return true;
+        }
     }
 
 }
