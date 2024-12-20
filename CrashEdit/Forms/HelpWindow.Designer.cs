@@ -32,8 +32,6 @@ namespace CrashEdit.CE
         {
             label5 = new Label();
             label6 = new Label();
-            label1 = new Label();
-            label2 = new Label();
             label3 = new Label();
             label4 = new Label();
             SuspendLayout();
@@ -64,48 +62,24 @@ namespace CrashEdit.CE
             label6.Text = "Open (Ctrl + O)\r\nSave (Ctrl + Shift + S)\r\nPatch NSD (Ctrl + S)\r\nClose (Ctrl + Shift + C)\r\nFind (Ctrl + F)\r\nFind Next (F3)\r\nFind first node (Enter)\r\nPlay (F1)";
             label6.Visible = false;
             // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 12F);
-            label1.ForeColor = Color.DarkTurquoise;
-            label1.Location = new Point(4, 0);
-            label1.Margin = new Padding(4, 0, 4, 0);
-            label1.Name = "label1";
-            label1.Size = new Size(127, 21);
-            label1.TabIndex = 12;
-            label1.Text = "General Controls";
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 9.75F);
-            label2.ForeColor = SystemColors.ControlText;
-            label2.Location = new Point(14, 23);
-            label2.Margin = new Padding(4, 0, 4, 0);
-            label2.Name = "label2";
-            label2.Size = new Size(105, 17);
-            label2.TabIndex = 11;
-            label2.Text = "Ctrl + D: Undock";
-            // 
             // label3
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 12F);
             label3.ForeColor = Color.DarkTurquoise;
-            label3.Location = new Point(4, 40);
+            label3.Location = new Point(4, 4);
             label3.Margin = new Padding(4, 0, 4, 0);
             label3.Name = "label3";
-            label3.Size = new Size(88, 42);
+            label3.Size = new Size(88, 21);
             label3.TabIndex = 14;
-            label3.Text = "\r\nHex Viewer";
+            label3.Text = "Hex Viewer";
             // 
             // label4
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Segoe UI", 9.75F);
             label4.ForeColor = SystemColors.ControlText;
-            label4.Location = new Point(14, 82);
+            label4.Location = new Point(14, 25);
             label4.Margin = new Padding(4, 0, 4, 0);
             label4.Name = "label4";
             label4.Size = new Size(206, 119);
@@ -121,8 +95,6 @@ namespace CrashEdit.CE
             ClientSize = new Size(333, 472);
             Controls.Add(label3);
             Controls.Add(label4);
-            Controls.Add(label1);
-            Controls.Add(label2);
             Controls.Add(label6);
             Controls.Add(label5);
             CornerStyle = CornerPreference.Default;
@@ -142,8 +114,6 @@ namespace CrashEdit.CE
         #endregion
         private Label label5;
         private Label label6;
-        private Label label1;
-        private Label label2;
         private Label label3;
         private Label label4;
     }

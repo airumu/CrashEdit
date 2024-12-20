@@ -66,12 +66,15 @@ namespace CrashEdit.CE
             fraLang = new DarkGroupBox();
             tbp3D = new TabPage();
             tbpDebugDisplay = new TabPage();
-            chkShowEntityParams = new CheckBox();
-            chkDisableVisual = new CheckBox();
+            darkGroupBox3 = new DarkGroupBox();
             chkViewCamera = new CheckBox();
             chkViewCameraAngle = new CheckBox();
-            chkViewZoneName = new CheckBox();
+            darkGroupBox2 = new DarkGroupBox();
             chkViewZoneBox = new CheckBox();
+            chkViewZoneName = new CheckBox();
+            darkGroupBox1 = new DarkGroupBox();
+            chkShowEntityParams = new CheckBox();
+            chkEnableVisual = new CheckBox();
             tbpPatchNSD = new TabPage();
             tbpMisc = new TabPage();
             fraExtra = new DarkGroupBox();
@@ -99,6 +102,9 @@ namespace CrashEdit.CE
             fraLang.SuspendLayout();
             tbp3D.SuspendLayout();
             tbpDebugDisplay.SuspendLayout();
+            darkGroupBox3.SuspendLayout();
+            darkGroupBox2.SuspendLayout();
+            darkGroupBox1.SuspendLayout();
             tbpPatchNSD.SuspendLayout();
             tbpMisc.SuspendLayout();
             fraExtra.SuspendLayout();
@@ -176,6 +182,7 @@ namespace CrashEdit.CE
             // chkViewerShowHelp
             // 
             chkViewerShowHelp.AutoSize = true;
+            chkViewerShowHelp.BackColor = Color.Transparent;
             chkViewerShowHelp.Checked = true;
             chkViewerShowHelp.CheckState = CheckState.Checked;
             chkViewerShowHelp.Location = new Point(7, 56);
@@ -184,19 +191,20 @@ namespace CrashEdit.CE
             chkViewerShowHelp.Size = new Size(160, 19);
             chkViewerShowHelp.TabIndex = 7;
             chkViewerShowHelp.Text = "Show help text by default";
-            chkViewerShowHelp.UseVisualStyleBackColor = true;
+            chkViewerShowHelp.UseVisualStyleBackColor = false;
             chkViewerShowHelp.CheckedChanged += chkViewerShowHelp_CheckedChanged;
             // 
             // chkFont2DEnable
             // 
             chkFont2DEnable.AutoSize = true;
-            chkFont2DEnable.Location = new Point(7, 231);
+            chkFont2DEnable.BackColor = Color.Transparent;
+            chkFont2DEnable.Location = new Point(7, 81);
             chkFont2DEnable.Margin = new Padding(4, 3, 4, 3);
             chkFont2DEnable.Name = "chkFont2DEnable";
             chkFont2DEnable.Size = new Size(136, 19);
             chkFont2DEnable.TabIndex = 6;
             chkFont2DEnable.Text = "Show debug console";
-            chkFont2DEnable.UseVisualStyleBackColor = true;
+            chkFont2DEnable.UseVisualStyleBackColor = false;
             chkFont2DEnable.CheckedChanged += chkFont2DEnable_CheckedChanged;
             // 
             // chkFont3DEnable
@@ -204,7 +212,7 @@ namespace CrashEdit.CE
             chkFont3DEnable.AutoSize = true;
             chkFont3DEnable.Checked = true;
             chkFont3DEnable.CheckState = CheckState.Checked;
-            chkFont3DEnable.Location = new Point(7, 81);
+            chkFont3DEnable.Location = new Point(7, 22);
             chkFont3DEnable.Margin = new Padding(4, 3, 4, 3);
             chkFont3DEnable.Name = "chkFont3DEnable";
             chkFont3DEnable.Size = new Size(126, 19);
@@ -216,25 +224,27 @@ namespace CrashEdit.CE
             // chkCollisionDisplay
             // 
             chkCollisionDisplay.AutoSize = true;
+            chkCollisionDisplay.BackColor = Color.Transparent;
             chkCollisionDisplay.Location = new Point(7, 31);
             chkCollisionDisplay.Margin = new Padding(4, 3, 4, 3);
             chkCollisionDisplay.Name = "chkCollisionDisplay";
             chkCollisionDisplay.Size = new Size(192, 19);
             chkCollisionDisplay.TabIndex = 2;
             chkCollisionDisplay.Text = "Show collision boxes by default";
-            chkCollisionDisplay.UseVisualStyleBackColor = true;
+            chkCollisionDisplay.UseVisualStyleBackColor = false;
             chkCollisionDisplay.CheckedChanged += chkCollisionDisplay_CheckedChanged;
             // 
             // chkNormalDisplay
             // 
             chkNormalDisplay.AutoSize = true;
+            chkNormalDisplay.BackColor = Color.Transparent;
             chkNormalDisplay.Location = new Point(7, 6);
             chkNormalDisplay.Margin = new Padding(4, 3, 4, 3);
             chkNormalDisplay.Name = "chkNormalDisplay";
             chkNormalDisplay.Size = new Size(226, 19);
             chkNormalDisplay.TabIndex = 0;
             chkNormalDisplay.Text = "(Crash 1) Show normals in animations";
-            chkNormalDisplay.UseVisualStyleBackColor = true;
+            chkNormalDisplay.UseVisualStyleBackColor = false;
             chkNormalDisplay.CheckedChanged += chkNormalDisplay_CheckedChanged;
             // 
             // fraAnimGrid
@@ -323,7 +333,7 @@ namespace CrashEdit.CE
             fraFont.Margin = new Padding(4, 3, 4, 3);
             fraFont.Name = "fraFont";
             fraFont.Padding = new Padding(4, 3, 4, 3);
-            fraFont.Size = new Size(206, 79);
+            fraFont.Size = new Size(206, 82);
             fraFont.TabIndex = 8;
             fraFont.TabStop = false;
             fraFont.Text = "3D Text";
@@ -412,11 +422,11 @@ namespace CrashEdit.CE
             cmdReset.CustomColour = false;
             cmdReset.FlatBottom = false;
             cmdReset.FlatTop = false;
-            cmdReset.Location = new Point(7, 149);
+            cmdReset.Location = new Point(7, 76);
             cmdReset.Margin = new Padding(4, 3, 4, 3);
             cmdReset.Name = "cmdReset";
             cmdReset.Padding = new Padding(5);
-            cmdReset.Size = new Size(90, 25);
+            cmdReset.Size = new Size(98, 25);
             cmdReset.TabIndex = 1;
             cmdReset.Text = "Reset Settings";
             cmdReset.Click += cmdReset_Click;
@@ -429,7 +439,7 @@ namespace CrashEdit.CE
             fraSize.Controls.Add(numW);
             fraSize.Controls.Add(numH);
             fraSize.Controls.Add(lblWH);
-            fraSize.Location = new Point(7, 76);
+            fraSize.Location = new Point(4, 308);
             fraSize.Margin = new Padding(4, 3, 4, 3);
             fraSize.Name = "fraSize";
             fraSize.Padding = new Padding(4, 3, 4, 3);
@@ -437,6 +447,7 @@ namespace CrashEdit.CE
             fraSize.TabIndex = 1;
             fraSize.TabStop = false;
             fraSize.Text = "Default Window Size";
+            fraSize.Visible = false;
             // 
             // cdlClearCol
             // 
@@ -533,11 +544,11 @@ namespace CrashEdit.CE
             cmdHelp.CustomColour = false;
             cmdHelp.FlatBottom = false;
             cmdHelp.FlatTop = false;
-            cmdHelp.Location = new Point(7, 180);
+            cmdHelp.Location = new Point(7, 107);
             cmdHelp.Margin = new Padding(4, 3, 4, 3);
             cmdHelp.Name = "cmdHelp";
             cmdHelp.Padding = new Padding(5);
-            cmdHelp.Size = new Size(90, 25);
+            cmdHelp.Size = new Size(98, 25);
             cmdHelp.TabIndex = 3;
             cmdHelp.Text = "Help";
             cmdHelp.Click += cmdHelp_Click;
@@ -570,17 +581,13 @@ namespace CrashEdit.CE
             // tbpDebugDisplay
             // 
             tbpDebugDisplay.BackColor = Color.FromArgb(30, 30, 30);
-            tbpDebugDisplay.Controls.Add(chkShowEntityParams);
-            tbpDebugDisplay.Controls.Add(chkDisableVisual);
-            tbpDebugDisplay.Controls.Add(chkViewCamera);
-            tbpDebugDisplay.Controls.Add(chkViewCameraAngle);
-            tbpDebugDisplay.Controls.Add(chkViewZoneName);
-            tbpDebugDisplay.Controls.Add(chkViewZoneBox);
+            tbpDebugDisplay.Controls.Add(darkGroupBox3);
+            tbpDebugDisplay.Controls.Add(darkGroupBox2);
+            tbpDebugDisplay.Controls.Add(darkGroupBox1);
             tbpDebugDisplay.Controls.Add(chkViewerShowHelp);
             tbpDebugDisplay.Controls.Add(chkFont2DEnable);
             tbpDebugDisplay.Controls.Add(chkNormalDisplay);
             tbpDebugDisplay.Controls.Add(chkCollisionDisplay);
-            tbpDebugDisplay.Controls.Add(chkFont3DEnable);
             tbpDebugDisplay.Location = new Point(4, 32);
             tbpDebugDisplay.Name = "tbpDebugDisplay";
             tbpDebugDisplay.Padding = new Padding(3);
@@ -588,37 +595,24 @@ namespace CrashEdit.CE
             tbpDebugDisplay.TabIndex = 3;
             tbpDebugDisplay.Text = "Debug Displays";
             // 
-            // chkShowEntityParams
+            // darkGroupBox3
             // 
-            chkShowEntityParams.AutoSize = true;
-            chkShowEntityParams.Checked = true;
-            chkShowEntityParams.CheckState = CheckState.Checked;
-            chkShowEntityParams.Location = new Point(7, 106);
-            chkShowEntityParams.Margin = new Padding(4, 3, 4, 3);
-            chkShowEntityParams.Name = "chkShowEntityParams";
-            chkShowEntityParams.Size = new Size(150, 19);
-            chkShowEntityParams.TabIndex = 13;
-            chkShowEntityParams.Text = "Show entity parameters";
-            chkShowEntityParams.UseVisualStyleBackColor = true;
-            chkShowEntityParams.CheckedChanged += chkShowEntityParams_CheckedChanged;
-            // 
-            // chkDisableVisual
-            // 
-            chkDisableVisual.AutoSize = true;
-            chkDisableVisual.Location = new Point(7, 256);
-            chkDisableVisual.Name = "chkDisableVisual";
-            chkDisableVisual.Size = new Size(154, 19);
-            chkDisableVisual.TabIndex = 12;
-            chkDisableVisual.Text = "Disable 3D entity display";
-            chkDisableVisual.UseVisualStyleBackColor = true;
-            chkDisableVisual.CheckedChanged += chkDisableVisual_CheckedChanged;
+            darkGroupBox3.BackColor = Color.Transparent;
+            darkGroupBox3.Controls.Add(chkViewCamera);
+            darkGroupBox3.Controls.Add(chkViewCameraAngle);
+            darkGroupBox3.Location = new Point(3, 281);
+            darkGroupBox3.Name = "darkGroupBox3";
+            darkGroupBox3.Size = new Size(200, 72);
+            darkGroupBox3.TabIndex = 16;
+            darkGroupBox3.TabStop = false;
+            darkGroupBox3.Text = "Cameras";
             // 
             // chkViewCamera
             // 
             chkViewCamera.AutoSize = true;
             chkViewCamera.Checked = true;
             chkViewCamera.CheckState = CheckState.Checked;
-            chkViewCamera.Location = new Point(7, 181);
+            chkViewCamera.Location = new Point(6, 22);
             chkViewCamera.Name = "chkViewCamera";
             chkViewCamera.Size = new Size(138, 19);
             chkViewCamera.TabIndex = 11;
@@ -631,7 +625,7 @@ namespace CrashEdit.CE
             chkViewCameraAngle.AutoSize = true;
             chkViewCameraAngle.Checked = true;
             chkViewCameraAngle.CheckState = CheckState.Checked;
-            chkViewCameraAngle.Location = new Point(7, 206);
+            chkViewCameraAngle.Location = new Point(6, 47);
             chkViewCameraAngle.Name = "chkViewCameraAngle";
             chkViewCameraAngle.Size = new Size(167, 19);
             chkViewCameraAngle.TabIndex = 10;
@@ -639,12 +633,37 @@ namespace CrashEdit.CE
             chkViewCameraAngle.UseVisualStyleBackColor = true;
             chkViewCameraAngle.CheckedChanged += chkViewCameraAngle_CheckedChanged;
             // 
+            // darkGroupBox2
+            // 
+            darkGroupBox2.BackColor = Color.Transparent;
+            darkGroupBox2.Controls.Add(chkViewZoneBox);
+            darkGroupBox2.Controls.Add(chkViewZoneName);
+            darkGroupBox2.Location = new Point(3, 203);
+            darkGroupBox2.Name = "darkGroupBox2";
+            darkGroupBox2.Size = new Size(200, 72);
+            darkGroupBox2.TabIndex = 15;
+            darkGroupBox2.TabStop = false;
+            darkGroupBox2.Text = "Zones";
+            // 
+            // chkViewZoneBox
+            // 
+            chkViewZoneBox.AutoSize = true;
+            chkViewZoneBox.Checked = true;
+            chkViewZoneBox.CheckState = CheckState.Checked;
+            chkViewZoneBox.Location = new Point(7, 47);
+            chkViewZoneBox.Name = "chkViewZoneBox";
+            chkViewZoneBox.Size = new Size(145, 19);
+            chkViewZoneBox.TabIndex = 8;
+            chkViewZoneBox.Text = "Show zone boundaries";
+            chkViewZoneBox.UseVisualStyleBackColor = true;
+            chkViewZoneBox.CheckedChanged += chkViewZoneBox_CheckedChanged;
+            // 
             // chkViewZoneName
             // 
             chkViewZoneName.AutoSize = true;
             chkViewZoneName.Checked = true;
             chkViewZoneName.CheckState = CheckState.Checked;
-            chkViewZoneName.Location = new Point(7, 156);
+            chkViewZoneName.Location = new Point(7, 22);
             chkViewZoneName.Name = "chkViewZoneName";
             chkViewZoneName.Size = new Size(121, 19);
             chkViewZoneName.TabIndex = 9;
@@ -652,18 +671,46 @@ namespace CrashEdit.CE
             chkViewZoneName.UseVisualStyleBackColor = true;
             chkViewZoneName.CheckedChanged += chkViewZoneName_CheckedChanged;
             // 
-            // chkViewZoneBox
+            // darkGroupBox1
             // 
-            chkViewZoneBox.AutoSize = true;
-            chkViewZoneBox.Checked = true;
-            chkViewZoneBox.CheckState = CheckState.Checked;
-            chkViewZoneBox.Location = new Point(7, 131);
-            chkViewZoneBox.Name = "chkViewZoneBox";
-            chkViewZoneBox.Size = new Size(145, 19);
-            chkViewZoneBox.TabIndex = 8;
-            chkViewZoneBox.Text = "Show zone boundaries";
-            chkViewZoneBox.UseVisualStyleBackColor = true;
-            chkViewZoneBox.CheckedChanged += chkViewZoneBox_CheckedChanged;
+            darkGroupBox1.BackColor = Color.Transparent;
+            darkGroupBox1.Controls.Add(chkFont3DEnable);
+            darkGroupBox1.Controls.Add(chkShowEntityParams);
+            darkGroupBox1.Controls.Add(chkEnableVisual);
+            darkGroupBox1.Location = new Point(3, 106);
+            darkGroupBox1.Name = "darkGroupBox1";
+            darkGroupBox1.Size = new Size(200, 95);
+            darkGroupBox1.TabIndex = 14;
+            darkGroupBox1.TabStop = false;
+            darkGroupBox1.Text = "Entities";
+            // 
+            // chkShowEntityParams
+            // 
+            chkShowEntityParams.AutoSize = true;
+            chkShowEntityParams.Checked = true;
+            chkShowEntityParams.CheckState = CheckState.Checked;
+            chkShowEntityParams.Location = new Point(7, 47);
+            chkShowEntityParams.Margin = new Padding(4, 3, 4, 3);
+            chkShowEntityParams.Name = "chkShowEntityParams";
+            chkShowEntityParams.Size = new Size(150, 19);
+            chkShowEntityParams.TabIndex = 13;
+            chkShowEntityParams.Text = "Show entity parameters";
+            chkShowEntityParams.UseVisualStyleBackColor = true;
+            chkShowEntityParams.CheckedChanged += chkShowEntityParams_CheckedChanged;
+            // 
+            // chkEnableVisual
+            // 
+            chkEnableVisual.AutoSize = true;
+            chkEnableVisual.BackColor = Color.Transparent;
+            chkEnableVisual.Checked = true;
+            chkEnableVisual.CheckState = CheckState.Checked;
+            chkEnableVisual.Location = new Point(7, 72);
+            chkEnableVisual.Name = "chkEnableVisual";
+            chkEnableVisual.Size = new Size(151, 19);
+            chkEnableVisual.TabIndex = 12;
+            chkEnableVisual.Text = "Enable 3D entity display";
+            chkEnableVisual.UseVisualStyleBackColor = false;
+            chkEnableVisual.CheckedChanged += chkDisableVisual_CheckedChanged;
             // 
             // tbpPatchNSD
             // 
@@ -811,6 +858,12 @@ namespace CrashEdit.CE
             tbp3D.PerformLayout();
             tbpDebugDisplay.ResumeLayout(false);
             tbpDebugDisplay.PerformLayout();
+            darkGroupBox3.ResumeLayout(false);
+            darkGroupBox3.PerformLayout();
+            darkGroupBox2.ResumeLayout(false);
+            darkGroupBox2.PerformLayout();
+            darkGroupBox1.ResumeLayout(false);
+            darkGroupBox1.PerformLayout();
             tbpPatchNSD.ResumeLayout(false);
             tbpPatchNSD.PerformLayout();
             tbpMisc.ResumeLayout(false);
@@ -859,7 +912,7 @@ namespace CrashEdit.CE
         private CheckBox chkViewCameraAngle;
         private CheckBox chkViewZoneName;
         private CheckBox chkViewCamera;
-        private CheckBox chkDisableVisual;
+        private CheckBox chkEnableVisual;
         private DarkGroupBox fraLang;
         private CheckBox chkShowEntityParams;
         private CheckBox chkOldPatchNSD;
@@ -870,5 +923,8 @@ namespace CrashEdit.CE
         private CheckBox chkSplitViewerPanels;
         private DarkGroupBox fraExtra;
         private DarkButton cmdHelp;
+        private DarkGroupBox darkGroupBox2;
+        private DarkGroupBox darkGroupBox1;
+        private DarkGroupBox darkGroupBox3;
     }
 }

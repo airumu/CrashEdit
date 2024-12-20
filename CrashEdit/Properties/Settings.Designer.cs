@@ -301,13 +301,13 @@ namespace CrashEdit.CE.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool DisableVisual {
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool EnableVisual {
             get {
-                return ((bool)(this["DisableVisual"]));
+                return ((bool)(this["EnableVisual"]));
             }
             set {
-                this["DisableVisual"] = value;
+                this["EnableVisual"] = value;
             }
         }
         

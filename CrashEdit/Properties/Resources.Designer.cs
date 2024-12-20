@@ -106,20 +106,20 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
-        ///   Disable 3D entity display に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string Config_chkDisableVisual {
-            get {
-                return ResourceManager.GetString("Config_chkDisableVisual", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Enable Crash 2 time trial editor に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Config_chkEnableC2TT {
             get {
                 return ResourceManager.GetString("Config_chkEnableC2TT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Enable 3D entity display に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Config_chkEnableVisual {
+            get {
+                return ResourceManager.GetString("Config_chkEnableVisual", resourceCulture);
             }
         }
         

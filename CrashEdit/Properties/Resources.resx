@@ -753,9 +753,6 @@ as Meters: {3:F3}m</value>
   <data name="ViewerControls_ToggleSlowAnim" xml:space="preserve">
     <value>Toggle half-speed animations ({0})</value>
   </data>
-  <data name="Config_chkDisableVisual" xml:space="preserve">
-    <value>Disable 3D entity display</value>
-  </data>
   <data name="Config_chkViewCamera" xml:space="preserve">
     <value>Show camera entities</value>
   </data>
@@ -829,5 +826,8 @@ as Meters: {3:F3}m</value>
   </data>
   <data name="ViewerControls_FastMove" xml:space="preserve">
     <value>Hold right-click to increase movement speed</value>
+  </data>
+  <data name="Config_chkEnableVisual" xml:space="preserve">
+    <value>Enable 3D entity display</value>
   </data>
 </root>

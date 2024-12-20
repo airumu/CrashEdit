@@ -1,5 +1,6 @@
 ﻿using AltUI.Forms;
 using CrashEdit.CE.Properties;
+using Settings = CrashEdit.CE.Properties.Settings;
 
 namespace CrashEdit.CE
 {
@@ -100,7 +101,7 @@ namespace CrashEdit.CE
             chkViewCameraAngle.Checked = Settings.Default.ViewCameraAngle;
             chkShowEntityParams.Checked = Settings.Default.ShowEntityParams;
             chkPatchNSDSavesNSF.Checked = Settings.Default.PatchNSDSavesNSF;
-            chkDisableVisual.Checked = Settings.Default.DisableVisual;
+            chkEnableVisual.Checked = Settings.Default.EnableVisual;
             // added
             chkOldPatchNSD.Checked = Settings.Default.UseOldPatchNSD;
             chkLiteralCollisionTypes.Checked = Settings.Default.ShowliteralCollisionTypes;
@@ -275,7 +276,7 @@ namespace CrashEdit.CE
 
         private void chkDisableVisual_CheckedChanged(object sender, EventArgs e)
         {
-            Settings.Default.DisableVisual = chkDisableVisual.Checked;
+            Settings.Default.EnableVisual = chkEnableVisual.Checked;
             Settings.Default.Save();
         }
 

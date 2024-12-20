@@ -488,7 +488,7 @@ namespace CrashEdit.CE
                 }
 
                 bool rendered_model = false;
-                if (!Settings.Default.DisableVisual && entity.Type.HasValue && entity.Subtype.HasValue)
+                if (Settings.Default.EnableVisual && entity.Type.HasValue && entity.Subtype.HasValue)
                 {
                     rendered_model = RenderEntityVisual(entity, trans);
                 }

@@ -71,8 +71,8 @@
     <Setting Name="ViewCameraAngle" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="DisableVisual" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+    <Setting Name="EnableVisual" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="ShowEntityParams" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
