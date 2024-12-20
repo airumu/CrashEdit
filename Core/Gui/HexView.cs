@@ -945,19 +945,21 @@ namespace CrashEdit
             if (DataChangeHandler == null)
                 return false;
 
+            // Check if the pasted name is valid
+            string ename = Clipboard.GetText();
+            string str = Entry.CheckEIDErrors(ename, true);
+            if (str != string.Empty) return false;
+
+            int eid = Entry.ENameToEID(ename);
+            // If pasted a null chunk
+            if (eid == 1) eid = 0;
+
             // If cursor is not word-aligned
             while (ByteCursor % 4 != 0)
                 MoveBy(-1);
 
             if (_pendingInput != null)
                 _pendingInput = null;
-
-            string text = Clipboard.GetText();
-            int eid = Entry.ENameToEID(text);
-
-            // if pasted a null chunk
-            if (eid == 1)
-                eid = 0;
 
             // todo something nicer
             int temp = 0;
