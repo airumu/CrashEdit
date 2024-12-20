@@ -201,11 +201,11 @@ namespace CrashEdit.CE
         {
             public static readonly ControlsKeyboardInfo ResetCamera = new(Keys.R, Resources.ViewerControls_ResetCamera);
             public static readonly ControlsKeyboardInfo ToggleTextures = new(Keys.T, Resources.ViewerControls_ToggleTextures);
-            public static readonly ControlsKeyboardInfo ToggleZoneOctree = new(Keys.C, Resources.ViewerControls_ToggleZoneOctree);
+            public static readonly ControlsKeyboardInfo ToggleZoneOctree = new(Keys.X, Resources.ViewerControls_ToggleZoneOctree);
             public static readonly ControlsKeyboardInfo ToggleZoneOctreeOutline = new(Keys.V, Resources.ViewerControls_ToggleZoneOctreeOutline);
-            public static readonly ControlsKeyboardInfo ToggleZoneOctreeNeighbors = new(Keys.Z, Resources.ViewerControls_ToggleZoneOctreeNeighbors);
-            public static readonly ControlsKeyboardInfo OpenOctreeWindow = new(Keys.B, Resources.ViewerControls_OpenOctreeWindow);
-            public static readonly ControlsKeyboardInfo ToggleZoneOctreeFlip = new(Keys.F, Resources.ViewerControls_ToggleZoneOctreeFlip);
+            public static readonly ControlsKeyboardInfo ToggleZoneOctreeNeighbors = new(Keys.F, Resources.ViewerControls_ToggleZoneOctreeNeighbors);
+            public static readonly ControlsKeyboardInfo OpenOctreeWindow = new(Keys.C, Resources.ViewerControls_OpenOctreeWindow);
+            public static readonly ControlsKeyboardInfo ToggleZoneOctreeFlip = new(Keys.M, Resources.ViewerControls_ToggleZoneOctreeFlip);
             public static readonly ControlsKeyboardInfo ToggleTimeTrial = new(Keys.Y, Resources.ViewerControls_ToggleTimeTrial);
             public static readonly ControlsKeyboardInfo ToggleCollisionAnim = new(Keys.C, Resources.ViewerControls_ToggleCollisionAnim);
             public static readonly ControlsKeyboardInfo ToggleLerp = new(Keys.I, Resources.ViewerControls_ToggleLerp);
@@ -220,7 +220,7 @@ namespace CrashEdit.CE
             public static readonly ControlsKeyboardInfo ZoneAnchorDetach = new(Keys.K, Resources.ViewerControls_ZoneAnchorDetach);
             public static readonly ControlsKeyboardInfo ToggleSlowAnim = new(Keys.P, Resources.ViewerControls_ToggleSlowAnim);
             public static readonly ControlsKeyboardInfo ToggleModelCycle = new(Keys.Y, Resources.ViewerControls_ToggleModelCycle);
-            public static readonly ControlsKeyboardInfo ToggleAlignedMovement = new(Keys.X, Resources.ViewerControls_MoveAligned);
+            public static readonly ControlsKeyboardInfo ToggleAlignedMovement = new(Keys.Z, Resources.ViewerControls_MoveAligned);
         }
         #endregion
 
