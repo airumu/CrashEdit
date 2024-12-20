@@ -212,13 +212,13 @@ namespace CrashEdit.CE
             public static readonly ControlsKeyboardInfo ToggleNormals = new(Keys.N, Resources.ViewerControls_ToggleNormals);
             public static readonly ControlsKeyboardInfo ChangeCullMode = new(Keys.U, Resources.ViewerControls_ChangeCullMode);
             public static readonly ControlsKeyboardInfo ToggleHelp = new(Keys.H, Resources.ViewerControls_ToggleHelp);
-            public static readonly ControlsKeyboardInfo EnterZoneAnchor = new(Keys.O, Resources.ViewerControls_EnterZoneAnchor);
-            public static readonly ControlsKeyboardInfo ExitZoneAnchor = new(Keys.O, Resources.ViewerControls_ExitZoneAnchor);
+            public static readonly ControlsKeyboardInfo EnterZoneAnchor = new(Keys.P, Resources.ViewerControls_EnterZoneAnchor);
+            public static readonly ControlsKeyboardInfo ExitZoneAnchor = new(Keys.P, Resources.ViewerControls_ExitZoneAnchor);
             public static readonly ControlsKeyboardInfo ZoneAnchorPrevCam = new(Keys.Left, Resources.ViewerControls_ZoneAnchorPrevCam);
             public static readonly ControlsKeyboardInfo ZoneAnchorNextCam = new(Keys.Right, Resources.ViewerControls_ZoneAnchorNextCam);
             public static readonly ControlsKeyboardInfo ZoneAnchorSortList = new(Keys.L, Resources.ViewerControls_ZoneAnchorSortList);
             public static readonly ControlsKeyboardInfo ZoneAnchorDetach = new(Keys.K, Resources.ViewerControls_ZoneAnchorDetach);
-            public static readonly ControlsKeyboardInfo ToggleSlowAnim = new(Keys.P, Resources.ViewerControls_ToggleSlowAnim);
+            public static readonly ControlsKeyboardInfo ToggleSlowAnim = new(Keys.O, Resources.ViewerControls_ToggleSlowAnim);
             public static readonly ControlsKeyboardInfo ToggleModelCycle = new(Keys.Y, Resources.ViewerControls_ToggleModelCycle);
             public static readonly ControlsKeyboardInfo ToggleAlignedMovement = new(Keys.Z, Resources.ViewerControls_MoveAligned);
         }
@@ -396,8 +396,8 @@ namespace CrashEdit.CE
                 con_help += KeyboardControls.ResetCamera.Print();
             if (CanMove())
                 con_help += KeyboardControls.ToggleAlignedMovement.Print(OnOffName(Settings.Default.AlignedMovement));
-            con_help += KeyboardControls.ToggleTextures.Print(OnOffName(render.EnableTexture));
             con_help += KeyboardControls.ToggleHelp.Print(OnOffName(showHelp));
+            con_help += KeyboardControls.ToggleTextures.Print(OnOffName(render.EnableTexture));
         }
 
         protected virtual void RunLogic()

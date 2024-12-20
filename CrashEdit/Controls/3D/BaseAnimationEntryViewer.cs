@@ -45,8 +45,8 @@ namespace CrashEdit.CE
         {
             base.PrintHelp();
             con_help += KeyboardControls.ToggleCollisionAnim.Print(OnOffName(_collision));
-            con_help += KeyboardControls.ToggleLerp.Print(OnOffName(_interpolate));
             con_help += KeyboardControls.ChangeCullMode.Print(CullModeName(_cullmode));
+            con_help += KeyboardControls.ToggleLerp.Print(OnOffName(_interpolate));
         }
 
         protected override void RunLogic()
