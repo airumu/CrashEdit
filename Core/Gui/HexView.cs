@@ -955,6 +955,10 @@ namespace CrashEdit
             string text = Clipboard.GetText();
             int eid = Entry.ENameToEID(text);
 
+            // if pasted a null chunk
+            if (eid == 1)
+                eid = 0;
+
             // todo something nicer
             int temp = 0;
             for (int i = 0; i < 8; i++)
