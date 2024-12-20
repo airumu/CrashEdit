@@ -295,6 +295,8 @@ namespace CrashEdit.CE
             var fs = new CDBuilder();
             fs.AddFile("S0\\" + Path.GetFileName(nsfFilename) + ";1", nsfFilename);
             fs.AddFile("S0\\" + Path.GetFileName(nsdFilename) + ";1", nsdFilename);
+            fs.AddFile("M0\\" + Path.GetFileName(nsfFilename) + ";1", nsfFilename);
+            fs.AddFile("M0\\" + Path.GetFileName(nsdFilename) + ";1", nsdFilename);
             fs.AddFile("PSX.EXE;1", exeFilename);
             if (warpscusFilename != null) fs.AddFile("S0\\" + Path.GetFileName(warpscusFilename) + ";1", warpscusFilename);
             if (kdatFilename != null) fs.AddFile("S3\\" + Path.GetFileName(kdatFilename) + ";1", kdatFilename);
