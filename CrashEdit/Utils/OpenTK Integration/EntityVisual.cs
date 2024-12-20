@@ -187,10 +187,12 @@ namespace CrashEdit.CE
             MapCrash2.AddVisual(26, 4 + 0x100, new("Pb2mV")); // pillar array with possum
             MapCrash2.AddVisual(26, 7, new("Si0fV")); // easy/hard sign
             MapCrash2.AddVisual(27, 0, new("Po1eV")); // porcupine
+            MapCrash2.AddVisual(28, 0, new("Ra1aV")); // rat
             MapCrash2.AddVisual(28, 2, new("Pb2cV")); // possum night jungle
             MapCrash2.AddVisual(28, 3, new("Lp1cV")); // lizard night jungle
             MapCrash2.AddVisual(28, 2 + 1000, new("Pb2mV")); // possum ruins
             MapCrash2.AddVisual(28, 3 + 1000, new("Lp1mV")); // lizard ruins
+            MapCrash2.AddVisual(28, 4, new("Ra1aV")); // rat circle
             MapCrash2.AddVisual(30, 0, new("Ob2bV")); // ostrich
             MapCrash2.AddVisual(32, 0, new("Sm1eV")); // smasher
             MapCrash2.AddVisual(32, 1, new("Sm2eV")); // constant smasher

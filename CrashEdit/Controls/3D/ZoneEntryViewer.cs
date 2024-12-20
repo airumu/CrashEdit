@@ -366,6 +366,22 @@ namespace CrashEdit.CE
                         ok |= RenderEntityVisual(visual, trans, scale: new Vector3(4915f / 4096f));
                     return ok;
                 }
+                else if (type == 28 && subtype == 4 && entity.Settings.Count == 6) // rat circle
+                {
+                    bool ok = false;
+                    if (map.TryGetVisual(type, subtype, out visual))
+                    {
+                        int rat_count = entity.Settings[5].Value >> 8;
+                        float deg_per_rat = MathHelper.TwoPi / rat_count;
+                        float rat_distance = entity.Settings[4].Value / 256f / 400f;
+                        for (int i = 0; i < rat_count; i++)
+                        {
+                            float deg = deg_per_rat * i;
+                            ok |= RenderEntityVisual(visual, trans + new Vector3(MathF.Cos(deg) * rat_distance, 0, MathF.Sin(deg) * rat_distance));
+                        }
+                    }
+                    return ok;
+                }
                 else if (type == 35 && subtype == 15 && entity.Settings.Count == 9) // space bomb ring
                 {
                     bool ok = false;
