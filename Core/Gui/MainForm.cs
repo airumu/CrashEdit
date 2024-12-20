@@ -77,7 +77,7 @@ namespace CrashEdit
             SearchBox = new ToolStripTextBox
             {
                 Alignment = ToolStripItemAlignment.Right,
-                Enabled = false
+                Enabled = true
             };
             SearchBox.TextChanged += (sender, e) =>
             {
@@ -92,6 +92,7 @@ namespace CrashEdit
             };
             SearchBox.KeyPress += (sender, e) =>
             {
+                if (ActiveWorkspaceHost is not MainControl mainCtl_) e.Handled = e.KeyChar != (char)Keys.Delete;
                 if (e.KeyChar == '\r')
                 {
                     // Start a search if the user pressed enter, if valid.
@@ -318,7 +319,7 @@ namespace CrashEdit
             }
             else
             {
-                SearchBox.Enabled = false;
+                //SearchBox.Enabled = false;
                 SearchBox.Text = "";
             }
             ResyncSuggested?.Invoke(this, e);

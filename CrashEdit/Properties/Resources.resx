@@ -193,7 +193,7 @@
     <value>Open</value>
   </data>
   <data name="Toolbar_PatchNSD" xml:space="preserve">
-    <value>Patch NSD</value>
+    <value>Patch NSD (Ctrl + S)</value>
   </data>
   <data name="Toolbar_RedoAction" xml:space="preserve">
     <value>Redo {0}</value>
@@ -819,7 +819,9 @@ as Meters: {3:F3}m</value>
     <value>Export as COLLADA</value>
   </data>
   <data name="EntityBox_tipLists" xml:space="preserve">
-    <value>Press Ctrl+C to copy, Ctrl+V to paste</value>
+    <value>[Ctrl+C] Copy
+[Ctrl+V] Paste
+[Double-click / F2] Rename</value>
   </data>
   <data name="EntityBox_fraVerifyDrawList" xml:space="preserve">
     <value>Verify Draw Lists</value>
@@ -829,5 +831,8 @@ as Meters: {3:F3}m</value>
   </data>
   <data name="Config_chkEnableVisual" xml:space="preserve">
     <value>Enable 3D entity display</value>
+  </data>
+  <data name="Toolbar_Play" xml:space="preserve">
+    <value>Play (F1)</value>
   </data>
 </root>

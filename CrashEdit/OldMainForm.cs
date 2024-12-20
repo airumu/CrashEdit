@@ -63,6 +63,7 @@ namespace CrashEdit.CE
             {
                 Text = Resources.Toolbar_PatchNSD,
                 ImageKey = "Floppy",
+                ToolTipText = Resources.Toolbar_PatchNSD,
                 DisplayStyle = ToolStripItemDisplayStyle.Image,
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
@@ -123,6 +124,7 @@ namespace CrashEdit.CE
             tbbPlay = new ToolStripButton
             {
                 Text = "Play",
+                ToolTipText = Resources.Toolbar_Play,
                 TextImageRelation = TextImageRelation.ImageAboveText
             };
             tbbPlay.Click += new EventHandler(tbbPlay_Click);
@@ -172,6 +174,35 @@ namespace CrashEdit.CE
             Text = $"CrashEdit v{Assembly.GetExecutingAssembly().GetName().Version}";
 
             dlgMakeBINFile.Filter = "Playstation Disc Images (*.bin)|*.bin";
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            switch (keyData)
+            {
+                // Open NSF
+                //case (Keys.Control |  Keys.O):
+                //    ToolStrip.Items[0].PerformClick();
+                //    break;
+                // Save NSF
+                //case (Keys.Control | Keys.Shift | Keys.S):
+                //    ToolStrip.Items[1].PerformClick();
+                //    break;
+                // Patch NSD
+                case (Keys.Control | Keys.S):
+                    ToolStrip.Items[3].PerformClick();
+                    break;
+                // Close NSF
+                //case (Keys.Control | Keys.C):
+                //    ToolStrip.Items[5].PerformClick();
+                //    break;
+                // Play
+                case (Keys.F1):
+                    ToolStrip.Items[8].PerformClick();
+                    break;
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
         }
 
         private void tbcTabs_SelectedIndexChanged(object sender, EventArgs e)

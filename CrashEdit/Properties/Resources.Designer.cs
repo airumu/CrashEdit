@@ -946,7 +946,9 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
-        ///   Press Ctrl+C to copy, Ctrl+V to paste に類似しているローカライズされた文字列を検索します。
+        ///   [Ctrl+C] Copy
+        ///[Ctrl+V] Paste
+        ///[Double-click / F2] Rename に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string EntityBox_tipLists {
             get {
@@ -1855,11 +1857,20 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
-        ///   Patch NSD に類似しているローカライズされた文字列を検索します。
+        ///   Patch NSD (Ctrl + S) に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Toolbar_PatchNSD {
             get {
                 return ResourceManager.GetString("Toolbar_PatchNSD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Play (F1) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Toolbar_Play {
+            get {
+                return ResourceManager.GetString("Toolbar_Play", resourceCulture);
             }
         }
         
