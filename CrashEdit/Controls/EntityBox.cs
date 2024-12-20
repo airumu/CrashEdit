@@ -1609,6 +1609,8 @@ namespace CrashEdit.CE
                 entity.DrawListA.Rows[drawlistarowindex].Values.Add(0);
                 lbEntityA.Items.Add(0);
             }
+            if (lbEntityA.SelectedIndex == -1)
+                lbEntityA.SelectedIndex = 0;
             UpdateDrawListA();
         }
 
@@ -1877,6 +1879,8 @@ namespace CrashEdit.CE
                 entity.DrawListB.Rows[drawlistbrowindex].Values.Add(0);
                 lbEntityB.Items.Add(0);
             }
+            if (lbEntityB.SelectedIndex == -1)
+                lbEntityB.SelectedIndex = 0;
             UpdateDrawListB();
         }
 
