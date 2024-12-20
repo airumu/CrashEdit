@@ -117,6 +117,7 @@ namespace CrashEdit
                     }
                 }
             };
+            SearchBox.Enter += (sender, e) => { if (ActiveWorkspaceHost is not MainControl mainCtl_) TabControl.Focus(); };
             ToolStrip.Items.Add(SearchBox);
 
             // Toolbar -> Find (label and icon)
