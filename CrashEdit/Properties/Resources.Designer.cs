@@ -1954,6 +1954,15 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
+        ///   Hold right-click to increase movement speed に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string ViewerControls_FastMove {
+            get {
+                return ResourceManager.GetString("ViewerControls_FastMove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   W/A/S/D to move, Q/E to pan up/down に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string ViewerControls_Move {
@@ -1963,7 +1972,7 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
-        ///   Hold Shift for aligned movement に類似しているローカライズされた文字列を検索します。
+        ///   Toggle aligned movement ({0}) に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string ViewerControls_MoveAligned {
             get {

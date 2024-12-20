@@ -144,7 +144,8 @@ namespace CrashEdit.CE
         private bool mouseleft = false;
         private int mousex = 0;
         private int mousey = 0;
-        private readonly float movespeed = 10f;
+        private readonly float movespeed_default = 10f;
+        private float movespeed = 10f;
         private readonly float rotspeed = 0.5f;
         private readonly float zoomspeed = 1f;
         protected const float PerFrame = 1 / 60f;
@@ -211,14 +212,15 @@ namespace CrashEdit.CE
             public static readonly ControlsKeyboardInfo ToggleNormals = new(Keys.N, Resources.ViewerControls_ToggleNormals);
             public static readonly ControlsKeyboardInfo ChangeCullMode = new(Keys.U, Resources.ViewerControls_ChangeCullMode);
             public static readonly ControlsKeyboardInfo ToggleHelp = new(Keys.H, Resources.ViewerControls_ToggleHelp);
-            public static readonly ControlsKeyboardInfo EnterZoneAnchor = new(Keys.Control | Keys.O, Resources.ViewerControls_EnterZoneAnchor);
-            public static readonly ControlsKeyboardInfo ExitZoneAnchor = new(Keys.Control | Keys.O, Resources.ViewerControls_ExitZoneAnchor);
+            public static readonly ControlsKeyboardInfo EnterZoneAnchor = new(Keys.O, Resources.ViewerControls_EnterZoneAnchor);
+            public static readonly ControlsKeyboardInfo ExitZoneAnchor = new(Keys.O, Resources.ViewerControls_ExitZoneAnchor);
             public static readonly ControlsKeyboardInfo ZoneAnchorPrevCam = new(Keys.Left, Resources.ViewerControls_ZoneAnchorPrevCam);
             public static readonly ControlsKeyboardInfo ZoneAnchorNextCam = new(Keys.Right, Resources.ViewerControls_ZoneAnchorNextCam);
             public static readonly ControlsKeyboardInfo ZoneAnchorSortList = new(Keys.L, Resources.ViewerControls_ZoneAnchorSortList);
             public static readonly ControlsKeyboardInfo ZoneAnchorDetach = new(Keys.K, Resources.ViewerControls_ZoneAnchorDetach);
             public static readonly ControlsKeyboardInfo ToggleSlowAnim = new(Keys.P, Resources.ViewerControls_ToggleSlowAnim);
             public static readonly ControlsKeyboardInfo ToggleModelCycle = new(Keys.Y, Resources.ViewerControls_ToggleModelCycle);
+            public static readonly ControlsKeyboardInfo ToggleAlignedMovement = new(Keys.X, Resources.ViewerControls_MoveAligned);
         }
         #endregion
 
@@ -381,7 +383,7 @@ namespace CrashEdit.CE
             if (CanMove())
             {
                 con_help += Resources.ViewerControls_Move + '\n';
-                con_help += Resources.ViewerControls_MoveAligned + '\n';
+                con_help += Resources.ViewerControls_FastMove + '\n';
             }
             if (CanAim() && CanZoom())
                 con_help += Resources.ViewerControls_AimAndZoom + '\n';
@@ -389,10 +391,11 @@ namespace CrashEdit.CE
                 con_help += Resources.ViewerControls_Aim + '\n';
             else if (CanZoom())
                 con_help += Resources.ViewerControls_Zoom + '\n';
+
             if (CanResetCamera())
-            {
                 con_help += KeyboardControls.ResetCamera.Print();
-            }
+            if (CanMove())
+                con_help += KeyboardControls.ToggleAlignedMovement.Print(OnOffName(Settings.Default.AlignedMovement));
             con_help += KeyboardControls.ToggleTextures.Print(OnOffName(render.EnableTexture));
             con_help += KeyboardControls.ToggleHelp.Print(OnOffName(showHelp));
         }
@@ -402,7 +405,7 @@ namespace CrashEdit.CE
             if (CanMove())
             {
                 var d = GetMoveSpeed() * PerFrame;
-                if (KDown(Keys.Shift))
+                if (Settings.Default.AlignedMovement)
                 {
                     if (KDown(Keys.W, true)) render.Projection.CamTrans.Z += d;
                     if (KDown(Keys.S, true)) render.Projection.CamTrans.Z -= d;
@@ -429,6 +432,7 @@ namespace CrashEdit.CE
             }
             if (KPress(KeyboardControls.ToggleTextures)) render.EnableTexture = !render.EnableTexture;
             if (KPress(KeyboardControls.ToggleHelp)) showHelp = !showHelp;
+            if (KPress(KeyboardControls.ToggleAlignedMovement)) Settings.Default.AlignedMovement = !Settings.Default.AlignedMovement;
         }
 
         protected virtual bool CanMove() => true;
@@ -1176,7 +1180,11 @@ namespace CrashEdit.CE
             switch (e.Button)
             {
                 case MouseButtons.Left: mouseleft = false; break;
-                case MouseButtons.Right: mouseright = false; break;
+                case MouseButtons.Right: mouseright = false;
+                    {
+                        movespeed = movespeed_default;
+                        break;
+                    }
             }
         }
 
@@ -1246,7 +1254,11 @@ namespace CrashEdit.CE
             switch (e.Button)
             {
                 case MouseButtons.Left: mouseleft = true; /*mousex = e.X; mousey = e.Y;*/ break;
-                case MouseButtons.Right: mouseright = true; break;
+                case MouseButtons.Right: mouseright = true;
+                    {
+                        movespeed = movespeed_default * 3;
+                        break;
+                    }
             }
         }
 

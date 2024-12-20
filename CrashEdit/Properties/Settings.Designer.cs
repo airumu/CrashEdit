@@ -406,5 +406,17 @@ namespace CrashEdit.CE.Properties {
                 this["SplitViewerPanels"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AlignedMovement {
+            get {
+                return ((bool)(this["AlignedMovement"]));
+            }
+            set {
+                this["AlignedMovement"] = value;
+            }
+        }
     }
 }
