@@ -57,6 +57,24 @@ namespace CrashEdit.CE
             // added
             UpdateC2TTSet();
 
+            // Check if the entity is a camera
+            if (entity.ID == null)
+            {
+                tbcTabs.Controls.Remove(tabSpecial);
+                tabGeneral.Controls.Remove(fraName);
+                tabGeneral.Controls.Remove(fraID);
+                tabGeneral.Controls.Remove(fraType);
+                tabGeneral.Controls.Remove(fraSettings);
+                tabGeneral.Controls.Remove(fraZMod);
+                fraPosition.Location = new Point(4, 3);
+            }
+            else
+            {
+                tbcTabs.Controls.Remove(tabCamera);
+                tbcTabs.Controls.Remove(tabLoadLists);
+                tbcTabs.Controls.Remove(tabDrawLists);
+            }
+
             positionindex = 0;
             victimindex = 0;
             loadlistarowindex = 0;
@@ -2100,12 +2118,21 @@ namespace CrashEdit.CE
         {
             LoadVictimList();
             UpdateVictim();
-            UpdateScaling();
             UpdateBoxCount();
             UpdateDDASection();
             UpdateDDASettings();
-            UpdateOtherSettings();
-            UpdateTTReward();
+            if (controller.GetNSF().Version == GameVersion.Crash3)
+            {
+                UpdateScaling();
+                UpdateOtherSettings();
+                UpdateTTReward();
+            }
+            else
+            {
+                tabSpecial.Controls.Remove(fraTTReward);
+                tabSpecial.Controls.Remove(fraOtherSettings);
+                tabSpecial.Controls.Remove(fraScaling);
+            }
             tabSpecial.Enter -= tabSpecial_Enter;
         }
 

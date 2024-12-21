@@ -1158,7 +1158,7 @@ namespace CrashEdit.CE
             // 
             fraTTReward.Controls.Add(chkTTReward);
             fraTTReward.Controls.Add(numTTReward);
-            fraTTReward.Location = new Point(310, 186);
+            fraTTReward.Location = new Point(312, 146);
             fraTTReward.Margin = new Padding(4, 3, 4, 3);
             fraTTReward.Name = "fraTTReward";
             fraTTReward.Padding = new Padding(4, 3, 4, 3);
@@ -1195,7 +1195,7 @@ namespace CrashEdit.CE
             // 
             fraOtherSettings.Controls.Add(chkOtherSettings);
             fraOtherSettings.Controls.Add(numOtherSettings);
-            fraOtherSettings.Location = new Point(310, 361);
+            fraOtherSettings.Location = new Point(312, 321);
             fraOtherSettings.Margin = new Padding(4, 3, 4, 3);
             fraOtherSettings.Name = "fraOtherSettings";
             fraOtherSettings.Padding = new Padding(4, 3, 4, 3);
@@ -1232,7 +1232,7 @@ namespace CrashEdit.CE
             // 
             fraScaling.Controls.Add(chkScaling);
             fraScaling.Controls.Add(numScaling);
-            fraScaling.Location = new Point(310, 274);
+            fraScaling.Location = new Point(312, 234);
             fraScaling.Margin = new Padding(4, 3, 4, 3);
             fraScaling.Name = "fraScaling";
             fraScaling.Padding = new Padding(4, 3, 4, 3);
@@ -1269,7 +1269,7 @@ namespace CrashEdit.CE
             // 
             fraDDASection.Controls.Add(chkDDASection);
             fraDDASection.Controls.Add(numDDASection);
-            fraDDASection.Location = new Point(164, 186);
+            fraDDASection.Location = new Point(166, 146);
             fraDDASection.Margin = new Padding(4, 3, 4, 3);
             fraDDASection.Name = "fraDDASection";
             fraDDASection.Padding = new Padding(4, 3, 4, 3);
@@ -1306,7 +1306,7 @@ namespace CrashEdit.CE
             // 
             fraDDASettings.Controls.Add(chkDDASettings);
             fraDDASettings.Controls.Add(numDDASettings);
-            fraDDASettings.Location = new Point(164, 274);
+            fraDDASettings.Location = new Point(166, 234);
             fraDDASettings.Margin = new Padding(4, 3, 4, 3);
             fraDDASettings.Name = "fraDDASettings";
             fraDDASettings.Padding = new Padding(4, 3, 4, 3);
@@ -1345,7 +1345,7 @@ namespace CrashEdit.CE
             fraBoxCount.Controls.Add(numBonusBoxCount);
             fraBoxCount.Controls.Add(chkBoxCount);
             fraBoxCount.Controls.Add(numBoxCount);
-            fraBoxCount.Location = new Point(164, 3);
+            fraBoxCount.Location = new Point(166, 3);
             fraBoxCount.Margin = new Padding(4, 3, 4, 3);
             fraBoxCount.Name = "fraBoxCount";
             fraBoxCount.Padding = new Padding(4, 3, 4, 3);
