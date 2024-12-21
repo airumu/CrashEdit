@@ -57,8 +57,9 @@ namespace CrashEdit.CE
             // added
             UpdateC2TTSet();
 
-            // Check if the entity is a camera
-            if (entity.ID == null)
+            // Check CameraCout to see if the entity is a camera
+            ZoneEntry zone = controller.ZoneEntryController.ZoneEntry;
+            if (zone.Entities.IndexOf(entity) < BitConv.FromInt32(zone.Header, 0x188))
             {
                 tbcTabs.Controls.Remove(tabSpecial);
                 tabGeneral.Controls.Remove(fraName);
