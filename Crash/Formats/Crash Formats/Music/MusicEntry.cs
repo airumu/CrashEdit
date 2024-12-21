@@ -20,14 +20,14 @@ namespace CrashEdit.Crash
         public override string ImageKey => "MusicNoteBlue";
 
         public override int Type => 13;
-        public int VHEID { get; }
-        public int VB0EID { get; }
-        public int VB1EID { get; }
-        public int VB2EID { get; }
-        public int VB3EID { get; }
-        public int VB4EID { get; }
-        public int VB5EID { get; }
-        public int VB6EID { get; }
+        public int VHEID { get; set; }
+        public int VB0EID { get; set; }
+        public int VB1EID { get; set; }
+        public int VB2EID { get; set; }
+        public int VB3EID { get; set; }
+        public int VB4EID { get; set; }
+        public int VB5EID { get; set; }
+        public int VB6EID { get; set; }
 
         [SubresourceSlot(AllowNull = true)]
         public VH VH { get; set; }

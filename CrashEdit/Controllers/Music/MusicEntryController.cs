@@ -19,6 +19,13 @@ namespace CrashEdit.CE
             AddMenu("Replace Linked VAB", Menu_Replace_Linked_VAB);
         }
 
+        public override bool EditorAvailable => true;
+
+        public override Control CreateEditor()
+        {
+            return new MusicBox(this);
+        }
+
         public MusicEntry MusicEntry { get; }
 
         private VH FindLinkedVH()
