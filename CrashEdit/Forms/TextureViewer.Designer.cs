@@ -680,7 +680,7 @@ namespace CrashEdit.CE
             C2numH.Name = "C2numH";
             C2numH.Size = new Size(70, 23);
             C2numH.TabIndex = 5;
-            C2numH.Value = new decimal(new int[] { 16, 0, 0, 0 });
+            C2numH.Value = new decimal(new int[] { 32, 0, 0, 0 });
             // 
             // label9
             // 
@@ -702,7 +702,7 @@ namespace CrashEdit.CE
             C2numW.Name = "C2numW";
             C2numW.Size = new Size(70, 23);
             C2numW.TabIndex = 4;
-            C2numW.Value = new decimal(new int[] { 16, 0, 0, 0 });
+            C2numW.Value = new decimal(new int[] { 32, 0, 0, 0 });
             // 
             // label10
             // 
