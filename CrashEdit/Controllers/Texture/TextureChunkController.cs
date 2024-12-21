@@ -28,15 +28,7 @@ namespace CrashEdit.CE
 
         private void Menu_Recalculate_Checksum()
         {
-            int current_checksum = BitConv.FromInt32(TextureChunk.Data, 12);
             int correct_checksum = Chunk.CalculateChecksum(TextureChunk.Data);
-            //if (current_checksum == correct_checksum)
-            //{
-            //    MessageBox.Show("Checksum was already correct.");
-            //    return;
-            //}
-            //BitConv.ToInt32(TextureChunk.Data, 12, correct_checksum);
-            //MessageBox.Show("Checksum was incorrect and has been corrected.");
             BitConv.ToInt32(TextureChunk.Data, 12, correct_checksum);
             SystemSounds.Asterisk.Play();
         }
@@ -50,6 +42,7 @@ namespace CrashEdit.CE
                 if (newentrywindow.ShowDialog() == DialogResult.OK)
                 {
                     TextureChunk.EID = newentrywindow.EID;
+                    BitConv.ToInt32(TextureChunk.Data, 12, Chunk.CalculateChecksum(TextureChunk.Data));
                 }
             }
         }
