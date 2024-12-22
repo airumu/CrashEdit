@@ -1,8 +1,10 @@
+using System.Text;
 using System.Text.RegularExpressions;
 using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace CrashEdit.CE
 {
@@ -713,26 +715,28 @@ namespace CrashEdit.CE
 
             if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control)
             {
-                string list = "";
-                foreach (object item in lbVictimID.Items) list += item.ToString() + "\n";
-                Clipboard.SetText(list);
+                StringBuilder sb = new StringBuilder();
+                foreach (object item in lbVictimID.Items)
+                {
+                    sb.Append(item + Environment.NewLine);
+                }
+                if (sb .Length > 0)
+                    Clipboard.SetText(sb.ToString());
             }
 
             if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
             {
-                using (StringReader reader = new StringReader(Clipboard.GetText()))
+                StringReader sr = new StringReader(Clipboard.GetText());
+                string line;
+                while ((line = sr.ReadLine()) != null)
                 {
-                    string line;
-                    while ((line = reader.ReadLine()) != null)
+                    if (lbVictimID.Items.Count >= 1023) break;
+                    var stripped = Regex.Replace(line, "[^0-9]", "");
+                    if (stripped.Length > 0)
                     {
-                        if (lbVictimID.Items.Count >= 1023) break;
-                        var stripped = Regex.Replace(line, "[^0-9]", "");
-                        if (stripped.Length > 0)
-                        {
-                            short victimid = Convert.ToInt16(stripped);
-                            entity.Victims.Add(new(victimid));
-                            lbVictimID.Items.Add(victimid);
-                        }
+                        short victimid = Convert.ToInt16(stripped);
+                        entity.Victims.Add(new(victimid));
+                        lbVictimID.Items.Add(victimid);
                     }
                 }
                 if (lbVictimID.SelectedIndex == -1)
@@ -946,24 +950,26 @@ namespace CrashEdit.CE
 
             if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control)
             {
-                string list = "";
-                foreach (object item in lbEIDA.Items) list += item.ToString() + "\n";
-                Clipboard.SetText(list);
+                StringBuilder sb = new StringBuilder();
+                foreach (object item in lbEIDA.Items)
+                {
+                    sb.Append(item + Environment.NewLine);
+                }
+                if (sb.Length > 0)
+                    Clipboard.SetText(sb.ToString());
             }
 
             if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
             {
-                using (StringReader reader = new StringReader(Clipboard.GetText()))
+                StringReader sr = new StringReader(Clipboard.GetText());
+                string line;
+                while ((line = sr.ReadLine()) != null)
                 {
-                    string line;
-                    while ((line = reader.ReadLine()) != null)
+                    if (entity.LoadListA.Rows[loadlistarowindex].Values.Count >= 1023) break;
+                    if (CheckEname(line).Length > 0)
                     {
-                        if (entity.LoadListA.Rows[loadlistarowindex].Values.Count >= 1023) break;
-                        if (CheckEname(line).Length > 0)
-                        {
-                            entity.LoadListA.Rows[loadlistarowindex].Values.Add(Entry.ENameToEID(line));
-                            lbEIDA.Items.Add(line);
-                        }
+                        entity.LoadListA.Rows[loadlistarowindex].Values.Add(Entry.ENameToEID(line));
+                        lbEIDA.Items.Add(line);
                     }
                 }
                 if (lbEIDA.SelectedIndex == -1)
@@ -1223,24 +1229,26 @@ namespace CrashEdit.CE
 
             if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control)
             {
-                string list = "";
-                foreach (object item in lbEIDB.Items) list += item.ToString() + "\n";
-                Clipboard.SetText(list);
+                StringBuilder sb = new StringBuilder();
+                foreach (object item in lbEIDB.Items)
+                {
+                    sb.Append(item + Environment.NewLine);
+                }
+                if (sb.Length > 0)
+                    Clipboard.SetText(sb.ToString());
             }
 
             if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
             {
-                using (StringReader reader = new StringReader(Clipboard.GetText()))
+                StringReader sr = new StringReader(Clipboard.GetText());
+                string line;
+                while ((line = sr.ReadLine()) != null)
                 {
-                    string line;
-                    while ((line = reader.ReadLine()) != null)
+                    if (entity.LoadListB.Rows[loadlistbrowindex].Values.Count >= 1023) break;
+                    if (CheckEname(line).Length > 0)
                     {
-                        if (entity.LoadListB.Rows[loadlistbrowindex].Values.Count >= 1023) break;
-                        if (CheckEname(line).Length > 0)
-                        {
-                            entity.LoadListB.Rows[loadlistbrowindex].Values.Add(Entry.ENameToEID(line));
-                            lbEIDB.Items.Add(line);
-                        }
+                        entity.LoadListB.Rows[loadlistbrowindex].Values.Add(Entry.ENameToEID(line));
+                        lbEIDB.Items.Add(line);
                     }
                 }
                 if (lbEIDB.SelectedIndex == -1)
@@ -1519,29 +1527,31 @@ namespace CrashEdit.CE
 
             if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control)
             {
-                string list = "";
-                foreach (object item in lbEntityA.Items) list += item.ToString() + "\n";
-                Clipboard.SetText(list);
+                StringBuilder sb = new StringBuilder();
+                foreach (object item in lbEntityA.Items)
+                {
+                    sb.Append(item + Environment.NewLine);
+                }
+                if (sb.Length > 0)
+                    Clipboard.SetText(sb.ToString());
             }
 
             if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
             {
-                using (StringReader reader = new StringReader(Clipboard.GetText()))
+                StringReader sr = new StringReader(Clipboard.GetText());
+                string line;
+                while ((line = sr.ReadLine()) != null)
                 {
-                    string line;
-                    while ((line = reader.ReadLine()) != null)
+                    if (entity.DrawListA.Rows[drawlistarowindex].Values.Count >= 1023) break;
+                    var stripped = Regex.Replace(line, "[^0-9]", "");
+                    if (stripped.Length > 0)
                     {
-                        if (entity.DrawListA.Rows[drawlistarowindex].Values.Count >= 1023) break;
-                        var stripped = Regex.Replace(line, "[^0-9]", "");
-                        if (stripped.Length > 0)
+                        int id = GetEntityID(Convert.ToInt16(stripped));
+                        if (id > 0)
                         {
-                            int id = GetEntityID(Convert.ToInt16(stripped));
-                            if (id > 0)
-                            {
-                                drawlistaentityindex = entity.DrawListA.Rows[drawlistarowindex].Values.Count;
-                                entity.DrawListA.Rows[drawlistarowindex].Values.Add(id);
-                                lbEntityA.Items.Add(id >> 8 & 0xFFFF);
-                            }
+                            drawlistaentityindex = entity.DrawListA.Rows[drawlistarowindex].Values.Count;
+                            entity.DrawListA.Rows[drawlistarowindex].Values.Add(id);
+                            lbEntityA.Items.Add(id >> 8 & 0xFFFF);
                         }
                     }
                 }
@@ -1791,29 +1801,31 @@ namespace CrashEdit.CE
 
             if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control)
             {
-                string list = "";
-                foreach (object item in lbEntityB.Items) list += item.ToString() + "\n";
-                Clipboard.SetText(list);
+                StringBuilder sb = new StringBuilder();
+                foreach (object item in lbEntityB.Items)
+                {
+                    sb.Append(item + Environment.NewLine);
+                }
+                if (sb.Length > 0)
+                    Clipboard.SetText(sb.ToString());
             }
 
             if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
             {
-                using (StringReader reader = new StringReader(Clipboard.GetText()))
+                StringReader sr = new StringReader(Clipboard.GetText());
+                string line;
+                while ((line = sr.ReadLine()) != null)
                 {
-                    string line;
-                    while ((line = reader.ReadLine()) != null)
+                    if (entity.DrawListB.Rows[drawlistbrowindex].Values.Count >= 1023) break;
+                    var stripped = Regex.Replace(line, "[^0-9]", "");
+                    if (stripped.Length > 0)
                     {
-                        if (entity.DrawListB.Rows[drawlistbrowindex].Values.Count >= 1023) break;
-                        var stripped = Regex.Replace(line, "[^0-9]", "");
-                        if (stripped.Length > 0)
+                        int id = GetEntityID(Convert.ToInt16(stripped));
+                        if (id > 0)
                         {
-                            int id = GetEntityID(Convert.ToInt16(stripped));
-                            if (id > 0)
-                            {
-                                drawlistbentityindex = entity.DrawListB.Rows[drawlistbrowindex].Values.Count;
-                                entity.DrawListB.Rows[drawlistbrowindex].Values.Add(id);
-                                lbEntityB.Items.Add(id >> 8 & 0xFFFF);
-                            }
+                            drawlistbentityindex = entity.DrawListB.Rows[drawlistbrowindex].Values.Count;
+                            entity.DrawListB.Rows[drawlistbrowindex].Values.Add(id);
+                            lbEntityB.Items.Add(id >> 8 & 0xFFFF);
                         }
                     }
                 }
