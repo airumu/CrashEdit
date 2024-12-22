@@ -295,6 +295,12 @@ namespace CrashEdit
                         CopyEID(ByteCursorColumn, ByteCursorRow);
                         break;
 
+                    case Keys.X:
+                        // Cut EID
+                        CopyEID(ByteCursorColumn, ByteCursorRow);
+                        InputZero(4);
+                        break;
+
                     case Keys.V:
                         // Paste EID
                         PasteEID();

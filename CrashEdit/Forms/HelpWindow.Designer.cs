@@ -30,6 +30,7 @@ namespace CrashEdit.CE
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HelpWindow));
             label5 = new Label();
             label6 = new Label();
             label3 = new Label();
@@ -82,9 +83,9 @@ namespace CrashEdit.CE
             label4.Location = new Point(14, 25);
             label4.Margin = new Padding(4, 0, 4, 0);
             label4.Name = "label4";
-            label4.Size = new Size(206, 119);
+            label4.Size = new Size(206, 136);
             label4.TabIndex = 13;
-            label4.Text = "N: Input the EID for \"NONE!\"\r\nZ: Toggle chunk name view mode\r\nSpace: Clear selected cell\r\n\r\nCtrl + C: Copy EID to clipboard\r\nCtrl + V: Paste EID from clipboard\r\nCtrl + Space: Clear selected chunk";
+            label4.Text = resources.GetString("label4.Text");
             // 
             // HelpWindow
             // 

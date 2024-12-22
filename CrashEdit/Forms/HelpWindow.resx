@@ -117,4 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="label4.Text" xml:space="preserve">
+    <value>N: Input the EID for "NONE!"
+Z: Toggle chunk name view mode
+Space: Clear selected cell
+
+Ctrl + C: Copy EID to clipboard
+Ctrl + X: Cut EID to clipboard
+Ctrl + V: Paste EID from clipboard
+Ctrl + Space: Clear selected chunk</value>
+  </data>
 </root>
