@@ -1437,6 +1437,7 @@ namespace CrashEdit.CE
             lbVictimID.Name = "lbVictimID";
             lbVictimID.Size = new Size(138, 287);
             lbVictimID.TabIndex = 14;
+            lbVictimID.SelectedIndexChanged += lbVictimID_SelectedIndexChanged;
             lbVictimID.DoubleClick += lbVictimID_DoubleClick;
             lbVictimID.KeyDown += lbVictimID_KeyDown;
             lbVictimID.KeyPress += lbVictimID_KeyPress;
@@ -2475,7 +2476,7 @@ namespace CrashEdit.CE
             lbEIDB.BorderStyle = BorderStyle.FixedSingle;
             lbEIDB.ForeColor = Color.FromArgb(213, 213, 213);
             lbEIDB.FormattingEnabled = true;
-            lbEIDB.Location = new Point(7, 58);
+            lbEIDB.Location = new Point(7, 123);
             lbEIDB.Name = "lbEIDB";
             lbEIDB.Size = new Size(140, 227);
             lbEIDB.TabIndex = 25;
@@ -2490,7 +2491,7 @@ namespace CrashEdit.CE
             txtEIDB.BorderStyle = BorderStyle.FixedSingle;
             txtEIDB.Enabled = false;
             txtEIDB.ForeColor = Color.FromArgb(213, 213, 213);
-            txtEIDB.Location = new Point(7, 35);
+            txtEIDB.Location = new Point(7, 100);
             txtEIDB.Margin = new Padding(4, 3, 4, 3);
             txtEIDB.MaxLength = 5;
             txtEIDB.Name = "txtEIDB";
@@ -2517,7 +2518,7 @@ namespace CrashEdit.CE
             cmdAppendEIDB.CustomColour = false;
             cmdAppendEIDB.FlatBottom = false;
             cmdAppendEIDB.FlatTop = false;
-            cmdAppendEIDB.Location = new Point(7, 323);
+            cmdAppendEIDB.Location = new Point(7, 68);
             cmdAppendEIDB.Margin = new Padding(4, 3, 4, 3);
             cmdAppendEIDB.Name = "cmdAppendEIDB";
             cmdAppendEIDB.Padding = new Padding(5);
@@ -2532,7 +2533,7 @@ namespace CrashEdit.CE
             cmdRemoveEIDB.CustomColour = false;
             cmdRemoveEIDB.FlatBottom = false;
             cmdRemoveEIDB.FlatTop = false;
-            cmdRemoveEIDB.Location = new Point(7, 290);
+            cmdRemoveEIDB.Location = new Point(7, 35);
             cmdRemoveEIDB.Margin = new Padding(4, 3, 4, 3);
             cmdRemoveEIDB.Name = "cmdRemoveEIDB";
             cmdRemoveEIDB.Padding = new Padding(5);
@@ -2547,7 +2548,7 @@ namespace CrashEdit.CE
             cmdInsertEIDB.CustomColour = false;
             cmdInsertEIDB.FlatBottom = false;
             cmdInsertEIDB.FlatTop = false;
-            cmdInsertEIDB.Location = new Point(79, 290);
+            cmdInsertEIDB.Location = new Point(79, 35);
             cmdInsertEIDB.Margin = new Padding(4, 3, 4, 3);
             cmdInsertEIDB.Name = "cmdInsertEIDB";
             cmdInsertEIDB.Padding = new Padding(5);
@@ -2703,7 +2704,7 @@ namespace CrashEdit.CE
             lbEIDA.BorderStyle = BorderStyle.FixedSingle;
             lbEIDA.ForeColor = Color.FromArgb(213, 213, 213);
             lbEIDA.FormattingEnabled = true;
-            lbEIDA.Location = new Point(7, 58);
+            lbEIDA.Location = new Point(7, 123);
             lbEIDA.Name = "lbEIDA";
             lbEIDA.Size = new Size(140, 227);
             lbEIDA.TabIndex = 24;
@@ -2718,7 +2719,7 @@ namespace CrashEdit.CE
             txtEIDA.BorderStyle = BorderStyle.FixedSingle;
             txtEIDA.Enabled = false;
             txtEIDA.ForeColor = Color.FromArgb(213, 213, 213);
-            txtEIDA.Location = new Point(7, 35);
+            txtEIDA.Location = new Point(7, 100);
             txtEIDA.Margin = new Padding(4, 3, 4, 3);
             txtEIDA.MaxLength = 5;
             txtEIDA.Name = "txtEIDA";
@@ -2745,7 +2746,7 @@ namespace CrashEdit.CE
             cmdAppendEIDA.CustomColour = false;
             cmdAppendEIDA.FlatBottom = false;
             cmdAppendEIDA.FlatTop = false;
-            cmdAppendEIDA.Location = new Point(7, 323);
+            cmdAppendEIDA.Location = new Point(7, 68);
             cmdAppendEIDA.Margin = new Padding(4, 3, 4, 3);
             cmdAppendEIDA.Name = "cmdAppendEIDA";
             cmdAppendEIDA.Padding = new Padding(5);
@@ -2760,7 +2761,7 @@ namespace CrashEdit.CE
             cmdRemoveEIDA.CustomColour = false;
             cmdRemoveEIDA.FlatBottom = false;
             cmdRemoveEIDA.FlatTop = false;
-            cmdRemoveEIDA.Location = new Point(7, 290);
+            cmdRemoveEIDA.Location = new Point(7, 35);
             cmdRemoveEIDA.Margin = new Padding(4, 3, 4, 3);
             cmdRemoveEIDA.Name = "cmdRemoveEIDA";
             cmdRemoveEIDA.Padding = new Padding(5);
@@ -2775,7 +2776,7 @@ namespace CrashEdit.CE
             cmdInsertEIDA.CustomColour = false;
             cmdInsertEIDA.FlatBottom = false;
             cmdInsertEIDA.FlatTop = false;
-            cmdInsertEIDA.Location = new Point(79, 290);
+            cmdInsertEIDA.Location = new Point(79, 35);
             cmdInsertEIDA.Margin = new Padding(4, 3, 4, 3);
             cmdInsertEIDA.Name = "cmdInsertEIDA";
             cmdInsertEIDA.Padding = new Padding(5);
@@ -2973,7 +2974,7 @@ namespace CrashEdit.CE
             lbEntityB.BorderStyle = BorderStyle.FixedSingle;
             lbEntityB.ForeColor = Color.FromArgb(213, 213, 213);
             lbEntityB.FormattingEnabled = true;
-            lbEntityB.Location = new Point(7, 58);
+            lbEntityB.Location = new Point(7, 123);
             lbEntityB.Name = "lbEntityB";
             lbEntityB.Size = new Size(139, 227);
             lbEntityB.TabIndex = 22;
@@ -2985,7 +2986,7 @@ namespace CrashEdit.CE
             // numEntityB
             // 
             numEntityB.Enabled = false;
-            numEntityB.Location = new Point(7, 35);
+            numEntityB.Location = new Point(7, 100);
             numEntityB.Margin = new Padding(4, 3, 4, 3);
             numEntityB.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
             numEntityB.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
@@ -3012,7 +3013,7 @@ namespace CrashEdit.CE
             cmdAppendEntityB.CustomColour = false;
             cmdAppendEntityB.FlatBottom = false;
             cmdAppendEntityB.FlatTop = false;
-            cmdAppendEntityB.Location = new Point(7, 323);
+            cmdAppendEntityB.Location = new Point(7, 68);
             cmdAppendEntityB.Margin = new Padding(4, 3, 4, 3);
             cmdAppendEntityB.Name = "cmdAppendEntityB";
             cmdAppendEntityB.Padding = new Padding(5);
@@ -3027,7 +3028,7 @@ namespace CrashEdit.CE
             cmdRemoveEntityB.CustomColour = false;
             cmdRemoveEntityB.FlatBottom = false;
             cmdRemoveEntityB.FlatTop = false;
-            cmdRemoveEntityB.Location = new Point(7, 290);
+            cmdRemoveEntityB.Location = new Point(7, 35);
             cmdRemoveEntityB.Margin = new Padding(4, 3, 4, 3);
             cmdRemoveEntityB.Name = "cmdRemoveEntityB";
             cmdRemoveEntityB.Padding = new Padding(5);
@@ -3042,7 +3043,7 @@ namespace CrashEdit.CE
             cmdInsertEntityB.CustomColour = false;
             cmdInsertEntityB.FlatBottom = false;
             cmdInsertEntityB.FlatTop = false;
-            cmdInsertEntityB.Location = new Point(79, 290);
+            cmdInsertEntityB.Location = new Point(79, 35);
             cmdInsertEntityB.Margin = new Padding(4, 3, 4, 3);
             cmdInsertEntityB.Name = "cmdInsertEntityB";
             cmdInsertEntityB.Padding = new Padding(5);
@@ -3187,7 +3188,7 @@ namespace CrashEdit.CE
             lbEntityA.BorderStyle = BorderStyle.FixedSingle;
             lbEntityA.ForeColor = Color.FromArgb(213, 213, 213);
             lbEntityA.FormattingEnabled = true;
-            lbEntityA.Location = new Point(7, 58);
+            lbEntityA.Location = new Point(7, 123);
             lbEntityA.Name = "lbEntityA";
             lbEntityA.Size = new Size(139, 227);
             lbEntityA.TabIndex = 22;
@@ -3199,7 +3200,7 @@ namespace CrashEdit.CE
             // numEntityA
             // 
             numEntityA.Enabled = false;
-            numEntityA.Location = new Point(7, 35);
+            numEntityA.Location = new Point(7, 100);
             numEntityA.Margin = new Padding(4, 3, 4, 3);
             numEntityA.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
             numEntityA.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
@@ -3226,7 +3227,7 @@ namespace CrashEdit.CE
             cmdAppendEntityA.CustomColour = false;
             cmdAppendEntityA.FlatBottom = false;
             cmdAppendEntityA.FlatTop = false;
-            cmdAppendEntityA.Location = new Point(6, 323);
+            cmdAppendEntityA.Location = new Point(7, 68);
             cmdAppendEntityA.Margin = new Padding(4, 3, 4, 3);
             cmdAppendEntityA.Name = "cmdAppendEntityA";
             cmdAppendEntityA.Padding = new Padding(5);
@@ -3241,7 +3242,7 @@ namespace CrashEdit.CE
             cmdRemoveEntityA.CustomColour = false;
             cmdRemoveEntityA.FlatBottom = false;
             cmdRemoveEntityA.FlatTop = false;
-            cmdRemoveEntityA.Location = new Point(6, 290);
+            cmdRemoveEntityA.Location = new Point(7, 35);
             cmdRemoveEntityA.Margin = new Padding(4, 3, 4, 3);
             cmdRemoveEntityA.Name = "cmdRemoveEntityA";
             cmdRemoveEntityA.Padding = new Padding(5);
@@ -3256,7 +3257,7 @@ namespace CrashEdit.CE
             cmdInsertEntityA.CustomColour = false;
             cmdInsertEntityA.FlatBottom = false;
             cmdInsertEntityA.FlatTop = false;
-            cmdInsertEntityA.Location = new Point(78, 290);
+            cmdInsertEntityA.Location = new Point(79, 35);
             cmdInsertEntityA.Margin = new Padding(4, 3, 4, 3);
             cmdInsertEntityA.Name = "cmdInsertEntityA";
             cmdInsertEntityA.Padding = new Padding(5);

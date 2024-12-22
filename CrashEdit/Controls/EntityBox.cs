@@ -54,26 +54,47 @@ namespace CrashEdit.CE
             UpdateID();
             UpdateZMod();
 
-            // added
-            UpdateC2TTSet();
-
-            // Check CameraCout to see if the entity is a camera
-            ZoneEntry zone = controller.ZoneEntryController.ZoneEntry;
-            if (zone.Entities.IndexOf(entity) < BitConv.FromInt32(zone.Header, 0x188))
+            if (Settings.Default.EnableLegacyEntityBox == false)
             {
-                tbcTabs.Controls.Remove(tabSpecial);
-                tabGeneral.Controls.Remove(fraName);
-                tabGeneral.Controls.Remove(fraID);
-                tabGeneral.Controls.Remove(fraType);
-                tabGeneral.Controls.Remove(fraSettings);
-                tabGeneral.Controls.Remove(fraZMod);
-                fraPosition.Location = new Point(4, 3);
-            }
-            else
-            {
-                tbcTabs.Controls.Remove(tabCamera);
-                tbcTabs.Controls.Remove(tabLoadLists);
-                tbcTabs.Controls.Remove(tabDrawLists);
+                // Check CameraCout to see if the entity is a camera
+                ZoneEntry zone = controller.ZoneEntryController.ZoneEntry;
+                if (zone.Entities.IndexOf(entity) < BitConv.FromInt32(zone.Header, 0x188))
+                {
+                    if (entity.CameraSubIndex > 0)
+                    {
+                        tbcTabs.Controls.Remove(tabLoadLists);
+                        tbcTabs.Controls.Remove(tabDrawLists);
+                    }
+                    tbcTabs.Controls.Remove(tabSpecial);
+                    tabGeneral.Controls.Remove(fraName);
+                    tabGeneral.Controls.Remove(fraID);
+                    tabGeneral.Controls.Remove(fraType);
+                    tabGeneral.Controls.Remove(fraSettings);
+                    tabGeneral.Controls.Remove(fraZMod);
+                    fraPosition.Location = new Point(4, 3);
+                }
+                else
+                {
+                    if (Settings.Default.EnableC2TTEditor)
+                    {
+                        fraC2TTSet.Visible = true;
+                        fraC2TTSet.Location = new Point(245, 146);
+                        fraZMod.Location = new Point(384, 146);
+                        UpdateC2TTType();
+                        UpdateC2TTYRot();
+                        UpdateC2TTBoxFlag();
+                        UpdateC2TTGhostTarget();
+                    }
+                    else
+                    {
+                        fraC2TTSet.Visible = false;
+                        fraC2TTSet.Location = new Point(245, 146);
+                        fraZMod.Location = new Point(245, 146);
+                    }
+                    tbcTabs.Controls.Remove(tabCamera);
+                    tbcTabs.Controls.Remove(tabLoadLists);
+                    tbcTabs.Controls.Remove(tabDrawLists);
+                }
             }
 
             positionindex = 0;
@@ -679,6 +700,12 @@ namespace CrashEdit.CE
                 }
                 lbVictimID.SelectedIndex = 0;
             }
+        }
+
+        private void lbVictimID_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            victimindex = lbVictimID.SelectedIndex;
+            lblVictimIndex.Text = $"{victimindex + 1} / {entity.Victims.Count}";
         }
 
         private void lbVictimID_KeyPress(object sender, KeyPressEventArgs e)
@@ -2109,12 +2136,6 @@ namespace CrashEdit.CE
             entity.SLST.Rows[0].Values[0] = Entry.ENameToEID(txtSLST.Text);
         }
 
-        //private void tabGeneral_Enter(object sender, EventArgs e)
-        //{
-        //    UpdateC2TTSet();
-        //    tabGeneral.Enter -= tabGeneral_Enter;
-        //}
-
         private void tabSpecial_Enter(object sender, EventArgs e)
         {
             LoadVictimList();
@@ -2496,26 +2517,6 @@ namespace CrashEdit.CE
         }
 
         // added
-        private void UpdateC2TTSet()
-        {
-            if (Settings.Default.EnableC2TTEditor)
-            {
-                fraC2TTSet.Visible = true;
-                fraC2TTSet.Location = new Point(245, 146);
-                fraZMod.Location = new Point(384, 146);
-                UpdateC2TTType();
-                UpdateC2TTYRot();
-                UpdateC2TTBoxFlag();
-                UpdateC2TTGhostTarget();
-            }
-            else
-            {
-                fraC2TTSet.Visible = false;
-                fraC2TTSet.Location = new Point(245, 146);
-                fraZMod.Location = new Point(245, 146);
-            }
-        }
-
         private void UpdateC2TTType()
         {
             if (entity.C2TTType.HasValue)

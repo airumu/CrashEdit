@@ -38,7 +38,7 @@ namespace CrashEdit.CE
                     Dock = DockStyle.Fill
                 };
 
-                if (Settings.Default.SplitViewerPanels)
+                if (Settings.Default.SplitAnimViewerPanels)
                 {
                     pnSplit = new SplitContainer
                     {

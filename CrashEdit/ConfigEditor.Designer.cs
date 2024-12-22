@@ -84,6 +84,7 @@ namespace CrashEdit.CE
             chkSplitViewerPanels = new CheckBox();
             chkLiteralCollisionTypes = new CheckBox();
             chkPatchGOOLC3toC2 = new CheckBox();
+            chkEnableLegacyEntityBox = new CheckBox();
             tableLayoutPanel4 = new TableLayoutPanel();
             tableLayoutPanel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numFontSize).BeginInit();
@@ -727,6 +728,7 @@ namespace CrashEdit.CE
             // tbpMisc
             // 
             tbpMisc.BackColor = Color.FromArgb(30, 30, 30);
+            tbpMisc.Controls.Add(chkEnableLegacyEntityBox);
             tbpMisc.Controls.Add(fraExtra);
             tbpMisc.Controls.Add(chkSplitViewerPanels);
             tbpMisc.Controls.Add(chkLiteralCollisionTypes);
@@ -744,9 +746,9 @@ namespace CrashEdit.CE
             fraExtra.Controls.Add(chkShowCustomCrates);
             fraExtra.Controls.Add(chkOldPatchNSD);
             fraExtra.Controls.Add(chkEnableC2TT);
-            fraExtra.Location = new Point(1, 81);
+            fraExtra.Location = new Point(0, 106);
             fraExtra.Name = "fraExtra";
-            fraExtra.Size = new Size(424, 100);
+            fraExtra.Size = new Size(421, 100);
             fraExtra.TabIndex = 18;
             fraExtra.TabStop = false;
             fraExtra.Text = "CE-tweaked";
@@ -793,7 +795,7 @@ namespace CrashEdit.CE
             chkSplitViewerPanels.Name = "chkSplitViewerPanels";
             chkSplitViewerPanels.Size = new Size(123, 19);
             chkSplitViewerPanels.TabIndex = 17;
-            chkSplitViewerPanels.Text = "Split viewer panels";
+            chkSplitViewerPanels.Text = "Split animation viewer panels";
             chkSplitViewerPanels.UseVisualStyleBackColor = true;
             chkSplitViewerPanels.CheckedChanged += chkSplitViewerPanels_CheckedChanged;
             // 
@@ -820,6 +822,18 @@ namespace CrashEdit.CE
             chkPatchGOOLC3toC2.UseVisualStyleBackColor = true;
             chkPatchGOOLC3toC2.CheckedChanged += chkPatchGOOLC3toC2_CheckedChanged;
             chkPatchGOOLC3toC2.Click += chkPatchGOOLC3toC2_Click;
+            // 
+            // chkEnableLegacyEntityBox
+            // 
+            chkEnableLegacyEntityBox.AutoSize = true;
+            chkEnableLegacyEntityBox.Location = new Point(7, 81);
+            chkEnableLegacyEntityBox.Margin = new Padding(4, 3, 4, 3);
+            chkEnableLegacyEntityBox.Name = "chkEnableLegacyEntityBox";
+            chkEnableLegacyEntityBox.Size = new Size(165, 19);
+            chkEnableLegacyEntityBox.TabIndex = 19;
+            chkEnableLegacyEntityBox.Text = "Enable legacy entity editor";
+            chkEnableLegacyEntityBox.UseVisualStyleBackColor = true;
+            chkEnableLegacyEntityBox.CheckedChanged += chkEnableLegacyEntityBox_CheckedChanged;
             // 
             // ConfigEditor
             // 
@@ -926,5 +940,6 @@ namespace CrashEdit.CE
         private DarkGroupBox darkGroupBox2;
         private DarkGroupBox darkGroupBox1;
         private DarkGroupBox darkGroupBox3;
+        private CheckBox chkEnableLegacyEntityBox;
     }
 }

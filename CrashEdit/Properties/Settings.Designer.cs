@@ -398,12 +398,12 @@ namespace CrashEdit.CE.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool SplitViewerPanels {
+        public bool SplitAnimViewerPanels {
             get {
-                return ((bool)(this["SplitViewerPanels"]));
+                return ((bool)(this["SplitAnimViewerPanels"]));
             }
             set {
-                this["SplitViewerPanels"] = value;
+                this["SplitAnimViewerPanels"] = value;
             }
         }
         
@@ -416,6 +416,18 @@ namespace CrashEdit.CE.Properties {
             }
             set {
                 this["AlignedMovement"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool EnableLegacyEntityBox {
+            get {
+                return ((bool)(this["EnableLegacyEntityBox"]));
+            }
+            set {
+                this["EnableLegacyEntityBox"] = value;
             }
         }
     }
