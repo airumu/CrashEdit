@@ -133,8 +133,8 @@ namespace CrashEdit.Crash
 
         public bool IsOldVersion { get; }
         public int VBSize { get; set; }
-        public byte Volume { get; }
-        public byte Panning { get; }
+        public byte Volume { get; set; }
+        public byte Panning { get; set; }
         public byte Attribute1 { get; }
         public byte Attribute2 { get; }
         public IDictionary<int, VHProgram> Programs => programs;

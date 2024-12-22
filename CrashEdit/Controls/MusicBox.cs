@@ -8,56 +8,63 @@ namespace CrashEdit.CE
         private MusicEntryController controller;
         private MusicEntry musicentry;
 
-        private TableLayoutPanel pnOptions;
+        private TableLayoutPanel pnMain;
+        private TableLayoutPanel pnSub1;
+        private TableLayoutPanel pnSub2;
+        private ListView lstMusic;
         private DarkTextBox txtMusic;
-        private ListView listView1;
         private Label lblEIDError;
+        private Label lblMasterVolume;
+        private DarkNumericUpDown numMasterVolume;
+        private Label lblMasterPan;
+        private DarkNumericUpDown numMasterPan;
+
         public MusicBox(MusicEntryController controller)
         {
             this.controller = controller;
             musicentry = controller.MusicEntry;
 
-            listView1 = new ListView()
+            lstMusic = new ListView()
             {
                 View = View.Details,
                 Size = new Size(120, 200),
-                FullRowSelect = true,
+                FullRowSelect = true
             };
-            listView1.Click += listView1_Click;
-            listView1.Columns.Add("Item");
-            listView1.Columns.Add("EID");
+            lstMusic.Click += lstMusic_Click;
+            lstMusic.Columns.Add("Item");
+            lstMusic.Columns.Add("EID");
 
             ListViewItem newitem = new ListViewItem("VH");
             newitem.SubItems.Add(Entry.EIDToEName(musicentry.VHEID));
-            listView1.Items.Add(newitem);
-            newitem = new ListViewItem("VB 0");
+            lstMusic.Items.Add(newitem);
+            newitem = new ListViewItem("VB [0]");
             newitem.SubItems.Add(Entry.EIDToEName(musicentry.VB0EID));
-            listView1.Items.Add(newitem);
-            newitem = new ListViewItem("VB 1");
+            lstMusic.Items.Add(newitem);
+            newitem = new ListViewItem("VB [1]");
             newitem.SubItems.Add(Entry.EIDToEName(musicentry.VB1EID));
-            listView1.Items.Add(newitem);
-            newitem = new ListViewItem("VB 2");
+            lstMusic.Items.Add(newitem);
+            newitem = new ListViewItem("VB [2]");
             newitem.SubItems.Add(Entry.EIDToEName(musicentry.VB2EID));
-            listView1.Items.Add(newitem);
-            newitem = new ListViewItem("VB 3");
+            lstMusic.Items.Add(newitem);
+            newitem = new ListViewItem("VB [3]");
             newitem.SubItems.Add(Entry.EIDToEName(musicentry.VB3EID));
-            listView1.Items.Add(newitem);
-            newitem = new ListViewItem("VB 4");
+            lstMusic.Items.Add(newitem);
+            newitem = new ListViewItem("VB [4]");
             newitem.SubItems.Add(Entry.EIDToEName(musicentry.VB4EID));
-            listView1.Items.Add(newitem);
-            newitem = new ListViewItem("VB 5");
+            lstMusic.Items.Add(newitem);
+            newitem = new ListViewItem("VB [5]");
             newitem.SubItems.Add(Entry.EIDToEName(musicentry.VB5EID));
-            listView1.Items.Add(newitem);
-            newitem = new ListViewItem("VB 6");
+            lstMusic.Items.Add(newitem);
+            newitem = new ListViewItem("VB [6]");
             newitem.SubItems.Add(Entry.EIDToEName(musicentry.VB6EID));
-            listView1.Items.Add(newitem);
+            lstMusic.Items.Add(newitem);
 
-            //foreach (ColumnHeader column in listView1.Columns)
+            //foreach (ColumnHeader column in lstMusic.Columns)
             //{
             //    column.Width = -2;
             //}
-            listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-            listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+            lstMusic.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            lstMusic.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
 
             txtMusic = new DarkTextBox()
             {
@@ -74,35 +81,74 @@ namespace CrashEdit.CE
                 ForeColor = Color.Red
             };
 
-            pnOptions = new TableLayoutPanel()
+            if (musicentry.VH != null)
+            {
+                lblMasterVolume = new Label()
+                {
+                    Text = "Master Volume"
+                };
+                numMasterVolume = new DarkNumericUpDown()
+                {
+                    Value = musicentry.VH.Volume,
+                    Maximum = 127
+                };
+                numMasterVolume.ValueChanged += (sender, e) =>
+                {
+                    musicentry.VH.Volume = (byte)numMasterVolume.Value;
+                };
+
+                lblMasterPan = new Label()
+                {
+                    Text = "Master Pan"
+                };
+                numMasterPan = new DarkNumericUpDown()
+                {
+                    Value = musicentry.VH.Panning,
+                    Maximum = 127
+                };
+                numMasterPan.ValueChanged += (sender, e) =>
+                {
+                    musicentry.VH.Panning = (byte)numMasterPan.Value;
+                };
+            }
+
+            pnMain = new TableLayoutPanel()
+            {
+                ColumnCount = 2,
+                RowCount = 1,
+                Dock = DockStyle.Fill
+            };
+            pnSub1 = new TableLayoutPanel()
             {
                 ColumnCount = 1,
                 RowCount = 3,
-                Dock = DockStyle.Fill,
-   
+                Dock = DockStyle.Fill
             };
-            pnOptions.Controls.Add(listView1, 0, 0);
-            pnOptions.Controls.Add(txtMusic, 0, 1);
-            pnOptions.Controls.Add(lblEIDError, 0, 2);
-            Controls.Add(pnOptions);
+            pnSub2 = new TableLayoutPanel()
+            {
+                ColumnCount = 1,
+                RowCount = 4,
+                Dock = DockStyle.Fill
+            };
+            pnSub1.Controls.Add(lstMusic, 0, 0);
+            pnSub1.Controls.Add(txtMusic, 0, 1);
+            pnSub1.Controls.Add(lblEIDError, 0, 2);
+            if (musicentry.VH != null)
+            {
+                pnSub2.Controls.Add(lblMasterVolume, 0, 0);
+                pnSub2.Controls.Add(numMasterVolume, 0, 1);
+                pnSub2.Controls.Add(lblMasterPan, 0, 2);
+                pnSub2.Controls.Add(numMasterPan, 0, 3);
+            }
+            pnMain.Controls.Add(pnSub1);
+            pnMain.Controls.Add(pnSub2);
+            Controls.Add(pnMain);
         }
-
-        private void listView1_Click(object sender, EventArgs e)
-        {
-            txtMusic.Enabled = true;
-            txtMusic.Text = listView1.SelectedItems[0].SubItems[1].Text;
-        }
-
-        private void txtMusic_TextChanged(object sender, EventArgs e)
-        {
-            lblEIDError.Text = Entry.CheckEIDErrors(txtMusic.Text, true);
-        }
-
         private void UpdateEID()
         {
             if (lblEIDError.Text != string.Empty) return;
-            var idx = listView1.SelectedIndices[0];
-            listView1.SelectedItems[0].SubItems[1].Text = txtMusic.Text;
+            var idx = lstMusic.SelectedIndices[0];
+            lstMusic.SelectedItems[0].SubItems[1].Text = txtMusic.Text;
             if (idx == 0) musicentry.VHEID = Entry.ENameToEID(txtMusic.Text);
             else if (idx == 1) musicentry.VB0EID = Entry.ENameToEID(txtMusic.Text);
             else if (idx == 2) musicentry.VB1EID = Entry.ENameToEID(txtMusic.Text);
@@ -113,13 +159,24 @@ namespace CrashEdit.CE
             else if (idx == 7) musicentry.VB6EID = Entry.ENameToEID(txtMusic.Text);
         }
 
-        private void txtMusic_KeyDown(object sender, KeyEventArgs e)
+        private void lstMusic_Click(object? sender, EventArgs e)
+        {
+            txtMusic.Enabled = true;
+            txtMusic.Text = lstMusic.SelectedItems[0].SubItems[1].Text;
+        }
+
+        private void txtMusic_TextChanged(object? sender, EventArgs e)
+        {
+            lblEIDError.Text = Entry.CheckEIDErrors(txtMusic.Text, true);
+        }
+
+        private void txtMusic_KeyDown(object? sender, KeyEventArgs e)
         {
             if (e.KeyData == Keys.Enter)
                 UpdateEID();
         }
 
-        private void txtMusic_LostFocus(object sender, EventArgs e)
+        private void txtMusic_LostFocus(object? sender, EventArgs e)
         {
             UpdateEID();
         }
