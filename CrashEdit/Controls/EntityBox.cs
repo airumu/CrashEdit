@@ -720,19 +720,21 @@ namespace CrashEdit.CE
 
             if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
             {
-                List<string> list = Clipboard.GetText().Split('\n').ToList();
-                foreach (string line in list)
+                using (StringReader reader = new StringReader(Clipboard.GetText()))
                 {
-                    if (lbVictimID.Items.Count >= 1023) break;
-                    var stripped = Regex.Replace(line, "[^0-9]", "");
-                    if (stripped.Length > 0)
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
                     {
-                        short victimid = Convert.ToInt16(stripped);
-                        entity.Victims.Add(new(victimid));
-                        lbVictimID.Items.Add(victimid);
+                        if (lbVictimID.Items.Count >= 1023) break;
+                        var stripped = Regex.Replace(line, "[^0-9]", "");
+                        if (stripped.Length > 0)
+                        {
+                            short victimid = Convert.ToInt16(stripped);
+                            entity.Victims.Add(new(victimid));
+                            lbVictimID.Items.Add(victimid);
+                        }
                     }
-                };
-
+                }
                 if (lbVictimID.SelectedIndex == -1)
                     lbVictimID.SelectedIndex = 0;
                 UpdateVictim();
@@ -951,17 +953,19 @@ namespace CrashEdit.CE
 
             if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
             {
-                List<string> list = Clipboard.GetText().Split('\n').ToList();
-                foreach (string line in list)
+                using (StringReader reader = new StringReader(Clipboard.GetText()))
                 {
-                    if (entity.LoadListA.Rows[loadlistarowindex].Values.Count >= 1023) break;
-                    if (CheckEname(line).Length > 0)
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
                     {
-                        entity.LoadListA.Rows[loadlistarowindex].Values.Add(Entry.ENameToEID(line));
-                        lbEIDA.Items.Add(line);
+                        if (entity.LoadListA.Rows[loadlistarowindex].Values.Count >= 1023) break;
+                        if (CheckEname(line).Length > 0)
+                        {
+                            entity.LoadListA.Rows[loadlistarowindex].Values.Add(Entry.ENameToEID(line));
+                            lbEIDA.Items.Add(line);
+                        }
                     }
-                };
-
+                }
                 if (lbEIDA.SelectedIndex == -1)
                     lbEIDA.SelectedIndex = 0;
                 UpdateLoadListA();
@@ -1226,17 +1230,19 @@ namespace CrashEdit.CE
 
             if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
             {
-                List<string> list = Clipboard.GetText().Split('\n').ToList();
-                foreach (string line in list)
+                using (StringReader reader = new StringReader(Clipboard.GetText()))
                 {
-                    if (entity.LoadListB.Rows[loadlistbrowindex].Values.Count >= 1023) break;
-                    if (CheckEname(line).Length > 0)
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
                     {
-                        entity.LoadListB.Rows[loadlistbrowindex].Values.Add(Entry.ENameToEID(line));
-                        lbEIDB.Items.Add(line);
+                        if (entity.LoadListB.Rows[loadlistbrowindex].Values.Count >= 1023) break;
+                        if (CheckEname(line).Length > 0)
+                        {
+                            entity.LoadListB.Rows[loadlistbrowindex].Values.Add(Entry.ENameToEID(line));
+                            lbEIDB.Items.Add(line);
+                        }
                     }
-                };
-
+                }
                 if (lbEIDB.SelectedIndex == -1)
                     lbEIDB.SelectedIndex = 0;
                 UpdateLoadListB();
@@ -1520,23 +1526,25 @@ namespace CrashEdit.CE
 
             if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
             {
-                List<string> list = Clipboard.GetText().Split('\n').ToList();
-                foreach (string line in list)
+                using (StringReader reader = new StringReader(Clipboard.GetText()))
                 {
-                    if (entity.DrawListA.Rows[drawlistarowindex].Values.Count >= 1023) break;
-                    var stripped = Regex.Replace(line, "[^0-9]", "");
-                    if (stripped.Length > 0)
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
                     {
-                        int id = GetEntityID(Convert.ToInt16(stripped));
-                        if (id > 0)
+                        if (entity.DrawListA.Rows[drawlistarowindex].Values.Count >= 1023) break;
+                        var stripped = Regex.Replace(line, "[^0-9]", "");
+                        if (stripped.Length > 0)
                         {
-                            drawlistaentityindex = entity.DrawListA.Rows[drawlistarowindex].Values.Count;
-                            entity.DrawListA.Rows[drawlistarowindex].Values.Add(id);
-                            lbEntityA.Items.Add(id >> 8 & 0xFFFF);
+                            int id = GetEntityID(Convert.ToInt16(stripped));
+                            if (id > 0)
+                            {
+                                drawlistaentityindex = entity.DrawListA.Rows[drawlistarowindex].Values.Count;
+                                entity.DrawListA.Rows[drawlistarowindex].Values.Add(id);
+                                lbEntityA.Items.Add(id >> 8 & 0xFFFF);
+                            }
                         }
                     }
-                };
-
+                }
                 if (lbEntityA.SelectedIndex == -1)
                     lbEntityA.SelectedIndex = 0;
                 UpdateDrawListA();
@@ -1790,23 +1798,25 @@ namespace CrashEdit.CE
 
             if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
             {
-                List<string> list = Clipboard.GetText().Split('\n').ToList();
-                foreach (string line in list)
+                using (StringReader reader = new StringReader(Clipboard.GetText()))
                 {
-                    if (entity.DrawListB.Rows[drawlistbrowindex].Values.Count >= 1023) break;
-                    var stripped = Regex.Replace(line, "[^0-9]", "");
-                    if (stripped.Length > 0)
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
                     {
-                        int id = GetEntityID(Convert.ToInt16(stripped));
-                        if (id > 0)
+                        if (entity.DrawListB.Rows[drawlistbrowindex].Values.Count >= 1023) break;
+                        var stripped = Regex.Replace(line, "[^0-9]", "");
+                        if (stripped.Length > 0)
                         {
-                            drawlistbentityindex = entity.DrawListB.Rows[drawlistbrowindex].Values.Count;
-                            entity.DrawListB.Rows[drawlistbrowindex].Values.Add(id);
-                            lbEntityB.Items.Add(id >> 8 & 0xFFFF);
+                            int id = GetEntityID(Convert.ToInt16(stripped));
+                            if (id > 0)
+                            {
+                                drawlistbentityindex = entity.DrawListB.Rows[drawlistbrowindex].Values.Count;
+                                entity.DrawListB.Rows[drawlistbrowindex].Values.Add(id);
+                                lbEntityB.Items.Add(id >> 8 & 0xFFFF);
+                            }
                         }
                     }
-                };
-
+                }
                 if (lbEntityB.SelectedIndex == -1)
                     lbEntityB.SelectedIndex = 0;
                 UpdateDrawListB();
