@@ -18,13 +18,11 @@ namespace CrashEdit.CE
         private ToolStripButton tbbPatchNSD;
         private ToolStripButton tbbClose;
         private ToolStripMenuItem tbxMakeBIN;
-        private ToolStripMenuItem tbxMakeBINUSA;
-        private ToolStripMenuItem tbxMakeBINEUR;
-        private ToolStripMenuItem tbxMakeBINJAP;
         private ToolStripMenuItem tbxConvertVHVB;
         private ToolStripMenuItem tbxConvertVAB;
         private ToolStripMenuItem tbbExtra;
         private ToolStripButton tbbPlay;
+        private ToolStripButton tbbBIN;
         private TabControl tbcTabs;
         private GameVersionForm dlgGameVersion;
         private ToolStripButton tbbPAL;
@@ -38,6 +36,8 @@ namespace CrashEdit.CE
         public static bool PAL { get; private set; } = Settings.Default.ModePAL;
         private const int RateNTSC = 30;
         private const int RatePAL = 25;
+
+        private MakeBin frmmakebin = null;
 
         public OldMainForm()
         {
@@ -82,18 +82,6 @@ namespace CrashEdit.CE
             tbxMakeBIN.Text = Resources.OldMainForm_tbxMakeBIN;
             tbxMakeBIN.Click += new EventHandler(tbxMakeBIN_Click);
 
-            tbxMakeBINUSA = new ToolStripMenuItem();
-            tbxMakeBINUSA.Text = Resources.OldMainForm_tbxMakeBINUSA;
-            tbxMakeBINUSA.Click += new EventHandler(tbxMakeBIN_Click);
-
-            tbxMakeBINEUR = new ToolStripMenuItem();
-            tbxMakeBINEUR.Text = Resources.OldMainForm_tbxMakeBINEUR;
-            tbxMakeBINEUR.Click += new EventHandler(tbxMakeBIN_Click);
-
-            tbxMakeBINJAP = new ToolStripMenuItem();
-            tbxMakeBINJAP.Text = Resources.OldMainForm_tbxMakeBINJAP;
-            tbxMakeBINJAP.Click += new EventHandler(tbxMakeBIN_Click);
-
             tbxConvertVHVB = new ToolStripMenuItem();
             tbxConvertVHVB.Text = Resources.OldMainForm_tbxConvertVHVB;
             tbxConvertVHVB.Click += new EventHandler(tbxConvertVHVB_Click);
@@ -105,9 +93,6 @@ namespace CrashEdit.CE
             tbbExtra = new ToolStripMenuItem();
             tbbExtra.Text = Resources.OldMainForm_tbbExtra;
             tbbExtra.DropDown.Items.Add(tbxMakeBIN);
-            tbbExtra.DropDown.Items.Add(tbxMakeBINUSA);
-            tbbExtra.DropDown.Items.Add(tbxMakeBINEUR);
-            tbbExtra.DropDown.Items.Add(tbxMakeBINJAP);
             tbbExtra.DropDown.Items.Add("-");
             tbbExtra.DropDown.Items.Add(tbxConvertVHVB);
             tbbExtra.DropDown.Items.Add(tbxConvertVAB);
@@ -129,6 +114,14 @@ namespace CrashEdit.CE
             };
             tbbPlay.Click += new EventHandler(tbbPlay_Click);
 
+            tbbBIN = new ToolStripButton
+            {
+                Text = "BIN",
+                ToolTipText = Resources.Toolbar_BIN,
+                TextImageRelation = TextImageRelation.ImageAboveText
+            };
+            tbbBIN.Click += new EventHandler(tbbBIN_Click);
+
             ToolStrip.Items.Insert(0, tbbOpen);
             ToolStrip.Items.Insert(1, tbbSave);
             ToolStrip.Items.Insert(2, new ToolStripSeparator());
@@ -138,7 +131,8 @@ namespace CrashEdit.CE
             ToolStrip.Items.Insert(6, new ToolStripSeparator());
             ToolStrip.Items.Insert(7, tbbPAL);
             ToolStrip.Items.Insert(8, tbbPlay);
-            ToolStrip.Items.Insert(9, new ToolStripSeparator());
+            ToolStrip.Items.Insert(9, tbbBIN);
+            ToolStrip.Items.Insert(10, new ToolStripSeparator());
             MenuStrip.Items.Add(tbbExtra);
 
             tbcTabs = TabControl;
@@ -339,7 +333,14 @@ namespace CrashEdit.CE
 
             Task.Run(() =>
             {
-                ExternalTool.Invoke("pcsx-hdbg", $"gamefile=\"{binPath}\" bootlevel={levelID} region={regionStr}");
+                try
+                {
+                    ExternalTool.Invoke("pcsx-hdbg", $"gamefile=\"{binPath}\" bootlevel={levelID} region={regionStr}");
+                }
+                catch (FileNotFoundException)
+                {
+                    DarkMessageBox.ShowError(Resources.Playtest_Error5, Resources.Playtest_Title);
+                }
                 Directory.Delete(basePath, true);
             });
         }
@@ -748,18 +749,6 @@ namespace CrashEdit.CE
             }
         }
 
-        void AddDirectoryToISO(CDBuilder fs, string prefix, DirectoryInfo dir)
-        {
-            foreach (DirectoryInfo subdir in dir.GetDirectories())
-            {
-                AddDirectoryToISO(fs, $"{prefix}{subdir.Name}\\", subdir);
-            }
-            foreach (FileInfo file in dir.GetFiles())
-            {
-                fs.AddFile($"{prefix}{file.Name};1", file.FullName);
-            }
-        }
-
         private void bgwMakeBIN_DoWork(object sender, DoWorkEventArgs e)
         {
             object[] args = (object[])e.Argument;
@@ -794,105 +783,26 @@ namespace CrashEdit.CE
             }
         }
 
+        void tbbBIN_Click(object sender, EventArgs e)
+        {
+            if (frmmakebin == null || frmmakebin.IsDisposed)
+                frmmakebin = new MakeBin(this, true);
+
+            if (!frmmakebin.Visible)
+                frmmakebin.Show();
+            else
+                frmmakebin.Activate();
+        }
+
         void tbxMakeBIN_Click(object sender, EventArgs e)
         {
+            if (frmmakebin == null || frmmakebin.IsDisposed)
+                frmmakebin = new MakeBin(this, false);
 
-            if (dlgMakeBINDir.ShowDialog(this) != DialogResult.OK)
-                return;
-
-            string cnffile = Path.Combine(dlgMakeBINDir.SelectedPath, "SYSTEM.CNF");
-            string exefile = Path.Combine(dlgMakeBINDir.SelectedPath, "PSX.EXE");
-
-            if (!File.Exists(cnffile) && !File.Exists(exefile))
-            {
-                if (DarkMessageBox.ShowWarning(Resources.MakeBIN_NoSystemFiles, Resources.MakeBIN_Title, DarkDialogButton.YesNo) != DialogResult.Yes)
-                    return;
-            }
-
-            if (dlgMakeBINFile.ShowDialog(this) != DialogResult.OK)
-                return;
-
-            var fs = new CDBuilder();
-            AddDirectoryToISO(fs, "", new DirectoryInfo(dlgMakeBINDir.SelectedPath));
-
-            MakeBinWithProgressBar(fs, dlgMakeBINFile.FileName);
-
-            var log = new StringBuilder();
-            log.AppendLine(Resources.MakeBIN_NoRegOK);
-            log.AppendLine();
-
-            string cueFilename = Path.ChangeExtension(dlgMakeBINFile.FileName, ".cue");
-            if (!File.Exists(cueFilename))
-            {
-                try
-                {
-                    using (var cue = new StreamWriter(cueFilename))
-                    {
-                        cue.WriteLine($"FILE \"{Path.GetFileName(dlgMakeBINFile.FileName)}\" BINARY");
-                        cue.WriteLine("  TRACK 01 MODE2/2352");
-                        cue.WriteLine("    INDEX 01 00:00:00");
-                    }
-                    log.AppendLine(Resources.MakeBIN_CueSuccess);
-                    log.AppendLine();
-                }
-                catch (IOException ex)
-                {
-                    log.AppendLine(string.Format(Resources.MakeBIN_CueFail, ex));
-                    log.AppendLine();
-                }
-            }
+            if (!frmmakebin.Visible)
+                frmmakebin.Show();
             else
-            {
-                log.AppendLine(Resources.MakeBIN_CueExists);
-                log.AppendLine();
-            }
-
-            string imprintOpt;
-            if (sender == tbxMakeBINUSA)
-            {
-                imprintOpt = ":cdxa-imprint --psx-scea";
-            }
-            else if (sender == tbxMakeBINEUR)
-            {
-                imprintOpt = ":cdxa-imprint --psx-scee";
-            }
-            else if (sender == tbxMakeBINJAP)
-            {
-                imprintOpt = ":cdxa-imprint --psx-scei";
-            }
-            else
-            {
-                log.Append(Resources.Done);
-                DarkMessageBox.ShowMessage(log.ToString(), Resources.MakeBIN_Title);
-                return;
-            }
-
-            log.AppendLine(Resources.MakeBIN_DRNSF_Launch);
-            try
-            {
-                if (ExternalTool.Invoke("drnsf", $"{imprintOpt} -- \"{dlgMakeBINFile.FileName}\"") != 0)
-                {
-                    log.AppendLine(Resources.MakeBIN_DRNSF_Error);
-                    log.AppendLine();
-                }
-                else
-                {
-                    log.AppendLine(Resources.MakeBIN_DRNSF_Success);
-                    log.AppendLine();
-                }
-            }
-            catch (FileNotFoundException)
-            {
-                log.AppendLine(Resources.MakeBIN_DRNSF_Unavailable);
-                log.AppendLine();
-            }
-            catch (Exception ex)
-            {
-                log.AppendLine(string.Format(Resources.MakeBIN_DRNSF_Fail, ex));
-                log.AppendLine();
-            }
-            log.Append(Resources.Done);
-            DarkMessageBox.ShowMessage(log.ToString(), Resources.MakeBIN_Title);
+                frmmakebin.Activate();
         }
 
         void tbxConvertVHVB_Click(object sender, EventArgs e)

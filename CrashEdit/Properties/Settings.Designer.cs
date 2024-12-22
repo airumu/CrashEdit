@@ -430,5 +430,41 @@ namespace CrashEdit.CE.Properties {
                 this["EnableLegacyEntityBox"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string MakeBinPath {
+            get {
+                return ((string)(this["MakeBinPath"]));
+            }
+            set {
+                this["MakeBinPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string MakeBinSavePath {
+            get {
+                return ((string)(this["MakeBinSavePath"]));
+            }
+            set {
+                this["MakeBinSavePath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int MakeBinRegion {
+            get {
+                return ((int)(this["MakeBinRegion"]));
+            }
+            set {
+                this["MakeBinRegion"] = value;
+            }
+        }
     }
 }

@@ -508,16 +508,7 @@
     <value>Convert VH+VB to DLS</value>
   </data>
   <data name="OldMainForm_tbxMakeBIN" xml:space="preserve">
-    <value>Make BIN (no region)</value>
-  </data>
-  <data name="OldMainForm_tbxMakeBINEUR" xml:space="preserve">
-    <value>Make BIN (PAL)</value>
-  </data>
-  <data name="OldMainForm_tbxMakeBINJAP" xml:space="preserve">
-    <value>Make BIN (NTSC-J)</value>
-  </data>
-  <data name="OldMainForm_tbxMakeBINUSA" xml:space="preserve">
-    <value>Make BIN (NTSC-U/C)</value>
+    <value>Make BIN settings</value>
   </data>
   <data name="TextureViewer_groupBox1" xml:space="preserve">
     <value>Color Mode</value>
@@ -834,5 +825,11 @@ as Meters: {3:F3}m</value>
   </data>
   <data name="Toolbar_Play" xml:space="preserve">
     <value>Play (F1)</value>
+  </data>
+  <data name="Toolbar_BIN" xml:space="preserve">
+    <value>Make BIN</value>
+  </data>
+  <data name="Playtest_Error5" xml:space="preserve">
+    <value>Could not find pcsx-hdbg exe. Please place this in the same directory as CrashEdit.</value>
   </data>
 </root>

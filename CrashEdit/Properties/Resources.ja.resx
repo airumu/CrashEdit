@@ -502,16 +502,7 @@
     <value>VH+VB を DLS に変換</value>
   </data>
   <data name="OldMainForm_tbxMakeBIN" xml:space="preserve">
-    <value>BIN の作成 (リージョンなし)</value>
-  </data>
-  <data name="OldMainForm_tbxMakeBINEUR" xml:space="preserve">
-    <value>BIN の作成 (PAL)</value>
-  </data>
-  <data name="OldMainForm_tbxMakeBINJAP" xml:space="preserve">
-    <value>BIN の作成 (NTSC-J)</value>
-  </data>
-  <data name="OldMainForm_tbxMakeBINUSA" xml:space="preserve">
-    <value>BIN の作成 (NTSC-U/C)</value>
+    <value>BIN の作成の設定</value>
   </data>
   <data name="TextureViewer_groupBox1" xml:space="preserve">
     <value>カラーモード</value>
@@ -647,5 +638,11 @@
   </data>
   <data name="Misc" xml:space="preserve">
     <value>雑</value>
+  </data>
+  <data name="Toolbar_Play" xml:space="preserve">
+    <value>Play (F1)</value>
+  </data>
+  <data name="Toolbar_BIN" xml:space="preserve">
+    <value>BINの作成</value>
   </data>
 </root>

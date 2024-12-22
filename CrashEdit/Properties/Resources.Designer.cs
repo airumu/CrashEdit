@@ -1497,38 +1497,11 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
-        ///   Make BIN (no region) に類似しているローカライズされた文字列を検索します。
+        ///   Make BIN settings に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string OldMainForm_tbxMakeBIN {
             get {
                 return ResourceManager.GetString("OldMainForm_tbxMakeBIN", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Make BIN (PAL) に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string OldMainForm_tbxMakeBINEUR {
-            get {
-                return ResourceManager.GetString("OldMainForm_tbxMakeBINEUR", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Make BIN (NTSC-J) に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string OldMainForm_tbxMakeBINJAP {
-            get {
-                return ResourceManager.GetString("OldMainForm_tbxMakeBINJAP", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Make BIN (NTSC-U/C) に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string OldMainForm_tbxMakeBINUSA {
-            get {
-                return ResourceManager.GetString("OldMainForm_tbxMakeBINUSA", resourceCulture);
             }
         }
         
@@ -1628,6 +1601,15 @@ namespace CrashEdit.CE.Properties {
         internal static string Playtest_Error4 {
             get {
                 return ResourceManager.GetString("Playtest_Error4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Could not find pcsx-hdbg exe. Please place this in the same directory as CrashEdit. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Playtest_Error5 {
+            get {
+                return ResourceManager.GetString("Playtest_Error5", resourceCulture);
             }
         }
         
@@ -1808,6 +1790,15 @@ namespace CrashEdit.CE.Properties {
         internal static string TextureViewer_groupBox5 {
             get {
                 return ResourceManager.GetString("TextureViewer_groupBox5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Make BIN に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Toolbar_BIN {
+            get {
+                return ResourceManager.GetString("Toolbar_BIN", resourceCulture);
             }
         }
         
