@@ -2,6 +2,7 @@ using CrashEdit.Crash;
 using System.Drawing;
 using System.Reflection.Metadata;
 using System.Security.Cryptography;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -112,11 +113,10 @@ namespace CrashEdit
         // The address of the currently selected byte.
         public long ByteCursorAddress => FirstByteAddress + ByteCursor;
 
-        // Selected byte for right click
+        // Selected byte set by right-clicking.
         public int ByteSelectedCursor { get; private set; }
 
-        public bool HoldShift { get; private set; }
-
+        // Used to move the cursor to the selected byte.
         private int TargetPosition { get; set; }
 
         // The data on which the HexView operates. The memory must remain valid until replaced
@@ -302,13 +302,12 @@ namespace CrashEdit
                 {
                     case Keys.C:
                         // Copy EID
-                        CopyEID(ByteCursorColumn, ByteCursorRow);
+                        CopyEID(false);
                         break;
 
                     case Keys.X:
                         // Cut EID
-                        CopyEID(ByteCursorColumn, ByteCursorRow);
-                        InputZero(4);
+                        CopyEID(true);
                         break;
 
                     case Keys.V:
@@ -322,8 +321,6 @@ namespace CrashEdit
                         break;
                 }
             }
-            else if (e.Shift)
-                HoldShift = true;
             else
             {
                 switch (e.KeyCode)
@@ -430,12 +427,6 @@ namespace CrashEdit
          
         }
 
-        protected override void OnKeyUp(KeyEventArgs e)
-        {
-            if (e.Shift)
-                HoldShift = false;
-        }
-
         private static Brush brush_borderBrush = new SolidBrush(Color.FromArgb(36, 36, 40));
         private static Brush brush_borderWordBrush = new SolidBrush(Color.FromArgb(40, 40, 44));
         private static Brush brush_bgNormalBrush = new SolidBrush(Color.FromArgb(31, 31, 32));
@@ -443,7 +434,7 @@ namespace CrashEdit
         private static Brush brush_bgSelectedBrush = new SolidBrush(Color.FromArgb(35, 35, 38));
         private static Brush brush_bgChunkBrush = new SolidBrush(Color.FromArgb(38, 75, 104));
         private static Brush brush_bgSelectedChunkBrush = new SolidBrush(Color.FromArgb(41, 91, 132));
-        private static Brush brush_bgSelectedrowBrush = new SolidBrush(Color.FromArgb(38, 59, 76));
+        private static Brush brush_bgSelectedrowBrush = new SolidBrush(Color.FromArgb(28, 43, 56));
 
         // Border color drawn around cells.
         private static Brush _borderBrush = brush_borderBrush;
@@ -526,6 +517,11 @@ namespace CrashEdit
             );
         }
 
+        private void SetSelectedCursorl()
+        {
+            ByteSelectedCursor = ByteCursor;
+        }
+
         private void CheckPisition(MouseEventArgs e)
         {
             if (e.X - AutoScrollPosition.X < XStart)
@@ -557,7 +553,7 @@ namespace CrashEdit
             {
                 CheckPisition(e);
                 MoveTo(TargetPosition);
-                ByteSelectedCursor = ByteCursor;
+                SetSelectedCursorl();
                 Invalidate();
             }
             if (e.Button == MouseButtons.Right)
@@ -697,7 +693,12 @@ namespace CrashEdit
 
                     Brush fgBrush;
                     Brush bgBrush;
-                    if ((cellByte >= ByteCursor && cellByte <= ByteSelectedCursor) && ByteCursor != ByteSelectedCursor)
+                    if ((cellByte >= ByteSelectedCursor && cellByte <= ByteCursor) && ByteCursor != ByteSelectedCursor)
+                    {
+                        fgBrush = _fgSelectedBrush;
+                        bgBrush = showChunkName ? _bgSelectedChunkBrush : _bgSelectedrowBrush;
+                    }
+                    else if ((cellByte >= ByteCursor && cellByte <= ByteSelectedCursor) && ByteCursor != ByteSelectedCursor)
                     {
                         fgBrush = _fgSelectedBrush;
                         bgBrush = showChunkName ? _bgSelectedChunkBrush : _bgSelectedrowBrush;
@@ -928,12 +929,9 @@ namespace CrashEdit
             // If cursor is not word-aligned
             while (ByteCursor % 4 != 0)
                 MoveBy(-1);
-                //return false;
 
             if (_pendingInput != null)
-            {
                 _pendingInput = null;
-            }
 
             bool ok = DataChangeHandler(ByteCursor, 4, [Entry.NullEID & 0xFF, (Entry.NullEID >> 8) & 0xFF, (Entry.NullEID >> 16) & 0xFF, (Entry.NullEID >> 24) & 0xFF]);
             if (ok)
@@ -944,6 +942,8 @@ namespace CrashEdit
                 MoveBy(1);
             }
 
+            SetSelectedCursorl();
+            Invalidate();
             return true;
         }
 
@@ -975,39 +975,59 @@ namespace CrashEdit
                 InputNybble(0);
             }
 
+            SetSelectedCursorl();
+            Invalidate();
             return true;
         }
 
-        public void CopyEID(int col, int row)
+        public bool CopyEID(bool cut)
         {
+            int start = ByteCursor, end;
+            if (ByteCursor <= ByteSelectedCursor)
+            {
+                end = ByteSelectedCursor;
+            }
+            else
+            {
+                end = ByteCursor;
+                ByteCursor = ByteSelectedCursor;
+            }
+
             while (ByteCursor % 4 != 0)
                 MoveBy(-1);
 
-            string list = string.Empty;
-            while (ByteCursor <= ByteSelectedCursor)
+            if (_pendingInput != null)
+                _pendingInput = null;
+
+            int col = ByteCursorColumn, row = ByteCursorRow;
+
+            StringBuilder sb = new StringBuilder();
+            for (var i = ByteCursor; i <= end; i += 4)
             {
                 var data = Data.Span;
                 int cellByte = row * ColumnCount - FirstByteColumn + col;
                 int cellByteChunkNameOfs = cellByte % 4;
                 string eid = Entry.EIDToEName(BitConv.FromInt32(data, cellByte - cellByteChunkNameOfs));
-                list += eid + "\n";
-                MoveBy(1);
-                MoveBy(1);
-                MoveBy(1);
-                MoveBy(1);
+                sb.Append(eid + Environment.NewLine);
+                if (cut)
+                    InputZero(4);
                 col += 4;
             }
-            if (list.Length > 0)
-                Clipboard.SetText(list);
+            if (sb.Length > 0)
+                Clipboard.SetText(sb.ToString());
+
+            if (!cut)
+                ByteCursor = start;
+            SetSelectedCursorl();
+            Invalidate();
+            return true;
         }
 
         public bool PasteEID()
         {
-            // If edits are not allowed, fail now.
             if (DataChangeHandler == null)
                 return false;
 
-            // If cursor is not word-aligned
             while (ByteCursor % 4 != 0)
                 MoveBy(-1);
 
@@ -1016,35 +1036,34 @@ namespace CrashEdit
 
             // Check if the pasted name is valid
             //string[] lines = Clipboard.GetText().Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
-            using (StringReader reader = new StringReader(Clipboard.GetText()))
+            StringReader sr = new StringReader(Clipboard.GetText());
+            string line;
+            while ((line = sr.ReadLine()) != null)
             {
-                string line;
-                while ((line = reader.ReadLine()) != null)
+                if (CheckEname(line).Length > 0)
                 {
-                    if (CheckEname(line).Length > 0)
+                    // todo something nicer maybe
+                    int eid = Entry.ENameToEID(line);
+                    if (eid == 1) eid = 0;
+                    int temp = 0;
+                    for (int i = 0; i < 8; i++)
                     {
-                        // todo something nicer maybe
-                        int eid = Entry.ENameToEID(line);
-                        if (eid == 1) eid = 0;
-                        int temp = 0;
-                        for (int i = 0; i < 8; i++)
+                        if (i % 2 == 0)
                         {
-                            if (i % 2 == 0)
-                            {
-                                temp = eid & 0xF;
-                                eid >>= 4;
-                                InputNybble(eid & 0xF);
-                            }
-                            else
-                            {
-                                InputNybble(temp);
-                                eid >>= 4;
-                            }
+                            temp = eid & 0xF;
+                            eid >>= 4;
+                            InputNybble(eid & 0xF);
+                        }
+                        else
+                        {
+                            InputNybble(temp);
+                            eid >>= 4;
                         }
                     }
                 }
             }
-
+            SetSelectedCursorl();
+            Invalidate();
             return true;
         }
 
