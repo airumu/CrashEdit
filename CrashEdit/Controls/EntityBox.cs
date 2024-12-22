@@ -75,27 +75,14 @@ namespace CrashEdit.CE
                 }
                 else
                 {
-                    if (Settings.Default.EnableC2TTEditor)
-                    {
-                        fraC2TTSet.Visible = true;
-                        fraC2TTSet.Location = new Point(245, 146);
-                        fraZMod.Location = new Point(384, 146);
-                        UpdateC2TTType();
-                        UpdateC2TTYRot();
-                        UpdateC2TTBoxFlag();
-                        UpdateC2TTGhostTarget();
-                    }
-                    else
-                    {
-                        fraC2TTSet.Visible = false;
-                        fraC2TTSet.Location = new Point(245, 146);
-                        fraZMod.Location = new Point(245, 146);
-                    }
+                    UpdateC2TTSets();
                     tbcTabs.Controls.Remove(tabCamera);
                     tbcTabs.Controls.Remove(tabLoadLists);
                     tbcTabs.Controls.Remove(tabDrawLists);
                 }
             }
+            else
+                UpdateC2TTSets();
 
             positionindex = 0;
             victimindex = 0;
@@ -2517,6 +2504,26 @@ namespace CrashEdit.CE
         }
 
         // added
+        private void UpdateC2TTSets()
+        {
+            if (Settings.Default.EnableC2TTEditor)
+            {
+                fraC2TTSet.Visible = true;
+                fraC2TTSet.Location = new Point(245, 146);
+                fraZMod.Location = new Point(384, 146);
+                UpdateC2TTType();
+                UpdateC2TTYRot();
+                UpdateC2TTBoxFlag();
+                UpdateC2TTGhostTarget();
+            }
+            else
+            {
+                fraC2TTSet.Visible = false;
+                fraC2TTSet.Location = new Point(245, 146);
+                fraZMod.Location = new Point(245, 146);
+            }
+        }
+
         private void UpdateC2TTType()
         {
             if (entity.C2TTType.HasValue)
