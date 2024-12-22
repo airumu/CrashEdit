@@ -1,5 +1,8 @@
 using CrashEdit.Crash;
 using System.Drawing;
+using System.Reflection.Metadata;
+using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace CrashEdit
@@ -108,6 +111,13 @@ namespace CrashEdit
 
         // The address of the currently selected byte.
         public long ByteCursorAddress => FirstByteAddress + ByteCursor;
+
+        // Selected byte for right click
+        public int ByteSelectedCursor { get; private set; }
+
+        public bool HoldShift { get; private set; }
+
+        private int TargetPosition { get; set; }
 
         // The data on which the HexView operates. The memory must remain valid until replaced
         // or until the control is disposed.
@@ -288,7 +298,7 @@ namespace CrashEdit
         {
             if (e.Control)
             {
-                switch (e.KeyCode) 
+                switch (e.KeyCode)
                 {
                     case Keys.C:
                         // Copy EID
@@ -312,6 +322,8 @@ namespace CrashEdit
                         break;
                 }
             }
+            else if (e.Shift)
+                HoldShift = true;
             else
             {
                 switch (e.KeyCode)
@@ -418,6 +430,12 @@ namespace CrashEdit
          
         }
 
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            if (e.Shift)
+                HoldShift = false;
+        }
+
         private static Brush brush_borderBrush = new SolidBrush(Color.FromArgb(36, 36, 40));
         private static Brush brush_borderWordBrush = new SolidBrush(Color.FromArgb(40, 40, 44));
         private static Brush brush_bgNormalBrush = new SolidBrush(Color.FromArgb(31, 31, 32));
@@ -425,6 +443,7 @@ namespace CrashEdit
         private static Brush brush_bgSelectedBrush = new SolidBrush(Color.FromArgb(35, 35, 38));
         private static Brush brush_bgChunkBrush = new SolidBrush(Color.FromArgb(38, 75, 104));
         private static Brush brush_bgSelectedChunkBrush = new SolidBrush(Color.FromArgb(41, 91, 132));
+        private static Brush brush_bgSelectedrowBrush = new SolidBrush(Color.FromArgb(38, 59, 76));
 
         // Border color drawn around cells.
         private static Brush _borderBrush = brush_borderBrush;
@@ -457,6 +476,9 @@ namespace CrashEdit
         private static Brush _fgChunkBrush = Brushes.GhostWhite;
         private static Brush _bgChunkBrush = brush_bgChunkBrush;
         private static Brush _bgSelectedChunkBrush = brush_bgSelectedChunkBrush;
+
+        // Color for selected cells.
+        private static Brush _bgSelectedrowBrush = brush_bgSelectedrowBrush;
 
         // Size of borders between and around cells, in pixels.
         private static int _borderSize = 2;
@@ -504,30 +526,45 @@ namespace CrashEdit
             );
         }
 
+        private void CheckPisition(MouseEventArgs e)
+        {
+            if (e.X - AutoScrollPosition.X < XStart)
+                return;
+            if (e.Y - AutoScrollPosition.Y < YStart)
+                return;
+
+            int col = (e.X - AutoScrollPosition.X - XStart) / XStep;
+            int row = (e.Y - AutoScrollPosition.Y - YStart) / YStep;
+
+            if (col < 0 || col >= ColumnCount)
+                return;
+            if (row < 0 || row >= RowCount)
+                return;
+
+            int target = row * ColumnCount + col - FirstByteColumn;
+            if (target < 0 || target > Data.Length)
+                return;
+
+            TargetPosition = target;
+            return;
+        }
+
         protected override void OnMouseClick(MouseEventArgs e)
         {
             base.OnMouseClick(e);
 
             if (e.Button == MouseButtons.Left)
             {
-                if (e.X - AutoScrollPosition.X < XStart)
-                    return;
-                if (e.Y - AutoScrollPosition.Y < YStart)
-                    return;
-
-                int col = (e.X - AutoScrollPosition.X - XStart) / XStep;
-                int row = (e.Y - AutoScrollPosition.Y - YStart) / YStep;
-
-                if (col < 0 || col >= ColumnCount)
-                    return;
-                if (row < 0 || row >= RowCount)
-                    return;
-
-                int target = row * ColumnCount + col - FirstByteColumn;
-                if (target < 0 || target > Data.Length)
-                    return;
-
-                MoveTo(target);
+                CheckPisition(e);
+                MoveTo(TargetPosition);
+                ByteSelectedCursor = ByteCursor;
+                Invalidate();
+            }
+            if (e.Button == MouseButtons.Right)
+            {
+                CheckPisition(e);
+                ByteSelectedCursor = TargetPosition;
+                Invalidate();
             }
         }
 
@@ -660,7 +697,12 @@ namespace CrashEdit
 
                     Brush fgBrush;
                     Brush bgBrush;
-                    if (cellByte == ByteCursor)
+                    if ((cellByte >= ByteCursor && cellByte <= ByteSelectedCursor) && ByteCursor != ByteSelectedCursor)
+                    {
+                        fgBrush = _fgSelectedBrush;
+                        bgBrush = showChunkName ? _bgSelectedChunkBrush : _bgSelectedrowBrush;
+                    }
+                    else if (cellByte == ByteCursor)
                     {
                         fgBrush = _fgSelectedBrush;
                         bgBrush = showChunkName ? _bgSelectedChunkBrush : _bgSelectedBrush;
@@ -938,11 +980,25 @@ namespace CrashEdit
 
         public void CopyEID(int col, int row)
         {
-            var data = Data.Span;
-            int cellByte = row * ColumnCount - FirstByteColumn + col;
-            int cellByteChunkNameOfs = cellByte % 4;
-            string eid = Entry.EIDToEName(BitConv.FromInt32(data, cellByte - cellByteChunkNameOfs));
-            Clipboard.SetText(eid);
+            while (ByteCursor % 4 != 0)
+                MoveBy(-1);
+
+            string list = string.Empty;
+            while (ByteCursor <= ByteSelectedCursor)
+            {
+                var data = Data.Span;
+                int cellByte = row * ColumnCount - FirstByteColumn + col;
+                int cellByteChunkNameOfs = cellByte % 4;
+                string eid = Entry.EIDToEName(BitConv.FromInt32(data, cellByte - cellByteChunkNameOfs));
+                list += eid + "\n";
+                MoveBy(1);
+                MoveBy(1);
+                MoveBy(1);
+                MoveBy(1);
+                col += 4;
+            }
+            if (list.Length > 0)
+                Clipboard.SetText(list);
         }
 
         public bool PasteEID()
@@ -951,15 +1007,6 @@ namespace CrashEdit
             if (DataChangeHandler == null)
                 return false;
 
-            // Check if the pasted name is valid
-            string ename = Clipboard.GetText();
-            string str = Entry.CheckEIDErrors(ename, true);
-            if (str != string.Empty) return false;
-
-            int eid = Entry.ENameToEID(ename);
-            // If pasted a null chunk
-            if (eid == 1) eid = 0;
-
             // If cursor is not word-aligned
             while (ByteCursor % 4 != 0)
                 MoveBy(-1);
@@ -967,24 +1014,47 @@ namespace CrashEdit
             if (_pendingInput != null)
                 _pendingInput = null;
 
-            // todo something nicer
-            int temp = 0;
-            for (int i = 0; i < 8; i++)
+            // Check if the pasted name is valid
+            //string[] lines = Clipboard.GetText().Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+            using (StringReader reader = new StringReader(Clipboard.GetText()))
             {
-                if (i % 2 == 0)
+                string line;
+                while ((line = reader.ReadLine()) != null)
                 {
-                    temp = eid & 0xF;
-                    eid >>= 4;
-                    InputNybble(eid & 0xF);
-                }
-                else
-                {
-                    InputNybble(temp);
-                    eid >>= 4;
+                    if (CheckEname(line).Length > 0)
+                    {
+                        // todo something nicer maybe
+                        int eid = Entry.ENameToEID(line);
+                        if (eid == 1) eid = 0;
+                        int temp = 0;
+                        for (int i = 0; i < 8; i++)
+                        {
+                            if (i % 2 == 0)
+                            {
+                                temp = eid & 0xF;
+                                eid >>= 4;
+                                InputNybble(eid & 0xF);
+                            }
+                            else
+                            {
+                                InputNybble(temp);
+                                eid >>= 4;
+                            }
+                        }
+                    }
                 }
             }
 
             return true;
+        }
+
+        public static string CheckEname(string ename)
+        {
+            if (ename.Length != 5) return string.Empty;
+            int eid = Entry.NullEID;
+            try { eid = Entry.ENameToEID(ename); }
+            catch (ArgumentException) { return string.Empty; }
+            return ename;
         }
     }
 
