@@ -17,7 +17,7 @@ namespace CrashEdit.CrashUI
             cmdCancel.Text = Properties.Resources.Cancel;
         }
 
-        public GameVersion SelectedVersion { get; private set; }
+        public GameVersion SelectedVersion { get; set; }
 
         private void cmdCrash1_Click(object sender, EventArgs e)
         {

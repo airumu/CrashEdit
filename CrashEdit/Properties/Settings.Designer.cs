@@ -466,5 +466,17 @@ namespace CrashEdit.CE.Properties {
                 this["MakeBinRegion"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int DefaultGameVersion {
+            get {
+                return ((int)(this["DefaultGameVersion"]));
+            }
+            set {
+                this["DefaultGameVersion"] = value;
+            }
+        }
     }
 }

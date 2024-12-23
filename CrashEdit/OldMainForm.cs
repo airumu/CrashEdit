@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace CrashEdit.CE
 {
@@ -17,6 +18,8 @@ namespace CrashEdit.CE
         private ToolStripButton tbbSave;
         private ToolStripButton tbbPatchNSD;
         private ToolStripButton tbbClose;
+        private ToolStripLabel tlbDefaultVersion;
+        private ToolStripComboBox tbxDefaultVersion;
         private ToolStripMenuItem tbxMakeBIN;
         private ToolStripMenuItem tbxConvertVHVB;
         private ToolStripMenuItem tbxConvertVAB;
@@ -78,6 +81,15 @@ namespace CrashEdit.CE
             };
             tbbClose.Click += new EventHandler(tbbClose_Click);
 
+            tlbDefaultVersion = new ToolStripLabel();
+            tlbDefaultVersion.Text = "Set default game version";
+
+            tbxDefaultVersion = new ToolStripComboBox();
+            tbxDefaultVersion.DropDownStyle = ComboBoxStyle.DropDownList;
+            tbxDefaultVersion.ComboBox.Items.AddRange(new string[] { "Default", "Crash1", "Crash2", "Crash3" });
+            tbxDefaultVersion.SelectedIndex = Settings.Default.DefaultGameVersion;
+            tbxDefaultVersion.SelectedIndexChanged += new EventHandler(tbxDefaultVersion_SelectedIndexChanged);
+
             tbxMakeBIN = new ToolStripMenuItem();
             tbxMakeBIN.Text = Resources.OldMainForm_tbxMakeBIN;
             tbxMakeBIN.Click += new EventHandler(tbxMakeBIN_Click);
@@ -92,6 +104,9 @@ namespace CrashEdit.CE
 
             tbbExtra = new ToolStripMenuItem();
             tbbExtra.Text = Resources.OldMainForm_tbbExtra;
+            tbbExtra.DropDown.Items.Add(tlbDefaultVersion);
+            tbbExtra.DropDown.Items.Add(tbxDefaultVersion);
+            tbbExtra.DropDown.Items.Add("-");
             tbbExtra.DropDown.Items.Add(tbxMakeBIN);
             tbbExtra.DropDown.Items.Add("-");
             tbbExtra.DropDown.Items.Add(tbxConvertVHVB);
@@ -391,7 +406,13 @@ namespace CrashEdit.CE
             try
             {
                 byte[] nsfdata = File.ReadAllBytes(filename);
-                if (dlgGameVersion.ShowDialog(this) == DialogResult.OK)
+                bool isdefault = true;
+                if (Settings.Default.DefaultGameVersion != 0)
+                {
+                    dlgGameVersion.SelectedVersion = (GameVersion)Enum.Parse(typeof(GameVersion), tbxDefaultVersion.Text);
+                    isdefault = false;
+                }
+                if (!isdefault || dlgGameVersion.ShowDialog(this) == DialogResult.OK)
                 {
                     NSF nsf = NSF.LoadAndProcess(nsfdata, dlgGameVersion.SelectedVersion);
                     OpenNSF(filename, nsf, dlgGameVersion.SelectedVersion);
@@ -792,6 +813,12 @@ namespace CrashEdit.CE
                 frmmakebin.Show();
             else
                 frmmakebin.Activate();
+        }
+
+        void tbxDefaultVersion_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Settings.Default.DefaultGameVersion = tbxDefaultVersion.SelectedIndex;
+            Settings.Default.Save();
         }
 
         void tbxMakeBIN_Click(object sender, EventArgs e)
