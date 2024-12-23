@@ -276,6 +276,8 @@ namespace CrashEdit
                     -newScrollPos.Y);
             }
 
+            SetSelectedCursorl();
+            Invalidate();
             return inRange;
         }
 
