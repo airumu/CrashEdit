@@ -53,10 +53,10 @@ namespace CrashEdit.Crash
                 {
                     chunkid += 2;
                     chunk.ChunkId = chunkid;
-                    if (chunk is IEntry ientry)
-                    {
-                        AllEntriesByEid.Add(ientry.EID, ientry);
-                    }
+                    //if (chunk is IEntry ientry)
+                    //{
+                    //    AllEntriesByEid.Add(ientry.EID, ientry);
+                    //}
 
                     //if (chunk is EntryChunk ec)
                     //{
