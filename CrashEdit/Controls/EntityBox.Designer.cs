@@ -2267,7 +2267,7 @@ namespace CrashEdit.CE
             fraLoadListPayload.Margin = new Padding(4, 3, 4, 3);
             fraLoadListPayload.Name = "fraLoadListPayload";
             fraLoadListPayload.Padding = new Padding(4, 3, 4, 3);
-            fraLoadListPayload.Size = new Size(181, 214);
+            fraLoadListPayload.Size = new Size(181, 232);
             fraLoadListPayload.TabIndex = 22;
             fraLoadListPayload.TabStop = false;
             fraLoadListPayload.Text = "Verify Load Lists";
@@ -2276,7 +2276,7 @@ namespace CrashEdit.CE
             // 
             lblPayloadSound.AutoSize = true;
             lblPayloadSound.BackColor = Color.Transparent;
-            lblPayloadSound.Location = new Point(5, 178);
+            lblPayloadSound.Location = new Point(5, 187);
             lblPayloadSound.Margin = new Padding(4, 0, 4, 0);
             lblPayloadSound.Name = "lblPayloadSound";
             lblPayloadSound.Size = new Size(139, 30);
@@ -2288,7 +2288,7 @@ namespace CrashEdit.CE
             // 
             lblPayloadTexture.AutoSize = true;
             lblPayloadTexture.BackColor = Color.Transparent;
-            lblPayloadTexture.Location = new Point(5, 162);
+            lblPayloadTexture.Location = new Point(5, 171);
             lblPayloadTexture.Margin = new Padding(4, 0, 4, 0);
             lblPayloadTexture.Name = "lblPayloadTexture";
             lblPayloadTexture.Size = new Size(154, 15);
@@ -2313,7 +2313,7 @@ namespace CrashEdit.CE
             // 
             lblPayload.AutoSize = true;
             lblPayload.BackColor = Color.Transparent;
-            lblPayload.Location = new Point(5, 146);
+            lblPayload.Location = new Point(5, 155);
             lblPayload.Margin = new Padding(4, 0, 4, 0);
             lblPayload.Name = "lblPayload";
             lblPayload.Size = new Size(155, 15);
@@ -2342,7 +2342,7 @@ namespace CrashEdit.CE
             cmdPayload.CustomColour = false;
             cmdPayload.FlatBottom = false;
             cmdPayload.FlatTop = false;
-            cmdPayload.Location = new Point(7, 87);
+            cmdPayload.Location = new Point(6, 81);
             cmdPayload.Margin = new Padding(4, 3, 4, 3);
             cmdPayload.Name = "cmdPayload";
             cmdPayload.Padding = new Padding(5);

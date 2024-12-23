@@ -713,7 +713,7 @@ namespace CrashEdit.CE
             if (e.KeyData == Keys.F2)
                 EnableVictimEditor(sender);
 
-            if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control)
+            if ((e.KeyCode == Keys.C || e.KeyCode == Keys.X) && e.Modifiers == Keys.Control)
             {
                 StringBuilder sb = new StringBuilder();
                 foreach (object item in lbVictimID.Items)
@@ -722,6 +722,13 @@ namespace CrashEdit.CE
                 }
                 if (sb .Length > 0)
                     Clipboard.SetText(sb.ToString());
+
+                if (e.KeyCode == Keys.X) // clear
+                {
+                    entity.Victims.Clear();
+                    lbVictimID.Items.Clear();
+                    UpdateVictim();
+                }
             }
 
             if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
@@ -948,7 +955,7 @@ namespace CrashEdit.CE
             if (e.KeyData == Keys.F2)
                 EnableEIDAEditor(sender);
 
-            if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control)
+            if ((e.KeyCode == Keys.C || e.KeyCode == Keys.X) && e.Modifiers == Keys.Control)
             {
                 StringBuilder sb = new StringBuilder();
                 foreach (object item in lbEIDA.Items)
@@ -957,6 +964,13 @@ namespace CrashEdit.CE
                 }
                 if (sb.Length > 0)
                     Clipboard.SetText(sb.ToString());
+
+                if (e.KeyCode == Keys.X) // clear
+                {
+                    entity.LoadListA.Rows[loadlistarowindex].Values.Clear();
+                    lbEIDA.Items.Clear();
+                    UpdateLoadListA();
+                }
             }
 
             if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
@@ -1227,7 +1241,7 @@ namespace CrashEdit.CE
             if (e.KeyData == Keys.F2)
                 EnableEIDBEditor(sender);
 
-            if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control)
+            if ((e.KeyCode == Keys.C || e.KeyCode == Keys.X) && e.Modifiers == Keys.Control)
             {
                 StringBuilder sb = new StringBuilder();
                 foreach (object item in lbEIDB.Items)
@@ -1236,6 +1250,13 @@ namespace CrashEdit.CE
                 }
                 if (sb.Length > 0)
                     Clipboard.SetText(sb.ToString());
+                
+                if (e.KeyCode == Keys.X) // clear
+                {
+                    entity.LoadListB.Rows[loadlistbrowindex].Values.Clear();
+                    lbEIDB.Items.Clear();
+                    UpdateLoadListB();
+                }
             }
 
             if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
@@ -1525,7 +1546,7 @@ namespace CrashEdit.CE
             if (e.KeyData == Keys.F2)
                 EnableDrawListAEditor(sender);
 
-            if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control)
+            if ((e.KeyCode == Keys.C || e.KeyCode == Keys.X) && e.Modifiers == Keys.Control)
             {
                 StringBuilder sb = new StringBuilder();
                 foreach (object item in lbEntityA.Items)
@@ -1534,6 +1555,13 @@ namespace CrashEdit.CE
                 }
                 if (sb.Length > 0)
                     Clipboard.SetText(sb.ToString());
+
+                if (e.KeyCode == Keys.X) // clear
+                {
+                    entity.DrawListA.Rows[drawlistarowindex].Values.Clear();
+                    lbEntityA.Items.Clear();
+                    UpdateDrawListA();
+                }
             }
 
             if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
@@ -1799,7 +1827,7 @@ namespace CrashEdit.CE
             if (e.KeyData == Keys.F2)
                 EnableDrawListBEditor(sender);
 
-            if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control)
+            if ((e.KeyCode == Keys.C || e.KeyCode == Keys.X) && e.Modifiers == Keys.Control)
             {
                 StringBuilder sb = new StringBuilder();
                 foreach (object item in lbEntityB.Items)
@@ -1808,6 +1836,13 @@ namespace CrashEdit.CE
                 }
                 if (sb.Length > 0)
                     Clipboard.SetText(sb.ToString());
+
+                if (e.KeyCode == Keys.X) // clear 
+                {
+                    entity.DrawListB.Rows[drawlistbrowindex].Values.Clear();
+                    lbEntityB.Items.Clear();
+                    UpdateDrawListB();
+                }
             }
 
             if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
@@ -2363,7 +2398,7 @@ namespace CrashEdit.CE
             lblPayloadTexture.Visible = true;
             lblPayloadTexture.Text = $"Payload is {loadedtexturechunks.Count} texture chunks";
             lblPayloadSound.Visible = true;
-            lblPayloadSound.Text = $"Payload is {loadedsoundchunks.Count} - {loadedwavebankchunks.Count}\nsound - wavebank chunks";
+            lblPayloadSound.Text = $"Payload is {loadedsoundchunks.Count} - {loadedwavebankchunks.Count}\nsound/wavebank chunks";
             if (loadedchunks.Count < 20)
             {
                 lblPayload.ForeColor = Color.LimeGreen;

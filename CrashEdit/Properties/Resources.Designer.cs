@@ -947,6 +947,7 @@ namespace CrashEdit.CE.Properties {
         
         /// <summary>
         ///   [Ctrl+C] Copy
+        ///[Ctrl+X] Cut
         ///[Ctrl+V] Paste
         ///[Double-click / F2] Rename に類似しているローカライズされた文字列を検索します。
         /// </summary>
