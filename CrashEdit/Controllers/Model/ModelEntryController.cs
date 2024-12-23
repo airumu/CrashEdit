@@ -1,3 +1,4 @@
+using CrashEdit.CE.Controls;
 using CrashEdit.Crash;
 
 namespace CrashEdit.CE
@@ -14,6 +15,8 @@ namespace CrashEdit.CE
 
         public override Control CreateEditor()
         {
+            return new ModelBox(this);
+
             if (ModelEntry.Positions == null)
                 return new Label { Text = string.Format("Polygon count: {0}\nVertex count: {1}", ModelEntry.PolyCount, ModelEntry.VertexCount), TextAlign = ContentAlignment.MiddleCenter };
             else
