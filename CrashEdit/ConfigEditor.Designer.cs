@@ -269,7 +269,7 @@ namespace CrashEdit.CE
             // 
             numAnimGrid.Location = new Point(66, 48);
             numAnimGrid.Margin = new Padding(4, 3, 4, 3);
-            numAnimGrid.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numAnimGrid.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
             numAnimGrid.Name = "numAnimGrid";
             numAnimGrid.Size = new Size(86, 23);
             numAnimGrid.TabIndex = 2;
