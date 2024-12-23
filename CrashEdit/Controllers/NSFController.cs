@@ -358,6 +358,8 @@ namespace CrashEdit.CE
                 try
                 {
                     UnprocessedChunk chunk = Chunk.Load(data);
+                    if (chunk.Type == 1) // Texture Chunk
+                        process = true;
                     if (process)
                     {
                         Chunk processedchunk = chunk.Process();
