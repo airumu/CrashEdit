@@ -89,8 +89,9 @@ namespace CrashEdit.CE
                 };
                 numMasterVolume = new DarkNumericUpDown()
                 {
-                    Value = musicentry.VH.Volume,
-                    Maximum = 127
+                    Minimum = 0,
+                    Maximum = 127,
+                    Value = musicentry.VH.Volume
                 };
                 numMasterVolume.ValueChanged += (sender, e) =>
                 {
@@ -103,8 +104,9 @@ namespace CrashEdit.CE
                 };
                 numMasterPan = new DarkNumericUpDown()
                 {
-                    Value = musicentry.VH.Panning,
-                    Maximum = 127
+                    Minimum = 0,
+                    Maximum = 127,
+                    Value = musicentry.VH.Panning
                 };
                 numMasterPan.ValueChanged += (sender, e) =>
                 {
