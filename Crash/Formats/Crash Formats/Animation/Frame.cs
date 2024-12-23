@@ -230,7 +230,7 @@ namespace CrashEdit.Crash
             Temporals = temporals;
         }
 
-        public int ModelEID { get; }
+        public int ModelEID { get; set; }
         public short XOffset { get; set; }
         public short YOffset { get; set; }
         public short ZOffset { get; set; }

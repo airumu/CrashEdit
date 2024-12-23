@@ -17,13 +17,14 @@ namespace CrashEdit.CE
         {
             this.controller = controller;
             frame = controller.Frame;
-            model= controller.Model;
+            model = controller.Model;
             InitializeComponent();
             UpdateVertice();
             UpdateCollision();
             UpdateOffset();
             UpdateHeaderSize();
             UpdateSPVertex();
+            UpdateModel();
             vertexindex = 0;
             collisionindex = 0;
         }
@@ -266,6 +267,11 @@ namespace CrashEdit.CE
             numSPVertex.Value = frame.SpecialVertexCount;
         }
 
+        private void UpdateModel()
+        {
+            txtModel.Text = Entry.EIDToEName(frame.ModelEID);
+        }
+
         private void numX_ValueChanged(object sender, EventArgs e)
         {
             if (!vertexdirty)
@@ -388,6 +394,13 @@ namespace CrashEdit.CE
                 FrameCollision pos = frame.Collision[collisionindex];
                 frame.Collision[collisionindex] = new FrameCollision(pos.U, pos.XOffset, pos.YOffset, (int)numZG.Value, pos.X1, pos.Y1, pos.Z1, pos.X2, pos.Y2, pos.Z2);
             }
+        }
+
+        private void txtModel_TextChanged(object sender, EventArgs e)
+        {
+            lblEIDError.Text = Entry.CheckEIDErrors(txtModel.Text, true);
+            if (lblEIDError.Text != string.Empty) return;
+            frame.ModelEID = Entry.ENameToEID(txtModel.Text);
         }
     }
 }

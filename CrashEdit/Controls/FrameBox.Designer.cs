@@ -88,6 +88,9 @@ namespace CrashEdit.CE
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             groupBox2 = new DarkGroupBox();
             numSPVertex = new DarkNumericUpDown();
+            darkGroupBox1 = new DarkGroupBox();
+            txtModel = new DarkTextBox();
+            lblEIDError = new Label();
             fraVertice.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numZ).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numY).BeginInit();
@@ -113,6 +116,7 @@ namespace CrashEdit.CE
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numSPVertex).BeginInit();
+            darkGroupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // fraVertice
@@ -887,11 +891,48 @@ namespace CrashEdit.CE
             numSPVertex.Size = new Size(111, 23);
             numSPVertex.TabIndex = 6;
             // 
+            // darkGroupBox1
+            // 
+            darkGroupBox1.BackColor = Color.Transparent;
+            darkGroupBox1.Controls.Add(txtModel);
+            darkGroupBox1.Font = new Font("Segoe UI", 9F);
+            darkGroupBox1.ForeColor = SystemColors.ControlText;
+            darkGroupBox1.Location = new Point(317, 232);
+            darkGroupBox1.Name = "darkGroupBox1";
+            darkGroupBox1.Size = new Size(145, 48);
+            darkGroupBox1.TabIndex = 16;
+            darkGroupBox1.TabStop = false;
+            darkGroupBox1.Text = "Model EID";
+            // 
+            // txtModel
+            // 
+            txtModel.BackColor = Color.FromArgb(26, 26, 28);
+            txtModel.BorderStyle = BorderStyle.FixedSingle;
+            txtModel.ForeColor = Color.FromArgb(213, 213, 213);
+            txtModel.Location = new Point(27, 19);
+            txtModel.MaxLength = 5;
+            txtModel.Name = "txtModel";
+            txtModel.Size = new Size(102, 23);
+            txtModel.TabIndex = 0;
+            txtModel.TextChanged += txtModel_TextChanged;
+            // 
+            // lblEIDError
+            // 
+            lblEIDError.AutoSize = true;
+            lblEIDError.ForeColor = Color.Red;
+            lblEIDError.Location = new Point(344, 283);
+            lblEIDError.Name = "lblEIDError";
+            lblEIDError.Size = new Size(74, 15);
+            lblEIDError.TabIndex = 17;
+            lblEIDError.Text = "EIDERROR!";
+            // 
             // FrameBox
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(30, 30, 30);
+            Controls.Add(lblEIDError);
+            Controls.Add(darkGroupBox1);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
             Controls.Add(fraCollision);
@@ -932,7 +973,10 @@ namespace CrashEdit.CE
             groupBox1.ResumeLayout(false);
             groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)numSPVertex).EndInit();
+            darkGroupBox1.ResumeLayout(false);
+            darkGroupBox1.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -995,5 +1039,8 @@ namespace CrashEdit.CE
         private DarkButton cmdNext10Vertice;
         private DarkButton cmdPrevious10Vertice;
         private Label lblSPVertex;
+        private DarkGroupBox darkGroupBox1;
+        private DarkTextBox txtModel;
+        private Label lblEIDError;
     }
 }
