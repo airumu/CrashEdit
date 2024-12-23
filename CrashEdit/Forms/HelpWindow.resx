@@ -121,10 +121,14 @@
     <value>N: Input the EID for "NONE!"
 Z: Toggle chunk name view mode
 Space: Clear selected cell
+Ctrl + Space: Clear selected chunk
 
-Ctrl + C: Copy EID to clipboard
-Ctrl + X: Cut EID to clipboard
-Ctrl + V: Paste EID from clipboard
-Ctrl + Space: Clear selected chunk</value>
+Right-click to select multiple cells
+Ctrl + C: Copy selected chunks as bytes
+Ctrl + X: Cut selected chunks as bytes
+Ctrl + V: Paste to chunks as bytes
+Ctrl + Shift + C: Copy selected chunks as EID
+Ctrl + Shift + X: Cut selected chunks as EID
+Ctrl + Shift + V: Paste to chunks as EID</value>
   </data>
 </root>

@@ -83,7 +83,7 @@ namespace CrashEdit.CE
             label4.Location = new Point(14, 25);
             label4.Margin = new Padding(4, 0, 4, 0);
             label4.Name = "label4";
-            label4.Size = new Size(206, 136);
+            label4.Size = new Size(267, 204);
             label4.TabIndex = 13;
             label4.Text = resources.GetString("label4.Text");
             // 

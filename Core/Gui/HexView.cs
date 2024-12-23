@@ -1,9 +1,6 @@
 using CrashEdit.Crash;
 using System.Drawing;
-using System.Reflection.Metadata;
-using System.Security.Cryptography;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace CrashEdit
@@ -296,23 +293,43 @@ namespace CrashEdit
         // Handle keyboard inputs.
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            if (e.Control)
+            if (e.Modifiers == (Keys.Control | Keys.Shift))
             {
                 switch (e.KeyCode)
                 {
                     case Keys.C:
-                        // Copy EID
-                        CopyEID(false);
+                        // Copy chunks as EID
+                        CopyBytes(false, true);
                         break;
 
                     case Keys.X:
-                        // Cut EID
-                        CopyEID(true);
+                        // Cut chunks as EID
+                        CopyBytes(true, true);
                         break;
 
                     case Keys.V:
-                        // Paste EID
-                        PasteEID();
+                        // Paste chunks as EID
+                        PasteBytes(true);
+                        break;
+                }
+            }
+            else if (e.Modifiers == Keys.Control)
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.C:
+                        // Copy chunks as bytes
+                        CopyBytes(false, false);
+                        break;
+
+                    case Keys.X:
+                        // Cut chunks as bytes
+                        CopyBytes(true, false);
+                        break;
+
+                    case Keys.V:
+                        // Paste chunks as bytes
+                        PasteBytes(false);
                         break;
 
                     case Keys.Space:
@@ -980,8 +997,11 @@ namespace CrashEdit
             return true;
         }
 
-        public bool CopyEID(bool cut)
+        public bool CopyBytes(bool cut, bool asEID)
         {
+            if (ByteCursor == _data.Length)
+                return false;
+
             int start = ByteCursor, end;
             if (ByteCursor <= ByteSelectedCursor)
             {
@@ -1007,8 +1027,19 @@ namespace CrashEdit
                 var data = Data.Span;
                 int cellByte = row * ColumnCount - FirstByteColumn + col;
                 int cellByteChunkNameOfs = cellByte % 4;
-                string eid = Entry.EIDToEName(BitConv.FromInt32(data, cellByte - cellByteChunkNameOfs));
-                sb.Append(eid + Environment.NewLine);
+                int offset = cellByte - cellByteChunkNameOfs;
+                string str;
+                if (asEID)
+                {
+                    int chunk = BitConv.FromInt32(data, offset);
+                    str = Entry.EIDToEName(chunk);
+                }
+                else
+                {
+                    byte[] chunk = [data[offset], data[offset + 1], data[offset + 2], data[offset + 3]];
+                    str = Convert.ToHexString(chunk);
+                }
+                sb.Append(str + Environment.NewLine);
                 if (cut)
                     InputZero(4);
                 col += 4;
@@ -1023,7 +1054,7 @@ namespace CrashEdit
             return true;
         }
 
-        public bool PasteEID()
+        public bool PasteBytes(bool asEID)
         {
             if (DataChangeHandler == null)
                 return false;
@@ -1040,24 +1071,49 @@ namespace CrashEdit
             string line;
             while ((line = sr.ReadLine()) != null)
             {
-                if (CheckEname(line).Length > 0)
+                if (asEID)
                 {
-                    // todo something nicer maybe
-                    int eid = Entry.ENameToEID(line);
-                    if (eid == 1) eid = 0;
-                    int temp = 0;
-                    for (int i = 0; i < 8; i++)
+                    if (CheckEname(line).Length > 0)
                     {
-                        if (i % 2 == 0)
+                        int chunk = Entry.ENameToEID(line);
+                        if (chunk == 1) chunk = 0;
+
+                        // todo something nicer maybe
+                        int temp = 0;
+                        for (int i = 0; i < 8; i++)
                         {
-                            temp = eid & 0xF;
-                            eid >>= 4;
-                            InputNybble(eid & 0xF);
+                            if (i % 2 == 0)
+                            {
+                                temp = chunk & 0xF;
+                                chunk >>= 4;
+                                InputNybble(chunk & 0xF);
+                            }
+                            else
+                            {
+                                InputNybble(temp);
+                                chunk >>= 4;
+                            }
                         }
-                        else
+                    }
+                }
+                else
+                {
+                    if (IsHexString(line))
+                    {
+                        byte[] chunk = Convert.FromHexString(line);
+                        int chunkLength = chunk.Length;
+                        for (int i = 0; i < chunkLength; i++)
                         {
-                            InputNybble(temp);
-                            eid >>= 4;
+                            InputNybble(chunk[i] >> 4);
+                            InputNybble(chunk[i] & 0xF);
+                        }
+                        if (chunkLength % 4 != 0)
+                        {
+                            for (int i = 0; i < 4 - chunkLength % 4; i++)
+                            {
+                                InputNybble(0);
+                                InputNybble(0);
+                            }
                         }
                     }
                 }
@@ -1074,6 +1130,17 @@ namespace CrashEdit
             try { eid = Entry.ENameToEID(ename); }
             catch (ArgumentException) { return string.Empty; }
             return ename;
+        }
+
+        public bool IsHexString(string value)
+        {
+            string hx = "0123456789ABCDEF";
+            foreach (char c in value.ToUpper())
+            {
+                if (!hx.Contains(c))
+                    return false;
+            }
+            return true;
         }
     }
 
