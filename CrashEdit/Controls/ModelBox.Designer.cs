@@ -32,60 +32,62 @@ namespace CrashEdit.CE.Controls
         /// </summary>
         private void InitializeComponent()
         {
-            tbcModel = new MetroSetTabControl();
+            tabModel = new MetroSetTabControl();
             tbpInfo = new TabPage();
             fraTexture = new AltUI.Controls.DarkGroupBox();
             listView1 = new ListView();
             tbpColors = new TabPage();
+            fraGlobalControl = new AltUI.Controls.DarkGroupBox();
+            cmdCancel = new AltUI.Controls.DarkButton();
             cmdApply = new AltUI.Controls.DarkButton();
-            pnEditMode = new Panel();
+            pnGlobalControl = new Panel();
             saturationColorSlider = new Cyotek.Windows.Forms.SaturationColorSlider();
             hueColorSlider = new Cyotek.Windows.Forms.HueColorSlider();
             lightnessColorSlider = new Cyotek.Windows.Forms.LightnessColorSlider();
+            tglGlobalControl = new MetroSetSwitch();
             pnSliders = new Panel();
             colorEditor = new Cyotek.Windows.Forms.ColorEditor();
             picPreview = new PictureBox();
             colorWheel = new Cyotek.Windows.Forms.ColorWheel();
             lstColor = new ListView();
             lstCopy = new ListView();
-            swtEditEntire = new MetroSetSwitch();
             tbpTextures = new TabPage();
-            tbcModel.SuspendLayout();
+            tabModel.SuspendLayout();
             tbpInfo.SuspendLayout();
             fraTexture.SuspendLayout();
             tbpColors.SuspendLayout();
-            pnEditMode.SuspendLayout();
+            fraGlobalControl.SuspendLayout();
+            pnGlobalControl.SuspendLayout();
             pnSliders.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picPreview).BeginInit();
             SuspendLayout();
             // 
-            // tbcModel
+            // tabModel
             // 
-            tbcModel.AnimateEasingType = MetroSet_UI.Enums.EasingType.CubeOut;
-            tbcModel.AnimateTime = 200;
-            tbcModel.BackgroundColor = Color.FromArgb(30, 30, 30);
-            tbcModel.Controls.Add(tbpInfo);
-            tbcModel.Controls.Add(tbpColors);
-            tbcModel.Controls.Add(tbpTextures);
-            tbcModel.Dock = DockStyle.Fill;
-            tbcModel.IsDerivedStyle = true;
-            tbcModel.ItemSize = new Size(100, 48);
-            tbcModel.Location = new Point(0, 0);
-            tbcModel.Multiline = true;
-            tbcModel.Name = "tbcModel";
-            tbcModel.SelectedIndex = 1;
-            tbcModel.SelectedTextColor = Color.White;
-            tbcModel.Size = new Size(800, 800);
-            tbcModel.SizeMode = TabSizeMode.Fixed;
-            tbcModel.Speed = 100;
-            tbcModel.Style = MetroSet_UI.Enums.Style.Dark;
-            tbcModel.StyleManager = null;
-            tbcModel.TabIndex = 0;
-            tbcModel.ThemeAuthor = "Narwin";
-            tbcModel.ThemeName = "MetroDark";
-            tbcModel.UnselectedTextColor = Color.Gray;
-            tbcModel.UseAnimation = false;
-            tbcModel.Enter += tbpColors_Enter;
+            tabModel.AnimateEasingType = MetroSet_UI.Enums.EasingType.CubeOut;
+            tabModel.AnimateTime = 200;
+            tabModel.BackgroundColor = Color.FromArgb(30, 30, 30);
+            tabModel.Controls.Add(tbpInfo);
+            tabModel.Controls.Add(tbpColors);
+            tabModel.Controls.Add(tbpTextures);
+            tabModel.Dock = DockStyle.Fill;
+            tabModel.IsDerivedStyle = true;
+            tabModel.ItemSize = new Size(100, 48);
+            tabModel.Location = new Point(0, 0);
+            tabModel.Multiline = true;
+            tabModel.Name = "tabModel";
+            tabModel.SelectedIndex = 1;
+            tabModel.SelectedTextColor = Color.White;
+            tabModel.Size = new Size(800, 800);
+            tabModel.SizeMode = TabSizeMode.Fixed;
+            tabModel.Speed = 100;
+            tabModel.Style = MetroSet_UI.Enums.Style.Dark;
+            tabModel.StyleManager = null;
+            tabModel.TabIndex = 0;
+            tabModel.ThemeAuthor = "Narwin";
+            tabModel.ThemeName = "MetroDark";
+            tabModel.UnselectedTextColor = Color.Gray;
+            tabModel.UseAnimation = false;
             // 
             // tbpInfo
             // 
@@ -121,18 +123,46 @@ namespace CrashEdit.CE.Controls
             // tbpColors
             // 
             tbpColors.BackColor = Color.FromArgb(31, 31, 32);
-            tbpColors.Controls.Add(cmdApply);
-            tbpColors.Controls.Add(pnEditMode);
+            tbpColors.Controls.Add(fraGlobalControl);
             tbpColors.Controls.Add(pnSliders);
             tbpColors.Controls.Add(lstColor);
             tbpColors.Controls.Add(lstCopy);
-            tbpColors.Controls.Add(swtEditEntire);
             tbpColors.Location = new Point(4, 52);
             tbpColors.Name = "tbpColors";
             tbpColors.Size = new Size(792, 744);
             tbpColors.TabIndex = 1;
             tbpColors.Text = "Colors";
             tbpColors.Click += tbpColors_Click;
+            tbpColors.Enter += tbpColors_Enter;
+            tbpColors.Leave += tbpColors_Leave;
+            // 
+            // fraGlobalControl
+            // 
+            fraGlobalControl.Controls.Add(cmdCancel);
+            fraGlobalControl.Controls.Add(cmdApply);
+            fraGlobalControl.Controls.Add(pnGlobalControl);
+            fraGlobalControl.Controls.Add(tglGlobalControl);
+            fraGlobalControl.Location = new Point(3, 427);
+            fraGlobalControl.Name = "fraGlobalControl";
+            fraGlobalControl.Size = new Size(239, 167);
+            fraGlobalControl.TabIndex = 7;
+            fraGlobalControl.TabStop = false;
+            fraGlobalControl.Text = "HLS Global Controller";
+            // 
+            // cmdCancel
+            // 
+            cmdCancel.BorderColour = Color.Empty;
+            cmdCancel.CustomColour = false;
+            cmdCancel.Enabled = false;
+            cmdCancel.FlatBottom = false;
+            cmdCancel.FlatTop = false;
+            cmdCancel.Location = new Point(153, 21);
+            cmdCancel.Name = "cmdCancel";
+            cmdCancel.Padding = new Padding(5);
+            cmdCancel.Size = new Size(75, 23);
+            cmdCancel.TabIndex = 5;
+            cmdCancel.Text = "Cancel";
+            cmdCancel.Click += cmdCancel_Click;
             // 
             // cmdApply
             // 
@@ -141,7 +171,7 @@ namespace CrashEdit.CE.Controls
             cmdApply.Enabled = false;
             cmdApply.FlatBottom = false;
             cmdApply.FlatTop = false;
-            cmdApply.Location = new Point(70, 426);
+            cmdApply.Location = new Point(73, 21);
             cmdApply.Name = "cmdApply";
             cmdApply.Padding = new Padding(5);
             cmdApply.Size = new Size(75, 23);
@@ -149,16 +179,16 @@ namespace CrashEdit.CE.Controls
             cmdApply.Text = "Apply";
             cmdApply.Click += cmdApply_Click;
             // 
-            // pnEditMode
+            // pnGlobalControl
             // 
-            pnEditMode.Controls.Add(saturationColorSlider);
-            pnEditMode.Controls.Add(hueColorSlider);
-            pnEditMode.Controls.Add(lightnessColorSlider);
-            pnEditMode.Enabled = false;
-            pnEditMode.Location = new Point(3, 455);
-            pnEditMode.Name = "pnEditMode";
-            pnEditMode.Size = new Size(239, 254);
-            pnEditMode.TabIndex = 4;
+            pnGlobalControl.Controls.Add(saturationColorSlider);
+            pnGlobalControl.Controls.Add(hueColorSlider);
+            pnGlobalControl.Controls.Add(lightnessColorSlider);
+            pnGlobalControl.Enabled = false;
+            pnGlobalControl.Location = new Point(6, 50);
+            pnGlobalControl.Name = "pnGlobalControl";
+            pnGlobalControl.Size = new Size(227, 111);
+            pnGlobalControl.TabIndex = 4;
             // 
             // saturationColorSlider
             // 
@@ -188,6 +218,31 @@ namespace CrashEdit.CE.Controls
             lightnessColorSlider.Value = 50F;
             lightnessColorSlider.ValueChanged += lightnessColorSlider_ValueChanged;
             // 
+            // tglGlobalControl
+            // 
+            tglGlobalControl.BackColor = Color.Transparent;
+            tglGlobalControl.BackgroundColor = Color.Empty;
+            tglGlobalControl.BorderColor = Color.FromArgb(155, 155, 155);
+            tglGlobalControl.CheckColor = Color.FromArgb(65, 177, 225);
+            tglGlobalControl.CheckState = MetroSet_UI.Enums.CheckState.Unchecked;
+            tglGlobalControl.DisabledBorderColor = Color.FromArgb(85, 85, 85);
+            tglGlobalControl.DisabledCheckColor = Color.FromArgb(100, 65, 177, 225);
+            tglGlobalControl.DisabledUnCheckColor = Color.FromArgb(200, 205, 205, 205);
+            tglGlobalControl.IsDerivedStyle = true;
+            tglGlobalControl.Location = new Point(9, 22);
+            tglGlobalControl.Name = "tglGlobalControl";
+            tglGlobalControl.Size = new Size(58, 22);
+            tglGlobalControl.Style = MetroSet_UI.Enums.Style.Dark;
+            tglGlobalControl.StyleManager = null;
+            tglGlobalControl.Switched = false;
+            tglGlobalControl.SymbolColor = Color.FromArgb(92, 92, 92);
+            tglGlobalControl.TabIndex = 1;
+            tglGlobalControl.Text = "metroSetSwitch1";
+            tglGlobalControl.ThemeAuthor = "Narwin";
+            tglGlobalControl.ThemeName = "MetroDark";
+            tglGlobalControl.UnCheckColor = Color.FromArgb(155, 155, 155);
+            tglGlobalControl.SwitchedChanged += tglGlobalControl_SwitchedChanged;
+            // 
             // pnSliders
             // 
             pnSliders.Controls.Add(colorEditor);
@@ -196,7 +251,7 @@ namespace CrashEdit.CE.Controls
             pnSliders.Enabled = false;
             pnSliders.Location = new Point(248, 3);
             pnSliders.Name = "pnSliders";
-            pnSliders.Size = new Size(306, 592);
+            pnSliders.Size = new Size(306, 591);
             pnSliders.TabIndex = 3;
             // 
             // colorEditor
@@ -208,22 +263,22 @@ namespace CrashEdit.CE.Controls
             colorEditor.Padding = new Padding(9);
             colorEditor.ShowAlphaChannel = false;
             colorEditor.ShowColorSpaceLabels = false;
-            colorEditor.Size = new Size(232, 202);
+            colorEditor.Size = new Size(284, 202);
             colorEditor.TabIndex = 0;
             colorEditor.ColorChanged += colorEditor_ColorChanged;
             // 
             // picPreview
             // 
-            picPreview.Location = new Point(4, 211);
+            picPreview.Location = new Point(188, 211);
             picPreview.Name = "picPreview";
-            picPreview.Size = new Size(100, 50);
+            picPreview.Size = new Size(84, 50);
             picPreview.TabIndex = 2;
             picPreview.TabStop = false;
             // 
             // colorWheel
             // 
             colorWheel.Color = Color.FromArgb(255, 255, 255);
-            colorWheel.Location = new Point(58, 267);
+            colorWheel.Location = new Point(4, 195);
             colorWheel.Name = "colorWheel";
             colorWheel.Size = new Size(178, 200);
             colorWheel.TabIndex = 0;
@@ -253,31 +308,6 @@ namespace CrashEdit.CE.Controls
             lstCopy.UseCompatibleStateImageBehavior = false;
             lstCopy.Visible = false;
             // 
-            // swtEditEntire
-            // 
-            swtEditEntire.BackColor = Color.Transparent;
-            swtEditEntire.BackgroundColor = Color.Empty;
-            swtEditEntire.BorderColor = Color.FromArgb(155, 155, 155);
-            swtEditEntire.CheckColor = Color.FromArgb(65, 177, 225);
-            swtEditEntire.CheckState = MetroSet_UI.Enums.CheckState.Unchecked;
-            swtEditEntire.DisabledBorderColor = Color.FromArgb(85, 85, 85);
-            swtEditEntire.DisabledCheckColor = Color.FromArgb(100, 65, 177, 225);
-            swtEditEntire.DisabledUnCheckColor = Color.FromArgb(200, 205, 205, 205);
-            swtEditEntire.IsDerivedStyle = true;
-            swtEditEntire.Location = new Point(6, 427);
-            swtEditEntire.Name = "swtEditEntire";
-            swtEditEntire.Size = new Size(58, 22);
-            swtEditEntire.Style = MetroSet_UI.Enums.Style.Dark;
-            swtEditEntire.StyleManager = null;
-            swtEditEntire.Switched = false;
-            swtEditEntire.SymbolColor = Color.FromArgb(92, 92, 92);
-            swtEditEntire.TabIndex = 1;
-            swtEditEntire.Text = "metroSetSwitch1";
-            swtEditEntire.ThemeAuthor = "Narwin";
-            swtEditEntire.ThemeName = "MetroDark";
-            swtEditEntire.UnCheckColor = Color.FromArgb(155, 155, 155);
-            swtEditEntire.SwitchedChanged += swtEditEntire_SwitchedChanged;
-            // 
             // tbpTextures
             // 
             tbpTextures.BackColor = Color.FromArgb(31, 31, 32);
@@ -292,14 +322,15 @@ namespace CrashEdit.CE.Controls
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(tbcModel);
+            Controls.Add(tabModel);
             Name = "ModelBox";
             Size = new Size(800, 800);
-            tbcModel.ResumeLayout(false);
+            tabModel.ResumeLayout(false);
             tbpInfo.ResumeLayout(false);
             fraTexture.ResumeLayout(false);
             tbpColors.ResumeLayout(false);
-            pnEditMode.ResumeLayout(false);
+            fraGlobalControl.ResumeLayout(false);
+            pnGlobalControl.ResumeLayout(false);
             pnSliders.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)picPreview).EndInit();
             ResumeLayout(false);
@@ -307,7 +338,7 @@ namespace CrashEdit.CE.Controls
 
         #endregion
 
-        private MetroSet_UI.Controls.MetroSetTabControl tbcModel;
+        private MetroSet_UI.Controls.MetroSetTabControl tabModel;
         private TabPage tbpInfo;
         private TabPage tbpColors;
         private TabPage tbpTextures;
@@ -317,13 +348,15 @@ namespace CrashEdit.CE.Controls
         private ListView lstCopy;
         private Cyotek.Windows.Forms.ColorEditor colorEditor;
         private Cyotek.Windows.Forms.ColorWheel colorWheel;
-        private MetroSetSwitch swtEditEntire;
+        private MetroSetSwitch tglGlobalControl;
         private Cyotek.Windows.Forms.HueColorSlider hueColorSlider;
         private Cyotek.Windows.Forms.SaturationColorSlider saturationColorSlider;
         private Cyotek.Windows.Forms.LightnessColorSlider lightnessColorSlider;
         private PictureBox picPreview;
         private Panel pnSliders;
-        private Panel pnEditMode;
+        private Panel pnGlobalControl;
         private AltUI.Controls.DarkButton cmdApply;
+        private AltUI.Controls.DarkGroupBox fraGlobalControl;
+        private AltUI.Controls.DarkButton cmdCancel;
     }
 }

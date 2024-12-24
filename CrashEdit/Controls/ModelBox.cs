@@ -52,18 +52,20 @@ namespace CrashEdit.CE.Controls
                     lsi.BackColor = Color.FromArgb(item[0], item[1], item[2]);
                     lsi.ForeColor = getBrightness(lsi.BackColor) >= 0.5 ? Color.Black : Color.White;
                     lsi.Tag = i;
+                    // SubItems[0] is the original color, SubItems[1] is the copy
+                    lsi.SubItems.Add(Convert.ToHexString(item));
+                    lsi.SubItems.Add(Convert.ToHexString(item));
                     lstColor.Items.Add(lsi);
-                    lstCopy.Items.Add((ListViewItem)lsi.Clone());
                 }
             }
         }
 
         private void ResetColorList()
         {
-            foreach (ListViewItem item in lstCopy.Items)
+            for (int i = 0; i < lstColor.Items.Count; i++)
             {
-                var i = (int)item.Tag;
-                SetModelColor(Color.FromArgb(item.BackColor.R, item.BackColor.G, item.BackColor.B), i);
+                byte[] item = StringToByteArray(lstColor.Items[i].SubItems[1].Text);
+                SetModelColor(Color.FromArgb(item[0], item[1], item[2]), i);
             }
             lstColor.Items.Clear();
             UpdateColorList();
@@ -71,10 +73,9 @@ namespace CrashEdit.CE.Controls
 
         private void Updatemodelcopy()
         {
-            lstCopy.Items.Clear();
-            foreach (ListViewItem item in lstColor.SelectedItems)
+            for (int i = 0; i < lstColor.Items.Count; i++)
             {
-                lstCopy.Items.Add((ListViewItem)item.Clone());
+                lstColor.Items[i].SubItems[1].Text = lstColor.Items[i].SubItems[0].Text;
             }
         }
 
@@ -185,12 +186,12 @@ namespace CrashEdit.CE.Controls
             }
 
             Color color = clr;
-            var i = lstColor.SelectedIndices[0];
+            var i = (int)lstColor.SelectedItems[0].Tag;
             SetModelColor(color, i);
-            lstColor.SelectedItems[0].Text = Convert.ToHexString(new byte[] { color.R, color.G, color.B });
-            lstColor.SelectedItems[0].BackColor = color;
-            lstColor.SelectedItems[0].ForeColor = getBrightness(lstColor.SelectedItems[0].BackColor) >= 0.5 ? Color.Black : Color.White;
-            //Updatemodelcopy();
+            lstColor.Items[i].SubItems[0].Text = Convert.ToHexString(new byte[] { color.R, color.G, color.B });
+            lstColor.Items[i].SubItems[0].BackColor = color;
+            lstColor.Items[i].SubItems[0].ForeColor = getBrightness(lstColor.Items[i].SubItems[0].BackColor) >= 0.5 ? Color.Black : Color.White;
+            Updatemodelcopy();
 
             colorEditor.Color = color;
             colorWheel.Color = color;
@@ -201,10 +202,10 @@ namespace CrashEdit.CE.Controls
         {
             if (EditMode)
             {
-                foreach (ListViewItem item in lstCopy.Items)
+                for (int i = 0; i < lstColor.Items.Count; i++)
                 {
-                    var i = (int)item.Tag;
-                    Color itemColor = Color.FromArgb(item.BackColor.R, item.BackColor.G, item.BackColor.B);
+                    byte[] item = StringToByteArray(lstColor.Items[i].SubItems[1].Text);
+                    Color itemColor = (Color.FromArgb(item[0], item[1], item[2]));
 
                     HslColor hslColor = new HslColor(itemColor);
 
@@ -217,11 +218,19 @@ namespace CrashEdit.CE.Controls
 
 
                     SetModelColor(newColor, i);
-                    //item.Text = Convert.ToHexString(new byte[] { newColor.R, newColor.G, newColor.B });
-                    //item.BackColor = newColor;
-                    //item.ForeColor = getBrightness(item.BackColor) >= 0.5 ? Color.Black : Color.White;
+                    lstColor.Items[i].SubItems[0].Text = Convert.ToHexString(new byte[] { newColor.R, newColor.G, newColor.B });
+                    lstColor.Items[i].SubItems[0].BackColor = newColor;
+                    lstColor.Items[i].SubItems[0].ForeColor = getBrightness(lstColor.Items[i].SubItems[0].BackColor) >= 0.5 ? Color.Black : Color.White;
                 }
             }
+        }
+
+        public static byte[] StringToByteArray(string hex)
+        {
+            return Enumerable.Range(0, hex.Length)
+                             .Where(x => x % 2 == 0)
+                             .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
+                             .ToArray();
         }
 
         private Color GetColorFromSelected()
@@ -315,22 +324,24 @@ namespace CrashEdit.CE.Controls
             return copy;
         }
 
-        private void swtEditEntire_SwitchedChanged(object sender)
+        private void tglGlobalControl_SwitchedChanged(object sender)
         {
-            EditMode = swtEditEntire.Switched;
+            EditMode = tglGlobalControl.Switched;
             if (EditMode)
             {
                 pnSliders.Enabled = false;
-                pnEditMode.Enabled = true;
-                cmdApply.Enabled = true;
+                pnGlobalControl.Enabled =
+                cmdApply.Enabled =
+                cmdCancel.Enabled = true;
                 hueColorSlider.Value = 180;
                 saturationColorSlider.Value = 50;
                 lightnessColorSlider.Value = 50;
             }
             else
             {
-                pnEditMode.Enabled = false;
-                cmdApply.Enabled = false;
+                pnGlobalControl.Enabled =
+                cmdApply.Enabled =
+                cmdCancel.Enabled = false;
                 ResetColorList();
             }
         }
@@ -343,8 +354,19 @@ namespace CrashEdit.CE.Controls
                 byte[] item_ = [model.Colors[i].Red, model.Colors[i].Green, model.Colors[i].Blue];
                 SetModelColor(item.BackColor, i);
             }
-            //Updatemodelcopy();
-            swtEditEntire.Switched = false;
+            Updatemodelcopy();
+            tglGlobalControl.Switched = false;
         }
+
+        private void cmdCancel_Click(object sender, EventArgs e)
+        {
+            tglGlobalControl.Switched = false;
+        }
+
+        private void tbpColors_Leave(object sender, EventArgs e)
+        {
+            tglGlobalControl.Switched = false;
+        }
+
     }
 }
