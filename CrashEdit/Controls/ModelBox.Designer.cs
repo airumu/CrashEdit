@@ -71,11 +71,11 @@ namespace CrashEdit.CE.Controls
             tabModel.Controls.Add(tbpTextures);
             tabModel.Dock = DockStyle.Fill;
             tabModel.IsDerivedStyle = true;
-            tabModel.ItemSize = new Size(100, 48);
+            tabModel.ItemSize = new Size(100, 28);
             tabModel.Location = new Point(0, 0);
             tabModel.Multiline = true;
             tabModel.Name = "tabModel";
-            tabModel.SelectedIndex = 1;
+            tabModel.SelectedIndex = 2;
             tabModel.SelectedTextColor = Color.White;
             tabModel.Size = new Size(800, 800);
             tabModel.SizeMode = TabSizeMode.Fixed;
@@ -125,9 +125,9 @@ namespace CrashEdit.CE.Controls
             tbpColors.Controls.Add(fraGlobalControl);
             tbpColors.Controls.Add(pnSliders);
             tbpColors.Controls.Add(lstColor);
-            tbpColors.Location = new Point(4, 52);
+            tbpColors.Location = new Point(4, 32);
             tbpColors.Name = "tbpColors";
-            tbpColors.Size = new Size(792, 744);
+            tbpColors.Size = new Size(792, 764);
             tbpColors.TabIndex = 1;
             tbpColors.Text = "Colors";
             tbpColors.Enter += tbpColors_Enter;
@@ -135,6 +135,7 @@ namespace CrashEdit.CE.Controls
             // 
             // fraGlobalControl
             // 
+            fraGlobalControl.BackColor = Color.Transparent;
             fraGlobalControl.Controls.Add(cmdCancel);
             fraGlobalControl.Controls.Add(cmdApply);
             fraGlobalControl.Controls.Add(pnGlobalControl);
