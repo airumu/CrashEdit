@@ -37,14 +37,26 @@ namespace CrashEdit.CE.Controls
             fraTexture = new AltUI.Controls.DarkGroupBox();
             listView1 = new ListView();
             tbpColors = new TabPage();
-            lstColor = new ListView();
+            cmdApply = new AltUI.Controls.DarkButton();
+            pnEditMode = new Panel();
+            saturationColorSlider = new Cyotek.Windows.Forms.SaturationColorSlider();
+            hueColorSlider = new Cyotek.Windows.Forms.HueColorSlider();
+            lightnessColorSlider = new Cyotek.Windows.Forms.LightnessColorSlider();
+            pnSliders = new Panel();
             colorEditor = new Cyotek.Windows.Forms.ColorEditor();
+            picPreview = new PictureBox();
             colorWheel = new Cyotek.Windows.Forms.ColorWheel();
+            lstColor = new ListView();
+            lstCopy = new ListView();
+            swtEditEntire = new MetroSetSwitch();
             tbpTextures = new TabPage();
             tbcModel.SuspendLayout();
             tbpInfo.SuspendLayout();
             fraTexture.SuspendLayout();
             tbpColors.SuspendLayout();
+            pnEditMode.SuspendLayout();
+            pnSliders.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)picPreview).BeginInit();
             SuspendLayout();
             // 
             // tbcModel
@@ -63,7 +75,7 @@ namespace CrashEdit.CE.Controls
             tbcModel.Name = "tbcModel";
             tbcModel.SelectedIndex = 1;
             tbcModel.SelectedTextColor = Color.White;
-            tbcModel.Size = new Size(529, 573);
+            tbcModel.Size = new Size(800, 800);
             tbcModel.SizeMode = TabSizeMode.Fixed;
             tbcModel.Speed = 100;
             tbcModel.Style = MetroSet_UI.Enums.Style.Dark;
@@ -81,7 +93,7 @@ namespace CrashEdit.CE.Controls
             tbpInfo.Controls.Add(fraTexture);
             tbpInfo.Location = new Point(4, 52);
             tbpInfo.Name = "tbpInfo";
-            tbpInfo.Size = new Size(521, 517);
+            tbpInfo.Size = new Size(792, 744);
             tbpInfo.TabIndex = 0;
             tbpInfo.Text = "Info";
             // 
@@ -109,14 +121,113 @@ namespace CrashEdit.CE.Controls
             // tbpColors
             // 
             tbpColors.BackColor = Color.FromArgb(31, 31, 32);
+            tbpColors.Controls.Add(cmdApply);
+            tbpColors.Controls.Add(pnEditMode);
+            tbpColors.Controls.Add(pnSliders);
             tbpColors.Controls.Add(lstColor);
-            tbpColors.Controls.Add(colorEditor);
-            tbpColors.Controls.Add(colorWheel);
+            tbpColors.Controls.Add(lstCopy);
+            tbpColors.Controls.Add(swtEditEntire);
             tbpColors.Location = new Point(4, 52);
             tbpColors.Name = "tbpColors";
-            tbpColors.Size = new Size(521, 517);
+            tbpColors.Size = new Size(792, 744);
             tbpColors.TabIndex = 1;
             tbpColors.Text = "Colors";
+            tbpColors.Click += tbpColors_Click;
+            // 
+            // cmdApply
+            // 
+            cmdApply.BorderColour = Color.Empty;
+            cmdApply.CustomColour = false;
+            cmdApply.Enabled = false;
+            cmdApply.FlatBottom = false;
+            cmdApply.FlatTop = false;
+            cmdApply.Location = new Point(70, 426);
+            cmdApply.Name = "cmdApply";
+            cmdApply.Padding = new Padding(5);
+            cmdApply.Size = new Size(75, 23);
+            cmdApply.TabIndex = 5;
+            cmdApply.Text = "Apply";
+            cmdApply.Click += cmdApply_Click;
+            // 
+            // pnEditMode
+            // 
+            pnEditMode.Controls.Add(saturationColorSlider);
+            pnEditMode.Controls.Add(hueColorSlider);
+            pnEditMode.Controls.Add(lightnessColorSlider);
+            pnEditMode.Enabled = false;
+            pnEditMode.Location = new Point(3, 455);
+            pnEditMode.Name = "pnEditMode";
+            pnEditMode.Size = new Size(239, 254);
+            pnEditMode.TabIndex = 4;
+            // 
+            // saturationColorSlider
+            // 
+            saturationColorSlider.Location = new Point(3, 38);
+            saturationColorSlider.Name = "saturationColorSlider";
+            saturationColorSlider.Size = new Size(219, 29);
+            saturationColorSlider.TabIndex = 0;
+            saturationColorSlider.Value = 50F;
+            saturationColorSlider.ValueChanged += saturationColorSlider_ValueChanged;
+            // 
+            // hueColorSlider
+            // 
+            hueColorSlider.Location = new Point(3, 3);
+            hueColorSlider.Name = "hueColorSlider";
+            hueColorSlider.Size = new Size(219, 29);
+            hueColorSlider.TabIndex = 0;
+            hueColorSlider.Value = 180F;
+            hueColorSlider.ValueChanged += hueColorSlider_ValueChangedHandler;
+            // 
+            // lightnessColorSlider
+            // 
+            lightnessColorSlider.Color = Color.FromArgb(127, 127, 127);
+            lightnessColorSlider.Location = new Point(3, 73);
+            lightnessColorSlider.Name = "lightnessColorSlider";
+            lightnessColorSlider.Size = new Size(219, 29);
+            lightnessColorSlider.TabIndex = 0;
+            lightnessColorSlider.Value = 50F;
+            lightnessColorSlider.ValueChanged += lightnessColorSlider_ValueChanged;
+            // 
+            // pnSliders
+            // 
+            pnSliders.Controls.Add(colorEditor);
+            pnSliders.Controls.Add(picPreview);
+            pnSliders.Controls.Add(colorWheel);
+            pnSliders.Enabled = false;
+            pnSliders.Location = new Point(248, 3);
+            pnSliders.Name = "pnSliders";
+            pnSliders.Size = new Size(306, 592);
+            pnSliders.TabIndex = 3;
+            // 
+            // colorEditor
+            // 
+            colorEditor.Color = Color.FromArgb(0, 0, 0);
+            colorEditor.Location = new Point(4, 3);
+            colorEditor.Margin = new Padding(4, 3, 4, 3);
+            colorEditor.Name = "colorEditor";
+            colorEditor.Padding = new Padding(9);
+            colorEditor.ShowAlphaChannel = false;
+            colorEditor.ShowColorSpaceLabels = false;
+            colorEditor.Size = new Size(232, 202);
+            colorEditor.TabIndex = 0;
+            colorEditor.ColorChanged += colorEditor_ColorChanged;
+            // 
+            // picPreview
+            // 
+            picPreview.Location = new Point(4, 211);
+            picPreview.Name = "picPreview";
+            picPreview.Size = new Size(100, 50);
+            picPreview.TabIndex = 2;
+            picPreview.TabStop = false;
+            // 
+            // colorWheel
+            // 
+            colorWheel.Color = Color.FromArgb(255, 255, 255);
+            colorWheel.Location = new Point(58, 267);
+            colorWheel.Name = "colorWheel";
+            colorWheel.Size = new Size(178, 200);
+            colorWheel.TabIndex = 0;
+            colorWheel.ColorChanged += colorWheel_ColorChanged;
             // 
             // lstColor
             // 
@@ -125,37 +236,54 @@ namespace CrashEdit.CE.Controls
             lstColor.ForeColor = Color.FromArgb(213, 213, 213);
             lstColor.Location = new Point(3, 3);
             lstColor.Name = "lstColor";
-            lstColor.Size = new Size(212, 212);
+            lstColor.OwnerDraw = true;
+            lstColor.Size = new Size(239, 418);
             lstColor.TabIndex = 0;
+            lstColor.UseCompatibleStateImageBehavior = false;
+            lstColor.DrawItem += lstColor_DrawItem;
+            lstColor.DrawSubItem += lstColor_DrawSubItem;
             lstColor.SelectedIndexChanged += lstColor_SelectedIndexChanged;
             // 
-            // colorEditor
+            // lstCopy
             // 
-            colorEditor.Color = Color.FromArgb(0, 0, 0);
-            colorEditor.Location = new Point(222, 3);
-            colorEditor.Margin = new Padding(4, 3, 4, 3);
-            colorEditor.Name = "colorEditor";
-            colorEditor.Padding = new Padding(9);
-            colorEditor.Size = new Size(228, 327);
-            colorEditor.TabIndex = 0;
-            colorEditor.ColorChanged += colorEditor_ColorChanged;
+            lstCopy.Location = new Point(3, 3);
+            lstCopy.Name = "lstCopy";
+            lstCopy.Size = new Size(121, 97);
+            lstCopy.TabIndex = 6;
+            lstCopy.UseCompatibleStateImageBehavior = false;
+            lstCopy.Visible = false;
             // 
-            // colorWheel
+            // swtEditEntire
             // 
-            colorWheel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            colorWheel.Color = Color.FromArgb(65, 105, 225);
-            colorWheel.Location = new Point(80, 221);
-            colorWheel.Name = "colorWheel";
-            colorWheel.Size = new Size(135, 139);
-            colorWheel.TabIndex = 0;
-            colorWheel.ColorChanged += colorWheel_ColorChanged;
+            swtEditEntire.BackColor = Color.Transparent;
+            swtEditEntire.BackgroundColor = Color.Empty;
+            swtEditEntire.BorderColor = Color.FromArgb(155, 155, 155);
+            swtEditEntire.CheckColor = Color.FromArgb(65, 177, 225);
+            swtEditEntire.CheckState = MetroSet_UI.Enums.CheckState.Unchecked;
+            swtEditEntire.DisabledBorderColor = Color.FromArgb(85, 85, 85);
+            swtEditEntire.DisabledCheckColor = Color.FromArgb(100, 65, 177, 225);
+            swtEditEntire.DisabledUnCheckColor = Color.FromArgb(200, 205, 205, 205);
+            swtEditEntire.IsDerivedStyle = true;
+            swtEditEntire.Location = new Point(6, 427);
+            swtEditEntire.Name = "swtEditEntire";
+            swtEditEntire.Size = new Size(58, 22);
+            swtEditEntire.Style = MetroSet_UI.Enums.Style.Dark;
+            swtEditEntire.StyleManager = null;
+            swtEditEntire.Switched = false;
+            swtEditEntire.SymbolColor = Color.FromArgb(92, 92, 92);
+            swtEditEntire.TabIndex = 1;
+            swtEditEntire.Text = "metroSetSwitch1";
+            swtEditEntire.ThemeAuthor = "Narwin";
+            swtEditEntire.ThemeName = "MetroDark";
+            swtEditEntire.UnCheckColor = Color.FromArgb(155, 155, 155);
+            swtEditEntire.SwitchedChanged += swtEditEntire_SwitchedChanged;
             // 
             // tbpTextures
             // 
             tbpTextures.BackColor = Color.FromArgb(31, 31, 32);
             tbpTextures.Location = new Point(4, 52);
             tbpTextures.Name = "tbpTextures";
-            tbpTextures.Size = new Size(521, 517);
+            tbpTextures.Size = new Size(792, 744);
             tbpTextures.TabIndex = 2;
             tbpTextures.Text = "Textures";
             tbpTextures.Enter += tbpTextures_Enter;
@@ -166,11 +294,14 @@ namespace CrashEdit.CE.Controls
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(tbcModel);
             Name = "ModelBox";
-            Size = new Size(529, 573);
+            Size = new Size(800, 800);
             tbcModel.ResumeLayout(false);
             tbpInfo.ResumeLayout(false);
             fraTexture.ResumeLayout(false);
             tbpColors.ResumeLayout(false);
+            pnEditMode.ResumeLayout(false);
+            pnSliders.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)picPreview).EndInit();
             ResumeLayout(false);
         }
 
@@ -183,7 +314,16 @@ namespace CrashEdit.CE.Controls
         private AltUI.Controls.DarkGroupBox fraTexture;
         private ListView listView1;
         private ListView lstColor;
+        private ListView lstCopy;
         private Cyotek.Windows.Forms.ColorEditor colorEditor;
         private Cyotek.Windows.Forms.ColorWheel colorWheel;
+        private MetroSetSwitch swtEditEntire;
+        private Cyotek.Windows.Forms.HueColorSlider hueColorSlider;
+        private Cyotek.Windows.Forms.SaturationColorSlider saturationColorSlider;
+        private Cyotek.Windows.Forms.LightnessColorSlider lightnessColorSlider;
+        private PictureBox picPreview;
+        private Panel pnSliders;
+        private Panel pnEditMode;
+        private AltUI.Controls.DarkButton cmdApply;
     }
 }
