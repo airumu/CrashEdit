@@ -50,7 +50,6 @@ namespace CrashEdit.CE.Controls
             picPreview = new PictureBox();
             colorWheel = new Cyotek.Windows.Forms.ColorWheel();
             lstColor = new ListView();
-            lstCopy = new ListView();
             tbpTextures = new TabPage();
             tabModel.SuspendLayout();
             tbpInfo.SuspendLayout();
@@ -126,13 +125,11 @@ namespace CrashEdit.CE.Controls
             tbpColors.Controls.Add(fraGlobalControl);
             tbpColors.Controls.Add(pnSliders);
             tbpColors.Controls.Add(lstColor);
-            tbpColors.Controls.Add(lstCopy);
             tbpColors.Location = new Point(4, 52);
             tbpColors.Name = "tbpColors";
             tbpColors.Size = new Size(792, 744);
             tbpColors.TabIndex = 1;
             tbpColors.Text = "Colors";
-            tbpColors.Click += tbpColors_Click;
             tbpColors.Enter += tbpColors_Enter;
             tbpColors.Leave += tbpColors_Leave;
             // 
@@ -299,15 +296,6 @@ namespace CrashEdit.CE.Controls
             lstColor.DrawSubItem += lstColor_DrawSubItem;
             lstColor.SelectedIndexChanged += lstColor_SelectedIndexChanged;
             // 
-            // lstCopy
-            // 
-            lstCopy.Location = new Point(3, 3);
-            lstCopy.Name = "lstCopy";
-            lstCopy.Size = new Size(121, 97);
-            lstCopy.TabIndex = 6;
-            lstCopy.UseCompatibleStateImageBehavior = false;
-            lstCopy.Visible = false;
-            // 
             // tbpTextures
             // 
             tbpTextures.BackColor = Color.FromArgb(31, 31, 32);
@@ -345,7 +333,6 @@ namespace CrashEdit.CE.Controls
         private AltUI.Controls.DarkGroupBox fraTexture;
         private ListView listView1;
         private ListView lstColor;
-        private ListView lstCopy;
         private Cyotek.Windows.Forms.ColorEditor colorEditor;
         private Cyotek.Windows.Forms.ColorWheel colorWheel;
         private MetroSetSwitch tglGlobalControl;

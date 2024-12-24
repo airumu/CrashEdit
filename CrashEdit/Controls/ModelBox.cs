@@ -71,7 +71,7 @@ namespace CrashEdit.CE.Controls
             UpdateColorList();
         }
 
-        private void Updatemodelcopy()
+        private void UpdateColorCopy()
         {
             for (int i = 0; i < lstColor.Items.Count; i++)
             {
@@ -191,14 +191,14 @@ namespace CrashEdit.CE.Controls
             lstColor.Items[i].SubItems[0].Text = Convert.ToHexString(new byte[] { color.R, color.G, color.B });
             lstColor.Items[i].SubItems[0].BackColor = color;
             lstColor.Items[i].SubItems[0].ForeColor = getBrightness(lstColor.Items[i].SubItems[0].BackColor) >= 0.5 ? Color.Black : Color.White;
-            Updatemodelcopy();
+            UpdateColorCopy();
 
             colorEditor.Color = color;
             colorWheel.Color = color;
             picPreview.BackColor = color;
         }
 
-        private void UpdateEntireColor()
+        private void UpdateAllColors()
         {
             if (EditMode)
             {
@@ -210,12 +210,10 @@ namespace CrashEdit.CE.Controls
                     HslColor hslColor = new HslColor(itemColor);
 
                     hslColor = ChangeHue(hslColor, hslColor.H + (MasterHue - 180));
-
                     hslColor.S += (double)(MasterSaturation - 50) / 100;
                     hslColor.L += (double)(MasterLightness - 50) / 100;
 
                     Color newColor = hslColor.ToRgbColor();
-
 
                     SetModelColor(newColor, i);
                     lstColor.Items[i].SubItems[0].Text = Convert.ToHexString(new byte[] { newColor.R, newColor.G, newColor.B });
@@ -233,7 +231,33 @@ namespace CrashEdit.CE.Controls
                              .ToArray();
         }
 
-        private Color GetColorFromSelected()
+        // color brightness as perceived:
+        float getBrightness(Color c)
+        { return (c.R * 0.299f + c.G * 0.587f + c.B * 0.114f) / 256f; }
+
+        private void tglGlobalControl_SwitchedChanged(object sender)
+        {
+            EditMode = tglGlobalControl.Switched;
+            if (EditMode)
+            {
+                pnSliders.Enabled = false;
+                pnGlobalControl.Enabled =
+                cmdApply.Enabled =
+                cmdCancel.Enabled = true;
+                hueColorSlider.Value = 180;
+                saturationColorSlider.Value = 50;
+                lightnessColorSlider.Value = 50;
+            }
+            else
+            {
+                pnGlobalControl.Enabled =
+                cmdApply.Enabled =
+                cmdCancel.Enabled = false;
+                ResetColorList();
+            }
+        }
+
+        private Color GetSelectedItemColor()
         {
             string hexcolor = lstColor.SelectedItems[0].Text;
             int color = Int32.Parse(hexcolor.Replace("#", ""), NumberStyles.HexNumber);
@@ -250,16 +274,11 @@ namespace CrashEdit.CE.Controls
                 return;
             }
             pnSliders.Enabled = true;
-            Color color = GetColorFromSelected();
+            Color color = GetSelectedItemColor();
             colorEditor.Color = color;
             colorWheel.Color = color;
             picPreview.BackColor = color;
         }
-
-        // color brightness as perceived:
-        float getBrightness(Color c)
-        { return (c.R * 0.299f + c.G * 0.587f + c.B * 0.114f) / 256f; }
-
 
         private void colorEditor_ColorChanged(object sender, EventArgs e)
         {
@@ -273,16 +292,11 @@ namespace CrashEdit.CE.Controls
                 UpdateSelectedColor(colorWheel.Color);
         }
 
-        private void tbpColors_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void hueColorSlider_ValueChangedHandler(object sender, EventArgs e)
         {
             if (hueColorSlider.Focused)
             {
-                UpdateEntireColor();
+                UpdateAllColors();
             }
         }
 
@@ -290,7 +304,7 @@ namespace CrashEdit.CE.Controls
         {
             if (saturationColorSlider.Focused)
             {
-                UpdateEntireColor();
+                UpdateAllColors();
             }
         }
 
@@ -298,7 +312,7 @@ namespace CrashEdit.CE.Controls
         {
             if (lightnessColorSlider.Focused)
             {
-                UpdateEntireColor();
+                UpdateAllColors();
             }
         }
 
@@ -324,28 +338,6 @@ namespace CrashEdit.CE.Controls
             return copy;
         }
 
-        private void tglGlobalControl_SwitchedChanged(object sender)
-        {
-            EditMode = tglGlobalControl.Switched;
-            if (EditMode)
-            {
-                pnSliders.Enabled = false;
-                pnGlobalControl.Enabled =
-                cmdApply.Enabled =
-                cmdCancel.Enabled = true;
-                hueColorSlider.Value = 180;
-                saturationColorSlider.Value = 50;
-                lightnessColorSlider.Value = 50;
-            }
-            else
-            {
-                pnGlobalControl.Enabled =
-                cmdApply.Enabled =
-                cmdCancel.Enabled = false;
-                ResetColorList();
-            }
-        }
-
         private void cmdApply_Click(object sender, EventArgs e)
         {
             foreach (ListViewItem item in lstColor.Items)
@@ -354,7 +346,7 @@ namespace CrashEdit.CE.Controls
                 byte[] item_ = [model.Colors[i].Red, model.Colors[i].Green, model.Colors[i].Blue];
                 SetModelColor(item.BackColor, i);
             }
-            Updatemodelcopy();
+            UpdateColorCopy();
             tglGlobalControl.Switched = false;
         }
 
