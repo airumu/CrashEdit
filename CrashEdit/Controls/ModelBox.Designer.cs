@@ -62,12 +62,15 @@ namespace CrashEdit.CE.Controls
             fraSwitches = new AltUI.Controls.DarkGroupBox();
             tglSimpleMode = new MetroSetSwitch();
             fraReplace = new AltUI.Controls.DarkGroupBox();
+            label1 = new Label();
+            numReplaceTo = new AltUI.Controls.DarkNumericUpDown();
             numReplace = new AltUI.Controls.DarkNumericUpDown();
             cmdReplace = new AltUI.Controls.DarkButton();
             pictureBox1 = new PictureBox();
             fraTexture = new AltUI.Controls.DarkGroupBox();
             lstPages = new DoubleBufferedListView();
             grdTextures = new DataGridView();
+            numRowIndex = new AltUI.Controls.DarkNumericUpDown();
             tabModel.SuspendLayout();
             tbpColors.SuspendLayout();
             fraGlobalControl.SuspendLayout();
@@ -77,10 +80,12 @@ namespace CrashEdit.CE.Controls
             tbpTextures.SuspendLayout();
             fraSwitches.SuspendLayout();
             fraReplace.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numReplaceTo).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numReplace).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             fraTexture.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)grdTextures).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRowIndex).BeginInit();
             SuspendLayout();
             // 
             // tabModel
@@ -301,6 +306,7 @@ namespace CrashEdit.CE.Controls
             // 
             tbpTextures.BackColor = Color.FromArgb(31, 31, 32);
             tbpTextures.Controls.Add(fraSwitches);
+            tbpTextures.Controls.Add(numRowIndex);
             tbpTextures.Controls.Add(fraReplace);
             tbpTextures.Controls.Add(pictureBox1);
             tbpTextures.Controls.Add(fraTexture);
@@ -352,15 +358,34 @@ namespace CrashEdit.CE.Controls
             // fraReplace
             // 
             fraReplace.BackColor = Color.Transparent;
+            fraReplace.Controls.Add(label1);
+            fraReplace.Controls.Add(numReplaceTo);
             fraReplace.Controls.Add(numReplace);
             fraReplace.Controls.Add(cmdReplace);
             fraReplace.Enabled = false;
             fraReplace.Location = new Point(786, 62);
             fraReplace.Name = "fraReplace";
-            fraReplace.Size = new Size(107, 100);
+            fraReplace.Size = new Size(107, 127);
             fraReplace.TabIndex = 6;
             fraReplace.TabStop = false;
             fraReplace.Text = "Replace Values";
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(6, 48);
+            label1.Name = "label1";
+            label1.Size = new Size(13, 15);
+            label1.TabIndex = 7;
+            label1.Text = "↓";
+            // 
+            // numReplaceTo
+            // 
+            numReplaceTo.Location = new Point(6, 66);
+            numReplaceTo.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numReplaceTo.Name = "numReplaceTo";
+            numReplaceTo.Size = new Size(95, 23);
+            numReplaceTo.TabIndex = 6;
             // 
             // numReplace
             // 
@@ -376,7 +401,7 @@ namespace CrashEdit.CE.Controls
             cmdReplace.CustomColour = false;
             cmdReplace.FlatBottom = false;
             cmdReplace.FlatTop = false;
-            cmdReplace.Location = new Point(6, 51);
+            cmdReplace.Location = new Point(6, 95);
             cmdReplace.Name = "cmdReplace";
             cmdReplace.Padding = new Padding(5);
             cmdReplace.Size = new Size(75, 23);
@@ -432,6 +457,14 @@ namespace CrashEdit.CE.Controls
             grdTextures.CellValueChanged += grdTextures_CellValueChanged;
             grdTextures.SelectionChanged += grdTextures_SelectionChanged;
             // 
+            // numRowIndex
+            // 
+            numRowIndex.Location = new Point(792, 195);
+            numRowIndex.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numRowIndex.Name = "numRowIndex";
+            numRowIndex.Size = new Size(95, 23);
+            numRowIndex.TabIndex = 6;
+            // 
             // ModelBox
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -448,10 +481,13 @@ namespace CrashEdit.CE.Controls
             tbpTextures.ResumeLayout(false);
             fraSwitches.ResumeLayout(false);
             fraReplace.ResumeLayout(false);
+            fraReplace.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numReplaceTo).EndInit();
             ((System.ComponentModel.ISupportInitialize)numReplace).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             fraTexture.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)grdTextures).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRowIndex).EndInit();
             ResumeLayout(false);
         }
 
@@ -483,5 +519,8 @@ namespace CrashEdit.CE.Controls
         private AltUI.Controls.DarkGroupBox fraReplace;
         private AltUI.Controls.DarkNumericUpDown numReplace;
         private AltUI.Controls.DarkGroupBox fraSwitches;
+        private Label label1;
+        private AltUI.Controls.DarkNumericUpDown numReplaceTo;
+        private AltUI.Controls.DarkNumericUpDown numRowIndex;
     }
 }

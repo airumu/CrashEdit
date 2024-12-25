@@ -1,15 +1,8 @@
-﻿using System;
-using System.Drawing.Imaging;
+﻿using System.Drawing.Imaging;
 using System.Globalization;
-using System.Linq;
-using System.Security.Cryptography;
 using System.Windows.Forms;
-using System.Windows.Media.Media3D;
 using AltUI.Forms;
 using CrashEdit.Crash;
-using CrashEdit.Crash.GOOLIns;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 using static CrashEdit.CE.TextureViewer;
 using HslColor = Cyotek.Windows.Forms.HslColor;
 
@@ -318,6 +311,8 @@ namespace CrashEdit.CE.Controls
                 UpdatePicture(cid, item.Cells[1].Value, item.Cells[2].Value, item.Cells[3].Value, item.Cells[4].Value, item.Cells[5].Value, item.Cells[6].Value, item.Cells[7].Value, item.Cells[8].Value);
 
                 numReplace.Value = Convert.ToInt32(grdTextures.CurrentCell.Value);
+                numReplaceTo.Value = numReplace.Value;
+                numRowIndex.Value = grdTextures.CurrentCell.RowIndex;
                 lstPages.SelectedItems.Clear();
                 lstPages.Items[pageIndex].Selected = true;
                 //lstPages.EnsureVisible(pageIndex);
@@ -338,7 +333,7 @@ namespace CrashEdit.CE.Controls
 
                 if (uniqueRows.Contains(rowData))
                 {
-                    dataGridView.Rows.RemoveAt(i);
+                    //dataGridView.Rows.RemoveAt(i);
                 }
                 else
                 {
@@ -384,11 +379,20 @@ namespace CrashEdit.CE.Controls
 
         private void cmdReplace_Click(object sender, EventArgs e)
         {
-            string newValue = numReplace.Value.ToString();
-            foreach (DataGridViewCell cell in grdTextures.SelectedCells)
-            {
-                cell.Value = newValue;
-            }
+            //byte valueFrom = (byte)numReplace.Value;
+            //byte valueTo = (byte)numReplaceTo.Value;
+            //foreach (DataGridViewCell cell in grdTextures.SelectedCells)
+            //{
+            //    if (cell.Value== valueFrom.ToString())
+            //        cell.Value = valueTo;
+            //}
+            int index = (int)numRowIndex.Value;
+            int? col = grdTextures.CurrentCell?.ColumnIndex;
+            if (col >= 9 && col <= 11)
+                UpdateRowsX(index, (int)numReplaceTo.Value, (int)numReplaceTo.Value, (int)numReplaceTo.Value + (int)grdTextures.Rows[index].Cells[5].Value);
+            else if (col >= 12 && col <= 14)
+                UpdateRowsY(index, (int)numReplaceTo.Value, (int)numReplaceTo.Value, (int)numReplaceTo.Value + (int)grdTextures.Rows[index].Cells[6].Value);
+
         }
 
         private void grdTextures_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
@@ -509,6 +513,9 @@ namespace CrashEdit.CE.Controls
                 og.U2 = (byte)(newU + ints[1]);
                 og.U3 = (byte)(newU + ints[2]);
                 og.Segment = (byte)segment;
+
+                UpdateRowsX(e.RowIndex, og.U1, og.U2, og.U3);
+
                 //Console.WriteLine($"Recalculated U1: {U1}, U2: {U2}, U3: {U3}, xoffUnit: {xoffUnit}, segment: {segment}, xoff: {xoff}");
             }
             // Y (Top), Height
@@ -574,6 +581,83 @@ namespace CrashEdit.CE.Controls
             var pageIndex = Convert.ToInt32(item.Cells[0].Value);
             string cid = lstPages.Items[pageIndex].SubItems[1].Text;
             UpdatePicture(cid, item.Cells[1].Value, item.Cells[2].Value, item.Cells[3].Value, item.Cells[4].Value, item.Cells[5].Value, item.Cells[6].Value, item.Cells[7].Value, item.Cells[8].Value);
+        }
+
+        private void UpdateRowsX(int targetRowIndex, int newX1, int newX2, int newX3)
+        {
+            // 対象行の ClutX, ClutY を取得
+            var targetRow = grdTextures.Rows[targetRowIndex];
+            var targetClutX = targetRow.Cells["ClutX"].Value?.ToString();
+            var targetClutY = targetRow.Cells["ClutY"].Value?.ToString();
+
+            if (targetClutX == null || targetClutY == null)
+                return;
+
+            int newMinU = Math.Min(newX1, Math.Min(newX2, newX3));
+            int newMaxU = Math.Max(newX1, Math.Max(newX2, newX3));
+
+            foreach (DataGridViewRow row in grdTextures.Rows)
+            {
+                // ClutX, ClutY が一致する行のみ対象
+                if (row.Cells["ClutX"].Value?.ToString() == targetClutX &&
+                    row.Cells["ClutY"].Value?.ToString() == targetClutY)
+                {
+                    if (int.TryParse(row.Cells["X1"].Value?.ToString(), out int U1) &&
+                        int.TryParse(row.Cells["X2"].Value?.ToString(), out int U2) &&
+                        int.TryParse(row.Cells["X3"].Value?.ToString(), out int U3))
+                    {
+                        int minU = Math.Min(U1, Math.Min(U2, U3));
+                        int maxU = Math.Max(U1, Math.Max(U2, U3));
+
+                        U1 = (U1 == minU) ? newMinU : newMaxU;
+                        U2 = (U2 == minU) ? newMinU : newMaxU;
+                        U3 = (U3 == minU) ? newMinU : newMaxU;
+
+                        row.Cells["X1"].Value = U1;
+                        row.Cells["X2"].Value = U2;
+                        row.Cells["X3"].Value = U3;
+                    }
+                }
+            }
+        }
+
+
+        private void UpdateRowsY(int targetRowIndex, int newY1, int newY2, int newY3)
+        {
+            // 対象行の ClutX, ClutY を取得
+            var targetRow = grdTextures.Rows[targetRowIndex];
+            var targetClutX = targetRow.Cells["ClutX"].Value?.ToString();
+            var targetClutY = targetRow.Cells["ClutY"].Value?.ToString();
+
+            if (targetClutX == null || targetClutY == null)
+                return;
+
+            int newMinV = Math.Min(newY1, Math.Min(newY2, newY3));
+            int newMaxV = Math.Max(newY1, Math.Max(newY2, newY3));
+
+            foreach (DataGridViewRow row in grdTextures.Rows)
+            {
+                // ClutX, ClutY が一致する行のみ対象
+                if (row.Cells["ClutX"].Value?.ToString() == targetClutX &&
+                    row.Cells["ClutY"].Value?.ToString() == targetClutY)
+                {
+                    if (int.TryParse(row.Cells["Y1"].Value?.ToString(), out int V1) &&
+                        int.TryParse(row.Cells["Y2"].Value?.ToString(), out int V2) &&
+                        int.TryParse(row.Cells["Y3"].Value?.ToString(), out int V3))
+                    {
+                        int minV = Math.Min(V1, Math.Min(V2, V3));
+                        int maxV = Math.Max(V1, Math.Max(V2, V3));
+
+                        V1 = (V1 == minV) ? newMinV : newMaxV;
+                        V2 = (V2 == minV) ? newMinV : newMaxV;
+                        V3 = (V3 == minV) ? newMinV : newMaxV;
+
+                        row.Cells["Y1"].Value = V1;
+                        row.Cells["Y2"].Value = V2;
+                        row.Cells["Y3"].Value = V3;
+                    }
+                }
+            }
         }
 
         private void tbpColors_Enter(object sender, EventArgs e)
