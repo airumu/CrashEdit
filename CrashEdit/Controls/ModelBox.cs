@@ -1,7 +1,11 @@
 ﻿using System.Drawing.Imaging;
 using System.Globalization;
+using System.Security.Cryptography;
 using System.Windows.Forms;
 using CrashEdit.Crash;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
+using static CrashEdit.CE.TextureViewer;
 using HslColor = Cyotek.Windows.Forms.HslColor;
 
 namespace CrashEdit.CE.Controls
@@ -11,15 +15,24 @@ namespace CrashEdit.CE.Controls
         private ModelEntryController controller;
         private ModelEntry model;
 
+        public TexturePageList TPages { get; set; }
+
         private float MasterHue => hueColorSlider.Value;
         private float MasterSaturation => saturationColorSlider.Value;
         private float MasterLightness => lightnessColorSlider.Value;
         private bool EditMode { get; set; }
+        private bool SimpleMode { get; set; }
+        private bool Expand { get; set; }
+
+        private TextureChunk chunk;
+        private TextureType textype;
+        private Rectangle selectedregion;
 
         public ModelBox(ModelEntryController controller)
         {
             this.controller = controller;
             model = controller.ModelEntry;
+            DoubleBuffered = true;
             InitializeComponent();
             UpdateInfo();
 
@@ -28,13 +41,14 @@ namespace CrashEdit.CE.Controls
 
         private void UpdateInfo()
         {
-            listView1.Columns.Add("Index");
-            listView1.Columns.Add("TPage");
+
+            lstTex.Columns.Add("Index");
+            lstTex.Columns.Add("TPage");
             for (int i = 0; i < model.TPAGCount; ++i)
             {
                 ListViewItem newitem = new ListViewItem(i.ToString());
                 newitem.SubItems.Add(Entry.EIDToEName(model.GetTPAG(i)));
-                listView1.Items.Add(newitem);
+                lstTex.Items.Add(newitem);
             }
         }
 
@@ -134,7 +148,7 @@ namespace CrashEdit.CE.Controls
 
                     // Draw the subitem text in red to highlight it. 
                     e.Graphics.DrawString(e.SubItem.Text,
-                        listView1.Font, Brushes.Red, e.Bounds, sf);
+                        lstTex.Font, Brushes.Red, e.Bounds, sf);
 
                     return;
                 }
@@ -145,9 +159,206 @@ namespace CrashEdit.CE.Controls
             }
         }
 
+
+
         private void UpdateTexture()
         {
 
+            lstTextures.Columns.Add("ClutX");
+            lstTextures.Columns.Add("ClutY");
+            lstTextures.Columns.Add("Left");
+            lstTextures.Columns.Add("Top");
+            lstTextures.Columns.Add("Width");
+            lstTextures.Columns.Add("Height");
+            lstTextures.Columns.Add("BlendMode");
+            lstTextures.Columns.Add("ColorMode");
+            lstTextures.Columns.Add("Page");
+            for (int i = 0; i < model.Textures.Count; ++i)
+            {
+                var item = model.Textures[i];
+                ListViewItem lsi = new(item.ClutX.ToString());
+                lsi.SubItems.Add(item.ClutY.ToString());
+                lsi.SubItems.Add(item.Left.ToString());
+                lsi.SubItems.Add(item.Top.ToString());
+                lsi.SubItems.Add(item.Width.ToString());
+                lsi.SubItems.Add(item.Height.ToString());
+                lsi.SubItems.Add(item.BlendMode.ToString());
+                lsi.SubItems.Add(item.ColorMode.ToString());
+                lsi.SubItems.Add(item.Page.ToString());
+                lstTextures.Items.Add(lsi);
+            }
+        }
+
+        private void lstTextures_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lstTextures.SelectedItems.Count <= 0) return;
+
+            int i = lstTextures.SelectedItems[0].Index;
+            var item = lstTextures.Items[i];
+            var index = Convert.ToInt32(item.SubItems[8].Text);
+            string cid = lstTex.Items[index].SubItems[1].Text;
+            UpdatePicture(cid, Convert.ToInt32(item.SubItems[0].Text), Convert.ToInt32(item.SubItems[1].Text), Convert.ToInt32(item.SubItems[2].Text), Convert.ToInt32(item.SubItems[3].Text), Convert.ToInt32(item.SubItems[4].Text), Convert.ToInt32(item.SubItems[5].Text));
+        }
+
+        private void ListView_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            var hitTestInfo = lstTextures.HitTest(e.Location);
+            var clickedItem = hitTestInfo.Item;
+            var clickedSubItem = hitTestInfo.SubItem;
+
+            if (clickedItem != null && clickedSubItem != null)
+            {
+                int subItemIndex = clickedItem.SubItems.IndexOf(clickedSubItem);
+
+                numEdit.Tag = new ListViewEditInfo(clickedItem, subItemIndex);
+                numEdit.Enabled = true;
+                numEdit.Value = Convert.ToInt32(clickedSubItem.Text);
+                numEdit.Select(0, numEdit.Text.Length);
+                numEdit.Focus();
+            }
+        }
+
+        private void NumEdit_LostFocus(object sender, EventArgs e)
+        {
+            ApplyEdit(true);
+        }
+
+        private void NumEdit_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                ApplyEdit(true);
+            if (e.KeyCode == Keys.Escape)
+                ApplyEdit(false);
+        }
+
+        private void ApplyEdit(bool apply)
+        {
+            if (numEdit.Tag is ListViewEditInfo editInfo)
+            {
+                if (apply)
+                {
+                    int value = (int)numEdit.Value;
+                    editInfo.Item.SubItems[editInfo.SubItemIndex].Text = value.ToString();
+                }
+
+                numEdit.Tag = null;
+            }
+            numEdit.Enabled = false;
+        }
+
+        private void UpdateTextureList()
+        {
+            if (Expand)
+            {
+                lstTextures.Columns.Clear();
+                lstTextures.Columns.Add("ClutX");
+                lstTextures.Columns.Add("ClutY");
+                lstTextures.Columns.Add("X1");
+                lstTextures.Columns.Add("X2");
+                lstTextures.Columns.Add("X3");
+                //lstTextures.Columns.Add("X4");
+                lstTextures.Columns.Add("Y1");
+                lstTextures.Columns.Add("Y2");
+                lstTextures.Columns.Add("Y3");
+                //lstTextures.Columns.Add("Y4");
+
+                lstTextures.Items.Clear();
+                for (int i = 0; i < model.Textures.Count; ++i)
+                {
+                    var item = model.Textures[i];
+                    ListViewItem lsi = new ListViewItem(item.ClutX.ToString());
+                    lsi.SubItems.Add(item.ClutY.ToString());
+                    lsi.SubItems.Add(item.X1.ToString());
+                    lsi.SubItems.Add(item.X2.ToString());
+                    lsi.SubItems.Add(item.X3.ToString());
+                    //lsi.SubItems.Add(item.X4.ToString());
+                    lsi.SubItems.Add(item.Y1.ToString());
+                    lsi.SubItems.Add(item.Y2.ToString());
+                    lsi.SubItems.Add(item.Y3.ToString());
+                    //lsi.SubItems.Add(item.Y4.ToString());
+                    lstTextures.Items.Add(lsi);
+                }
+            }
+            else
+            {
+                lstTextures.Columns.Clear();
+                lstTextures.Columns.Add("ClutX");
+                lstTextures.Columns.Add("ClutY");
+                lstTextures.Columns.Add("Left");
+                lstTextures.Columns.Add("Top");
+                lstTextures.Columns.Add("Width");
+                lstTextures.Columns.Add("Height");
+                lstTextures.Columns.Add("BlendMode");
+                lstTextures.Columns.Add("ColorMode");
+                lstTextures.Columns.Add("Page");
+
+                lstTextures.Items.Clear();
+                for (int i = 0; i < model.Textures.Count; ++i)
+                {
+                    var item = model.Textures[i];
+                    ListViewItem lsi = new ListViewItem(item.ClutX.ToString());
+                    lsi.SubItems.Add(item.ClutY.ToString());
+                    lsi.SubItems.Add(item.Left.ToString());
+                    lsi.SubItems.Add(item.Top.ToString());
+                    lsi.SubItems.Add(item.Width.ToString());
+                    lsi.SubItems.Add(item.Height.ToString());
+                    lsi.SubItems.Add(item.Page.ToString());
+                    lsi.SubItems.Add(item.BlendMode.ToString());
+                    lsi.SubItems.Add(item.ColorMode.ToString());
+                    lstTextures.Items.Add(lsi);
+                }
+            }
+        }
+
+        private void TrimTextureList()
+        {
+            if (SimpleMode)
+            {
+                RemoveDuplicateNodes(lstTextures);
+
+                //// Output result for demonstration
+                //foreach (ListViewItem item in lstTextures.Items)
+                //{
+                //    Console.WriteLine(string.Join(", ", item.SubItems.Cast<ListViewItem.ListViewSubItem>().Select(sub => sub.Text)));
+                //}
+            }
+        }
+
+
+        private void cmdEditAll_Click(object sender, EventArgs e)
+        {
+        }
+
+        public static void RemoveDuplicateNodes(ListView listView)
+        {
+            var uniqueItems = new HashSet<string>();
+            var itemsToRemove = new List<ListViewItem>();
+
+            // Gather duplicate items
+            foreach (ListViewItem item in listView.Items)
+            {
+                var key = string.Join(",", item.SubItems.Cast<ListViewItem.ListViewSubItem>().Select(sub => sub.Text));
+
+                if (!uniqueItems.Add(key))
+                {
+                    itemsToRemove.Add(item);
+                }
+            }
+
+            // Disable updates to avoid UI flickering
+            listView.BeginUpdate();
+
+            // Deselect all items to avoid selection errors
+            listView.SelectedItems.Clear();
+
+            // Remove duplicate items
+            foreach (var item in itemsToRemove)
+            {
+                listView.Items.Remove(item);
+            }
+
+            // Re-enable updates
+            listView.EndUpdate();
         }
 
         private void listView1_Click(object? sender, EventArgs e)
@@ -360,5 +571,114 @@ namespace CrashEdit.CE.Controls
             tglGlobalControl.Switched = false;
         }
 
+        private void UpdatePicture(string cid, int TexCX, int TexCY, int TexX, int TexY, int TexW, int TexH)
+        {
+            TextureChunk chunk = controller.GetEntry<TextureChunk>(Entry.ENameToEID(cid));
+            int pw = 1024;
+            int ph = 128;
+            // Bitmap bitmap = new Bitmap(pw + 64, ph + 64, PixelFormat.Format32bppArgb); // we give the image some buffer space for the selection graphic
+            Bitmap bitmap = new Bitmap(pw + 2, ph + 2, PixelFormat.Format32bppArgb);
+            Rectangle brect = new Rectangle(Point.Empty, bitmap.Size);
+            BitmapData bdata = bitmap.LockBits(brect, ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+            int[] palette = null;
+            int colormode = 0;
+            int blendmode = 3;
+            if (colormode == 0)
+            {
+                int clutx = TexCX;
+                int cluty = TexCY;
+                palette = new int[16];
+                for (int x = 0; x < 16; ++x)
+                {
+                    palette[x] = PixelConv.Convert5551_8888(BitConv.FromInt16(chunk.Data, cluty * 512 + (clutx * 16 + x) * 2), blendmode);
+                }
+            }
+            else if (colormode == 1)
+            {
+                int cluty = TexCY;
+                palette = new int[256];
+                for (int x = 0; x < 256; ++x)
+                {
+                    palette[x] = PixelConv.Convert5551_8888(BitConv.FromInt16(chunk.Data, cluty * 512 + x * 2), blendmode);
+                }
+            }
+            try
+            {
+                for (int y = 0; y < ph; y++)
+                {
+                    for (int x = 0; x < pw; x++)
+                    {
+                        int pixel = colormode == 0 ? palette[chunk.Data[x / 2 + y * 512] >> ((x & 1) == 0 ? 0 : 4) & 0xF] :
+                        colormode == 1 ? palette[chunk.Data[x + y * 512]] :
+                                    colormode == 2 ? PixelConv.Convert5551_8888(BitConv.FromInt16(chunk.Data, x * 2 + y * 512), blendmode)
+                                    : throw new Exception("invalid colormode");
+                        System.Runtime.InteropServices.Marshal.WriteInt32(bdata.Scan0, x * 4 + y * bdata.Stride, pixel);
+                    }
+                }
+            }
+            finally
+            {
+                bitmap.UnlockBits(bdata);
+            }
+            using (Graphics g = Graphics.FromImage(bitmap))
+            {
+                int x = TexX;
+                int y = TexY;
+                int w = TexW;
+                int h = TexH;
+                using (var brush = new SolidBrush(Color.FromArgb(127, 0, 0, 0)))
+                using (var pen = new Pen(Color.Black))
+                {
+                    int minh = Math.Min(h, ph - y);
+                    g.FillRectangles(brush, new Rectangle[4]
+                    {
+                        new Rectangle(0, 0, pw, y),
+                        new Rectangle(0, y, x, minh),
+                        new Rectangle(x+w, y, Math.Max(pw-(x+w),0), minh),
+                        new Rectangle(0, y+h, pw, Math.Max(ph-(y+h),0))
+                    });
+                    g.DrawRectangles(pen, new Rectangle[2]
+                    {
+                        new Rectangle(x-1,y-1,w+1,h+1),
+                        new Rectangle(x-3,y-3,w+5,h+5)
+                    });
+                    pen.Color = Color.White;
+                    g.DrawRectangle(pen, new Rectangle(x - 2, y - 2, w + 3, h + 3));
+                }
+                selectedregion.X = x;
+                selectedregion.Y = y;
+                selectedregion.Width = w;
+                selectedregion.Height = h;
+            }
+            pictureBox1.Image = bitmap;
+            pictureBox1.Size = bitmap.Size;
+            /*            if (Width != pw + 16)
+                            Width = pw + 16;*/
+            Width = 1024 + 32;
+        }
+
+        private void tglSimpleMode_SwitchedChanged(object sender)
+        {
+            SimpleMode = tglSimpleMode.Switched;
+            TrimTextureList();
+        }
+
+        private void tglExpand_SwitchedChanged(object sender)
+        {
+            Expand = tglExpand.Switched;
+            UpdateTextureList();
+        }
+    }
+
+    public class ListViewEditInfo
+    {
+        public ListViewItem Item { get; set; }
+        public int SubItemIndex { get; set; }
+
+        public ListViewEditInfo(ListViewItem item, int subItemIndex)
+        {
+            Item = item;
+            SubItemIndex = subItemIndex;
+        }
     }
 }
