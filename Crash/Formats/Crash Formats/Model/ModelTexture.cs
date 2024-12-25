@@ -75,20 +75,20 @@ namespace CrashEdit.Crash
         }
 
         public byte ColorMode { get; set; }
-        public byte U1 { get; }
-        public byte V1 { get; }
-        public byte U2 { get; }
-        public byte V2 { get; }
-        public byte U3 { get; }
-        public byte V3 { get; }
-        public byte U4 { get; }
-        public byte V4 { get; }
+        public byte U1 { get; set; }
+        public byte V1 { get; set; }
+        public byte U2 { get; set; }
+        public byte V2 { get; set; }
+        public byte U3 { get; set; }
+        public byte V3 { get; set; }
+        public byte U4 { get; set; }
+        public byte V4 { get; set; }
         public byte ClutX { get; set; } // 16-color (32-byte) segments
         public byte ClutY1 { get; set; }
         public byte ClutY2 { get; set; }
         public byte BlendMode { get; set; }
-        public byte Segment { get; }
-        public byte Page { get; }
+        public byte Segment { get; set; }
+        public byte Page { get; set; }
 
         public int ClutY => (ClutY2 << 2) | (ClutY1 >> 2 & 0x3);
         public int Left { get; }
