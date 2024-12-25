@@ -47,7 +47,9 @@ namespace CrashEdit.Crash
             Left = Math.Min(U1, Math.Min(U2, U3)) + xoff;
             Top = Math.Min(V1, Math.Min(V2, V3));
             Width = Math.Max(U1, Math.Max(U2, U3)) + xoff - Left;
+            Width++; // fake value
             Height = Math.Max(V1, Math.Max(V2, V3)) - Top;
+            Height++; // fake value
             int tx1 = U1 + xoff;
             int tx2 = U2 + xoff;
             int tx3 = U3 + xoff;

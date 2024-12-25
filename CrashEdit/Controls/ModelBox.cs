@@ -1,8 +1,10 @@
-﻿using System.Drawing.Imaging;
+﻿using System;
+using System.Drawing.Imaging;
 using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Windows.Forms;
+using System.Windows.Media.Media3D;
 using AltUI.Forms;
 using CrashEdit.Crash;
 using CrashEdit.Crash.GOOLIns;
@@ -25,7 +27,6 @@ namespace CrashEdit.CE.Controls
         private float MasterLightness => lightnessColorSlider.Value;
         private bool EditMode { get; set; }
         private bool SimpleMode { get; set; }
-        private bool Expand { get; set; }
 
         private TextureChunk chunk;
         private TextureType textype;
@@ -218,7 +219,44 @@ namespace CrashEdit.CE.Controls
                 null, grdTextures, new object[] { true });
         }
 
-        private void UpdateTexture()
+        private void SetTag(int start, int end)
+        {
+            int startColumnIndex = start;
+            int endColumnIndex = end;
+
+            foreach (DataGridViewRow row in grdTextures.Rows)
+            {
+                double maxValue = double.MinValue;
+
+                for (int col = startColumnIndex; col <= endColumnIndex; col++)
+                {
+                    var cellValue = row.Cells[col].Value;
+
+                    if (cellValue != null && double.TryParse(cellValue.ToString(), out double value))
+                    {
+                        if (value > maxValue)
+                        {
+                            maxValue = value;
+                        }
+                    }
+                }
+                for (int col = startColumnIndex; col <= endColumnIndex; col++)
+                {
+                    var cellValue = row.Cells[col].Value;
+
+                    if (cellValue != null && double.TryParse(cellValue.ToString(), out double value))
+                    {
+                        if (value == maxValue)
+                        {
+                            row.Cells[col].Tag = "MaxValue";
+                            row.Cells[col].Style.ForeColor = Color.Turquoise;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void LoadTextureList()
         {
             grdTextures.SuspendLayout();
 
@@ -246,23 +284,25 @@ namespace CrashEdit.CE.Controls
                 row.CreateCells(grdTextures, item.Page, item.ClutX, item.ClutY, item.Left, item.Top, item.Width, item.Height, item.BlendMode, item.ColorMode, item.X1, item.X2, item.X3, item.Y1, item.Y2, item.Y3);
                 grdTextures.Rows.Add(row);
             }
+            SetTag(9, 11);
+            SetTag(12, 14);
             grdTextures.ResumeLayout();
-            ToggleExpand();
+
+            foreach (DataGridViewColumn column in grdTextures.Columns)
+            {
+                if (column.Index >= 3 && column.Index <= 6)
+                    column.Visible = false;
+
+                if (column.Index >= 9)
+                    column.Visible = true;
+            }
+            AdjustColumnWidths();
 
             if (grdTextures.Rows.Count > 0)
             {
                 fraSwitches.Enabled = true;
                 fraReplace.Enabled = true;
             }
-        }
-
-        private void UpdateTextureList()
-        {
-            if (grdTextures.IsCurrentCellInEditMode)
-                grdTextures.CancelEdit();
-            grdTextures.Columns.Clear();
-            grdTextures.Rows.Clear();
-            UpdateTexture();
         }
 
         private void grdTextures_SelectionChanged(object sender, EventArgs e)
@@ -309,21 +349,26 @@ namespace CrashEdit.CE.Controls
 
         private void ToggleSimpleMode()
         {
-            UpdateTextureList();
+            if (grdTextures.IsCurrentCellInEditMode)
+                grdTextures.CancelEdit();
+
+            grdTextures.Columns.Clear();
+            grdTextures.Rows.Clear();
+            LoadTextureList();
+
             if (SimpleMode)
             {
+                foreach (DataGridViewColumn column in grdTextures.Columns)
+                {
+                    if (column.Index >= 3 && column.Index <= 6)
+                        column.Visible = true;
+
+                    if (column.Index >= 9)
+                        column.Visible = false;
+                }
                 RemoveDuplicateRowsExceptColumns(grdTextures, 9, 10, 11, 12, 13, 14);
-                tglExpand.Enabled = false;
             }
             else
-            {
-                tglExpand.Enabled = true;
-            }
-        }
-
-        private void ToggleExpand()
-        {
-            if (Expand)
             {
                 foreach (DataGridViewColumn column in grdTextures.Columns)
                 {
@@ -333,19 +378,6 @@ namespace CrashEdit.CE.Controls
                     if (column.Index >= 9)
                         column.Visible = true;
                 }
-                tglSimpleMode.Enabled = false;
-            }
-            else
-            {
-                foreach (DataGridViewColumn column in grdTextures.Columns)
-                {
-                    if (column.Index >= 3 && column.Index <= 6)
-                        column.Visible = true;
-
-                    if (column.Index >= 9)
-                        column.Visible = false;
-                }
-                tglSimpleMode.Enabled = true;
             }
             AdjustColumnWidths();
         }
@@ -422,13 +454,22 @@ namespace CrashEdit.CE.Controls
 
         }
 
+        private void GetXOff(int colorMode, int value, out int segment, out int xoff)
+        {
+            int xoffUnit = (1 << (2 - colorMode)) * 64;
+            segment = value / xoffUnit;
+            xoff = xoffUnit * segment;
+            return;
+        }
+
         private void grdTextures_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0)
                 return;
 
-            var item = grdTextures.Rows[e.RowIndex];
             var og = model.Textures[e.RowIndex];
+            var item = grdTextures.Rows[e.RowIndex];
+            int colorMode = Convert.ToInt32(item.Cells[8].Value);
 
             // Page
             if (e.ColumnIndex == 0)
@@ -443,7 +484,92 @@ namespace CrashEdit.CE.Controls
                 og.ClutY1 = (byte)((value & 0x3) << 2);
                 og.ClutY2 = (byte)(value >> 2);
             }
+            // X (Left), Width
+            else if (e.ColumnIndex == 3 || e.ColumnIndex == 5)
+            {
+                int value = Convert.ToInt32(item.Cells[3].Value);
+                int width = Convert.ToInt32(item.Cells[5].Value) - 1; // fake value
+                int U1 = og.U1, U2 = og.U2, U3 = og.U3;
+                int minU = Math.Min(U1, Math.Min(U2, U3));
 
+                int segment, xoff;
+                GetXOff(colorMode, value, out segment, out xoff);
+                int newU = value - xoff;
+
+                //if (U1 == minU) U1 = newU; else U1 = newU + width;
+                //if (U2 == minU) U2 = newU; else U2 = newU + width;
+                //if (U3 == minU) U3 = newU; else U3 = newU + width;
+                int[] ints = new int[3];
+                for (int i = 0; i < 3; i++)
+                {
+                    if (item.Cells[i + 9].Tag != null && item.Cells[i + 9].Tag.ToString() == "MaxValue")
+                        ints[i] = width;
+                }
+                og.U1 = (byte)(newU + ints[0]);
+                og.U2 = (byte)(newU + ints[1]);
+                og.U3 = (byte)(newU + ints[2]);
+                og.Segment = (byte)segment;
+                //Console.WriteLine($"Recalculated U1: {U1}, U2: {U2}, U3: {U3}, xoffUnit: {xoffUnit}, segment: {segment}, xoff: {xoff}");
+            }
+            // Y (Top), Height
+            else if (e.ColumnIndex == 4 || e.ColumnIndex == 6)
+            {
+                int value = Convert.ToInt32(item.Cells[4].Value);
+                int height = Convert.ToInt32(item.Cells[6].Value) - 1; // fake value
+                int V1 = og.V1, V2 = og.V2, V3 = og.V3;
+                int minV = Math.Min(V1, Math.Min(V2, V3));
+
+                int newV = value;
+                int[] ints = new int[3];
+                for (int i = 0; i < 3; i++)
+                {
+                    if (item.Cells[i + 12].Tag != null && item.Cells[i + 12].Tag.ToString() == "MaxValue")
+                        ints[i] = height;
+                }
+                og.V1 = (byte)(newV + ints[0]);
+                og.V2 = (byte)(newV + ints[1]);
+                og.V3 = (byte)(newV + ints[2]);
+            }
+            // Blend Mode
+            else if (e.ColumnIndex == 7)
+                og.ClutX = Convert.ToByte(item.Cells[7].Value);
+            // Color Mode
+            else if (e.ColumnIndex == 8)
+                og.ClutX = Convert.ToByte(item.Cells[8].Value);
+            // X1, X2, X3
+            else if (e.ColumnIndex >= 9 && e.ColumnIndex <= 11)
+            {
+                int value = Convert.ToInt32(item.Cells[e.ColumnIndex].Value);
+                int U1 = og.U1, U2 = og.U2, U3 = og.U3;
+                int minU = Math.Min(U1, Math.Min(U2, U3));
+
+                int segment, xoff;
+                GetXOff(colorMode, value, out segment, out xoff);
+                int newU = value - xoff;
+
+                if (item.Cells[e.ColumnIndex].Tag != null && item.Cells[e.ColumnIndex].Tag.ToString() == "MaxValue")
+                    newU--;
+
+                if (e.ColumnIndex == 9) og.U1 = (byte)newU;
+                else if (e.ColumnIndex == 10) og.U2 = (byte)newU;
+                else if (e.ColumnIndex == 11) og.U3 = (byte)newU;
+                og.Segment = (byte)segment;
+            }
+            // Y1, Y2, Y3
+            else if (e.ColumnIndex >= 12 && e.ColumnIndex <= 14)
+            {
+                int value = Convert.ToInt32(item.Cells[e.ColumnIndex].Value);
+                int V1 = og.V1, V2 = og.V2, V3 = og.V3;
+                int minV = Math.Min(V1, Math.Min(V2, V3));
+
+                int newV = value;
+                if (item.Cells[e.ColumnIndex].Tag != null && item.Cells[e.ColumnIndex].Tag.ToString() == "MaxValue")
+                    newV--;
+
+                if (e.ColumnIndex == 12) og.V1 = (byte)newV;
+                else if (e.ColumnIndex == 13) og.V2 = (byte)newV;
+                else if (e.ColumnIndex == 14) og.V3 = (byte)newV;
+            }
 
             var pageIndex = Convert.ToInt32(item.Cells[0].Value);
             string cid = lstPages.Items[pageIndex].SubItems[1].Text;
@@ -460,7 +586,7 @@ namespace CrashEdit.CE.Controls
         {
             SetDarkTheme(grdTextures);
             EnableDoubleBuffering();
-            UpdateTexture();
+            LoadTextureList();
             tbpTextures.Enter -= tbpTextures_Enter;
         }
 
@@ -753,17 +879,6 @@ namespace CrashEdit.CE.Controls
         {
             SimpleMode = tglSimpleMode.Switched;
             ToggleSimpleMode();
-        }
-
-        private void tglExpand_SwitchedChanged(object sender)
-        {
-            Expand = tglExpand.Switched;
-            UpdateTextureList();
-        }
-
-        private void lblSimpleMode_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void lstPages_ColumnWidthChangingHandler(object sender, ColumnWidthChangingEventArgs e)

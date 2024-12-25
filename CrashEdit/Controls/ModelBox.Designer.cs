@@ -60,10 +60,7 @@ namespace CrashEdit.CE.Controls
             lstColor = new DoubleBufferedListView();
             tbpTextures = new TabPage();
             fraSwitches = new AltUI.Controls.DarkGroupBox();
-            lblSimpleMode = new Label();
             tglSimpleMode = new MetroSetSwitch();
-            lblExpand = new Label();
-            tglExpand = new MetroSetSwitch();
             fraReplace = new AltUI.Controls.DarkGroupBox();
             numReplace = new AltUI.Controls.DarkNumericUpDown();
             cmdReplace = new AltUI.Controls.DarkButton();
@@ -317,27 +314,15 @@ namespace CrashEdit.CE.Controls
             // 
             // fraSwitches
             // 
-            fraSwitches.Controls.Add(lblSimpleMode);
+            fraSwitches.BackColor = Color.Transparent;
             fraSwitches.Controls.Add(tglSimpleMode);
-            fraSwitches.Controls.Add(lblExpand);
-            fraSwitches.Controls.Add(tglExpand);
             fraSwitches.Enabled = false;
-            fraSwitches.Location = new Point(740, 13);
+            fraSwitches.Location = new Point(786, 3);
             fraSwitches.Name = "fraSwitches";
-            fraSwitches.Size = new Size(107, 106);
+            fraSwitches.Size = new Size(107, 53);
             fraSwitches.TabIndex = 7;
             fraSwitches.TabStop = false;
-            // 
-            // lblSimpleMode
-            // 
-            lblSimpleMode.AutoSize = true;
-            lblSimpleMode.BackColor = Color.Transparent;
-            lblSimpleMode.Location = new Point(6, 0);
-            lblSimpleMode.Name = "lblSimpleMode";
-            lblSimpleMode.Size = new Size(77, 15);
-            lblSimpleMode.TabIndex = 3;
-            lblSimpleMode.Text = "Simple mode";
-            lblSimpleMode.Click += lblSimpleMode_Click;
+            fraSwitches.Text = "Simple Mode";
             // 
             // tglSimpleMode
             // 
@@ -364,48 +349,13 @@ namespace CrashEdit.CE.Controls
             tglSimpleMode.UnCheckColor = Color.FromArgb(155, 155, 155);
             tglSimpleMode.SwitchedChanged += tglSimpleMode_SwitchedChanged;
             // 
-            // lblExpand
-            // 
-            lblExpand.AutoSize = true;
-            lblExpand.BackColor = Color.Transparent;
-            lblExpand.Location = new Point(6, 56);
-            lblExpand.Name = "lblExpand";
-            lblExpand.Size = new Size(46, 15);
-            lblExpand.TabIndex = 3;
-            lblExpand.Text = "Expand";
-            // 
-            // tglExpand
-            // 
-            tglExpand.BackColor = Color.Transparent;
-            tglExpand.BackgroundColor = Color.Empty;
-            tglExpand.BorderColor = Color.FromArgb(155, 155, 155);
-            tglExpand.CheckColor = Color.FromArgb(65, 177, 225);
-            tglExpand.CheckState = MetroSet_UI.Enums.CheckState.Unchecked;
-            tglExpand.DisabledBorderColor = Color.FromArgb(85, 85, 85);
-            tglExpand.DisabledCheckColor = Color.FromArgb(100, 65, 177, 225);
-            tglExpand.DisabledUnCheckColor = Color.FromArgb(200, 205, 205, 205);
-            tglExpand.IsDerivedStyle = true;
-            tglExpand.Location = new Point(8, 78);
-            tglExpand.Name = "tglExpand";
-            tglExpand.Size = new Size(58, 22);
-            tglExpand.Style = MetroSet_UI.Enums.Style.Dark;
-            tglExpand.StyleManager = null;
-            tglExpand.Switched = false;
-            tglExpand.SymbolColor = Color.FromArgb(92, 92, 92);
-            tglExpand.TabIndex = 2;
-            tglExpand.Text = "Expand";
-            tglExpand.ThemeAuthor = "Narwin";
-            tglExpand.ThemeName = "MetroDark";
-            tglExpand.UnCheckColor = Color.FromArgb(155, 155, 155);
-            tglExpand.SwitchedChanged += tglExpand_SwitchedChanged;
-            // 
             // fraReplace
             // 
             fraReplace.BackColor = Color.Transparent;
             fraReplace.Controls.Add(numReplace);
             fraReplace.Controls.Add(cmdReplace);
             fraReplace.Enabled = false;
-            fraReplace.Location = new Point(740, 125);
+            fraReplace.Location = new Point(786, 62);
             fraReplace.Name = "fraReplace";
             fraReplace.Size = new Size(107, 100);
             fraReplace.TabIndex = 6;
@@ -469,9 +419,13 @@ namespace CrashEdit.CE.Controls
             grdTextures.AllowUserToAddRows = false;
             grdTextures.AllowUserToResizeColumns = false;
             grdTextures.AllowUserToResizeRows = false;
-            grdTextures.Location = new Point(158, 13);
+            grdTextures.ColumnHeadersHeight = 24;
+            grdTextures.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            grdTextures.Location = new Point(158, 3);
             grdTextures.Name = "grdTextures";
-            grdTextures.Size = new Size(576, 243);
+            grdTextures.RowHeadersWidth = 24;
+            grdTextures.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            grdTextures.Size = new Size(622, 253);
             grdTextures.TabIndex = 0;
             grdTextures.CellEndEdit += grdTextures_CellEndEdit;
             grdTextures.CellValidating += grdTextures_CellValidating;
@@ -493,7 +447,6 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)picPreview).EndInit();
             tbpTextures.ResumeLayout(false);
             fraSwitches.ResumeLayout(false);
-            fraSwitches.PerformLayout();
             fraReplace.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)numReplace).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
@@ -525,10 +478,7 @@ namespace CrashEdit.CE.Controls
         private AltUI.Controls.DarkButton cmdCancel;
         private DataGridView grdTextures;
         private PictureBox pictureBox1;
-        private Label lblSimpleMode;
         private MetroSetSwitch tglSimpleMode;
-        private Label lblExpand;
-        private MetroSetSwitch tglExpand;
         private AltUI.Controls.DarkButton cmdReplace;
         private AltUI.Controls.DarkGroupBox fraReplace;
         private AltUI.Controls.DarkNumericUpDown numReplace;
