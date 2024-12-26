@@ -18,6 +18,10 @@ namespace CrashEdit.CE
         private TextureType textype;
         private Rectangle selectedregion;
 
+        private bool isDragging = false;
+        private Point dragStartPoint;
+        private Point initialSelectedRegionPosition;
+
         public TextureViewer(TextureChunk texturechunk)
         {
             chunk = texturechunk;
@@ -28,12 +32,12 @@ namespace CrashEdit.CE
 
             InitializeComponent();
 
-            tabC1.Enter += delegate (object sender, EventArgs e)
+            tabC1.Enter += delegate (object? sender, EventArgs e)
             {
                 textype = TextureType.Crash1;
                 UpdatePicture();
             };
-            tabC2.Enter += delegate (object sender, EventArgs e)
+            tabC2.Enter += delegate (object? sender, EventArgs e)
             {
                 textype = TextureType.Crash2;
                 UpdatePicture();
@@ -46,7 +50,7 @@ namespace CrashEdit.CE
             C2dpdColor.SelectedIndex = 0;
             C2dpdBlend.SelectedIndex = 3;
 
-            pictureBox1.MouseClick += delegate (object sender, MouseEventArgs e)
+            pictureBox1.MouseClick += delegate (object? sender, MouseEventArgs e)
             {
                 if (e.Button == MouseButtons.Right && pictureBox1.Image != null && pictureBox1.Image is Bitmap bmp)
                 {
@@ -55,6 +59,84 @@ namespace CrashEdit.CE
                         bmp.Clone(selectedregion, PixelFormat.Format32bppArgb).Save(w, ImageFormat.Png);
                         FileUtil.SaveFile($"{chunk.EName}_{TexCY}_{TexCX}", w.ToArray(), FileFilters.PNG);
                     }
+                }
+            };
+
+            pictureBox1.MouseDown += (sender, e) =>
+            {
+                if (textype == TextureType.Crash1) return;
+                if (e.Button == MouseButtons.Left)
+                {
+                    selectedregion.Width = 32;
+                    selectedregion.Height = 32;
+                    C2numW.Value = 32;
+                    C2numH.Value = 32;
+
+                    dragStartPoint = e.Location;
+                    //initialSelectedRegionPosition = selectedregion.Location;
+                    selectedregion = new Rectangle(dragStartPoint.X, dragStartPoint.Y, TexW, TexH);
+                    isDragging = true;
+
+                    int clickX = e.X;
+                    int clickY = e.Y;
+                    int offsetX = clickX / TexW * TexW;
+                    int offsetY = clickY / TexH * TexH;
+                    selectedregion.X = offsetX;
+                    selectedregion.Y = offsetY;
+                    C2numX.Value = offsetX;
+                    C2numY.Value = offsetY;
+                    UpdatePicture();
+                }
+            };
+
+            pictureBox1.MouseMove += (sender, e) =>
+            {
+                if (textype == TextureType.Crash1) return;
+                if (isDragging)
+                {
+                    int deltaX = e.X - dragStartPoint.X + 32;
+                    int deltaY = e.Y - dragStartPoint.Y + 32;
+                    selectedregion.Width = deltaX;
+                    selectedregion.Height = deltaY;
+                    selectedregion.Width = (selectedregion.Width / 32) * 32;
+                    selectedregion.Height = (selectedregion.Height / 32) * 32;
+
+                    if (selectedregion.Width < 32)
+                        selectedregion.Width = 32;
+                    else if (selectedregion.Width > 1024)
+                        selectedregion.Width = 1024;
+
+                    if (selectedregion.Height < 32)
+                        selectedregion.Height = 32;
+                    else if (selectedregion.Height > 128)
+                        selectedregion.Height = 128;
+
+                    C2numW.Value = selectedregion.Width;
+                    C2numH.Value = selectedregion.Height;
+                    UpdatePicture();
+                }
+                //if (isDragging)
+                //{
+                //    int deltaX = e.X - dragStartPoint.X;
+                //    int deltaY = e.Y - dragStartPoint.Y;
+                //    int newX = initialSelectedRegionPosition.X + deltaX;
+                //    int newY = initialSelectedRegionPosition.Y + deltaY;
+                //    newX = (newX / TexW) * TexW;
+                //    newY = (newY / TexH) * TexH;
+                //    C2numX.Value = newX;
+                //    C2numY.Value = newY;
+                //    selectedregion.X = newX;
+                //    selectedregion.Y = newY;
+                //    UpdatePicture();
+                //}
+            };
+
+            pictureBox1.MouseUp += (sender, e) =>
+            {
+                if (textype == TextureType.Crash1) return;
+                if (e.Button == MouseButtons.Left)
+                {
+                    isDragging = false;
                 }
             };
 
@@ -193,34 +275,48 @@ namespace CrashEdit.CE
                 int y = TexY;
                 int w = TexW;
                 int h = TexH;
+
                 using (var brush = new SolidBrush(Color.FromArgb(127, 0, 0, 0)))
                 using (var pen = new Pen(Color.Black))
                 {
                     int minh = Math.Min(h, ph - y);
                     g.FillRectangles(brush, new Rectangle[4]
                     {
-                        new Rectangle(0, 0, pw, y),
-                        new Rectangle(0, y, x, minh),
-                        new Rectangle(x+w, y, Math.Max(pw-(x+w),0), minh),
-                        new Rectangle(0, y+h, pw, Math.Max(ph-(y+h),0))
+                    new Rectangle(0, 0, pw, y),
+                    new Rectangle(0, y, x, minh),
+                    new Rectangle(x + w, y, Math.Max(pw - (x + w), 0), minh),
+                    new Rectangle(0, y + h, pw, Math.Max(ph - (y + h), 0))
                     });
-                    g.DrawRectangles(pen, new Rectangle[2]
+
+                    if (textype == TextureType.Crash1)
                     {
-                        new Rectangle(x-1,y-1,w+1,h+1),
-                        new Rectangle(x-3,y-3,w+5,h+5)
-                    });
-                    pen.Color = Color.White;
-                    g.DrawRectangle(pen, new Rectangle(x - 2, y - 2, w + 3, h + 3));
+                        g.DrawRectangles(pen, new Rectangle[2]
+                        {
+                            new Rectangle(x-1,y-1,w+1,h+1),
+                            new Rectangle(x-3,y-3,w+5,h+5)
+                        });
+                        pen.Color = Color.White;
+                        g.DrawRectangle(pen, new Rectangle(x - 2, y - 2, w + 3, h + 3));
+                    }
+                    else
+                    {
+                        g.DrawRectangles(pen, new Rectangle[2]
+                        {
+                            new Rectangle(selectedregion.X - 1, selectedregion.Y - 1, selectedregion.Width + 1, selectedregion.Height + 1),
+                            new Rectangle(selectedregion.X - 3, selectedregion.Y - 3, selectedregion.Width + 5, selectedregion.Height + 5)
+                        });
+                        pen.Color = Color.White;
+                        g.DrawRectangle(pen, new Rectangle(selectedregion.X - 2, selectedregion.Y - 2, selectedregion.Width + 3, selectedregion.Height + 3));
+                    }
                 }
                 selectedregion.X = x;
                 selectedregion.Y = y;
                 selectedregion.Width = w;
                 selectedregion.Height = h;
             }
+
             pictureBox1.Image = bitmap;
             pictureBox1.Size = bitmap.Size;
-            /*            if (Width != pw + 16)
-                            Width = pw + 16;*/
             Width = 1024 + 32;
         }
 
@@ -228,42 +324,49 @@ namespace CrashEdit.CE
         {
             C2numW.Value = 16;
             C2numH.Value = 16;
+            UpdatePicture();
         }
 
         private void C2Size32_Click(object sender, EventArgs e)
         {
             C2numW.Value = 32;
             C2numH.Value = 32;
+            UpdatePicture();
         }
 
         private void C2Size64_Click(object sender, EventArgs e)
         {
             C2numW.Value = 64;
             C2numH.Value = 64;
+            UpdatePicture();
         }
 
         private void C2SizeMax_Click(object sender, EventArgs e)
         {
             C2numW.Value = 1024;
             C2numH.Value = 128;
+            UpdatePicture();
         }
 
         private void C1Size16_Click(object sender, EventArgs e)
         {
             C1dpdW.SelectedItem = "16";
             C1dpdH.SelectedItem = "16";
+            UpdatePicture();
         }
 
         private void C1Size32_Click(object sender, EventArgs e)
         {
             C1dpdW.SelectedItem = "32";
             C1dpdH.SelectedItem = "32";
+            UpdatePicture();
         }
 
         private void C1Size64_Click(object sender, EventArgs e)
         {
             C1dpdW.SelectedItem = "64";
             C1dpdH.SelectedItem = "64";
+            UpdatePicture();
         }
 
         private void C2btnMoveX1_Click(object sender, EventArgs e)
