@@ -16,6 +16,7 @@ namespace CrashEdit.CE
             AddMenu(CrashUI.Properties.Resources.NSFController_AcAddSoundChunk, Menu_Add_SoundChunk);
             AddMenu(CrashUI.Properties.Resources.NSFController_AcAddWavebankChunk, Menu_Add_WavebankChunk);
             AddMenu(CrashUI.Properties.Resources.NSFController_AcAddSpeechChunk, Menu_Add_SpeechChunk);
+            AddMenu(CrashUI.Properties.Resources.NSFController_AcAddTextureChunk, Menu_Add_TextureChunk);
             AddMenu(CrashUI.Properties.Resources.NSFController_AcImportChunk, Menu_Import_Chunk);
             if (GameVersion == GameVersion.Crash2 || GameVersion == GameVersion.Crash3)
             {
@@ -83,6 +84,15 @@ namespace CrashEdit.CE
         private void Menu_Add_SpeechChunk()
         {
             SpeechChunk chunk = new SpeechChunk();
+            NSF.Chunks.Add(chunk);
+        }
+
+        private void Menu_Add_TextureChunk()
+        {
+            byte[] header = { 0x34, 0x12, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0xAE, 0x5B, 0x34, 0x56};
+            byte[] newchunk = new byte[65536];
+            Array.Copy(header, 0, newchunk, 0, header.Length);
+            TextureChunk chunk = new TextureChunk(newchunk);
             NSF.Chunks.Add(chunk);
         }
 

@@ -357,4 +357,7 @@
   <data name="NSFController_AcShowLevelZones" xml:space="preserve">
     <value>全てのゾーンを表示</value>
   </data>
+  <data name="NSFController_AcAddTextureChunk" xml:space="preserve">
+    <value>テクスチャチャンクの追加</value>
+  </data>
 </root>

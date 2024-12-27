@@ -392,7 +392,18 @@ namespace CrashEdit.CrashUI.Properties {
                 return ResourceManager.GetString("NSFController_AcAddWavebankChunk", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Add Wavebank Chunk.
+        /// </summary>
+        public static string NSFController_AcAddTextureChunk
+        {
+            get
+            {
+                return ResourceManager.GetString("NSFController_AcAddTextureChunk", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Fix Box Count.
         /// </summary>

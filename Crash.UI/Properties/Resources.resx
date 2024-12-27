@@ -357,4 +357,7 @@
   <data name="NSFController_AcShowLevelZones" xml:space="preserve">
     <value>Show All Level Zones</value>
   </data>
+  <data name="NSFController_AcAddTextureChunk" xml:space="preserve">
+    <value>Add Texture Chunk</value>
+  </data>
 </root>
