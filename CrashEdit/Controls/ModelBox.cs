@@ -817,7 +817,7 @@ namespace CrashEdit.CE.Controls
 
             IsBGRA = true;
             ReplaceCLUT = true;
-            chkOutput.Checked = Settings.Default.OutputTextureCopyResult;
+            chkOutput.Checked = Settings.Default.OutputCopyTextureResult;
 
             lblEIDError.Text = string.Empty;
             if (lstTPages.Items.Count > 0)
@@ -1183,7 +1183,7 @@ namespace CrashEdit.CE.Controls
 
         private void chkOutput_CheckedChanged(object sender, EventArgs e)
         {
-            Settings.Default.OutputTextureCopyResult = chkOutput.Checked;
+            Settings.Default.OutputCopyTextureResult = chkOutput.Checked;
             Settings.Default.Save();
         }
 
@@ -1276,10 +1276,11 @@ namespace CrashEdit.CE.Controls
         {
             bool is8bpp = (bpp == 8);
 
-            if (textureWidth != VRAMWidth * (is8bpp ? 1 : 2))
-                CreateBufferFromTexture(texture1, textureWidth, textureHeight, is8bpp);
-            else
-                vram = texture1;
+            //if (textureWidth != VRAMWidth * (is8bpp ? 1 : 2))
+            //    CreateBufferFromTexture(texture1, textureWidth, textureHeight, is8bpp);
+            //else
+            //    vram = texture1;
+            CreateBufferFromTexture(texture1, textureWidth, textureHeight, is8bpp);
 
             if (bpp == 4)
             {
@@ -1287,7 +1288,7 @@ namespace CrashEdit.CE.Controls
                 {
                     int offset1 = (i + srcY) * 0x200 + srcX / 2;
                     int offset2 = (i + destY) * 0x200 + destX / 2;
-                    if (Settings.Default.OutputTextureCopyResult)
+                    if (Settings.Default.OutputCopyTextureResult)
                         Console.WriteLine($"i: {i:D2} offset1: {offset1:D5}, offset2: {offset2:D5}");
                     Array.Copy(vram, offset1, texture2, offset2, (width * 4) / 8);
                 }
@@ -1298,7 +1299,7 @@ namespace CrashEdit.CE.Controls
                 {
                     int offset1 = (i + srcY) * 0x200 + srcX;
                     int offset2 = (i + destY) * 0x200 + destX;
-                    if (Settings.Default.OutputTextureCopyResult)
+                    if (Settings.Default.OutputCopyTextureResult)
                         Console.WriteLine($"i: {i:D2} offset1: {offset1:D5}, offset2: {offset2:D5}");
                     Array.Copy(vram, offset1, texture2, offset2, width);
                 }
@@ -1326,7 +1327,7 @@ namespace CrashEdit.CE.Controls
 
                 if (sourceOffset + rowBytes <= texture1.Length && destinationOffset + rowBytes <= vram.Length)
                 {
-                    if (Settings.Default.OutputTextureCopyResult)
+                    if (Settings.Default.OutputCopyTextureResult)
                         Console.WriteLine($"y: {y:D2} sourceOffset: {sourceOffset:D5}, destinationOffset: {destinationOffset:D5}");
                     Array.Copy(texture1, sourceOffset, vram, destinationOffset, rowBytes);
                 }

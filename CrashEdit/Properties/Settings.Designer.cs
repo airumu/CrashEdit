@@ -482,12 +482,12 @@ namespace CrashEdit.CE.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool OutputTextureCopyResult {
+        public bool OutputCopyTextureResult {
             get {
-                return ((bool)(this["OutputTextureCopyResult"]));
+                return ((bool)(this["OutputCopyTextureResult"]));
             }
             set {
-                this["OutputTextureCopyResult"] = value;
+                this["OutputCopyTextureResult"] = value;
             }
         }
     }

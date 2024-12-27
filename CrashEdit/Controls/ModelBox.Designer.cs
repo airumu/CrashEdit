@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Data.Common;
+using System.Windows.Forms;
 using AltUI.ColorPicker;
 using Cyotek.Windows.Forms;
 using MetroSet_UI.Controls;
@@ -621,6 +622,7 @@ namespace CrashEdit.CE.Controls
             grdTextures.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             grdTextures.Size = new Size(622, 356);
             grdTextures.TabIndex = 0;
+            grdTextures.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             grdTextures.CellEndEdit += grdTextures_CellEndEdit;
             grdTextures.CellValidating += grdTextures_CellValidating;
             grdTextures.CellValueChanged += grdTextures_CellValueChanged;
