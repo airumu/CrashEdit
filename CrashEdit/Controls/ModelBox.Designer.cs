@@ -44,6 +44,7 @@ namespace CrashEdit.CE.Controls
         {
             tabModel = new MetroSetTabControl();
             tbpInfo = new TabPage();
+            label2 = new Label();
             tbpColors = new TabPage();
             fraGlobalControl = new AltUI.Controls.DarkGroupBox();
             cmdCancel = new AltUI.Controls.DarkButton();
@@ -81,6 +82,7 @@ namespace CrashEdit.CE.Controls
             lstTPages = new DoubleBufferedListView();
             grdTextures = new DataGridView();
             tabModel.SuspendLayout();
+            tbpInfo.SuspendLayout();
             tbpColors.SuspendLayout();
             fraGlobalControl.SuspendLayout();
             pnGlobalControl.SuspendLayout();
@@ -112,7 +114,7 @@ namespace CrashEdit.CE.Controls
             tabModel.Location = new Point(0, 0);
             tabModel.Multiline = true;
             tabModel.Name = "tabModel";
-            tabModel.SelectedIndex = 2;
+            tabModel.SelectedIndex = 0;
             tabModel.SelectedTextColor = Color.White;
             tabModel.Size = new Size(1040, 800);
             tabModel.SizeMode = TabSizeMode.Fixed;
@@ -128,11 +130,23 @@ namespace CrashEdit.CE.Controls
             // tbpInfo
             // 
             tbpInfo.BackColor = Color.FromArgb(31, 31, 32);
+            tbpInfo.Controls.Add(label2);
             tbpInfo.Location = new Point(4, 32);
             tbpInfo.Name = "tbpInfo";
             tbpInfo.Size = new Size(1032, 764);
             tbpInfo.TabIndex = 0;
             tbpInfo.Text = "Info";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.BackColor = Color.Transparent;
+            label2.Location = new Point(12, 12);
+            label2.Name = "label2";
+            label2.Size = new Size(184, 45);
+            label2.TabIndex = 0;
+            label2.Text = "Polygon count: {0}\r\nVertex count: {1}\r\nCompression ratio: {2:P1} ({3}/{4})";
+            label2.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // tbpColors
             // 
@@ -620,6 +634,8 @@ namespace CrashEdit.CE.Controls
             Name = "ModelBox";
             Size = new Size(1040, 800);
             tabModel.ResumeLayout(false);
+            tbpInfo.ResumeLayout(false);
+            tbpInfo.PerformLayout();
             tbpColors.ResumeLayout(false);
             fraGlobalControl.ResumeLayout(false);
             pnGlobalControl.ResumeLayout(false);
@@ -681,5 +697,6 @@ namespace CrashEdit.CE.Controls
         private AltUI.Controls.DarkTextBox txtTPage;
         private Label lblEIDError;
         private CheckBox chkReplaceCLUT;
+        private Label label2;
     }
 }

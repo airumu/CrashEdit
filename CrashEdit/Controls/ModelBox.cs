@@ -57,6 +57,20 @@ namespace CrashEdit.CE.Controls
         private void UpdateInfo()
         {
 
+            if (model.Positions == null)
+                label2.Text = string.Format("Polygon count: {0}\nVertex count: {1}", model.PolyCount, model.VertexCount);
+            else
+            {
+                int totalbits = model.Positions.Count * 8 * 3;
+                int bits = 0;
+                foreach (ModelPosition pos in model.Positions)
+                {
+                    bits += 1 + pos.XBits;
+                    bits += 1 + pos.YBits;
+                    bits += 1 + pos.ZBits;
+                }
+                label2.Text = string.Format("Polygon count: {0}\nVertex count: {1}\nCompression ratio: {2:P1} ({3}/{4})", model.PolyCount, model.VertexCount, (float)bits / totalbits, bits, totalbits);
+            }
         }
 
         private void UpdateColorList()
@@ -293,10 +307,10 @@ namespace CrashEdit.CE.Controls
 
             foreach (DataGridViewColumn column in grdTextures.Columns)
             {
-                if (column.Index >= 3 && column.Index <= 6)
+                if (column.Index >= ColLeft && column.Index <= ColHeight)
                     column.Visible = false;
 
-                if (column.Index >= 9)
+                if (column.Index >= ColX1 && column.Index <= ColY3)
                     column.Visible = true;
             }
             AdjustColumnWidths();
