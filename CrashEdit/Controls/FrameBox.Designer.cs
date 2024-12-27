@@ -843,6 +843,7 @@ namespace CrashEdit.CE
             // 
             // numHeader
             // 
+            numHeader.Enabled = false;
             numHeader.InterceptArrowKeys = false;
             numHeader.Location = new Point(27, 17);
             numHeader.Margin = new Padding(3, 4, 3, 4);
@@ -881,6 +882,7 @@ namespace CrashEdit.CE
             // 
             // numSPVertex
             // 
+            numSPVertex.Enabled = false;
             numSPVertex.InterceptArrowKeys = false;
             numSPVertex.Location = new Point(27, 17);
             numSPVertex.Margin = new Padding(3, 4, 3, 4);
