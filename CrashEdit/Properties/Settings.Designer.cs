@@ -478,5 +478,17 @@ namespace CrashEdit.CE.Properties {
                 this["DefaultGameVersion"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool OutputTextureCopyResult {
+            get {
+                return ((bool)(this["OutputTextureCopyResult"]));
+            }
+            set {
+                this["OutputTextureCopyResult"] = value;
+            }
+        }
     }
 }

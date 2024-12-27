@@ -1,8 +1,15 @@
-﻿using System.Drawing.Imaging;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.Globalization;
 using System.Windows.Forms;
+using System.Windows.Media.Media3D;
+using System.Xml.Linq;
 using AltUI.Forms;
+using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
+using static System.Windows.Forms.AxHost;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 using static CrashEdit.CE.TextureViewer;
 using HslColor = Cyotek.Windows.Forms.HslColor;
 
@@ -20,10 +27,15 @@ namespace CrashEdit.CE.Controls
         private float MasterLightness => lightnessColorSlider.Value;
         private bool EditMode { get; set; }
         private bool SimpleMode { get; set; }
+        private bool IsBGRA { get; set; }
+        private bool OutputResult { get; set; }
+        private TextureChunk chunk { get; set; }
 
-        private TextureChunk chunk;
         private TextureType textype;
         private Rectangle selectedregion;
+
+        private int SelectedRegionX { get; set; }
+        private int SelectedRegionY { get; set; }
 
         public ModelBox(ModelEntryController controller)
         {
@@ -39,14 +51,7 @@ namespace CrashEdit.CE.Controls
         private void UpdateInfo()
         {
 
-            lstPages.Columns.Add("Index");
-            lstPages.Columns.Add("Page");
-            for (int i = 0; i < model.TPAGCount; ++i)
-            {
-                ListViewItem newitem = new ListViewItem(i.ToString());
-                newitem.SubItems.Add(Entry.EIDToEName(model.GetTPAG(i)));
-                lstPages.Items.Add(newitem);
-            }
+
         }
 
         private void UpdateColorList()
@@ -144,7 +149,7 @@ namespace CrashEdit.CE.Controls
 
                     // Draw the subitem text in red to highlight it. 
                     e.Graphics.DrawString(e.SubItem.Text,
-                        lstPages.Font, Brushes.Red, e.Bounds, sf);
+                        lstTPages.Font, Brushes.Red, e.Bounds, sf);
 
                     return;
                 }
@@ -249,7 +254,7 @@ namespace CrashEdit.CE.Controls
             }
         }
 
-        private void LoadTextureList()
+        private void UpdateTextureList()
         {
             grdTextures.SuspendLayout();
 
@@ -306,15 +311,15 @@ namespace CrashEdit.CE.Controls
                 var item = grdTextures.Rows[rowIndex];
 
                 var pageIndex = Convert.ToInt32(item.Cells[0].Value);
-                string cid = lstPages.Items[pageIndex].SubItems[1].Text;
+                string cid = lstTPages.Items[pageIndex].SubItems[1].Text;
 
                 UpdatePicture(cid, item.Cells[1].Value, item.Cells[2].Value, item.Cells[3].Value, item.Cells[4].Value, item.Cells[5].Value, item.Cells[6].Value, item.Cells[7].Value, item.Cells[8].Value);
 
                 numReplace.Value = Convert.ToInt32(grdTextures.CurrentCell.Value);
                 numReplaceTo.Value = numReplace.Value;
                 numRowIndex.Value = grdTextures.CurrentCell.RowIndex;
-                lstPages.SelectedItems.Clear();
-                lstPages.Items[pageIndex].Selected = true;
+                lstTPages.SelectedItems.Clear();
+                lstTPages.Items[pageIndex].Selected = true;
                 //lstPages.EnsureVisible(pageIndex);
             }
         }
@@ -349,7 +354,7 @@ namespace CrashEdit.CE.Controls
 
             grdTextures.Columns.Clear();
             grdTextures.Rows.Clear();
-            LoadTextureList();
+            UpdateTextureList();
 
             if (SimpleMode)
             {
@@ -377,6 +382,94 @@ namespace CrashEdit.CE.Controls
             AdjustColumnWidths();
         }
 
+        private void ReplaceTextureFromFile()
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "Image Files|*.bmp;*.png;|All Files|*.*";
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string filePath = openFileDialog.FileName;
+                    string extension = Path.GetExtension(filePath).ToLower();
+                    bool Failed = false;
+                    switch (extension)
+                    {
+                        case ".bmp":
+                            try
+                            {
+                                var result = ImageProcessor.ProcessBmp(filePath);
+                                ReplaceTexture(result.rawImageData, result.palette, result.width, result.height);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($"Error: {ex.Message}");
+                            }
+                            break;
+                        case ".png":
+                            try
+                            {
+                                var result = ImageProcessor.ProcessPng(filePath, IsBGRA);
+                                ReplaceTexture(result.rawImageData, result.palette, result.width, result.height);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($"Error: {ex.Message}");
+                            }
+                            break;
+                        default:
+                            Console.WriteLine("The selected file is not a supported image format.");
+                            Failed = true;
+                            break;
+                    }
+
+                    if (Failed)
+                    {
+                        Console.WriteLine("Failed to process the image file.");
+                    }
+                }
+            }
+        }
+
+        private void ReplaceTexture(byte[] _rawImageData, byte[] _palette, int _width, int _height)
+        {
+            byte[] rawImageData = _rawImageData;
+            byte[] palette = _palette;
+            int width = _width;
+            int height = _height;
+
+            byte[] rgba5551List = ImageProcessor.ConvertPaletteToRGBA5551(palette);
+            int paletteCount = rgba5551List.Length / 2;
+            int bpp = (paletteCount <= 16) ? 4 : 8;
+
+            byte[] currentData = chunk.Data;
+
+            int destX = SelectedRegionX;
+            if (grdTextures.SelectedCells.Count > 0)
+            {
+                int rowIndex = grdTextures.SelectedCells[0].RowIndex;
+                if (Convert.ToInt32(grdTextures.Rows[rowIndex].Cells[8].Value) == 1)
+                    destX *= 2;
+            }
+            byte[] newTextureData = ImageProcessor.CopyTexture(rawImageData, currentData, width, height, bpp, 0, 0, width, height, destX / (bpp == 8 ? 2 : 1), SelectedRegionY);
+            chunk.Data = newTextureData;
+
+            WriteResult(rgba5551List, rawImageData, paletteCount, bpp, width, height);
+        }
+
+        private void WriteResult(byte[] rgba5551List, byte[] rawImageData, int colorCount, int bpp, int width, int height)
+        {
+            Console.WriteLine($"Raw Image Data Length: {rawImageData.Length}");
+            Console.WriteLine($"Image Size: {width} x {height}");
+            Console.WriteLine($"Palette Count: {colorCount}, {bpp}bpp");
+            string hexString = BitConverter.ToString(rgba5551List).Replace("-", "");
+            Console.WriteLine($"Palette (RGBA5551 format):\r\n{hexString}");
+        }
+
+        private void cmdReplaceTexture_Click(object sender, EventArgs e)
+        {
+            ReplaceTextureFromFile();
+        }
+
         private void cmdReplace_Click(object sender, EventArgs e)
         {
             //byte valueFrom = (byte)numReplace.Value;
@@ -401,7 +494,7 @@ namespace CrashEdit.CE.Controls
 
             // Page
             if (e.ColumnIndex == 0)
-                maxValue = lstPages.Items.Count - 1;
+                maxValue = lstTPages.Items.Count - 1;
             // ClutX
             else if (e.ColumnIndex == 1)
                 maxValue = 15;
@@ -477,7 +570,10 @@ namespace CrashEdit.CE.Controls
 
             // Page
             if (e.ColumnIndex == 0)
+            {
                 og.Page = Convert.ToByte(item.Cells[0].Value);
+                UpdateTPageButtons();
+            }
             // ClutX
             else if (e.ColumnIndex == 1)
                 og.ClutX = Convert.ToByte(item.Cells[1].Value);
@@ -579,7 +675,7 @@ namespace CrashEdit.CE.Controls
             }
 
             var pageIndex = Convert.ToInt32(item.Cells[0].Value);
-            string cid = lstPages.Items[pageIndex].SubItems[1].Text;
+            string cid = lstTPages.Items[pageIndex].SubItems[1].Text;
             UpdatePicture(cid, item.Cells[1].Value, item.Cells[2].Value, item.Cells[3].Value, item.Cells[4].Value, item.Cells[5].Value, item.Cells[6].Value, item.Cells[7].Value, item.Cells[8].Value);
         }
 
@@ -670,8 +766,58 @@ namespace CrashEdit.CE.Controls
         {
             SetDarkTheme(grdTextures);
             EnableDoubleBuffering();
-            LoadTextureList();
+            UpdateTPageList();
+            UpdateTextureList();
+            UpdateTPageButtons();
+
+            IsBGRA = true;
+            chkOutput.Checked = Settings.Default.OutputTextureCopyResult;
+            lblEIDError.Text = string.Empty;
+            if (lstTPages.Items.Count > 0)
+                txtTPage.Enabled = true;
+
             tbpTextures.Enter -= tbpTextures_Enter;
+        }
+
+        private void UpdateTPageList()
+        {
+            lstTPages.Columns.Add("Index");
+            lstTPages.Columns.Add("Page");
+            for (int i = 0; i < model.TPAGCount; ++i)
+            {
+                ListViewItem newitem = new ListViewItem(i.ToString());
+                newitem.SubItems.Add(Entry.EIDToEName(model.GetTPAG(i)));
+                lstTPages.Items.Add(newitem);
+            }
+            UpdateTPageButtons();
+        }
+
+        private void UpdateTPageButtons()
+        {
+            if (model.TPAGCount > 7)
+                cmdAppendTPage.Enabled = false;
+            else
+                cmdAppendTPage.Enabled = true;
+
+            if (model.TPAGCount == 0)
+                cmdRemoveTPage.Enabled = false;
+            else
+                cmdRemoveTPage.Enabled = true;
+
+            if (grdTextures.Rows.Count > 0)
+            {
+                int maxIndex = 0;
+                foreach (DataGridViewRow row in grdTextures.Rows)
+                {
+                    int curIndex = Convert.ToInt32(row.Cells[0].Value.ToString());
+                    if (curIndex > maxIndex)
+                        maxIndex = curIndex;
+                }
+                if (lstTPages.Items.Count <= maxIndex + 1)
+                    cmdRemoveTPage.Enabled = false;
+                else
+                    cmdRemoveTPage.Enabled = true;
+            }
         }
 
         private void SetModelColor(Color color, int i)
@@ -877,7 +1023,7 @@ namespace CrashEdit.CE.Controls
             int TexH = Convert.ToInt32(texH);
             int colormode = Convert.ToInt32(colorMode);
             int blendmode = 3;
-            TextureChunk chunk = controller.GetEntry<TextureChunk>(Entry.ENameToEID(cid));
+            chunk = controller.GetEntry<TextureChunk>(Entry.ENameToEID(cid));
             int pw = 256 << (2 - colormode);
             int ph = 128;
             // Bitmap bitmap = new Bitmap(pw + 64, ph + 64, PixelFormat.Format32bppArgb); // we give the image some buffer space for the selection graphic
@@ -951,6 +1097,8 @@ namespace CrashEdit.CE.Controls
                 selectedregion.Y = y;
                 selectedregion.Width = w;
                 selectedregion.Height = h;
+                SelectedRegionX = x;
+                SelectedRegionY = y;
             }
             pictureBox1.Image = bitmap;
             pictureBox1.Size = bitmap.Size;
@@ -968,10 +1116,79 @@ namespace CrashEdit.CE.Controls
         private void lstPages_ColumnWidthChangingHandler(object sender, ColumnWidthChangingEventArgs e)
         {
             e.Cancel = true;
-            e.NewWidth = lstPages.Columns[e.ColumnIndex].Width;
+            e.NewWidth = lstTPages.Columns[e.ColumnIndex].Width;
         }
 
-     
+        private void chkBGRA_CheckedChanged(object sender, EventArgs e)
+        {
+            IsBGRA = chkBGRA.Checked;
+        }
+
+        private void chkOutput_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.OutputTextureCopyResult = chkOutput.Checked;
+            Settings.Default.Save();
+        }
+
+        private void cmdAppendTPage_Click(object sender, EventArgs e)
+        {
+            if (lstTPages.Items.Count < 8)
+            {
+                int index = lstTPages.Items.Count;
+                string name = lstTPages.Items[index - 1].SubItems[1].Text;
+                model.SetTPAG(index, Entry.ENameToEID(name));
+                ++model.TPAGCount;
+
+                ListViewItem newitem = new ListViewItem((index).ToString());
+                newitem.SubItems.Add(name);
+                lstTPages.Items.Add(newitem);
+                UpdateTPageButtons();
+            }
+        }
+
+        private void cmdRemoveTPage_Click(object sender, EventArgs e)
+        {
+            if (lstTPages.Items.Count > 0)
+            {
+                int index = lstTPages.Items.Count;
+                int name = 0;
+                model.SetTPAG(index - 1, name);
+                --model.TPAGCount;
+
+                lstTPages.Items.RemoveAt(index - 1);
+                UpdateTPageButtons();
+            }
+        }
+
+        private void txtTPage_TextChanged(object sender, EventArgs e)
+        {
+            lblEIDError.Text = Entry.CheckEIDErrors(txtTPage.Text, true);
+        }
+
+        private void UpdateEID()
+        {
+            if (lblEIDError.Text != string.Empty) return;
+
+            lstTPages.SelectedItems[0].SubItems[1].Text = txtTPage.Text;
+            model.SetTPAG(lstTPages.SelectedIndices[0], Entry.ENameToEID(txtTPage.Text));
+        }
+
+        private void txtTPage_KeyDown(object? sender, KeyEventArgs e)
+        {
+            if (e.KeyData == Keys.Enter)
+                UpdateEID();
+        }
+
+        private void txtTPage_LostFocus(object? sender, EventArgs e)
+        {
+            UpdateEID();
+        }
+
+        private void lstTPages_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(lstTPages.Items.Count > 0 && lstTPages.SelectedItems.Count > 0)
+                txtTPage.Text = lstTPages.SelectedItems[0].SubItems[1].Text;
+        }
     }
 
     public class ListViewEditInfo
@@ -985,4 +1202,233 @@ namespace CrashEdit.CE.Controls
             SubItemIndex = subItemIndex;
         }
     }
+
+    public class ImageProcessor
+    {
+        const int VRAMWidth = 512;
+        const int VRAMHeight = 128;
+        private static byte[] vram = new byte[VRAMWidth * VRAMHeight];
+        const int BufferSize = 65536;
+
+        public static byte[] CopyTexture(byte[] texture1, byte[] texture2, int textureWidth, int textureHeight, int bpp, int srcX, int srcY, int width, int height, int destX, int destY)
+        {
+            bool is8bpp = (bpp == 8);
+
+            if (textureWidth != VRAMWidth * (is8bpp ? 1 : 2))
+                CreateBufferFromTexture(texture1, textureWidth, textureHeight, is8bpp);
+            else
+                vram = texture1;
+
+            if (bpp == 4)
+            {
+                for (int i = 0; i < height; i++)
+                {
+                    int offset1 = (i + srcY) * 0x200 + srcX / 2;
+                    int offset2 = (i + destY) * 0x200 + destX / 2;
+                    if (Settings.Default.OutputTextureCopyResult)
+                        Console.WriteLine($"i: {i:D2} offset1: {offset1:D5}, offset2: {offset2:D5}");
+                    Array.Copy(vram, offset1, texture2, offset2, (width * 4) / 8);
+                }
+            }
+            else if (bpp == 8)
+            {
+                for (int i = 0; i < height; i++)
+                {
+                    int offset1 = (i + srcY) * 0x200 + srcX;
+                    int offset2 = (i + destY) * 0x200 + destX;
+                    if (Settings.Default.OutputTextureCopyResult)
+                        Console.WriteLine($"i: {i:D2} offset1: {offset1:D5}, offset2: {offset2:D5}");
+                    Array.Copy(vram, offset1, texture2, offset2, width);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Unsupported bpp value.");
+            }
+
+            return texture2;
+        }
+
+        public static void CreateBufferFromTexture(byte[] texture1, int texture1Width, int texture1Height, bool is8bpp)
+        {
+            Console.WriteLine();
+            Array.Clear(vram, 0, vram.Length);
+
+            int bytesPerPixel = is8bpp ? 1 : 2;
+            int rowBytes = is8bpp ? texture1Width : (texture1Width + 1) / 2;
+
+            for (int y = 0; y < texture1Height; y++)
+            {
+                int sourceOffset = y * rowBytes;
+                int destinationOffset = y * VRAMWidth;
+
+                if (sourceOffset + rowBytes <= texture1.Length && destinationOffset + rowBytes <= vram.Length)
+                {
+                    if (Settings.Default.OutputTextureCopyResult)
+                        Console.WriteLine($"y: {y:D2} sourceOffset: {sourceOffset:D5}, destinationOffset: {destinationOffset:D5}");
+                    Array.Copy(texture1, sourceOffset, vram, destinationOffset, rowBytes);
+                }
+                else
+                {
+                    Console.WriteLine($"Error: Out of bounds copy. sourceOffset: {sourceOffset}, destinationOffset: {destinationOffset}");
+                }
+            }
+        }
+
+        public static (byte[] rawImageData, byte[] palette, int width, int height) ProcessBmp(string filePath)
+        {
+            byte[] bmpData = File.ReadAllBytes(filePath);
+            int width = BitConverter.ToInt32(bmpData, 18);
+            int height = BitConverter.ToInt32(bmpData, 22);
+            int offset = BitConverter.ToInt32(bmpData, 10);
+            int bitsPerPixel = BitConverter.ToInt16(bmpData, 28);
+
+            if (bitsPerPixel != 4 && bitsPerPixel != 8)
+            {
+                throw new InvalidOperationException("The loaded image is not 4bpp or 8bpp.");
+            }
+
+            int rowSize, paletteSize;
+            if (bitsPerPixel == 4)
+            {
+                rowSize = (width + 1) / 2;
+                paletteSize = 16 * 4;
+            }
+            else
+            {
+                rowSize = width;
+                paletteSize = 256 * 4;
+            }
+            int pixelDataOffset = BitConverter.ToInt32(bmpData, 10);
+            int pixelDataSize = rowSize * height;
+
+            if (bmpData.Length < 54 + paletteSize)
+            {
+                throw new InvalidOperationException("The BMP file is corrupted or incomplete.");
+            }
+            byte[] paletteData = new byte[paletteSize];
+            Array.Copy(bmpData, 54, paletteData, 0, paletteSize);
+
+            byte[] pixelData = new byte[pixelDataSize];
+            Array.Copy(bmpData, offset, pixelData, 0, pixelDataSize);
+
+            byte[] rawImageData = new byte[pixelDataSize];
+
+            for (int y = 0; y < height; y++)
+            {
+                int flippedY = height - 1 - y;
+                int srcOffset = y * rowSize;
+                int destOffset = flippedY * rowSize;
+
+                Array.Copy(pixelData, srcOffset, rawImageData, destOffset, rowSize);
+            }
+
+            return (rawImageData, paletteData, width, height);
+        }
+
+        public static byte[] ConvertPaletteToRGBA5551(byte[] palette)
+        {
+            int paletteSize = palette.Length / 4;
+            byte[] convertedPalette = new byte[paletteSize * 2];
+
+            for (int i = 0; i < paletteSize; i++)
+            {
+                byte r = palette[i * 4];
+                byte g = palette[i * 4 + 1];
+                byte b = palette[i * 4 + 2];
+                byte a = palette[i * 4 + 3];
+
+                ushort rgba5551 = ConvertToRGBA5551(r, g, b, a);
+                convertedPalette[i * 2] = (byte)(rgba5551 & 0xFF);
+                convertedPalette[i * 2 + 1] = (byte)((rgba5551 >> 8) & 0xFF);
+            }
+
+            return convertedPalette;
+        }
+
+        private static ushort ConvertToRGBA5551(byte r, byte g, byte b, byte a)
+        {
+            ushort rgba5551 = 0;
+
+            rgba5551 |= (ushort)((r >> 3) << 10);  // Red: 5 bits
+            rgba5551 |= (ushort)((g >> 3) << 5);   // Green: 5 bits
+            rgba5551 |= (ushort)((b >> 3));        // Blue: 5 bits
+            rgba5551 |= (ushort)((a > 0 ? 1 : 0) << 15);  // Alpha: 1 bit (opaque)
+
+            return rgba5551;
+        }
+
+        public static (byte[] rawImageData, byte[] palette, int width, int height) ProcessPng(string filePath, bool isBGRA)
+        {
+            using (Bitmap bitmap = new Bitmap(filePath))
+            {
+                if (bitmap.PixelFormat != PixelFormat.Format4bppIndexed &&
+                    bitmap.PixelFormat != PixelFormat.Format8bppIndexed)
+                {
+                    throw new InvalidOperationException($"Unsupported pixel format: {bitmap.PixelFormat}");
+                }
+
+                if (bitmap.Width <= 0 || bitmap.Height <= 0)
+                {
+                    throw new InvalidOperationException("Invalid image dimensions.");
+                }
+
+                ColorPalette palette = bitmap.Palette;
+                Color[] paletteColors = new Color[palette.Entries.Length];
+                if (isBGRA)
+                {
+                    for (int i = 0; i < palette.Entries.Length; i++)
+                    {
+                        Color color = palette.Entries[i];
+                        paletteColors[i] = Color.FromArgb(color.A, color.B, color.G, color.R);
+                    }
+                }
+                else
+                {
+                    paletteColors = palette.Entries;
+                }
+
+                byte[] paletteData = new byte[palette.Entries.Length * 4];
+                int index = 0;
+                foreach (Color color in paletteColors)
+                {
+                    paletteData[index++] = color.R;
+                    paletteData[index++] = color.G;
+                    paletteData[index++] = color.B;
+                    paletteData[index++] = color.A;
+                }
+
+                byte[] rawImageData = ExtractRawImageData(bitmap);
+                return (rawImageData, paletteData, bitmap.Width, bitmap.Height);
+            }
+        }
+
+        private static byte[] ExtractRawImageData(Bitmap bitmap)
+        {
+            Rectangle rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
+            BitmapData bitmapData = bitmap.LockBits(rect, ImageLockMode.ReadOnly, bitmap.PixelFormat);
+
+            int bitsPerPixel = Image.GetPixelFormatSize(bitmap.PixelFormat);
+            int bytesPerPixel = bitsPerPixel / 8;
+            int byteWidth = (bitmap.Width * bitsPerPixel + 7) / 8;
+
+            if (byteWidth <= 0 || bitmap.Height <= 0)
+            {
+                throw new InvalidOperationException("Invalid image dimensions.");
+            }
+
+            byte[] rawImageData = new byte[byteWidth * bitmap.Height];
+
+            for (int y = 0; y < bitmap.Height; y++)
+            {
+                IntPtr rowPtr = bitmapData.Scan0 + y * bitmapData.Stride;
+                System.Runtime.InteropServices.Marshal.Copy(rowPtr, rawImageData, y * byteWidth, byteWidth);
+            }
+
+            bitmap.UnlockBits(bitmapData);
+            return rawImageData;
+        }
+
+    }
+ 
 }

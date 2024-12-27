@@ -194,8 +194,13 @@ namespace CrashEdit.Crash
         public int ScaleY => BitConv.FromInt32(Info, 4);
         public int ScaleZ => BitConv.FromInt32(Info, 8);
         public int GetTPAG(int idx) => BitConv.FromInt32(Info, 0xC + 4 * idx);
+        public void SetTPAG(int idx, int value) => BitConv.ToInt32(Info, 0xC + 4 * idx, value);
         public int VertexCount => BitConv.FromInt32(Info, 0x38);
-        public int TPAGCount => BitConv.FromInt32(Info, 0x40);
+        public int TPAGCount
+        {
+            get => BitConv.FromInt32(Info, 0x40);
+            set => BitConv.ToInt32(Info, 0x40, value);
+        }
         public int PolyCount => BitConv.FromInt32(Info, 0x44);
 
         public override UnprocessedEntry Unprocess()
