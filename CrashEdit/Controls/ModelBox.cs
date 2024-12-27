@@ -300,12 +300,6 @@ namespace CrashEdit.CE.Controls
                     column.Visible = true;
             }
             AdjustColumnWidths();
-
-            if (grdTextures.Rows.Count > 0)
-            {
-                fraSwitches.Enabled = true;
-                fraReplace.Enabled = true;
-            }
         }
 
         private void grdTextures_SelectionChanged(object sender, EventArgs e)
@@ -343,7 +337,8 @@ namespace CrashEdit.CE.Controls
 
                 if (uniqueRows.Contains(rowData))
                 {
-                    //dataGridView.Rows.RemoveAt(i);
+                    // Todo fix
+                    dataGridView.Rows.RemoveAt(i);
                 }
                 else
                 {
@@ -809,9 +804,17 @@ namespace CrashEdit.CE.Controls
             IsBGRA = true;
             ReplaceCLUT = true;
             chkOutput.Checked = Settings.Default.OutputTextureCopyResult;
+
             lblEIDError.Text = string.Empty;
             if (lstTPages.Items.Count > 0)
                 txtTPage.Enabled = true;
+
+            if (grdTextures.Rows.Count > 0)
+            {
+                fraSwitches.Enabled = true;
+                fraReplace.Enabled = true;
+                fraReplaceTexture.Enabled = true;
+            }
 
             tbpTextures.Enter -= tbpTextures_Enter;
         }
@@ -831,7 +834,7 @@ namespace CrashEdit.CE.Controls
 
         private void UpdateTPageButtons()
         {
-            if (model.TPAGCount > 7)
+            if (model.TPAGCount > 7 || model.TPAGCount == 0)
                 cmdAppendTPage.Enabled = false;
             else
                 cmdAppendTPage.Enabled = true;
