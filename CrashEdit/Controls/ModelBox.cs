@@ -302,7 +302,7 @@ namespace CrashEdit.CE.Controls
                 var pageIndex = Convert.ToInt32(item.Cells[0].Value);
                 string cid = lstTPages.Items[pageIndex].SubItems[1].Text;
 
-                UpdatePicture(cid, item.Cells[1].Value, item.Cells[2].Value, item.Cells[3].Value, item.Cells[4].Value, item.Cells[5].Value, item.Cells[6].Value, item.Cells[7].Value, item.Cells[8].Value);
+                UpdatePicture();
 
                 numReplace.Value = Convert.ToInt32(grdTextures.CurrentCell.Value);
                 numReplaceTo.Value = numReplace.Value;
@@ -476,6 +476,7 @@ namespace CrashEdit.CE.Controls
                 }
             }
             BitConv.ToInt32(chunk.Data, 12, Chunk.CalculateChecksum(chunk.Data));
+            UpdatePicture();
         }
 
         private void WriteResult(byte[] rgba5551List, byte[] rawImageData, int colorCount, int bpp, int width, int height)
@@ -507,6 +508,7 @@ namespace CrashEdit.CE.Controls
                 UpdateRowsX(index, (int)numReplaceTo.Value, (int)numReplaceTo.Value, (int)numReplaceTo.Value + (int)grdTextures.Rows[index].Cells[5].Value);
             else if (col >= 12 && col <= 14)
                 UpdateRowsY(index, (int)numReplaceTo.Value, (int)numReplaceTo.Value, (int)numReplaceTo.Value + (int)grdTextures.Rows[index].Cells[6].Value);
+            UpdatePicture();
 
         }
 
@@ -698,7 +700,7 @@ namespace CrashEdit.CE.Controls
 
             var pageIndex = Convert.ToInt32(item.Cells[0].Value);
             string cid = lstTPages.Items[pageIndex].SubItems[1].Text;
-            UpdatePicture(cid, item.Cells[1].Value, item.Cells[2].Value, item.Cells[3].Value, item.Cells[4].Value, item.Cells[5].Value, item.Cells[6].Value, item.Cells[7].Value, item.Cells[8].Value);
+            UpdatePicture();
         }
 
         private void UpdateRowsX(int targetRowIndex, int newX1, int newX2, int newX3)
@@ -1036,20 +1038,25 @@ namespace CrashEdit.CE.Controls
             tglGlobalControl.Switched = false;
         }
 
-        private void UpdatePicture(string cid, object texCX, object texCY, object texX, object texY, object texW, object texH, object blendMode, object colorMode)
+        private void UpdatePicture()
         {
-            int TexCX = Convert.ToInt32(texCX);
-            int TexCY = Convert.ToInt32(texCY);
-            int TexX = Convert.ToInt32(texX);
-            int TexY = Convert.ToInt32(texY);
-            int TexW = Convert.ToInt32(texW);
-            int TexH = Convert.ToInt32(texH);
-            int colormode = Convert.ToInt32(colorMode);
-            int blendmode = 3;
+            if (!(grdTextures.SelectedCells.Count > 0)) return;
+
+            var cell = grdTextures.Rows[grdTextures.SelectedCells[0].RowIndex];
+            var pageIndex = Convert.ToInt32(cell.Cells[0].Value);
+            string cid = lstTPages.Items[pageIndex].SubItems[1].Text;
+
+            int TexCX = Convert.ToInt32(cell.Cells[1].Value);
+            int TexCY = Convert.ToInt32(cell.Cells[2].Value);
+            int TexX = Convert.ToInt32(cell.Cells[3].Value);
+            int TexY = Convert.ToInt32(cell.Cells[4].Value);
+            int TexW = Convert.ToInt32(cell.Cells[5].Value);
+            int TexH = Convert.ToInt32(cell.Cells[6].Value);
+            int colormode = Convert.ToInt32(cell.Cells[8].Value);
+            int blendmode = 3; //Convert.ToInt32(cell.Cells[7].Value);
             chunk = controller.GetEntry<TextureChunk>(Entry.ENameToEID(cid));
             int pw = 256 << (2 - colormode);
             int ph = 128;
-            // Bitmap bitmap = new Bitmap(pw + 64, ph + 64, PixelFormat.Format32bppArgb); // we give the image some buffer space for the selection graphic
             Bitmap bitmap = new Bitmap(pw + 2, ph + 2, PixelFormat.Format32bppArgb);
             Rectangle brect = new Rectangle(Point.Empty, bitmap.Size);
             BitmapData bdata = bitmap.LockBits(brect, ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
@@ -1125,8 +1132,6 @@ namespace CrashEdit.CE.Controls
             }
             pictureBox1.Image = bitmap;
             pictureBox1.Size = bitmap.Size;
-            /*            if (Width != pw + 16)
-                            Width = pw + 16;*/
             Width = 1024 + 32;
         }
 
