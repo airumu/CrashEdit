@@ -80,6 +80,7 @@ namespace CrashEdit.CE.Controls
             lstTPages = new DoubleBufferedListView();
             grdTextures = new DataGridView();
             darkButton1 = new AltUI.Controls.DarkButton();
+            chkReplaceCLUT = new CheckBox();
             tabModel.SuspendLayout();
             tbpColors.SuspendLayout();
             fraGlobalControl.SuspendLayout();
@@ -346,10 +347,11 @@ namespace CrashEdit.CE.Controls
             darkGroupBox1.BackColor = Color.Transparent;
             darkGroupBox1.Controls.Add(cmdReplaceTexture);
             darkGroupBox1.Controls.Add(chkOutput);
+            darkGroupBox1.Controls.Add(chkReplaceCLUT);
             darkGroupBox1.Controls.Add(chkBGRA);
             darkGroupBox1.Location = new Point(769, 224);
             darkGroupBox1.Name = "darkGroupBox1";
-            darkGroupBox1.Size = new Size(132, 110);
+            darkGroupBox1.Size = new Size(132, 135);
             darkGroupBox1.TabIndex = 9;
             darkGroupBox1.TabStop = false;
             darkGroupBox1.Text = "Replace Texture";
@@ -374,7 +376,7 @@ namespace CrashEdit.CE.Controls
             chkOutput.BackColor = Color.Transparent;
             chkOutput.Checked = true;
             chkOutput.CheckState = CheckState.Checked;
-            chkOutput.Location = new Point(6, 76);
+            chkOutput.Location = new Point(6, 101);
             chkOutput.Name = "chkOutput";
             chkOutput.Size = new Size(96, 19);
             chkOutput.TabIndex = 8;
@@ -388,7 +390,7 @@ namespace CrashEdit.CE.Controls
             chkBGRA.BackColor = Color.Transparent;
             chkBGRA.Checked = true;
             chkBGRA.CheckState = CheckState.Checked;
-            chkBGRA.Location = new Point(6, 51);
+            chkBGRA.Location = new Point(6, 76);
             chkBGRA.Name = "chkBGRA";
             chkBGRA.Size = new Size(95, 19);
             chkBGRA.TabIndex = 8;
@@ -497,7 +499,7 @@ namespace CrashEdit.CE.Controls
             // 
             // pictureBox1
             // 
-            pictureBox1.Location = new Point(3, 340);
+            pictureBox1.Location = new Point(3, 365);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(1024, 128);
             pictureBox1.TabIndex = 1;
@@ -581,7 +583,7 @@ namespace CrashEdit.CE.Controls
             grdTextures.Name = "grdTextures";
             grdTextures.RowHeadersWidth = 24;
             grdTextures.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            grdTextures.Size = new Size(622, 331);
+            grdTextures.Size = new Size(622, 356);
             grdTextures.TabIndex = 0;
             grdTextures.CellEndEdit += grdTextures_CellEndEdit;
             grdTextures.CellValidating += grdTextures_CellValidating;
@@ -600,6 +602,20 @@ namespace CrashEdit.CE.Controls
             darkButton1.Size = new Size(75, 23);
             darkButton1.TabIndex = 1;
             darkButton1.Text = "darkButton1";
+            // 
+            // chkReplaceCLUT
+            // 
+            chkReplaceCLUT.AutoSize = true;
+            chkReplaceCLUT.BackColor = Color.Transparent;
+            chkReplaceCLUT.Checked = true;
+            chkReplaceCLUT.CheckState = CheckState.Checked;
+            chkReplaceCLUT.Location = new Point(6, 51);
+            chkReplaceCLUT.Name = "chkReplaceCLUT";
+            chkReplaceCLUT.Size = new Size(98, 19);
+            chkReplaceCLUT.TabIndex = 8;
+            chkReplaceCLUT.Text = "Replace CLUT";
+            chkReplaceCLUT.UseVisualStyleBackColor = false;
+            chkReplaceCLUT.CheckedChanged += chkReplaceCLUT_CheckedChanged;
             // 
             // ModelBox
             // 
@@ -671,5 +687,6 @@ namespace CrashEdit.CE.Controls
         private AltUI.Controls.DarkButton cmdAppendTPage;
         private AltUI.Controls.DarkTextBox txtTPage;
         private Label lblEIDError;
+        private CheckBox chkReplaceCLUT;
     }
 }

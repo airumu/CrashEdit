@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing.Imaging;
+﻿using System.Drawing.Imaging;
 using System.Globalization;
-using System.Windows.Forms;
-using System.Windows.Media.Media3D;
-using System.Xml.Linq;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
-using static System.Windows.Forms.AxHost;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 using static CrashEdit.CE.TextureViewer;
 using HslColor = Cyotek.Windows.Forms.HslColor;
 
@@ -19,23 +12,22 @@ namespace CrashEdit.CE.Controls
     {
         private ModelEntryController controller;
         private ModelEntry model;
-
         public TexturePageList TPages { get; set; }
-
-        private float MasterHue => hueColorSlider.Value;
-        private float MasterSaturation => saturationColorSlider.Value;
-        private float MasterLightness => lightnessColorSlider.Value;
-        private bool EditMode { get; set; }
-        private bool SimpleMode { get; set; }
-        private bool IsBGRA { get; set; }
-        private bool OutputResult { get; set; }
         private TextureChunk chunk { get; set; }
 
         private TextureType textype;
         private Rectangle selectedregion;
 
-        private int SelectedRegionX { get; set; }
-        private int SelectedRegionY { get; set; }
+        private bool EditMode;
+        private bool SimpleMode;
+        private bool IsBGRA;
+        private bool ReplaceCLUT;
+        private int SelectedRegionX;
+        private int SelectedRegionY;
+
+        private float MasterHue => hueColorSlider.Value;
+        private float MasterSaturation => saturationColorSlider.Value;
+        private float MasterLightness => lightnessColorSlider.Value;
 
         public ModelBox(ModelEntryController controller)
         {
@@ -44,13 +36,10 @@ namespace CrashEdit.CE.Controls
             DoubleBuffered = true;
             InitializeComponent();
             UpdateInfo();
-
-
         }
 
         private void UpdateInfo()
         {
-
 
         }
 
@@ -444,16 +433,49 @@ namespace CrashEdit.CE.Controls
             byte[] currentData = chunk.Data;
 
             int destX = SelectedRegionX;
+            int clutX = 0, clutY = 0, old_bpp = 0;
             if (grdTextures.SelectedCells.Count > 0)
             {
-                int rowIndex = grdTextures.SelectedCells[0].RowIndex;
-                if (Convert.ToInt32(grdTextures.Rows[rowIndex].Cells[8].Value) == 1)
+                var cell = grdTextures.Rows[grdTextures.SelectedCells[0].RowIndex];
+                if (Convert.ToInt32(cell.Cells[8].Value) == 1)
+                {
                     destX *= 2;
+                    old_bpp = 8;
+                }
+                else
+                {
+                    old_bpp = 4;
+                }
+                clutX = Convert.ToInt32(cell.Cells[1].Value);
+                clutY = Convert.ToInt32(cell.Cells[2].Value);
             }
             byte[] newTextureData = ImageProcessor.CopyTexture(rawImageData, currentData, width, height, bpp, 0, 0, width, height, destX / (bpp == 8 ? 2 : 1), SelectedRegionY);
             chunk.Data = newTextureData;
-
             WriteResult(rgba5551List, rawImageData, paletteCount, bpp, width, height);
+
+            if (ReplaceCLUT)
+            {
+                bool doProcess = true;
+                if (bpp != old_bpp)
+                {
+                    if (DarkMessageBox.ShowWarning("The color depth of the selected image differs from the current one. Do you want to continue anyway?", "", DarkDialogButton.YesNo) == DialogResult.Yes)
+                        doProcess = true;
+                    else
+                        doProcess = false;
+                }
+
+                if (doProcess)
+                {
+                    int offset = clutX * 0x20 + clutY * 0x200;
+                    Array.Copy(rgba5551List, 0, chunk.Data, offset, rgba5551List.Length);
+                    Console.WriteLine("CLUT replacement completed.");
+                }
+                else
+                {
+                    Console.WriteLine("CLUT replacement cancelled.");
+                }
+            }
+            BitConv.ToInt32(chunk.Data, 12, Chunk.CalculateChecksum(chunk.Data));
         }
 
         private void WriteResult(byte[] rgba5551List, byte[] rawImageData, int colorCount, int bpp, int width, int height)
@@ -771,6 +793,7 @@ namespace CrashEdit.CE.Controls
             UpdateTPageButtons();
 
             IsBGRA = true;
+            ReplaceCLUT = true;
             chkOutput.Checked = Settings.Default.OutputTextureCopyResult;
             lblEIDError.Text = string.Empty;
             if (lstTPages.Items.Count > 0)
@@ -1186,8 +1209,13 @@ namespace CrashEdit.CE.Controls
 
         private void lstTPages_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(lstTPages.Items.Count > 0 && lstTPages.SelectedItems.Count > 0)
+            if (lstTPages.Items.Count > 0 && lstTPages.SelectedItems.Count > 0)
                 txtTPage.Text = lstTPages.SelectedItems[0].SubItems[1].Text;
+        }
+
+        private void chkReplaceCLUT_CheckedChanged(object sender, EventArgs e)
+        {
+            ReplaceCLUT = chkReplaceCLUT.Checked;
         }
     }
 
