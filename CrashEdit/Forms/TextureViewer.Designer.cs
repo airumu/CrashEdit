@@ -668,7 +668,6 @@ namespace CrashEdit.CE
             // 
             // C2numY
             // 
-            C2numY.Increment = new decimal(new int[] { 8, 0, 0, 0 });
             C2numY.Location = new Point(30, 61);
             C2numY.Margin = new Padding(4);
             C2numY.Maximum = new decimal(new int[] { 127, 0, 0, 0 });
@@ -678,7 +677,6 @@ namespace CrashEdit.CE
             // 
             // C2numX
             // 
-            C2numX.Increment = new decimal(new int[] { 8, 0, 0, 0 });
             C2numX.Location = new Point(30, 25);
             C2numX.Margin = new Padding(4);
             C2numX.Maximum = new decimal(new int[] { 1023, 0, 0, 0 });
@@ -711,7 +709,6 @@ namespace CrashEdit.CE
             // C2numY2
             // 
             C2numY2.Hexadecimal = true;
-            C2numY2.Increment = new decimal(new int[] { 8, 0, 0, 0 });
             C2numY2.Location = new Point(128, 61);
             C2numY2.Margin = new Padding(4);
             C2numY2.Maximum = new decimal(new int[] { 127, 0, 0, 0 });
@@ -722,7 +719,6 @@ namespace CrashEdit.CE
             // C2numX2
             // 
             C2numX2.Hexadecimal = true;
-            C2numX2.Increment = new decimal(new int[] { 8, 0, 0, 0 });
             C2numX2.Location = new Point(128, 25);
             C2numX2.Margin = new Padding(4);
             C2numX2.Maximum = new decimal(new int[] { 1023, 0, 0, 0 });
@@ -748,7 +744,6 @@ namespace CrashEdit.CE
             // 
             // C2numH
             // 
-            C2numH.Increment = new decimal(new int[] { 8, 0, 0, 0 });
             C2numH.Location = new Point(30, 61);
             C2numH.Margin = new Padding(4);
             C2numH.Maximum = new decimal(new int[] { 128, 0, 0, 0 });
@@ -771,7 +766,6 @@ namespace CrashEdit.CE
             // 
             // C2numW
             // 
-            C2numW.Increment = new decimal(new int[] { 8, 0, 0, 0 });
             C2numW.Location = new Point(30, 25);
             C2numW.Margin = new Padding(4);
             C2numW.Maximum = new decimal(new int[] { 1024, 0, 0, 0 });
@@ -931,7 +925,6 @@ namespace CrashEdit.CE
             // 
             // C2numShiftX
             // 
-            C2numShiftX.Increment = new decimal(new int[] { 8, 0, 0, 0 });
             C2numShiftX.Location = new Point(7, 21);
             C2numShiftX.Margin = new Padding(4);
             C2numShiftX.Maximum = new decimal(new int[] { 1023, 0, 0, 0 });
@@ -987,7 +980,6 @@ namespace CrashEdit.CE
             // 
             // C2numShiftY
             // 
-            C2numShiftY.Increment = new decimal(new int[] { 8, 0, 0, 0 });
             C2numShiftY.Location = new Point(7, 21);
             C2numShiftY.Margin = new Padding(4);
             C2numShiftY.Maximum = new decimal(new int[] { 1023, 0, 0, 0 });

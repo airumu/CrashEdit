@@ -1,8 +1,10 @@
-﻿using AltUI.Forms;
+﻿using AltUI.Controls;
+using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Windows.Forms;
 
 namespace CrashEdit.CE
 {
@@ -170,6 +172,17 @@ namespace CrashEdit.CE
             C2numCY.ValueChanged += new EventHandler(Control_UpdatePicture_3);
             C2numW.ValueChanged += new EventHandler(Control_UpdatePicture);
             C2numH.ValueChanged += new EventHandler(Control_UpdatePicture);
+
+            C2numCX.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
+            C2numCY.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
+            C2numX.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
+            C2numY.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
+            C2numX2.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
+            C2numY2.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
+            C2numW.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
+            C2numH.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
+            C2numShiftX.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
+            C2numShiftY.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
 
             UpdatePicture();
 
@@ -463,5 +476,44 @@ namespace CrashEdit.CE
         {
             ReplaceCLUT = chkReplaceCLUT.Checked;
         }
+
+        private void ScrollHandlerFunction(object sender, MouseEventArgs e)
+        {
+            if (sender is NumericUpDown numericUpDown)
+            {
+                HandledMouseEventArgs handledArgs = e as HandledMouseEventArgs;
+                if (handledArgs != null)
+                    handledArgs.Handled = true;
+
+                decimal newValue = numericUpDown.Value;
+                if (e.Delta > 0 && newValue < numericUpDown.Maximum)
+                    newValue += numericUpDown.Increment;
+
+                else if (e.Delta < 0 && newValue > numericUpDown.Minimum)
+                    newValue -= numericUpDown.Increment;
+
+                numericUpDown.Value = newValue;
+            }
+        }
+
+        private void ScrollHandlerFunction2(object sender, MouseEventArgs e)
+        {
+            if (sender is NumericUpDown numericUpDown)
+            {
+                HandledMouseEventArgs handledArgs = e as HandledMouseEventArgs;
+                if (handledArgs != null)
+                    handledArgs.Handled = true;
+
+                decimal newValue = numericUpDown.Value;
+                if (e.Delta > 0 && newValue + 8 < numericUpDown.Maximum)
+                    newValue += 8;
+
+                else if (e.Delta < 0 && newValue - 8 > numericUpDown.Minimum)
+                    newValue -= 8;
+
+                numericUpDown.Value = newValue;
+            }
+        }
+
     }
 }
