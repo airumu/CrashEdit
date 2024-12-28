@@ -750,7 +750,7 @@ namespace CrashEdit.CE
             chkOutputCopyTextureResult.Name = "chkOutputCopyTextureResult";
             chkOutputCopyTextureResult.Size = new Size(182, 19);
             chkOutputCopyTextureResult.TabIndex = 19;
-            chkOutputCopyTextureResult.Text = "Output copying texture result";
+            chkOutputCopyTextureResult.Text = "Output copying texture result to console";
             chkOutputCopyTextureResult.UseVisualStyleBackColor = true;
             chkOutputCopyTextureResult.CheckedChanged += chkOutputCopyTextureResult_CheckedChanged;
             // 
@@ -842,9 +842,9 @@ namespace CrashEdit.CE
             chkPatchGOOLC3toC2.Location = new Point(7, 6);
             chkPatchGOOLC3toC2.Margin = new Padding(4, 3, 4, 3);
             chkPatchGOOLC3toC2.Name = "chkPatchGOOLC3toC2";
-            chkPatchGOOLC3toC2.Size = new Size(427, 19);
+            chkPatchGOOLC3toC2.Size = new Size(338, 19);
             chkPatchGOOLC3toC2.TabIndex = 8;
-            chkPatchGOOLC3toC2.Text = "(Crash 2) Patch GOOL frame groups imported from Crash 3 (requires restart)";
+            chkPatchGOOLC3toC2.Text = "(Crash 2) Patch GOOL frame groups imported from Crash 3";
             chkPatchGOOLC3toC2.UseVisualStyleBackColor = true;
             chkPatchGOOLC3toC2.CheckedChanged += chkPatchGOOLC3toC2_CheckedChanged;
             chkPatchGOOLC3toC2.Click += chkPatchGOOLC3toC2_Click;

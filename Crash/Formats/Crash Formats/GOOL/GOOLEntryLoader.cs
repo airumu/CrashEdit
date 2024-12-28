@@ -67,6 +67,7 @@ namespace CrashEdit.Crash
                                     else if (goolver == GOOLVersion.Version2)
                                     {
                                         // check if it's ported from Crash 3 to Crash 2
+                                        Settings.Default.Reload();
                                         if (Settings.Default.PatchGOOLC3toC2)
                                         {
                                             int offset10 = BitConv.FromInt16(items[5], i + 10);

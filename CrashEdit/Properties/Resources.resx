@@ -776,7 +776,7 @@ as Meters: {3:F3}m</value>
     <comment>CE-tweaked</comment>
   </data>
   <data name="Config_chkPatchGOOLC3toC2" xml:space="preserve">
-    <value>(Crash 2) Patch GOOL frame groups imported from Crash 3 (requires restart)</value>
+    <value>(Crash 2) Patch GOOL frame groups imported from Crash 3</value>
     <comment>CE-tweaked</comment>
   </data>
   <data name="Config_chkEnableC2TT" xml:space="preserve">
@@ -832,5 +832,9 @@ as Meters: {3:F3}m</value>
   </data>
   <data name="Playtest_Error5" xml:space="preserve">
     <value>Could not find pcsx-hdbg exe. Please place this in the same directory as CrashEdit.</value>
+  </data>
+  <data name="Config_chkOutputCopyTextureResult" xml:space="preserve">
+    <value>Output copying texture result to console</value>
+    <comment>CE-tweaked</comment>
   </data>
 </root>

@@ -169,7 +169,16 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
-        ///   (Crash 2) Patch GOOL frame groups imported from Crash 3 (requires restart) に類似しているローカライズされた文字列を検索します。
+        ///   Output copying texture result to console に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Config_chkOutputCopyTextureResult {
+            get {
+                return ResourceManager.GetString("Config_chkOutputCopyTextureResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   (Crash 2) Patch GOOL frame groups imported from Crash 3 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Config_chkPatchGOOLC3toC2 {
             get {

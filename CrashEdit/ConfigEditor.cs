@@ -143,6 +143,7 @@ namespace CrashEdit.CE
             chkShowCustomCrates.Text = Resources.Config_chkShowCustomCrates;
             chkEnableC2TT.Text = Resources.Config_chkEnableC2TT;
             chkPatchGOOLC3toC2.Text = Resources.Config_chkPatchGOOLC3toC2;
+            chkOutputCopyTextureResult.Text = Resources.Config_chkOutputCopyTextureResult;
         }
 
         private void dpdLang_SelectedIndexChanged(object sender, EventArgs e)
@@ -322,7 +323,6 @@ namespace CrashEdit.CE
         {
             Settings.Default.PatchGOOLC3toC2 = chkPatchGOOLC3toC2.Checked;
             Settings.Default.Save();
-            RestartProgram();
         }
 
         private void chkSplitViewerPanels_CheckedChanged(object sender, EventArgs e)

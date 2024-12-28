@@ -18,6 +18,7 @@ namespace CrashEdit.Crash
             //    CreateBufferFromTexture(srcTexture, textureWidth, textureHeight, is8bpp);
             //else
             //    vram = srcTexture;
+            Settings.Default.Reload();
             CreateBuffer(srcTexture, textureWidth, textureHeight, is8bpp);
 
             if (bpp == 4)
