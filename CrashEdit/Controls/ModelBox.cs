@@ -313,7 +313,6 @@ namespace CrashEdit.CE.Controls
             }
             SetTag(ColX1, ColX3);
             SetTag(ColY1, ColY3);
-            grdTextures.ResumeLayout();
 
             foreach (DataGridViewColumn column in grdTextures.Columns)
             {
@@ -324,6 +323,8 @@ namespace CrashEdit.CE.Controls
                     column.Visible = true;
             }
             AdjustColumnWidths();
+
+            grdTextures.ResumeLayout();
         }
 
         private void grdTextures_SelectionChanged(object sender, EventArgs e)
@@ -390,6 +391,8 @@ namespace CrashEdit.CE.Controls
 
         private void ToggleSimpleMode()
         {
+            grdTextures.SuspendLayout();
+
             if (grdTextures.IsCurrentCellInEditMode)
                 grdTextures.CancelEdit();
 
@@ -421,6 +424,8 @@ namespace CrashEdit.CE.Controls
                 }
             }
             AdjustColumnWidths();
+
+            grdTextures.ResumeLayout();
         }
 
         private void ReplaceTextureFromFile()
