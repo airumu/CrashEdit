@@ -110,6 +110,7 @@ namespace CrashEdit.CE
             chkPatchGOOLC3toC2.Checked = Settings.Default.PatchGOOLC3toC2;
             chkSplitViewerPanels.Checked = Settings.Default.SplitAnimViewerPanels;
             chkEnableLegacyEntityBox.Checked = Settings.Default.EnableLegacyEntityBox;
+            chkOutputCopyTextureResult.Checked = Settings.Default.OutputCopyTextureResult;
 
             fraSize.Text = Resources.Config_fraSize;
             fraClearCol.Text = Resources.Config_fraClearCol;
@@ -333,6 +334,12 @@ namespace CrashEdit.CE
         private void chkEnableLegacyEntityBox_CheckedChanged(object sender, EventArgs e)
         {
             Settings.Default.EnableLegacyEntityBox = chkEnableLegacyEntityBox.Checked;
+            Settings.Default.Save();
+        }
+
+        private void chkOutputCopyTextureResult_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.OutputCopyTextureResult = chkOutputCopyTextureResult.Checked;
             Settings.Default.Save();
         }
 

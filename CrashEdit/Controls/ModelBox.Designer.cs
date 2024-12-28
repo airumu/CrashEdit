@@ -57,6 +57,7 @@ namespace CrashEdit.CE.Controls
             lightnessColorSlider = new Cyotek.Windows.Forms.LightnessColorSlider();
             tglGlobalControl = new MetroSetSwitch();
             pnSliders = new Panel();
+            darkGroupBox1 = new DarkGroupBox();
             colorEditor = new Cyotek.Windows.Forms.ColorEditor();
             picPreview = new PictureBox();
             colorWheel = new Cyotek.Windows.Forms.ColorWheel();
@@ -64,7 +65,6 @@ namespace CrashEdit.CE.Controls
             tbpTextures = new TabPage();
             fraReplaceTexture = new DarkGroupBox();
             cmdReplaceTexture = new DarkButton();
-            chkOutput = new CheckBox();
             chkReplaceCLUT = new CheckBox();
             chkBGRA = new CheckBox();
             fraSwitches = new DarkGroupBox();
@@ -83,13 +83,13 @@ namespace CrashEdit.CE.Controls
             cmdAppendTPage = new DarkButton();
             lstTPages = new DoubleBufferedListView();
             grdTextures = new DataGridView();
-            darkGroupBox1 = new DarkGroupBox();
             tabModel.SuspendLayout();
             tbpInfo.SuspendLayout();
             tbpColors.SuspendLayout();
             fraGlobalControl.SuspendLayout();
             pnGlobalControl.SuspendLayout();
             pnSliders.SuspendLayout();
+            darkGroupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picPreview).BeginInit();
             tbpTextures.SuspendLayout();
             fraReplaceTexture.SuspendLayout();
@@ -101,7 +101,6 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             fraTexture.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)grdTextures).BeginInit();
-            darkGroupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // tabModel
@@ -118,7 +117,7 @@ namespace CrashEdit.CE.Controls
             tabModel.Location = new Point(0, 0);
             tabModel.Multiline = true;
             tabModel.Name = "tabModel";
-            tabModel.SelectedIndex = 1;
+            tabModel.SelectedIndex = 2;
             tabModel.SelectedTextColor = Color.White;
             tabModel.Size = new Size(1040, 800);
             tabModel.SizeMode = TabSizeMode.Fixed;
@@ -285,6 +284,15 @@ namespace CrashEdit.CE.Controls
             pnSliders.Size = new Size(578, 209);
             pnSliders.TabIndex = 3;
             // 
+            // darkGroupBox1
+            // 
+            darkGroupBox1.Controls.Add(colorEditor);
+            darkGroupBox1.Location = new Point(3, 3);
+            darkGroupBox1.Name = "darkGroupBox1";
+            darkGroupBox1.Size = new Size(293, 203);
+            darkGroupBox1.TabIndex = 3;
+            darkGroupBox1.TabStop = false;
+            // 
             // colorEditor
             // 
             colorEditor.Color = Color.FromArgb(0, 0, 0);
@@ -356,7 +364,6 @@ namespace CrashEdit.CE.Controls
             // 
             fraReplaceTexture.BackColor = Color.Transparent;
             fraReplaceTexture.Controls.Add(cmdReplaceTexture);
-            fraReplaceTexture.Controls.Add(chkOutput);
             fraReplaceTexture.Controls.Add(chkReplaceCLUT);
             fraReplaceTexture.Controls.Add(chkBGRA);
             fraReplaceTexture.Enabled = false;
@@ -380,20 +387,6 @@ namespace CrashEdit.CE.Controls
             cmdReplaceTexture.TabIndex = 5;
             cmdReplaceTexture.Text = "BOOM";
             cmdReplaceTexture.Click += cmdReplaceTexture_Click;
-            // 
-            // chkOutput
-            // 
-            chkOutput.AutoSize = true;
-            chkOutput.BackColor = Color.Transparent;
-            chkOutput.Checked = true;
-            chkOutput.CheckState = CheckState.Checked;
-            chkOutput.Location = new Point(6, 101);
-            chkOutput.Name = "chkOutput";
-            chkOutput.Size = new Size(96, 19);
-            chkOutput.TabIndex = 8;
-            chkOutput.Text = "Output result";
-            chkOutput.UseVisualStyleBackColor = false;
-            chkOutput.CheckedChanged += chkOutput_CheckedChanged;
             // 
             // chkReplaceCLUT
             // 
@@ -644,15 +637,6 @@ namespace CrashEdit.CE.Controls
             grdTextures.EditingControlShowing += grdTextures_EditingControlShowing;
             grdTextures.SelectionChanged += grdTextures_SelectionChanged;
             // 
-            // darkGroupBox1
-            // 
-            darkGroupBox1.Controls.Add(colorEditor);
-            darkGroupBox1.Location = new Point(3, 3);
-            darkGroupBox1.Name = "darkGroupBox1";
-            darkGroupBox1.Size = new Size(293, 203);
-            darkGroupBox1.TabIndex = 3;
-            darkGroupBox1.TabStop = false;
-            // 
             // ModelBox
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -667,6 +651,7 @@ namespace CrashEdit.CE.Controls
             fraGlobalControl.ResumeLayout(false);
             pnGlobalControl.ResumeLayout(false);
             pnSliders.ResumeLayout(false);
+            darkGroupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)picPreview).EndInit();
             tbpTextures.ResumeLayout(false);
             fraReplaceTexture.ResumeLayout(false);
@@ -680,7 +665,6 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             fraTexture.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)grdTextures).EndInit();
-            darkGroupBox1.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -717,7 +701,6 @@ namespace CrashEdit.CE.Controls
         private CheckBox chkBGRA;
         private AltUI.Controls.DarkGroupBox fraReplaceTexture;
         private AltUI.Controls.DarkButton cmdReplaceTexture;
-        private CheckBox chkOutput;
         private AltUI.Controls.DarkButton cmdRemoveTPage;
         private AltUI.Controls.DarkButton cmdAppendTPage;
         private DarkComboBox dpdTPage;

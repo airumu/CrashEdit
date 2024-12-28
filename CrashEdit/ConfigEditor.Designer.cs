@@ -77,6 +77,8 @@ namespace CrashEdit.CE
             chkEnableVisual = new CheckBox();
             tbpPatchNSD = new TabPage();
             tbpMisc = new TabPage();
+            chkOutputCopyTextureResult = new CheckBox();
+            chkEnableLegacyEntityBox = new CheckBox();
             fraExtra = new DarkGroupBox();
             chkShowCustomCrates = new CheckBox();
             chkOldPatchNSD = new CheckBox();
@@ -84,7 +86,6 @@ namespace CrashEdit.CE
             chkSplitViewerPanels = new CheckBox();
             chkLiteralCollisionTypes = new CheckBox();
             chkPatchGOOLC3toC2 = new CheckBox();
-            chkEnableLegacyEntityBox = new CheckBox();
             tableLayoutPanel4 = new TableLayoutPanel();
             tableLayoutPanel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numFontSize).BeginInit();
@@ -728,6 +729,7 @@ namespace CrashEdit.CE
             // tbpMisc
             // 
             tbpMisc.BackColor = Color.FromArgb(30, 30, 30);
+            tbpMisc.Controls.Add(chkOutputCopyTextureResult);
             tbpMisc.Controls.Add(chkEnableLegacyEntityBox);
             tbpMisc.Controls.Add(fraExtra);
             tbpMisc.Controls.Add(chkSplitViewerPanels);
@@ -740,13 +742,37 @@ namespace CrashEdit.CE
             tbpMisc.TabIndex = 2;
             tbpMisc.Text = "Misc";
             // 
+            // chkOutputCopyTextureResult
+            // 
+            chkOutputCopyTextureResult.AutoSize = true;
+            chkOutputCopyTextureResult.Location = new Point(7, 106);
+            chkOutputCopyTextureResult.Margin = new Padding(4, 3, 4, 3);
+            chkOutputCopyTextureResult.Name = "chkOutputCopyTextureResult";
+            chkOutputCopyTextureResult.Size = new Size(182, 19);
+            chkOutputCopyTextureResult.TabIndex = 19;
+            chkOutputCopyTextureResult.Text = "Output copying texture result";
+            chkOutputCopyTextureResult.UseVisualStyleBackColor = true;
+            chkOutputCopyTextureResult.CheckedChanged += chkOutputCopyTextureResult_CheckedChanged;
+            // 
+            // chkEnableLegacyEntityBox
+            // 
+            chkEnableLegacyEntityBox.AutoSize = true;
+            chkEnableLegacyEntityBox.Location = new Point(7, 81);
+            chkEnableLegacyEntityBox.Margin = new Padding(4, 3, 4, 3);
+            chkEnableLegacyEntityBox.Name = "chkEnableLegacyEntityBox";
+            chkEnableLegacyEntityBox.Size = new Size(165, 19);
+            chkEnableLegacyEntityBox.TabIndex = 19;
+            chkEnableLegacyEntityBox.Text = "Enable legacy entity editor";
+            chkEnableLegacyEntityBox.UseVisualStyleBackColor = true;
+            chkEnableLegacyEntityBox.CheckedChanged += chkEnableLegacyEntityBox_CheckedChanged;
+            // 
             // fraExtra
             // 
             fraExtra.BackColor = Color.Transparent;
             fraExtra.Controls.Add(chkShowCustomCrates);
             fraExtra.Controls.Add(chkOldPatchNSD);
             fraExtra.Controls.Add(chkEnableC2TT);
-            fraExtra.Location = new Point(0, 106);
+            fraExtra.Location = new Point(0, 140);
             fraExtra.Name = "fraExtra";
             fraExtra.Size = new Size(421, 100);
             fraExtra.TabIndex = 18;
@@ -793,7 +819,7 @@ namespace CrashEdit.CE
             chkSplitViewerPanels.Location = new Point(7, 56);
             chkSplitViewerPanels.Margin = new Padding(4, 3, 4, 3);
             chkSplitViewerPanels.Name = "chkSplitViewerPanels";
-            chkSplitViewerPanels.Size = new Size(123, 19);
+            chkSplitViewerPanels.Size = new Size(180, 19);
             chkSplitViewerPanels.TabIndex = 17;
             chkSplitViewerPanels.Text = "Split animation viewer panels";
             chkSplitViewerPanels.UseVisualStyleBackColor = true;
@@ -822,18 +848,6 @@ namespace CrashEdit.CE
             chkPatchGOOLC3toC2.UseVisualStyleBackColor = true;
             chkPatchGOOLC3toC2.CheckedChanged += chkPatchGOOLC3toC2_CheckedChanged;
             chkPatchGOOLC3toC2.Click += chkPatchGOOLC3toC2_Click;
-            // 
-            // chkEnableLegacyEntityBox
-            // 
-            chkEnableLegacyEntityBox.AutoSize = true;
-            chkEnableLegacyEntityBox.Location = new Point(7, 81);
-            chkEnableLegacyEntityBox.Margin = new Padding(4, 3, 4, 3);
-            chkEnableLegacyEntityBox.Name = "chkEnableLegacyEntityBox";
-            chkEnableLegacyEntityBox.Size = new Size(165, 19);
-            chkEnableLegacyEntityBox.TabIndex = 19;
-            chkEnableLegacyEntityBox.Text = "Enable legacy entity editor";
-            chkEnableLegacyEntityBox.UseVisualStyleBackColor = true;
-            chkEnableLegacyEntityBox.CheckedChanged += chkEnableLegacyEntityBox_CheckedChanged;
             // 
             // ConfigEditor
             // 
@@ -941,5 +955,6 @@ namespace CrashEdit.CE
         private DarkGroupBox darkGroupBox1;
         private DarkGroupBox darkGroupBox3;
         private CheckBox chkEnableLegacyEntityBox;
+        private CheckBox chkOutputCopyTextureResult;
     }
 }
