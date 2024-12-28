@@ -337,6 +337,23 @@ namespace CrashEdit.CE.Controls
             }
         }
 
+        private void grdTextures_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            if (e.Control is TextBox textbox)
+            {
+                textbox.KeyPress -= TextBox_KeyPress;
+                textbox.KeyPress += TextBox_KeyPress;
+            }
+        }
+
+        private void TextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back)
+            {
+               e.Handled = true;
+            }
+        }
+
         private void RemoveDuplicateRowsExceptColumns(DataGridView dataGridView, params int[] excludedColumns)
         {
             HashSet<int> excludedColumnSet = new HashSet<int>(excludedColumns);
@@ -579,18 +596,18 @@ namespace CrashEdit.CE.Controls
             {
                 if (value > maxValue)
                 {
-                    DarkMessageBox.ShowError($"The value must be less than or equal to {maxValue}.", "");
+                    DarkMessageBox.ShowError($"The value must be less than or equal to {maxValue}.", "Input Error");
                     e.Cancel = true;
                 }
                 else if (value < 0)
                 {
-                    DarkMessageBox.ShowError($"The value must be greater than or equal to 0.", "");
+                    DarkMessageBox.ShowError($"The value must be greater than or equal to 0.", "Input Error");
                     e.Cancel = true;
                 }
             }
             else
             {
-                DarkMessageBox.ShowError($"Invalid input. Please enter an integer.", "");
+                DarkMessageBox.ShowError($"Invalid input. Please enter an integer.", "Input Error");
                 e.Cancel = true;
             }
         }
@@ -1335,6 +1352,7 @@ namespace CrashEdit.CE.Controls
                 {
                     Console.WriteLine($"Error: Out of bounds copy. sourceOffset: {sourceOffset}, destinationOffset: {destinationOffset}");
                 }
+                //File.WriteAllBytes("raw_vram.bin", vram); // debug
             }
         }
 

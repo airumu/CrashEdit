@@ -627,6 +627,7 @@ namespace CrashEdit.CE.Controls
             grdTextures.CellValidating += grdTextures_CellValidating;
             grdTextures.CellValueChanged += grdTextures_CellValueChanged;
             grdTextures.SelectionChanged += grdTextures_SelectionChanged;
+            grdTextures.EditingControlShowing += grdTextures_EditingControlShowing;
             // 
             // ModelBox
             // 
