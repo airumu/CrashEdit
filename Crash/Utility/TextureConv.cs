@@ -12,6 +12,48 @@ namespace CrashEdit.Crash
         const int VRAMHeight = 128;
         private static byte[] vram = new byte[VRAMWidth * VRAMHeight];
 
+        public static byte[] ReplaceTextureFromFile(string filePath, string extension, bool isBGRA, byte[] currentData, int destX, int destY, bool replaceCLUT, int oldBpp, int clutX, int clutY)
+        {
+            byte[] newData = currentData;
+            bool failed = false;
+            switch (extension)
+            {
+                case ".bmp":
+                    try
+                    {
+                        var result = TextureConv.ProcessBmp(filePath);
+                        newData = TextureConv.ReplaceTextureFromViewer(currentData, result.rawImageData, result.palette, result.width, result.height, destX, destY, replaceCLUT, oldBpp, clutX, clutY);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error: {ex.Message}");
+                    }
+                    break;
+                case ".png":
+                    try
+                    {
+                        var result = TextureConv.ProcessPng(filePath, isBGRA);
+                        newData = TextureConv.ReplaceTextureFromViewer(currentData, result.rawImageData, result.palette, result.width, result.height, destX, destY, replaceCLUT, oldBpp, clutX, clutY);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error: {ex.Message}");
+                    }
+                    break;
+                default:
+                    Console.WriteLine("The selected file is not a supported image format.");
+                    failed = true;
+                    break;
+            }
+
+            if (failed)
+            {
+                Console.WriteLine("Failed to process the image file.");
+            }
+
+            return newData;
+        }
+
         public static byte[] ReplaceTextureFromViewer(byte[] currentData, byte[] rawImageData, byte[] palette, int width, int height, int destX, int destY, bool replaceCLUT, int oldBpp, int clutX, int clutY)
         {
             byte[] rgba5551List = ConvertPaletteToRGBA5551(palette);

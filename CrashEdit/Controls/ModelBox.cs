@@ -419,7 +419,7 @@ namespace CrashEdit.CE.Controls
             grdTextures.ResumeLayout();
         }
 
-        private void ReplaceTextureFromFile()
+        private void cmdReplaceTexture_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
@@ -428,13 +428,10 @@ namespace CrashEdit.CE.Controls
                 {
                     string filePath = openFileDialog.FileName;
                     string extension = Path.GetExtension(filePath).ToLower();
-                    bool Failed = false;
 
                     int destX = SelectedRegionX;
                     int destY = SelectedRegionY;
-
                     int oldBpp = 0; int clutX = 0; int clutY = 0;
-
                     if (grdTextures.SelectedCells.Count > 0)
                     {
                         var row = grdTextures.Rows[grdTextures.SelectedCells[0].RowIndex];
@@ -449,50 +446,12 @@ namespace CrashEdit.CE.Controls
                         }
                         clutX = Convert.ToInt32(row.Cells[ColClutX].Value);
                         clutY = Convert.ToInt32(row.Cells[ColClutY].Value);
-                    }
 
-                    switch (extension)
-                    {
-                        case ".bmp":
-                            try
-                            {
-                                var result = TextureConv.ProcessBmp(filePath);
-                                chunk.Data = TextureConv.ReplaceTextureFromViewer(chunk.Data, result.rawImageData, result.palette, result.width, result.height, destX, destY, ReplaceCLUT, oldBpp, clutX, clutY);
-                            }
-                            catch (Exception ex)
-                            {
-                                Console.WriteLine($"Error: {ex.Message}");
-                            }
-                            break;
-                        case ".png":
-                            try
-                            {
-                                var result = TextureConv.ProcessPng(filePath, IsBGRA);
-                                chunk.Data = TextureConv.ReplaceTextureFromViewer(chunk.Data, result.rawImageData, result.palette, result.width, result.height, destX, destY, ReplaceCLUT, oldBpp, clutX, clutY);
-                            }
-                            catch (Exception ex)
-                            {
-                                Console.WriteLine($"Error: {ex.Message}");
-                            }
-                            break;
-                        default:
-                            Console.WriteLine("The selected file is not a supported image format.");
-                            Failed = true;
-                            break;
+                        chunk.Data = TextureConv.ReplaceTextureFromFile(filePath, extension, IsBGRA, chunk.Data, destX, destY, ReplaceCLUT, oldBpp, clutX, clutY);
+                        UpdatePicture();
                     }
-
-                    if (Failed)
-                    {
-                        Console.WriteLine("Failed to process the image file.");
-                    }
-                    UpdatePicture();
                 }
             }
-        }
-
-        private void cmdReplaceTexture_Click(object sender, EventArgs e)
-        {
-            ReplaceTextureFromFile();
         }
 
         private void cmdReplace_Click(object sender, EventArgs e)
