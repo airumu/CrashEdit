@@ -350,7 +350,7 @@ namespace CrashEdit.CE.Controls
         {
             if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back)
             {
-               e.Handled = true;
+                e.Handled = true;
             }
         }
 
@@ -836,10 +836,6 @@ namespace CrashEdit.CE.Controls
             ReplaceCLUT = true;
             chkOutput.Checked = Settings.Default.OutputCopyTextureResult;
 
-            lblEIDError.Text = string.Empty;
-            if (lstTPages.Items.Count > 0)
-                txtTPage.Enabled = true;
-
             if (grdTextures.Rows.Count > 0)
             {
                 fraSwitches.Enabled = true;
@@ -860,6 +856,21 @@ namespace CrashEdit.CE.Controls
                 newitem.SubItems.Add(Entry.EIDToEName(model.GetTPAG(i)));
                 lstTPages.Items.Add(newitem);
             }
+
+            if (lstTPages.Items.Count > 0)
+            {
+                dpdTPage.Enabled = true;
+                List<Chunk> chunks = null;
+                chunks = controller.GetNSF().Chunks;
+                foreach (Chunk chunk in chunks)
+                {
+                    if (chunk is TextureChunk t)
+                    {
+                        dpdTPage.Items.Add(Entry.EIDToEName(t.EID));
+                    }
+                }
+            }
+
             UpdateTPageButtons();
         }
 
@@ -1234,39 +1245,24 @@ namespace CrashEdit.CE.Controls
             }
         }
 
-        private void txtTPage_TextChanged(object sender, EventArgs e)
-        {
-            lblEIDError.Text = Entry.CheckEIDErrors(txtTPage.Text, true);
-        }
-
-        private void UpdateEID()
-        {
-            if (lblEIDError.Text != string.Empty) return;
-
-            lstTPages.SelectedItems[0].SubItems[1].Text = txtTPage.Text;
-            model.SetTPAG(lstTPages.SelectedIndices[0], Entry.ENameToEID(txtTPage.Text));
-        }
-
-        private void txtTPage_KeyDown(object? sender, KeyEventArgs e)
-        {
-            if (e.KeyData == Keys.Enter)
-                UpdateEID();
-        }
-
-        private void txtTPage_LostFocus(object? sender, EventArgs e)
-        {
-            UpdateEID();
-        }
-
         private void lstTPages_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (lstTPages.Items.Count > 0 && lstTPages.SelectedItems.Count > 0)
-                txtTPage.Text = lstTPages.SelectedItems[0].SubItems[1].Text;
+                dpdTPage.Text = lstTPages.SelectedItems[0].SubItems[1].Text;
         }
 
         private void chkReplaceCLUT_CheckedChanged(object sender, EventArgs e)
         {
             ReplaceCLUT = chkReplaceCLUT.Checked;
+        }
+
+        private void dpdTPage_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string text = dpdTPage.Text;
+            if (lstTPages.SelectedItems.Count > 0)
+                lstTPages.SelectedItems[0].SubItems[1].Text = text;
+            model.SetTPAG(lstTPages.SelectedIndices[0], Entry.ENameToEID(text));
+            UpdatePicture();
         }
     }
 

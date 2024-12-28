@@ -1,6 +1,7 @@
 ﻿using System.Data.Common;
 using System.Windows.Forms;
 using AltUI.ColorPicker;
+using AltUI.Controls;
 using Cyotek.Windows.Forms;
 using MetroSet_UI.Controls;
 
@@ -47,9 +48,9 @@ namespace CrashEdit.CE.Controls
             tbpInfo = new TabPage();
             label2 = new Label();
             tbpColors = new TabPage();
-            fraGlobalControl = new AltUI.Controls.DarkGroupBox();
-            cmdCancel = new AltUI.Controls.DarkButton();
-            cmdApply = new AltUI.Controls.DarkButton();
+            fraGlobalControl = new DarkGroupBox();
+            cmdCancel = new DarkButton();
+            cmdApply = new DarkButton();
             pnGlobalControl = new Panel();
             saturationColorSlider = new Cyotek.Windows.Forms.SaturationColorSlider();
             hueColorSlider = new Cyotek.Windows.Forms.HueColorSlider();
@@ -61,25 +62,24 @@ namespace CrashEdit.CE.Controls
             colorWheel = new Cyotek.Windows.Forms.ColorWheel();
             lstColor = new DoubleBufferedListView();
             tbpTextures = new TabPage();
-            lblEIDError = new Label();
-            fraReplaceTexture = new AltUI.Controls.DarkGroupBox();
-            cmdReplaceTexture = new AltUI.Controls.DarkButton();
+            fraReplaceTexture = new DarkGroupBox();
+            cmdReplaceTexture = new DarkButton();
             chkOutput = new CheckBox();
             chkReplaceCLUT = new CheckBox();
             chkBGRA = new CheckBox();
-            fraSwitches = new AltUI.Controls.DarkGroupBox();
+            fraSwitches = new DarkGroupBox();
             tglSimpleMode = new MetroSetSwitch();
-            numRowIndex = new AltUI.Controls.DarkNumericUpDown();
-            fraReplace = new AltUI.Controls.DarkGroupBox();
+            numRowIndex = new DarkNumericUpDown();
+            fraReplace = new DarkGroupBox();
             label1 = new Label();
-            numReplaceTo = new AltUI.Controls.DarkNumericUpDown();
-            numReplace = new AltUI.Controls.DarkNumericUpDown();
-            cmdReplace = new AltUI.Controls.DarkButton();
+            numReplaceTo = new DarkNumericUpDown();
+            numReplace = new DarkNumericUpDown();
+            cmdReplace = new DarkButton();
             pictureBox1 = new PictureBox();
-            fraTexture = new AltUI.Controls.DarkGroupBox();
-            txtTPage = new AltUI.Controls.DarkTextBox();
-            cmdRemoveTPage = new AltUI.Controls.DarkButton();
-            cmdAppendTPage = new AltUI.Controls.DarkButton();
+            fraTexture = new DarkGroupBox();
+            dpdTPage = new DarkComboBox();
+            cmdRemoveTPage = new DarkButton();
+            cmdAppendTPage = new DarkButton();
             lstTPages = new DoubleBufferedListView();
             grdTextures = new DataGridView();
             tabModel.SuspendLayout();
@@ -115,7 +115,7 @@ namespace CrashEdit.CE.Controls
             tabModel.Location = new Point(0, 0);
             tabModel.Multiline = true;
             tabModel.Name = "tabModel";
-            tabModel.SelectedIndex = 0;
+            tabModel.SelectedIndex = 2;
             tabModel.SelectedTextColor = Color.White;
             tabModel.Size = new Size(1040, 800);
             tabModel.SizeMode = TabSizeMode.Fixed;
@@ -330,7 +330,6 @@ namespace CrashEdit.CE.Controls
             // tbpTextures
             // 
             tbpTextures.BackColor = Color.FromArgb(31, 31, 32);
-            tbpTextures.Controls.Add(lblEIDError);
             tbpTextures.Controls.Add(fraReplaceTexture);
             tbpTextures.Controls.Add(fraSwitches);
             tbpTextures.Controls.Add(numRowIndex);
@@ -344,17 +343,6 @@ namespace CrashEdit.CE.Controls
             tbpTextures.TabIndex = 2;
             tbpTextures.Text = "Textures";
             tbpTextures.Enter += tbpTextures_Enter;
-            // 
-            // lblEIDError
-            // 
-            lblEIDError.BackColor = Color.Transparent;
-            lblEIDError.ForeColor = Color.Red;
-            lblEIDError.Location = new Point(3, 307);
-            lblEIDError.Name = "lblEIDError";
-            lblEIDError.Size = new Size(132, 23);
-            lblEIDError.TabIndex = 10;
-            lblEIDError.Text = "EID ERROR!";
-            lblEIDError.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // fraReplaceTexture
             // 
@@ -540,7 +528,7 @@ namespace CrashEdit.CE.Controls
             // 
             // fraTexture
             // 
-            fraTexture.Controls.Add(txtTPage);
+            fraTexture.Controls.Add(dpdTPage);
             fraTexture.Controls.Add(cmdRemoveTPage);
             fraTexture.Controls.Add(cmdAppendTPage);
             fraTexture.Controls.Add(lstTPages);
@@ -551,20 +539,16 @@ namespace CrashEdit.CE.Controls
             fraTexture.TabStop = false;
             fraTexture.Text = "Texture Pages";
             // 
-            // txtTPage
+            // dpdTPage
             // 
-            txtTPage.BackColor = Color.FromArgb(26, 26, 28);
-            txtTPage.BorderStyle = BorderStyle.FixedSingle;
-            txtTPage.Enabled = false;
-            txtTPage.ForeColor = Color.FromArgb(213, 213, 213);
-            txtTPage.Location = new Point(16, 208);
-            txtTPage.MaxLength = 5;
-            txtTPage.Name = "txtTPage";
-            txtTPage.Size = new Size(100, 23);
-            txtTPage.TabIndex = 2;
-            txtTPage.TextChanged += txtTPage_TextChanged;
-            txtTPage.KeyDown += txtTPage_KeyDown;
-            txtTPage.LostFocus += txtTPage_LostFocus;
+            dpdTPage.DrawMode = DrawMode.OwnerDrawVariable;
+            dpdTPage.Enabled = false;
+            dpdTPage.Location = new Point(6, 208);
+            dpdTPage.MaxLength = 5;
+            dpdTPage.Name = "dpdTPage";
+            dpdTPage.Size = new Size(120, 24);
+            dpdTPage.TabIndex = 2;
+            dpdTPage.SelectedIndexChanged += dpdTPage_SelectedIndexChanged;
             // 
             // cmdRemoveTPage
             // 
@@ -614,6 +598,7 @@ namespace CrashEdit.CE.Controls
             grdTextures.AllowUserToAddRows = false;
             grdTextures.AllowUserToResizeColumns = false;
             grdTextures.AllowUserToResizeRows = false;
+            grdTextures.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             grdTextures.ColumnHeadersHeight = 24;
             grdTextures.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             grdTextures.Location = new Point(141, 3);
@@ -622,12 +607,11 @@ namespace CrashEdit.CE.Controls
             grdTextures.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             grdTextures.Size = new Size(622, 356);
             grdTextures.TabIndex = 0;
-            grdTextures.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             grdTextures.CellEndEdit += grdTextures_CellEndEdit;
             grdTextures.CellValidating += grdTextures_CellValidating;
             grdTextures.CellValueChanged += grdTextures_CellValueChanged;
-            grdTextures.SelectionChanged += grdTextures_SelectionChanged;
             grdTextures.EditingControlShowing += grdTextures_EditingControlShowing;
+            grdTextures.SelectionChanged += grdTextures_SelectionChanged;
             // 
             // ModelBox
             // 
@@ -655,7 +639,6 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)numReplace).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             fraTexture.ResumeLayout(false);
-            fraTexture.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)grdTextures).EndInit();
             ResumeLayout(false);
         }
@@ -697,8 +680,7 @@ namespace CrashEdit.CE.Controls
         private CheckBox chkOutput;
         private AltUI.Controls.DarkButton cmdRemoveTPage;
         private AltUI.Controls.DarkButton cmdAppendTPage;
-        private AltUI.Controls.DarkTextBox txtTPage;
-        private Label lblEIDError;
+        private DarkComboBox dpdTPage;
         private CheckBox chkReplaceCLUT;
         private Label label2;
     }
