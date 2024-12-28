@@ -1,4 +1,5 @@
 using AltUI.Controls;
+using CrashEdit.CE.Controls;
 using CrashEdit.Crash;
 using MetroSet_UI.Controls;
 using System.Drawing.Imaging;
@@ -103,6 +104,16 @@ namespace CrashEdit.CE
                 tbcTabs.TabPages.Add(page);
                 tbcTabs.SelectedTab = page;
             }
+            {
+                CLUTBox clut = new CLUTBox(chunk)
+                {
+                    Dock = DockStyle.Fill
+                };
+                TabPage page = new TabPage("CLUT");
+                page.Controls.Add(clut);
+                tbcTabs.TabPages.Add(page);
+            }
+
             Controls.Add(tbcTabs);
             tbcTabs.SelectedIndex = 1;
         }
