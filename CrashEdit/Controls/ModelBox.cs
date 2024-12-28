@@ -1303,11 +1303,16 @@ namespace CrashEdit.CE.Controls
             {
                 for (int i = 0; i < height; i++)
                 {
-                    int offset1 = (i + srcY) * 0x200 + srcX / 2;
-                    int offset2 = (i + destY) * 0x200 + destX / 2;
-                    if (Settings.Default.OutputCopyTextureResult)
-                        Console.WriteLine($"i: {i:D2} offset1: {offset1:D5}, offset2: {offset2:D5}");
-                    Array.Copy(vram, offset1, texture2, offset2, (width * 4) / 8);
+                    int srcOffset = (i + srcY) * 0x200 + srcX / 2;
+                    int destOffset = (i + destY) * 0x200 + destX / 2;
+
+                    int byteCount = (width + 1) / 2;
+                    for (int j = 0; j < byteCount; j++)
+                    {
+                        byte srcByte = vram[srcOffset + j];
+                        byte reversedByte = (byte)(((srcByte & 0xF) << 4) | ((srcByte & 0xF0) >> 4));
+                        texture2[destOffset + j] = reversedByte;
+                    }
                 }
             }
             else if (bpp == 8)
