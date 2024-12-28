@@ -311,8 +311,8 @@ namespace CrashEdit.CE.Controls
                 row.CreateCells(grdTextures, item.Page, item.ClutX, item.ClutY, item.Left, item.Top, item.Width, item.Height, item.X1, item.X2, item.X3, item.Y1, item.Y2, item.Y3, item.BlendMode, item.ColorMode);
                 grdTextures.Rows.Add(row);
             }
-            SetTag(9, 11);
-            SetTag(12, 14);
+            SetTag(ColX1, ColX3);
+            SetTag(ColY1, ColY3);
             grdTextures.ResumeLayout();
 
             foreach (DataGridViewColumn column in grdTextures.Columns)
