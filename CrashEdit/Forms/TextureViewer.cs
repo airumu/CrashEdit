@@ -23,6 +23,8 @@ namespace CrashEdit.CE
         private Point initialSelectedRegionPosition;
         private int selectionSize;
 
+        private bool IsBGRA;
+        private bool ReplaceCLUT;
         public TextureViewer(TextureChunk texturechunk)
         {
             chunk = texturechunk;
@@ -51,6 +53,9 @@ namespace CrashEdit.CE
             C2dpdColor.SelectedIndex = 0;
             C2dpdBlend.SelectedIndex = 3;
             selectionSize = 32;
+
+            IsBGRA = true;
+            ReplaceCLUT = true;
 
             pictureBox1.MouseClick += delegate (object? sender, MouseEventArgs e)
             {
@@ -413,6 +418,50 @@ namespace CrashEdit.CE
         private void splitContainer1_GotFocus(object sender, EventArgs e)
         {
             tabControl1.Focus();
+        }
+
+        private void cmdReplace_Click(object sender, EventArgs e)
+        {
+            if (C2dpdColor.SelectedIndex == 2)
+            {
+                DarkMessageBox.ShowError("Unsupported bpp.", "Error");
+                return;
+            }
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "Image Files|*.bmp;*.png;|All Files|*.*";
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string filePath = openFileDialog.FileName;
+                    string extension = Path.GetExtension(filePath).ToLower();
+
+                    int destX = (int)C2numX.Value;
+                    int destY = (int)C2numY.Value;
+                    int clutX = (int)C2numCX.Value;
+                    int clutY = (int)C2numCY.Value;
+
+                    int oldBpp = 4;
+                    if (C2dpdColor.SelectedIndex == 1)
+                    {
+                        oldBpp = 8;
+                        destX *= 2;
+                        clutX = 0;
+                    }
+
+                    chunk.Data = TextureConv.ReplaceTextureFromFile(filePath, extension, IsBGRA, chunk.Data, destX, destY, ReplaceCLUT, oldBpp, clutX, clutY);
+                    UpdatePicture();
+                }
+            }
+        }
+
+        private void chkBGRA_CheckedChanged(object sender, EventArgs e)
+        {
+            IsBGRA = chkBGRA.Checked;
+        }
+
+        private void chkReplaceCLUT_CheckedChanged(object sender, EventArgs e)
+        {
+            ReplaceCLUT = chkReplaceCLUT.Checked;
         }
     }
 }

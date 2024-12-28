@@ -152,7 +152,7 @@ namespace CrashEdit.Crash
             }
             else
             {
-                Console.WriteLine("Unsupported bpp value.");
+                Console.WriteLine("Unsupported bpp.");
             }
 
             return destTexture;

@@ -431,21 +431,19 @@ namespace CrashEdit.CE.Controls
 
                     int destX = SelectedRegionX;
                     int destY = SelectedRegionY;
-                    int oldBpp = 0; int clutX = 0; int clutY = 0;
                     if (grdTextures.SelectedCells.Count > 0)
                     {
                         var row = grdTextures.Rows[grdTextures.SelectedCells[0].RowIndex];
+                        int clutX = Convert.ToInt32(row.Cells[ColClutX].Value);
+                        int clutY = Convert.ToInt32(row.Cells[ColClutY].Value);
+
+                        int oldBpp = 4;
                         if (Convert.ToInt32(row.Cells[ColColorMode].Value) == 1)
                         {
-                            destX *= 2;
                             oldBpp = 8;
+                            destX *= 2;
+                            clutX = 0;
                         }
-                        else
-                        {
-                            oldBpp = 4;
-                        }
-                        clutX = Convert.ToInt32(row.Cells[ColClutX].Value);
-                        clutY = Convert.ToInt32(row.Cells[ColClutY].Value);
 
                         chunk.Data = TextureConv.ReplaceTextureFromFile(filePath, extension, IsBGRA, chunk.Data, destX, destY, ReplaceCLUT, oldBpp, clutX, clutY);
                         UpdatePicture();

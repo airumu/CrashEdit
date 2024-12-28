@@ -61,6 +61,10 @@ namespace CrashEdit.CE
             groupBox1 = new DarkGroupBox();
             C1dpdColor = new DarkComboBox();
             tabC2 = new TabPage();
+            darkGroupBox2 = new DarkGroupBox();
+            chkBGRA = new CheckBox();
+            chkReplaceCLUT = new CheckBox();
+            cmdReplace = new DarkButton();
             darkGroupBox1 = new DarkGroupBox();
             C2Size32 = new DarkButton();
             C2SizeMax = new DarkButton();
@@ -115,6 +119,7 @@ namespace CrashEdit.CE
             groupBox2.SuspendLayout();
             groupBox1.SuspendLayout();
             tabC2.SuspendLayout();
+            darkGroupBox2.SuspendLayout();
             darkGroupBox1.SuspendLayout();
             groupBox6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)C2numY).BeginInit();
@@ -477,6 +482,7 @@ namespace CrashEdit.CE
             // tabC2
             // 
             tabC2.BackColor = Color.Transparent;
+            tabC2.Controls.Add(darkGroupBox2);
             tabC2.Controls.Add(darkGroupBox1);
             tabC2.Controls.Add(groupBox6);
             tabC2.Controls.Add(groupBox7);
@@ -492,6 +498,58 @@ namespace CrashEdit.CE
             tabC2.Size = new Size(908, 182);
             tabC2.TabIndex = 1;
             tabC2.Text = "Crash 2";
+            // 
+            // darkGroupBox2
+            // 
+            darkGroupBox2.Controls.Add(chkBGRA);
+            darkGroupBox2.Controls.Add(chkReplaceCLUT);
+            darkGroupBox2.Controls.Add(cmdReplace);
+            darkGroupBox2.Location = new Point(663, 8);
+            darkGroupBox2.Name = "darkGroupBox2";
+            darkGroupBox2.Size = new Size(113, 102);
+            darkGroupBox2.TabIndex = 17;
+            darkGroupBox2.TabStop = false;
+            darkGroupBox2.Text = "Replace Texture";
+            // 
+            // chkBGRA
+            // 
+            chkBGRA.AutoSize = true;
+            chkBGRA.Checked = true;
+            chkBGRA.CheckState = System.Windows.Forms.CheckState.Checked;
+            chkBGRA.Location = new Point(6, 77);
+            chkBGRA.Name = "chkBGRA";
+            chkBGRA.Size = new Size(95, 19);
+            chkBGRA.TabIndex = 1;
+            chkBGRA.Text = "BGRA format";
+            chkBGRA.UseVisualStyleBackColor = true;
+            chkBGRA.CheckedChanged += chkBGRA_CheckedChanged;
+            // 
+            // chkReplaceCLUT
+            // 
+            chkReplaceCLUT.AutoSize = true;
+            chkReplaceCLUT.Checked = true;
+            chkReplaceCLUT.CheckState = System.Windows.Forms.CheckState.Checked;
+            chkReplaceCLUT.Location = new Point(6, 52);
+            chkReplaceCLUT.Name = "chkReplaceCLUT";
+            chkReplaceCLUT.Size = new Size(98, 19);
+            chkReplaceCLUT.TabIndex = 1;
+            chkReplaceCLUT.Text = "Replace CLUT";
+            chkReplaceCLUT.UseVisualStyleBackColor = true;
+            chkReplaceCLUT.CheckedChanged += chkReplaceCLUT_CheckedChanged;
+            // 
+            // cmdReplace
+            // 
+            cmdReplace.BorderColour = Color.Empty;
+            cmdReplace.CustomColour = false;
+            cmdReplace.FlatBottom = false;
+            cmdReplace.FlatTop = false;
+            cmdReplace.Location = new Point(6, 23);
+            cmdReplace.Name = "cmdReplace";
+            cmdReplace.Padding = new Padding(5);
+            cmdReplace.Size = new Size(75, 23);
+            cmdReplace.TabIndex = 0;
+            cmdReplace.Text = "Browse";
+            cmdReplace.Click += cmdReplace_Click;
             // 
             // darkGroupBox1
             // 
@@ -999,6 +1057,8 @@ namespace CrashEdit.CE
             groupBox2.ResumeLayout(false);
             groupBox1.ResumeLayout(false);
             tabC2.ResumeLayout(false);
+            darkGroupBox2.ResumeLayout(false);
+            darkGroupBox2.PerformLayout();
             darkGroupBox1.ResumeLayout(false);
             groupBox6.ResumeLayout(false);
             groupBox6.PerformLayout();
@@ -1089,5 +1149,9 @@ namespace CrashEdit.CE
         private DarkNumericUpDown C2numShiftX;
         private DarkNumericUpDown C2numShiftY;
         private DarkGroupBox darkGroupBox1;
+        private DarkGroupBox darkGroupBox2;
+        private DarkButton cmdReplace;
+        private CheckBox chkReplaceCLUT;
+        private CheckBox chkBGRA;
     }
 }
