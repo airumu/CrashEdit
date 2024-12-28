@@ -4,6 +4,7 @@ using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
+using SharpFont.Fnt;
 using static CrashEdit.CE.TextureViewer;
 using HslColor = Cyotek.Windows.Forms.HslColor;
 
@@ -123,69 +124,59 @@ namespace CrashEdit.CE.Controls
             }
         }
 
-        // Draws the backgrounds for entire ListView items.
         private void lstColor_DrawItem(object sender, DrawListViewItemEventArgs e)
         {
-            bool isSelected = e.Item.Selected;
-            e.DrawBackground(); // Draws background
-
-            if (isSelected)
-            {
-                // Change background color for selected items
-                //e.Graphics.FillRectangle(Brushes.LightBlue, e.Bounds);
-            }
-
-            // Draw the item text
-            e.DrawText();
-        }
-
-        // Draws subitem text and applies content-based formatting.
-        private void lstColor_DrawSubItem(object sender,
-            DrawListViewSubItemEventArgs e)
-        {
-            TextFormatFlags flags = TextFormatFlags.Left;
-
+            TextFormatFlags flags = TextFormatFlags.HorizontalCenter;
             using (StringFormat sf = new StringFormat())
             {
-                // Store the column text alignment, letting it default
-                // to Left if it has not been set to Center or Right.
-                switch (e.Header.TextAlign)
+                bool isSelected = e.Item.Selected;
+
+                e.DrawBackground();
+
+                sf.Alignment = StringAlignment.Center;
+
+                if (isSelected)
                 {
-                    case HorizontalAlignment.Center:
-                        sf.Alignment = StringAlignment.Center;
-                        flags = TextFormatFlags.HorizontalCenter;
-                        break;
-                    case HorizontalAlignment.Right:
-                        sf.Alignment = StringAlignment.Far;
-                        flags = TextFormatFlags.Right;
-                        break;
+                    //e.Graphics.FillRectangle(Brushes.LightBlue, e.Bounds);
+                    e.Graphics.DrawString(e.Item.Text, lstColor.Font, Brushes.White, e.Bounds, sf);
+                }
+                else
+                {
+                    e.DrawText(flags);
                 }
 
-                // Draw the text and background for a subitem with a 
-                // negative value. 
-                double subItemValue;
-                if (e.ColumnIndex > 0 && Double.TryParse(
-                    e.SubItem.Text, NumberStyles.Currency,
-                    NumberFormatInfo.CurrentInfo, out subItemValue) &&
-                    subItemValue < 0)
+            }
+        }
+
+        private void lstColor_MouseDown(object sender, MouseEventArgs e)
+        {
+            Point mousePosition = e.Location;
+            for (int i = 0; i < lstColor.Items.Count; i++)
+            {
+                ListViewItem item = lstColor.Items[i];
+                Rectangle itemBounds = item.Bounds;
+                if (itemBounds.Contains(mousePosition))
                 {
-                    // Unless the item is selected, draw the standard 
-                    // background to make it stand out from the gradient.
-                    if ((e.ItemState & ListViewItemStates.Selected) == 0)
-                    {
-                        e.DrawBackground();
-                    }
-
-                    // Draw the subitem text in red to highlight it. 
-                    e.Graphics.DrawString(e.SubItem.Text,
-                        lstTPages.Font, Brushes.Red, e.Bounds, sf);
-
-                    return;
+                    lstColor.SelectedItems.Clear();
+                    item.Selected = true;
+                    break;
                 }
+            }
+        }
 
-                // Draw normal text for a subitem with a nonnegative 
-                // or nonnumerical value.
-                e.DrawText(flags);
+        private void lstColor_MouseUp(object sender, MouseEventArgs e)
+        {
+            Point mousePosition = e.Location;
+            for (int i = 0; i < lstColor.Items.Count; i++)
+            {
+                ListViewItem item = lstColor.Items[i];
+                Rectangle itemBounds = item.Bounds;
+                if (itemBounds.Contains(mousePosition))
+                {
+                    lstColor.SelectedItems.Clear();
+                    item.Selected = true;
+                    break;
+                }
             }
         }
 
@@ -960,7 +951,7 @@ namespace CrashEdit.CE.Controls
 
                     HslColor hslColor = new HslColor(itemColor);
 
-                    hslColor = ChangeHue(hslColor, hslColor.H + (MasterHue - 180));
+                    hslColor = ChangeHue(hslColor, hslColor.H + (MasterHue));
                     hslColor.S += (double)(MasterSaturation - 50) / 100;
                     hslColor.L += (double)(MasterLightness - 50) / 100;
 
@@ -995,9 +986,6 @@ namespace CrashEdit.CE.Controls
                 pnGlobalControl.Enabled =
                 cmdApply.Enabled =
                 cmdCancel.Enabled = true;
-                hueColorSlider.Value = 180;
-                saturationColorSlider.Value = 50;
-                lightnessColorSlider.Value = 50;
             }
             else
             {
@@ -1006,6 +994,14 @@ namespace CrashEdit.CE.Controls
                 cmdCancel.Enabled = false;
                 ResetColorList();
             }
+            ResetColorSliders();
+        }
+
+        private void ResetColorSliders()
+        {
+            hueColorSlider.Value = 180F;
+            saturationColorSlider.Value = 50F;
+            lightnessColorSlider.Value = 50F;
         }
 
         private Color GetSelectedItemColor()
@@ -1021,7 +1017,7 @@ namespace CrashEdit.CE.Controls
         {
             if (lstColor.SelectedItems.Count <= 0 || EditMode)
             {
-                pnSliders.Enabled = false;
+                //pnSliders.Enabled = false;
                 return;
             }
             pnSliders.Enabled = true;
@@ -1104,11 +1100,13 @@ namespace CrashEdit.CE.Controls
         private void cmdCancel_Click(object sender, EventArgs e)
         {
             tglGlobalControl.Switched = false;
+            ResetColorSliders();
         }
 
         private void tbpColors_Leave(object sender, EventArgs e)
         {
             tglGlobalControl.Switched = false;
+            ResetColorSliders();
         }
 
         private void UpdatePicture()
@@ -1300,6 +1298,8 @@ namespace CrashEdit.CE.Controls
             }
             rbtReloadTPage.Checked = false;
         }
+
+        
     }
 
     public class ListViewEditInfo
