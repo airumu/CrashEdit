@@ -1,4 +1,6 @@
-﻿namespace CrashEdit.CE.Controls
+﻿using System.Windows.Forms;
+
+namespace CrashEdit.CE.Controls
 {
     partial class CLUTBox
     {
@@ -32,6 +34,7 @@
             cmdLoadCLUT = new AltUI.Controls.DarkButton();
             numLoadClut = new AltUI.Controls.DarkNumericUpDown();
             lblCount = new Label();
+            colorEditor = new Cyotek.Windows.Forms.ColorEditor();
             ((System.ComponentModel.ISupportInitialize)grdCLUT).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numLoadClut).BeginInit();
             SuspendLayout();
@@ -46,12 +49,14 @@
             grdCLUT.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             grdCLUT.Location = new Point(0, 0);
             grdCLUT.Name = "grdCLUT";
+            grdCLUT.ReadOnly = true;
             grdCLUT.RowHeadersWidth = 24;
             grdCLUT.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             grdCLUT.ScrollBars = ScrollBars.Vertical;
-            grdCLUT.Size = new Size(538, 538);
+            grdCLUT.Size = new Size(538, 600);
             grdCLUT.TabIndex = 0;
             grdCLUT.CellPainting += grdCLUT_CellPainting;
+            grdCLUT.SelectionChanged += grdCLUT_SelectionChanged;
             grdCLUT.KeyDown += grdCLUT_KeyDown;
             // 
             // cmdLoadCLUT
@@ -87,6 +92,20 @@
             lblCount.TabIndex = 3;
             lblCount.Text = "Count";
             // 
+            // colorEditor
+            // 
+            colorEditor.Color = Color.FromArgb(0, 0, 0);
+            colorEditor.Enabled = false;
+            colorEditor.Location = new Point(543, 85);
+            colorEditor.Margin = new Padding(4, 3, 4, 3);
+            colorEditor.Name = "colorEditor";
+            colorEditor.Padding = new Padding(9);
+            colorEditor.ShowAlphaChannel = false;
+            colorEditor.ShowColorSpaceLabels = false;
+            colorEditor.Size = new Size(284, 197);
+            colorEditor.TabIndex = 0;
+            colorEditor.ColorChanged += colorEditor_ColorChanged;
+            // 
             // CLUTBox
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -96,8 +115,9 @@
             Controls.Add(numLoadClut);
             Controls.Add(cmdLoadCLUT);
             Controls.Add(grdCLUT);
+            Controls.Add(colorEditor);
             Name = "CLUTBox";
-            Size = new Size(800, 800);
+            Size = new Size(1000, 1000);
             ((System.ComponentModel.ISupportInitialize)grdCLUT).EndInit();
             ((System.ComponentModel.ISupportInitialize)numLoadClut).EndInit();
             ResumeLayout(false);
@@ -110,5 +130,6 @@
         private AltUI.Controls.DarkButton cmdLoadCLUT;
         private AltUI.Controls.DarkNumericUpDown numLoadClut;
         private Label lblCount;
+        private Cyotek.Windows.Forms.ColorEditor colorEditor;
     }
 }

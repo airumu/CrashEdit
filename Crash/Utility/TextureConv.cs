@@ -257,7 +257,7 @@ namespace CrashEdit.Crash
             return convertedPalette;
         }
 
-        private static ushort ConvertToRGBA5551(byte r, byte g, byte b, byte a)
+        public static ushort ConvertToRGBA5551(byte r, byte g, byte b, byte a)
         {
             ushort rgba5551 = 0;
 

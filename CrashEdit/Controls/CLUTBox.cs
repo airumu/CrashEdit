@@ -1,4 +1,6 @@
-﻿using CrashEdit.Crash;
+﻿using System.Drawing;
+using System.Windows.Forms;
+using CrashEdit.Crash;
 
 namespace CrashEdit.CE.Controls
 {
@@ -14,6 +16,27 @@ namespace CrashEdit.CE.Controls
 
             SetDarkTheme(grdCLUT);
             EnableDoubleBuffering();
+
+            numLoadClut.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
+        }
+
+        private void ScrollHandlerFunction(object sender, MouseEventArgs e)
+        {
+            if (sender is NumericUpDown numericUpDown)
+            {
+                HandledMouseEventArgs handledArgs = e as HandledMouseEventArgs;
+                if (handledArgs != null)
+                    handledArgs.Handled = true;
+
+                decimal newValue = numericUpDown.Value;
+                if (e.Delta > 0 && newValue < numericUpDown.Maximum)
+                    newValue += numericUpDown.Increment;
+
+                else if (e.Delta < 0 && newValue > numericUpDown.Minimum)
+                    newValue -= numericUpDown.Increment;
+
+                numericUpDown.Value = newValue;
+            }
         }
 
         private void SetDarkTheme(DataGridView dataGridView)
@@ -109,13 +132,16 @@ namespace CrashEdit.CE.Controls
                 {
                     if (i * 2 + 1 < clut.Length)
                     {
-                        ushort colorValue = BitConverter.ToUInt16(clut, i * 2);
-                        row.Cells[i + 1].Tag = colorValue;
+                        short hexString = BitConverter.ToInt16(clut);
+                        //row.Cells[i + 1].Value = (i * 2) + (rowIndex * 32);
+                        row.Cells[i + 1].Tag = (i * 2) + (rowIndex * 32);
 
+                        ushort colorValue = BitConverter.ToUInt16(clut, i * 2);
                         int r = (colorValue & 0x1F) << 3;
                         int g = ((colorValue >> 5) & 0x1F) << 3;
                         int b = ((colorValue >> 10) & 0x1F) << 3;
                         row.Cells[i + 1].Style.BackColor = Color.FromArgb(255, r, g, b);
+                        row.Cells[i + 1].Style.ForeColor = Color.Transparent;
                     }
                 }
             }
@@ -138,16 +164,49 @@ namespace CrashEdit.CE.Controls
 
         private void grdCLUT_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control)
+            //if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control)
+            //{
+            //    var tagValue = grdCLUT.SelectedCells[0].Tag?.ToString();
+            //    if (!string.IsNullOrEmpty(tagValue))
+            //    {
+            //        Clipboard.SetText(tagValue);
+            //    }
+            //}
+        }
+        private void UpdateSelectedColor(Color color)
+        {
+            if (grdCLUT.SelectedCells.Count > 0 && grdCLUT.SelectedCells[0].ColumnIndex > 0 && grdCLUT.SelectedCells[0].RowIndex > 0)
             {
-                var tagValue = grdCLUT.SelectedCells[0].Tag?.ToString();
-                if (!string.IsNullOrEmpty(tagValue))
-                {
-                    Clipboard.SetText(tagValue);
-                }
+                colorEditor.Enabled = true;
+                grdCLUT.SelectedCells[0].Style.BackColor = color;
 
+                ushort rgba5551 = TextureConv.ConvertToRGBA5551(color.B, color.G, color.R, color.A);
+                byte[] convertedPalette = BitConverter.GetBytes(rgba5551);
+
+                int offset = (int)grdCLUT.SelectedCells[0].Tag;
+                Array.Copy(convertedPalette, 0, chunk.Data, offset, 2);
+            }
+            else
+            {
+                colorEditor.Enabled = false;
+                return;
             }
         }
+
+        private void colorEditor_ColorChanged(object sender, EventArgs e)
+        {
+            //if (!EditMode)
+            UpdateSelectedColor(colorEditor.Color);
+        }
+
+        private void grdCLUT_SelectionChanged(object sender, EventArgs e)
+        {
+            if (grdCLUT.SelectedCells.Count > 0)
+            {
+                colorEditor.Color = grdCLUT.SelectedCells[0].Style.BackColor;
+            }
+        }
+
 
     }
 }
