@@ -21,6 +21,7 @@ namespace CrashEdit.CE
         private bool isDragging = false;
         private Point dragStartPoint;
         private Point initialSelectedRegionPosition;
+        private int selectionSize;
 
         public TextureViewer(TextureChunk texturechunk)
         {
@@ -49,6 +50,7 @@ namespace CrashEdit.CE
             C1dpdBlend.SelectedIndex = 3;
             C2dpdColor.SelectedIndex = 0;
             C2dpdBlend.SelectedIndex = 3;
+            selectionSize = 32;
 
             pictureBox1.MouseClick += delegate (object? sender, MouseEventArgs e)
             {
@@ -67,10 +69,10 @@ namespace CrashEdit.CE
                 if (textype == TextureType.Crash1) return;
                 if (e.Button == MouseButtons.Left)
                 {
-                    selectedregion.Width = 32;
-                    selectedregion.Height = 32;
-                    C2numW.Value = 32;
-                    C2numH.Value = 32;
+                    selectedregion.Width = selectionSize;
+                    selectedregion.Height = selectionSize;
+                    C2numW.Value = selectionSize;
+                    C2numH.Value = selectionSize;
 
                     dragStartPoint = e.Location;
                     //initialSelectedRegionPosition = selectedregion.Location;
@@ -94,20 +96,20 @@ namespace CrashEdit.CE
                 if (textype == TextureType.Crash1) return;
                 if (isDragging)
                 {
-                    int deltaX = e.X - dragStartPoint.X + 32;
-                    int deltaY = e.Y - dragStartPoint.Y + 32;
+                    int deltaX = e.X - dragStartPoint.X + selectionSize;
+                    int deltaY = e.Y - dragStartPoint.Y + selectionSize;
                     selectedregion.Width = deltaX;
                     selectedregion.Height = deltaY;
-                    selectedregion.Width = (selectedregion.Width / 32) * 32;
-                    selectedregion.Height = (selectedregion.Height / 32) * 32;
+                    selectedregion.Width = (selectedregion.Width / selectionSize) * selectionSize;
+                    selectedregion.Height = (selectedregion.Height / selectionSize) * selectionSize;
 
-                    if (selectedregion.Width < 32)
-                        selectedregion.Width = 32;
+                    if (selectedregion.Width < selectionSize)
+                        selectedregion.Width = selectionSize;
                     else if (selectedregion.Width > 1024)
                         selectedregion.Width = 1024;
 
-                    if (selectedregion.Height < 32)
-                        selectedregion.Height = 32;
+                    if (selectedregion.Height < selectionSize)
+                        selectedregion.Height = selectionSize;
                     else if (selectedregion.Height > 128)
                         selectedregion.Height = 128;
 
@@ -324,6 +326,7 @@ namespace CrashEdit.CE
         {
             C2numW.Value = 16;
             C2numH.Value = 16;
+            selectionSize = 16;
             UpdatePicture();
         }
 
@@ -331,6 +334,7 @@ namespace CrashEdit.CE
         {
             C2numW.Value = 32;
             C2numH.Value = 32;
+            selectionSize = 32;
             UpdatePicture();
         }
 
@@ -338,6 +342,7 @@ namespace CrashEdit.CE
         {
             C2numW.Value = 64;
             C2numH.Value = 64;
+            selectionSize = 64;
             UpdatePicture();
         }
 
@@ -371,7 +376,7 @@ namespace CrashEdit.CE
 
         private void C2btnMoveX1_Click(object sender, EventArgs e)
         {
-            int arg = (int)C2numMoveX.Value;
+            int arg = (int)C2numShiftX.Value;
             if ((int)C2numX.Value > arg)
                 C2numX.Value -= arg;
             else
@@ -380,7 +385,7 @@ namespace CrashEdit.CE
 
         private void C2btnMoveX2_Click(object sender, EventArgs e)
         {
-            int arg = (int)C2numMoveX.Value;
+            int arg = (int)C2numShiftX.Value;
             if ((int)C2numX.Value < 1023 - arg)
                 C2numX.Value += arg;
             /*            else
@@ -389,7 +394,7 @@ namespace CrashEdit.CE
 
         private void C2btnMoveY1_Click(object sender, EventArgs e)
         {
-            int arg = (int)C2numMoveY.Value;
+            int arg = (int)C2numShiftY.Value;
             if ((int)C2numY.Value > arg)
                 C2numY.Value -= arg;
             else
@@ -398,7 +403,7 @@ namespace CrashEdit.CE
 
         private void C2btnMoveY2_Click(object sender, EventArgs e)
         {
-            int arg = (int)C2numMoveY.Value;
+            int arg = (int)C2numShiftY.Value;
             if ((int)C2numY.Value < 127 - arg)
                 C2numY.Value += arg;
             /*            else
