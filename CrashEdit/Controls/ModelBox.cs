@@ -1,5 +1,6 @@
 ﻿using System.Drawing.Imaging;
 using System.Globalization;
+using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
@@ -17,6 +18,8 @@ namespace CrashEdit.CE.Controls
 
         private TextureType textype;
         private Rectangle selectedregion;
+
+        private DarkToolTip tipReloadTPage;
 
         private bool EditMode;
         private bool SimpleMode;
@@ -51,7 +54,14 @@ namespace CrashEdit.CE.Controls
             model = controller.ModelEntry;
             DoubleBuffered = true;
             InitializeComponent();
+            MainInit();
             UpdateInfo();
+        }
+
+        private void MainInit()
+        {
+            tipReloadTPage = new DarkToolTip();
+            tipReloadTPage.SetToolTip(rbtReloadTPage, "Reload");
         }
 
         private void UpdateInfo()
@@ -859,6 +869,7 @@ namespace CrashEdit.CE.Controls
 
             if (lstTPages.Items.Count > 0)
             {
+                rbtReloadTPage.Enabled = true;
                 dpdTPage.Enabled = true;
                 List<Chunk> chunks = null;
                 chunks = controller.GetNSF().Chunks;
@@ -1263,6 +1274,26 @@ namespace CrashEdit.CE.Controls
                 lstTPages.SelectedItems[0].SubItems[1].Text = text;
             model.SetTPAG(lstTPages.SelectedIndices[0], Entry.ENameToEID(text));
             UpdatePicture();
+        }
+
+        private void metroSetRadioButton1_Click(object sender, EventArgs e)
+        {
+            if (lstTPages.Items.Count > 0)
+            {
+                dpdTPage.Items.Clear();
+                List<Chunk> chunks = null;
+                chunks = controller.GetNSF().Chunks;
+                foreach (Chunk chunk in chunks)
+                {
+                    if (chunk is TextureChunk t)
+                    {
+                        dpdTPage.Items.Add(Entry.EIDToEName(t.EID));
+                    }
+                }
+                if (lstTPages.Items.Count > 0 && lstTPages.SelectedItems.Count > 0)
+                    dpdTPage.Text = lstTPages.SelectedItems[0].SubItems[1].Text;
+            }
+            rbtReloadTPage.Checked = false;
         }
     }
 

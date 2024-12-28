@@ -77,6 +77,7 @@ namespace CrashEdit.CE.Controls
             cmdReplace = new DarkButton();
             pictureBox1 = new PictureBox();
             fraTexture = new DarkGroupBox();
+            rbtReloadTPage = new MetroSetRadioButton();
             dpdTPage = new DarkComboBox();
             cmdRemoveTPage = new DarkButton();
             cmdAppendTPage = new DarkButton();
@@ -528,6 +529,7 @@ namespace CrashEdit.CE.Controls
             // 
             // fraTexture
             // 
+            fraTexture.Controls.Add(rbtReloadTPage);
             fraTexture.Controls.Add(dpdTPage);
             fraTexture.Controls.Add(cmdRemoveTPage);
             fraTexture.Controls.Add(cmdAppendTPage);
@@ -538,6 +540,28 @@ namespace CrashEdit.CE.Controls
             fraTexture.TabIndex = 0;
             fraTexture.TabStop = false;
             fraTexture.Text = "Texture Pages";
+            // 
+            // rbtReloadTPage
+            // 
+            rbtReloadTPage.BackgroundColor = Color.FromArgb(30, 30, 30);
+            rbtReloadTPage.BorderColor = Color.FromArgb(155, 155, 155);
+            rbtReloadTPage.Checked = true;
+            rbtReloadTPage.CheckSignColor = Color.FromArgb(65, 177, 225);
+            rbtReloadTPage.CheckState = MetroSet_UI.Enums.CheckState.Checked;
+            rbtReloadTPage.DisabledBorderColor = Color.FromArgb(85, 85, 85);
+            rbtReloadTPage.Enabled = false;
+            rbtReloadTPage.Font = new Font("Microsoft Sans Serif", 10F);
+            rbtReloadTPage.Group = 0;
+            rbtReloadTPage.IsDerivedStyle = true;
+            rbtReloadTPage.Location = new Point(107, 278);
+            rbtReloadTPage.Name = "rbtReloadTPage";
+            rbtReloadTPage.Size = new Size(19, 17);
+            rbtReloadTPage.Style = MetroSet_UI.Enums.Style.Dark;
+            rbtReloadTPage.StyleManager = null;
+            rbtReloadTPage.TabIndex = 10;
+            rbtReloadTPage.ThemeAuthor = "Narwin";
+            rbtReloadTPage.ThemeName = "MetroDark";
+            rbtReloadTPage.Click += metroSetRadioButton1_Click;
             // 
             // dpdTPage
             // 
@@ -683,5 +707,6 @@ namespace CrashEdit.CE.Controls
         private DarkComboBox dpdTPage;
         private CheckBox chkReplaceCLUT;
         private Label label2;
+        private MetroSetRadioButton rbtReloadTPage;
     }
 }
