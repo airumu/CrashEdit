@@ -429,13 +429,35 @@ namespace CrashEdit.CE.Controls
                     string filePath = openFileDialog.FileName;
                     string extension = Path.GetExtension(filePath).ToLower();
                     bool Failed = false;
+
+                    int destX = SelectedRegionX;
+                    int destY = SelectedRegionY;
+
+                    int oldBpp = 0; int clutX = 0; int clutY = 0;
+
+                    if (grdTextures.SelectedCells.Count > 0)
+                    {
+                        var row = grdTextures.Rows[grdTextures.SelectedCells[0].RowIndex];
+                        if (Convert.ToInt32(row.Cells[ColColorMode].Value) == 1)
+                        {
+                            destX *= 2;
+                            oldBpp = 8;
+                        }
+                        else
+                        {
+                            oldBpp = 4;
+                        }
+                        clutX = Convert.ToInt32(row.Cells[ColClutX].Value);
+                        clutY = Convert.ToInt32(row.Cells[ColClutY].Value);
+                    }
+
                     switch (extension)
                     {
                         case ".bmp":
                             try
                             {
                                 var result = TextureConv.ProcessBmp(filePath);
-                                ReplaceTexture(result.rawImageData, result.palette, result.width, result.height);
+                                chunk.Data = TextureConv.ReplaceTextureFromViewer(chunk.Data, result.rawImageData, result.palette, result.width, result.height, destX, destY, ReplaceCLUT, oldBpp, clutX, clutY);
                             }
                             catch (Exception ex)
                             {
@@ -446,7 +468,7 @@ namespace CrashEdit.CE.Controls
                             try
                             {
                                 var result = TextureConv.ProcessPng(filePath, IsBGRA);
-                                ReplaceTexture(result.rawImageData, result.palette, result.width, result.height);
+                                chunk.Data = TextureConv.ReplaceTextureFromViewer(chunk.Data, result.rawImageData, result.palette, result.width, result.height, destX, destY, ReplaceCLUT, oldBpp, clutX, clutY);
                             }
                             catch (Exception ex)
                             {
@@ -463,77 +485,9 @@ namespace CrashEdit.CE.Controls
                     {
                         Console.WriteLine("Failed to process the image file.");
                     }
+                    UpdatePicture();
                 }
             }
-        }
-
-        private void ReplaceTexture(byte[] _rawImageData, byte[] _palette, int _width, int _height)
-        {
-            byte[] rawImageData = _rawImageData;
-            byte[] palette = _palette;
-            int width = _width;
-            int height = _height;
-
-            byte[] rgba5551List = TextureConv.ConvertPaletteToRGBA5551(palette);
-            int paletteCount = rgba5551List.Length / 2;
-            int bpp = (paletteCount <= 16) ? 4 : 8;
-
-            byte[] currentData = chunk.Data;
-
-            int destX = SelectedRegionX;
-            int clutX = 0, clutY = 0, old_bpp = 0;
-            if (grdTextures.SelectedCells.Count > 0)
-            {
-                var row = grdTextures.Rows[grdTextures.SelectedCells[0].RowIndex];
-                if (Convert.ToInt32(row.Cells[ColColorMode].Value) == 1)
-                {
-                    destX *= 2;
-                    old_bpp = 8;
-                }
-                else
-                {
-                    old_bpp = 4;
-                }
-                clutX = Convert.ToInt32(row.Cells[ColClutX].Value);
-                clutY = Convert.ToInt32(row.Cells[ColClutY].Value);
-            }
-            byte[] newTextureData = TextureConv.ReplaceTexture(rawImageData, currentData, width, height, bpp, 0, 0, width, height, destX / (bpp == 8 ? 2 : 1), SelectedRegionY);
-            chunk.Data = newTextureData;
-            WriteResult(rgba5551List, rawImageData, paletteCount, bpp, width, height);
-
-            if (ReplaceCLUT)
-            {
-                bool doProcess = true;
-                if (bpp != old_bpp)
-                {
-                    if (DarkMessageBox.ShowWarning("The color depth of the selected image differs from the current one. Do you want to continue anyway?", "", DarkDialogButton.YesNo) == DialogResult.Yes)
-                        doProcess = true;
-                    else
-                        doProcess = false;
-                }
-
-                if (doProcess)
-                {
-                    int offset = clutX * 0x20 + clutY * 0x200;
-                    Array.Copy(rgba5551List, 0, chunk.Data, offset, rgba5551List.Length);
-                    Console.WriteLine("CLUT replacement completed.");
-                }
-                else
-                {
-                    Console.WriteLine("CLUT replacement cancelled.");
-                }
-            }
-            BitConv.ToInt32(chunk.Data, 12, Chunk.CalculateChecksum(chunk.Data));
-            UpdatePicture();
-        }
-
-        private void WriteResult(byte[] rgba5551List, byte[] rawImageData, int colorCount, int bpp, int width, int height)
-        {
-            Console.WriteLine($"Raw Image Data Length: {rawImageData.Length}");
-            Console.WriteLine($"Image Size: {width} x {height}");
-            Console.WriteLine($"Palette Count: {colorCount}, {bpp}bpp");
-            string hexString = BitConverter.ToString(rgba5551List).Replace("-", "");
-            Console.WriteLine($"Palette (RGBA5551 format):\r\n{hexString}");
         }
 
         private void cmdReplaceTexture_Click(object sender, EventArgs e)

@@ -1,14 +1,71 @@
 ﻿using System.Drawing.Imaging;
 using System.Drawing;
 using CrashEdit.CE.Properties;
+using AltUI.Forms;
+using System.Windows.Forms;
 
 namespace CrashEdit.Crash
 {
-    public static class TextureConv
+    public class TextureConv
     {
         const int VRAMWidth = 512;
         const int VRAMHeight = 128;
         private static byte[] vram = new byte[VRAMWidth * VRAMHeight];
+
+        public static byte[] ReplaceTextureFromViewer(byte[] currentData, byte[] rawImageData, byte[] palette, int width, int height, int destX, int destY, bool replaceCLUT, int oldBpp, int clutX, int clutY)
+        {
+            byte[] rgba5551List = ConvertPaletteToRGBA5551(palette);
+            int paletteCount = rgba5551List.Length / 2;
+            int bpp = (paletteCount <= 16) ? 4 : 8;
+
+            byte[] newTextureData = ReplaceTexture(rawImageData, currentData, width, height, bpp, 0, 0, width, height, destX / (bpp == 8 ? 2 : 1), destY);
+            byte[] newTPage = newTextureData;
+
+            WriteResult(rgba5551List, rawImageData, paletteCount, bpp, width, height);
+
+            if (replaceCLUT)
+            {
+                newTPage = ReplaceClut(rgba5551List, newTPage, bpp, oldBpp, clutX, clutY);
+            }
+
+            BitConv.ToInt32(newTPage, 12, Chunk.CalculateChecksum(newTPage));
+
+            return newTPage;
+        }
+
+        private static void WriteResult(byte[] rgba5551List, byte[] rawImageData, int paletteCount, int bpp, int width, int height)
+        {
+            Console.WriteLine($"Raw Image Data Length: {rawImageData.Length}");
+            Console.WriteLine($"Image Size: {width} x {height}");
+            Console.WriteLine($"Palette Count: {paletteCount}, {bpp}bpp");
+            string hexString = BitConverter.ToString(rgba5551List).Replace("-", "");
+            Console.WriteLine($"Palette (RGBA5551 format):\r\n{hexString}");
+        }
+
+        public static byte[] ReplaceClut(byte[] rgba5551List, byte[] newTPage, int bpp, int oldBpp, int clutX, int clutY)
+        {
+            bool doProcess = true;
+            if (bpp != oldBpp)
+            {
+                if (DarkMessageBox.ShowWarning("The color depth of the selected image differs from the current one. Do you want to continue anyway?", "", DarkDialogButton.YesNo) == DialogResult.Yes)
+                    doProcess = true;
+                else
+                    doProcess = false;
+            }
+
+            if (doProcess)
+            {
+                int offset = clutX * 0x20 + clutY * 0x200;
+                Array.Copy(rgba5551List, 0, newTPage, offset, rgba5551List.Length);
+                Console.WriteLine("CLUT replacement completed.");
+            }
+            else
+            {
+                Console.WriteLine("CLUT replacement cancelled.");
+            }
+
+            return newTPage;
+        }
 
         public static byte[] ReplaceTexture(byte[] srcTexture, byte[] destTexture, int textureWidth, int textureHeight, int bpp, int srcX, int srcY, int width, int height, int destX, int destY)
         {
