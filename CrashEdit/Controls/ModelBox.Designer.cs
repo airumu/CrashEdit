@@ -385,7 +385,7 @@ namespace CrashEdit.CE.Controls
             cmdReplaceTexture.Padding = new Padding(5);
             cmdReplaceTexture.Size = new Size(75, 23);
             cmdReplaceTexture.TabIndex = 5;
-            cmdReplaceTexture.Text = "BOOM";
+            cmdReplaceTexture.Text = "Browse...";
             cmdReplaceTexture.Click += cmdReplaceTexture_Click;
             // 
             // chkReplaceCLUT

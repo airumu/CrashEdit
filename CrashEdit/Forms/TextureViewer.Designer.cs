@@ -548,7 +548,7 @@ namespace CrashEdit.CE
             cmdReplace.Padding = new Padding(5);
             cmdReplace.Size = new Size(75, 23);
             cmdReplace.TabIndex = 0;
-            cmdReplace.Text = "Browse";
+            cmdReplace.Text = "Browse...";
             cmdReplace.Click += cmdReplace_Click;
             // 
             // darkGroupBox1
