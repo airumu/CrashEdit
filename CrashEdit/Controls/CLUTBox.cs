@@ -202,9 +202,16 @@ namespace CrashEdit.CE.Controls
             //}
         }
 
-        private void UpdateColors()
+        private Color GetColor(Color itemColor)
         {
+            HslColor hslColor = new HslColor(itemColor);
 
+            hslColor = ChangeHue(hslColor, hslColor.H + (MasterHue));
+            hslColor.S += (double)(MasterSaturation - 50) / 100;
+            hslColor.L += (double)(MasterLightness - 50) / 100;
+
+            Color newColor = hslColor.ToRgbColor();
+            return newColor;
         }
 
         private void UpdateAllColors()
@@ -227,13 +234,7 @@ namespace CrashEdit.CE.Controls
                             var cell = grdCLUT.Rows[row].Cells[col];
 
                             Color itemColor = LoadColorFromValue(cell);
-                            HslColor hslColor = new HslColor(itemColor);
-
-                            hslColor = ChangeHue(hslColor, hslColor.H + (MasterHue));
-                            hslColor.S += (double)(MasterSaturation - 50) / 100;
-                            hslColor.L += (double)(MasterLightness - 50) / 100;
-
-                            Color newColor = hslColor.ToRgbColor();
+                            Color newColor = GetColor(itemColor);
 
                             ushort rgba5551 = TextureConv.ConvertToRGBA5551(newColor.B, newColor.G, newColor.R, newColor.A);
                             byte[] convertedPalette = BitConverter.GetBytes(rgba5551);
@@ -252,13 +253,7 @@ namespace CrashEdit.CE.Controls
                         if (grdCLUT.SelectedCells.Count > 0 && cell.RowIndex > 0 && cell.ColumnIndex > 0)
                         {
                             Color itemColor = LoadColorFromValue(cell);
-                            HslColor hslColor = new HslColor(itemColor);
-
-                            hslColor = ChangeHue(hslColor, hslColor.H + (MasterHue));
-                            hslColor.S += (double)(MasterSaturation - 50) / 100;
-                            hslColor.L += (double)(MasterLightness - 50) / 100;
-
-                            Color newColor = hslColor.ToRgbColor();
+                            Color newColor = GetColor(itemColor);
 
                             ushort rgba5551 = TextureConv.ConvertToRGBA5551(newColor.B, newColor.G, newColor.R, newColor.A);
                             byte[] convertedPalette = BitConverter.GetBytes(rgba5551);
