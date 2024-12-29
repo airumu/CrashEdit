@@ -1804,6 +1804,18 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
+        ///   Right-click to save texture region to file
+        ///Ctrl+C to copy
+        ///Ctrl+X to cut
+        ///Ctrl+V to paste に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string TextureViewer_tipViewer {
+            get {
+                return ResourceManager.GetString("TextureViewer_tipViewer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Make BIN に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Toolbar_BIN {

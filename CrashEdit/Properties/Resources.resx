@@ -837,4 +837,10 @@ as Meters: {3:F3}m</value>
     <value>Output copying texture result to console</value>
     <comment>CE-tweaked</comment>
   </data>
+  <data name="TextureViewer_tipViewer" xml:space="preserve">
+    <value>Right-click to save texture region to file
+Ctrl+C to copy
+Ctrl+X to cut
+Ctrl+V to paste</value>
+  </data>
 </root>

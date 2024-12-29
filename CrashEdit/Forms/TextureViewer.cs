@@ -1,9 +1,11 @@
 ﻿using AltUI.Controls;
 using AltUI.Forms;
+using CrashEdit.CE.Controls;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Text;
 using System.Windows.Forms;
 
 namespace CrashEdit.CE
@@ -24,16 +26,22 @@ namespace CrashEdit.CE
         private Point dragStartPoint;
         private Point initialSelectedRegionPosition;
         private int selectionSize;
+        private byte[] tempTexture;
+        private int tempWidth;
+        private int tempHeight;
+        private int tempBpp;
 
         private bool IsBGRA;
         private bool ReplaceCLUT;
+
+        private DarkToolTip tipViewer;
         public TextureViewer(TextureChunk texturechunk)
         {
             chunk = texturechunk;
             textype = TextureType.Crash2;
 
             Icon = Embeds.GetIcon("Painting");
-            Text = string.Format("Texture Viewer [{0}] - Right-click to save texture region to file", texturechunk.EName);
+            Text = string.Format("Texture Viewer [{0}]", texturechunk.EName);
 
             InitializeComponent();
 
@@ -153,6 +161,9 @@ namespace CrashEdit.CE
             {
                 dpd.SelectedIndex = 0;
             }
+
+            tipViewer = new DarkToolTip();
+            tipViewer.SetToolTip(pictureBox1, Resources.TextureViewer_tipViewer);
 
             C1dpdColor.SelectedIndexChanged += new EventHandler(Control_UpdatePicture);
             C1dpdBlend.SelectedIndexChanged += new EventHandler(Control_UpdatePicture);
@@ -515,5 +526,36 @@ namespace CrashEdit.CE
             }
         }
 
+        private void tabControl1_KeyDown(object sender, KeyEventArgs e)
+        {
+          
+            if ((e.KeyCode == Keys.C || e.KeyCode == Keys.X) && e.Modifiers == Keys.Control)
+            {
+                if (C2dpdColor.SelectedIndex != 2)
+                {
+                    var temp = TextureConv.CopyTexture(chunk.Data, (C2dpdColor.SelectedIndex + 1) * 4, (int)C2numX.Value, (int)C2numY.Value, (int)C2numW.Value, (int)C2numH.Value);
+                    tempTexture = temp.tempTexture;
+                    tempWidth = temp.tempWidth;
+                    tempHeight = temp.tempHeight;
+                    tempBpp = temp.tempBpp;
+                }
+                if (e.KeyCode == Keys.X) // clear
+                {
+                    byte[] temp = new byte[65536];
+                    TextureConv.ReplaceTexture(temp, chunk.Data, tempWidth, tempHeight, tempBpp, 0, 0, tempWidth, tempHeight, (int)C2numX.Value, (int)C2numY.Value, false);
+                }
+            }
+            else if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
+            {
+                if (tempTexture != null)
+                {
+                    if ((int)C2numX.Value < 32 && (int)C2numY.Value == 0)
+                        DarkMessageBox.ShowError("Textures cannot be replaced on the header.", "Error");
+                    else
+                        TextureConv.ReplaceTexture(tempTexture, chunk.Data, tempWidth, tempHeight, tempBpp, 0, 0, tempWidth, tempHeight, (int)C2numX.Value, (int)C2numY.Value, false);
+
+                }
+            }
+        }
     }
 }

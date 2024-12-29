@@ -21,8 +21,8 @@ namespace CrashEdit.Crash
                 case ".bmp":
                     try
                     {
-                        var result = TextureConv.ProcessBmp(filePath);
-                        newData = TextureConv.ReplaceTextureFromViewer(currentData, result.rawImageData, result.palette, result.width, result.height, destX, destY, replaceCLUT, oldBpp, clutX, clutY);
+                        var result = ProcessBmp(filePath);
+                        newData = ReplaceTextureFromViewer(currentData, result.rawImageData, result.palette, result.width, result.height, destX, destY, replaceCLUT, oldBpp, clutX, clutY);
                     }
                     catch (Exception ex)
                     {
@@ -32,8 +32,8 @@ namespace CrashEdit.Crash
                 case ".png":
                     try
                     {
-                        var result = TextureConv.ProcessPng(filePath, isBGRA);
-                        newData = TextureConv.ReplaceTextureFromViewer(currentData, result.rawImageData, result.palette, result.width, result.height, destX, destY, replaceCLUT, oldBpp, clutX, clutY);
+                        var result = ProcessPng(filePath, isBGRA);
+                        newData = ReplaceTextureFromViewer(currentData, result.rawImageData, result.palette, result.width, result.height, destX, destY, replaceCLUT, oldBpp, clutX, clutY);
                     }
                     catch (Exception ex)
                     {
@@ -54,13 +54,13 @@ namespace CrashEdit.Crash
             return newData;
         }
 
-        public static byte[] ReplaceTextureFromViewer(byte[] currentData, byte[] rawImageData, byte[] palette, int width, int height, int destX, int destY, bool replaceCLUT, int oldBpp, int clutX, int clutY)
+        private static byte[] ReplaceTextureFromViewer(byte[] currentData, byte[] rawImageData, byte[] palette, int width, int height, int destX, int destY, bool replaceCLUT, int oldBpp, int clutX, int clutY)
         {
             byte[] rgba5551List = ConvertPaletteToRGBA5551(palette);
             int paletteCount = rgba5551List.Length / 2;
             int bpp = (paletteCount <= 16) ? 4 : 8;
 
-            byte[] newTextureData = ReplaceTexture(rawImageData, currentData, width, height, bpp, 0, 0, width, height, destX / (bpp == 8 ? 2 : 1), destY);
+            byte[] newTextureData = ReplaceTexture(rawImageData, currentData, width, height, bpp, 0, 0, width, height, destX / (bpp == 8 ? 2 : 1), destY, true);
             byte[] newTPage = newTextureData;
 
             WriteResult(rgba5551List, rawImageData, paletteCount, bpp, width, height);
@@ -84,7 +84,7 @@ namespace CrashEdit.Crash
             Console.WriteLine($"Palette (RGBA5551 format):\r\n{hexString}");
         }
 
-        public static byte[] ReplaceClut(byte[] rgba5551List, byte[] newTPage, int bpp, int oldBpp, int clutX, int clutY)
+        private static byte[] ReplaceClut(byte[] rgba5551List, byte[] newTPage, int bpp, int oldBpp, int clutX, int clutY)
         {
             bool doProcess = true;
             if (bpp != oldBpp)
@@ -109,7 +109,7 @@ namespace CrashEdit.Crash
             return newTPage;
         }
 
-        public static byte[] ReplaceTexture(byte[] srcTexture, byte[] destTexture, int textureWidth, int textureHeight, int bpp, int srcX, int srcY, int width, int height, int destX, int destY)
+        public static byte[] ReplaceTexture(byte[] srcTexture, byte[] destTexture, int textureWidth, int textureHeight, int bpp, int srcX, int srcY, int width, int height, int destX, int destY, bool isFromFile)
         {
             bool is8bpp = (bpp == 8);
 
@@ -118,7 +118,7 @@ namespace CrashEdit.Crash
             //else
             //    vram = srcTexture;
             Settings.Default.Reload();
-            CreateBuffer(srcTexture, textureWidth, textureHeight, is8bpp);
+            CreateBuffer(srcTexture, textureWidth, textureHeight, is8bpp, isFromFile, 0, 0);
 
             if (bpp == 4)
             {
@@ -158,17 +158,23 @@ namespace CrashEdit.Crash
             return destTexture;
         }
 
-        public static void CreateBuffer(byte[] srcTexture, int texture1Width, int texture1Height, bool is8bpp)
+        private static void CreateBuffer(byte[] srcTexture, int textureWidth, int textureHeight, bool is8bpp, bool isFromFile, int srcX, int srcY)
         {
+            if (Settings.Default.OutputCopyTextureResult)
+                Console.WriteLine($"srcX: {srcX}, srcY: {srcY}");
             Console.WriteLine();
             Array.Clear(vram, 0, vram.Length);
 
             int bytesPerPixel = is8bpp ? 1 : 2;
-            int rowBytes = is8bpp ? texture1Width : (texture1Width + 1) / 2;
+            int rowBytes = is8bpp ? textureWidth : (textureWidth + 1) / 2;
 
-            for (int i = 0; i < texture1Height; i++)
+            for (int i = 0; i < textureHeight; i++)
             {
-                int sourceOffset = i * rowBytes;
+                int sourceOffset;
+                if (isFromFile)
+                    sourceOffset = i * rowBytes;
+                else
+                    sourceOffset = (i + srcY) * 0x200 + srcX / (is8bpp ? 1 : 2);
                 int destinationOffset = i * VRAMWidth;
 
                 if (sourceOffset + rowBytes <= srcTexture.Length && destinationOffset + rowBytes <= vram.Length)
@@ -184,6 +190,54 @@ namespace CrashEdit.Crash
                 }
                 //File.WriteAllBytes("raw_vram.bin", vram); // debug
             }
+        }
+
+        public static (byte[] tempTexture, int tempWidth, int tempHeight, int tempBpp) CopyTexture(byte[] srcTexture, int bpp, int srcX, int srcY, int width, int height)
+        {
+            bool is8bpp = (bpp == 8);
+            int destX = 0;
+            int destY = 0;
+            byte[] tempTexture = new byte[VRAMWidth * VRAMHeight];
+
+            Settings.Default.Reload();
+            CreateBuffer(srcTexture, width, height, is8bpp, false, srcX, srcY);
+
+            if (bpp == 4)
+            {
+                for (int i = 0; i < height; i++)
+                {
+                    int srcOffset = i * 0x200;
+                    int destOffset = (i + destY) * 0x200 + destX / 2;
+                    if (Settings.Default.OutputCopyTextureResult)
+                        Console.WriteLine($"i: {i:D2} sourceOffset: {srcOffset:D5}, destinationOffset: {destOffset:D5}");
+
+                    int byteCount = (width + 1) / 2;
+                    for (int j = 0; j < byteCount; j++)
+                    {
+                        byte srcByte = vram[srcOffset + j];
+                        byte reversedByte = (byte)(((srcByte & 0xF) << 4) | ((srcByte & 0xF0) >> 4));
+                        tempTexture[destOffset + j] = reversedByte;
+                    }
+                }
+            }
+            else if (bpp == 8)
+            {
+                for (int i = 0; i < height; i++)
+                {
+                    int srcOffset = i * 0x200;
+                    int destOffset = (i + destY) * 0x200 + destX;
+                    if (Settings.Default.OutputCopyTextureResult)
+                        Console.WriteLine($"i: {i:D2} sourceOffset: {srcOffset:D5}, destinationOffset: {destOffset:D5}");
+
+                    Array.Copy(vram, srcOffset, tempTexture, destOffset, width);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Unsupported bpp.");
+            }
+
+            return (tempTexture, width, height, bpp);
         }
 
         public static (byte[] rawImageData, byte[] palette, int width, int height) ProcessBmp(string filePath)
