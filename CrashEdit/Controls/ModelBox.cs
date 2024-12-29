@@ -991,7 +991,6 @@ namespace CrashEdit.CE.Controls
             }
 
             copy.H = value;
-
             return copy;
         }
 

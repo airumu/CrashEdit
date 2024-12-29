@@ -117,7 +117,7 @@ namespace CrashEdit.CE.Controls
             tabModel.Location = new Point(0, 0);
             tabModel.Multiline = true;
             tabModel.Name = "tabModel";
-            tabModel.SelectedIndex = 2;
+            tabModel.SelectedIndex = 1;
             tabModel.SelectedTextColor = Color.White;
             tabModel.Size = new Size(1040, 800);
             tabModel.SizeMode = TabSizeMode.Fixed;
@@ -177,7 +177,7 @@ namespace CrashEdit.CE.Controls
             fraGlobalControl.Size = new Size(239, 167);
             fraGlobalControl.TabIndex = 7;
             fraGlobalControl.TabStop = false;
-            fraGlobalControl.Text = "HSL Global Controller";
+            fraGlobalControl.Text = "Global Controller";
             // 
             // cmdCancel
             // 
