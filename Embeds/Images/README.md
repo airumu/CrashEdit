@@ -8,6 +8,7 @@ Images and their sources are listed below. Some have been modified or adapted.
 |File           |![img](File.gif)           |Free Icons Web|
 |Fire           |![img](Fire.png)           |FatCow        |
 |Floppy         |![img](Floppy.gif)         |Free Icons Web|
+|FloppyGreen    |![img](Floppy.gif)         |Free Icons Web|
 |Folder         |![img](Folder.gif)         |Free Icons Web|
 |FolderOpen     |![img](FolderOpen.gif)     |Free Icons Web|
 |JournalBlue    |![img](JournalBlue.gif)    |Free Icons Web|

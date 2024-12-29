@@ -65,7 +65,7 @@ namespace CrashEdit.CE
             tbbPatchNSD = new ToolStripButton
             {
                 Text = Resources.Toolbar_PatchNSD,
-                ImageKey = "Floppy",
+                ImageKey = "FloppyGreen",
                 ToolTipText = Resources.Toolbar_PatchNSD,
                 DisplayStyle = ToolStripItemDisplayStyle.Image,
                 TextImageRelation = TextImageRelation.ImageAboveText

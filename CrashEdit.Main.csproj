@@ -41,6 +41,7 @@
       <None Remove="Embeds\Images\File.gif" />
       <None Remove="Embeds\Images\Fire.png" />
       <None Remove="Embeds\Images\Floppy.gif" />
+      <None Remove="Embeds\Images\FloppyGreen.gif" />
       <None Remove="Embeds\Images\Folder.gif" />
       <None Remove="Embeds\Images\FolderOpen.gif" />
       <None Remove="Embeds\Images\JournalBlue.gif" />
@@ -88,6 +89,7 @@
       <EmbeddedResource Include="Embeds\Images\File.gif" />
       <EmbeddedResource Include="Embeds\Images\Fire.png" />
       <EmbeddedResource Include="Embeds\Images\Floppy.gif" />
+      <EmbeddedResource Include="Embeds\Images\FloppyGreen.gif" />
       <EmbeddedResource Include="Embeds\Images\Folder.gif" />
       <EmbeddedResource Include="Embeds\Images\FolderOpen.gif" />
       <EmbeddedResource Include="Embeds\Images\JournalBlue.gif" />
