@@ -367,11 +367,11 @@ namespace CrashEdit.CE.Controls
             tglGlobalControl.Switched = false;
         }
 
-        //private void tbpColors_Leave(object sender, EventArgs e)
-        //{
-        //    ResetColorList();
-        //    tglGlobalControl.Switched = false;
-        //}
+        private void CLUTBox_Leave(object sender, EventArgs e)
+        {
+            ResetColorList();
+            tglGlobalControl.Switched = false;
+        }
 
         private void grdCLUT_SelectionChanged(object sender, EventArgs e)
         {
