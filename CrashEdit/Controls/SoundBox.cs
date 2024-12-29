@@ -1,6 +1,5 @@
 using AltUI.Controls;
 using CrashEdit.Crash;
-using MetroSet_UI.Controls;
 using System.Media;
 
 namespace CrashEdit.CE
@@ -11,7 +10,10 @@ namespace CrashEdit.CE
 
         private SoundPlayer spPlayer;
 
+        private SoundEntry soundentry;
+
         private ToolStrip tsToolbar;
+        private ToolStripButton tbbImport;
         private ToolStripButton tbbExport;
         private TableLayoutPanel pnOptions;
         private DarkButton cmdPlay;
@@ -34,6 +36,12 @@ namespace CrashEdit.CE
 
             spPlayer = new SoundPlayer();
 
+            tbbImport = new ToolStripButton();
+            tbbImport.Text = "Import";
+            /*            tbbImport.ForeColor = SystemColors.ControlText;
+                        tbbImport.BackColor = SystemColors.Window;*/
+            tbbImport.Click += new EventHandler(tbbImport_Click);
+
             tbbExport = new ToolStripButton();
             tbbExport.Text = "Export";
 /*            tbbExport.ForeColor = SystemColors.ControlText;
@@ -42,6 +50,7 @@ namespace CrashEdit.CE
 
             tsToolbar = new ToolStrip();
             tsToolbar.Dock = DockStyle.Top;
+            tsToolbar.Items.Add(tbbImport);
             tsToolbar.Items.Add(tbbExport);
 
             trkSampleRate = new TrackBar()
@@ -136,10 +145,33 @@ namespace CrashEdit.CE
         public SoundBox(SoundEntry entry)
             : this(entry.Samples)
         {
+            soundentry = entry;
         }
 
         public SoundBox(SpeechEntry entry) : this(entry.Samples)
         {
+        }
+
+        void tbbImport_Click(object sender, EventArgs e)
+        {
+            // Todo refresh sound chunk
+            byte[] data = FileUtil.OpenFile(FileFilters.VAG + "|" + FileFilters.Any);
+            if (data == null) return;
+
+            bool hasHeader = false;
+            for (int i = 12; i <= 15; i++)
+            {
+                if (data[i] != 0)
+                    hasHeader = true;
+            }
+            if (hasHeader)
+            {
+                byte[] result = new byte[data.Length - 48];
+                Array.Copy(data, 48, result, 0, data.Length - 48);
+                data = result;
+            }
+            samples = SampleSet.Load(data);
+            soundentry.Samples = samples;
         }
 
         void tbbExport_Click(object sender, EventArgs e)
