@@ -1,7 +1,6 @@
 using System.Runtime;
 using AltUI.Controls;
 using CrashEdit.Crash;
-using MetroSet_UI.Controls;
 
 namespace CrashEdit.CE
 {

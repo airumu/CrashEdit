@@ -46,6 +46,14 @@ namespace CrashEdit.CE.Controls
         {
             tabModel = new MetroSetTabControl();
             tbpInfo = new TabPage();
+            fraScales = new DarkGroupBox();
+            chkShowAsHex = new CheckBox();
+            numScaleZ = new DarkNumericUpDown();
+            lblScaleZ = new Label();
+            numScaleY = new DarkNumericUpDown();
+            lblScaleY = new Label();
+            numScaleX = new DarkNumericUpDown();
+            lblScaleX = new Label();
             label2 = new Label();
             tbpColors = new TabPage();
             fraGlobalControl = new DarkGroupBox();
@@ -85,6 +93,10 @@ namespace CrashEdit.CE.Controls
             grdTextures = new DataGridView();
             tabModel.SuspendLayout();
             tbpInfo.SuspendLayout();
+            fraScales.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numScaleZ).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numScaleY).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numScaleX).BeginInit();
             tbpColors.SuspendLayout();
             fraGlobalControl.SuspendLayout();
             pnGlobalControl.SuspendLayout();
@@ -117,7 +129,7 @@ namespace CrashEdit.CE.Controls
             tabModel.Location = new Point(0, 0);
             tabModel.Multiline = true;
             tabModel.Name = "tabModel";
-            tabModel.SelectedIndex = 1;
+            tabModel.SelectedIndex = 0;
             tabModel.SelectedTextColor = Color.White;
             tabModel.Size = new Size(1040, 800);
             tabModel.SizeMode = TabSizeMode.Fixed;
@@ -133,6 +145,7 @@ namespace CrashEdit.CE.Controls
             // tbpInfo
             // 
             tbpInfo.BackColor = Color.FromArgb(31, 31, 32);
+            tbpInfo.Controls.Add(fraScales);
             tbpInfo.Controls.Add(label2);
             tbpInfo.Location = new Point(4, 32);
             tbpInfo.Name = "tbpInfo";
@@ -140,11 +153,104 @@ namespace CrashEdit.CE.Controls
             tbpInfo.TabIndex = 0;
             tbpInfo.Text = "Info";
             // 
+            // fraScales
+            // 
+            fraScales.BackColor = Color.Transparent;
+            fraScales.Controls.Add(chkShowAsHex);
+            fraScales.Controls.Add(numScaleZ);
+            fraScales.Controls.Add(lblScaleZ);
+            fraScales.Controls.Add(numScaleY);
+            fraScales.Controls.Add(lblScaleY);
+            fraScales.Controls.Add(numScaleX);
+            fraScales.Controls.Add(lblScaleX);
+            fraScales.Location = new Point(3, 3);
+            fraScales.Name = "fraScales";
+            fraScales.Size = new Size(190, 130);
+            fraScales.TabIndex = 1;
+            fraScales.TabStop = false;
+            fraScales.Text = "Scales";
+            // 
+            // chkShowAsHex
+            // 
+            chkShowAsHex.AutoSize = true;
+            chkShowAsHex.Checked = true;
+            chkShowAsHex.CheckState = CheckState.Checked;
+            chkShowAsHex.Location = new Point(56, 104);
+            chkShowAsHex.Name = "chkShowAsHex";
+            chkShowAsHex.Size = new Size(47, 19);
+            chkShowAsHex.TabIndex = 2;
+            chkShowAsHex.Text = "Hex";
+            chkShowAsHex.UseVisualStyleBackColor = true;
+            chkShowAsHex.CheckedChanged += chkShowAsHex_CheckedChanged;
+            // 
+            // numScaleZ
+            // 
+            numScaleZ.Hexadecimal = true;
+            numScaleZ.Location = new Point(56, 75);
+            numScaleZ.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numScaleZ.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numScaleZ.Name = "numScaleZ";
+            numScaleZ.Size = new Size(122, 23);
+            numScaleZ.TabIndex = 1;
+            numScaleZ.ValueChanged += numScaleZ_ValueChanged;
+            // 
+            // lblScaleZ
+            // 
+            lblScaleZ.AutoSize = true;
+            lblScaleZ.BackColor = Color.Transparent;
+            lblScaleZ.Location = new Point(6, 77);
+            lblScaleZ.Name = "lblScaleZ";
+            lblScaleZ.Size = new Size(44, 15);
+            lblScaleZ.TabIndex = 0;
+            lblScaleZ.Text = "Scale Z";
+            // 
+            // numScaleY
+            // 
+            numScaleY.Hexadecimal = true;
+            numScaleY.Location = new Point(56, 46);
+            numScaleY.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numScaleY.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numScaleY.Name = "numScaleY";
+            numScaleY.Size = new Size(122, 23);
+            numScaleY.TabIndex = 1;
+            numScaleY.ValueChanged += numScaleY_ValueChanged;
+            // 
+            // lblScaleY
+            // 
+            lblScaleY.AutoSize = true;
+            lblScaleY.BackColor = Color.Transparent;
+            lblScaleY.Location = new Point(6, 48);
+            lblScaleY.Name = "lblScaleY";
+            lblScaleY.Size = new Size(44, 15);
+            lblScaleY.TabIndex = 0;
+            lblScaleY.Text = "Scale Y";
+            // 
+            // numScaleX
+            // 
+            numScaleX.Hexadecimal = true;
+            numScaleX.Location = new Point(56, 17);
+            numScaleX.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numScaleX.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numScaleX.Name = "numScaleX";
+            numScaleX.Size = new Size(122, 23);
+            numScaleX.TabIndex = 1;
+            numScaleX.ValueChanged += numScaleX_ValueChanged;
+            // 
+            // lblScaleX
+            // 
+            lblScaleX.AutoSize = true;
+            lblScaleX.BackColor = Color.Transparent;
+            lblScaleX.Location = new Point(6, 19);
+            lblScaleX.Name = "lblScaleX";
+            lblScaleX.Size = new Size(44, 15);
+            lblScaleX.TabIndex = 0;
+            lblScaleX.Text = "Scale X";
+            // 
             // label2
             // 
             label2.AutoSize = true;
             label2.BackColor = Color.Transparent;
-            label2.Location = new Point(12, 12);
+            label2.Location = new Point(9, 157);
             label2.Name = "label2";
             label2.Size = new Size(184, 45);
             label2.TabIndex = 0;
@@ -647,6 +753,11 @@ namespace CrashEdit.CE.Controls
             tabModel.ResumeLayout(false);
             tbpInfo.ResumeLayout(false);
             tbpInfo.PerformLayout();
+            fraScales.ResumeLayout(false);
+            fraScales.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numScaleZ).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numScaleY).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numScaleX).EndInit();
             tbpColors.ResumeLayout(false);
             fraGlobalControl.ResumeLayout(false);
             pnGlobalControl.ResumeLayout(false);
@@ -709,5 +820,13 @@ namespace CrashEdit.CE.Controls
         private MetroSetRadioButton rbtReloadTPage;
         private PictureBox picPreview;
         private DarkGroupBox darkGroupBox1;
+        private DarkGroupBox fraScales;
+        private DarkNumericUpDown numScaleZ;
+        private Label lblScaleZ;
+        private DarkNumericUpDown numScaleY;
+        private Label lblScaleY;
+        private DarkNumericUpDown numScaleX;
+        private Label lblScaleX;
+        private CheckBox chkShowAsHex;
     }
 }

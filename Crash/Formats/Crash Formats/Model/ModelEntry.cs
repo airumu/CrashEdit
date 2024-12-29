@@ -190,9 +190,21 @@ namespace CrashEdit.Crash
         public IList<ModelExtendedTexture> AnimatedTextures => animatedtextures;
         public IList<ModelPosition> Positions => positions;
 
-        public int ScaleX => BitConv.FromInt32(Info, 0);
-        public int ScaleY => BitConv.FromInt32(Info, 4);
-        public int ScaleZ => BitConv.FromInt32(Info, 8);
+        public int ScaleX
+        {
+            get => BitConv.FromInt32(Info, 0);
+            set => BitConv.ToInt32(Info, 0, value);
+        }
+        public int ScaleY
+        {
+            get => BitConv.FromInt32(Info, 4);
+            set => BitConv.ToInt32(Info, 4, value);
+        }
+        public int ScaleZ
+        {
+            get => BitConv.FromInt32(Info, 8);
+            set => BitConv.ToInt32(Info, 8, value);
+        }
         public int GetTPAG(int idx) => BitConv.FromInt32(Info, 0xC + 4 * idx);
         public void SetTPAG(int idx, int value) => BitConv.ToInt32(Info, 0xC + 4 * idx, value);
         public int VertexCount => BitConv.FromInt32(Info, 0x38);

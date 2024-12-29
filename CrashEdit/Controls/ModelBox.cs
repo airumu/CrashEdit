@@ -1,5 +1,6 @@
 ﻿using System.Drawing.Imaging;
 using System.Globalization;
+using System.Windows.Forms;
 using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
@@ -61,8 +62,9 @@ namespace CrashEdit.CE.Controls
 
         private void MainInit()
         {
-            tipReloadTPage = new DarkToolTip();
-            tipReloadTPage.SetToolTip(rbtReloadTPage, "Reload");
+            numScaleX.Value = model.ScaleX;
+            numScaleY.Value = model.ScaleY;
+            numScaleZ.Value = model.ScaleZ;
         }
 
         private void UpdateInfo()
@@ -743,6 +745,8 @@ namespace CrashEdit.CE.Controls
 
         private void tbpTextures_Enter(object sender, EventArgs e)
         {
+            tipReloadTPage = new DarkToolTip();
+            tipReloadTPage.SetToolTip(rbtReloadTPage, "Reload");
             SetDarkTheme(grdTextures);
             EnableDoubleBuffering();
             UpdateTPageList();
@@ -1202,7 +1206,27 @@ namespace CrashEdit.CE.Controls
             rbtReloadTPage.Checked = false;
         }
 
-        
+        private void numScaleX_ValueChanged(object sender, EventArgs e)
+        {
+            model.ScaleX = (int)numScaleX.Value;
+        }
+
+        private void numScaleY_ValueChanged(object sender, EventArgs e)
+        {
+            model.ScaleY = (int)numScaleY.Value;
+        }
+
+        private void numScaleZ_ValueChanged(object sender, EventArgs e)
+        {
+            model.ScaleZ = (int)numScaleZ.Value;
+        }
+
+        private void chkShowAsHex_CheckedChanged(object sender, EventArgs e)
+        {
+            numScaleX.Hexadecimal =
+            numScaleY.Hexadecimal =
+            numScaleZ.Hexadecimal = chkShowAsHex.Checked;
+        }
     }
 
     public class ListViewEditInfo
