@@ -81,6 +81,7 @@ namespace CrashEdit.CE
 
             pictureBox1.MouseDown += (sender, e) =>
             {
+                tabControl1.Focus();
                 if (textype == TextureType.Crash1) return;
                 if (e.Button == MouseButtons.Left)
                 {
@@ -488,6 +489,51 @@ namespace CrashEdit.CE
             ReplaceCLUT = chkReplaceCLUT.Checked;
         }
 
+        private void tabControl1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if ((e.KeyCode == Keys.C || e.KeyCode == Keys.X) && e.Modifiers == Keys.Control)
+            {
+                if (C2dpdColor.SelectedIndex != 2)
+                {
+                    var temp = TextureConv.CopyTexture(chunk.Data, (C2dpdColor.SelectedIndex + 1) * 4, (int)C2numX.Value, (int)C2numY.Value, (int)C2numW.Value, (int)C2numH.Value);
+                    tempTexture = temp.tempTexture;
+                    tempWidth = temp.tempWidth;
+                    tempHeight = temp.tempHeight;
+                    tempBpp = temp.tempBpp;
+                }
+                if (e.KeyCode == Keys.X) // clear
+                {
+                    byte[] temp = new byte[65536];
+                    TextureConv.ReplaceTexture(temp, chunk.Data, tempWidth, tempHeight, tempBpp, 0, 0, tempWidth, tempHeight, (int)C2numX.Value, (int)C2numY.Value, false);
+                }
+                Console.WriteLine("Texture copied successfully.");
+                UpdatePicture();
+            }
+            else if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
+            {
+                if (tempTexture != null)
+                {
+                    if ((int)C2numX.Value < 32 && (int)C2numY.Value == 0)
+                    {
+                        DarkMessageBox.ShowError("Textures cannot be replaced on the header.", "Texture Paste Error");
+                        Console.WriteLine("Failed to paste texture.");
+                    }
+                    else if ((int)C2numX.Value + tempWidth > 1024 || (int)C2numY.Value + tempHeight > 128)
+                    {
+                        DarkMessageBox.ShowError("Textures cannot be pasted outside the bounds.", "Texture Paste Error");
+                        Console.WriteLine("Failed to paste texture.");
+                    }
+                    else
+                    {
+                        TextureConv.ReplaceTexture(tempTexture, chunk.Data, tempWidth, tempHeight, tempBpp, 0, 0, tempWidth, tempHeight, (int)C2numX.Value, (int)C2numY.Value, false);
+                        Console.WriteLine("Successfully pasted texture.");
+                    }
+                }
+                
+                UpdatePicture();
+            }
+        }
+
         private void ScrollHandlerFunction(object sender, MouseEventArgs e)
         {
             if (sender is NumericUpDown numericUpDown)
@@ -526,36 +572,5 @@ namespace CrashEdit.CE
             }
         }
 
-        private void tabControl1_KeyDown(object sender, KeyEventArgs e)
-        {
-          
-            if ((e.KeyCode == Keys.C || e.KeyCode == Keys.X) && e.Modifiers == Keys.Control)
-            {
-                if (C2dpdColor.SelectedIndex != 2)
-                {
-                    var temp = TextureConv.CopyTexture(chunk.Data, (C2dpdColor.SelectedIndex + 1) * 4, (int)C2numX.Value, (int)C2numY.Value, (int)C2numW.Value, (int)C2numH.Value);
-                    tempTexture = temp.tempTexture;
-                    tempWidth = temp.tempWidth;
-                    tempHeight = temp.tempHeight;
-                    tempBpp = temp.tempBpp;
-                }
-                if (e.KeyCode == Keys.X) // clear
-                {
-                    byte[] temp = new byte[65536];
-                    TextureConv.ReplaceTexture(temp, chunk.Data, tempWidth, tempHeight, tempBpp, 0, 0, tempWidth, tempHeight, (int)C2numX.Value, (int)C2numY.Value, false);
-                }
-            }
-            else if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
-            {
-                if (tempTexture != null)
-                {
-                    if ((int)C2numX.Value < 32 && (int)C2numY.Value == 0)
-                        DarkMessageBox.ShowError("Textures cannot be replaced on the header.", "Error");
-                    else
-                        TextureConv.ReplaceTexture(tempTexture, chunk.Data, tempWidth, tempHeight, tempBpp, 0, 0, tempWidth, tempHeight, (int)C2numX.Value, (int)C2numY.Value, false);
-
-                }
-            }
-        }
     }
 }

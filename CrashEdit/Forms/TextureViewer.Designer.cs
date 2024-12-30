@@ -197,6 +197,7 @@ namespace CrashEdit.CE
             tabControl1.ThemeName = "MetroDark";
             tabControl1.UnselectedTextColor = Color.Gray;
             tabControl1.UseAnimation = false;
+            tabControl1.KeyDown += tabControl1_KeyDown;
             // 
             // tabC1
             // 

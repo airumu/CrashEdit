@@ -1804,10 +1804,10 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
-        ///   Right-click to save texture region to file
-        ///Ctrl+C to copy
-        ///Ctrl+X to cut
-        ///Ctrl+V to paste に類似しているローカライズされた文字列を検索します。
+        ///   [Right-click] save texture region to file
+        ///[Ctrl+C] copy texture to buffer
+        ///[Ctrl+X] cut texture to buffer
+        ///[Ctrl+V] paste texture from buffer に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string TextureViewer_tipViewer {
             get {

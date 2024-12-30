@@ -77,7 +77,7 @@ namespace CrashEdit.Crash
 
         private static void WriteResult(byte[] rgba5551List, byte[] rawImageData, int paletteCount, int bpp, int width, int height)
         {
-            Console.WriteLine($"Raw Image Data Length: {rawImageData.Length}");
+            Console.WriteLine($"[] Raw Image Data Length: {rawImageData.Length}");
             Console.WriteLine($"Image Size: {width} x {height}");
             Console.WriteLine($"Palette Count: {paletteCount}, {bpp}bpp");
             string hexString = BitConverter.ToString(rgba5551List).Replace("-", "");
@@ -158,40 +158,6 @@ namespace CrashEdit.Crash
             return destTexture;
         }
 
-        private static void CreateBuffer(byte[] srcTexture, int textureWidth, int textureHeight, bool is8bpp, bool isFromFile, int srcX, int srcY)
-        {
-            if (Settings.Default.OutputCopyTextureResult)
-                Console.WriteLine($"srcX: {srcX}, srcY: {srcY}");
-            Console.WriteLine();
-            Array.Clear(vram, 0, vram.Length);
-
-            int bytesPerPixel = is8bpp ? 1 : 2;
-            int rowBytes = is8bpp ? textureWidth : (textureWidth + 1) / 2;
-
-            for (int i = 0; i < textureHeight; i++)
-            {
-                int sourceOffset;
-                if (isFromFile)
-                    sourceOffset = i * rowBytes;
-                else
-                    sourceOffset = (i + srcY) * 0x200 + srcX / (is8bpp ? 1 : 2);
-                int destinationOffset = i * VRAMWidth;
-
-                if (sourceOffset + rowBytes <= srcTexture.Length && destinationOffset + rowBytes <= vram.Length)
-                {
-                    if (Settings.Default.OutputCopyTextureResult)
-                        Console.WriteLine($"Buffer_i: {i:D2} sourceOffset: {sourceOffset:D5}, destinationOffset: {destinationOffset:D5}");
-
-                    Array.Copy(srcTexture, sourceOffset, vram, destinationOffset, rowBytes);
-                }
-                else
-                {
-                    Console.WriteLine($"Error: Out of bounds copy. sourceOffset: {sourceOffset}, destinationOffset: {destinationOffset}");
-                }
-                //File.WriteAllBytes("raw_vram.bin", vram); // debug
-            }
-        }
-
         public static (byte[] tempTexture, int tempWidth, int tempHeight, int tempBpp) CopyTexture(byte[] srcTexture, int bpp, int srcX, int srcY, int width, int height)
         {
             bool is8bpp = (bpp == 8);
@@ -238,6 +204,50 @@ namespace CrashEdit.Crash
             }
 
             return (tempTexture, width, height, bpp);
+        }
+
+        private static void CreateBuffer(byte[] srcTexture, int textureWidth, int textureHeight, bool is8bpp, bool isFromFile, int srcX, int srcY)
+        {
+            if (isFromFile)
+            {
+
+            }
+                
+            if (Settings.Default.OutputCopyTextureResult)
+            {
+                Console.WriteLine();
+                Console.WriteLine($"srcX: {srcX}, srcY: {srcY}");
+            }
+
+               
+          
+            Array.Clear(vram, 0, vram.Length);
+
+            int bytesPerPixel = is8bpp ? 1 : 2;
+            int rowBytes = is8bpp ? textureWidth : (textureWidth + 1) / 2;
+
+            for (int i = 0; i < textureHeight; i++)
+            {
+                int sourceOffset;
+                if (isFromFile)
+                    sourceOffset = i * rowBytes;
+                else
+                    sourceOffset = (i + srcY) * 0x200 + srcX / (is8bpp ? 1 : 2);
+                int destinationOffset = i * VRAMWidth;
+
+                if (sourceOffset + rowBytes <= srcTexture.Length && destinationOffset + rowBytes <= vram.Length)
+                {
+                    if (Settings.Default.OutputCopyTextureResult)
+                        Console.WriteLine($"Buffer_i: {i:D2} sourceOffset: {sourceOffset:D5}, destinationOffset: {destinationOffset:D5}");
+
+                    Array.Copy(srcTexture, sourceOffset, vram, destinationOffset, rowBytes);
+                }
+                else
+                {
+                    Console.WriteLine($"Error: Out of bounds copy. sourceOffset: {sourceOffset}, destinationOffset: {destinationOffset}");
+                }
+                //File.WriteAllBytes("raw_vram.bin", vram); // debug
+            }
         }
 
         public static (byte[] rawImageData, byte[] palette, int width, int height) ProcessBmp(string filePath)
