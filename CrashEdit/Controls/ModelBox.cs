@@ -372,8 +372,7 @@ namespace CrashEdit.CE.Controls
 
                 if (uniqueRows.Contains(rowData))
                 {
-                    // Todo fix
-                    dataGridView.Rows.RemoveAt(i);
+                    dataGridView.Rows[i].Visible = false;
                 }
                 else
                 {
@@ -699,7 +698,6 @@ namespace CrashEdit.CE.Controls
                 }
             }
         }
-
 
         private void UpdateRowsY(int targetRowIndex, int newY1, int newY2, int newY3)
         {
