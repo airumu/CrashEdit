@@ -143,6 +143,7 @@ namespace CrashEdit.CE
             // splitContainer1
             // 
             splitContainer1.Dock = DockStyle.Fill;
+            splitContainer1.IsSplitterFixed = true;
             splitContainer1.Location = new Point(0, 0);
             splitContainer1.Margin = new Padding(5, 4, 5, 4);
             splitContainer1.Name = "splitContainer1";
@@ -1029,6 +1030,7 @@ namespace CrashEdit.CE
             DoubleBuffered = true;
             Margin = new Padding(4);
             Name = "TextureViewer";
+            FormBorderStyle = FormBorderStyle.FixedDialog;
             TransparencyKey = Color.FromArgb(31, 31, 32);
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);

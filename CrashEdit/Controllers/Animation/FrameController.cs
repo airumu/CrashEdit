@@ -1,3 +1,4 @@
+using System.Windows.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 using MetroSet_UI.Controls;
@@ -45,6 +46,7 @@ namespace CrashEdit.CE
                     {
                         Orientation = Orientation.Horizontal,
                         SplitterDistance = 35,
+                        IsSplitterFixed = true,
                         Dock = DockStyle.Fill 
                     };
                     pnSplit.Panel1.Controls.Add(framebox);
