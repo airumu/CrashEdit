@@ -220,8 +220,9 @@ namespace CrashEdit.CE
             UpdateCollision();
         }
 
-        private void cmdAppendCollision_Click(object sender, EventArgs e)
+        private void AppendCollision(Frame _frame)
         {
+            var frame = _frame;
             collisionindex = frame.Collision.Count;
             if (frame.Collision.Count > 0)
             {
@@ -235,22 +236,60 @@ namespace CrashEdit.CE
                 frame.HeaderSize = (int)numXOffset.Value;
                 frame.HeaderSize = (int)numHeader.Value + 40;
             }
+
+        }
+
+        private void cmdAppendCollision_Click(object sender, EventArgs e)
+        {
+            if (syncedit)
+            {
+                foreach (Frame frame in animation.Frames)
+                {
+                    AppendCollision(frame);
+                }
+            }
+            else
+            {
+                AppendCollision(frame);
+            }
             UpdateCollision();
             UpdateHeaderSize();
         }
 
         private void cmdInsertCollision_Click(object sender, EventArgs e)
         {
-            frame.Collision.Insert(collisionindex, frame.Collision[collisionindex]);
-            frame.HeaderSize = (int)numHeader.Value + 40;
+            if (syncedit)
+            {
+                foreach (Frame frame in animation.Frames)
+                {
+                    frame.Collision.Insert(collisionindex, frame.Collision[collisionindex]);
+                    frame.HeaderSize = (int)numHeader.Value + 40;
+                }
+            }
+            else
+            {
+                frame.Collision.Insert(collisionindex, frame.Collision[collisionindex]);
+                frame.HeaderSize = (int)numHeader.Value + 40;
+            }
             UpdateCollision();
             UpdateHeaderSize();
         }
 
         private void cmdRemoveCollision_Click(object sender, EventArgs e)
         {
-            frame.Collision.RemoveAt(collisionindex);
-            frame.HeaderSize = (int)numHeader.Value - 40;
+            if (syncedit)
+            {
+                foreach (Frame frame in animation.Frames)
+                {
+                    frame.Collision.RemoveAt(collisionindex);
+                    frame.HeaderSize = (int)numHeader.Value - 40;
+                }
+            }
+            else
+            {
+                frame.Collision.RemoveAt(collisionindex);
+                frame.HeaderSize = (int)numHeader.Value - 40;
+            }
             UpdateCollision();
             UpdateHeaderSize();
         }
