@@ -28,11 +28,12 @@ namespace CrashEdit.CE
                 };
                 ModelEntry modelentry = GetEntry<ModelEntry>(Frame.ModelEID);
 
-                var framebox = new FrameBox(this)
+                var entry = AnimationEntryController.AnimationEntry;
+
+                var framebox = new FrameBox(this, entry)
                 {
                     Dock = DockStyle.Fill
                 };
-                var entry = AnimationEntryController.AnimationEntry;
                 var viewerbox = new AnimationEntryViewer(GetNSF(), entry.EID, entry.Frames.IndexOf(Frame))
                 {
                     Dock = DockStyle.Fill

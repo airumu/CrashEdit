@@ -91,6 +91,10 @@ namespace CrashEdit.CE
             darkGroupBox1 = new DarkGroupBox();
             txtModel = new DarkTextBox();
             lblEIDError = new Label();
+            chkSyncFrames = new CheckBox();
+            cmdCopyCollision = new DarkButton();
+            fraCopy = new DarkGroupBox();
+            cmdCopyOffset = new DarkButton();
             fraVertice.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numZ).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numY).BeginInit();
@@ -117,6 +121,7 @@ namespace CrashEdit.CE
             groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numSPVertex).BeginInit();
             darkGroupBox1.SuspendLayout();
+            fraCopy.SuspendLayout();
             SuspendLayout();
             // 
             // fraVertice
@@ -141,7 +146,7 @@ namespace CrashEdit.CE
             fraVertice.Controls.Add(numX);
             fraVertice.Font = new Font("Segoe UI", 9F);
             fraVertice.ForeColor = Color.Silver;
-            fraVertice.Location = new Point(3, 301);
+            fraVertice.Location = new Point(3, 352);
             fraVertice.Margin = new Padding(3, 4, 3, 4);
             fraVertice.Name = "fraVertice";
             fraVertice.Padding = new Padding(3, 4, 3, 4);
@@ -928,11 +933,68 @@ namespace CrashEdit.CE
             lblEIDError.TabIndex = 17;
             lblEIDError.Text = "EIDERROR!";
             // 
+            // chkSyncFrames
+            // 
+            chkSyncFrames.AutoSize = true;
+            chkSyncFrames.BackColor = Color.Transparent;
+            chkSyncFrames.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            chkSyncFrames.ForeColor = SystemColors.ControlText;
+            chkSyncFrames.Location = new Point(468, 92);
+            chkSyncFrames.Name = "chkSyncFrames";
+            chkSyncFrames.Size = new Size(147, 19);
+            chkSyncFrames.TabIndex = 18;
+            chkSyncFrames.Text = "Sync with other frames";
+            chkSyncFrames.UseVisualStyleBackColor = false;
+            chkSyncFrames.CheckedChanged += chkSyncFrames_CheckedChanged;
+            // 
+            // cmdCopyCollision
+            // 
+            cmdCopyCollision.BorderColour = Color.Empty;
+            cmdCopyCollision.CustomColour = false;
+            cmdCopyCollision.FlatBottom = false;
+            cmdCopyCollision.FlatTop = false;
+            cmdCopyCollision.Location = new Point(6, 22);
+            cmdCopyCollision.Name = "cmdCopyCollision";
+            cmdCopyCollision.Padding = new Padding(5);
+            cmdCopyCollision.Size = new Size(75, 23);
+            cmdCopyCollision.TabIndex = 19;
+            cmdCopyCollision.Text = "Collision";
+            cmdCopyCollision.Click += cmdCopyCollision_Click;
+            // 
+            // fraCopy
+            // 
+            fraCopy.BackColor = Color.Transparent;
+            fraCopy.Controls.Add(cmdCopyOffset);
+            fraCopy.Controls.Add(cmdCopyCollision);
+            fraCopy.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            fraCopy.Location = new Point(468, 4);
+            fraCopy.Name = "fraCopy";
+            fraCopy.Size = new Size(147, 82);
+            fraCopy.TabIndex = 20;
+            fraCopy.TabStop = false;
+            fraCopy.Text = "Copy to other frames";
+            // 
+            // cmdCopyOffset
+            // 
+            cmdCopyOffset.BorderColour = Color.Empty;
+            cmdCopyOffset.CustomColour = false;
+            cmdCopyOffset.FlatBottom = false;
+            cmdCopyOffset.FlatTop = false;
+            cmdCopyOffset.Location = new Point(6, 51);
+            cmdCopyOffset.Name = "cmdCopyOffset";
+            cmdCopyOffset.Padding = new Padding(5);
+            cmdCopyOffset.Size = new Size(75, 23);
+            cmdCopyOffset.TabIndex = 19;
+            cmdCopyOffset.Text = "Offset";
+            cmdCopyOffset.Click += cmdCopyOffset_Click;
+            // 
             // FrameBox
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(30, 30, 30);
+            Controls.Add(fraCopy);
+            Controls.Add(chkSyncFrames);
             Controls.Add(lblEIDError);
             Controls.Add(darkGroupBox1);
             Controls.Add(groupBox2);
@@ -944,7 +1006,7 @@ namespace CrashEdit.CE
             ForeColor = SystemColors.Window;
             Margin = new Padding(3, 4, 3, 4);
             Name = "FrameBox";
-            Size = new Size(545, 524);
+            Size = new Size(710, 524);
             fraVertice.ResumeLayout(false);
             fraVertice.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numZ).EndInit();
@@ -977,6 +1039,7 @@ namespace CrashEdit.CE
             ((System.ComponentModel.ISupportInitialize)numSPVertex).EndInit();
             darkGroupBox1.ResumeLayout(false);
             darkGroupBox1.PerformLayout();
+            fraCopy.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1044,5 +1107,9 @@ namespace CrashEdit.CE
         private DarkGroupBox darkGroupBox1;
         private DarkTextBox txtModel;
         private Label lblEIDError;
+        private CheckBox chkSyncFrames;
+        private DarkButton cmdCopyCollision;
+        private DarkGroupBox fraCopy;
+        private DarkButton cmdCopyOffset;
     }
 }
