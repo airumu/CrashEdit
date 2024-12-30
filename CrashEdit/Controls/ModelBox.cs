@@ -465,9 +465,9 @@ namespace CrashEdit.CE.Controls
             int index = (int)numRowIndex.Value;
             int? col = grdTextures.CurrentCell?.ColumnIndex;
             if (col >= ColX1 && col <= ColX3)
-                UpdateRowsX(index, (int)numReplaceTo.Value, (int)numReplaceTo.Value, (int)numReplaceTo.Value + (int)grdTextures.Rows[index].Cells[ColWidth].Value);
+                UpdateRowsX(index, (int)numReplaceTo.Value, (int)numReplaceTo.Value + (int)grdTextures.Rows[index].Cells[ColWidth].Value);
             else if (col >= ColY1 && col <= ColY3)
-                UpdateRowsY(index, (int)numReplaceTo.Value, (int)numReplaceTo.Value, (int)numReplaceTo.Value + (int)grdTextures.Rows[index].Cells[ColHeight].Value);
+                UpdateRowsY(index, (int)numReplaceTo.Value, (int)numReplaceTo.Value + (int)grdTextures.Rows[index].Cells[ColHeight].Value);
             UpdatePicture();
 
         }
@@ -572,50 +572,17 @@ namespace CrashEdit.CE.Controls
             else if (e.ColumnIndex == ColLeft || e.ColumnIndex == ColWidth)
             {
                 int value = Convert.ToInt32(item.Cells[ColLeft].Value);
-                int width = Convert.ToInt32(item.Cells[ColWidth].Value) - 1; // fake value
-                int U1 = og.U1, U2 = og.U2, U3 = og.U3;
-                int minU = Math.Min(U1, Math.Min(U2, U3));
-
-                int segment, xoff;
-                GetXOff(colorMode, value, out segment, out xoff);
-                int newU = value - xoff;
-
-                //if (U1 == minU) U1 = newU; else U1 = newU + width;
-                //if (U2 == minU) U2 = newU; else U2 = newU + width;
-                //if (U3 == minU) U3 = newU; else U3 = newU + width;
-                int[] ints = new int[3];
-                for (int i = 0; i < 3; i++)
-                {
-                    if (item.Cells[i + ColX1].Tag != null && item.Cells[i + ColX1].Tag.ToString() == "MaxValue")
-                        ints[i] = width;
-                }
-                og.U1 = (byte)(newU + ints[0]);
-                og.U2 = (byte)(newU + ints[1]);
-                og.U3 = (byte)(newU + ints[2]);
-                og.Segment = (byte)segment;
-
-                UpdateRowsX(e.RowIndex, og.U1, og.U2, og.U3);
-
-                //Console.WriteLine($"Recalculated U1: {U1}, U2: {U2}, U3: {U3}, xoffUnit: {xoffUnit}, segment: {segment}, xoff: {xoff}");
+                int width = Convert.ToInt32(item.Cells[ColWidth].Value);
+                int index = (int)numRowIndex.Value;
+                UpdateRowsX(index, value, value + width);
             }
             // Y (Top), Height
             else if (e.ColumnIndex == ColTop || e.ColumnIndex == ColHeight)
             {
                 int value = Convert.ToInt32(item.Cells[ColTop].Value);
-                int height = Convert.ToInt32(item.Cells[ColHeight].Value) - 1; // fake value
-                int V1 = og.V1, V2 = og.V2, V3 = og.V3;
-                int minV = Math.Min(V1, Math.Min(V2, V3));
-
-                int newV = value;
-                int[] ints = new int[3];
-                for (int i = 0; i < 3; i++)
-                {
-                    if (item.Cells[i + ColY1].Tag != null && item.Cells[i + ColY1].Tag.ToString() == "MaxValue")
-                        ints[i] = height;
-                }
-                og.V1 = (byte)(newV + ints[0]);
-                og.V2 = (byte)(newV + ints[1]);
-                og.V3 = (byte)(newV + ints[2]);
+                int height = Convert.ToInt32(item.Cells[ColHeight].Value);
+                int index = (int)numRowIndex.Value;
+                UpdateRowsY(index, value, value + height);
             }
             // Blend Mode
             else if (e.ColumnIndex == ColBlendMode)
@@ -663,7 +630,7 @@ namespace CrashEdit.CE.Controls
             UpdatePicture();
         }
 
-        private void UpdateRowsX(int targetRowIndex, int newX1, int newX2, int newX3)
+        private void UpdateRowsX(int targetRowIndex, int newMinU, int newMaxU)
         {
             var targetRow = grdTextures.Rows[targetRowIndex];
             var targetClutX = targetRow.Cells[ColClutX].Value?.ToString();
@@ -671,9 +638,6 @@ namespace CrashEdit.CE.Controls
 
             if (targetClutX == null || targetClutY == null)
                 return;
-
-            int newMinU = Math.Min(newX1, Math.Min(newX2, newX3));
-            int newMaxU = Math.Max(newX1, Math.Max(newX2, newX3));
 
             foreach (DataGridViewRow row in grdTextures.Rows)
             {
@@ -699,7 +663,7 @@ namespace CrashEdit.CE.Controls
             }
         }
 
-        private void UpdateRowsY(int targetRowIndex, int newY1, int newY2, int newY3)
+        private void UpdateRowsY(int targetRowIndex, int newMinV, int newMaxV)
         {
             var targetRow = grdTextures.Rows[targetRowIndex];
             var targetClutX = targetRow.Cells[ColClutX].Value?.ToString();
@@ -707,9 +671,6 @@ namespace CrashEdit.CE.Controls
 
             if (targetClutX == null || targetClutY == null)
                 return;
-
-            int newMinV = Math.Min(newY1, Math.Min(newY2, newY3));
-            int newMaxV = Math.Max(newY1, Math.Max(newY2, newY3));
 
             foreach (DataGridViewRow row in grdTextures.Rows)
             {
