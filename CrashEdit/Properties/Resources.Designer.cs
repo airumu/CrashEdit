@@ -169,11 +169,20 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
-        ///   Output copying texture result to console に類似しているローカライズされた文字列を検索します。
+        ///   Output copying texture result to the console に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Config_chkOutputCopyTextureResult {
             get {
                 return ResourceManager.GetString("Config_chkOutputCopyTextureResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Output model&apos;s texture information to the console に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Config_chkOutputModelTextureInfo {
+            get {
+                return ResourceManager.GetString("Config_chkOutputModelTextureInfo", resourceCulture);
             }
         }
         

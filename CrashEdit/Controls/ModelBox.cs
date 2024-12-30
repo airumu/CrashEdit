@@ -1,12 +1,9 @@
 ﻿using System.Drawing.Imaging;
 using System.Globalization;
-using System.Windows.Forms;
 using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
-using SharpFont.Fnt;
-using static CrashEdit.CE.TextureViewer;
 using HslColor = Cyotek.Windows.Forms.HslColor;
 
 namespace CrashEdit.CE.Controls
@@ -18,18 +15,18 @@ namespace CrashEdit.CE.Controls
         public TexturePageList TPages { get; set; }
         private TextureChunk chunk { get; set; }
 
-        private TextureType textype;
         private Rectangle selectedregion;
 
         private DarkToolTip tipReloadTPage;
 
-        private bool EditMode;
-        private bool SimpleMode;
-        private bool IsBGRA;
-        private bool ReplaceCLUT;
-        private int SelectedRegionX;
-        private int SelectedRegionY;
-        private int CurrentColorMode;
+        private bool globalControlMode;
+
+        private bool simpleMode;
+        private bool BGRAMode;
+        private bool replaceCLUT;
+        private int selectedRegionX;
+        private int selectedRegionY;
+        private int currentColorMode;
 
         private int ColPage = 0;
         private int ColClutX = 1;
@@ -55,24 +52,21 @@ namespace CrashEdit.CE.Controls
         {
             this.controller = controller;
             model = controller.ModelEntry;
-            DoubleBuffered = true;
             InitializeComponent();
-            MainInit();
-            UpdateInfo();
-        }
 
-        private void MainInit()
-        {
+            DoubleBuffered = true;
             numScaleX.Value = model.ScaleX;
             numScaleY.Value = model.ScaleY;
             numScaleZ.Value = model.ScaleZ;
+            UpdateInfo();
         }
 
         private void UpdateInfo()
         {
-
             if (model.Positions == null)
+            {
                 label2.Text = string.Format("Polygon count: {0}\nVertex count: {1}", model.PolyCount, model.VertexCount);
+            }
             else
             {
                 int totalbits = model.Positions.Count * 8 * 3;
@@ -183,7 +177,6 @@ namespace CrashEdit.CE.Controls
             }
         }
 
-
         private void AdjustColumnWidths()
         {
             grdTextures.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
@@ -191,42 +184,42 @@ namespace CrashEdit.CE.Controls
 
         private void SetDarkTheme(DataGridView dataGridView)
         {
-            // グリッド全体の背景色
+            // Background color of the entire grid
             dataGridView.BackgroundColor = Color.FromArgb(30, 30, 30);
 
-            // グリッドの境界線の色
+            // Color of the grid lines
             dataGridView.GridColor = Color.FromArgb(50, 50, 50);
 
-            // セルのデフォルトスタイル
+            // Default style for cells
             dataGridView.DefaultCellStyle.BackColor = Color.FromArgb(40, 40, 40);
             dataGridView.DefaultCellStyle.ForeColor = Color.White;
             dataGridView.DefaultCellStyle.SelectionBackColor = Color.FromArgb(70, 70, 70);
             dataGridView.DefaultCellStyle.SelectionForeColor = Color.White;
 
-            // 列ヘッダーのスタイル
+            // Style for column headers
             dataGridView.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(50, 50, 50);
             dataGridView.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dataGridView.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(60, 60, 60);
             dataGridView.ColumnHeadersDefaultCellStyle.SelectionForeColor = Color.White;
             dataGridView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-            // 行ヘッダーのスタイル
+            // Style for row headers
             dataGridView.RowHeadersDefaultCellStyle.BackColor = Color.FromArgb(50, 50, 50);
             dataGridView.RowHeadersDefaultCellStyle.ForeColor = Color.White;
             dataGridView.RowHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(60, 60, 60);
             dataGridView.RowHeadersDefaultCellStyle.SelectionForeColor = Color.White;
 
-            // 奇数行と偶数行の背景色
+            // Background color for odd and even rows
             dataGridView.RowsDefaultCellStyle.BackColor = Color.FromArgb(40, 40, 40);
             dataGridView.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(30, 30, 30);
 
-            // 行の境界線スタイル
+            // Row border style
             dataGridView.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
 
-            // ヘッダーとグリッド線の表示スタイル
+            // Header and gridline styles
             dataGridView.EnableHeadersVisualStyles = false;
 
-            // その他の設定
+            // Additional settings
             dataGridView.BorderStyle = BorderStyle.None;
             dataGridView.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
             dataGridView.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
@@ -350,12 +343,15 @@ namespace CrashEdit.CE.Controls
                 //lstPages.EnsureVisible(pageIndex);
 
                 // debug
-                if (grdTextures.CurrentCell.Tag is HashSet<string> tags)
+                if (Settings.Default.OutputModelTextureInfo)
                 {
-                    Console.WriteLine($"[X{grdTextures.CurrentCell.ColumnIndex} - Y{grdTextures.CurrentCell.RowIndex}]");
-                    foreach (string tag in tags)
+                    if (grdTextures.CurrentCell.Tag is HashSet<string> tags)
                     {
-                        Console.WriteLine(tag);
+                        Console.WriteLine($"[X{grdTextures.CurrentCell.ColumnIndex} - Y{grdTextures.CurrentCell.RowIndex}]");
+                        foreach (string tag in tags)
+                        {
+                            Console.WriteLine(tag);
+                        }
                     }
                 }
             }
@@ -412,7 +408,7 @@ namespace CrashEdit.CE.Controls
             grdTextures.Rows.Clear();
             UpdateTextureList();
 
-            if (SimpleMode)
+            if (simpleMode)
             {
                 foreach (DataGridViewColumn column in grdTextures.Columns)
                 {
@@ -454,8 +450,8 @@ namespace CrashEdit.CE.Controls
                     string filePath = openFileDialog.FileName;
                     string extension = Path.GetExtension(filePath).ToLower();
 
-                    int destX = SelectedRegionX;
-                    int destY = SelectedRegionY;
+                    int destX = selectedRegionX;
+                    int destY = selectedRegionY;
                     if (grdTextures.SelectedCells.Count > 0)
                     {
                         var row = grdTextures.Rows[grdTextures.SelectedCells[0].RowIndex];
@@ -470,7 +466,7 @@ namespace CrashEdit.CE.Controls
                             clutX = 0;
                         }
 
-                        chunk.Data = TextureConv.ReplaceTextureFromFile(filePath, extension, IsBGRA, chunk.Data, destX, destY, ReplaceCLUT, oldBpp, clutX, clutY);
+                        chunk.Data = TextureConv.ReplaceTextureFromFile(filePath, extension, BGRAMode, chunk.Data, destX, destY, replaceCLUT, oldBpp, clutX, clutY);
                         UpdatePicture();
                     }
                 }
@@ -518,7 +514,7 @@ namespace CrashEdit.CE.Controls
                 maxValue = 127;
             // X (Left)
             else if (e.ColumnIndex == ColLeft)
-                maxValue = (256 << (2 - CurrentColorMode)) - 1;
+                maxValue = (256 << (2 - currentColorMode)) - 1;
             // Y (Top)
             else if (e.ColumnIndex == ColTop)
                 maxValue = 127;
@@ -536,7 +532,7 @@ namespace CrashEdit.CE.Controls
                 maxValue = 2;
             // X 1-3
             else if (e.ColumnIndex >= ColX1 && e.ColumnIndex <= ColX3)
-                maxValue = 256 << (2 - CurrentColorMode);
+                maxValue = 256 << (2 - currentColorMode);
             // Y 1-3
             else if (e.ColumnIndex >= ColY1 && e.ColumnIndex <= ColY3)
                 maxValue = 128;
@@ -563,9 +559,9 @@ namespace CrashEdit.CE.Controls
 
         private void grdTextures_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            if (grdTextures.SelectedCells.Count > 0 && SimpleMode)
+            if (grdTextures.SelectedCells.Count > 0 && simpleMode)
             {
-                var editedCell = grdTextures.SelectedCells[0];
+                var editedCell = grdTextures.Rows[e.RowIndex].Cells[e.ColumnIndex];
                 var newValue = editedCell.Value;
                 var editedCellTag = editedCell.Tag as HashSet<string>;
 
@@ -583,7 +579,9 @@ namespace CrashEdit.CE.Controls
                 if (cell.Tag is HashSet<string> tags && tags.SetEquals(editedCellTag))
                 {
                     cell.Value = newValue;
-                    Console.WriteLine($"Tags match in column {columnIndex}: {string.Join(", ", tags)}");
+                    // debug
+                    if (Settings.Default.OutputModelTextureInfo)
+                        Console.WriteLine($"Tags match in column {columnIndex}: {string.Join(", ", tags)}");
                 }
             }
         }
@@ -765,8 +763,8 @@ namespace CrashEdit.CE.Controls
             UpdateTextureList();
             UpdateTPageButtons();
 
-            IsBGRA = true;
-            ReplaceCLUT = true;
+            BGRAMode = true;
+            replaceCLUT = true;
 
             if (grdTextures.Rows.Count > 0)
             {
@@ -868,7 +866,7 @@ namespace CrashEdit.CE.Controls
 
         private void UpdateAllColors()
         {
-            if (EditMode)
+            if (globalControlMode)
             {
                 for (int i = 0; i < lstColor.Items.Count; i++)
                 {
@@ -905,8 +903,8 @@ namespace CrashEdit.CE.Controls
 
         private void tglGlobalControl_SwitchedChanged(object sender)
         {
-            EditMode = tglGlobalControl.Switched;
-            if (EditMode)
+            globalControlMode = tglGlobalControl.Switched;
+            if (globalControlMode)
             {
                 pnSliders.Enabled = false;
                 pnGlobalControl.Enabled =
@@ -941,7 +939,7 @@ namespace CrashEdit.CE.Controls
 
         private void lstColor_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (lstColor.SelectedItems.Count <= 0 || EditMode)
+            if (lstColor.SelectedItems.Count <= 0 || globalControlMode)
             {
                 //pnSliders.Enabled = false;
                 return;
@@ -955,13 +953,13 @@ namespace CrashEdit.CE.Controls
 
         private void colorEditor_ColorChanged(object sender, EventArgs e)
         {
-            if (!EditMode)
+            if (!globalControlMode)
                 UpdateSelectedColor(colorEditor.Color);
         }
 
         private void colorWheel_ColorChanged(object sender, EventArgs e)
         {
-            if (!EditMode)
+            if (!globalControlMode)
                 UpdateSelectedColor(colorWheel.Color);
         }
 
@@ -1123,19 +1121,19 @@ namespace CrashEdit.CE.Controls
                 selectedregion.Y = y;
                 selectedregion.Width = w;
                 selectedregion.Height = h;
-                SelectedRegionX = x;
-                SelectedRegionY = y;
+                selectedRegionX = x;
+                selectedRegionY = y;
             }
             pictureBox1.Image = bitmap;
             pictureBox1.Size = bitmap.Size;
             Width = 1024 + 32;
 
-            CurrentColorMode = colormode;
+            currentColorMode = colormode;
         }
 
         private void tglSimpleMode_SwitchedChanged(object sender)
         {
-            SimpleMode = tglSimpleMode.Switched;
+            simpleMode = tglSimpleMode.Switched;
             ToggleSimpleMode();
         }
 
@@ -1147,7 +1145,7 @@ namespace CrashEdit.CE.Controls
 
         private void chkBGRA_CheckedChanged(object sender, EventArgs e)
         {
-            IsBGRA = chkBGRA.Checked;
+            BGRAMode = chkBGRA.Checked;
         }
 
         private void cmdAppendTPage_Click(object sender, EventArgs e)
@@ -1188,7 +1186,7 @@ namespace CrashEdit.CE.Controls
 
         private void chkReplaceCLUT_CheckedChanged(object sender, EventArgs e)
         {
-            ReplaceCLUT = chkReplaceCLUT.Checked;
+            replaceCLUT = chkReplaceCLUT.Checked;
         }
 
         private void dpdTPage_SelectedIndexChanged(object sender, EventArgs e)

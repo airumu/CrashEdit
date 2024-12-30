@@ -111,6 +111,7 @@ namespace CrashEdit.CE
             chkSplitViewerPanels.Checked = Settings.Default.SplitAnimViewerPanels;
             chkEnableLegacyEntityBox.Checked = Settings.Default.EnableLegacyEntityBox;
             chkOutputCopyTextureResult.Checked = Settings.Default.OutputCopyTextureResult;
+            chkOutputModelTextureInfo.Checked = Settings.Default.OutputModelTextureInfo;
 
             fraSize.Text = Resources.Config_fraSize;
             fraClearCol.Text = Resources.Config_fraClearCol;
@@ -144,6 +145,7 @@ namespace CrashEdit.CE
             chkEnableC2TT.Text = Resources.Config_chkEnableC2TT;
             chkPatchGOOLC3toC2.Text = Resources.Config_chkPatchGOOLC3toC2;
             chkOutputCopyTextureResult.Text = Resources.Config_chkOutputCopyTextureResult;
+            chkOutputModelTextureInfo.Text = Resources.Config_chkOutputModelTextureInfo;
         }
 
         private void dpdLang_SelectedIndexChanged(object sender, EventArgs e)
@@ -340,6 +342,12 @@ namespace CrashEdit.CE
         private void chkOutputCopyTextureResult_CheckedChanged(object sender, EventArgs e)
         {
             Settings.Default.OutputCopyTextureResult = chkOutputCopyTextureResult.Checked;
+            Settings.Default.Save();
+        }
+
+        private void chkOutputModelTextureInfo_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.OutputModelTextureInfo = chkOutputModelTextureInfo.Checked;
             Settings.Default.Save();
         }
 

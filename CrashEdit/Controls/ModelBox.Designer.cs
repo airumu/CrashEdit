@@ -475,7 +475,7 @@ namespace CrashEdit.CE.Controls
             fraReplaceTexture.Enabled = false;
             fraReplaceTexture.Location = new Point(769, 195);
             fraReplaceTexture.Name = "fraReplaceTexture";
-            fraReplaceTexture.Size = new Size(132, 135);
+            fraReplaceTexture.Size = new Size(121, 109);
             fraReplaceTexture.TabIndex = 9;
             fraReplaceTexture.TabStop = false;
             fraReplaceTexture.Text = "Replace Texture";
@@ -486,7 +486,7 @@ namespace CrashEdit.CE.Controls
             cmdReplaceTexture.CustomColour = false;
             cmdReplaceTexture.FlatBottom = false;
             cmdReplaceTexture.FlatTop = false;
-            cmdReplaceTexture.Location = new Point(6, 22);
+            cmdReplaceTexture.Location = new Point(16, 22);
             cmdReplaceTexture.Name = "cmdReplaceTexture";
             cmdReplaceTexture.Padding = new Padding(5);
             cmdReplaceTexture.Size = new Size(75, 23);
@@ -545,7 +545,7 @@ namespace CrashEdit.CE.Controls
             tglSimpleMode.DisabledCheckColor = Color.FromArgb(100, 65, 177, 225);
             tglSimpleMode.DisabledUnCheckColor = Color.FromArgb(200, 205, 205, 205);
             tglSimpleMode.IsDerivedStyle = true;
-            tglSimpleMode.Location = new Point(6, 22);
+            tglSimpleMode.Location = new Point(16, 22);
             tglSimpleMode.Name = "tglSimpleMode";
             tglSimpleMode.Size = new Size(58, 22);
             tglSimpleMode.Style = MetroSet_UI.Enums.Style.Dark;

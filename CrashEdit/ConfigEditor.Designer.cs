@@ -77,7 +77,9 @@ namespace CrashEdit.CE
             chkEnableVisual = new CheckBox();
             tbpPatchNSD = new TabPage();
             tbpMisc = new TabPage();
+            fraMiscDebug = new DarkGroupBox();
             chkOutputCopyTextureResult = new CheckBox();
+            chkOutputModelTextureInfo = new CheckBox();
             chkEnableLegacyEntityBox = new CheckBox();
             fraExtra = new DarkGroupBox();
             chkShowCustomCrates = new CheckBox();
@@ -109,6 +111,7 @@ namespace CrashEdit.CE
             darkGroupBox1.SuspendLayout();
             tbpPatchNSD.SuspendLayout();
             tbpMisc.SuspendLayout();
+            fraMiscDebug.SuspendLayout();
             fraExtra.SuspendLayout();
             SuspendLayout();
             // 
@@ -729,7 +732,7 @@ namespace CrashEdit.CE
             // tbpMisc
             // 
             tbpMisc.BackColor = Color.FromArgb(30, 30, 30);
-            tbpMisc.Controls.Add(chkOutputCopyTextureResult);
+            tbpMisc.Controls.Add(fraMiscDebug);
             tbpMisc.Controls.Add(chkEnableLegacyEntityBox);
             tbpMisc.Controls.Add(fraExtra);
             tbpMisc.Controls.Add(chkSplitViewerPanels);
@@ -742,17 +745,41 @@ namespace CrashEdit.CE
             tbpMisc.TabIndex = 2;
             tbpMisc.Text = "Misc";
             // 
+            // fraMiscDebug
+            // 
+            fraMiscDebug.BackColor = Color.Transparent;
+            fraMiscDebug.Controls.Add(chkOutputCopyTextureResult);
+            fraMiscDebug.Controls.Add(chkOutputModelTextureInfo);
+            fraMiscDebug.Location = new Point(0, 106);
+            fraMiscDebug.Name = "fraMiscDebug";
+            fraMiscDebug.Size = new Size(417, 72);
+            fraMiscDebug.TabIndex = 20;
+            fraMiscDebug.TabStop = false;
+            fraMiscDebug.Text = "Debug";
+            // 
             // chkOutputCopyTextureResult
             // 
             chkOutputCopyTextureResult.AutoSize = true;
-            chkOutputCopyTextureResult.Location = new Point(7, 106);
+            chkOutputCopyTextureResult.Location = new Point(6, 22);
             chkOutputCopyTextureResult.Margin = new Padding(4, 3, 4, 3);
             chkOutputCopyTextureResult.Name = "chkOutputCopyTextureResult";
-            chkOutputCopyTextureResult.Size = new Size(182, 19);
+            chkOutputCopyTextureResult.Size = new Size(260, 19);
             chkOutputCopyTextureResult.TabIndex = 19;
-            chkOutputCopyTextureResult.Text = "Output copying texture result to console";
+            chkOutputCopyTextureResult.Text = "Output copying texture result to the console";
             chkOutputCopyTextureResult.UseVisualStyleBackColor = true;
             chkOutputCopyTextureResult.CheckedChanged += chkOutputCopyTextureResult_CheckedChanged;
+            // 
+            // chkOutputModelTextureInfo
+            // 
+            chkOutputModelTextureInfo.AutoSize = true;
+            chkOutputModelTextureInfo.Location = new Point(6, 47);
+            chkOutputModelTextureInfo.Margin = new Padding(4, 3, 4, 3);
+            chkOutputModelTextureInfo.Name = "chkOutputModelTextureInfo";
+            chkOutputModelTextureInfo.Size = new Size(293, 19);
+            chkOutputModelTextureInfo.TabIndex = 19;
+            chkOutputModelTextureInfo.Text = "Output model's texture information to the console";
+            chkOutputModelTextureInfo.UseVisualStyleBackColor = true;
+            chkOutputModelTextureInfo.CheckedChanged += chkOutputModelTextureInfo_CheckedChanged;
             // 
             // chkEnableLegacyEntityBox
             // 
@@ -772,9 +799,9 @@ namespace CrashEdit.CE
             fraExtra.Controls.Add(chkShowCustomCrates);
             fraExtra.Controls.Add(chkOldPatchNSD);
             fraExtra.Controls.Add(chkEnableC2TT);
-            fraExtra.Location = new Point(0, 140);
+            fraExtra.Location = new Point(0, 184);
             fraExtra.Name = "fraExtra";
-            fraExtra.Size = new Size(421, 100);
+            fraExtra.Size = new Size(417, 100);
             fraExtra.TabIndex = 18;
             fraExtra.TabStop = false;
             fraExtra.Text = "CE-tweaked";
@@ -896,6 +923,8 @@ namespace CrashEdit.CE
             tbpPatchNSD.PerformLayout();
             tbpMisc.ResumeLayout(false);
             tbpMisc.PerformLayout();
+            fraMiscDebug.ResumeLayout(false);
+            fraMiscDebug.PerformLayout();
             fraExtra.ResumeLayout(false);
             fraExtra.PerformLayout();
             ResumeLayout(false);
@@ -956,5 +985,7 @@ namespace CrashEdit.CE
         private DarkGroupBox darkGroupBox3;
         private CheckBox chkEnableLegacyEntityBox;
         private CheckBox chkOutputCopyTextureResult;
+        private CheckBox chkOutputModelTextureInfo;
+        private DarkGroupBox fraMiscDebug;
     }
 }
