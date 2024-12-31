@@ -93,18 +93,18 @@ namespace CrashEdit.Crash
         public byte Page { get; set; }
 
         public int ClutY => (ClutY2 << 2) | (ClutY1 >> 2 & 0x3);
-        public int Left { get; }
-        public int Top { get; }
-        public int Width { get; }
-        public int Height { get; }
-        public float X1 { get; }
-        public float X2 { get; }
-        public float X3 { get; }
-        public float X4 { get; }
-        public float Y1 { get; }
-        public float Y2 { get; }
-        public float Y3 { get; }
-        public float Y4 { get; }
+        public int Left { get; set; }
+        public int Top { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
+        public float X1 { get; set; }
+        public float X2 { get; set; }
+        public float X3 { get; set; }
+        public float X4 { get; set; }
+        public float Y1 { get; set; }
+        public float Y2 { get; set; }
+        public float Y3 { get; set; }
+        public float Y4 { get; set; }
 
         public byte[] Save()
         {

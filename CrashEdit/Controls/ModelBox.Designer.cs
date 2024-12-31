@@ -736,6 +736,7 @@ namespace CrashEdit.CE.Controls
             grdTextures.RowHeadersWidth = 24;
             grdTextures.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             grdTextures.Size = new Size(622, 356);
+            grdTextures.ScrollBars = ScrollBars.Vertical;
             grdTextures.TabIndex = 0;
             grdTextures.CellEndEdit += grdTextures_CellEndEdit;
             grdTextures.CellValidating += grdTextures_CellValidating;
