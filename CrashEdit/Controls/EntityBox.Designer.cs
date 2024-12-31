@@ -923,7 +923,7 @@ namespace CrashEdit.CE
             // tabGeneral
             // 
             tabGeneral.AutoScroll = true;
-            tabGeneral.BackColor = Color.FromArgb(30, 30, 30);
+            tabGeneral.BackColor = Color.FromArgb(31, 31, 32);
             tabGeneral.Controls.Add(fraC2TTSet);
             tabGeneral.Controls.Add(fraName);
             tabGeneral.Controls.Add(fraType);
@@ -934,6 +934,7 @@ namespace CrashEdit.CE
             tabGeneral.Location = new Point(4, 32);
             tabGeneral.Margin = new Padding(4, 3, 4, 3);
             tabGeneral.Name = "tabGeneral";
+            tabGeneral.Padding = new Padding(4, 3, 4, 3);
             tabGeneral.Size = new Size(592, 564);
             tabGeneral.TabIndex = 0;
             tabGeneral.Text = "General";
@@ -1138,7 +1139,7 @@ namespace CrashEdit.CE
             // tabSpecial
             // 
             tabSpecial.AutoScroll = true;
-            tabSpecial.BackColor = Color.FromArgb(30, 30, 30);
+            tabSpecial.BackColor = Color.FromArgb(31, 31, 32);
             tabSpecial.Controls.Add(fraTTReward);
             tabSpecial.Controls.Add(fraOtherSettings);
             tabSpecial.Controls.Add(fraScaling);
@@ -1149,6 +1150,7 @@ namespace CrashEdit.CE
             tabSpecial.Location = new Point(4, 32);
             tabSpecial.Margin = new Padding(4, 3, 4, 3);
             tabSpecial.Name = "tabSpecial";
+            tabSpecial.Padding = new Padding(4, 3, 4, 3);
             tabSpecial.Size = new Size(592, 564);
             tabSpecial.TabIndex = 1;
             tabSpecial.Text = "Special";
@@ -1486,7 +1488,7 @@ namespace CrashEdit.CE
             // 
             // tabCamera
             // 
-            tabCamera.BackColor = Color.FromArgb(30, 30, 30);
+            tabCamera.BackColor = Color.FromArgb(31, 31, 32);
             tabCamera.Controls.Add(fraFOV);
             tabCamera.Controls.Add(fraNeighbor);
             tabCamera.Controls.Add(fraAvgDist);
@@ -2226,7 +2228,7 @@ namespace CrashEdit.CE
             // 
             // tabLoadLists
             // 
-            tabLoadLists.BackColor = Color.FromArgb(30, 30, 30);
+            tabLoadLists.BackColor = Color.FromArgb(31, 31, 32);
             tabLoadLists.Controls.Add(lblEIDErrB);
             tabLoadLists.Controls.Add(fraLoadListPayload);
             tabLoadLists.Controls.Add(fraLoadListB);
@@ -2817,7 +2819,7 @@ namespace CrashEdit.CE
             // 
             // tabDrawLists
             // 
-            tabDrawLists.BackColor = Color.FromArgb(30, 30, 30);
+            tabDrawLists.BackColor = Color.FromArgb(31, 31, 32);
             tabDrawLists.Controls.Add(fraVerifyDrawList);
             tabDrawLists.Controls.Add(fraDrawListB);
             tabDrawLists.Controls.Add(fraDrawListA);

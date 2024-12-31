@@ -992,7 +992,7 @@ namespace CrashEdit.CE
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(30, 30, 30);
+            BackColor = Color.FromArgb(31, 31, 32);
             Controls.Add(fraCopy);
             Controls.Add(chkSyncFrames);
             Controls.Add(lblEIDError);

@@ -18,7 +18,8 @@ namespace CrashEdit.CE
 
             lstEntryList = new DarkListBox
             {
-                Dock = DockStyle.Fill
+                Dock = DockStyle.Fill,
+                BackColor = Color.FromArgb(31, 31, 32)
             };
 
             Controls.Add(lstEntryList);

@@ -144,6 +144,7 @@ namespace CrashEdit.CE.Controls
             // 
             // tbpInfo
             // 
+            tbpInfo.AutoScroll = true;
             tbpInfo.BackColor = Color.FromArgb(31, 31, 32);
             tbpInfo.Controls.Add(fraScales);
             tbpInfo.Controls.Add(label2);
@@ -735,8 +736,8 @@ namespace CrashEdit.CE.Controls
             grdTextures.Name = "grdTextures";
             grdTextures.RowHeadersWidth = 24;
             grdTextures.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            grdTextures.Size = new Size(622, 356);
             grdTextures.ScrollBars = ScrollBars.Vertical;
+            grdTextures.Size = new Size(622, 356);
             grdTextures.TabIndex = 0;
             grdTextures.CellEndEdit += grdTextures_CellEndEdit;
             grdTextures.CellValidating += grdTextures_CellValidating;

@@ -11,7 +11,8 @@ namespace CrashEdit.CE
         {
             lstValues = new DarkListBox
             {
-                Dock = DockStyle.Fill
+                Dock = DockStyle.Fill,
+                BackColor = Color.FromArgb(31, 31, 32)
             };
             lstValues.Items.Add(string.Format("Count: {0}", slstitem.Polygons.Count));
             foreach (SLSTPolygonID value in slstitem.Polygons)

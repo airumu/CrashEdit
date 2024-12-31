@@ -36,6 +36,7 @@ namespace CrashEdit
                 TabControl.TabPages[0].Controls.Add(new Label
                 {
                     Dock = DockStyle.Fill,
+                    BackColor = Color.FromArgb(31, 31, 32),
                     TextAlign = ContentAlignment.MiddleCenter,
                     Text = "No editors are available for this resource."
                 });

@@ -26,14 +26,14 @@ namespace CrashEdit.CE
                 Dock = DockStyle.Fill,
                 ItemSize = new Size(100, 28),
                 Style = MetroSet_UI.Enums.Style.Dark,
-                TabStyle = MetroSet_UI.Enums.TabStyle.Style2
+                TabStyle = MetroSet_UI.Enums.TabStyle.Style1
             };
             {
                 HexView hex = new HexView
                 {
                     Data = chunk.Data,
                     DataChangeHandler = HexView_DataChangeHandler,
-                    Dock = DockStyle.Fill
+                    Dock = DockStyle.Fill,
                 };
                 TabPage page = new TabPage("Hex");
                 page.Controls.Add(hex);
@@ -69,6 +69,7 @@ namespace CrashEdit.CE
                 tipClick.SetToolTip(picture, "Click to open the viewer");
                 TabPage page = new TabPage("Monochrome 8");
                 page.Controls.Add(picture);
+                page.BackColor = Color.FromArgb(31, 31, 32);
                 tbcTabs.TabPages.Add(page);
             }
             {
@@ -101,6 +102,7 @@ namespace CrashEdit.CE
                 tipClick.SetToolTip(picture, "Click to open the viewer");
                 TabPage page = new TabPage("BGR555");
                 page.Controls.Add(picture);
+                page.BackColor = Color.FromArgb(31, 31, 32);
                 tbcTabs.TabPages.Add(page);
                 tbcTabs.SelectedTab = page;
             }

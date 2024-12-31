@@ -11,7 +11,8 @@ namespace CrashEdit.CE
         {
             lstValues = new DarkListBox
             {
-                Dock = DockStyle.Fill
+                Dock = DockStyle.Fill,
+                BackColor = Color.FromArgb(31, 31, 32)
             };
             lstValues.Items.Add(string.Format("Remove Nodes: {0}", slstitem.RemoveNodes.Count));
             lstValues.Items.Add(string.Format("Add Nodes: {0}", slstitem.AddNodes.Count));

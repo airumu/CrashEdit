@@ -113,6 +113,7 @@ namespace CrashEdit.CE
 
             pnOptions = new TableLayoutPanel();
             pnOptions.Dock = DockStyle.Fill;
+            pnOptions.BackColor = Color.FromArgb(31, 31, 32);
             pnOptions.ColumnCount = 2;
             pnOptions.RowCount = 4;
             pnOptions.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
