@@ -122,6 +122,7 @@
 Z: Toggle chunk name view mode
 Space: Clear selected cell
 Ctrl + Space: Clear selected chunk
++ / - : Change line width
 
 Right-click to select multiple cells
 Ctrl + C: Copy selected chunks as bytes

@@ -402,6 +402,20 @@ namespace CrashEdit
                         }
                         break;
 
+                    case Keys.Add:
+                        if (ColumnCount < 24)
+                        {
+                            ColumnCount += 4;
+                        }
+                        break;
+
+                    case Keys.Subtract:
+                        if (ColumnCount > 4)
+                        {
+                            ColumnCount -= 4;
+                        }
+                        break;
+
                     case Keys k when (k >= Keys.D0 && k <= Keys.D9):
                         // Input hex digit 0-9.
                         InputNybble(k - Keys.D0);

@@ -42,7 +42,7 @@ namespace CrashEdit.CE
             label5.AutoSize = true;
             label5.Font = new Font("Segoe UI", 12F);
             label5.ForeColor = Color.MediumSpringGreen;
-            label5.Location = new Point(4, 273);
+            label5.Location = new Point(4, 246);
             label5.Margin = new Padding(4, 0, 4, 0);
             label5.Name = "label5";
             label5.Size = new Size(105, 42);
@@ -55,12 +55,12 @@ namespace CrashEdit.CE
             label6.AutoSize = true;
             label6.Font = new Font("Segoe UI", 9.75F);
             label6.ForeColor = SystemColors.ControlText;
-            label6.Location = new Point(14, 323);
+            label6.Location = new Point(14, 288);
             label6.Margin = new Padding(4, 0, 4, 0);
             label6.Name = "label6";
-            label6.Size = new Size(139, 136);
+            label6.Size = new Size(187, 85);
             label6.TabIndex = 10;
-            label6.Text = "Open (Ctrl + O)\r\nSave (Ctrl + Shift + S)\r\nPatch NSD (Ctrl + S)\r\nClose (Ctrl + Shift + C)\r\nFind (Ctrl + F)\r\nFind Next (F3)\r\nFind first node (Enter)\r\nPlay (F1)";
+            label6.Text = "Patch NSD (Ctrl + S)\r\nFind (Ctrl + F)\r\nFind next node (F3)\r\nFind previous node (Shift + F3)\r\nPlay (F1)";
             label6.Visible = false;
             // 
             // label3
@@ -83,7 +83,7 @@ namespace CrashEdit.CE
             label4.Location = new Point(14, 25);
             label4.Margin = new Padding(4, 0, 4, 0);
             label4.Name = "label4";
-            label4.Size = new Size(267, 204);
+            label4.Size = new Size(267, 221);
             label4.TabIndex = 13;
             label4.Text = resources.GetString("label4.Text");
             // 
@@ -93,7 +93,7 @@ namespace CrashEdit.CE
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(333, 472);
+            ClientSize = new Size(333, 469);
             Controls.Add(label3);
             Controls.Add(label4);
             Controls.Add(label6);
