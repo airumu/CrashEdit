@@ -504,6 +504,9 @@ namespace CrashEdit
         // Color for selected cells.
         private static Brush _bgSelectedrowBrush = brush_bgSelectedrowBrush;
 
+        // Color for address.
+        private static Brush _bgAddressBrush = Brushes.LightGray;
+
         // Size of borders between and around cells, in pixels.
         private static int _borderSize = 2;
 
@@ -539,7 +542,7 @@ namespace CrashEdit
         {
             using (var g = CreateGraphics())
             {
-                CharSize = TextRenderer.MeasureText(g, "A", _font, Size.Empty, TextFormatFlags.NoPadding);
+                CharSize = TextRenderer.MeasureText(g, "A", _font, Size.Empty, TextFormatFlags.NoPadding); 
             }
             AddressCharCount = 5; // sensible minimum
             AddressCharCount = Math.Max(AddressCharCount, FirstByteAddress.ToString("x").Length);
@@ -655,7 +658,7 @@ namespace CrashEdit
                 e.Graphics.DrawString(
                     rowAddress.ToString("X").PadLeft(AddressCharCount),
                     _font,
-                    SystemBrushes.ControlText,
+                    _bgAddressBrush,
                     rowAddrRect,
                     strFormat);
 
@@ -1063,8 +1066,7 @@ namespace CrashEdit
             if (sb.Length > 0)
                 Clipboard.SetText(sb.ToString());
 
-            if (!cut)
-                ByteCursor = start;
+            ByteCursor = start;
             SetSelectedCursorl();
             Invalidate();
             return true;
@@ -1082,7 +1084,6 @@ namespace CrashEdit
                 _pendingInput = null;
 
             // Check if the pasted name is valid
-            //string[] lines = Clipboard.GetText().Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
             StringReader sr = new StringReader(Clipboard.GetText());
             string line;
             while ((line = sr.ReadLine()) != null)
@@ -1094,7 +1095,6 @@ namespace CrashEdit
                         int chunk = Entry.ENameToEID(line);
                         if (chunk == 1) chunk = 0;
 
-                        // todo something nicer maybe
                         int temp = 0;
                         for (int i = 0; i < 8; i++)
                         {
@@ -1114,7 +1114,7 @@ namespace CrashEdit
                 }
                 else
                 {
-                    if (IsHexString(line))
+                    if (IsHexString(line) && line.Length == 8)
                     {
                         byte[] chunk = Convert.FromHexString(line);
                         int chunkLength = chunk.Length;
