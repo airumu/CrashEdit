@@ -146,6 +146,8 @@ namespace CrashEdit.CE
             chkPatchGOOLC3toC2.Text = Resources.Config_chkPatchGOOLC3toC2;
             chkOutputCopyTextureResult.Text = Resources.Config_chkOutputCopyTextureResult;
             chkOutputModelTextureInfo.Text = Resources.Config_chkOutputModelTextureInfo;
+
+            chkViewCameraAngle.Enabled = chkViewCamera.Checked;
         }
 
         private void dpdLang_SelectedIndexChanged(object sender, EventArgs e)
@@ -279,6 +281,7 @@ namespace CrashEdit.CE
         {
             Settings.Default.ViewCamera = chkViewCamera.Checked;
             Settings.Default.Save();
+            chkViewCameraAngle.Enabled = chkViewCamera.Checked;
         }
 
         private void chkViewCameraAngle_CheckedChanged(object sender, EventArgs e)

@@ -468,6 +468,8 @@ namespace CrashEdit.CE
             return false;
         }
 
+        public static Color4 DarkRed => new Color4(60, 20, 0, byte.MaxValue);
+
         private void RenderEntity(Entity entity)
         {
             float text_y = 0;
@@ -567,8 +569,8 @@ namespace CrashEdit.CE
                                         {
                                             var lzone_trans = new Vector3(lzone.X, lzone.Y, lzone.Z) / GameScales.ZoneC1;
                                             Vector3 link_trans = new Vector3(link.Positions[0].X, link.Positions[0].Y, link.Positions[0].Z) / scale + lzone_trans;
-                                            vaoLinesThick.PushAttrib(trans: trans, rgba: GetZoneColor(Color4.Red));
-                                            vaoLinesThick.PushAttrib(trans: link_trans, rgba: GetZoneColor(Color4.Lime));
+                                            vaoLinesThick.PushAttrib(trans: trans, rgba: GetZoneColor(Color4.Blue));
+                                            vaoLinesThick.PushAttrib(trans: link_trans, rgba: GetZoneColor(Color4.Cyan));
                                         }
                                     }
                                 }
@@ -593,9 +595,9 @@ namespace CrashEdit.CE
                     for (int i = 1; i < entity.Positions.Count; ++i)
                     {
                         vaoLines.PushAttrib(trans: new Vector3(entity.Positions[i - 1].X, entity.Positions[i - 1].Y, entity.Positions[i - 1].Z) / scale + zone_trans,
-                                            rgba: GetZoneColor(Color4.Blue));
+                                            rgba: GetZoneColor(DarkRed));
                         vaoLines.PushAttrib(trans: new Vector3(entity.Positions[i].X, entity.Positions[i].Y, entity.Positions[i].Z) / scale + zone_trans,
-                                            rgba: GetZoneColor(Color4.Blue));
+                                            rgba: GetZoneColor(DarkRed));
                     }
                     foreach (EntityPosition position in entity.Positions)
                     {
@@ -643,7 +645,7 @@ namespace CrashEdit.CE
                     var dir_vec2 = (rot_mat2 * new Vector4(0, 0, -1, 1)).Xyz;
 
                     Rgba angColor1 = GetZoneColor(Color4.Olive);
-                    Rgba angColor2 = GetZoneColor(Color4.DarkRed);
+                    Rgba angColor2 = GetZoneColor(Color4.DarkGreen);
                     vaoLines.PushAttrib(trans: trans, rgba: angColor1);
                     vaoLines.PushAttrib(trans: trans + dir_vec1, rgba: angColor1);
                     AddSprite(trans + dir_vec1, new Vector2(0.5f), angColor1, OldResources.PointTexture);
