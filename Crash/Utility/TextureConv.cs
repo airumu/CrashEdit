@@ -84,7 +84,7 @@ namespace CrashEdit.Crash
             Console.WriteLine($"Palette (RGBA5551 format):\r\n{hexString}");
         }
 
-        private static byte[] ReplaceClut(byte[] rgba5551List, byte[] newTPage, int bpp, int oldBpp, int clutX, int clutY)
+        public static byte[] ReplaceClut(byte[] rgba5551List, byte[] newTPage, int bpp, int oldBpp, int clutX, int clutY)
         {
             bool doProcess = true;
             if (bpp != oldBpp)
@@ -97,9 +97,9 @@ namespace CrashEdit.Crash
 
             if (doProcess)
             {
-                int offset = clutX * 0x20 + clutY * 0x200;
+                int offset = (bpp == 8)? clutY * 0x200 : clutX * 0x20 + clutY * 0x200;
                 Array.Copy(rgba5551List, 0, newTPage, offset, rgba5551List.Length);
-                Console.WriteLine("CLUT replacement completed.");
+                Console.WriteLine("CLUT replacement done.");
             }
             else
             {
@@ -208,18 +208,11 @@ namespace CrashEdit.Crash
 
         private static void CreateBuffer(byte[] srcTexture, int textureWidth, int textureHeight, bool is8bpp, bool isFromFile, int srcX, int srcY)
         {
-            if (isFromFile)
-            {
-
-            }
-                
             if (Settings.Default.OutputCopyTextureResult)
             {
                 Console.WriteLine();
                 Console.WriteLine($"srcX: {srcX}, srcY: {srcY}");
             }
-
-               
           
             Array.Clear(vram, 0, vram.Length);
 

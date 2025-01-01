@@ -455,6 +455,11 @@ namespace CrashEdit.CE.Controls
 
         private void cmdReplaceTexture_Click(object sender, EventArgs e)
         {
+            if (selectedRegionX < 32 && selectedRegionY == 0)
+            {
+                DarkMessageBox.ShowError("Textures cannot be replaced on the header.", "Error");
+                return;
+            }
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.Filter = "Image Files|*.bmp;*.png;|All Files|*.*";

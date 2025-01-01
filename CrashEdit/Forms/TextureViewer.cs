@@ -30,9 +30,10 @@ namespace CrashEdit.CE
         private int tempWidth;
         private int tempHeight;
         private int tempBpp;
+        private byte[] tempCLUT;
 
-        private bool IsBGRA;
-        private bool ReplaceCLUT;
+        private bool isBGRA;
+        private bool replaceCLUT;
 
         private DarkToolTip tipViewer;
         public TextureViewer(TextureChunk texturechunk)
@@ -64,8 +65,8 @@ namespace CrashEdit.CE
             C2dpdBlend.SelectedIndex = 3;
             selectionSize = 32;
 
-            IsBGRA = true;
-            ReplaceCLUT = true;
+            isBGRA = true;
+            replaceCLUT = true;
 
             pictureBox1.MouseClick += delegate (object? sender, MouseEventArgs e)
             {
@@ -452,6 +453,11 @@ namespace CrashEdit.CE
                 DarkMessageBox.ShowError("Unsupported bpp.", "Error");
                 return;
             }
+            if ((int)C2numX.Value < 32 && (int)C2numY.Value == 0)
+            {
+                DarkMessageBox.ShowError("Textures cannot be replaced on the header.", "Error");
+                return;
+            }
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.Filter = "Image Files|*.bmp;*.png;|All Files|*.*";
@@ -473,7 +479,7 @@ namespace CrashEdit.CE
                         clutX = 0;
                     }
 
-                    chunk.Data = TextureConv.ReplaceTextureFromFile(filePath, extension, IsBGRA, chunk.Data, destX, destY, ReplaceCLUT, oldBpp, clutX, clutY);
+                    chunk.Data = TextureConv.ReplaceTextureFromFile(filePath, extension, isBGRA, chunk.Data, destX, destY, replaceCLUT, oldBpp, clutX, clutY);
                     UpdatePicture();
                 }
             }
@@ -481,30 +487,49 @@ namespace CrashEdit.CE
 
         private void chkBGRA_CheckedChanged(object sender, EventArgs e)
         {
-            IsBGRA = chkBGRA.Checked;
+            isBGRA = chkBGRA.Checked;
         }
 
         private void chkReplaceCLUT_CheckedChanged(object sender, EventArgs e)
         {
-            ReplaceCLUT = chkReplaceCLUT.Checked;
+            replaceCLUT = chkReplaceCLUT.Checked;
         }
 
         private void tabControl1_KeyDown(object sender, KeyEventArgs e)
         {
+            if (C2dpdColor.SelectedIndex == 2)
+            {
+                DarkMessageBox.ShowError("Unsupported bpp.", "Error");
+                return;
+            }
             if ((e.KeyCode == Keys.C || e.KeyCode == Keys.X) && e.Modifiers == Keys.Control)
             {
-                if (C2dpdColor.SelectedIndex != 2)
+                var temp = TextureConv.CopyTexture(chunk.Data, (C2dpdColor.SelectedIndex + 1) * 4, (int)C2numX.Value, (int)C2numY.Value, (int)C2numW.Value, (int)C2numH.Value);
+                tempTexture = temp.tempTexture;
+                tempWidth = temp.tempWidth;
+                tempHeight = temp.tempHeight;
+                tempBpp = temp.tempBpp;
+
+                int length, offset;
+                if (C2dpdColor.SelectedIndex == 0)
                 {
-                    var temp = TextureConv.CopyTexture(chunk.Data, (C2dpdColor.SelectedIndex + 1) * 4, (int)C2numX.Value, (int)C2numY.Value, (int)C2numW.Value, (int)C2numH.Value);
-                    tempTexture = temp.tempTexture;
-                    tempWidth = temp.tempWidth;
-                    tempHeight = temp.tempHeight;
-                    tempBpp = temp.tempBpp;
+                    length = 0x20;
+                    offset = (int)C2numCX.Value * 0x20 + (int)C2numCY.Value * 0x200;
                 }
+                else
+                {
+                    length = 0x200;
+                    offset = (int)C2numCY.Value * 0x200;
+                }
+                tempCLUT = new byte[length];
+                Array.Copy(chunk.Data, offset, tempCLUT, 0, length);
+
                 if (e.KeyCode == Keys.X) // clear
                 {
-                    byte[] temp = new byte[65536];
-                    TextureConv.ReplaceTexture(temp, chunk.Data, tempWidth, tempHeight, tempBpp, 0, 0, tempWidth, tempHeight, (int)C2numX.Value, (int)C2numY.Value, false);
+                    byte[] tempChunk = new byte[65536];
+                    TextureConv.ReplaceTexture(tempChunk, chunk.Data, tempWidth, tempHeight, tempBpp, 0, 0, tempWidth, tempHeight, (int)C2numX.Value, (int)C2numY.Value, false);
+
+                    BitConv.ToInt32(chunk.Data, 12, Chunk.CalculateChecksum(chunk.Data));
                 }
                 Console.WriteLine("Texture copied successfully.");
                 UpdatePicture();
@@ -515,19 +540,28 @@ namespace CrashEdit.CE
                 {
                     if ((int)C2numX.Value < 32 && (int)C2numY.Value == 0)
                     {
-                        DarkMessageBox.ShowError("Textures cannot be replaced on the header.", "Texture Paste Error");
+                        DarkMessageBox.ShowError("Textures cannot be replaced on the header.", "Error");
                         Console.WriteLine("Failed to paste texture.");
+                        return;
                     }
                     else if ((int)C2numX.Value + tempWidth > 1024 || (int)C2numY.Value + tempHeight > 128)
                     {
-                        DarkMessageBox.ShowError("Textures cannot be pasted outside the bounds.", "Texture Paste Error");
+                        DarkMessageBox.ShowError("Textures cannot be pasted outside the bounds.", "Error");
                         Console.WriteLine("Failed to paste texture.");
+                        return;
                     }
                     else
                     {
                         TextureConv.ReplaceTexture(tempTexture, chunk.Data, tempWidth, tempHeight, tempBpp, 0, 0, tempWidth, tempHeight, (int)C2numX.Value, (int)C2numY.Value, false);
                         Console.WriteLine("Successfully pasted texture.");
                     }
+
+                    if (replaceCLUT)
+                    {
+                        chunk.Data = TextureConv.ReplaceClut(tempCLUT, chunk.Data, (C2dpdColor.SelectedIndex + 1) * 4, tempBpp, (int)C2numCX.Value, (int)C2numCY.Value);
+                    }
+
+                    BitConv.ToInt32(chunk.Data, 12, Chunk.CalculateChecksum(chunk.Data));
                 }
                 
                 UpdatePicture();
