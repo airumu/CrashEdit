@@ -479,20 +479,32 @@ namespace CrashEdit
             base.OnMouseMove(e);
 
             Point mousePosition = e.Location;
-            bool isOverNonSelectedTab = false;
+            if (!ClientRectangle.Contains(mousePosition))
+            {
+                Cursor = Cursors.Default;
+                return;
+            }
 
+            bool cursorOnOtherTab = false;
             for (int i = 0; i < TabPages.Count; i++)
             {
-                Rectangle tabRect = GetTabRect(i);
+                if (i == SelectedIndex)
+                    continue;
 
-                if (tabRect.Contains(mousePosition) && SelectedIndex != i)
+                Rectangle tabRect = GetTabRect(i);
+                if (tabRect.Contains(mousePosition) && mousePosition.Y <= tabRect.Bottom)
                 {
-                    isOverNonSelectedTab = true;
+                    cursorOnOtherTab = true;
                     break;
                 }
             }
-            Cursor = isOverNonSelectedTab ? Cursors.Hand : Cursors.Default;
+            Cursor = cursorOnOtherTab ? Cursors.Hand : Cursors.Default;
         }
+        protected override void OnMouseLeave(EventArgs e)
+        {
+            Cursor = Cursors.Default;
+        }
+
         private void CloseTab(int i)
         {
             if (PreRemoveTabPage != null)
