@@ -248,12 +248,20 @@ namespace CrashEdit.CE
             Settings.Default.Save();
         }
 
-        private void sldNodeShadeAmt_Scroll(object sender, EventArgs e)
+        //private void sldNodeShadeAmt_Scroll(object sender, EventArgs e)
+        //{
+        //    Settings.Default.NodeShadeMax = sldNodeShadeAmt.Value / 100f;
+        //    lblNodeShadeAmt.Text = string.Format("{0:F0}%", sldNodeShadeAmt.Value);
+        //    Settings.Default.Save();
+        //}
+
+        private void sldNodeShadeAmt_ValueChangedl(object sender, EventArgs e)
         {
             Settings.Default.NodeShadeMax = sldNodeShadeAmt.Value / 100f;
             lblNodeShadeAmt.Text = string.Format("{0:F0}%", sldNodeShadeAmt.Value);
             Settings.Default.Save();
         }
+
 
         private void chkViewZoneBox_CheckedChanged(object sender, EventArgs e)
         {

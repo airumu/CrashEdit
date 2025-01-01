@@ -436,7 +436,7 @@ namespace CrashEdit.CE.Controls
             Controls.Add(grdCLUT);
             Name = "CLUTBox";
             Size = new Size(1000, 1000);
-            this.Leave += this.CLUTBox_Leave;
+            Leave += CLUTBox_Leave;
             ((System.ComponentModel.ISupportInitialize)grdCLUT).EndInit();
             ((System.ComponentModel.ISupportInitialize)numLoadClut).EndInit();
             fraGlobalControl.ResumeLayout(false);

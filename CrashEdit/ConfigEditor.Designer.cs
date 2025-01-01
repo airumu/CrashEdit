@@ -59,7 +59,7 @@ namespace CrashEdit.CE
             cdlClearCol = new ColorDialog();
             fraNodeShadeAmt = new DarkGroupBox();
             lblNodeShadeAmt = new Label();
-            sldNodeShadeAmt = new TrackBar();
+            sldNodeShadeAmt = new MetroSetTrackBar();
             tbcSettings = new MetroSetTabControl();
             tbpGeneral = new TabPage();
             cmdHelp = new DarkButton();
@@ -100,7 +100,7 @@ namespace CrashEdit.CE
             ((System.ComponentModel.ISupportInitialize)numW).BeginInit();
             fraSize.SuspendLayout();
             fraNodeShadeAmt.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)sldNodeShadeAmt).BeginInit();
+            sldNodeShadeAmt.SuspendLayout();
             tbcSettings.SuspendLayout();
             tbpGeneral.SuspendLayout();
             fraLang.SuspendLayout();
@@ -490,7 +490,6 @@ namespace CrashEdit.CE
             // 
             sldNodeShadeAmt.BackColor = Color.FromArgb(30, 30, 30);
             sldNodeShadeAmt.Dock = DockStyle.Top;
-            sldNodeShadeAmt.LargeChange = 10;
             sldNodeShadeAmt.Location = new Point(4, 19);
             sldNodeShadeAmt.Margin = new Padding(4, 3, 4, 3);
             sldNodeShadeAmt.Maximum = 100;
@@ -499,7 +498,8 @@ namespace CrashEdit.CE
             sldNodeShadeAmt.TabIndex = 0;
             sldNodeShadeAmt.TickFrequency = 5;
             sldNodeShadeAmt.Value = 20;
-            sldNodeShadeAmt.Scroll += sldNodeShadeAmt_Scroll;
+            sldNodeShadeAmt.ValueChanged += sldNodeShadeAmt_ValueChangedl;
+            //sldNodeShadeAmt.Scroll += sldNodeShadeAmt_Scroll;
             // 
             // tbcSettings
             // 
@@ -904,7 +904,7 @@ namespace CrashEdit.CE
             fraSize.PerformLayout();
             fraNodeShadeAmt.ResumeLayout(false);
             fraNodeShadeAmt.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)sldNodeShadeAmt).EndInit();
+            sldNodeShadeAmt.PerformLayout();
             tbcSettings.ResumeLayout(false);
             tbpGeneral.ResumeLayout(false);
             tbpGeneral.PerformLayout();
@@ -936,27 +936,27 @@ namespace CrashEdit.CE
         private Label lblWH;
         private DarkNumericUpDown numH;
         private DarkNumericUpDown numW;
-        private System.Windows.Forms.ColorDialog cdlClearCol;
+        private ColorDialog cdlClearCol;
         private DarkGroupBox fraClearCol;
-        private System.Windows.Forms.PictureBox picClearCol;
+        private PictureBox picClearCol;
         private DarkGroupBox fraAnimGrid;
         private DarkNumericUpDown numAnimGrid;
         private Label lblAnimGrid;
-        private System.Windows.Forms.CheckBox chkAnimGrid;
+        private CheckBox chkAnimGrid;
         private DarkComboBox dpdFont;
         private DarkGroupBox fraFont;
         private DarkNumericUpDown numFontSize;
         private Label lblFontSize;
         private Label lblFontName;
         private DarkGroupBox fraNodeShadeAmt;
-        private System.Windows.Forms.TrackBar sldNodeShadeAmt;
-        private System.Windows.Forms.CheckBox chkViewerShowHelp;
-        private System.Windows.Forms.CheckBox chkFont2DEnable;
-        private System.Windows.Forms.CheckBox chkFont3DEnable;
-        private System.Windows.Forms.CheckBox chkCollisionDisplay;
-        private System.Windows.Forms.CheckBox chkNormalDisplay;
-        private System.Windows.Forms.CheckBox chkPatchNSDSavesNSF;
-        private System.Windows.Forms.CheckBox chkDeleteInvalidEntries;
+        private MetroSetTrackBar sldNodeShadeAmt;
+        private CheckBox chkViewerShowHelp;
+        private CheckBox chkFont2DEnable;
+        private CheckBox chkFont3DEnable;
+        private CheckBox chkCollisionDisplay;
+        private CheckBox chkNormalDisplay;
+        private CheckBox chkPatchNSDSavesNSF;
+        private CheckBox chkDeleteInvalidEntries;
         private DarkComboBox dpdLang;
         private Label lblNodeShadeAmt;
         private MetroSetTabControl tbcSettings;

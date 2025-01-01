@@ -15,7 +15,7 @@ namespace CrashEdit
             TabControl = new FlatTabControl
             {
                 Dock = DockStyle.Fill,
-                ItemSize = new Size(100, 28),
+                ItemSize = new Size(100, 24),
                 SizeMode = TabSizeMode.FillToRight,
                 Padding = new Point(0, 0),
                 DrawMode = TabDrawMode.OwnerDrawFixed,
@@ -476,7 +476,22 @@ namespace CrashEdit
                     }
                 }
             }
-            //base.OnMouseMove(e);
+            base.OnMouseMove(e);
+
+            Point mousePosition = e.Location;
+            bool isOverNonSelectedTab = false;
+
+            for (int i = 0; i < TabPages.Count; i++)
+            {
+                Rectangle tabRect = GetTabRect(i);
+
+                if (tabRect.Contains(mousePosition) && SelectedIndex != i)
+                {
+                    isOverNonSelectedTab = true;
+                    break;
+                }
+            }
+            Cursor = isOverNonSelectedTab ? Cursors.Hand : Cursors.Default;
         }
         private void CloseTab(int i)
         {
@@ -607,6 +622,7 @@ namespace CrashEdit
 
             // Draws the Title of the Tab:
             Rectangle rectangleF = tabTextRect;
+            rectangleF.X += 2; // Vertically Centered
             rectangleF.Y += 2; // Horizontally Centered
             TextRenderer.DrawText(g, customTabPage.Text, Font, rectangleF, isSelected ? SelectedForeColor : ForeColor);
         }

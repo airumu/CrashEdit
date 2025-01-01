@@ -1,5 +1,6 @@
 using AltUI.Controls;
 using CrashEdit.Crash;
+using MetroSet_UI.Controls;
 using System.Media;
 
 namespace CrashEdit.CE
@@ -18,34 +19,32 @@ namespace CrashEdit.CE
         private TableLayoutPanel pnOptions;
         private DarkButton cmdPlay;
         private DarkButton cmdExport;
-        private TrackBar trkSampleRate;
+        private MetroSetTrackBar trkSampleRate;
         private Label lblSampleRate;
         private DarkNumericUpDown numSampleRate;
 
         private void UpdateSampleRate()
         {
             int smpe = (int)(trkSampleRate.Value / 256.0 * (11025 / 4.0));
+            double smpe2 = trkSampleRate.Value / 256.0;
             cmdPlay.Text = string.Format("Play ({0}Hz)", smpe);
             cmdExport.Text = string.Format("Export ({0}Hz)", smpe);
-            lblSampleRate.Text = string.Format("Sample Rate: {0:0.000}", trkSampleRate.Value / 256.0);
+            lblSampleRate.Text = string.Format("Sample Rate: {0:0.000}", smpe2);
         }
 
         public SoundBox(SampleSet samples)
         {
             this.samples = samples;
+            DoubleBuffered = true;
 
             spPlayer = new SoundPlayer();
 
             tbbImport = new ToolStripButton();
             tbbImport.Text = "Import";
-            /*            tbbImport.ForeColor = SystemColors.ControlText;
-                        tbbImport.BackColor = SystemColors.Window;*/
             tbbImport.Click += new EventHandler(tbbImport_Click);
 
             tbbExport = new ToolStripButton();
             tbbExport.Text = "Export";
-/*            tbbExport.ForeColor = SystemColors.ControlText;
-            tbbExport.BackColor = SystemColors.Window;*/
             tbbExport.Click += new EventHandler(tbbExport_Click);
 
             tsToolbar = new ToolStrip();
@@ -53,13 +52,14 @@ namespace CrashEdit.CE
             tsToolbar.Items.Add(tbbImport);
             tsToolbar.Items.Add(tbbExport);
 
-            trkSampleRate = new TrackBar()
+            trkSampleRate = new MetroSetTrackBar
             {
                 Minimum = 0,
                 Maximum = 16 * 256,
-                TickFrequency = 128,
+                TickFrequency = 16,
                 Value = 1024,
-                Dock = DockStyle.Fill
+                Dock = DockStyle.Fill,
+                Style = MetroSet_UI.Enums.Style.Dark
             };
             trkSampleRate.ValueChanged += (object sender, EventArgs e) =>
             {
