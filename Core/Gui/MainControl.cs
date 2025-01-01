@@ -16,7 +16,8 @@ namespace CrashEdit
 
             Split = new SplitContainer
             {
-                Dock = DockStyle.Fill
+                Dock = DockStyle.Fill,
+                SplitterDistance = ClientSize.Width / 100 * 40
             };
             Controls.Add(Split);
 
