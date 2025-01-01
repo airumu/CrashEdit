@@ -124,6 +124,6 @@
 
     <ItemGroup>
       <PackageReference Include="AltUI" Version="1.0.2" />
-      <PackageReference Include="MetroSetUI" Version="1.0.1" />
+      <PackageReference Include="MetroSetUI" Version="1.0.11" />
     </ItemGroup>
 </Project>
