@@ -497,18 +497,30 @@ namespace CrashEdit.CE
 
         private void tabControl1_KeyDown(object sender, KeyEventArgs e)
         {
-            if (C2dpdColor.SelectedIndex == 2)
-            {
-                DarkMessageBox.ShowError("Unsupported bpp.", "Error");
-                return;
-            }
+            string basePath = basePath = Path.Combine(Path.GetTempPath(), "CrashEdit");
+
             if ((e.KeyCode == Keys.C || e.KeyCode == Keys.X) && e.Modifiers == Keys.Control)
             {
+                if (C2dpdColor.SelectedIndex == 2)
+                {
+                    DarkMessageBox.ShowError("Unsupported bpp.", "Error");
+                    return;
+                }
+
                 var temp = TextureConv.CopyTexture(chunk.Data, (C2dpdColor.SelectedIndex + 1) * 4, (int)C2numX.Value, (int)C2numY.Value, (int)C2numW.Value, (int)C2numH.Value);
                 tempTexture = temp.tempTexture;
                 tempWidth = temp.tempWidth;
                 tempHeight = temp.tempHeight;
                 tempBpp = temp.tempBpp;
+
+                if (!Directory.Exists(basePath))
+                {
+                    Directory.CreateDirectory(basePath);
+                }
+              
+                File.WriteAllBytes(Path.Combine(basePath, "tempTexture"), tempTexture);
+                List<string> tempInfo = new List<string> { tempWidth.ToString(), tempHeight.ToString(), tempBpp.ToString() };
+                File.WriteAllLines(Path.Combine(basePath, "tempInfo"), tempInfo);
 
                 int length, offset;
                 if (C2dpdColor.SelectedIndex == 0)
@@ -523,47 +535,74 @@ namespace CrashEdit.CE
                 }
                 tempCLUT = new byte[length];
                 Array.Copy(chunk.Data, offset, tempCLUT, 0, length);
+                File.WriteAllBytes(Path.Combine(basePath, "tempCLUT"), tempCLUT);
 
                 if (e.KeyCode == Keys.X) // clear
                 {
-                    byte[] tempChunk = new byte[65536];
-                    TextureConv.ReplaceTexture(tempChunk, chunk.Data, tempWidth, tempHeight, tempBpp, 0, 0, tempWidth, tempHeight, (int)C2numX.Value, (int)C2numY.Value, false);
+                    byte[] emptyChunk = new byte[65536];
+                    TextureConv.ReplaceTexture(emptyChunk, chunk.Data, tempWidth, tempHeight, tempBpp, 0, 0, tempWidth, tempHeight, (int)C2numX.Value, (int)C2numY.Value, false);
 
                     BitConv.ToInt32(chunk.Data, 12, Chunk.CalculateChecksum(chunk.Data));
                 }
-                Console.WriteLine("Texture copied successfully.");
+                Console.WriteLine("Successfully copied texture.");
                 UpdatePicture();
             }
             else if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
             {
-                if (tempTexture != null)
+                if (C2dpdColor.SelectedIndex == 2)
                 {
-                    if ((int)C2numX.Value < 32 && (int)C2numY.Value == 0)
-                    {
-                        DarkMessageBox.ShowError("Textures cannot be replaced on the header.", "Error");
-                        Console.WriteLine("Failed to paste texture.");
-                        return;
-                    }
-                    else if ((int)C2numX.Value + tempWidth > 1024 || (int)C2numY.Value + tempHeight > 128)
-                    {
-                        DarkMessageBox.ShowError("Textures cannot be pasted outside the bounds.", "Error");
-                        Console.WriteLine("Failed to paste texture.");
-                        return;
-                    }
-                    else
-                    {
-                        TextureConv.ReplaceTexture(tempTexture, chunk.Data, tempWidth, tempHeight, tempBpp, 0, 0, tempWidth, tempHeight, (int)C2numX.Value, (int)C2numY.Value, false);
-                        Console.WriteLine("Successfully pasted texture.");
-                    }
-
-                    if (replaceCLUT)
-                    {
-                        chunk.Data = TextureConv.ReplaceClut(tempCLUT, chunk.Data, (C2dpdColor.SelectedIndex + 1) * 4, tempBpp, (int)C2numCX.Value, (int)C2numCY.Value);
-                    }
-
-                    BitConv.ToInt32(chunk.Data, 12, Chunk.CalculateChecksum(chunk.Data));
+                    DarkMessageBox.ShowError("Unsupported bpp.", "Error");
+                    return;
                 }
-                
+
+                string[] files = Directory.GetFiles(basePath);
+                if (!Directory.Exists(basePath) || files.Length != 3)
+                {
+                    Console.WriteLine("There is no texture in buffer.");
+                    return;
+                }
+
+                tempTexture = File.ReadAllBytes(Path.Combine(basePath, "tempTexture"));
+                tempCLUT = File.ReadAllBytes(Path.Combine(basePath, "tempCLUT"));
+
+                string tempInfo = File.ReadAllText(Path.Combine(basePath, "tempInfo"));
+                List<int> restoredData = new List<int>();
+                foreach (string line in tempInfo.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    if (int.TryParse(line, out int value))
+                        restoredData.Add(value);
+                }
+                tempWidth = restoredData[0];
+                tempHeight = restoredData[1];
+                tempBpp = restoredData[2];
+
+                if ((int)C2numX.Value < 32 && (int)C2numY.Value == 0)
+                {
+                    DarkMessageBox.ShowError("Textures cannot be replaced on the header.", "Error");
+                    Console.WriteLine("Failed to paste texture.");
+                    return;
+                }
+                else if ((int)C2numX.Value + tempWidth > 1024 || (int)C2numY.Value + tempHeight > 128)
+                {
+                    DarkMessageBox.ShowError("Textures cannot be pasted outside the bounds.", "Error");
+                    Console.WriteLine("Failed to paste texture.");
+                    return;
+                }
+                else
+                {
+                    TextureConv.ReplaceTexture(tempTexture, chunk.Data, tempWidth, tempHeight, tempBpp, 0, 0, tempWidth, tempHeight, (int)C2numX.Value, (int)C2numY.Value, false);
+                    Console.WriteLine("Successfully pasted texture.");
+                }
+
+                if (Settings.Default.OutputCopyTextureResult)
+                    Console.WriteLine($"{tempWidth} x {tempHeight}, {tempBpp}bpp");
+
+                if (replaceCLUT)
+                {
+                    chunk.Data = TextureConv.ReplaceClut(tempCLUT, chunk.Data, (C2dpdColor.SelectedIndex + 1) * 4, tempBpp, (int)C2numCX.Value, (int)C2numCY.Value);
+                }
+
+                BitConv.ToInt32(chunk.Data, 12, Chunk.CalculateChecksum(chunk.Data));
                 UpdatePicture();
             }
         }
