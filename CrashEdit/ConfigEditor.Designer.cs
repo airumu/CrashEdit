@@ -488,7 +488,7 @@ namespace CrashEdit.CE
             // 
             // sldNodeShadeAmt
             // 
-            sldNodeShadeAmt.BackColor = Color.FromArgb(30, 30, 30);
+            sldNodeShadeAmt.BackColor = Color.FromArgb(31, 31, 32);
             sldNodeShadeAmt.Dock = DockStyle.Top;
             sldNodeShadeAmt.Location = new Point(4, 19);
             sldNodeShadeAmt.Margin = new Padding(4, 3, 4, 3);
@@ -505,7 +505,7 @@ namespace CrashEdit.CE
             // 
             tbcSettings.AnimateEasingType = MetroSet_UI.Enums.EasingType.CubeOut;
             tbcSettings.AnimateTime = 200;
-            tbcSettings.BackgroundColor = Color.FromArgb(30, 30, 30);
+            tbcSettings.BackgroundColor = Color.FromArgb(31, 31, 32);
             tbcSettings.Controls.Add(tbpGeneral);
             tbcSettings.Controls.Add(tbp3D);
             tbcSettings.Controls.Add(tbpDebugDisplay);
@@ -531,7 +531,7 @@ namespace CrashEdit.CE
             // 
             // tbpGeneral
             // 
-            tbpGeneral.BackColor = Color.FromArgb(30, 30, 30);
+            tbpGeneral.BackColor = Color.FromArgb(31, 31, 32);
             tbpGeneral.Controls.Add(cmdHelp);
             tbpGeneral.Controls.Add(fraLang);
             tbpGeneral.Controls.Add(cmdReset);
@@ -571,7 +571,7 @@ namespace CrashEdit.CE
             // 
             // tbp3D
             // 
-            tbp3D.BackColor = Color.FromArgb(30, 30, 30);
+            tbp3D.BackColor = Color.FromArgb(31, 31, 32);
             tbp3D.Controls.Add(fraNodeShadeAmt);
             tbp3D.Controls.Add(fraFont);
             tbp3D.Controls.Add(fraClearCol);
@@ -585,7 +585,7 @@ namespace CrashEdit.CE
             // 
             // tbpDebugDisplay
             // 
-            tbpDebugDisplay.BackColor = Color.FromArgb(30, 30, 30);
+            tbpDebugDisplay.BackColor = Color.FromArgb(31, 31, 32);
             tbpDebugDisplay.Controls.Add(darkGroupBox3);
             tbpDebugDisplay.Controls.Add(darkGroupBox2);
             tbpDebugDisplay.Controls.Add(darkGroupBox1);
@@ -719,7 +719,7 @@ namespace CrashEdit.CE
             // 
             // tbpPatchNSD
             // 
-            tbpPatchNSD.BackColor = Color.FromArgb(30, 30, 30);
+            tbpPatchNSD.BackColor = Color.FromArgb(31, 31, 32);
             tbpPatchNSD.Controls.Add(chkDeleteInvalidEntries);
             tbpPatchNSD.Controls.Add(chkPatchNSDSavesNSF);
             tbpPatchNSD.Location = new Point(4, 32);
@@ -731,7 +731,7 @@ namespace CrashEdit.CE
             // 
             // tbpMisc
             // 
-            tbpMisc.BackColor = Color.FromArgb(30, 30, 30);
+            tbpMisc.BackColor = Color.FromArgb(31, 31, 32);
             tbpMisc.Controls.Add(fraMiscDebug);
             tbpMisc.Controls.Add(chkEnableLegacyEntityBox);
             tbpMisc.Controls.Add(fraExtra);
@@ -882,7 +882,7 @@ namespace CrashEdit.CE
             AutoScaleMode = AutoScaleMode.Font;
             AutoScroll = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            BackColor = Color.FromArgb(30, 30, 30);
+            BackColor = Color.FromArgb(31, 31, 32);
             Controls.Add(tbcSettings);
             Margin = new Padding(4, 3, 4, 3);
             Name = "ConfigEditor";
