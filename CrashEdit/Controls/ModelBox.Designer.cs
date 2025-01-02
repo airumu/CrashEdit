@@ -45,16 +45,25 @@ namespace CrashEdit.CE.Controls
         private void InitializeComponent()
         {
             tabModel = new MetroSetTabControl();
-            tbpInfo = new TabPage();
+            tbpGeneral = new TabPage();
+            panel1 = new Panel();
             fraScales = new DarkGroupBox();
-            chkShowAsHex = new CheckBox();
+            chkScalesShowAsHex = new CheckBox();
             numScaleZ = new DarkNumericUpDown();
             lblScaleZ = new Label();
             numScaleY = new DarkNumericUpDown();
             lblScaleY = new Label();
             numScaleX = new DarkNumericUpDown();
             lblScaleX = new Label();
-            label2 = new Label();
+            fraOffsets = new DarkGroupBox();
+            chkOffsetsShowAsHex = new CheckBox();
+            numOffsetZ = new DarkNumericUpDown();
+            lblOffsetZ = new Label();
+            numOffsetY = new DarkNumericUpDown();
+            lblOffsetY = new Label();
+            numOffsetX = new DarkNumericUpDown();
+            lblOffsetX = new Label();
+            lblModelInfo = new Label();
             tbpColors = new TabPage();
             fraGlobalControl = new DarkGroupBox();
             cmdCancel = new DarkButton();
@@ -92,11 +101,16 @@ namespace CrashEdit.CE.Controls
             lstTPages = new DoubleBufferedListView();
             grdTextures = new DataGridView();
             tabModel.SuspendLayout();
-            tbpInfo.SuspendLayout();
+            tbpGeneral.SuspendLayout();
+            panel1.SuspendLayout();
             fraScales.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numScaleZ).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numScaleY).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numScaleX).BeginInit();
+            fraOffsets.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numOffsetZ).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numOffsetY).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numOffsetX).BeginInit();
             tbpColors.SuspendLayout();
             fraGlobalControl.SuspendLayout();
             pnGlobalControl.SuspendLayout();
@@ -120,7 +134,7 @@ namespace CrashEdit.CE.Controls
             tabModel.AnimateEasingType = MetroSet_UI.Enums.EasingType.CubeOut;
             tabModel.AnimateTime = 200;
             tabModel.BackgroundColor = Color.FromArgb(31, 31, 32);
-            tabModel.Controls.Add(tbpInfo);
+            tabModel.Controls.Add(tbpGeneral);
             tabModel.Controls.Add(tbpColors);
             tabModel.Controls.Add(tbpTextures);
             tabModel.Dock = DockStyle.Fill;
@@ -142,47 +156,57 @@ namespace CrashEdit.CE.Controls
             tabModel.UnselectedTextColor = Color.Gray;
             tabModel.UseAnimation = false;
             // 
-            // tbpInfo
+            // tbpGeneral
             // 
-            tbpInfo.AutoScroll = true;
-            tbpInfo.BackColor = Color.FromArgb(31, 31, 32);
-            tbpInfo.Controls.Add(fraScales);
-            tbpInfo.Controls.Add(label2);
-            tbpInfo.Location = new Point(4, 32);
-            tbpInfo.Name = "tbpInfo";
-            tbpInfo.Size = new Size(1032, 764);
-            tbpInfo.TabIndex = 0;
-            tbpInfo.Text = "Info";
+            tbpGeneral.AutoScroll = true;
+            tbpGeneral.BackColor = Color.FromArgb(31, 31, 32);
+            tbpGeneral.Controls.Add(panel1);
+            tbpGeneral.Controls.Add(lblModelInfo);
+            tbpGeneral.Location = new Point(4, 32);
+            tbpGeneral.Name = "tbpGeneral";
+            tbpGeneral.Size = new Size(1032, 764);
+            tbpGeneral.TabIndex = 0;
+            tbpGeneral.Text = "General";
+            // 
+            // panel1
+            // 
+            panel1.Controls.Add(fraScales);
+            panel1.Controls.Add(fraOffsets);
+            panel1.Location = new Point(3, 3);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(386, 134);
+            panel1.TabIndex = 2;
             // 
             // fraScales
             // 
             fraScales.BackColor = Color.Transparent;
-            fraScales.Controls.Add(chkShowAsHex);
+            fraScales.Controls.Add(chkScalesShowAsHex);
             fraScales.Controls.Add(numScaleZ);
             fraScales.Controls.Add(lblScaleZ);
             fraScales.Controls.Add(numScaleY);
             fraScales.Controls.Add(lblScaleY);
             fraScales.Controls.Add(numScaleX);
             fraScales.Controls.Add(lblScaleX);
-            fraScales.Location = new Point(3, 3);
+            fraScales.Dock = DockStyle.Left;
+            fraScales.Location = new Point(190, 0);
             fraScales.Name = "fraScales";
-            fraScales.Size = new Size(190, 130);
+            fraScales.Size = new Size(190, 134);
             fraScales.TabIndex = 1;
             fraScales.TabStop = false;
             fraScales.Text = "Scales";
             // 
-            // chkShowAsHex
+            // chkScalesShowAsHex
             // 
-            chkShowAsHex.AutoSize = true;
-            chkShowAsHex.Checked = true;
-            chkShowAsHex.CheckState = CheckState.Checked;
-            chkShowAsHex.Location = new Point(56, 104);
-            chkShowAsHex.Name = "chkShowAsHex";
-            chkShowAsHex.Size = new Size(47, 19);
-            chkShowAsHex.TabIndex = 2;
-            chkShowAsHex.Text = "Hex";
-            chkShowAsHex.UseVisualStyleBackColor = true;
-            chkShowAsHex.CheckedChanged += chkShowAsHex_CheckedChanged;
+            chkScalesShowAsHex.AutoSize = true;
+            chkScalesShowAsHex.Checked = true;
+            chkScalesShowAsHex.CheckState = CheckState.Checked;
+            chkScalesShowAsHex.Location = new Point(56, 104);
+            chkScalesShowAsHex.Name = "chkScalesShowAsHex";
+            chkScalesShowAsHex.Size = new Size(47, 19);
+            chkScalesShowAsHex.TabIndex = 2;
+            chkScalesShowAsHex.Text = "Hex";
+            chkScalesShowAsHex.UseVisualStyleBackColor = true;
+            chkScalesShowAsHex.CheckedChanged += chkScalesAsHex_CheckedChanged;
             // 
             // numScaleZ
             // 
@@ -247,16 +271,110 @@ namespace CrashEdit.CE.Controls
             lblScaleX.TabIndex = 0;
             lblScaleX.Text = "Scale X";
             // 
-            // label2
+            // fraOffsets
             // 
-            label2.AutoSize = true;
-            label2.BackColor = Color.Transparent;
-            label2.Location = new Point(9, 157);
-            label2.Name = "label2";
-            label2.Size = new Size(184, 45);
-            label2.TabIndex = 0;
-            label2.Text = "Polygon count: {0}\r\nVertex count: {1}\r\nCompression ratio: {2:P1} ({3}/{4})";
-            label2.TextAlign = ContentAlignment.MiddleCenter;
+            fraOffsets.BackColor = Color.Transparent;
+            fraOffsets.Controls.Add(chkOffsetsShowAsHex);
+            fraOffsets.Controls.Add(numOffsetZ);
+            fraOffsets.Controls.Add(lblOffsetZ);
+            fraOffsets.Controls.Add(numOffsetY);
+            fraOffsets.Controls.Add(lblOffsetY);
+            fraOffsets.Controls.Add(numOffsetX);
+            fraOffsets.Controls.Add(lblOffsetX);
+            fraOffsets.Dock = DockStyle.Left;
+            fraOffsets.Location = new Point(0, 0);
+            fraOffsets.Name = "fraOffsets";
+            fraOffsets.Size = new Size(190, 134);
+            fraOffsets.TabIndex = 1;
+            fraOffsets.TabStop = false;
+            fraOffsets.Text = "Offsets";
+            // 
+            // chkOffsetsShowAsHex
+            // 
+            chkOffsetsShowAsHex.AutoSize = true;
+            chkOffsetsShowAsHex.Checked = true;
+            chkOffsetsShowAsHex.CheckState = CheckState.Checked;
+            chkOffsetsShowAsHex.Location = new Point(56, 104);
+            chkOffsetsShowAsHex.Name = "chkOffsetsShowAsHex";
+            chkOffsetsShowAsHex.Size = new Size(47, 19);
+            chkOffsetsShowAsHex.TabIndex = 2;
+            chkOffsetsShowAsHex.Text = "Hex";
+            chkOffsetsShowAsHex.UseVisualStyleBackColor = true;
+            chkOffsetsShowAsHex.CheckedChanged += chkOffsetsAsHex_CheckedChanged;
+            // 
+            // numOffsetZ
+            // 
+            numOffsetZ.Hexadecimal = true;
+            numOffsetZ.Location = new Point(56, 75);
+            numOffsetZ.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numOffsetZ.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numOffsetZ.Name = "numOffsetZ";
+            numOffsetZ.Size = new Size(122, 23);
+            numOffsetZ.TabIndex = 1;
+            numOffsetZ.ValueChanged += numOffsetZ_ValueChanged;
+            // 
+            // lblOffsetZ
+            // 
+            lblOffsetZ.AutoSize = true;
+            lblOffsetZ.BackColor = Color.Transparent;
+            lblOffsetZ.Location = new Point(6, 77);
+            lblOffsetZ.Name = "lblOffsetZ";
+            lblOffsetZ.Size = new Size(49, 15);
+            lblOffsetZ.TabIndex = 0;
+            lblOffsetZ.Text = "Offset Z";
+            // 
+            // numOffsetY
+            // 
+            numOffsetY.Hexadecimal = true;
+            numOffsetY.Location = new Point(56, 46);
+            numOffsetY.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numOffsetY.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numOffsetY.Name = "numOffsetY";
+            numOffsetY.Size = new Size(122, 23);
+            numOffsetY.TabIndex = 1;
+            numOffsetY.ValueChanged += numOffsetY_ValueChanged;
+            // 
+            // lblOffsetY
+            // 
+            lblOffsetY.AutoSize = true;
+            lblOffsetY.BackColor = Color.Transparent;
+            lblOffsetY.Location = new Point(6, 48);
+            lblOffsetY.Name = "lblOffsetY";
+            lblOffsetY.Size = new Size(49, 15);
+            lblOffsetY.TabIndex = 0;
+            lblOffsetY.Text = "Offset Y";
+            // 
+            // numOffsetX
+            // 
+            numOffsetX.Hexadecimal = true;
+            numOffsetX.Location = new Point(56, 17);
+            numOffsetX.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numOffsetX.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numOffsetX.Name = "numOffsetX";
+            numOffsetX.Size = new Size(122, 23);
+            numOffsetX.TabIndex = 1;
+            numOffsetX.ValueChanged += numOffsetX_ValueChanged;
+            // 
+            // lblOffsetX
+            // 
+            lblOffsetX.AutoSize = true;
+            lblOffsetX.BackColor = Color.Transparent;
+            lblOffsetX.Location = new Point(6, 19);
+            lblOffsetX.Name = "lblOffsetX";
+            lblOffsetX.Size = new Size(49, 15);
+            lblOffsetX.TabIndex = 0;
+            lblOffsetX.Text = "Offset X";
+            // 
+            // lblModelInfo
+            // 
+            lblModelInfo.AutoSize = true;
+            lblModelInfo.BackColor = Color.Transparent;
+            lblModelInfo.Location = new Point(9, 140);
+            lblModelInfo.Name = "lblModelInfo";
+            lblModelInfo.Size = new Size(184, 45);
+            lblModelInfo.TabIndex = 0;
+            lblModelInfo.Text = "Polygon count: {0}\r\nVertex count: {1}\r\nCompression ratio: {2:P1} ({3}/{4})";
+            lblModelInfo.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // tbpColors
             // 
@@ -753,13 +871,19 @@ namespace CrashEdit.CE.Controls
             Name = "ModelBox";
             Size = new Size(1040, 800);
             tabModel.ResumeLayout(false);
-            tbpInfo.ResumeLayout(false);
-            tbpInfo.PerformLayout();
+            tbpGeneral.ResumeLayout(false);
+            tbpGeneral.PerformLayout();
+            panel1.ResumeLayout(false);
             fraScales.ResumeLayout(false);
             fraScales.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numScaleZ).EndInit();
             ((System.ComponentModel.ISupportInitialize)numScaleY).EndInit();
             ((System.ComponentModel.ISupportInitialize)numScaleX).EndInit();
+            fraOffsets.ResumeLayout(false);
+            fraOffsets.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numOffsetZ).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numOffsetY).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numOffsetX).EndInit();
             tbpColors.ResumeLayout(false);
             fraGlobalControl.ResumeLayout(false);
             pnGlobalControl.ResumeLayout(false);
@@ -784,7 +908,7 @@ namespace CrashEdit.CE.Controls
         #endregion
 
         private MetroSet_UI.Controls.MetroSetTabControl tabModel;
-        private TabPage tbpInfo;
+        private TabPage tbpGeneral;
         private TabPage tbpColors;
         private TabPage tbpTextures;
         private AltUI.Controls.DarkGroupBox fraTexture;
@@ -818,7 +942,7 @@ namespace CrashEdit.CE.Controls
         private AltUI.Controls.DarkButton cmdAppendTPage;
         private DarkComboBox dpdTPage;
         private CheckBox chkReplaceCLUT;
-        private Label label2;
+        private Label lblModelInfo;
         private MetroSetRadioButton rbtReloadTPage;
         private PictureBox picPreview;
         private DarkGroupBox darkGroupBox1;
@@ -829,6 +953,15 @@ namespace CrashEdit.CE.Controls
         private Label lblScaleY;
         private DarkNumericUpDown numScaleX;
         private Label lblScaleX;
-        private CheckBox chkShowAsHex;
+        private CheckBox chkScalesShowAsHex;
+        private DarkGroupBox fraOffsets;
+        private CheckBox chkOffsetsShowAsHex;
+        private DarkNumericUpDown numOffsetZ;
+        private Label lblOffsetZ;
+        private DarkNumericUpDown numOffsetY;
+        private Label lblOffsetY;
+        private DarkNumericUpDown numOffsetX;
+        private Label lblOffsetX;
+        private Panel panel1;
     }
 }

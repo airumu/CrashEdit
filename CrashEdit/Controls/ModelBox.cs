@@ -1,7 +1,5 @@
-﻿using System.Drawing;
-using System.Drawing.Imaging;
+﻿using System.Drawing.Imaging;
 using System.Globalization;
-using System.Text;
 using System.Windows.Forms;
 using AltUI.Controls;
 using AltUI.Forms;
@@ -13,15 +11,19 @@ namespace CrashEdit.CE.Controls
 {
     public partial class ModelBox : UserControl
     {
-        private ModelEntryController controller;
-        private ModelEntry model;
-        public TexturePageList TPages { get; set; }
+        //private ModelEntryController modelcontroller;
+        //private ModelEntry model;
+        //private SceneryEntryController scenerycontroller;
+        //private SceneryEntry scenery;
+        private dynamic controller;
+        private dynamic model;
         private TextureChunk chunk { get; set; }
 
         private Rectangle selectedregion;
 
         private DarkToolTip tipReloadTPage;
 
+        private bool isScenery;
         private bool globalControlMode;
 
         private bool simpleMode;
@@ -41,11 +43,13 @@ namespace CrashEdit.CE.Controls
         private int ColX1 = 7;
         private int ColX2 = 8;
         private int ColX3 = 9;
-        private int ColY1 = 10;
-        private int ColY2 = 11;
-        private int ColY3 = 12;
-        private int ColBlendMode = 13;
-        private int ColColorMode = 14;
+        private int ColX4 = 10;
+        private int ColY1 = 11;
+        private int ColY2 = 12;
+        private int ColY3 = 13;
+        private int ColY4 = 14;
+        private int ColBlendMode = 15;
+        private int ColColorMode = 16;
 
         private float MasterHue => hueColorSlider.Value;
         private float MasterSaturation => saturationColorSlider.Value;
@@ -53,22 +57,51 @@ namespace CrashEdit.CE.Controls
 
         public ModelBox(ModelEntryController controller)
         {
-            this.controller = controller;
-            model = controller.ModelEntry;
-            InitializeComponent();
+            MainInit(controller, false);
+        }
 
+        public ModelBox(SceneryEntryController controller)
+        {
+            MainInit(controller, true);
+        }
+
+        private void MainInit(object controller, bool isScenery)
+        {
+            InitializeComponent();
             DoubleBuffered = true;
-            numScaleX.Value = model.ScaleX;
-            numScaleY.Value = model.ScaleY;
-            numScaleZ.Value = model.ScaleZ;
-            UpdateInfo();
+
+            this.controller = controller;
+            this.isScenery = isScenery;
+
+            if (isScenery)
+            {
+                model = this.controller.SceneryEntry;
+
+                fraScales.Visible = false;
+                lblModelInfo.Visible = false;
+
+                numOffsetX.Value = model.XOffset;
+                numOffsetY.Value = model.YOffset;
+                numOffsetZ.Value = model.ZOffset;
+            }
+            else
+            {
+                model = this.controller.ModelEntry;
+
+                fraOffsets.Visible = false;
+
+                numScaleX.Value = model.ScaleX;
+                numScaleY.Value = model.ScaleY;
+                numScaleZ.Value = model.ScaleZ;
+                UpdateInfo();
+            }
         }
 
         private void UpdateInfo()
         {
             if (model.Positions == null)
             {
-                label2.Text = string.Format("Polygon count: {0}\nVertex count: {1}", model.PolyCount, model.VertexCount);
+                lblModelInfo.Text = string.Format("Polygon count: {0}\nVertex count: {1}", model.PolyCount, model.VertexCount);
             }
             else
             {
@@ -80,7 +113,7 @@ namespace CrashEdit.CE.Controls
                     bits += 1 + pos.YBits;
                     bits += 1 + pos.ZBits;
                 }
-                label2.Text = string.Format("Polygon count: {0}\nVertex count: {1}\nCompression ratio: {2:P1} ({3}/{4})", model.PolyCount, model.VertexCount, (float)bits / totalbits, bits, totalbits);
+                lblModelInfo.Text = string.Format("Polygon count: {0}\nVertex count: {1}\nCompression ratio: {2:P1} ({3}/{4})", model.PolyCount, model.VertexCount, (float)bits / totalbits, bits, totalbits);
             }
         }
 
@@ -182,7 +215,14 @@ namespace CrashEdit.CE.Controls
 
         private void AdjustColumnWidths()
         {
-            grdTextures.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
+            //grdTextures.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
+            foreach (DataGridViewColumn column in grdTextures.Columns)
+            {
+                column.SortMode = DataGridViewColumnSortMode.NotSortable;
+                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                column.Width = 44;
+                column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            }
         }
 
         private void SetDarkTheme(DataGridView dataGridView)
@@ -299,9 +339,11 @@ namespace CrashEdit.CE.Controls
                 grdTextures.Columns.Add("X1", "X1");
                 grdTextures.Columns.Add("X2", "X2");
                 grdTextures.Columns.Add("X3", "X3");
+                grdTextures.Columns.Add("X4", "X4");
                 grdTextures.Columns.Add("Y1", "Y1");
                 grdTextures.Columns.Add("Y2", "Y2");
                 grdTextures.Columns.Add("Y3", "Y3");
+                grdTextures.Columns.Add("Y4", "Y4");
                 grdTextures.Columns.Add("BlendMode", "Blend");
                 grdTextures.Columns.Add("ColorMode", "Color");
             }
@@ -311,7 +353,7 @@ namespace CrashEdit.CE.Controls
             {
                 var item = model.Textures[i];
                 DataGridViewRow row = new DataGridViewRow();
-                row.CreateCells(grdTextures, item.Page, item.ClutX, item.ClutY, item.Left, item.Top, item.Width, item.Height, item.X1, item.X2, item.X3, item.Y1, item.Y2, item.Y3, item.BlendMode, item.ColorMode);
+                row.CreateCells(grdTextures, item.Page, item.ClutX, item.ClutY, item.Left, item.Top, item.Width, item.Height, item.X1, item.X2, item.X3, 0, item.Y1, item.Y2, item.Y3, 0, item.BlendMode, item.ColorMode);
 
                 var tagValue = $"{item.ClutX}, {item.ClutY}, {item.Left}, {item.Top}";
                 foreach (DataGridViewCell cell in row.Cells)
@@ -340,6 +382,76 @@ namespace CrashEdit.CE.Controls
             }
             SetMaxValueTag(ColX1, ColX3);
             SetMaxValueTag(ColY1, ColY3);
+
+            for (int i = ColLeft; i <= ColHeight; i++)
+            {
+                grdTextures.Columns[i].Visible = false;
+            }
+            grdTextures.Columns[ColX4].Visible = false;
+            grdTextures.Columns[ColY4].Visible = false;
+            AdjustColumnWidths();
+            grdTextures.ResumeLayout();
+        }
+
+        private void UpdateTextureListScenery(bool creatreColumns)
+        {
+            grdTextures.SuspendLayout();
+
+            if (creatreColumns)
+            {
+                grdTextures.Columns.Add("Page", "Page");
+                grdTextures.Columns.Add("ClutX", "Clut X");
+                grdTextures.Columns.Add("ClutY", "Clut Y");
+                grdTextures.Columns.Add("Left", "X");
+                grdTextures.Columns.Add("Top", "Y");
+                grdTextures.Columns.Add("Width", "Width");
+                grdTextures.Columns.Add("Height", "Height");
+                grdTextures.Columns.Add("X1", "X1");
+                grdTextures.Columns.Add("X2", "X2");
+                grdTextures.Columns.Add("X3", "X3");
+                grdTextures.Columns.Add("X4", "X4");
+                grdTextures.Columns.Add("Y1", "Y1");
+                grdTextures.Columns.Add("Y2", "Y2");
+                grdTextures.Columns.Add("Y3", "Y3");
+                grdTextures.Columns.Add("Y4", "Y4");
+                grdTextures.Columns.Add("BlendMode", "Blend");
+                grdTextures.Columns.Add("ColorMode", "Color");
+            }
+
+            List<string> seenTags = new List<string>();
+            for (int i = 0; i < model.Textures.Count; ++i)
+            {
+                var item = model.Textures[i];
+                DataGridViewRow row = new DataGridViewRow();
+                row.CreateCells(grdTextures, item.Page, item.ClutX, item.ClutY, item.Left, item.Top, item.Width, item.Height, item.X1, item.X2, item.X3, item.X4, item.Y1, item.Y2, item.Y3, item.Y4, item.BlendMode, item.ColorMode);
+
+                var tagValue = $"{item.ClutX}, {item.ClutY}, {item.Left}, {item.Top}";
+                foreach (DataGridViewCell cell in row.Cells)
+                {
+                    cell.Tag = tagValue;
+                }
+                grdTextures.Rows.Add(row);
+
+                if (simpleMode)
+                {
+                    var tags = row.Cells[0].Tag as string;
+                    if (tags != null)
+                    {
+                        if (seenTags.Contains(tags))
+                        {
+                            row.Visible = false;
+                            if (Settings.Default.OutputModelTextureInfo)
+                                Console.WriteLine($"Hide row at: {row.Index}");
+                        }
+                        else
+                        {
+                            seenTags.Add(tags);
+                        }
+                    }
+                }
+            }
+            SetMaxValueTag(ColX1, ColX4);
+            SetMaxValueTag(ColY1, ColY4);
 
             for (int i = ColLeft; i <= ColHeight; i++)
             {
@@ -429,14 +541,21 @@ namespace CrashEdit.CE.Controls
             grdTextures.SuspendLayout();
 
             grdTextures.Rows.Clear();
-            UpdateTextureList(false);
+            if (isScenery)
+                UpdateTextureListScenery(false);
+            else
+                UpdateTextureList(false);
 
+            int endColX = isScenery ? ColX4 : ColX3;
+            int endColY = isScenery ? ColY4 : ColY3;
             if (simpleMode)
             {
                 for (int i = ColLeft; i <= ColHeight; i++)
                     grdTextures.Columns[i].Visible = true;
 
-                for (int i = ColX1; i <= ColY3; i++)
+                for (int i = ColX1; i <= endColX; i++)
+                    grdTextures.Columns[i].Visible = false;
+                for (int i = ColY1; i <= endColY; i++)
                     grdTextures.Columns[i].Visible = false;
             }
             else
@@ -444,7 +563,9 @@ namespace CrashEdit.CE.Controls
                 for (int i = ColLeft; i <= ColHeight; i++)
                     grdTextures.Columns[i].Visible = false;
 
-                for (int i = ColX1; i <= ColY3; i++)
+                for (int i = ColX1; i <= endColX; i++)
+                    grdTextures.Columns[i].Visible = true;
+                for (int i = ColY1; i <= endColY; i++)
                     grdTextures.Columns[i].Visible = true;
             }
             grdTextures.ResumeLayout();
@@ -493,15 +614,17 @@ namespace CrashEdit.CE.Controls
 
         private void cmdReplace_Click(object sender, EventArgs e)
         {
+            int endColX = isScenery ? ColX4 : ColX3;
+            int endColY = isScenery ? ColY4 : ColY3;
             if (grdTextures.SelectedCells.Count > 0)
             {
                 int index = (int)numRowIndex.Value;
                 int col = grdTextures.CurrentCell.ColumnIndex;
-                if (col >= ColX1 && col <= ColX3)
+                if (col >= ColX1 && col <= endColX)
                 {
                     UpdateRowsX(index, (int)numReplaceTo.Value, (int)numReplaceTo.Value + (int)grdTextures.Rows[index].Cells[ColWidth].Value);
                 }
-                else if (col >= ColY1 && col <= ColY3)
+                else if (col >= ColY1 && col <= endColY)
                 {
                     UpdateRowsY(index, (int)numReplaceTo.Value, (int)numReplaceTo.Value + (int)grdTextures.Rows[index].Cells[ColHeight].Value);
                 }
@@ -548,11 +671,11 @@ namespace CrashEdit.CE.Controls
             // Color Mode
             else if (e.ColumnIndex == ColColorMode)
                 maxValue = 2;
-            // X 1-3
-            else if (e.ColumnIndex >= ColX1 && e.ColumnIndex <= ColX3)
+            // X1-X4
+            else if (e.ColumnIndex >= ColX1 && e.ColumnIndex <= ColX4)
                 maxValue = 256 << (2 - currentColorMode);
-            // Y 1-3
-            else if (e.ColumnIndex >= ColY1 && e.ColumnIndex <= ColY3)
+            // Y1-Y4
+            else if (e.ColumnIndex >= ColY1 && e.ColumnIndex <= ColY4)
                 maxValue = 128;
 
             if (int.TryParse(e.FormattedValue.ToString(), out int value))
@@ -664,15 +787,15 @@ namespace CrashEdit.CE.Controls
             // Color Mode
             else if (e.ColumnIndex == ColColorMode)
                 og.ColorMode = Convert.ToByte(item.Cells[ColColorMode].Value);
-            // X1, X2, X3
-            else if (e.ColumnIndex >= ColX1 && e.ColumnIndex <= ColX3)
+            // X1-X4
+            else if (e.ColumnIndex >= ColX1 && e.ColumnIndex <= ColX4)
             {
                 int value = Convert.ToInt32(item.Cells[e.ColumnIndex].Value);
-                int U1 = og.U1, U2 = og.U2, U3 = og.U3;
 
                 if (e.ColumnIndex == ColX1) og.X1 = value;
                 else if (e.ColumnIndex == ColX2) og.X2 = value;
                 else if (e.ColumnIndex == ColX3) og.X3 = value;
+                else if (e.ColumnIndex == ColX4) og.X4 = value;
 
                 int segment, xoff;
                 GetXOff(colorMode, value, out segment, out xoff);
@@ -685,17 +808,18 @@ namespace CrashEdit.CE.Controls
                 if (e.ColumnIndex == ColX1) og.U1 = (byte)newU;
                 else if (e.ColumnIndex == ColX2) og.U2 = (byte)newU;
                 else if (e.ColumnIndex == ColX3) og.U3 = (byte)newU;
+                else if (e.ColumnIndex == ColX4) og.U4 = (byte)newU;
                 og.Segment = (byte)segment;
             }
-            // Y1, Y2, Y3
-            else if (e.ColumnIndex >= ColY1 && e.ColumnIndex <= ColY3)
+            // Y1-Y4
+            else if (e.ColumnIndex >= ColY1 && e.ColumnIndex <= ColY4)
             {
                 int value = Convert.ToInt32(item.Cells[e.ColumnIndex].Value);
-                int V1 = og.V1, V2 = og.V2, V3 = og.V3;
 
                 if (e.ColumnIndex == ColY1) og.Y1 = value;
                 else if (e.ColumnIndex == ColY2) og.Y2 = value;
                 else if (e.ColumnIndex == ColY3) og.Y3 = value;
+                else if (e.ColumnIndex == ColY4) og.Y4 = value;
 
                 int newV = value;
                 //if (item.Cells[e.ColumnIndex].Tag is HashSet<string> tags && tags.Contains("MaxValue"))
@@ -705,6 +829,7 @@ namespace CrashEdit.CE.Controls
                 if (e.ColumnIndex == ColY1) og.V1 = (byte)newV;
                 else if (e.ColumnIndex == ColY2) og.V2 = (byte)newV;
                 else if (e.ColumnIndex == ColY3) og.V3 = (byte)newV;
+                else if (e.ColumnIndex == ColY4) og.V4 = (byte)newV;
             }
 
             UpdatePicture();
@@ -719,30 +844,66 @@ namespace CrashEdit.CE.Controls
             if (targetClutX == null || targetClutY == null)
                 return;
 
-            foreach (DataGridViewRow row in grdTextures.Rows)
+            var og = model.Textures[targetRowIndex];
+            if (isScenery)
             {
-                if (row.Cells[ColClutX].Value?.ToString() == targetClutX &&
-                    row.Cells[ColClutY].Value?.ToString() == targetClutY)
+                foreach (DataGridViewRow row in grdTextures.Rows)
                 {
-                    if (int.TryParse(row.Cells[ColX1].Value?.ToString(), out int U1) &&
-                        int.TryParse(row.Cells[ColX2].Value?.ToString(), out int U2) &&
-                        int.TryParse(row.Cells[ColX3].Value?.ToString(), out int U3))
+                    if (row.Cells[ColClutX].Value?.ToString() == targetClutX &&
+                        row.Cells[ColClutY].Value?.ToString() == targetClutY)
                     {
-                        int minU = Math.Min(U1, Math.Min(U2, U3));
-                        int maxU = Math.Max(U1, Math.Max(U2, U3));
+                        if (int.TryParse(row.Cells[ColX1].Value?.ToString(), out int U1) &&
+                            int.TryParse(row.Cells[ColX2].Value?.ToString(), out int U2) &&
+                            int.TryParse(row.Cells[ColX3].Value?.ToString(), out int U3) &&
+                            int.TryParse(row.Cells[ColX4].Value?.ToString(), out int U4))
+                        {
+                            int minU = Math.Min(U1, Math.Min(U2, Math.Min(U3, U4)));
+                            int maxU = Math.Max(U1, Math.Max(U2, Math.Max(U3, U4)));
 
-                        U1 = (U1 == minU) ? newMinU : newMaxU;
-                        U2 = (U2 == minU) ? newMinU : newMaxU;
-                        U3 = (U3 == minU) ? newMinU : newMaxU;
+                            U1 = (U1 == minU) ? newMinU : newMaxU;
+                            U2 = (U2 == minU) ? newMinU : newMaxU;
+                            U3 = (U3 == minU) ? newMinU : newMaxU;
+                            U4 = (U4 == minU) ? newMinU : newMaxU;
 
-                        row.Cells[ColX1].Value = U1;
-                        row.Cells[ColX2].Value = U2;
-                        row.Cells[ColX3].Value = U3;
+                            row.Cells[ColX1].Value = U1;
+                            row.Cells[ColX2].Value = U2;
+                            row.Cells[ColX3].Value = U3;
+                            row.Cells[ColX4].Value = U4;
 
-                        model.Textures[row.Index].Left = newMinU;
+                            model.Textures[row.Index].Left = newMinU;
+                        }
                     }
                 }
             }
+            else
+            {
+                foreach (DataGridViewRow row in grdTextures.Rows)
+                {
+                    if (row.Cells[ColClutX].Value?.ToString() == targetClutX &&
+                        row.Cells[ColClutY].Value?.ToString() == targetClutY)
+                    {
+                        if (int.TryParse(row.Cells[ColX1].Value?.ToString(), out int U1) &&
+                            int.TryParse(row.Cells[ColX2].Value?.ToString(), out int U2) &&
+                            int.TryParse(row.Cells[ColX3].Value?.ToString(), out int U3))
+                        {
+                            int minU = Math.Min(U1, Math.Min(U2, U3));
+                            int maxU = Math.Max(U1, Math.Max(U2, U3));
+
+                            U1 = (U1 == minU) ? newMinU : newMaxU;
+                            U2 = (U2 == minU) ? newMinU : newMaxU;
+                            U3 = (U3 == minU) ? newMinU : newMaxU;
+
+                            row.Cells[ColX1].Value = U1;
+                            row.Cells[ColX2].Value = U2;
+                            row.Cells[ColX3].Value = U3;
+
+                            model.Textures[row.Index].Left = newMinU;
+                        }
+                    }
+                }
+            }
+            grdTextures.Rows[targetRowIndex].Cells[ColLeft].Value = newMinU;
+            grdTextures.Rows[targetRowIndex].Cells[ColWidth].Value = newMaxU - newMinU;
         }
 
         private void UpdateRowsY(int targetRowIndex, int newMinV, int newMaxV)
@@ -754,30 +915,66 @@ namespace CrashEdit.CE.Controls
             if (targetClutX == null || targetClutY == null)
                 return;
 
-            foreach (DataGridViewRow row in grdTextures.Rows)
+            var og = model.Textures[targetRowIndex];
+            if (isScenery)
             {
-                if (row.Cells[ColClutX].Value?.ToString() == targetClutX &&
-                    row.Cells[ColClutY].Value?.ToString() == targetClutY)
+                foreach (DataGridViewRow row in grdTextures.Rows)
                 {
-                    if (int.TryParse(row.Cells[ColY1].Value?.ToString(), out int V1) &&
-                        int.TryParse(row.Cells[ColY2].Value?.ToString(), out int V2) &&
-                        int.TryParse(row.Cells[ColY3].Value?.ToString(), out int V3))
+                    if (row.Cells[ColClutX].Value?.ToString() == targetClutX &&
+                        row.Cells[ColClutY].Value?.ToString() == targetClutY)
                     {
-                        int minV = Math.Min(V1, Math.Min(V2, V3));
-                        int maxV = Math.Max(V1, Math.Max(V2, V3));
+                        if (int.TryParse(row.Cells[ColY1].Value?.ToString(), out int V1) &&
+                            int.TryParse(row.Cells[ColY2].Value?.ToString(), out int V2) &&
+                            int.TryParse(row.Cells[ColY3].Value?.ToString(), out int V3) &&
+                            int.TryParse(row.Cells[ColY4].Value?.ToString(), out int V4))
+                        {
+                            int minV = Math.Min(V1, Math.Min(V2, Math.Min(V3, V4)));
+                            int maxV = Math.Max(V1, Math.Max(V2, Math.Max(V3, V4)));
 
-                        V1 = (V1 == minV) ? newMinV : newMaxV;
-                        V2 = (V2 == minV) ? newMinV : newMaxV;
-                        V3 = (V3 == minV) ? newMinV : newMaxV;
+                            V1 = (V1 == minV) ? newMinV : newMaxV;
+                            V2 = (V2 == minV) ? newMinV : newMaxV;
+                            V3 = (V3 == minV) ? newMinV : newMaxV;
+                            V4 = (V4 == minV) ? newMinV : newMaxV;
 
-                        row.Cells[ColY1].Value = V1;
-                        row.Cells[ColY2].Value = V2;
-                        row.Cells[ColY3].Value = V3;
+                            row.Cells[ColY1].Value = V1;
+                            row.Cells[ColY2].Value = V2;
+                            row.Cells[ColY3].Value = V3;
+                            row.Cells[ColY4].Value = V4;
 
-                        model.Textures[row.Index].Top = newMinV;
+                            model.Textures[row.Index].Top = newMinV;
+                        }
                     }
                 }
             }
+            else
+            {
+                foreach (DataGridViewRow row in grdTextures.Rows)
+                {
+                    if (row.Cells[ColClutX].Value?.ToString() == targetClutX &&
+                        row.Cells[ColClutY].Value?.ToString() == targetClutY)
+                    {
+                        if (int.TryParse(row.Cells[ColY1].Value?.ToString(), out int V1) &&
+                            int.TryParse(row.Cells[ColY2].Value?.ToString(), out int V2) &&
+                            int.TryParse(row.Cells[ColY3].Value?.ToString(), out int V3))
+                        {
+                            int minV = Math.Min(V1, Math.Min(V2, V3));
+                            int maxV = Math.Max(V1, Math.Max(V2, V3));
+
+                            V1 = (V1 == minV) ? newMinV : newMaxV;
+                            V2 = (V2 == minV) ? newMinV : newMaxV;
+                            V3 = (V3 == minV) ? newMinV : newMaxV;
+
+                            row.Cells[ColY1].Value = V1;
+                            row.Cells[ColY2].Value = V2;
+                            row.Cells[ColY3].Value = V3;
+
+                            model.Textures[row.Index].Top = newMinV;
+                        }
+                    }
+                }
+            }
+            grdTextures.Rows[targetRowIndex].Cells[ColTop].Value = newMinV;
+            grdTextures.Rows[targetRowIndex].Cells[ColHeight].Value = newMaxV - newMinV;
         }
 
         private void tbpColors_Enter(object sender, EventArgs e)
@@ -793,7 +990,10 @@ namespace CrashEdit.CE.Controls
             SetDarkTheme(grdTextures);
             EnableDoubleBuffering();
             UpdateTPageList();
-            UpdateTextureList(true);
+            if (isScenery)
+                UpdateTextureListScenery(true);
+            else
+                UpdateTextureList(true);
             UpdateTPageButtons();
 
             BGRAMode = true;
@@ -805,6 +1005,8 @@ namespace CrashEdit.CE.Controls
                 fraReplace.Enabled = true;
                 fraReplaceTexture.Enabled = true;
             }
+
+            numReplaceTo.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
 
             tbpTextures.Enter -= tbpTextures_Enter;
         }
@@ -1046,7 +1248,6 @@ namespace CrashEdit.CE.Controls
             foreach (ListViewItem item in lstColor.Items)
             {
                 var i = (int)item.Tag;
-                byte[] item_ = [model.Colors[i].Red, model.Colors[i].Green, model.Colors[i].Blue];
                 SetModelColor(item.BackColor, i);
             }
             UpdateColorCopy();
@@ -1061,8 +1262,11 @@ namespace CrashEdit.CE.Controls
 
         private void tbpColors_Leave(object sender, EventArgs e)
         {
-            tglGlobalControl.Switched = false;
-            ResetColorSliders();
+            if (globalControlMode)
+            {
+                tglGlobalControl.Switched = false;
+                ResetColorSliders();
+            }
         }
 
         private void UpdatePicture()
@@ -1266,12 +1470,54 @@ namespace CrashEdit.CE.Controls
             model.ScaleZ = (int)numScaleZ.Value;
         }
 
-        private void chkShowAsHex_CheckedChanged(object sender, EventArgs e)
+        private void chkScalesAsHex_CheckedChanged(object sender, EventArgs e)
         {
             numScaleX.Hexadecimal =
             numScaleY.Hexadecimal =
-            numScaleZ.Hexadecimal = chkShowAsHex.Checked;
+            numScaleZ.Hexadecimal = chkScalesShowAsHex.Checked;
         }
+
+        private void numOffsetX_ValueChanged(object sender, EventArgs e)
+        {
+            model.XOffset = (int)numOffsetX.Value;
+        }
+
+        private void numOffsetY_ValueChanged(object sender, EventArgs e)
+        {
+            model.YOffset = (int)numOffsetY.Value;
+        }
+
+        private void numOffsetZ_ValueChanged(object sender, EventArgs e)
+        {
+            model.ZOffset = (int)numOffsetZ.Value;
+        }
+
+        private void chkOffsetsAsHex_CheckedChanged(object sender, EventArgs e)
+        {
+            numOffsetX.Hexadecimal =
+            numOffsetY.Hexadecimal =
+            numOffsetZ.Hexadecimal = chkOffsetsShowAsHex.Checked;
+        }
+
+        private void ScrollHandlerFunction(object sender, MouseEventArgs e)
+        {
+            if (sender is NumericUpDown numericUpDown)
+            {
+                HandledMouseEventArgs handledArgs = e as HandledMouseEventArgs;
+                if (handledArgs != null)
+                    handledArgs.Handled = true;
+
+                decimal newValue = numericUpDown.Value;
+                if (e.Delta > 0 && newValue < numericUpDown.Maximum)
+                    newValue += numericUpDown.Increment;
+
+                else if (e.Delta < 0 && newValue > numericUpDown.Minimum)
+                    newValue -= numericUpDown.Increment;
+
+                numericUpDown.Value = newValue;
+            }
+        }
+
     }
 
     public class ListViewEditInfo
