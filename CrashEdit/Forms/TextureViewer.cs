@@ -450,12 +450,12 @@ namespace CrashEdit.CE
         {
             if (C2dpdColor.SelectedIndex == 2)
             {
-                DarkMessageBox.ShowError("Unsupported bpp.", "Error");
+                DarkMessageBox.ShowError("Unsupported bpp.", "Texture replacement");
                 return;
             }
             if ((int)C2numX.Value < 32 && (int)C2numY.Value == 0)
             {
-                DarkMessageBox.ShowError("Textures cannot be replaced on the header.", "Error");
+                DarkMessageBox.ShowError("Textures cannot be replaced on the header.", "Texture replacement");
                 return;
             }
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
@@ -503,7 +503,7 @@ namespace CrashEdit.CE
             {
                 if (C2dpdColor.SelectedIndex == 2)
                 {
-                    DarkMessageBox.ShowError("Unsupported bpp.", "Error");
+                    DarkMessageBox.ShowError("Unsupported bpp.", "Texture replacement");
                     return;
                 }
 
@@ -541,7 +541,7 @@ namespace CrashEdit.CE
                 {
                     if ((int)C2numX.Value < 32 && (int)C2numY.Value == 0)
                     {
-                        DarkMessageBox.ShowError("Textures cannot be replaced on the header.", "Error");
+                        DarkMessageBox.ShowError("Textures cannot be replaced on the header.", "Texture replacement");
                     }
                     else
                     {
@@ -559,7 +559,7 @@ namespace CrashEdit.CE
             {
                 if (C2dpdColor.SelectedIndex == 2)
                 {
-                    DarkMessageBox.ShowError("Unsupported bpp.", "Error");
+                    DarkMessageBox.ShowError("Unsupported bpp.", "Texture replacement");
                     return;
                 }
 
@@ -586,13 +586,13 @@ namespace CrashEdit.CE
 
                 if ((int)C2numX.Value < 32 && (int)C2numY.Value == 0)
                 {
-                    DarkMessageBox.ShowError("Textures cannot be replaced on the header.", "Error");
+                    DarkMessageBox.ShowError("Textures cannot be replaced on the header.", "Texture replacement");
                     Console.WriteLine("Failed to paste texture.");
                     return;
                 }
                 else if ((int)C2numX.Value + tempWidth > 1024 || (int)C2numY.Value + tempHeight > 128)
                 {
-                    DarkMessageBox.ShowError("Textures cannot be pasted outside the bounds.", "Error");
+                    DarkMessageBox.ShowError("Textures cannot be pasted outside the bounds.", "Texture replacement");
                     Console.WriteLine("Failed to paste texture.");
                     return;
                 }

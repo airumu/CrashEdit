@@ -89,10 +89,14 @@ namespace CrashEdit.Crash
             bool doProcess = true;
             if (bpp != oldBpp)
             {
-                if (DarkMessageBox.ShowWarning("The color depth of the selected image differs from the current one. Do you want to continue anyway?", "", DarkDialogButton.YesNo) == DialogResult.Yes)
-                    doProcess = true;
-                else
+                if (DarkMessageBox.ShowWarning("The color depth of the selected image differs from the current one. Do you want to process anyway?", "CLUT replacement", DarkDialogButton.YesNo) != DialogResult.Yes)
                     doProcess = false;
+            }
+
+            if ((clutX == 0 || bpp == 8) && clutY == 0)
+            {
+                DarkMessageBox.ShowError("CLUT cannot be replaced on the header.", "CLUT replacement");
+                doProcess = false;
             }
 
             if (doProcess)

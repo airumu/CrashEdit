@@ -457,7 +457,7 @@ namespace CrashEdit.CE.Controls
         {
             if (selectedRegionX < 32 && selectedRegionY == 0)
             {
-                DarkMessageBox.ShowError("Textures cannot be replaced on the header.", "Error");
+                DarkMessageBox.ShowError("Textures cannot be replaced on the header.", "Texture replacement");
                 return;
             }
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
