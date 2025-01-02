@@ -343,7 +343,7 @@ namespace CrashEdit
             }
         }
 
-        private void AdjustTabWidth(System.Windows.Forms.TabControl tabControl)
+        private void AdjustTabWidth(TabControl tabControl)
         {
             using (Graphics g = tabControl.CreateGraphics())
             {
@@ -358,7 +358,7 @@ namespace CrashEdit
         }
 
     }
-    public class FlatTabControl : System.Windows.Forms.TabControl
+    public class FlatTabControl : TabControl
     {
         #region Public Properties
 
@@ -381,7 +381,7 @@ namespace CrashEdit
         public override Color BackColor { get; set; } = SystemColors.Control;
 
         [Description("Fore Color for all Texts"), Category("Appearance")]
-        public override Color ForeColor { get; set; } = SystemColors.ControlText;
+        public override Color ForeColor { get; set; } = SystemColors.InfoText;
 
         [Description("Shows a Close Button on each tab"), Category("Appearance")]
         public bool ShowTabCloseButton { get; set; } = true;
@@ -599,7 +599,8 @@ namespace CrashEdit
             }
 
             // Draws the Tab Header:
-            Color HeaderColor = isSelected ? SelectTabColor : BackColor;
+            //Color HeaderColor = isSelected ? SelectTabColor : BackColor;
+            Color HeaderColor = BackColor;
             using (Brush brush = new SolidBrush(HeaderColor))
             {
                 g.FillPolygon(brush, points);
@@ -610,7 +611,7 @@ namespace CrashEdit
                     g.DrawLine(new Pen(BackColor),
                         new Point(tabRect.Left, tabRect.Top), new Point(tabRect.Left + 3, tabRect.Top));
                     g.DrawLine(new Pen(Color.DodgerBlue),
-                        new Point(tabRect.Left + 3, tabRect.Top), new Point(tabRect.Left + tabRect.Width, tabRect.Top));
+                        new Point(tabRect.Left + 3, tabRect.Bottom), new Point(tabRect.Left + tabRect.Width, tabRect.Bottom));
                 }
             }
 
