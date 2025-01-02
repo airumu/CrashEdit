@@ -539,11 +539,19 @@ namespace CrashEdit.CE
 
                 if (e.KeyCode == Keys.X) // clear
                 {
-                    byte[] emptyChunk = new byte[65536];
-                    TextureConv.ReplaceTexture(emptyChunk, chunk.Data, tempWidth, tempHeight, tempBpp, 0, 0, tempWidth, tempHeight, (int)C2numX.Value, (int)C2numY.Value, false);
+                    if ((int)C2numX.Value < 32 && (int)C2numY.Value == 0)
+                    {
+                        DarkMessageBox.ShowError("Textures cannot be replaced on the header.", "Error");
+                    }
+                    else
+                    {
+                        byte[] emptyChunk = new byte[65536];
+                        TextureConv.ReplaceTexture(emptyChunk, chunk.Data, tempWidth, tempHeight, tempBpp, 0, 0, tempWidth, tempHeight, (int)C2numX.Value, (int)C2numY.Value, false);
 
-                    BitConv.ToInt32(chunk.Data, 12, Chunk.CalculateChecksum(chunk.Data));
+                        BitConv.ToInt32(chunk.Data, 12, Chunk.CalculateChecksum(chunk.Data));
+                    }
                 }
+                  
                 Console.WriteLine("Successfully copied texture.");
                 UpdatePicture();
             }
