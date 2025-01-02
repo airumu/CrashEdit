@@ -372,10 +372,10 @@ namespace CrashEdit.CE
             // 
             tbcTabs.AnimateEasingType = MetroSet_UI.Enums.EasingType.CubeOut;
             tbcTabs.AnimateTime = 200;
-            tbcTabs.BackgroundColor = Color.FromArgb(30, 30, 30);
+            tbcTabs.BackgroundColor = Color.FromArgb(31, 31, 32);
             tbcTabs.Controls.Add(tabGeneral);
             tbcTabs.Dock = DockStyle.Fill;
-            tbcTabs.IsDerivedStyle = true;
+            tbcTabs.IsDerivedStyle = false;
             tbcTabs.ItemSize = new Size(100, 28);
             tbcTabs.Location = new Point(0, 0);
             tbcTabs.Margin = new Padding(4, 3, 4, 3);
@@ -396,7 +396,7 @@ namespace CrashEdit.CE
             // tabGeneral
             // 
             tabGeneral.AutoScroll = true;
-            tabGeneral.BackColor = Color.FromArgb(30, 30, 30);
+            tabGeneral.BackColor = Color.FromArgb(31, 31, 32);
             tabGeneral.Controls.Add(fraSpawn);
             tabGeneral.Controls.Add(fraSettings);
             tabGeneral.Controls.Add(fraType);
@@ -466,6 +466,7 @@ namespace CrashEdit.CE
             chkHexC.Size = new Size(47, 19);
             chkHexC.TabIndex = 11;
             chkHexC.Text = "Hex";
+            chkHexC.UseVisualStyleBackColor = false;
             chkHexC.CheckedChanged += chkHexC_CheckedChanged;
             // 
             // chkHexB
@@ -478,6 +479,7 @@ namespace CrashEdit.CE
             chkHexB.Size = new Size(47, 19);
             chkHexB.TabIndex = 10;
             chkHexB.Text = "Hex";
+            chkHexB.UseVisualStyleBackColor = false;
             chkHexB.CheckedChanged += chkHexB_CheckedChanged;
             // 
             // chkHexA
@@ -490,6 +492,7 @@ namespace CrashEdit.CE
             chkHexA.Size = new Size(47, 19);
             chkHexA.TabIndex = 9;
             chkHexA.Text = "Hex";
+            chkHexA.UseVisualStyleBackColor = false;
             chkHexA.CheckedChanged += chkHexA_CheckedChanged;
             // 
             // chkHexFlags
@@ -504,6 +507,7 @@ namespace CrashEdit.CE
             chkHexFlags.Size = new Size(47, 19);
             chkHexFlags.TabIndex = 8;
             chkHexFlags.Text = "Hex";
+            chkHexFlags.UseVisualStyleBackColor = false;
             chkHexFlags.CheckedChanged += chkHexUnknown_CheckedChanged;
             // 
             // lblC

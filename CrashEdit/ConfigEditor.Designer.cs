@@ -62,6 +62,7 @@ namespace CrashEdit.CE
             sldNodeShadeAmt = new MetroSetTrackBar();
             tbcSettings = new MetroSetTabControl();
             tbpGeneral = new TabPage();
+            chkApplyMica = new CheckBox();
             cmdHelp = new DarkButton();
             fraLang = new DarkGroupBox();
             tbp3D = new TabPage();
@@ -100,7 +101,6 @@ namespace CrashEdit.CE
             ((System.ComponentModel.ISupportInitialize)numW).BeginInit();
             fraSize.SuspendLayout();
             fraNodeShadeAmt.SuspendLayout();
-            sldNodeShadeAmt.SuspendLayout();
             tbcSettings.SuspendLayout();
             tbpGeneral.SuspendLayout();
             fraLang.SuspendLayout();
@@ -427,7 +427,7 @@ namespace CrashEdit.CE
             cmdReset.CustomColour = false;
             cmdReset.FlatBottom = false;
             cmdReset.FlatTop = false;
-            cmdReset.Location = new Point(7, 76);
+            cmdReset.Location = new Point(7, 101);
             cmdReset.Margin = new Padding(4, 3, 4, 3);
             cmdReset.Name = "cmdReset";
             cmdReset.Padding = new Padding(5);
@@ -470,7 +470,7 @@ namespace CrashEdit.CE
             fraNodeShadeAmt.Margin = new Padding(4, 3, 4, 3);
             fraNodeShadeAmt.Name = "fraNodeShadeAmt";
             fraNodeShadeAmt.Padding = new Padding(4, 3, 4, 3);
-            fraNodeShadeAmt.Size = new Size(276, 90);
+            fraNodeShadeAmt.Size = new Size(276, 61);
             fraNodeShadeAmt.TabIndex = 10;
             fraNodeShadeAmt.TabStop = false;
             fraNodeShadeAmt.Text = "Collision Node Shade Amount";
@@ -479,7 +479,7 @@ namespace CrashEdit.CE
             // 
             lblNodeShadeAmt.Dock = DockStyle.Top;
             lblNodeShadeAmt.Font = new Font("Microsoft Sans Serif", 10F);
-            lblNodeShadeAmt.Location = new Point(4, 64);
+            lblNodeShadeAmt.Location = new Point(4, 35);
             lblNodeShadeAmt.Name = "lblNodeShadeAmt";
             lblNodeShadeAmt.Size = new Size(268, 23);
             lblNodeShadeAmt.TabIndex = 11;
@@ -488,18 +488,30 @@ namespace CrashEdit.CE
             // 
             // sldNodeShadeAmt
             // 
-            sldNodeShadeAmt.BackColor = Color.FromArgb(31, 31, 32);
+            sldNodeShadeAmt.BackColor = Color.Transparent;
+            sldNodeShadeAmt.BackgroundColor = Color.FromArgb(205, 205, 205);
+            sldNodeShadeAmt.DisabledBackColor = Color.FromArgb(235, 235, 235);
+            sldNodeShadeAmt.DisabledBorderColor = Color.Empty;
+            sldNodeShadeAmt.DisabledHandlerColor = Color.FromArgb(196, 196, 196);
+            sldNodeShadeAmt.DisabledValueColor = Color.FromArgb(205, 205, 205);
             sldNodeShadeAmt.Dock = DockStyle.Top;
+            sldNodeShadeAmt.HandlerColor = Color.FromArgb(180, 180, 180);
+            sldNodeShadeAmt.IsDerivedStyle = true;
             sldNodeShadeAmt.Location = new Point(4, 19);
             sldNodeShadeAmt.Margin = new Padding(4, 3, 4, 3);
             sldNodeShadeAmt.Maximum = 100;
+            sldNodeShadeAmt.Minimum = 0;
             sldNodeShadeAmt.Name = "sldNodeShadeAmt";
-            sldNodeShadeAmt.Size = new Size(268, 45);
+            sldNodeShadeAmt.Size = new Size(268, 16);
+            sldNodeShadeAmt.Style = MetroSet_UI.Enums.Style.Light;
+            sldNodeShadeAmt.StyleManager = null;
             sldNodeShadeAmt.TabIndex = 0;
+            sldNodeShadeAmt.ThemeAuthor = "Narwin";
+            sldNodeShadeAmt.ThemeName = "MetroLite";
             sldNodeShadeAmt.TickFrequency = 5;
             sldNodeShadeAmt.Value = 20;
+            sldNodeShadeAmt.ValueColor = Color.FromArgb(65, 177, 225);
             sldNodeShadeAmt.ValueChanged += sldNodeShadeAmt_ValueChangedl;
-            //sldNodeShadeAmt.Scroll += sldNodeShadeAmt_Scroll;
             // 
             // tbcSettings
             // 
@@ -512,7 +524,7 @@ namespace CrashEdit.CE
             tbcSettings.Controls.Add(tbpPatchNSD);
             tbcSettings.Controls.Add(tbpMisc);
             tbcSettings.Dock = DockStyle.Fill;
-            tbcSettings.IsDerivedStyle = true;
+            tbcSettings.IsDerivedStyle = false;
             tbcSettings.ItemSize = new Size(100, 28);
             tbcSettings.Location = new Point(4, 3);
             tbcSettings.Name = "tbcSettings";
@@ -532,6 +544,7 @@ namespace CrashEdit.CE
             // tbpGeneral
             // 
             tbpGeneral.BackColor = Color.FromArgb(31, 31, 32);
+            tbpGeneral.Controls.Add(chkApplyMica);
             tbpGeneral.Controls.Add(cmdHelp);
             tbpGeneral.Controls.Add(fraLang);
             tbpGeneral.Controls.Add(cmdReset);
@@ -543,13 +556,26 @@ namespace CrashEdit.CE
             tbpGeneral.TabIndex = 0;
             tbpGeneral.Text = "General";
             // 
+            // chkApplyMica
+            // 
+            chkApplyMica.AutoSize = true;
+            chkApplyMica.BackColor = Color.Transparent;
+            chkApplyMica.Location = new Point(7, 76);
+            chkApplyMica.Name = "chkApplyMica";
+            chkApplyMica.Size = new Size(86, 19);
+            chkApplyMica.TabIndex = 4;
+            chkApplyMica.Text = "Apply Mica";
+            chkApplyMica.UseVisualStyleBackColor = false;
+            chkApplyMica.CheckedChanged += chkApplyMica_CheckedChanged;
+            chkApplyMica.Click += chkApplyMica_Click;
+            // 
             // cmdHelp
             // 
             cmdHelp.BorderColour = Color.Empty;
             cmdHelp.CustomColour = false;
             cmdHelp.FlatBottom = false;
             cmdHelp.FlatTop = false;
-            cmdHelp.Location = new Point(7, 107);
+            cmdHelp.Location = new Point(7, 132);
             cmdHelp.Margin = new Padding(4, 3, 4, 3);
             cmdHelp.Name = "cmdHelp";
             cmdHelp.Padding = new Padding(5);
@@ -857,9 +883,9 @@ namespace CrashEdit.CE
             chkLiteralCollisionTypes.AutoSize = true;
             chkLiteralCollisionTypes.Location = new Point(7, 31);
             chkLiteralCollisionTypes.Name = "chkLiteralCollisionTypes";
-            chkLiteralCollisionTypes.Size = new Size(193, 19);
+            chkLiteralCollisionTypes.Size = new Size(245, 19);
             chkLiteralCollisionTypes.TabIndex = 14;
-            chkLiteralCollisionTypes.Text = "Show literal zone collision types";
+            chkLiteralCollisionTypes.Text = "Show collision node types as literal values";
             chkLiteralCollisionTypes.UseVisualStyleBackColor = true;
             chkLiteralCollisionTypes.CheckedChanged += chkDetailedCollision_CheckedChanged;
             // 
@@ -903,8 +929,6 @@ namespace CrashEdit.CE
             fraSize.ResumeLayout(false);
             fraSize.PerformLayout();
             fraNodeShadeAmt.ResumeLayout(false);
-            fraNodeShadeAmt.PerformLayout();
-            sldNodeShadeAmt.PerformLayout();
             tbcSettings.ResumeLayout(false);
             tbpGeneral.ResumeLayout(false);
             tbpGeneral.PerformLayout();
@@ -987,5 +1011,6 @@ namespace CrashEdit.CE
         private CheckBox chkOutputCopyTextureResult;
         private CheckBox chkOutputModelTextureInfo;
         private DarkGroupBox fraMiscDebug;
+        private CheckBox chkApplyMica;
     }
 }

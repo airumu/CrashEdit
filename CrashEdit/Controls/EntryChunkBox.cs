@@ -16,6 +16,7 @@ namespace CrashEdit.CE
         {
             this.controller = controller;
 
+            BackColor = Color.FromArgb(31, 31, 32);
             lstEntryList = new DarkListBox
             {
                 Dock = DockStyle.Fill,

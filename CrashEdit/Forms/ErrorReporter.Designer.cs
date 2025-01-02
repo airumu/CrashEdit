@@ -70,7 +70,7 @@ namespace CrashEdit.CE
             // pnOptions
             // 
             pnOptions.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            pnOptions.BackgroundColor = Color.FromArgb(30, 30, 30);
+            pnOptions.BackgroundColor = Color.FromArgb(31, 31, 32);
             pnOptions.BorderColor = Color.FromArgb(110, 110, 110);
             pnOptions.BorderThickness = 1;
             pnOptions.Controls.Add(optIgnore);
@@ -78,7 +78,7 @@ namespace CrashEdit.CE
             pnOptions.Controls.Add(optSkip);
             pnOptions.Controls.Add(optAbort);
             pnOptions.Controls.Add(optBreak);
-            pnOptions.IsDerivedStyle = true;
+            pnOptions.IsDerivedStyle = false;
             pnOptions.Location = new Point(14, 97);
             pnOptions.Margin = new Padding(4, 3, 4, 3);
             pnOptions.Name = "pnOptions";

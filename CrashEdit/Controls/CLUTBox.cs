@@ -60,7 +60,7 @@ namespace CrashEdit.CE.Controls
 
         private void SetDarkTheme(DataGridView dataGridView)
         {
-            dataGridView.BackgroundColor = Color.FromArgb(30, 30, 30);
+            dataGridView.BackgroundColor = Color.FromArgb(31, 31, 32);
 
             dataGridView.GridColor = Color.FromArgb(50, 50, 50);
 

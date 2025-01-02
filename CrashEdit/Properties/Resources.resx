@@ -788,7 +788,7 @@ as Meters: {3:F3}m</value>
     <comment>CE-tweaked</comment>
   </data>
   <data name="Config_chkLiteralCollisionTypes" xml:space="preserve">
-    <value>Show literal zone collision types</value>
+    <value>Show collision node types as literal values</value>
     <comment>CE-tweaked</comment>
   </data>
   <data name="Scenery_ExportOBJ" xml:space="preserve">
@@ -849,5 +849,8 @@ as Meters: {3:F3}m</value>
   <data name="TextureChunkBox_TipText" xml:space="preserve">
     <value>[Click] open the viewer
 [Ctrl+R] reload</value>
+  </data>
+  <data name="Config_chkApplyMica" xml:space="preserve">
+    <value>Apply Mica</value>
   </data>
 </root>

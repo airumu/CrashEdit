@@ -112,6 +112,7 @@ namespace CrashEdit.CE
             chkEnableLegacyEntityBox.Checked = Settings.Default.EnableLegacyEntityBox;
             chkOutputCopyTextureResult.Checked = Settings.Default.OutputCopyTextureResult;
             chkOutputModelTextureInfo.Checked = Settings.Default.OutputModelTextureInfo;
+            chkApplyMica.Checked = Settings.Default.ApplyMica;
 
             fraSize.Text = Resources.Config_fraSize;
             fraClearCol.Text = Resources.Config_fraClearCol;
@@ -146,8 +147,25 @@ namespace CrashEdit.CE
             chkPatchGOOLC3toC2.Text = Resources.Config_chkPatchGOOLC3toC2;
             chkOutputCopyTextureResult.Text = Resources.Config_chkOutputCopyTextureResult;
             chkOutputModelTextureInfo.Text = Resources.Config_chkOutputModelTextureInfo;
+            chkApplyMica.Text = Resources.Config_chkApplyMica;
 
             chkViewCameraAngle.Enabled = chkViewCamera.Checked;
+        }
+
+        private void cmdHelp_Click(object sender, EventArgs e)
+        {
+            if (frmhelp == null || frmhelp.IsDisposed)
+            {
+                frmhelp = new HelpWindow();
+            }
+            if (!frmhelp.Visible)
+            {
+                frmhelp.Show();
+            }
+            else
+            {
+                frmhelp.Activate();
+            }
         }
 
         private void dpdLang_SelectedIndexChanged(object sender, EventArgs e)
@@ -362,20 +380,17 @@ namespace CrashEdit.CE
             Settings.Default.Save();
         }
 
-        private void cmdHelp_Click(object sender, EventArgs e)
+        private void chkApplyMica_CheckedChanged(object sender, EventArgs e)
         {
-            if (frmhelp == null || frmhelp.IsDisposed)
-            {
-                frmhelp = new HelpWindow();
-            }
-            if (!frmhelp.Visible)
-            {
-                frmhelp.Show();
-            }
-            else
-            {
-                frmhelp.Activate();
-            }
+            Settings.Default.ApplyMica = chkApplyMica.Checked;
+            Settings.Default.Save();
+        }
+
+        private void chkApplyMica_Click(object sender, EventArgs e)
+        {
+            Settings.Default.ApplyMica = chkApplyMica.Checked;
+            Settings.Default.Save();
+            RestartProgram();
         }
     }
 }

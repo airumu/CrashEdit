@@ -119,12 +119,12 @@ namespace CrashEdit.CE.Controls
             // 
             tabModel.AnimateEasingType = MetroSet_UI.Enums.EasingType.CubeOut;
             tabModel.AnimateTime = 200;
-            tabModel.BackgroundColor = Color.FromArgb(30, 30, 30);
+            tabModel.BackgroundColor = Color.FromArgb(31, 31, 32);
             tabModel.Controls.Add(tbpInfo);
             tabModel.Controls.Add(tbpColors);
             tabModel.Controls.Add(tbpTextures);
             tabModel.Dock = DockStyle.Fill;
-            tabModel.IsDerivedStyle = true;
+            tabModel.IsDerivedStyle = false;
             tabModel.ItemSize = new Size(100, 28);
             tabModel.Location = new Point(0, 0);
             tabModel.Multiline = true;

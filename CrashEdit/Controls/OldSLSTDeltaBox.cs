@@ -9,6 +9,7 @@ namespace CrashEdit.CE
 
         public OldSLSTDeltaBox(OldSLSTDelta slstitem)
         {
+            BackColor = Color.FromArgb(31, 31, 32);
             lstValues = new DarkListBox
             {
                 Dock = DockStyle.Fill,

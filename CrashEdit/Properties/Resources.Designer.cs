@@ -88,6 +88,15 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
+        ///   Apply Mica に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Config_chkApplyMica {
+            get {
+                return ResourceManager.GetString("Config_chkApplyMica", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Show collision boxes by default に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Config_chkCollisionDisplay {
@@ -142,7 +151,7 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
-        ///   Show literal zone collision types に類似しているローカライズされた文字列を検索します。
+        ///   Show collision node types as literal values に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Config_chkLiteralCollisionTypes {
             get {

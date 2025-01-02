@@ -1,3 +1,4 @@
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace CrashEdit
@@ -17,7 +18,8 @@ namespace CrashEdit
             Split = new SplitContainer
             {
                 Dock = DockStyle.Fill,
-                SplitterDistance = ClientSize.Width / 100 * 40
+                SplitterDistance = ClientSize.Width / 100 * 40,
+                BackColor = Color.FromArgb(31, 31, 32)
             };
             Controls.Add(Split);
 
@@ -25,7 +27,7 @@ namespace CrashEdit
             {
                 Dock = DockStyle.Fill,
                 RootController = RootController,
-                HideSelection = false
+                HideSelection = false,
             };
             ResourceTree.SelectedControllerChanged += (sender, e) =>
             {
@@ -34,12 +36,14 @@ namespace CrashEdit
                 OnActiveControllerChanged(EventArgs.Empty);
             };
             Split.Panel1.Controls.Add(ResourceTree);
+            Split.Panel1.BackColor = Color.FromArgb(31, 31, 32);
 
             ResourceBox = new ResourceBox
             {
                 Dock = DockStyle.Fill
             };
             Split.Panel2.Controls.Add(ResourceBox);
+            Split.Panel2.BackColor = Color.FromArgb(31, 31, 32);
         }
 
         public IUserInterface Ui { get; }

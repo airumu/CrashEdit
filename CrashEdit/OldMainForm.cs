@@ -182,6 +182,15 @@ namespace CrashEdit.CE
             FormClosing += new FormClosingEventHandler(OldMainForm_FormClosing);
             Text = $"CrashEdit v{Assembly.GetExecutingAssembly().GetName().Version}";
 
+            if (Settings.Default.ApplyMica)
+            {
+                BackColor = Color.FromArgb(31, 31, 32);
+            }
+            else
+            {
+                BackColor = Color.FromArgb(29, 30, 31);
+            }
+
             dlgMakeBINFile.Filter = "Playstation Disc Images (*.bin)|*.bin";
         }
 

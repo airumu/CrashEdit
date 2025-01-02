@@ -244,10 +244,10 @@ namespace CrashEdit.CE
             // 
             tbcTabs.AnimateEasingType = MetroSet_UI.Enums.EasingType.CubeOut;
             tbcTabs.AnimateTime = 200;
-            tbcTabs.BackgroundColor = Color.FromArgb(30, 30, 30);
+            tbcTabs.BackgroundColor = Color.FromArgb(31, 31, 32);
             tbcTabs.Controls.Add(tabGeneral);
             tbcTabs.Dock = DockStyle.Fill;
-            tbcTabs.IsDerivedStyle = true;
+            tbcTabs.IsDerivedStyle = false;
             tbcTabs.ItemSize = new Size(100, 28);
             tbcTabs.Location = new Point(0, 0);
             tbcTabs.Margin = new Padding(4, 3, 4, 3);
@@ -268,7 +268,7 @@ namespace CrashEdit.CE
             // tabGeneral
             // 
             tabGeneral.AutoScroll = true;
-            tabGeneral.BackColor = Color.FromArgb(30, 30, 30);
+            tabGeneral.BackColor = Color.FromArgb(31, 31, 32);
             tabGeneral.Controls.Add(fraSettings);
             tabGeneral.Controls.Add(fraType);
             tabGeneral.Controls.Add(fraSubtype);

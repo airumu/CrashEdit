@@ -12,6 +12,7 @@ namespace CrashEdit
         public HexView()
         {
             DoubleBuffered = true;
+            BackColor = Color.FromArgb(31, 31, 32);
             ResetLayout();
         }
 

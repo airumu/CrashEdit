@@ -23,6 +23,7 @@ namespace CrashEdit
                 //Style = MetroSet_UI.Enums.Style.Dark,
                 ShowTabCloseButton = false,
                 SelectedForeColor = Color.WhiteSmoke,
+                BackColor = Color.FromArgb(31, 31, 32)
             };
             AdjustTabWidth(TabControl);
 

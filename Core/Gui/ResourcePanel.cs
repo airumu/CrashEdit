@@ -17,10 +17,12 @@ namespace CrashEdit
 
             TabControl = new MetroSetTabControl
             {
+                BackgroundColor = Color.FromArgb(31, 31, 32),
                 Dock = DockStyle.Fill,
+                IsDerivedStyle = false,
                 ItemSize = new Size(100, 28),
+                Style = MetroSet_UI.Enums.Style.Dark,
                 TabStyle = MetroSet_UI.Enums.TabStyle.Style2,
-                Style = MetroSet_UI.Enums.Style.Dark
             };
             Controls.Add(TabControl);
 

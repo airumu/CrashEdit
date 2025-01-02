@@ -483,12 +483,12 @@ namespace CrashEdit.CE
             // 
             tbcTabs.AnimateEasingType = MetroSet_UI.Enums.EasingType.CubeOut;
             tbcTabs.AnimateTime = 200;
-            tbcTabs.BackgroundColor = Color.FromArgb(30, 30, 30);
+            tbcTabs.BackgroundColor = Color.FromArgb(31, 31, 32);
             tbcTabs.Controls.Add(tabPosition);
             tbcTabs.Controls.Add(tabSettings);
             tbcTabs.Controls.Add(tabNeighbor);
             tbcTabs.Dock = DockStyle.Fill;
-            tbcTabs.IsDerivedStyle = true;
+            tbcTabs.IsDerivedStyle = false;
             tbcTabs.ItemSize = new Size(100, 28);
             tbcTabs.Location = new Point(0, 0);
             tbcTabs.Margin = new Padding(4, 3, 4, 3);
@@ -509,7 +509,7 @@ namespace CrashEdit.CE
             // tabPosition
             // 
             tabPosition.AutoScroll = true;
-            tabPosition.BackColor = Color.FromArgb(30, 30, 30);
+            tabPosition.BackColor = Color.FromArgb(31, 31, 32);
             tabPosition.Controls.Add(fraPosition);
             tabPosition.Location = new Point(4, 32);
             tabPosition.Margin = new Padding(4, 3, 4, 3);
@@ -520,7 +520,7 @@ namespace CrashEdit.CE
             // 
             // tabSettings
             // 
-            tabSettings.BackColor = Color.FromArgb(30, 30, 30);
+            tabSettings.BackColor = Color.FromArgb(31, 31, 32);
             tabSettings.Controls.Add(fraSLST);
             tabSettings.Controls.Add(fraUnknown);
             tabSettings.Controls.Add(fraLink);
@@ -903,7 +903,7 @@ namespace CrashEdit.CE
             // 
             // tabNeighbor
             // 
-            tabNeighbor.BackColor = Color.FromArgb(30, 30, 30);
+            tabNeighbor.BackColor = Color.FromArgb(31, 31, 32);
             tabNeighbor.Controls.Add(fraNeighbor3);
             tabNeighbor.Controls.Add(fraNeighbor2);
             tabNeighbor.Controls.Add(fraNeighbor1);

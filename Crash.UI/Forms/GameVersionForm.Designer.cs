@@ -66,7 +66,7 @@ namespace CrashEdit.CrashUI
             // fraRelease
             // 
             fraRelease.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            fraRelease.BackColor = System.Drawing.Color.FromArgb(30, 30, 30);
+            fraRelease.BackColor = System.Drawing.Color.FromArgb(31, 31, 32);
             fraRelease.Controls.Add(cmdCrash3);
             fraRelease.Controls.Add(cmdCrash2);
             fraRelease.Controls.Add(cmdCrash1);
@@ -227,7 +227,7 @@ namespace CrashEdit.CrashUI
             // GameVersionForm
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
-            BackColor = System.Drawing.Color.FromArgb(30, 30, 30);
+            BackColor = System.Drawing.Color.FromArgb(31, 31, 32);
             CancelButton = cmdCancel;
             ClientSize = new System.Drawing.Size(465, 616);
             Controls.Add(cmdCancel);

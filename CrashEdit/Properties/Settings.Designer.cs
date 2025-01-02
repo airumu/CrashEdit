@@ -502,5 +502,17 @@ namespace CrashEdit.CE.Properties {
                 this["OutputModelTextureInfo"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ApplyMica {
+            get {
+                return ((bool)(this["ApplyMica"]));
+            }
+            set {
+                this["ApplyMica"] = value;
+            }
+        }
     }
 }

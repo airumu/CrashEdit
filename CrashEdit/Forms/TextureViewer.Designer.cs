@@ -177,11 +177,11 @@ namespace CrashEdit.CE
             // 
             tabControl1.AnimateEasingType = EasingType.CubeOut;
             tabControl1.AnimateTime = 200;
-            tabControl1.BackgroundColor = Color.FromArgb(30, 30, 30);
+            tabControl1.BackgroundColor = Color.FromArgb(31, 31, 32);
             tabControl1.Controls.Add(tabC1);
             tabControl1.Controls.Add(tabC2);
             tabControl1.Dock = DockStyle.Fill;
-            tabControl1.IsDerivedStyle = true;
+            tabControl1.IsDerivedStyle = false;
             tabControl1.ItemSize = new Size(100, 28);
             tabControl1.Location = new Point(0, 0);
             tabControl1.Margin = new Padding(4);

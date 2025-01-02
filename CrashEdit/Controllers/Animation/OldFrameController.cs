@@ -19,10 +19,12 @@ namespace CrashEdit.CE
         {
             MetroSetTabControl tbcTabs = new MetroSetTabControl()
             {
+                BackgroundColor = Color.FromArgb(31, 31, 32),
                 Dock = DockStyle.Fill,
+                IsDerivedStyle = false,
                 ItemSize = new Size(100, 28),
-                TabStyle = MetroSet_UI.Enums.TabStyle.Style1,
-                Style = MetroSet_UI.Enums.Style.Dark
+                Style = MetroSet_UI.Enums.Style.Dark,
+                TabStyle = MetroSet_UI.Enums.TabStyle.Style1
             };
             OldModelEntry modelentry = GetEntry<OldModelEntry>(OldFrame.ModelEID);
 

@@ -9,6 +9,7 @@ namespace CrashEdit.CE
 
         public GOOLBox(GOOLEntry goolentry)
         {
+            BackColor = Color.FromArgb(31, 31, 32);
             lstCode = new DarkListBox
             {
                 Dock = DockStyle.Fill,
