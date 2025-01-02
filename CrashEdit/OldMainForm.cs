@@ -175,7 +175,7 @@ namespace CrashEdit.CE
             bgwMakeBIN.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bgwMakeBIN_RunWorkerCompleted);
             dlgProgress = null;
 
-            Icon = OldResources.CBHacksIcon;
+            Icon = OldResources.CBHacksIconAlt;
             // Width = Settings.Default.DefaultFormW;
             // Height = Settings.Default.DefaultFormH;
             Load += new EventHandler(OldMainForm_Load);

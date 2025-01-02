@@ -8,6 +8,9 @@ namespace CrashEdit.CE
         [Resource("CBHacksIcon")]
         private static readonly Icon cbhacksicon = null;
 
+        [Resource("CBHacksIconAlt")]
+        private static readonly Icon cbhacksiconalt = null;
+
         [Resource("PointTexture")]
         private static readonly Bitmap pointtexture = null;
 
@@ -315,6 +318,7 @@ namespace CrashEdit.CE
         public static Dictionary<Bitmap, Rectangle> TexMap { get; }
 
         public static Icon CBHacksIcon => cbhacksicon;
+        public static Icon CBHacksIconAlt => cbhacksiconalt;
         public static Bitmap AppleTexture => appletexture;
         public static Bitmap LifeTexture => lifetexture;
         public static Bitmap MaskTexture => masktexture;
