@@ -11,7 +11,7 @@ namespace CrashEdit.Crash
         public override string ImageKey => "SpeakerWhite";
 
         public override int Type => 20;
-        public SampleSet Samples { get; }
+        public SampleSet Samples { get; set; }
 
         public override UnprocessedEntry Unprocess()
         {

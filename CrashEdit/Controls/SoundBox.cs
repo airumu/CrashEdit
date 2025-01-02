@@ -12,6 +12,9 @@ namespace CrashEdit.CE
         private SoundPlayer spPlayer;
 
         private SoundEntry soundentry;
+        private SpeechEntry speechentry;
+
+        private bool isSpeech;
 
         private ToolStrip tsToolbar;
         private ToolStripButton tbbImport;
@@ -32,9 +35,10 @@ namespace CrashEdit.CE
             lblSampleRate.Text = string.Format("Sample Rate: {0:0.000}", smpe2);
         }
 
-        public SoundBox(SampleSet samples)
+        public SoundBox(SampleSet samples, string title)
         {
             this.samples = samples;
+            isSpeech = title.Contains("Speech");
             DoubleBuffered = true;
 
             spPlayer = new SoundPlayer();
@@ -57,7 +61,7 @@ namespace CrashEdit.CE
                 Minimum = 0,
                 Maximum = 16 * 256,
                 TickFrequency = 16,
-                Value = 1024,
+                Value = isSpeech ? 2048 : 1024,
                 Dock = DockStyle.Fill,
                 Style = MetroSet_UI.Enums.Style.Dark
             };
@@ -143,14 +147,14 @@ namespace CrashEdit.CE
             ExportWave((int)(trkSampleRate.Value / 256.0 * (11025 / 4.0)));
         }
 
-        public SoundBox(SoundEntry entry)
-            : this(entry.Samples)
+        public SoundBox(SoundEntry entry) : this(entry.Samples, entry.Title)
         {
             soundentry = entry;
         }
 
-        public SoundBox(SpeechEntry entry) : this(entry.Samples)
+        public SoundBox(SpeechEntry entry) : this(entry.Samples, entry.Title)
         {
+            speechentry = entry;
         }
 
         void tbbImport_Click(object sender, EventArgs e)
@@ -172,7 +176,10 @@ namespace CrashEdit.CE
                 data = result;
             }
             samples = SampleSet.Load(data);
-            soundentry.Samples = samples;
+            if (isSpeech)
+                speechentry.Samples = samples;
+            else
+                soundentry.Samples = samples;
         }
 
         void tbbExport_Click(object sender, EventArgs e)
