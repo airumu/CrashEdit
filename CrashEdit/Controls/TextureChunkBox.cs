@@ -1,5 +1,6 @@
 using AltUI.Controls;
 using CrashEdit.CE.Controls;
+using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 using MetroSet_UI.Controls;
 using System.Drawing.Imaging;
@@ -27,6 +28,13 @@ namespace CrashEdit.CE
                 ItemSize = new Size(100, 28),
                 Style = MetroSet_UI.Enums.Style.Dark,
                 TabStyle = MetroSet_UI.Enums.TabStyle.Style1
+            };
+            tbcTabs.KeyDown += (sender, e) =>
+            {
+                if (e.Control && e.KeyCode == Keys.R)
+                {
+                    ReloadTab(tbcTabs, 1, chunk.Data);
+                }
             };
             {
                 HexView hex = new HexView
@@ -60,52 +68,56 @@ namespace CrashEdit.CE
                 {
                     bitmap.UnlockBits(bdata);
                 }
-                PictureBox picture = new PictureBox();
-                picture.Dock = DockStyle.Fill;
-                picture.Image = bitmap;
+                PictureBox picture = new PictureBox
+                {
+                    Dock = DockStyle.Fill,
+                    Image = bitmap,
+                    Cursor = Cursors.Hand
+                };
                 picture.Click += new EventHandler(OpenViewer);
-                picture.Cursor = Cursors.Hand;
                 tipClick = new DarkToolTip();
-                tipClick.SetToolTip(picture, "Click to open the viewer");
-                TabPage page = new TabPage("Monochrome 8");
+                tipClick.SetToolTip(picture, Resources.TextureChunkBox_TipText);
+                //TabPage page = new TabPage("Monochrome 8");
+                TabPage page = new TabPage("Viewer");
                 page.Controls.Add(picture);
                 page.BackColor = Color.FromArgb(31, 31, 32);
                 tbcTabs.TabPages.Add(page);
             }
-            {
-                Bitmap bitmap = new Bitmap(256, 128, PixelFormat.Format16bppArgb1555);
-                Rectangle brect = new Rectangle(Point.Empty, bitmap.Size);
-                BitmapData bdata = bitmap.LockBits(brect, ImageLockMode.WriteOnly, PixelFormat.Format16bppArgb1555);
-                try
-                {
-                    for (int y = 0; y < 128; y++)
-                    {
-                        for (int x = 0; x < 256; x++)
-                        {
-                            short color = BitConv.FromInt16(chunk.Data, x * 2 + y * 512);
-                            PixelConv.Unpack1555(color, out byte alpha, out byte blue, out byte green, out byte red);
-                            color = PixelConv.Pack1555(1, red, green, blue);
-                            System.Runtime.InteropServices.Marshal.WriteInt16(bdata.Scan0, x * 2 + y * bdata.Stride, color);
-                        }
-                    }
-                }
-                finally
-                {
-                    bitmap.UnlockBits(bdata);
-                }
-                PictureBox picture = new PictureBox();
-                picture.Dock = DockStyle.Fill;
-                picture.Image = bitmap;
-                picture.Click += new EventHandler(OpenViewer);
-                picture.Cursor = Cursors.Hand;
-                tipClick = new DarkToolTip();
-                tipClick.SetToolTip(picture, "Click to open the viewer");
-                TabPage page = new TabPage("BGR555");
-                page.Controls.Add(picture);
-                page.BackColor = Color.FromArgb(31, 31, 32);
-                tbcTabs.TabPages.Add(page);
-                tbcTabs.SelectedTab = page;
-            }
+            //{
+            //    Bitmap bitmap = new Bitmap(256, 128, PixelFormat.Format16bppArgb1555);
+            //    Rectangle brect = new Rectangle(Point.Empty, bitmap.Size);
+            //    BitmapData bdata = bitmap.LockBits(brect, ImageLockMode.WriteOnly, PixelFormat.Format16bppArgb1555);
+            //    try
+            //    {
+            //        for (int y = 0; y < 128; y++)
+            //        {
+            //            for (int x = 0; x < 256; x++)
+            //            {
+            //                short color = BitConv.FromInt16(chunk.Data, x * 2 + y * 512);
+            //                PixelConv.Unpack1555(color, out byte alpha, out byte blue, out byte green, out byte red);
+            //                color = PixelConv.Pack1555(1, red, green, blue);
+            //                System.Runtime.InteropServices.Marshal.WriteInt16(bdata.Scan0, x * 2 + y * bdata.Stride, color);
+            //            }
+            //        }
+            //    }
+            //    finally
+            //    {
+            //        bitmap.UnlockBits(bdata);
+            //    }
+            //    PictureBox picture = new PictureBox
+            //    {
+            //        Dock = DockStyle.Fill,
+            //        Image = bitmap,
+            //        Cursor = Cursors.Hand
+            //    };
+            //    picture.Click += new EventHandler(OpenViewer);
+            //    tipClick = new DarkToolTip();
+            //    tipClick.SetToolTip(picture, Resources.TextureChunkBox_TipText);
+            //    TabPage page = new TabPage("BGR555");
+            //    page.Controls.Add(picture);
+            //    page.BackColor = Color.FromArgb(31, 31, 32);
+            //    tbcTabs.TabPages.Add(page);
+            //}
             {
                 CLUTBox clut = new CLUTBox(chunk)
                 {
@@ -118,6 +130,48 @@ namespace CrashEdit.CE
 
             Controls.Add(tbcTabs);
             tbcTabs.SelectedIndex = 1;
+        }
+
+        private void ReloadTab(TabControl tabControl, int tabIndex, byte[] newChunkData)
+        {
+            int oldSelectedIndex = tabControl.SelectedIndex;
+            TabPage oldPage = tabControl.TabPages[tabIndex];
+            tabControl.TabPages.RemoveAt(tabIndex);
+
+            Bitmap newBitmap = new Bitmap(512, 128, PixelFormat.Format16bppArgb1555);
+            Rectangle brect = new Rectangle(Point.Empty, newBitmap.Size);
+            BitmapData bdata = newBitmap.LockBits(brect, ImageLockMode.WriteOnly, PixelFormat.Format16bppArgb1555);
+            try
+            {
+                for (int y = 0; y < 128; y++)
+                {
+                    for (int x = 0; x < 512; x++)
+                    {
+                        byte color = newChunkData[x + y * 512];
+                        color >>= 3;
+                        short color16 = PixelConv.Pack1555(1, color, color, color);
+                        System.Runtime.InteropServices.Marshal.WriteInt16(bdata.Scan0, x * 2 + y * bdata.Stride, color16);
+                    }
+                }
+            }
+            finally
+            {
+                newBitmap.UnlockBits(bdata);
+            }
+            PictureBox newPicture = new PictureBox
+            {
+                Dock = DockStyle.Fill,
+                Image = newBitmap,
+                Cursor = Cursors.Hand
+            };
+            newPicture.Click += new EventHandler(OpenViewer);
+            tipClick = new DarkToolTip();
+            tipClick.SetToolTip(newPicture, Resources.TextureChunkBox_TipText);
+            TabPage newPage = new TabPage(oldPage.Text);
+            newPage.Controls.Add(newPicture);
+            newPage.BackColor = Color.FromArgb(31, 31, 32);
+            tabControl.TabPages.Insert(tabIndex, newPage);
+            tbcTabs.SelectedIndex = oldSelectedIndex;
         }
 
         private void OpenViewer(object sender, EventArgs e)

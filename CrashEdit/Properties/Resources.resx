@@ -846,4 +846,8 @@ as Meters: {3:F3}m</value>
   <data name="Config_chkOutputModelTextureInfo" xml:space="preserve">
     <value>Output model's texture information to the console</value>
   </data>
+  <data name="TextureChunkBox_TipText" xml:space="preserve">
+    <value>[Click] open the viewer
+[Ctrl+R] reload</value>
+  </data>
 </root>

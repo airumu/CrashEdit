@@ -1777,6 +1777,16 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
+        ///   [Click] open the viewer
+        ///[Ctrl+R] reload に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string TextureChunkBox_TipText {
+            get {
+                return ResourceManager.GetString("TextureChunkBox_TipText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Color Mode に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string TextureViewer_groupBox1 {
