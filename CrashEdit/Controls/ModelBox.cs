@@ -574,8 +574,10 @@ namespace CrashEdit.CE.Controls
             }
         }
 
-        private void cmdReplace_Click(object sender, EventArgs e)
+        private async void cmdReplace_Click(object sender, EventArgs e)
         {
+            Stopwatch stopwatch = Stopwatch.StartNew();
+
             int endColX = isScenery ? ColX4 : ColX3;
             int endColY = isScenery ? ColY4 : ColY3;
             if (grdTextures.SelectedCells.Count > 0)
@@ -584,11 +586,11 @@ namespace CrashEdit.CE.Controls
                 int col = grdTextures.CurrentCell.ColumnIndex;
                 if (col >= ColX1 && col <= endColX)
                 {
-                    UpdateRowsX(index, (int)numReplaceTo.Value, (int)numReplaceTo.Value + (int)grdTextures.Rows[index].Cells[ColWidth].Value);
+                    await UpdateRowsXYAsync(index, (int)numReplaceTo.Value, (int)numReplaceTo.Value + (int)grdTextures.Rows[index].Cells[ColWidth].Value, true);
                 }
                 else if (col >= ColY1 && col <= endColY)
                 {
-                    UpdateRowsY(index, (int)numReplaceTo.Value, (int)numReplaceTo.Value + (int)grdTextures.Rows[index].Cells[ColHeight].Value);
+                    await UpdateRowsXYAsync(index, (int)numReplaceTo.Value, (int)numReplaceTo.Value + (int)grdTextures.Rows[index].Cells[ColHeight].Value, false);
                 }
                 else
                 {
@@ -600,6 +602,9 @@ namespace CrashEdit.CE.Controls
                 }
                 UpdatePicture();
             }
+
+            stopwatch.Stop();
+            Console.WriteLine($"Processing time: {stopwatch.Elapsed.TotalSeconds:F2} seconds");
         }
 
         private void grdTextures_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
@@ -698,7 +703,7 @@ namespace CrashEdit.CE.Controls
             return;
         }
 
-        private void grdTextures_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        private async void grdTextures_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0)
                 return;
@@ -729,7 +734,7 @@ namespace CrashEdit.CE.Controls
                 int left = Convert.ToInt32(item.Cells[ColLeft].Value);
                 int width = Convert.ToInt32(item.Cells[ColWidth].Value);
                 int index = (int)numRowIndex.Value;
-                UpdateRowsX(index, left, left + width);
+                await UpdateRowsXYAsync(index, left, left + width, true);
                 og.Left = left;
                 og.Width = width;
             }
@@ -739,7 +744,7 @@ namespace CrashEdit.CE.Controls
                 int top = Convert.ToInt32(item.Cells[ColTop].Value);
                 int height = Convert.ToInt32(item.Cells[ColHeight].Value);
                 int index = (int)numRowIndex.Value;
-                UpdateRowsY(index, top, top + height);
+                await UpdateRowsXYAsync(index, top, top + height, false);
                 og.Top = top;
                 og.Height = height;
             }
@@ -797,147 +802,106 @@ namespace CrashEdit.CE.Controls
             UpdatePicture();
         }
 
-        private void UpdateRowsX(int targetRowIndex, int newMinU, int newMaxU)
+        private async Task UpdateRowsXYAsync(int targetRowIndex, int newMinUV, int newMaxUV, bool targetIsX)
         {
-            var targetRow = grdTextures.Rows[targetRowIndex];
-            var targetClutX = targetRow.Cells[ColClutX].Value?.ToString();
-            var targetClutY = targetRow.Cells[ColClutY].Value?.ToString();
-
-            if (targetClutX == null || targetClutY == null)
-                return;
-
-            var og = model.Textures[targetRowIndex];
-            if (isScenery)
+            await Task.Run(() =>
             {
-                foreach (DataGridViewRow row in grdTextures.Rows)
+                int Col1, Col2, Col3, Col4, ColStart, ColLength;
+                if (targetIsX)
                 {
-                    if (row.Cells[ColClutX].Value?.ToString() == targetClutX &&
-                        row.Cells[ColClutY].Value?.ToString() == targetClutY)
-                    {
-                        if (int.TryParse(row.Cells[ColX1].Value?.ToString(), out int U1) &&
-                            int.TryParse(row.Cells[ColX2].Value?.ToString(), out int U2) &&
-                            int.TryParse(row.Cells[ColX3].Value?.ToString(), out int U3) &&
-                            int.TryParse(row.Cells[ColX4].Value?.ToString(), out int U4))
-                        {
-                            int minU = Math.Min(U1, Math.Min(U2, Math.Min(U3, U4)));
-                            int maxU = Math.Max(U1, Math.Max(U2, Math.Max(U3, U4)));
-
-                            U1 = (U1 == minU) ? newMinU : newMaxU;
-                            U2 = (U2 == minU) ? newMinU : newMaxU;
-                            U3 = (U3 == minU) ? newMinU : newMaxU;
-                            U4 = (U4 == minU) ? newMinU : newMaxU;
-
-                            row.Cells[ColX1].Value = U1;
-                            row.Cells[ColX2].Value = U2;
-                            row.Cells[ColX3].Value = U3;
-                            row.Cells[ColX4].Value = U4;
-
-                            model.Textures[row.Index].Left = newMinU;
-                        }
-                    }
+                    Col1 = ColX1;
+                    Col2 = ColX2;
+                    Col3 = ColX3;
+                    Col4 = ColX4;
+                    ColStart = ColLeft;
+                    ColLength = ColWidth;
                 }
-            }
-            else
-            {
-                foreach (DataGridViewRow row in grdTextures.Rows)
+                else
                 {
-                    if (row.Cells[ColClutX].Value?.ToString() == targetClutX &&
-                        row.Cells[ColClutY].Value?.ToString() == targetClutY)
-                    {
-                        if (int.TryParse(row.Cells[ColX1].Value?.ToString(), out int U1) &&
-                            int.TryParse(row.Cells[ColX2].Value?.ToString(), out int U2) &&
-                            int.TryParse(row.Cells[ColX3].Value?.ToString(), out int U3))
-                        {
-                            int minU = Math.Min(U1, Math.Min(U2, U3));
-                            int maxU = Math.Max(U1, Math.Max(U2, U3));
-
-                            U1 = (U1 == minU) ? newMinU : newMaxU;
-                            U2 = (U2 == minU) ? newMinU : newMaxU;
-                            U3 = (U3 == minU) ? newMinU : newMaxU;
-
-                            row.Cells[ColX1].Value = U1;
-                            row.Cells[ColX2].Value = U2;
-                            row.Cells[ColX3].Value = U3;
-
-                            model.Textures[row.Index].Left = newMinU;
-                        }
-                    }
+                    Col1 = ColY1;
+                    Col2 = ColY2;
+                    Col3 = ColY3;
+                    Col4 = ColY4;
+                    ColStart = ColTop;
+                    ColLength = ColHeight;
                 }
-            }
-            grdTextures.Rows[targetRowIndex].Cells[ColLeft].Value = newMinU;
-            grdTextures.Rows[targetRowIndex].Cells[ColWidth].Value = newMaxU - newMinU;
+                var targetRow = grdTextures.Rows[targetRowIndex];
+                string? targetClutX = targetRow.Cells[ColClutX].Value?.ToString();
+                string? targetClutY = targetRow.Cells[ColClutY].Value?.ToString();
+
+                if (targetClutX == null || targetClutY == null)
+                    return;
+
+                var og = model.Textures[targetRowIndex];
+
+                List<DataGridViewRow> updatedRows = new List<DataGridViewRow>();
+                List<Action> uiUpdates = new List<Action>();
+
+                var filteredRows = grdTextures.Rows.Cast<DataGridViewRow>()
+                    .Where(row => row.Cells[ColClutX].Value?.ToString() == targetClutX &&
+                                 row.Cells[ColClutY].Value?.ToString() == targetClutY)
+                    .ToList();
+            
+                Parallel.ForEach(filteredRows, row =>
+                {
+                    int UV4 = 0;
+                    if (int.TryParse(row.Cells[Col1].Value?.ToString(), out int UV1) &&
+                        int.TryParse(row.Cells[Col2].Value?.ToString(), out int UV2) &&
+                        int.TryParse(row.Cells[Col3].Value?.ToString(), out int UV3) &&
+                        (!isScenery || int.TryParse(row.Cells[Col4].Value?.ToString(), out UV4)))
+                    {
+                        int minUV, maxUV;
+                        if (isScenery)
+                        {
+                            minUV = Math.Min(UV1, Math.Min(UV2, Math.Min(UV3, UV4)));
+                            maxUV = Math.Max(UV1, Math.Max(UV2, Math.Max(UV3, UV4)));
+                        }
+                        else
+                        {
+                            minUV = Math.Min(UV1, Math.Min(UV2, UV3));
+                            maxUV = Math.Max(UV1, Math.Max(UV2, UV3));
+                        }
+
+                        UV1 = (UV1 == minUV) ? newMinUV : newMaxUV;
+                        UV2 = (UV2 == minUV) ? newMinUV : newMaxUV;
+                        UV3 = (UV3 == minUV) ? newMinUV : newMaxUV;
+                        if (isScenery) UV4 = (UV4 == minUV) ? newMinUV : newMaxUV;
+
+                        lock (updatedRows)
+                        {
+                            updatedRows.Add(row);
+                        }
+
+                        //Invoke((Action)(() =>
+                        //{
+                        //    row.Cells[Col1].Value = UV1;
+                        //    row.Cells[Col2].Value = UV2;
+                        //    row.Cells[Col3].Value = UV3;
+                        //    if (isScenery) row.Cells[Col4].Value = UV4;
+                        //}));
+                        uiUpdates.Add(() =>
+                        {
+                            row.Cells[Col1].Value = UV1;
+                            row.Cells[Col2].Value = UV2;
+                            row.Cells[Col3].Value = UV3;
+                            if (isScenery) row.Cells[Col4].Value = UV4;
+                        });
+                    }
+                });
+
+                Invoke((Action)(() =>
+                {
+                    foreach (var update in uiUpdates)
+                    {
+                        update();
+                    }
+
+                    grdTextures.Rows[targetRowIndex].Cells[ColStart].Value = newMinUV;
+                    grdTextures.Rows[targetRowIndex].Cells[ColLength].Value = newMaxUV - newMinUV;
+                }));
+            });
         }
 
-        private void UpdateRowsY(int targetRowIndex, int newMinV, int newMaxV)
-        {
-            var targetRow = grdTextures.Rows[targetRowIndex];
-            var targetClutX = targetRow.Cells[ColClutX].Value?.ToString();
-            var targetClutY = targetRow.Cells[ColClutY].Value?.ToString();
-
-            if (targetClutX == null || targetClutY == null)
-                return;
-
-            var og = model.Textures[targetRowIndex];
-            if (isScenery)
-            {
-                foreach (DataGridViewRow row in grdTextures.Rows)
-                {
-                    if (row.Cells[ColClutX].Value?.ToString() == targetClutX &&
-                        row.Cells[ColClutY].Value?.ToString() == targetClutY)
-                    {
-                        if (int.TryParse(row.Cells[ColY1].Value?.ToString(), out int V1) &&
-                            int.TryParse(row.Cells[ColY2].Value?.ToString(), out int V2) &&
-                            int.TryParse(row.Cells[ColY3].Value?.ToString(), out int V3) &&
-                            int.TryParse(row.Cells[ColY4].Value?.ToString(), out int V4))
-                        {
-                            int minV = Math.Min(V1, Math.Min(V2, Math.Min(V3, V4)));
-                            int maxV = Math.Max(V1, Math.Max(V2, Math.Max(V3, V4)));
-
-                            V1 = (V1 == minV) ? newMinV : newMaxV;
-                            V2 = (V2 == minV) ? newMinV : newMaxV;
-                            V3 = (V3 == minV) ? newMinV : newMaxV;
-                            V4 = (V4 == minV) ? newMinV : newMaxV;
-
-                            row.Cells[ColY1].Value = V1;
-                            row.Cells[ColY2].Value = V2;
-                            row.Cells[ColY3].Value = V3;
-                            row.Cells[ColY4].Value = V4;
-
-                            model.Textures[row.Index].Top = newMinV;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                foreach (DataGridViewRow row in grdTextures.Rows)
-                {
-                    if (row.Cells[ColClutX].Value?.ToString() == targetClutX &&
-                        row.Cells[ColClutY].Value?.ToString() == targetClutY)
-                    {
-                        if (int.TryParse(row.Cells[ColY1].Value?.ToString(), out int V1) &&
-                            int.TryParse(row.Cells[ColY2].Value?.ToString(), out int V2) &&
-                            int.TryParse(row.Cells[ColY3].Value?.ToString(), out int V3))
-                        {
-                            int minV = Math.Min(V1, Math.Min(V2, V3));
-                            int maxV = Math.Max(V1, Math.Max(V2, V3));
-
-                            V1 = (V1 == minV) ? newMinV : newMaxV;
-                            V2 = (V2 == minV) ? newMinV : newMaxV;
-                            V3 = (V3 == minV) ? newMinV : newMaxV;
-
-                            row.Cells[ColY1].Value = V1;
-                            row.Cells[ColY2].Value = V2;
-                            row.Cells[ColY3].Value = V3;
-
-                            model.Textures[row.Index].Top = newMinV;
-                        }
-                    }
-                }
-            }
-            grdTextures.Rows[targetRowIndex].Cells[ColTop].Value = newMinV;
-            grdTextures.Rows[targetRowIndex].Cells[ColHeight].Value = newMaxV - newMinV;
-        }
 
         private void tbpColors_Enter(object sender, EventArgs e)
         {
