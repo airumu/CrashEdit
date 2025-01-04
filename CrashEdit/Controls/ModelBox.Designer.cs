@@ -80,6 +80,7 @@ namespace CrashEdit.CE.Controls
             colorWheel = new Cyotek.Windows.Forms.ColorWheel();
             lstColor = new DoubleBufferedListView();
             tbpTextures = new TabPage();
+            cmdLoadTexture = new DarkButton();
             fraReplaceTexture = new DarkGroupBox();
             cmdReplaceTexture = new DarkButton();
             chkReplaceCLUT = new CheckBox();
@@ -93,7 +94,7 @@ namespace CrashEdit.CE.Controls
             numReplace = new DarkNumericUpDown();
             cmdReplace = new DarkButton();
             pictureBox1 = new PictureBox();
-            fraTexture = new DarkGroupBox();
+            fraTPage = new DarkGroupBox();
             rbtReloadTPage = new MetroSetRadioButton();
             dpdTPage = new DarkComboBox();
             cmdRemoveTPage = new DarkButton();
@@ -125,7 +126,7 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)numReplaceTo).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numReplace).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
-            fraTexture.SuspendLayout();
+            fraTPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)grdTextures).BeginInit();
             SuspendLayout();
             // 
@@ -143,7 +144,7 @@ namespace CrashEdit.CE.Controls
             tabModel.Location = new Point(0, 0);
             tabModel.Multiline = true;
             tabModel.Name = "tabModel";
-            tabModel.SelectedIndex = 0;
+            tabModel.SelectedIndex = 2;
             tabModel.SelectedTextColor = Color.White;
             tabModel.Size = new Size(1040, 800);
             tabModel.SizeMode = TabSizeMode.Fixed;
@@ -571,12 +572,13 @@ namespace CrashEdit.CE.Controls
             // tbpTextures
             // 
             tbpTextures.BackColor = Color.FromArgb(31, 31, 32);
+            tbpTextures.Controls.Add(cmdLoadTexture);
             tbpTextures.Controls.Add(fraReplaceTexture);
             tbpTextures.Controls.Add(fraSwitches);
             tbpTextures.Controls.Add(numRowIndex);
             tbpTextures.Controls.Add(fraReplace);
             tbpTextures.Controls.Add(pictureBox1);
-            tbpTextures.Controls.Add(fraTexture);
+            tbpTextures.Controls.Add(fraTPage);
             tbpTextures.Controls.Add(grdTextures);
             tbpTextures.Location = new Point(4, 32);
             tbpTextures.Name = "tbpTextures";
@@ -584,6 +586,21 @@ namespace CrashEdit.CE.Controls
             tbpTextures.TabIndex = 2;
             tbpTextures.Text = "Textures";
             tbpTextures.Enter += tbpTextures_Enter;
+            // 
+            // cmdLoadTexture
+            // 
+            cmdLoadTexture.BackColor = Color.Transparent;
+            cmdLoadTexture.BorderColour = Color.Empty;
+            cmdLoadTexture.CustomColour = false;
+            cmdLoadTexture.FlatBottom = false;
+            cmdLoadTexture.FlatTop = false;
+            cmdLoadTexture.Location = new Point(882, 32);
+            cmdLoadTexture.Name = "cmdLoadTexture";
+            cmdLoadTexture.Padding = new Padding(5);
+            cmdLoadTexture.Size = new Size(75, 23);
+            cmdLoadTexture.TabIndex = 10;
+            cmdLoadTexture.Text = "Load";
+            cmdLoadTexture.Click += cmdLoadTexture_Click;
             // 
             // fraReplaceTexture
             // 
@@ -752,19 +769,19 @@ namespace CrashEdit.CE.Controls
             pictureBox1.TabIndex = 1;
             pictureBox1.TabStop = false;
             // 
-            // fraTexture
+            // fraTPage
             // 
-            fraTexture.Controls.Add(rbtReloadTPage);
-            fraTexture.Controls.Add(dpdTPage);
-            fraTexture.Controls.Add(cmdRemoveTPage);
-            fraTexture.Controls.Add(cmdAppendTPage);
-            fraTexture.Controls.Add(lstTPages);
-            fraTexture.Location = new Point(3, 3);
-            fraTexture.Name = "fraTexture";
-            fraTexture.Size = new Size(132, 301);
-            fraTexture.TabIndex = 0;
-            fraTexture.TabStop = false;
-            fraTexture.Text = "Texture Pages";
+            fraTPage.Controls.Add(rbtReloadTPage);
+            fraTPage.Controls.Add(dpdTPage);
+            fraTPage.Controls.Add(cmdRemoveTPage);
+            fraTPage.Controls.Add(cmdAppendTPage);
+            fraTPage.Controls.Add(lstTPages);
+            fraTPage.Location = new Point(3, 3);
+            fraTPage.Name = "fraTPage";
+            fraTPage.Size = new Size(132, 301);
+            fraTPage.TabIndex = 0;
+            fraTPage.TabStop = false;
+            fraTPage.Text = "Texture Pages";
             // 
             // rbtReloadTPage
             // 
@@ -900,7 +917,7 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)numReplaceTo).EndInit();
             ((System.ComponentModel.ISupportInitialize)numReplace).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
-            fraTexture.ResumeLayout(false);
+            fraTPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)grdTextures).EndInit();
             ResumeLayout(false);
         }
@@ -911,7 +928,7 @@ namespace CrashEdit.CE.Controls
         private TabPage tbpGeneral;
         private TabPage tbpColors;
         private TabPage tbpTextures;
-        private AltUI.Controls.DarkGroupBox fraTexture;
+        private AltUI.Controls.DarkGroupBox fraTPage;
         private DoubleBufferedListView lstTPages;
         private DoubleBufferedListView lstColor;
         private Cyotek.Windows.Forms.ColorEditor colorEditor;
@@ -963,5 +980,6 @@ namespace CrashEdit.CE.Controls
         private DarkNumericUpDown numOffsetX;
         private Label lblOffsetX;
         private Panel panel1;
+        private DarkButton cmdLoadTexture;
     }
 }

@@ -1,6 +1,7 @@
-﻿using System.Drawing.Imaging;
+﻿using System.Collections.Concurrent;
+using System.Diagnostics;
+using System.Drawing.Imaging;
 using System.Globalization;
-using System.Windows.Forms;
 using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
@@ -276,6 +277,11 @@ namespace CrashEdit.CE.Controls
                 null, grdTextures, new object[] { true });
         }
 
+        DataGridViewCellStyle maxValueStyle = new DataGridViewCellStyle
+        {
+            ForeColor = Color.Turquoise
+        };
+
         private void SetMaxValueTag(int start, int end)
         {
             int startColumnIndex = start;
@@ -307,10 +313,7 @@ namespace CrashEdit.CE.Controls
                         if (value == maxValue)
                         {
                             //if (row.Cells[col].Tag is HashSet<string> tags)
-                            //{
                             //    tags.Add("MaxValue");
-                            //    row.Cells[col].Style.ForeColor = Color.Turquoise;
-                            //}
                             row.Cells[col].Style = maxValueStyle;
                         }
                     }
@@ -318,147 +321,97 @@ namespace CrashEdit.CE.Controls
             });
         }
 
-        DataGridViewCellStyle maxValueStyle = new DataGridViewCellStyle
+        private void CreateTextureListColumns()
         {
-            ForeColor = Color.Turquoise
-        };
-
-        private void UpdateTextureList(bool creatreColumns)
-        {
-            grdTextures.SuspendLayout();
-
-            if (creatreColumns)
-            {
-                grdTextures.Columns.Add("Page", "Page");
-                grdTextures.Columns.Add("ClutX", "Clut X");
-                grdTextures.Columns.Add("ClutY", "Clut Y");
-                grdTextures.Columns.Add("Left", "X  ");
-                grdTextures.Columns.Add("Top", "Y  ");
-                grdTextures.Columns.Add("Width", "Width");
-                grdTextures.Columns.Add("Height", "Height");
-                grdTextures.Columns.Add("X1", "X1");
-                grdTextures.Columns.Add("X2", "X2");
-                grdTextures.Columns.Add("X3", "X3");
-                grdTextures.Columns.Add("X4", "X4");
-                grdTextures.Columns.Add("Y1", "Y1");
-                grdTextures.Columns.Add("Y2", "Y2");
-                grdTextures.Columns.Add("Y3", "Y3");
-                grdTextures.Columns.Add("Y4", "Y4");
-                grdTextures.Columns.Add("BlendMode", "Blend");
-                grdTextures.Columns.Add("ColorMode", "Color");
-            }
-
-            List<string> seenTags = new List<string>();
-            for (int i = 0; i < model.Textures.Count; ++i)
-            {
-                var item = model.Textures[i];
-                DataGridViewRow row = new DataGridViewRow();
-                row.CreateCells(grdTextures, item.Page, item.ClutX, item.ClutY, item.Left, item.Top, item.Width, item.Height, item.X1, item.X2, item.X3, 0, item.Y1, item.Y2, item.Y3, 0, item.BlendMode, item.ColorMode);
-
-                var tagValue = $"{item.ClutX}, {item.ClutY}, {item.Left}, {item.Top}";
-                foreach (DataGridViewCell cell in row.Cells)
-                {
-                    cell.Tag = tagValue;
-                }
-                grdTextures.Rows.Add(row);
-
-                if (simpleMode)
-                {
-                    var tags = row.Cells[0].Tag as string;
-                    if (tags != null)
-                    {
-                        if (seenTags.Contains(tags))
-                        {
-                            row.Visible = false;
-                            if (Settings.Default.OutputModelTextureInfo)
-                                Console.WriteLine($"Hide row at: {row.Index}");
-                        }
-                        else
-                        {
-                            seenTags.Add(tags);
-                        }
-                    }
-                }
-            }
-            SetMaxValueTag(ColX1, ColX3);
-            SetMaxValueTag(ColY1, ColY3);
+            grdTextures.Columns.Add("Page", "Page");
+            grdTextures.Columns.Add("ClutX", "Clut X");
+            grdTextures.Columns.Add("ClutY", "Clut Y");
+            grdTextures.Columns.Add("Left", "X  ");
+            grdTextures.Columns.Add("Top", "Y  ");
+            grdTextures.Columns.Add("Width", "Width");
+            grdTextures.Columns.Add("Height", "Height");
+            grdTextures.Columns.Add("X1", "X1");
+            grdTextures.Columns.Add("X2", "X2");
+            grdTextures.Columns.Add("X3", "X3");
+            grdTextures.Columns.Add("X4", "X4");
+            grdTextures.Columns.Add("Y1", "Y1");
+            grdTextures.Columns.Add("Y2", "Y2");
+            grdTextures.Columns.Add("Y3", "Y3");
+            grdTextures.Columns.Add("Y4", "Y4");
+            grdTextures.Columns.Add("BlendMode", "Blend");
+            grdTextures.Columns.Add("ColorMode", "Color");
 
             for (int i = ColLeft; i <= ColHeight; i++)
             {
                 grdTextures.Columns[i].Visible = false;
             }
-            grdTextures.Columns[ColX4].Visible = false;
-            grdTextures.Columns[ColY4].Visible = false;
+            if (!isScenery)
+            {
+                grdTextures.Columns[ColX4].Visible = false;
+                grdTextures.Columns[ColY4].Visible = false;
+            }
             AdjustColumnWidths();
-            grdTextures.ResumeLayout();
         }
 
-        private void UpdateTextureListScenery(bool creatreColumns)
+        private async Task UpdateTextureListAsync(bool setMaxTags)
         {
-            grdTextures.SuspendLayout();
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            var seenTags = new ConcurrentDictionary<string, bool>();
 
-            if (creatreColumns)
+            var rows = await Task.Run(() =>
             {
-                grdTextures.Columns.Add("Page", "Page");
-                grdTextures.Columns.Add("ClutX", "Clut X");
-                grdTextures.Columns.Add("ClutY", "Clut Y");
-                grdTextures.Columns.Add("Left", "X");
-                grdTextures.Columns.Add("Top", "Y");
-                grdTextures.Columns.Add("Width", "Width");
-                grdTextures.Columns.Add("Height", "Height");
-                grdTextures.Columns.Add("X1", "X1");
-                grdTextures.Columns.Add("X2", "X2");
-                grdTextures.Columns.Add("X3", "X3");
-                grdTextures.Columns.Add("X4", "X4");
-                grdTextures.Columns.Add("Y1", "Y1");
-                grdTextures.Columns.Add("Y2", "Y2");
-                grdTextures.Columns.Add("Y3", "Y3");
-                grdTextures.Columns.Add("Y4", "Y4");
-                grdTextures.Columns.Add("BlendMode", "Blend");
-                grdTextures.Columns.Add("ColorMode", "Color");
-            }
-
-            List<string> seenTags = new List<string>();
-            for (int i = 0; i < model.Textures.Count; ++i)
-            {
-                var item = model.Textures[i];
-                DataGridViewRow row = new DataGridViewRow();
-                row.CreateCells(grdTextures, item.Page, item.ClutX, item.ClutY, item.Left, item.Top, item.Width, item.Height, item.X1, item.X2, item.X3, item.X4, item.Y1, item.Y2, item.Y3, item.Y4, item.BlendMode, item.ColorMode);
-
-                var tagValue = $"{item.ClutX}, {item.ClutY}, {item.Left}, {item.Top}";
-                foreach (DataGridViewCell cell in row.Cells)
+                var rowsToAdd = new ConcurrentBag<(int Index, DataGridViewRow Row)>();
+                
+                Parallel.ForEach(Enumerable.Range(0, (int)model.Textures.Count), (int i) =>
                 {
-                    cell.Tag = tagValue;
-                }
-                grdTextures.Rows.Add(row);
+                    var item = model.Textures[i];
+                    DataGridViewRow row = new DataGridViewRow();
+                    row.CreateCells(grdTextures, item.Page, item.ClutX, item.ClutY, item.Left, item.Top, item.Width, item.Height, item.X1, item.X2, item.X3, item.X4, item.Y1, item.Y2, item.Y3, item.Y4, item.BlendMode, item.ColorMode);
 
-                if (simpleMode)
-                {
-                    var tags = row.Cells[0].Tag as string;
-                    if (tags != null)
+                    var tagValue = $"{item.ClutX}, {item.ClutY}, {item.Left}, {item.Top}";
+                    foreach (DataGridViewCell cell in row.Cells)
                     {
-                        if (seenTags.Contains(tags))
+                        cell.Tag = tagValue;
+                    }
+
+                    if (simpleMode)
+                    {
+                        if (!seenTags.ContainsKey(tagValue))
                         {
-                            row.Visible = false;
-                            if (Settings.Default.OutputModelTextureInfo)
-                                Console.WriteLine($"Hide row at: {row.Index}");
+                            seenTags.TryAdd(tagValue, true);
                         }
                         else
                         {
-                            seenTags.Add(tags);
+                            row.Visible = false;
                         }
                     }
-                }
-            }
-            SetMaxValueTag(ColX1, ColX4);
-            SetMaxValueTag(ColY1, ColY4);
+                    rowsToAdd.Add((i, row));
+                });
+                return rowsToAdd.OrderBy(pair => pair.Index).Select(pair => pair.Row).ToList();
+            });
 
-            for (int i = ColLeft; i <= ColHeight; i++)
+            // Add rows to the DataGridView in the UI thread
+            grdTextures.Rows.Clear();
+            foreach (var row in rows)
             {
-                grdTextures.Columns[i].Visible = false;
+                grdTextures.Rows.Add(row);
             }
-            AdjustColumnWidths();
-            grdTextures.ResumeLayout();
+
+            if (isScenery)
+            {
+                SetMaxValueTag(ColX1, ColX4);
+                SetMaxValueTag(ColY1, ColY4);
+            }
+            else
+            {
+                SetMaxValueTag(ColX1, ColX3);
+                SetMaxValueTag(ColY1, ColY3);
+            }
+
+            stopwatch.Stop();
+            int count = simpleMode ? seenTags.Count : rows.Count;
+            Console.WriteLine($"Row count: {count}");
+            Console.WriteLine($"Processing time: {stopwatch.Elapsed.TotalSeconds:F2} seconds");
         }
 
         private void grdTextures_SelectionChanged(object sender, EventArgs e)
@@ -533,18 +486,27 @@ namespace CrashEdit.CE.Controls
         //    }
         //}
 
-        private void ToggleSimpleMode()
+        private async void cmdLoadTexture_Click(object sender, EventArgs e)
+        {
+            await UpdateTextureListAsync(true);
+
+            if (grdTextures.Rows.Count > 0)
+            {
+                UpdateTPageButtons();
+                fraSwitches.Enabled = true;
+                fraReplace.Enabled = true;
+                fraReplaceTexture.Enabled = true;
+            }
+        }
+
+        private async void ToggleSimpleMode()
         {
             if (grdTextures.IsCurrentCellInEditMode)
                 grdTextures.CancelEdit();
-            grdTextures.ScrollBars = ScrollBars.None;
             grdTextures.SuspendLayout();
+            grdTextures.ScrollBars = ScrollBars.None;
 
-            grdTextures.Rows.Clear();
-            if (isScenery)
-                UpdateTextureListScenery(false);
-            else
-                UpdateTextureList(false);
+            await UpdateTextureListAsync(false);
 
             int endColX = isScenery ? ColX4 : ColX3;
             int endColY = isScenery ? ColY4 : ColY3;
@@ -568,10 +530,10 @@ namespace CrashEdit.CE.Controls
                 for (int i = ColY1; i <= endColY; i++)
                     grdTextures.Columns[i].Visible = true;
             }
-            grdTextures.ResumeLayout();
 
             grdTextures.ScrollBars = ScrollBars.Vertical;
             fraReplace.Enabled = !simpleMode;
+            grdTextures.ResumeLayout();
         }
 
         private void cmdReplaceTexture_Click(object sender, EventArgs e)
@@ -989,18 +951,15 @@ namespace CrashEdit.CE.Controls
             tipReloadTPage.SetToolTip(rbtReloadTPage, "Reload");
             SetDarkTheme(grdTextures);
             EnableDoubleBuffering();
+            CreateTextureListColumns();
             UpdateTPageList();
-            if (isScenery)
-                UpdateTextureListScenery(true);
-            else
-                UpdateTextureList(true);
-            UpdateTPageButtons();
 
             BGRAMode = true;
             replaceCLUT = true;
 
             if (grdTextures.Rows.Count > 0)
             {
+                UpdateTPageButtons();
                 fraSwitches.Enabled = true;
                 fraReplace.Enabled = true;
                 fraReplaceTexture.Enabled = true;
@@ -1065,6 +1024,16 @@ namespace CrashEdit.CE.Controls
                     cmdRemoveTPage.Enabled = false;
                 else
                     cmdRemoveTPage.Enabled = true;
+            }
+            else
+            {
+                if (lstTPages.Items.Count > 0)
+                {
+                    lstTPages.Items[0].Selected = true;
+                    dpdTPage.Text = lstTPages.SelectedItems[0].SubItems[1].Text;
+                }
+                cmdAppendTPage.Enabled = false;
+                cmdRemoveTPage.Enabled = false;
             }
         }
 
