@@ -375,27 +375,27 @@ namespace CrashEdit.CE.Controls
                         cell.Tag = tagValue;
                     }
 
-                    if (simpleMode)
-                    {
-                        if (!seenTags.ContainsKey(tagValue))
-                        {
-                            seenTags.TryAdd(tagValue, true);
-                        }
-                        else
-                        {
-                            row.Visible = false;
-                        }
-                    }
                     rowsToAdd.Add((i, row));
                 });
                 return rowsToAdd.OrderBy(pair => pair.Index).Select(pair => pair.Row).ToList();
             });
 
-            // Add rows to the DataGridView in the UI thread
             grdTextures.Rows.Clear();
             foreach (var row in rows)
             {
                 grdTextures.Rows.Add(row);
+                if (simpleMode)
+                {
+                    string tagValue = row.Cells[0].Tag as string;
+                    if (!seenTags.ContainsKey(tagValue))
+                    {
+                        seenTags.TryAdd(tagValue, true);
+                    }
+                    else
+                    {
+                        row.Visible = false;
+                    }
+                }
             }
 
             if (isScenery)
@@ -412,7 +412,7 @@ namespace CrashEdit.CE.Controls
             stopwatch.Stop();
             int count = simpleMode ? seenTags.Count : rows.Count;
             Console.WriteLine($"Row count: {count}");
-            Console.WriteLine($"Processing time: {stopwatch.Elapsed.TotalSeconds:F2} seconds");
+            Console.WriteLine($"Processing time: {stopwatch.Elapsed.TotalSeconds:F3} seconds");
         }
 
         private void grdTextures_SelectionChanged(object sender, EventArgs e)
@@ -823,48 +823,45 @@ namespace CrashEdit.CE.Controls
             }
         }
 
-
         private async Task UpdateRowsXYAsync(int targetRowIndex, int newMinUV, int newMaxUV, bool targetIsX)
         {
+            if (targetRowIndex < 0 || targetRowIndex >= model.Textures.Count)
+                return;
+
+            int Col1, Col2, Col3, Col4, ColStart, ColLength;
+            if (targetIsX)
+            {
+                Col1 = ColX1;
+                Col2 = ColX2;
+                Col3 = ColX3;
+                Col4 = ColX4;
+                ColStart = ColLeft;
+                ColLength = ColWidth;
+            }
+            else
+            {
+                Col1 = ColY1;
+                Col2 = ColY2;
+                Col3 = ColY3;
+                Col4 = ColY4;
+                ColStart = ColTop;
+                ColLength = ColHeight;
+            }
+
+            var targetRow = grdTextures.Rows[targetRowIndex];
+            string? targetClutX = targetRow.Cells[ColClutX].Value?.ToString();
+            string? targetClutY = targetRow.Cells[ColClutY].Value?.ToString();
+
+            if (string.IsNullOrEmpty(targetClutX) || string.IsNullOrEmpty(targetClutY))
+                return;
+
+            var updatedRows = new ConcurrentBag<(int RowIndex, int UV1, int UV2, int UV3, int UV4)>();
+
             await Task.Run(() =>
             {
-                if (targetRowIndex < 0 || targetRowIndex >= model.Textures.Count)
-                    return;
-
-                int Col1, Col2, Col3, Col4, ColStart, ColLength;
-                if (targetIsX)
-                {
-                    Col1 = ColX1;
-                    Col2 = ColX2;
-                    Col3 = ColX3;
-                    Col4 = ColX4;
-                    ColStart = ColLeft;
-                    ColLength = ColWidth;
-                }
-                else
-                {
-                    Col1 = ColY1;
-                    Col2 = ColY2;
-                    Col3 = ColY3;
-                    Col4 = ColY4;
-                    ColStart = ColTop;
-                    ColLength = ColHeight;
-                }
-
-                var targetRow = grdTextures.Rows[targetRowIndex];
-                string? targetClutX = targetRow.Cells[ColClutX].Value?.ToString();
-                string? targetClutY = targetRow.Cells[ColClutY].Value?.ToString();
-
-                if (targetClutX == null || targetClutY == null)
-                    return;
-
-                var og = model.Textures[targetRowIndex];
-                List<DataGridViewRow> updatedRows = new List<DataGridViewRow>();
-
                 var filteredRows = grdTextures.Rows.Cast<DataGridViewRow>()
                     .Where(row => row.Cells[ColClutX].Value?.ToString() == targetClutX &&
-                                 row.Cells[ColClutY].Value?.ToString() == targetClutY)
-                    .ToList();
+                                  row.Cells[ColClutY].Value?.ToString() == targetClutY);
 
                 Parallel.ForEach(filteredRows, row =>
                 {
@@ -874,64 +871,46 @@ namespace CrashEdit.CE.Controls
                         int.TryParse(row.Cells[Col3].Value?.ToString(), out int UV3) &&
                         (!isScenery || int.TryParse(row.Cells[Col4].Value?.ToString(), out UV4)))
                     {
-                        int minUV, maxUV;
-                        if (isScenery)
-                        {
-                            minUV = Math.Min(UV1, Math.Min(UV2, Math.Min(UV3, UV4)));
-                            maxUV = Math.Max(UV1, Math.Max(UV2, Math.Max(UV3, UV4)));
-                        }
-                        else
-                        {
-                            minUV = Math.Min(UV1, Math.Min(UV2, UV3));
-                            maxUV = Math.Max(UV1, Math.Max(UV2, UV3));
-                        }
+                        int minUV = isScenery ? Math.Min(UV1, Math.Min(UV2, Math.Min(UV3, UV4))) : Math.Min(UV1, Math.Min(UV2, UV3));
+                        int maxUV = isScenery ? Math.Max(UV1, Math.Max(UV2, Math.Max(UV3, UV4))) : Math.Max(UV1, Math.Max(UV2, UV3));
 
                         UV1 = (UV1 == minUV) ? newMinUV : newMaxUV;
                         UV2 = (UV2 == minUV) ? newMinUV : newMaxUV;
                         UV3 = (UV3 == minUV) ? newMinUV : newMaxUV;
                         if (isScenery) UV4 = (UV4 == minUV) ? newMinUV : newMaxUV;
 
-                        lock (updatedRows)
-                        {
-                            updatedRows.Add(row);
-                        }
-
-                        if (grdTextures.InvokeRequired)
-                        {
-                            grdTextures.Invoke(new Action(() =>
-                            {
-                                row.Cells[Col1].Value = UV1;
-                                row.Cells[Col2].Value = UV2;
-                                row.Cells[Col3].Value = UV3;
-                                if (isScenery) row.Cells[Col4].Value = UV4;
-                            }));
-                        }
-                        else
-                        {
-                            row.Cells[Col1].Value = UV1;
-                            row.Cells[Col2].Value = UV2;
-                            row.Cells[Col3].Value = UV3;
-                            if (isScenery) row.Cells[Col4].Value = UV4;
-                        }
+                        updatedRows.Add((row.Index, UV1, UV2, UV3, UV4));
                     }
                 });
+            });
 
-                if (grdTextures.InvokeRequired)
+            grdTextures.Invoke(() =>
+            {
+                foreach (var (rowIndex, UV1, UV2, UV3, UV4) in updatedRows)
                 {
-                    grdTextures.Invoke(new Action(() =>
+                    var row = grdTextures.Rows[rowIndex];
+                    row.Cells[Col1].Value = UV1;
+                    row.Cells[Col2].Value = UV2;
+                    row.Cells[Col3].Value = UV3;
+                    if (isScenery) row.Cells[Col4].Value = UV4;
+
+                    var texture = model.Textures[rowIndex];
+                    if (targetIsX)
                     {
-                        grdTextures.Rows[targetRowIndex].Cells[ColStart].Value = newMinUV;
-                        grdTextures.Rows[targetRowIndex].Cells[ColLength].Value = newMaxUV - newMinUV;
-                    }));
+                        texture.Left = newMinUV;
+                        texture.Width = newMaxUV - newMinUV;
+                    }
+                    else
+                    {
+                        texture.Top = newMinUV;
+                        texture.Height = newMaxUV - newMinUV;
+                    }
                 }
-                else
-                {
-                    grdTextures.Rows[targetRowIndex].Cells[ColStart].Value = newMinUV;
-                    grdTextures.Rows[targetRowIndex].Cells[ColLength].Value = newMaxUV - newMinUV;
-                }
+
+                targetRow.Cells[ColStart].Value = newMinUV;
+                targetRow.Cells[ColLength].Value = newMaxUV - newMinUV;
             });
         }
-
 
         private void tbpColors_Enter(object sender, EventArgs e)
         {
