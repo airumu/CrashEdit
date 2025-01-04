@@ -434,16 +434,9 @@ namespace CrashEdit.CE.Controls
                 lstTPages.Items[pageIndex].Selected = true;
                 //lstPages.EnsureVisible(pageIndex);
 
-                if (Settings.Default.OutputModelTextureInfo)
+                if (Settings.Default.OutputModelTextureInfo && grdTextures.CurrentCell.Tag is string tags)
                 {
-                    if (grdTextures.CurrentCell.Tag is HashSet<string> tags)
-                    {
-                        Console.WriteLine($"[X{grdTextures.CurrentCell.ColumnIndex} - Y{grdTextures.CurrentCell.RowIndex}]");
-                        foreach (string tag in tags)
-                        {
-                            Console.WriteLine(tag);
-                        }
-                    }
+                    Console.WriteLine($"Row {grdTextures.CurrentCell.RowIndex} Tags: {string.Join(", ", tags)}");
                 }
             }
         }
