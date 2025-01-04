@@ -644,6 +644,8 @@ namespace CrashEdit.CE.Controls
                 int rowIndex = (int)numRowIndex.Value;
                 int columnIndex = grdTextures.CurrentCell.ColumnIndex;
                 var row = grdTextures.Rows[rowIndex];
+                string? editedCellTag = grdTextures.SelectedCells[0].Tag?.ToString();
+
                 GetMaxValue(rowIndex, columnIndex, out int minValue, out int maxValue, out bool isMaxCell);
                 int newValue = (int)numReplaceTo.Value;
                 if (newValue > maxValue)
@@ -663,7 +665,7 @@ namespace CrashEdit.CE.Controls
                         DarkMessageBox.ShowError($"The value must be greater than or equal to {row.Cells[ColWidth].Value}.", "Input Error");
                         return;
                     }
-                    await UpdateRowsXYAsync(rowIndex, newValue, newValue + (int)row.Cells[ColWidth].Value, true);
+                    await UpdateRowsXYAsync(rowIndex, newValue, newValue + (int)row.Cells[ColWidth].Value, true, editedCellTag);
                 }
                 else if (columnIndex >= ColY1 && columnIndex <= endColY)
                 {
@@ -674,11 +676,10 @@ namespace CrashEdit.CE.Controls
                         DarkMessageBox.ShowError($"The value must be greater than or equal to {row.Cells[ColHeight].Value}.", "Input Error");
                         return;
                     }
-                    await UpdateRowsXYAsync(rowIndex, newValue, newValue + (int)row.Cells[ColHeight].Value, false);
+                    await UpdateRowsXYAsync(rowIndex, newValue, newValue + (int)row.Cells[ColHeight].Value, false, editedCellTag);
                 }
                 else
                 {
-                    string editedCellTag = grdTextures.SelectedCells[0].Tag.ToString();
                     await UpdateCellsByTagAsync(columnIndex, columnIndex, newValue, editedCellTag);
                 }
                 UpdatePicture();
@@ -691,25 +692,25 @@ namespace CrashEdit.CE.Controls
             {
                 var editedRow = grdTextures.Rows[e.RowIndex];
                 int newValue = Convert.ToInt32(editedRow.Cells[e.ColumnIndex].Value);
-                string editedCellTag = editedRow.Cells[e.ColumnIndex].Tag?.ToString();
+                string? editedCellTag = editedRow.Cells[e.ColumnIndex].Tag?.ToString();
 
                 if (editedCellTag != null)
                 {
                     if (e.ColumnIndex == ColLeft)
                     {
-                        await UpdateRowsXYAsync(e.RowIndex, newValue, newValue + (int)editedRow.Cells[ColWidth].Value, true);
+                        await UpdateRowsXYAsync(e.RowIndex, newValue, newValue + (int)editedRow.Cells[ColWidth].Value, true, editedCellTag);
                     }
                     else if (e.ColumnIndex == ColWidth)
                     {
-                        await UpdateRowsXYAsync(e.RowIndex, (int)editedRow.Cells[ColLeft].Value, (int)editedRow.Cells[ColLeft].Value + newValue, true);
+                        await UpdateRowsXYAsync(e.RowIndex, (int)editedRow.Cells[ColLeft].Value, (int)editedRow.Cells[ColLeft].Value + newValue, true, editedCellTag);
                     }
                     else if (e.ColumnIndex == ColTop)
                     {
-                        await UpdateRowsXYAsync(e.RowIndex, newValue, newValue + (int)editedRow.Cells[ColHeight].Value, false);
+                        await UpdateRowsXYAsync(e.RowIndex, newValue, newValue + (int)editedRow.Cells[ColHeight].Value, false, editedCellTag);
                     }
                     else if (e.ColumnIndex == ColHeight)
                     {
-                        await UpdateRowsXYAsync(e.RowIndex, (int)editedRow.Cells[ColTop].Value, (int)editedRow.Cells[ColTop].Value + newValue, false);
+                        await UpdateRowsXYAsync(e.RowIndex, (int)editedRow.Cells[ColTop].Value, (int)editedRow.Cells[ColTop].Value + newValue, false, editedCellTag);
                     }
                     else
                     {
@@ -724,15 +725,15 @@ namespace CrashEdit.CE.Controls
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
 
-            var rowsToUpdate = grdTextures.Rows.Cast<DataGridViewRow>()
+            var filteredRows = grdTextures.Rows.Cast<DataGridViewRow>()
                   .Where(row =>
                   {
-                      var cell = row.Cells[startColumn];
+                      var cell = row.Cells[0];
                       return cell.Tag is string tags && tags.Contains(editedCellTag);
                   })
                   .ToList();
 
-            foreach (var row in rowsToUpdate)
+            foreach (var row in filteredRows)
             {
                 for (int col = startColumn; col <= endColumn; col++)
                 {
@@ -845,7 +846,7 @@ namespace CrashEdit.CE.Controls
             }
         }
 
-        private async Task UpdateRowsXYAsync(int targetRowIndex, int newMinUV, int newMaxUV, bool targetIsX)
+        private async Task UpdateRowsXYAsync(int targetRowIndex, int newMinUV, int newMaxUV, bool targetIsX, string editedCellTag)
         {
             int Col1, Col2, Col3, Col4, ColStart, ColLength;
             if (targetIsX)
@@ -868,14 +869,8 @@ namespace CrashEdit.CE.Controls
             }
 
             var targetRow = grdTextures.Rows[targetRowIndex];
-            string? targetClutX = targetRow.Cells[ColClutX].Value?.ToString();
-            string? targetClutY = targetRow.Cells[ColClutY].Value?.ToString();
-            string? editedCellTag = targetRow.Cells[ColStart].Tag?.ToString();
 
             if (targetRowIndex < 0 || targetRowIndex >= model.Textures.Count)
-                return;
-
-            if (string.IsNullOrEmpty(targetClutX) || string.IsNullOrEmpty(targetClutY))
                 return;
 
             Stopwatch stopwatch = Stopwatch.StartNew();
@@ -884,8 +879,12 @@ namespace CrashEdit.CE.Controls
             await Task.Run(() =>
             {
                 var filteredRows = grdTextures.Rows.Cast<DataGridViewRow>()
-                    .Where(row => row.Cells[ColClutX].Value?.ToString() == targetClutX &&
-                                  row.Cells[ColClutY].Value?.ToString() == targetClutY);
+                     .Where(row =>
+                    {
+                        var cell = row.Cells[0];
+                        return cell.Tag is string tags && tags.Contains(editedCellTag);
+                    })
+                    .ToList();
 
                 Parallel.ForEach(filteredRows, row =>
                 {
