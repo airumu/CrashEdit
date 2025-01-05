@@ -601,6 +601,7 @@ namespace CrashEdit.CE.Controls
             cmdLoadTexture.Size = new Size(75, 23);
             cmdLoadTexture.TabIndex = 10;
             cmdLoadTexture.Text = "Load";
+            cmdLoadTexture.Visible = false;
             cmdLoadTexture.Click += cmdLoadTexture_Click;
             // 
             // fraReplaceTexture

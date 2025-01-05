@@ -1093,7 +1093,7 @@ namespace CrashEdit.CE.Controls
             tbpColors.Enter -= tbpColors_Enter;
         }
 
-        private void tbpTextures_Enter(object sender, EventArgs e)
+        private async void tbpTextures_Enter(object sender, EventArgs e)
         {
             tipReloadTPage = new DarkToolTip();
             tipReloadTPage.SetToolTip(rbtReloadTPage, "Reload");
@@ -1101,10 +1101,7 @@ namespace CrashEdit.CE.Controls
             EnableDoubleBuffering();
             CreateTextureListColumns();
             UpdateTPageList();
-
-            BGRAMode = true;
-            replaceCLUT = true;
-
+            await UpdateTextureListAsync(true);
             if (grdTextures.Rows.Count > 0)
             {
                 UpdateTPageButtons();
@@ -1112,6 +1109,9 @@ namespace CrashEdit.CE.Controls
                 fraReplace.Enabled = true;
                 fraReplaceTexture.Enabled = true;
             }
+
+            BGRAMode = true;
+            replaceCLUT = true;
 
             numReplaceTo.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
 
@@ -1143,24 +1143,22 @@ namespace CrashEdit.CE.Controls
                     }
                 }
             }
-
-            UpdateTPageButtons();
         }
 
         private void UpdateTPageButtons()
         {
-            if (model.TPAGCount > 7 || model.TPAGCount == 0)
-                cmdAppendTPage.Enabled = false;
-            else
-                cmdAppendTPage.Enabled = true;
-
-            if (model.TPAGCount == 0)
-                cmdRemoveTPage.Enabled = false;
-            else
-                cmdRemoveTPage.Enabled = true;
-
             if (grdTextures.Rows.Count > 0)
             {
+                if (model.TPAGCount > 7 || model.TPAGCount == 0)
+                    cmdAppendTPage.Enabled = false;
+                else
+                    cmdAppendTPage.Enabled = true;
+
+                if (model.TPAGCount == 0)
+                    cmdRemoveTPage.Enabled = false;
+                else
+                    cmdRemoveTPage.Enabled = true;
+
                 int maxIndex = 0;
                 foreach (DataGridViewRow row in grdTextures.Rows)
                 {
