@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Globalization;
-using System.Windows.Media.TextFormatting;
 using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
@@ -25,6 +23,9 @@ namespace CrashEdit.CE.Controls
         private Rectangle selectedregion;
 
         private DarkToolTip tipReloadTPage;
+
+        private CancellationTokenSource _debounceTokenSource;
+        private const int DebounceDelay = 50;
 
         private bool isScenery;
         private bool globalControlMode;
@@ -1194,6 +1195,32 @@ namespace CrashEdit.CE.Controls
             model.Colors[i] = updatedColor;
         }
 
+        private void OnValueChanged(bool isAll)
+        {
+            OnValueChanged(isAll, Color.Empty);
+        }
+
+        private void OnValueChanged(bool isAll, Color clr)
+        {
+            _debounceTokenSource?.Cancel();
+
+            _debounceTokenSource = new CancellationTokenSource();
+
+            Task.Delay(DebounceDelay).ContinueWith(t =>
+            {
+                if (!_debounceTokenSource.Token.IsCancellationRequested)
+                {
+                    Invoke(new Action(() =>
+                    {
+                        if (isAll)
+                            UpdateAllColors();
+                        else
+                            UpdateSelectedColor(clr);
+                    }));
+                }
+            }, _debounceTokenSource.Token);
+        }
+
         private void UpdateSelectedColor(Color clr)
         {
             if (lstColor.SelectedItems.Count <= 0)
@@ -1298,27 +1325,33 @@ namespace CrashEdit.CE.Controls
             pnSliders.Enabled = true;
             Color color = GetSelectedItemColor();
             colorEditor.Color = color;
-            colorWheel.Color = color;
-            picPreview.BackColor = color;
+            var hslColor = colorEditor.HslColor;
+            if (hslColor.S == 0)
+            {
+                hslColor.H = 180F;
+                colorEditor.HslColor = hslColor;
+            }
+            //colorWheel.Color = color;
+            //picPreview.BackColor = color;
         }
 
         private void colorEditor_ColorChanged(object sender, EventArgs e)
         {
             if (!globalControlMode)
-                UpdateSelectedColor(colorEditor.Color);
+                OnValueChanged(false, colorEditor.Color);
         }
 
         private void colorWheel_ColorChanged(object sender, EventArgs e)
         {
             if (!globalControlMode)
-                UpdateSelectedColor(colorWheel.Color);
+                OnValueChanged(false, colorWheel.Color);
         }
 
         private void hueColorSlider_ValueChangedHandler(object sender, EventArgs e)
         {
             if (hueColorSlider.Focused)
             {
-                UpdateAllColors();
+                OnValueChanged(true);
             }
         }
 
@@ -1326,7 +1359,7 @@ namespace CrashEdit.CE.Controls
         {
             if (saturationColorSlider.Focused)
             {
-                UpdateAllColors();
+                OnValueChanged(true);
             }
         }
 
@@ -1334,7 +1367,7 @@ namespace CrashEdit.CE.Controls
         {
             if (lightnessColorSlider.Focused)
             {
-                UpdateAllColors();
+                OnValueChanged(true);
             }
         }
 
