@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Globalization;
+using System.Windows.Media.TextFormatting;
 using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
@@ -568,7 +569,7 @@ namespace CrashEdit.CE.Controls
             }
         }
 
-        private void GetMaxValue(int rowIndex, int columnIndex, out int minValue, out int maxValue, out bool isMaxCell)
+        private void GetMaxValue(int rowIndex, int columnIndex, int newValue, out int minValue, out int maxValue, out bool isMaxCell)
         {
             isMaxCell = grdTextures.Rows[rowIndex].Cells[columnIndex].Style == maxValueStyle;
             maxValue = 0; minValue = 0;
@@ -583,15 +584,33 @@ namespace CrashEdit.CE.Controls
                 maxValue = 127;
             // X (Left)
             else if (columnIndex == ColLeft)
-                maxValue = (256 << (2 - currentColorMode)) - (int)grdTextures.Rows[rowIndex].Cells[ColWidth].Value;
+            {
+                int width = (int)grdTextures.Rows[rowIndex].Cells[ColWidth].Value;
+                GetXOff(currentColorMode, newValue, out int xoffUnit, out int segment, out int xoff);
+
+                int pw = 256 << (2 - currentColorMode);
+                if (newValue >= (isMaxCell ? pw + width : pw))
+                {
+                    maxValue = isMaxCell ? pw : pw - width;
+                    return;
+                }
+
+                int xoffEnd = xoff + xoffUnit;
+                maxValue = xoffEnd - width;
+                Console.WriteLine($"Segment {segment}, maxValue {maxValue}");
+            }
             // Y (Top)
             else if (columnIndex == ColTop)
                 maxValue = 128 - (int)grdTextures.Rows[rowIndex].Cells[ColHeight].Value;
             // Width
             else if (columnIndex == ColWidth)
             {
-                maxValue = 1024 - (int)grdTextures.Rows[rowIndex].Cells[ColLeft].Value;
+                int value = (int)grdTextures.Rows[rowIndex].Cells[ColLeft].Value;
+                GetXOff(currentColorMode, value, out int xoffUnit, out int segment, out int xoff);
+
+                maxValue = xoffUnit - (value - xoff);
                 minValue = 4;
+                Console.WriteLine($"Segment {segment}, maxValue {maxValue}");
             }
             // Height
             else if (columnIndex == ColHeight)
@@ -607,7 +626,30 @@ namespace CrashEdit.CE.Controls
                 maxValue = 2;
             // X1-X4
             else if (columnIndex >= ColX1 && columnIndex <= ColX4)
-                maxValue = (256 << (2 - currentColorMode)) - (int)(isMaxCell ? 0 : grdTextures.Rows[rowIndex].Cells[ColWidth].Value);
+            {
+                int width = (int)grdTextures.Rows[rowIndex].Cells[ColWidth].Value;
+                GetXOff(currentColorMode, isMaxCell ? newValue - width : newValue, out int xoffUnit, out int segment, out int xoff);
+                int xoffEnd = xoff + xoffUnit;
+
+                int pw = 256 << (2 - currentColorMode);
+                if (newValue >= (isMaxCell ? pw + width : pw))
+                {
+                    maxValue = isMaxCell ? pw : pw - width;
+                    return;
+                }
+
+                if (isMaxCell)
+                {
+                    maxValue = xoffEnd;
+                    minValue = xoff + width;
+                }
+                else
+                {
+                    maxValue = xoffEnd - width;
+                    minValue = xoff;
+                }
+                Console.WriteLine($"Segment {segment}, minValue {minValue}, maxValue {maxValue}");
+            }
             // Y1-Y4
             else if (columnIndex >= ColY1 && columnIndex <= ColY4)
                 maxValue = 128 - (int)(isMaxCell ? 0 : grdTextures.Rows[rowIndex].Cells[ColHeight].Value);
@@ -616,12 +658,15 @@ namespace CrashEdit.CE.Controls
 
         private void grdTextures_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
-            GetMaxValue(e.RowIndex, e.ColumnIndex, out int minValue, out int maxValue, out bool isMaxCell);
             if (int.TryParse(e.FormattedValue.ToString(), out int newValue))
             {
+                GetMaxValue(e.RowIndex, e.ColumnIndex, newValue, out int minValue, out int maxValue, out bool isMaxCell);
                 if (newValue > maxValue)
                 {
-                    DarkMessageBox.ShowError($"The value must be less than or equal to {maxValue}.", "Input Error");
+                    if (e.ColumnIndex >= ColLeft && e.ColumnIndex <= ColHeight)
+                        DarkMessageBox.ShowError($"The UV does not fit within the segment. The value must be less than or equal to {maxValue}.", "Input Error");
+                    else
+                        DarkMessageBox.ShowError($"The value must be less than or equal to {maxValue}.", "Input Error");
                     e.Cancel = true;
                 }
                 else if (newValue < minValue)
@@ -646,11 +691,14 @@ namespace CrashEdit.CE.Controls
                 var row = grdTextures.Rows[rowIndex];
                 string? editedCellTag = grdTextures.SelectedCells[0].Tag?.ToString();
 
-                GetMaxValue(rowIndex, columnIndex, out int minValue, out int maxValue, out bool isMaxCell);
                 int newValue = (int)numReplaceTo.Value;
+                GetMaxValue(rowIndex, columnIndex, newValue, out int minValue, out int maxValue, out bool isMaxCell);
                 if (newValue > maxValue)
                 {
-                    DarkMessageBox.ShowError($"The value must be less than or equal to {maxValue}.", "Input Error");
+                    if (columnIndex >= ColLeft && columnIndex <= ColHeight)
+                        DarkMessageBox.ShowError($"The UV does not fit within the segment. The value must be less than or equal to {maxValue}.", "Input Error");
+                    else
+                        DarkMessageBox.ShowError($"The value must be less than or equal to {maxValue}.", "Input Error");
                     return;
                 }
 
@@ -677,6 +725,10 @@ namespace CrashEdit.CE.Controls
                         return;
                     }
                     await UpdateRowsXYAsync(rowIndex, newValue, newValue + (int)row.Cells[ColHeight].Value, false, editedCellTag);
+                }
+                else if (columnIndex == ColColorMode)
+                {
+                    await UpdateRowsColorModeAsync(rowIndex, newValue, editedCellTag);
                 }
                 else
                 {
@@ -712,6 +764,10 @@ namespace CrashEdit.CE.Controls
                     {
                         await UpdateRowsXYAsync(e.RowIndex, (int)editedRow.Cells[ColTop].Value, (int)editedRow.Cells[ColTop].Value + newValue, false, editedCellTag);
                     }
+                    else if (e.ColumnIndex == ColColorMode)
+                    {
+                        await UpdateRowsColorModeAsync(e.RowIndex, newValue, editedCellTag);
+                    }
                     else
                     {
                         await UpdateCellsByTagAsync(e.ColumnIndex, e.ColumnIndex, newValue, editedCellTag);
@@ -737,10 +793,9 @@ namespace CrashEdit.CE.Controls
             {
                 for (int col = startColumn; col <= endColumn; col++)
                 {
-                    var cell = row.Cells[col];
-                    if (Settings.Default.OutputModelTextureInfo && cell.Tag is string tags)
+                    row.Cells[col].Value = newValue;
+                    if (Settings.Default.OutputModelTextureInfo)
                         Console.WriteLine($"Tags match in row {row.Index}");
-                    cell.Value = newValue;
                 }
             }
 
@@ -751,9 +806,9 @@ namespace CrashEdit.CE.Controls
             Console.WriteLine($"Processing time: {stopwatch.Elapsed.TotalSeconds:F3} seconds");
         }
 
-        private void GetXOff(int colorMode, int value, out int segment, out int xoff)
+        private void GetXOff(int colorMode, int value, out int xoffUnit, out int segment, out int xoff)
         {
-            int xoffUnit = (1 << (2 - colorMode)) * 64;
+            xoffUnit = (1 << (2 - colorMode)) * 64;
             segment = value / xoffUnit;
             xoff = xoffUnit * segment;
         }
@@ -811,18 +866,19 @@ namespace CrashEdit.CE.Controls
                 else if (e.ColumnIndex == ColX3) og.X3 = value;
                 else if (e.ColumnIndex == ColX4) og.X4 = value;
 
-                int segment, xoff;
-                GetXOff(colorMode, value, out segment, out xoff);
+                GetXOff(colorMode, value - 1, out int xoffUnit, out int segment, out int xoff);
                 int newU = value - xoff;
 
                 if (item.Cells[e.ColumnIndex].Style == maxValueStyle)
+                {
                     newU--;
+                    og.Segment = (byte)segment;
+                }
 
                 if (e.ColumnIndex == ColX1) og.U1 = (byte)newU;
                 else if (e.ColumnIndex == ColX2) og.U2 = (byte)newU;
                 else if (e.ColumnIndex == ColX3) og.U3 = (byte)newU;
                 else if (e.ColumnIndex == ColX4) og.U4 = (byte)newU;
-                og.Segment = (byte)segment;
             }
             // Y1-Y4
             else if (e.ColumnIndex >= ColY1 && e.ColumnIndex <= ColY4)
@@ -837,7 +893,9 @@ namespace CrashEdit.CE.Controls
                 int newV = value;
 
                 if (item.Cells[e.ColumnIndex].Style == maxValueStyle)
+                {
                     newV--;
+                }
 
                 if (e.ColumnIndex == ColY1) og.V1 = (byte)newV;
                 else if (e.ColumnIndex == ColY2) og.V2 = (byte)newV;
@@ -846,8 +904,11 @@ namespace CrashEdit.CE.Controls
             }
         }
 
-        private async Task UpdateRowsXYAsync(int targetRowIndex, int newMinUV, int newMaxUV, bool targetIsX, string editedCellTag)
+        private async Task UpdateRowsXYAsync(int rowIndex, int newMinUV, int newMaxUV, bool targetIsX, string editedCellTag)
         {
+            if (rowIndex < 0 || rowIndex >= model.Textures.Count)
+                return;
+
             int Col1, Col2, Col3, Col4, ColStart, ColLength;
             if (targetIsX)
             {
@@ -868,11 +929,8 @@ namespace CrashEdit.CE.Controls
                 ColLength = ColHeight;
             }
 
-            var targetRow = grdTextures.Rows[targetRowIndex];
-
-            if (targetRowIndex < 0 || targetRowIndex >= model.Textures.Count)
-                return;
-
+            var targetRow = grdTextures.Rows[rowIndex];
+   
             Stopwatch stopwatch = Stopwatch.StartNew();
             var updatedRows = new ConcurrentBag<(int RowIndex, int UV1, int UV2, int UV3, int UV4)>();
 
@@ -943,6 +1001,90 @@ namespace CrashEdit.CE.Controls
             stopwatch.Stop();
             Console.WriteLine($"Processing time: {stopwatch.Elapsed.TotalSeconds:F3} seconds");
         }
+
+        private async Task UpdateRowsColorModeAsync(int rowIndex, int newValue, string editedCellTag)
+        {
+            if (rowIndex < 0 || rowIndex >= model.Textures.Count)
+                return;
+
+            var targetRow = grdTextures.Rows[rowIndex];
+            int oldColorMode = Convert.ToInt32(targetRow.Cells[ColColorMode].Value);
+
+            Stopwatch stopwatch = Stopwatch.StartNew();
+
+            var updatedRows = await Task.Run(() =>
+            {
+                var result = new ConcurrentBag<(DataGridViewRow Row, int[] UpdatedValues, int newLeft)>();
+
+                var filteredRows = grdTextures.Rows.Cast<DataGridViewRow>()
+                    .Where(row =>
+                    {
+                        var cell = row.Cells[0];
+                        return cell.Tag is string tags && tags.Contains(editedCellTag);
+                    })
+                    .ToList();
+
+                Parallel.ForEach(filteredRows, row =>
+                {
+                    var texture = model.Textures[row.Index];
+                    int newLeft = newLeft = Convert.ToInt32(row.Cells[ColLeft].Value);
+                    bool trimed = false;
+
+                    var updatedValues = new int[(isScenery ? ColX4 : ColX3) - ColX1 + 1];
+
+                    if ((int)row.Cells[ColLeft].Value + (int)row.Cells[ColWidth].Value > (256 << (2 - newValue)))
+                    {
+                        newLeft = (256 << (2 - newValue)) - Convert.ToInt32(row.Cells[ColWidth].Value);
+                        trimed = true;
+                    }
+
+                    for (int i = ColX1; i <= (isScenery ? ColX4 : ColX3); i++)
+                    {
+                        int value = Convert.ToInt32(row.Cells[i].Value);
+                        if (trimed)
+                        {
+                            value = newLeft;
+                            if (row.Cells[i].Style == maxValueStyle)
+                            {
+                                value += (int)row.Cells[ColWidth].Value;
+                            }
+                        }
+                        updatedValues[i - ColX1] = value;
+                    }
+
+                    result.Add((row, updatedValues, newLeft));
+                });
+
+                return result;
+            });
+
+            grdTextures.Invoke(() =>
+            {
+                foreach (var (row, updatedValues, newLeft) in updatedRows)
+                {
+                    for (int i = ColX1; i <= (isScenery ? ColX4 : ColX3); i++)
+                    {
+                        row.Cells[i].Value = updatedValues[i - ColX1];
+                    }
+
+                    row.Cells[ColLeft].Value = newLeft;
+                    //model.Textures[row.Index].Left = newLeft;
+
+                    row.Cells[ColColorMode].Value = Convert.ToByte(newValue);
+
+                    if (Settings.Default.OutputModelTextureInfo)
+                        Console.WriteLine($"Tags match in row {row.Index}");
+                }
+            });
+
+            if (Settings.Default.OutputModelTextureInfo)
+                Console.WriteLine($"Finished updating cells with tag: {editedCellTag}");
+
+            stopwatch.Stop();
+            Console.WriteLine($"Processing time: {stopwatch.Elapsed.TotalSeconds:F3} seconds");
+        }
+
+
 
         private void tbpColors_Enter(object sender, EventArgs e)
         {
