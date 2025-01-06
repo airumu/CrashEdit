@@ -12,6 +12,11 @@ namespace CrashEdit.CE.Controls
 
         private bool globalControlMode;
         private int editMode;
+        private int modeCLUT = 0;
+        private int modeSelectedCells = 1;
+
+        private int editStartRow;
+        private int editEndRow;
 
         private double MasterHue => colorEditorGlobal.HslColor.H;
         private double MasterSaturation => colorEditorGlobal.HslColor.S;
@@ -220,57 +225,66 @@ namespace CrashEdit.CE.Controls
 
         private void UpdateAllColors()
         {
-            if (globalControlMode)
+            if (!globalControlMode) return;
+
+            grdCLUT.SuspendLayout();
+            if (editMode == modeCLUT)
             {
-                grdCLUT.SuspendLayout();
-                if (editMode == 0)
+                int startRow = (int)numClutX1.Value + (int)numClutY1.Value * 16;
+                int endRow = (int)numClutX2.Value + (int)numClutY2.Value * 16;
+
+                if (startRow == 0)
+                    startRow++;
+
+                editStartRow = startRow;
+                editEndRow = endRow;
+
+                for (int row = startRow; row <= endRow; row++)
                 {
-                    int startRow = (int)numClutX1.Value + (int)numClutY1.Value * 16;
-                    int endRow = (int)numClutX2.Value + (int)numClutY2.Value * 16;
-
-                    if (startRow == 0)
-                        startRow++;
-
-                    for (int row = startRow; row <= endRow; row++)
+                    for (int col = 1; col <= 16; col++)
                     {
-                        for (int col = 1; col <= 16; col++)
-                        {
-                            var cell = grdCLUT.Rows[row].Cells[col];
+                        var cell = grdCLUT.Rows[row].Cells[col];
 
-                            Color itemColor = LoadColorFromValue(cell);
-                            Color newColor = GetColor(itemColor);
+                        Color itemColor = LoadColorFromValue(cell);
+                        Color newColor = GetColor(itemColor);
 
-                            ushort rgba5551 = TextureConv.ConvertToRGBA5551(newColor.B, newColor.G, newColor.R, newColor.A);
-                            byte[] convertedPalette = BitConverter.GetBytes(rgba5551);
+                        ushort rgba5551 = TextureConv.ConvertToRGBA5551(newColor.B, newColor.G, newColor.R, newColor.A);
+                        byte[] convertedPalette = BitConverter.GetBytes(rgba5551);
 
-                            int offset = (int)cell.Tag;
-                            Array.Copy(convertedPalette, 0, chunk.Data, offset, 2);
+                        int offset = (int)cell.Tag;
+                        Array.Copy(convertedPalette, 0, chunk.Data, offset, 2);
 
-                            cell.Style.BackColor = newColor;
-                        }
+                        cell.Style.BackColor = newColor;
                     }
                 }
-                else
-                {
-                    foreach (DataGridViewCell cell in grdCLUT.SelectedCells)
-                    {
-                        if (grdCLUT.SelectedCells.Count > 0 && cell.RowIndex > 0 && cell.ColumnIndex > 0)
-                        {
-                            Color itemColor = LoadColorFromValue(cell);
-                            Color newColor = GetColor(itemColor);
-
-                            ushort rgba5551 = TextureConv.ConvertToRGBA5551(newColor.B, newColor.G, newColor.R, newColor.A);
-                            byte[] convertedPalette = BitConverter.GetBytes(rgba5551);
-
-                            int offset = (int)cell.Tag;
-                            Array.Copy(convertedPalette, 0, chunk.Data, offset, 2);
-
-                            cell.Style.BackColor = newColor;
-                        }
-                    }
-                }
-                grdCLUT.ResumeLayout();
             }
+            else
+            {
+                foreach (DataGridViewCell cell in grdCLUT.SelectedCells)
+                {
+                    if (grdCLUT.SelectedCells.Count > 0 && cell.RowIndex > 0 && cell.ColumnIndex > 0)
+                    {
+                        if (cell.RowIndex <= editStartRow)
+                            editStartRow = cell.RowIndex;
+                        if (cell.RowIndex >= editEndRow)
+                            editEndRow = cell.RowIndex;
+
+                        Color itemColor = LoadColorFromValue(cell);
+                        Color newColor = GetColor(itemColor);
+
+                        ushort rgba5551 = TextureConv.ConvertToRGBA5551(newColor.B, newColor.G, newColor.R, newColor.A);
+                        byte[] convertedPalette = BitConverter.GetBytes(rgba5551);
+
+                        int offset = (int)cell.Tag;
+                        Array.Copy(convertedPalette, 0, chunk.Data, offset, 2);
+
+                        cell.Style.BackColor = newColor;
+                        
+                    }
+                }
+            }
+            //Console.WriteLine($"{editStartRow}, {editEndRow}");
+            grdCLUT.ResumeLayout();
         }
 
         private void UpdateSelectedColor(Color color)
@@ -331,9 +345,7 @@ namespace CrashEdit.CE.Controls
         private void ApplyChanges()
         {
             grdCLUT.SuspendLayout();
-            int startRow = (int)numClutX1.Value + (int)numClutY1.Value * 16;
-            int endRow = (int)numClutX2.Value + (int)numClutY2.Value * 16;
-            for (int row = startRow; row <= endRow; row++)
+            for (int row = editStartRow; row <= editEndRow; row++)
             {
                 for (int col = 1; col <= 16; col++)
                 {
@@ -359,18 +371,18 @@ namespace CrashEdit.CE.Controls
 
         private void CLUTBox_Leave(object sender, EventArgs e)
         {
-            if (globalControlMode)
-            {
-                if (DarkMessageBox.ShowWarning("The changes have not been saved. Do you want to apply them?", "Global Controller", DarkDialogButton.YesNo) == DialogResult.Yes)
-                {
-                    ApplyChanges();
-                    tglGlobalControl.Switched = false;
-                }
-                else
-                {
-                    tglGlobalControl.Switched = false;
-                }
-            }
+            //if (globalControlMode)
+            //{
+            //    if (DarkMessageBox.ShowWarning("The changes have not been saved. Do you want to apply them?", "Global Controller", DarkDialogButton.YesNo) == DialogResult.Yes)
+            //    {
+            //        ApplyChanges();
+            //        tglGlobalControl.Switched = false;
+            //    }
+            //    else
+            //    {
+            //        tglGlobalControl.Switched = false;
+            //    }
+            //}
         }
 
         private void grdCLUT_SelectionChanged(object sender, EventArgs e)
@@ -385,7 +397,7 @@ namespace CrashEdit.CE.Controls
             {
                 colorEditor.Color = grdCLUT.SelectedCells[0].Style.BackColor;
 
-                if (editMode == 0)
+                if (editMode == modeCLUT)
                 {
                     var rowIndices = grdCLUT.SelectedCells
                                               .Cast<DataGridViewCell>()
@@ -425,17 +437,24 @@ namespace CrashEdit.CE.Controls
                 ResetColorList();
                 ResetColorSliders();
             }
+            ResetEditRows();
+        }
+
+        private void ResetEditRows()
+        {
+            editStartRow = grdCLUT.RowCount - 1;
+            editEndRow = 0;
         }
 
         private void ResetColorSliders()
         {
+            dirty = true;
+
             var hslColor = colorEditorGlobal.HslColor;
             hslColor.H = 180;
             hslColor.S = 0.5;
             hslColor.L = 0.5;
             colorEditorGlobal.HslColor = hslColor;
-
-            dirty = true;
         }
 
         private void ResetColorList()
@@ -511,7 +530,7 @@ namespace CrashEdit.CE.Controls
             if (radioButton != null && radioButton.Checked)
                 radioButton.Checked = false;
 
-            editMode = 0;
+            editMode = modeCLUT;
             pnCLUT.Enabled = true;
             UpdateNumricValues();
             ResetColorSliders();
@@ -524,7 +543,7 @@ namespace CrashEdit.CE.Controls
             if (radioButton != null && radioButton.Checked)
                 radioButton.Checked = false;
 
-            editMode = 1;
+            editMode = modeSelectedCells;
             pnCLUT.Enabled = false;
             ResetColorSliders();
         }
