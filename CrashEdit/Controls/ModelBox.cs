@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Globalization;
+using System.Windows.Forms;
 using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
@@ -361,7 +362,7 @@ namespace CrashEdit.CE.Controls
             var rows = await Task.Run(() =>
             {
                 var rowsToAdd = new ConcurrentBag<(int Index, DataGridViewRow Row)>();
-                
+
                 Parallel.ForEach(Enumerable.Range(0, (int)model.Textures.Count), (int i) =>
                 {
                     var item = model.Textures[i];
@@ -928,7 +929,7 @@ namespace CrashEdit.CE.Controls
             }
 
             var targetRow = grdTextures.Rows[rowIndex];
-   
+
             Stopwatch stopwatch = Stopwatch.StartNew();
             var updatedRows = new ConcurrentBag<(int RowIndex, int UV1, int UV2, int UV3, int UV4)>();
 
@@ -1101,12 +1102,14 @@ namespace CrashEdit.CE.Controls
             if (grdTextures.Rows.Count > 0)
             {
                 UpdateTPageButtons();
-                fraSwitches.Enabled = true;
-                fraReplace.Enabled = true;
+                fraSwitches.Enabled =
+                fraReplace.Enabled =
                 fraReplaceTexture.Enabled = true;
+                trkPictureSize.Visible = true;
+                pnPicture.AutoScroll = true;
             }
 
-            BGRAMode = true;
+            BGRAMode =
             replaceCLUT = true;
 
             numReplaceTo.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
@@ -1497,10 +1500,23 @@ namespace CrashEdit.CE.Controls
                 selectedRegionY = y;
             }
             pictureBox1.Image = bitmap;
-            pictureBox1.Size = bitmap.Size;
-            Width = 1024 + 32;
+
+            float zoom = trkPictureSize.Value / 100f;
+            pictureBox1.Width = (int)(pictureBox1.Image.Width * zoom);
+            pictureBox1.Height = (int)(pictureBox1.Image.Height * zoom);
 
             currentColorMode = colormode;
+        }
+
+        private void trkPictureSize_ValueChanged(object sender, EventArgs e)
+        {
+            if (pictureBox1.Image != null)
+            {
+                float zoom = trkPictureSize.Value / 100f;
+                pictureBox1.Width = (int)(pictureBox1.Image.Width * zoom);
+                pictureBox1.Height = (int)(pictureBox1.Image.Height * zoom);
+                pictureBox1.Invalidate();
+            }
         }
 
         private void tglSimpleMode_SwitchedChanged(object sender)

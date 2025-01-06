@@ -84,7 +84,7 @@ namespace CrashEdit.CE.Controls
             grdCLUT.RowHeadersWidth = 24;
             grdCLUT.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             grdCLUT.ScrollBars = ScrollBars.Vertical;
-            grdCLUT.Size = new Size(538, 600);
+            grdCLUT.Size = new Size(538, 598);
             grdCLUT.TabIndex = 0;
             grdCLUT.CellPainting += grdCLUT_CellPainting;
             grdCLUT.SelectionChanged += grdCLUT_SelectionChanged;
@@ -137,7 +137,7 @@ namespace CrashEdit.CE.Controls
             fraGlobalControl.Controls.Add(pnGlobalControl);
             fraGlobalControl.Controls.Add(tglGlobalControl);
             fraGlobalControl.Enabled = false;
-            fraGlobalControl.Location = new Point(544, 301);
+            fraGlobalControl.Location = new Point(544, 305);
             fraGlobalControl.Name = "fraGlobalControl";
             fraGlobalControl.Size = new Size(297, 278);
             fraGlobalControl.TabIndex = 8;
@@ -384,7 +384,7 @@ namespace CrashEdit.CE.Controls
             // 
             fraSlider.Controls.Add(pnSliders);
             fraSlider.Enabled = false;
-            fraSlider.Location = new Point(544, 85);
+            fraSlider.Location = new Point(544, 89);
             fraSlider.Name = "fraSlider";
             fraSlider.Size = new Size(297, 210);
             fraSlider.TabIndex = 9;
