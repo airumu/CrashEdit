@@ -379,7 +379,7 @@ namespace CrashEdit.CE
 
         private void C2SizeMax_Click(object sender, EventArgs e)
         {
-            C2numW.Value = 1024;
+            C2numW.Value = 256 << (2 - TexColorMode);
             C2numH.Value = 128;
             UpdatePicture();
         }
@@ -417,10 +417,8 @@ namespace CrashEdit.CE
         private void C2btnMoveX2_Click(object sender, EventArgs e)
         {
             int arg = (int)C2numShiftX.Value;
-            if ((int)C2numX.Value < 1023 - arg)
+            if ((int)C2numX.Value < (256 << (2 - TexColorMode)) - 1 - arg)
                 C2numX.Value += arg;
-            /*            else
-                            C2numX.Value = 1023;*/
         }
 
         private void C2btnMoveY1_Click(object sender, EventArgs e)
@@ -437,8 +435,6 @@ namespace CrashEdit.CE
             int arg = (int)C2numShiftY.Value;
             if ((int)C2numY.Value < 127 - arg)
                 C2numY.Value += arg;
-            /*            else
-                            C2numY.Value = 127;*/
         }
 
         private void splitContainer1_GotFocus(object sender, EventArgs e)
@@ -448,9 +444,9 @@ namespace CrashEdit.CE
 
         private void cmdReplace_Click(object sender, EventArgs e)
         {
-            if (C2dpdColor.SelectedIndex == 2)
+            if (TexColorMode == 2)
             {
-                DarkMessageBox.ShowError("Unsupported bpp.", "Texture replacement");
+                DarkMessageBox.ShowError("Unsupported color depth.", "Texture replacement");
                 return;
             }
             if ((int)C2numX.Value < 32 && (int)C2numY.Value == 0)
@@ -472,7 +468,7 @@ namespace CrashEdit.CE
                     int clutY = (int)C2numCY.Value;
 
                     int oldBpp = 4;
-                    if (C2dpdColor.SelectedIndex == 1)
+                    if (TexColorMode == 1)
                     {
                         oldBpp = 8;
                         destX *= 2;
@@ -498,16 +494,22 @@ namespace CrashEdit.CE
         private void tabControl1_KeyDown(object sender, KeyEventArgs e)
         {
             string basePath = basePath = Path.Combine(Path.GetTempPath(), "CrashEdit");
+            int currentBpp = (int)Math.Pow(2, TexColorMode + 2);
 
             if ((e.KeyCode == Keys.C || e.KeyCode == Keys.X) && e.Modifiers == Keys.Control)
             {
-                if (C2dpdColor.SelectedIndex == 2)
+                if (TexColorMode == 2)
                 {
-                    DarkMessageBox.ShowError("Unsupported bpp.", "Texture replacement");
+                    DarkMessageBox.ShowError("Unsupported color depth.", "Texture replacement");
+                    return;
+                }
+                else if ((int)C2numX.Value + (int)C2numW.Value > (256 << (2 - TexColorMode)) || (int)C2numY.Value + (int)C2numH.Value > 128)
+                {
+                    DarkMessageBox.ShowError("Textures cannot be copied outside the bounds.", "Texture replacement");
                     return;
                 }
 
-                var temp = TextureConv.CopyTexture(chunk.Data, (C2dpdColor.SelectedIndex + 1) * 4, (int)C2numX.Value, (int)C2numY.Value, (int)C2numW.Value, (int)C2numH.Value);
+                var temp = TextureConv.CopyTexture(chunk.Data, currentBpp, (int)C2numX.Value, (int)C2numY.Value, (int)C2numW.Value, (int)C2numH.Value);
                 tempTexture = temp.tempTexture;
                 tempWidth = temp.tempWidth;
                 tempHeight = temp.tempHeight;
@@ -523,7 +525,7 @@ namespace CrashEdit.CE
                 File.WriteAllLines(Path.Combine(basePath, "tempInfo"), tempInfo);
 
                 int length, offset;
-                if (C2dpdColor.SelectedIndex == 0)
+                if (TexColorMode == 0)
                 {
                     length = 0x20;
                     offset = (int)C2numCX.Value * 0x20 + (int)C2numCY.Value * 0x200;
@@ -557,16 +559,16 @@ namespace CrashEdit.CE
             }
             else if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
             {
-                if (C2dpdColor.SelectedIndex == 2)
+                if (TexColorMode == 2)
                 {
-                    DarkMessageBox.ShowError("Unsupported bpp.", "Texture replacement");
+                    DarkMessageBox.ShowError("Unsupported color depth.", "Texture replacement");
                     return;
                 }
 
                 string[] files = Directory.GetFiles(basePath);
                 if (!Directory.Exists(basePath) || files.Length != 3)
                 {
-                    Console.WriteLine("There is no texture in buffer.");
+                    DarkMessageBox.ShowError("There is no texture in buffer.", "Texture replacement");
                     return;
                 }
 
@@ -584,30 +586,39 @@ namespace CrashEdit.CE
                 tempHeight = restoredData[1];
                 tempBpp = restoredData[2];
 
+                bool failed = false;
                 if ((int)C2numX.Value < 32 && (int)C2numY.Value == 0)
                 {
                     DarkMessageBox.ShowError("Textures cannot be replaced on the header.", "Texture replacement");
-                    Console.WriteLine("Failed to paste texture.");
-                    return;
+                    failed = true;
                 }
-                else if ((int)C2numX.Value + tempWidth > 1024 || (int)C2numY.Value + tempHeight > 128)
+                else if ((int)C2numX.Value + tempWidth > (256 << (2 - TexColorMode)) || (int)C2numY.Value + tempHeight > 128)
                 {
                     DarkMessageBox.ShowError("Textures cannot be pasted outside the bounds.", "Texture replacement");
+                    failed = true;
+                }
+                else if (currentBpp != tempBpp)
+                {
+                    DarkMessageBox.ShowError("The color depth of the selected image differs from the current one.", "Texture replacement");
+                    failed = true;
+                }
+
+                if (failed)
+{
                     Console.WriteLine("Failed to paste texture.");
                     return;
                 }
-                else
-                {
-                    TextureConv.ReplaceTexture(tempTexture, chunk.Data, tempWidth, tempHeight, tempBpp, 0, 0, tempWidth, tempHeight, (int)C2numX.Value, (int)C2numY.Value, false);
-                    Console.WriteLine("Successfully pasted texture.");
-                }
+
+                TextureConv.ReplaceTexture(tempTexture, chunk.Data, tempWidth, tempHeight, tempBpp, 0, 0, tempWidth, tempHeight, (int)C2numX.Value, (int)C2numY.Value, false);
 
                 if (Settings.Default.OutputCopyTextureResult)
                     Console.WriteLine($"{tempWidth} x {tempHeight}, {tempBpp}bpp");
 
+                Console.WriteLine("Successfully pasted texture.");
+
                 if (replaceCLUT)
                 {
-                    chunk.Data = TextureConv.ReplaceClut(tempCLUT, chunk.Data, (C2dpdColor.SelectedIndex + 1) * 4, tempBpp, (int)C2numCX.Value, (int)C2numCY.Value);
+                    chunk.Data = TextureConv.ReplaceClut(tempCLUT, chunk.Data, currentBpp, tempBpp, (int)C2numCX.Value, (int)C2numCY.Value);
                 }
 
                 BitConv.ToInt32(chunk.Data, 12, Chunk.CalculateChecksum(chunk.Data));

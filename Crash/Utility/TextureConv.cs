@@ -156,7 +156,7 @@ namespace CrashEdit.Crash
             }
             else
             {
-                Console.WriteLine("Unsupported bpp.");
+                Console.WriteLine("Unsupported color depth.");
             }
 
             return destTexture;
@@ -204,7 +204,7 @@ namespace CrashEdit.Crash
             }
             else
             {
-                Console.WriteLine("Unsupported bpp.");
+                Console.WriteLine("Unsupported color depth.");
             }
 
             return (tempTexture, width, height, bpp);
