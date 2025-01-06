@@ -68,48 +68,6 @@ namespace CrashEdit.CE.Controls
             }
         }
 
-        private void SetDarkTheme(DataGridView dataGridView)
-        {
-            dataGridView.BackgroundColor = Color.FromArgb(31, 31, 32);
-
-            dataGridView.GridColor = Color.FromArgb(50, 50, 50);
-
-            dataGridView.DefaultCellStyle.BackColor = Color.FromArgb(40, 40, 40);
-            dataGridView.DefaultCellStyle.ForeColor = Color.White;
-            dataGridView.DefaultCellStyle.SelectionBackColor = Color.FromArgb(70, 70, 70);
-            dataGridView.DefaultCellStyle.SelectionForeColor = Color.White;
-
-            dataGridView.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(50, 50, 50);
-            dataGridView.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            dataGridView.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(60, 60, 60);
-            dataGridView.ColumnHeadersDefaultCellStyle.SelectionForeColor = Color.White;
-            dataGridView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-
-            dataGridView.RowHeadersDefaultCellStyle.BackColor = Color.FromArgb(50, 50, 50);
-            dataGridView.RowHeadersDefaultCellStyle.ForeColor = Color.White;
-            dataGridView.RowHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(60, 60, 60);
-            dataGridView.RowHeadersDefaultCellStyle.SelectionForeColor = Color.White;
-
-            dataGridView.RowsDefaultCellStyle.BackColor = Color.FromArgb(40, 40, 40);
-            dataGridView.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(30, 30, 30);
-
-            dataGridView.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-
-            dataGridView.EnableHeadersVisualStyles = false;
-
-            dataGridView.BorderStyle = BorderStyle.None;
-            dataGridView.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
-            dataGridView.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
-        }
-
-        private void EnableDoubleBuffering()
-        {
-            typeof(DataGridView).InvokeMember("DoubleBuffered",
-                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance |
-                System.Reflection.BindingFlags.SetProperty,
-                null, grdCLUT, new object[] { true });
-        }
-
         private void grdCLUT_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
             if (e.RowIndex >= 0 && e.ColumnIndex >= 1)
@@ -159,7 +117,7 @@ namespace CrashEdit.CE.Controls
                     var clut = cluts[i];
                     var row = new DataGridViewRow();
 
-                    while (row.Cells.Count < 17)
+                    while (row.Cells.Count < 16 + 1)
                     {
                         row.Cells.Add(new DataGridViewTextBoxCell());
                     }
@@ -560,5 +518,46 @@ namespace CrashEdit.CE.Controls
             ResetColorSliders();
         }
 
+        private void EnableDoubleBuffering()
+        {
+            typeof(DataGridView).InvokeMember("DoubleBuffered",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance |
+                System.Reflection.BindingFlags.SetProperty,
+                null, grdCLUT, new object[] { true });
+        }
+
+        private void SetDarkTheme(DataGridView dataGridView)
+        {
+            dataGridView.BackgroundColor = Color.FromArgb(31, 31, 32);
+
+            dataGridView.GridColor = Color.FromArgb(50, 50, 50);
+
+            dataGridView.DefaultCellStyle.BackColor = Color.FromArgb(40, 40, 40);
+            dataGridView.DefaultCellStyle.ForeColor = Color.White;
+            dataGridView.DefaultCellStyle.SelectionBackColor = Color.FromArgb(70, 70, 70);
+            dataGridView.DefaultCellStyle.SelectionForeColor = Color.White;
+
+            dataGridView.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(50, 50, 50);
+            dataGridView.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dataGridView.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(60, 60, 60);
+            dataGridView.ColumnHeadersDefaultCellStyle.SelectionForeColor = Color.White;
+            dataGridView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridView.RowHeadersDefaultCellStyle.BackColor = Color.FromArgb(50, 50, 50);
+            dataGridView.RowHeadersDefaultCellStyle.ForeColor = Color.White;
+            dataGridView.RowHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(60, 60, 60);
+            dataGridView.RowHeadersDefaultCellStyle.SelectionForeColor = Color.White;
+
+            dataGridView.RowsDefaultCellStyle.BackColor = Color.FromArgb(40, 40, 40);
+            dataGridView.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(30, 30, 30);
+
+            dataGridView.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+
+            dataGridView.EnableHeadersVisualStyles = false;
+
+            dataGridView.BorderStyle = BorderStyle.None;
+            dataGridView.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+            dataGridView.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+        }
     }
 }
