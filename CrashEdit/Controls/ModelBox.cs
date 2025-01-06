@@ -12,6 +12,11 @@ namespace CrashEdit.CE.Controls
 {
     public partial class ModelBox : UserControl
     {
+        DataGridViewCellStyle maxValueStyle = new DataGridViewCellStyle
+        {
+            ForeColor = Color.Turquoise
+        };
+
         //private ModelEntryController modelcontroller;
         //private ModelEntry model;
         //private SceneryEntryController scenerycontroller;
@@ -121,9 +126,42 @@ namespace CrashEdit.CE.Controls
             }
         }
 
-        private void UpdateColorList()
+        private async Task UpdateColorListAsync()
         {
-            if (!(lstColor.Items.Count > 0))
+            if (lstColor.Items.Count > 0) return;
+
+            int colorCount = model.Colors.Count;
+
+            if (isScenery)
+            {
+                var rows = await Task.Run(() =>
+                {
+                    var rowsToAdd = new List<(int Index, ListViewItem Row)>();
+
+                    Parallel.For(0, colorCount, i =>
+                    {
+                        var color = model.Colors[i];
+                        byte[] item = { color.Red, color.Green, color.Blue };
+
+                        ListViewItem lsi = new();
+                        lsi.Text = Convert.ToHexString(item);
+                        lsi.BackColor = Color.FromArgb(item[0], item[1], item[2]);
+                        lsi.ForeColor = getBrightness(lsi.BackColor) >= 0.5 ? Color.Black : Color.White;
+                        lsi.Tag = i;
+
+                        lsi.SubItems.Add(Convert.ToHexString(item)); // Original color
+                        lsi.SubItems.Add(Convert.ToHexString(item)); // Copy
+
+                        rowsToAdd.Add((i, lsi));
+                    });
+                    return rowsToAdd.OrderBy(pair => pair.Index).Select(pair => pair.Row).ToList();
+                });
+
+                lstColor.BeginUpdate();
+                lstColor.Items.AddRange(rows.ToArray());
+                lstColor.EndUpdate();
+            }
+            else
             {
                 int colorcount = model.Colors.Count;
                 for (int i = 0; i < colorcount; ++i)
@@ -134,31 +172,47 @@ namespace CrashEdit.CE.Controls
                     lsi.BackColor = Color.FromArgb(item[0], item[1], item[2]);
                     lsi.ForeColor = getBrightness(lsi.BackColor) >= 0.5 ? Color.Black : Color.White;
                     lsi.Tag = i;
-                    // SubItems[0] is the original color, SubItems[1] is the copy
-                    lsi.SubItems.Add(Convert.ToHexString(item));
-                    lsi.SubItems.Add(Convert.ToHexString(item));
+                    lsi.SubItems.Add(Convert.ToHexString(item)); // Original color
+                    lsi.SubItems.Add(Convert.ToHexString(item)); // Copy
                     lstColor.Items.Add(lsi);
                 }
             }
         }
 
-        private void ResetColorList()
+        private async Task ResetColorListAsync()
         {
-            for (int i = 0; i < lstColor.Items.Count; i++)
+            if (isScenery)
             {
-                byte[] item = StringToByteArray(lstColor.Items[i].SubItems[1].Text);
-                SetModelColor(Color.FromArgb(item[0], item[1], item[2]), i);
+                await Task.Run(() =>
+                {
+                    Parallel.For(0, lstColor.Items.Count, i =>
+                    {
+                        byte[] item = StringToByteArray(lstColor.Items[i].SubItems[1].Text);
+                        SetModelColor(Color.FromArgb(item[0], item[1], item[2]), i);
+                    });
+                });
             }
-            lstColor.Items.Clear();
-            UpdateColorList();
+            else
+            {
+                for (int i = 0; i < lstColor.Items.Count; i++)
+                {
+                    byte[] item = StringToByteArray(lstColor.Items[i].SubItems[1].Text);
+                    SetModelColor(Color.FromArgb(item[0], item[1], item[2]), i);
+                }
+            }
+            lstColor.Invoke(() => lstColor.Items.Clear());
+            await UpdateColorListAsync();
         }
 
         private void UpdateColorCopy()
         {
-            for (int i = 0; i < lstColor.Items.Count; i++)
+            lstColor.Invoke(() =>
             {
-                lstColor.Items[i].SubItems[1].Text = lstColor.Items[i].SubItems[0].Text;
-            }
+                for (int i = 0; i < lstColor.Items.Count; i++)
+                {
+                    lstColor.Items[i].SubItems[1].Text = lstColor.Items[i].SubItems[0].Text;
+                }
+            });
         }
 
         private void lstColor_DrawItem(object sender, DrawListViewItemEventArgs e)
@@ -181,7 +235,6 @@ namespace CrashEdit.CE.Controls
                 {
                     e.DrawText(flags);
                 }
-
             }
         }
 
@@ -279,11 +332,6 @@ namespace CrashEdit.CE.Controls
                 System.Reflection.BindingFlags.SetProperty,
                 null, grdTextures, new object[] { true });
         }
-
-        DataGridViewCellStyle maxValueStyle = new DataGridViewCellStyle
-        {
-            ForeColor = Color.Turquoise
-        };
 
         private void SetMaxValueTag(int start, int end)
         {
@@ -1085,12 +1133,10 @@ namespace CrashEdit.CE.Controls
             Console.WriteLine($"Processing time: {stopwatch.Elapsed.TotalSeconds:F3} seconds");
         }
 
-
-
-        private void tbpColors_Enter(object sender, EventArgs e)
+        private async void tbpColors_Enter(object sender, EventArgs e)
         {
             ResetColorSliders();
-            UpdateColorList();
+            await UpdateColorListAsync();
             tbpColors.Enter -= tbpColors_Enter;
         }
 
@@ -1277,7 +1323,7 @@ namespace CrashEdit.CE.Controls
         float getBrightness(Color c)
         { return (c.R * 0.299f + c.G * 0.587f + c.B * 0.114f) / 256f; }
 
-        private void tglGlobalControl_SwitchedChanged(object sender)
+        private async void tglGlobalControl_SwitchedChanged(object sender)
         {
             globalControlMode = tglGlobalControl.Switched;
             if (globalControlMode)
@@ -1292,7 +1338,7 @@ namespace CrashEdit.CE.Controls
                 pnGlobalControl.Enabled =
                 cmdApply.Enabled =
                 cmdCancel.Enabled = false;
-                ResetColorList();
+                await ResetColorListAsync();
                 ResetColorSliders();
             }
         }
