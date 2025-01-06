@@ -1,4 +1,5 @@
-﻿using AltUI.Forms;
+﻿using System.Collections.Concurrent;
+using AltUI.Forms;
 using CrashEdit.Crash;
 using MetroSet_UI.Controls;
 using Color = System.Drawing.Color;
@@ -124,7 +125,7 @@ namespace CrashEdit.CE.Controls
             }
         }
 
-        private void cmdLoadCLUT_Click(object sender, EventArgs e)
+        private async void cmdLoadCLUT_Click(object sender, EventArgs e)
         {
             grdCLUT.ClearSelection();
             numClutX1.Value =
@@ -150,41 +151,52 @@ namespace CrashEdit.CE.Controls
             byte[] data = chunk.Data;
             List<byte[]> cluts = GetCLUT(data, 0x20, (int)numLoadClut.Value);
 
-            foreach (byte[] clut in cluts)
+            var rows = await Task.Run(() =>
             {
-                int rowIndex = grdCLUT.Rows.Add();
-                var row = grdCLUT.Rows[rowIndex];
-
-                while (row.Cells.Count < 17)
+                var rowsToAdd = new ConcurrentBag<(int Index, DataGridViewRow Row)>();
+                Parallel.For(0, cluts.Count, i =>
                 {
-                    row.Cells.Add(new DataGridViewTextBoxCell());
-                }
+                    var clut = cluts[i];
+                    var row = new DataGridViewRow();
 
-                row.Cells[0].Value = $"X{rowIndex % 16}, Y{rowIndex / 16}";
-
-                for (int i = 0; i < 16; i++)
-                {
-                    if (i * 2 + 1 < clut.Length)
+                    while (row.Cells.Count < 17)
                     {
-                        short hexString = BitConverter.ToInt16(clut);
-                        row.Cells[i + 1].Tag = (i * 2) + (rowIndex * 32);
-
-                        ushort colorValue = BitConverter.ToUInt16(clut, i * 2);
-                        int r = (colorValue & 0x1F) << 3;
-                        int g = ((colorValue >> 5) & 0x1F) << 3;
-                        int b = ((colorValue >> 10) & 0x1F) << 3;
-                        Color color = Color.FromArgb(255, r, g, b);
-                        row.Cells[i + 1].Style.ForeColor = Color.Transparent;
-                        row.Cells[i + 1].Style.BackColor = color;
-                        row.Cells[i + 1].Value = ColorTranslator.ToHtml(color);
+                        row.Cells.Add(new DataGridViewTextBoxCell());
                     }
-                }
-            }
 
+                    row.Cells[0].Value = $"X{i % 16}, Y{i / 16}";
+
+                    for (int j = 0; j < 16; j++)
+                    {
+                        if (j * 2 + 1 < clut.Length)
+                        {
+                            short hexString = BitConverter.ToInt16(clut);
+                            row.Cells[j + 1].Tag = (j * 2) + (i * 32);
+
+                            ushort colorValue = BitConverter.ToUInt16(clut, j * 2);
+                            int r = (colorValue & 0x1F) << 3;
+                            int g = ((colorValue >> 5) & 0x1F) << 3;
+                            int b = ((colorValue >> 10) & 0x1F) << 3;
+                            Color color = Color.FromArgb(255, r, g, b);
+                            row.Cells[j + 1].Style.ForeColor = Color.Transparent;
+                            row.Cells[j + 1].Style.BackColor = color;
+                            row.Cells[j + 1].Value = ColorTranslator.ToHtml(color);
+                        }
+                    }
+
+                    rowsToAdd.Add((i, row));
+                });
+
+                return rowsToAdd.OrderBy(pair => pair.Index).Select(pair => pair.Row).ToList();
+            });
+
+            grdCLUT.Rows.AddRange(rows.ToArray());
             grdCLUT.ResumeLayout();
+
             fraSlider.Enabled =
             fraGlobalControl.Enabled = true;
         }
+
 
         private static List<byte[]> GetCLUT(byte[] source, int clutsize, int count)
         {
