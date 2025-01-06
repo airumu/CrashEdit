@@ -127,15 +127,15 @@ namespace CrashEdit.CE.Controls
 
         private async void cmdLoadCLUT_Click(object sender, EventArgs e)
         {
+            grdCLUT.SuspendLayout();
+
             grdCLUT.ClearSelection();
             numClutX1.Value =
             numClutX2.Value =
             numClutY1.Value =
             numClutY2.Value = 0;
+
             grdCLUT.Columns.Clear();
-
-            grdCLUT.SuspendLayout();
-
             grdCLUT.Columns.Add($"Clut", $"Clut");
             for (int i = 0; i < 16; i++)
             {

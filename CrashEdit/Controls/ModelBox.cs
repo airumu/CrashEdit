@@ -230,7 +230,10 @@ namespace CrashEdit.CE.Controls
                 if (isSelected)
                 {
                     //e.Graphics.FillRectangle(Brushes.LightBlue, e.Bounds);
-                    e.Graphics.DrawString(e.Item.Text, lstColor.Font, Brushes.White, e.Bounds, sf);
+                    using (Brush brush = new SolidBrush(e.Item.ForeColor))
+                    {
+                        e.Graphics.DrawString(e.Item.Text, lstColor.Font, brush, e.Bounds, sf);
+                    }
                 }
                 else
                 {
@@ -1422,7 +1425,7 @@ namespace CrashEdit.CE.Controls
             int TexW = Convert.ToInt32(cell.Cells[ColWidth].Value);
             int TexH = Convert.ToInt32(cell.Cells[ColHeight].Value);
             int colormode = Convert.ToInt32(cell.Cells[ColColorMode].Value);
-            int blendmode = 3; //Convert.ToInt32(cell.Cells["ColBlendMode"].Value);
+            int blendmode = Convert.ToInt32(cell.Cells[ColBlendMode].Value);
             chunk = controller.GetEntry<TextureChunk>(Entry.ENameToEID(cid));
             int pw = 256 << (2 - colormode);
             int ph = 128;

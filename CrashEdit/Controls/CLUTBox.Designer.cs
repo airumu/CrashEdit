@@ -84,7 +84,7 @@ namespace CrashEdit.CE.Controls
             grdCLUT.RowHeadersWidth = 24;
             grdCLUT.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             grdCLUT.ScrollBars = ScrollBars.Vertical;
-            grdCLUT.Size = new Size(538, 598);
+            grdCLUT.Size = new Size(516, 598);
             grdCLUT.TabIndex = 0;
             grdCLUT.CellPainting += grdCLUT_CellPainting;
             grdCLUT.SelectionChanged += grdCLUT_SelectionChanged;
@@ -137,7 +137,7 @@ namespace CrashEdit.CE.Controls
             fraGlobalControl.Controls.Add(pnGlobalControl);
             fraGlobalControl.Controls.Add(tglGlobalControl);
             fraGlobalControl.Enabled = false;
-            fraGlobalControl.Location = new Point(544, 305);
+            fraGlobalControl.Location = new Point(522, 305);
             fraGlobalControl.Name = "fraGlobalControl";
             fraGlobalControl.Size = new Size(297, 278);
             fraGlobalControl.TabIndex = 8;
@@ -275,7 +275,6 @@ namespace CrashEdit.CE.Controls
             numClutX2.Name = "numClutX2";
             numClutX2.Size = new Size(64, 23);
             numClutX2.TabIndex = 2;
-            numClutX2.Value = new decimal(new int[] { 1, 0, 0, 0 });
             numClutX2.ValueChanged += numClutX2_ValueChanged;
             // 
             // numClutY2
@@ -330,7 +329,6 @@ namespace CrashEdit.CE.Controls
             numClutX1.Name = "numClutX1";
             numClutX1.Size = new Size(64, 23);
             numClutX1.TabIndex = 2;
-            numClutX1.Value = new decimal(new int[] { 1, 0, 0, 0 });
             numClutX1.ValueChanged += numClutX1_ValueChanged;
             // 
             // rdiModeCLUT
@@ -384,7 +382,7 @@ namespace CrashEdit.CE.Controls
             // 
             fraSlider.Controls.Add(pnSliders);
             fraSlider.Enabled = false;
-            fraSlider.Location = new Point(544, 89);
+            fraSlider.Location = new Point(522, 89);
             fraSlider.Name = "fraSlider";
             fraSlider.Size = new Size(297, 210);
             fraSlider.TabIndex = 9;
@@ -403,7 +401,7 @@ namespace CrashEdit.CE.Controls
             fraCount.BackColor = Color.Transparent;
             fraCount.Controls.Add(numLoadClut);
             fraCount.Controls.Add(cmdLoadCLUT);
-            fraCount.Location = new Point(544, 3);
+            fraCount.Location = new Point(522, 3);
             fraCount.Name = "fraCount";
             fraCount.Size = new Size(92, 80);
             fraCount.TabIndex = 10;
