@@ -178,6 +178,15 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
+        ///   Output CLUT information to the console に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Config_chkOutputCLUTInfo {
+            get {
+                return ResourceManager.GetString("Config_chkOutputCLUTInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Output copying texture result to the console に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Config_chkOutputCopyTextureResult {

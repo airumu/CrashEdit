@@ -112,6 +112,7 @@ namespace CrashEdit.CE
             chkEnableLegacyEntityBox.Checked = Settings.Default.EnableLegacyEntityBox;
             chkOutputCopyTextureResult.Checked = Settings.Default.OutputCopyTextureResult;
             chkOutputModelTextureInfo.Checked = Settings.Default.OutputModelTextureInfo;
+            chkOutputCLUTInfo.Checked = Settings.Default.OutputCLUTInfo;
             chkApplyMica.Checked = Settings.Default.ApplyMica;
 
             fraSize.Text = Resources.Config_fraSize;
@@ -147,6 +148,7 @@ namespace CrashEdit.CE
             chkPatchGOOLC3toC2.Text = Resources.Config_chkPatchGOOLC3toC2;
             chkOutputCopyTextureResult.Text = Resources.Config_chkOutputCopyTextureResult;
             chkOutputModelTextureInfo.Text = Resources.Config_chkOutputModelTextureInfo;
+            chkOutputCLUTInfo.Text = Resources.Config_chkOutputCLUTInfo;
             chkApplyMica.Text = Resources.Config_chkApplyMica;
 
             chkViewCameraAngle.Enabled = chkViewCamera.Checked;
@@ -391,6 +393,12 @@ namespace CrashEdit.CE
             Settings.Default.ApplyMica = chkApplyMica.Checked;
             Settings.Default.Save();
             RestartProgram();
+        }
+
+        private void chkOutputCLUTInfo_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.OutputCLUTInfo = chkOutputCLUTInfo.Checked;
+            Settings.Default.Save();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Windows.Forms;
+using AltUI.Controls;
 
 namespace CrashEdit.CE.Controls
 {
@@ -31,42 +32,48 @@ namespace CrashEdit.CE.Controls
         private void InitializeComponent()
         {
             grdCLUT = new DataGridView();
-            cmdLoadCLUT = new AltUI.Controls.DarkButton();
-            numLoadClut = new AltUI.Controls.DarkNumericUpDown();
+            cmdLoadCLUT = new DarkButton();
+            numLoadClut = new DarkNumericUpDown();
             colorEditor = new Cyotek.Windows.Forms.ColorEditor();
-            fraGlobalControl = new AltUI.Controls.DarkGroupBox();
-            cmdCancel = new AltUI.Controls.DarkButton();
-            cmdApply = new AltUI.Controls.DarkButton();
+            fraGlobalControl = new DarkGroupBox();
+            cmdCancel = new DarkButton();
+            cmdApply = new DarkButton();
             pnGlobalControl = new Panel();
+            fraSTPbit = new DarkGroupBox();
+            cmdSetSTPbit = new DarkButton();
+            cmdRemoveSTPbit = new DarkButton();
+            fraGlobalSlider = new DarkGroupBox();
             colorEditorGlobal = new Cyotek.Windows.Forms.ColorEditor();
             rdiModeSelectedCells = new MetroSet_UI.Controls.MetroSetRadioButton();
-            pnCLUT = new Panel();
+            fraCLUT = new DarkGroupBox();
             lblCLUTTo = new Label();
             lblCLUTFrom = new Label();
             lblClutX = new Label();
-            numClutX2 = new AltUI.Controls.DarkNumericUpDown();
-            numClutY2 = new AltUI.Controls.DarkNumericUpDown();
+            numClutX2 = new DarkNumericUpDown();
+            numClutY2 = new DarkNumericUpDown();
             label1 = new Label();
             label2 = new Label();
-            numClutY1 = new AltUI.Controls.DarkNumericUpDown();
+            numClutY1 = new DarkNumericUpDown();
             lblClutY = new Label();
-            numClutX1 = new AltUI.Controls.DarkNumericUpDown();
+            numClutX1 = new DarkNumericUpDown();
             rdiModeCLUT = new MetroSet_UI.Controls.MetroSetRadioButton();
             tglGlobalControl = new MetroSet_UI.Controls.MetroSetSwitch();
-            fraSlider = new AltUI.Controls.DarkGroupBox();
-            pnSliders = new Panel();
-            fraCount = new AltUI.Controls.DarkGroupBox();
+            fraSlider = new DarkGroupBox();
+            chkSTPbit = new CheckBox();
+            fraCount = new DarkGroupBox();
+            chkHighlightSTPbit = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)grdCLUT).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numLoadClut).BeginInit();
             fraGlobalControl.SuspendLayout();
             pnGlobalControl.SuspendLayout();
-            pnCLUT.SuspendLayout();
+            fraSTPbit.SuspendLayout();
+            fraGlobalSlider.SuspendLayout();
+            fraCLUT.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numClutX2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numClutY2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numClutY1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numClutX1).BeginInit();
             fraSlider.SuspendLayout();
-            pnSliders.SuspendLayout();
             fraCount.SuspendLayout();
             SuspendLayout();
             // 
@@ -84,7 +91,7 @@ namespace CrashEdit.CE.Controls
             grdCLUT.RowHeadersWidth = 24;
             grdCLUT.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             grdCLUT.ScrollBars = ScrollBars.Vertical;
-            grdCLUT.Size = new Size(516, 598);
+            grdCLUT.Size = new Size(516, 646);
             grdCLUT.TabIndex = 0;
             grdCLUT.CellPainting += grdCLUT_CellPainting;
             grdCLUT.SelectionChanged += grdCLUT_SelectionChanged;
@@ -119,7 +126,7 @@ namespace CrashEdit.CE.Controls
             colorEditor.AutoSize = true;
             colorEditor.Color = Color.FromArgb(0, 0, 0);
             colorEditor.Enabled = false;
-            colorEditor.Location = new Point(1, 1);
+            colorEditor.Location = new Point(3, 3);
             colorEditor.Margin = new Padding(4, 3, 4, 3);
             colorEditor.Name = "colorEditor";
             colorEditor.Padding = new Padding(9);
@@ -137,9 +144,9 @@ namespace CrashEdit.CE.Controls
             fraGlobalControl.Controls.Add(pnGlobalControl);
             fraGlobalControl.Controls.Add(tglGlobalControl);
             fraGlobalControl.Enabled = false;
-            fraGlobalControl.Location = new Point(522, 305);
+            fraGlobalControl.Location = new Point(522, 314);
             fraGlobalControl.Name = "fraGlobalControl";
-            fraGlobalControl.Size = new Size(297, 278);
+            fraGlobalControl.Size = new Size(297, 332);
             fraGlobalControl.TabIndex = 8;
             fraGlobalControl.TabStop = false;
             fraGlobalControl.Text = "Global Controller";
@@ -176,21 +183,70 @@ namespace CrashEdit.CE.Controls
             // 
             // pnGlobalControl
             // 
-            pnGlobalControl.Controls.Add(colorEditorGlobal);
+            pnGlobalControl.Controls.Add(fraSTPbit);
+            pnGlobalControl.Controls.Add(fraGlobalSlider);
             pnGlobalControl.Controls.Add(rdiModeSelectedCells);
-            pnGlobalControl.Controls.Add(pnCLUT);
+            pnGlobalControl.Controls.Add(fraCLUT);
             pnGlobalControl.Controls.Add(rdiModeCLUT);
             pnGlobalControl.Enabled = false;
             pnGlobalControl.Location = new Point(6, 50);
             pnGlobalControl.Name = "pnGlobalControl";
-            pnGlobalControl.Size = new Size(288, 223);
+            pnGlobalControl.Size = new Size(288, 280);
             pnGlobalControl.TabIndex = 4;
+            // 
+            // fraSTPbit
+            // 
+            fraSTPbit.Controls.Add(cmdSetSTPbit);
+            fraSTPbit.Controls.Add(cmdRemoveSTPbit);
+            fraSTPbit.Location = new Point(3, 222);
+            fraSTPbit.Name = "fraSTPbit";
+            fraSTPbit.Size = new Size(157, 54);
+            fraSTPbit.TabIndex = 14;
+            fraSTPbit.TabStop = false;
+            fraSTPbit.Text = "STP Bit";
+            // 
+            // cmdSetSTPbit
+            // 
+            cmdSetSTPbit.BorderColour = Color.Empty;
+            cmdSetSTPbit.CustomColour = false;
+            cmdSetSTPbit.FlatBottom = false;
+            cmdSetSTPbit.FlatTop = false;
+            cmdSetSTPbit.Location = new Point(6, 22);
+            cmdSetSTPbit.Name = "cmdSetSTPbit";
+            cmdSetSTPbit.Padding = new Padding(5);
+            cmdSetSTPbit.Size = new Size(71, 23);
+            cmdSetSTPbit.TabIndex = 12;
+            cmdSetSTPbit.Text = "Set";
+            cmdSetSTPbit.Click += cmdSetSTPbit_Click;
+            // 
+            // cmdRemoveSTPbit
+            // 
+            cmdRemoveSTPbit.BorderColour = Color.Empty;
+            cmdRemoveSTPbit.CustomColour = false;
+            cmdRemoveSTPbit.FlatBottom = false;
+            cmdRemoveSTPbit.FlatTop = false;
+            cmdRemoveSTPbit.Location = new Point(80, 22);
+            cmdRemoveSTPbit.Name = "cmdRemoveSTPbit";
+            cmdRemoveSTPbit.Padding = new Padding(5);
+            cmdRemoveSTPbit.Size = new Size(71, 23);
+            cmdRemoveSTPbit.TabIndex = 12;
+            cmdRemoveSTPbit.Text = "Remove";
+            cmdRemoveSTPbit.Click += cmdRemoveSTPbit_Click;
+            // 
+            // fraGlobalSlider
+            // 
+            fraGlobalSlider.Controls.Add(colorEditorGlobal);
+            fraGlobalSlider.Location = new Point(3, 112);
+            fraGlobalSlider.Name = "fraGlobalSlider";
+            fraGlobalSlider.Size = new Size(282, 104);
+            fraGlobalSlider.TabIndex = 13;
+            fraGlobalSlider.TabStop = false;
             // 
             // colorEditorGlobal
             // 
             colorEditorGlobal.AutoSize = true;
             colorEditorGlobal.Color = Color.FromArgb(0, 0, 0);
-            colorEditorGlobal.Location = new Point(1, 121);
+            colorEditorGlobal.Location = new Point(0, 4);
             colorEditorGlobal.Margin = new Padding(4, 3, 4, 3);
             colorEditorGlobal.Name = "colorEditorGlobal";
             colorEditorGlobal.Padding = new Padding(9);
@@ -219,32 +275,33 @@ namespace CrashEdit.CE.Controls
             rdiModeSelectedCells.Style = MetroSet_UI.Enums.Style.Dark;
             rdiModeSelectedCells.StyleManager = null;
             rdiModeSelectedCells.TabIndex = 6;
-            rdiModeSelectedCells.Text = "Selected cells";
+            rdiModeSelectedCells.Text = "Selected Cells";
             rdiModeSelectedCells.ThemeAuthor = "Narwin";
             rdiModeSelectedCells.ThemeName = "MetroDark";
             rdiModeSelectedCells.Click += rdiModeSelectedCells_Click;
             // 
-            // pnCLUT
+            // fraCLUT
             // 
-            pnCLUT.Controls.Add(lblCLUTTo);
-            pnCLUT.Controls.Add(lblCLUTFrom);
-            pnCLUT.Controls.Add(lblClutX);
-            pnCLUT.Controls.Add(numClutX2);
-            pnCLUT.Controls.Add(numClutY2);
-            pnCLUT.Controls.Add(label1);
-            pnCLUT.Controls.Add(label2);
-            pnCLUT.Controls.Add(numClutY1);
-            pnCLUT.Controls.Add(lblClutY);
-            pnCLUT.Controls.Add(numClutX1);
-            pnCLUT.Location = new Point(3, 26);
-            pnCLUT.Name = "pnCLUT";
-            pnCLUT.Size = new Size(221, 89);
-            pnCLUT.TabIndex = 10;
+            fraCLUT.Controls.Add(lblCLUTTo);
+            fraCLUT.Controls.Add(lblCLUTFrom);
+            fraCLUT.Controls.Add(lblClutX);
+            fraCLUT.Controls.Add(numClutX2);
+            fraCLUT.Controls.Add(numClutY2);
+            fraCLUT.Controls.Add(label1);
+            fraCLUT.Controls.Add(label2);
+            fraCLUT.Controls.Add(numClutY1);
+            fraCLUT.Controls.Add(lblClutY);
+            fraCLUT.Controls.Add(numClutX1);
+            fraCLUT.Location = new Point(3, 26);
+            fraCLUT.Name = "fraCLUT";
+            fraCLUT.Size = new Size(208, 80);
+            fraCLUT.TabIndex = 10;
+            fraCLUT.TabStop = false;
             // 
             // lblCLUTTo
             // 
             lblCLUTTo.AutoSize = true;
-            lblCLUTTo.Location = new Point(35, 53);
+            lblCLUTTo.Location = new Point(19, 51);
             lblCLUTTo.Name = "lblCLUTTo";
             lblCLUTTo.Size = new Size(19, 15);
             lblCLUTTo.TabIndex = 3;
@@ -253,7 +310,7 @@ namespace CrashEdit.CE.Controls
             // lblCLUTFrom
             // 
             lblCLUTFrom.AutoSize = true;
-            lblCLUTFrom.Location = new Point(19, 24);
+            lblCLUTFrom.Location = new Point(3, 22);
             lblCLUTFrom.Name = "lblCLUTFrom";
             lblCLUTFrom.Size = new Size(35, 15);
             lblCLUTFrom.TabIndex = 3;
@@ -262,7 +319,7 @@ namespace CrashEdit.CE.Controls
             // lblClutX
             // 
             lblClutX.AutoSize = true;
-            lblClutX.Location = new Point(68, 4);
+            lblClutX.Location = new Point(52, 2);
             lblClutX.Name = "lblClutX";
             lblClutX.Size = new Size(45, 15);
             lblClutX.TabIndex = 3;
@@ -270,7 +327,7 @@ namespace CrashEdit.CE.Controls
             // 
             // numClutX2
             // 
-            numClutX2.Location = new Point(60, 51);
+            numClutX2.Location = new Point(44, 49);
             numClutX2.Maximum = new decimal(new int[] { 15, 0, 0, 0 });
             numClutX2.Name = "numClutX2";
             numClutX2.Size = new Size(64, 23);
@@ -279,7 +336,7 @@ namespace CrashEdit.CE.Controls
             // 
             // numClutY2
             // 
-            numClutY2.Location = new Point(154, 51);
+            numClutY2.Location = new Point(138, 49);
             numClutY2.Maximum = new decimal(new int[] { 32, 0, 0, 0 });
             numClutY2.Name = "numClutY2";
             numClutY2.Size = new Size(64, 23);
@@ -289,7 +346,7 @@ namespace CrashEdit.CE.Controls
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(132, 24);
+            label1.Location = new Point(116, 22);
             label1.Name = "label1";
             label1.Size = new Size(12, 15);
             label1.TabIndex = 3;
@@ -298,7 +355,7 @@ namespace CrashEdit.CE.Controls
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(132, 53);
+            label2.Location = new Point(116, 51);
             label2.Name = "label2";
             label2.Size = new Size(12, 15);
             label2.TabIndex = 3;
@@ -306,7 +363,7 @@ namespace CrashEdit.CE.Controls
             // 
             // numClutY1
             // 
-            numClutY1.Location = new Point(154, 22);
+            numClutY1.Location = new Point(138, 20);
             numClutY1.Maximum = new decimal(new int[] { 32, 0, 0, 0 });
             numClutY1.Name = "numClutY1";
             numClutY1.Size = new Size(64, 23);
@@ -316,7 +373,7 @@ namespace CrashEdit.CE.Controls
             // lblClutY
             // 
             lblClutY.AutoSize = true;
-            lblClutY.Location = new Point(164, 4);
+            lblClutY.Location = new Point(148, 2);
             lblClutY.Name = "lblClutY";
             lblClutY.Size = new Size(45, 15);
             lblClutY.TabIndex = 3;
@@ -324,7 +381,7 @@ namespace CrashEdit.CE.Controls
             // 
             // numClutX1
             // 
-            numClutX1.Location = new Point(60, 22);
+            numClutX1.Location = new Point(44, 20);
             numClutX1.Maximum = new decimal(new int[] { 15, 0, 0, 0 });
             numClutX1.Name = "numClutX1";
             numClutX1.Size = new Size(64, 23);
@@ -380,21 +437,25 @@ namespace CrashEdit.CE.Controls
             // 
             // fraSlider
             // 
-            fraSlider.Controls.Add(pnSliders);
+            fraSlider.Controls.Add(chkSTPbit);
+            fraSlider.Controls.Add(colorEditor);
             fraSlider.Enabled = false;
             fraSlider.Location = new Point(522, 89);
             fraSlider.Name = "fraSlider";
-            fraSlider.Size = new Size(297, 210);
+            fraSlider.Size = new Size(297, 219);
             fraSlider.TabIndex = 9;
             fraSlider.TabStop = false;
             // 
-            // pnSliders
+            // chkSTPbit
             // 
-            pnSliders.Controls.Add(colorEditor);
-            pnSliders.Location = new Point(3, 3);
-            pnSliders.Name = "pnSliders";
-            pnSliders.Size = new Size(291, 203);
-            pnSliders.TabIndex = 1;
+            chkSTPbit.AutoSize = true;
+            chkSTPbit.Location = new Point(9, 194);
+            chkSTPbit.Name = "chkSTPbit";
+            chkSTPbit.Size = new Size(62, 19);
+            chkSTPbit.TabIndex = 11;
+            chkSTPbit.Text = "STP Bit";
+            chkSTPbit.UseVisualStyleBackColor = true;
+            chkSTPbit.Click += chkSTPbit_Click;
             // 
             // fraCount
             // 
@@ -408,11 +469,23 @@ namespace CrashEdit.CE.Controls
             fraCount.TabStop = false;
             fraCount.Text = "Count";
             // 
+            // chkHighlightSTPbit
+            // 
+            chkHighlightSTPbit.AutoSize = true;
+            chkHighlightSTPbit.Location = new Point(620, 3);
+            chkHighlightSTPbit.Name = "chkHighlightSTPbit";
+            chkHighlightSTPbit.Size = new Size(172, 19);
+            chkHighlightSTPbit.TabIndex = 11;
+            chkHighlightSTPbit.Text = "Highlight cells with STP bits";
+            chkHighlightSTPbit.UseVisualStyleBackColor = true;
+            chkHighlightSTPbit.CheckedChanged += chkHighlightSTPbit_CheckedChanged;
+            // 
             // CLUTBox
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(31, 31, 32);
+            Controls.Add(chkHighlightSTPbit);
             Controls.Add(fraCount);
             Controls.Add(fraSlider);
             Controls.Add(fraGlobalControl);
@@ -424,18 +497,20 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)numLoadClut).EndInit();
             fraGlobalControl.ResumeLayout(false);
             pnGlobalControl.ResumeLayout(false);
-            pnGlobalControl.PerformLayout();
-            pnCLUT.ResumeLayout(false);
-            pnCLUT.PerformLayout();
+            fraSTPbit.ResumeLayout(false);
+            fraGlobalSlider.ResumeLayout(false);
+            fraGlobalSlider.PerformLayout();
+            fraCLUT.ResumeLayout(false);
+            fraCLUT.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numClutX2).EndInit();
             ((System.ComponentModel.ISupportInitialize)numClutY2).EndInit();
             ((System.ComponentModel.ISupportInitialize)numClutY1).EndInit();
             ((System.ComponentModel.ISupportInitialize)numClutX1).EndInit();
             fraSlider.ResumeLayout(false);
-            pnSliders.ResumeLayout(false);
-            pnSliders.PerformLayout();
+            fraSlider.PerformLayout();
             fraCount.ResumeLayout(false);
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -458,13 +533,18 @@ namespace CrashEdit.CE.Controls
         private Label label2;
         private Label label1;
         private AltUI.Controls.DarkGroupBox fraSlider;
-        private Panel pnSliders;
         private MetroSet_UI.Controls.MetroSetRadioButton rdiModeCLUT;
         private MetroSet_UI.Controls.MetroSetRadioButton rdiModeSelectedCells;
-        private Panel pnCLUT;
+        private DarkGroupBox fraCLUT;
         private AltUI.Controls.DarkGroupBox fraCount;
         private Label lblCLUTTo;
         private Label lblCLUTFrom;
         private Cyotek.Windows.Forms.ColorEditor colorEditorGlobal;
+        private CheckBox chkSTPbit;
+        private AltUI.Controls.DarkButton cmdRemoveSTPbit;
+        private AltUI.Controls.DarkButton cmdSetSTPbit;
+        private AltUI.Controls.DarkGroupBox fraSTPbit;
+        private AltUI.Controls.DarkGroupBox fraGlobalSlider;
+        private CheckBox chkHighlightSTPbit;
     }
 }

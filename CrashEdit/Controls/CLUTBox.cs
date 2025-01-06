@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
-using AltUI.Forms;
+using System.Windows.Forms;
+using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 using MetroSet_UI.Controls;
 using Color = System.Drawing.Color;
@@ -38,9 +39,9 @@ namespace CrashEdit.CE.Controls
             globalControlMode = false;
             editMode = 0;
 
-            numClutX1.Enabled = false;
-            numClutX2.Enabled = false;
-            numClutY1.Enabled = false;
+            numClutX1.Enabled =
+            numClutX2.Enabled =
+            numClutY1.Enabled =
             numClutY2.Enabled = false;
             numClutX1.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
             numClutX2.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
@@ -73,6 +74,7 @@ namespace CrashEdit.CE.Controls
             if (e.RowIndex >= 0 && e.ColumnIndex >= 1)
             {
                 var cell = grdCLUT[e.ColumnIndex, e.RowIndex];
+                var tags = cell.Tag as List<object>;
                 if (cell.Selected)
                 {
                     e.Graphics.FillRectangle(new SolidBrush(e.CellStyle.BackColor), e.CellBounds);
@@ -80,10 +82,17 @@ namespace CrashEdit.CE.Controls
 
                     e.Handled = true;
                 }
+                else if (chkHighlightSTPbit.Checked & (int)tags[1] == 1)
+                {
+                    e.Graphics.FillRectangle(new SolidBrush(e.CellStyle.BackColor), e.CellBounds);
+                    e.Graphics.DrawRectangle(Pens.Turquoise, e.CellBounds.X, e.CellBounds.Y, e.CellBounds.Width - 1, e.CellBounds.Height - 1);
+
+                    e.Handled = true;
+                }
             }
         }
 
-        private async void cmdLoadCLUT_Click(object sender, EventArgs e)
+        private async Task UpdateCLUTList()
         {
             grdCLUT.SuspendLayout();
 
@@ -128,17 +137,19 @@ namespace CrashEdit.CE.Controls
                     {
                         if (j * 2 + 1 < clut.Length)
                         {
-                            short hexString = BitConverter.ToInt16(clut);
-                            row.Cells[j + 1].Tag = (j * 2) + (i * 32);
-
                             ushort colorValue = BitConverter.ToUInt16(clut, j * 2);
                             int r = (colorValue & 0x1F) << 3;
                             int g = ((colorValue >> 5) & 0x1F) << 3;
                             int b = ((colorValue >> 10) & 0x1F) << 3;
+                            int a = ((colorValue >> 15) & 0x1);
                             Color color = Color.FromArgb(255, r, g, b);
+
                             row.Cells[j + 1].Style.ForeColor = Color.Transparent;
                             row.Cells[j + 1].Style.BackColor = color;
                             row.Cells[j + 1].Value = ColorTranslator.ToHtml(color);
+
+                            List<object> tags = new List<object> { (j * 2) + (i * 32), a };
+                            row.Cells[j + 1].Tag = tags;
                         }
                     }
 
@@ -155,18 +166,9 @@ namespace CrashEdit.CE.Controls
             fraGlobalControl.Enabled = true;
         }
 
-
-        private static List<byte[]> GetCLUT(byte[] source, int clutsize, int count)
+        private async void cmdLoadCLUT_Click(object sender, EventArgs e)
         {
-            List<byte[]> clut = new List<byte[]>();
-
-            for (int i = 0; i < count * 0x200; i += clutsize)
-            {
-                byte[] chunk = new byte[clutsize];
-                Array.Copy(source, i, chunk, 0, clutsize);
-                clut.Add(chunk);
-            }
-            return clut;
+            await UpdateCLUTList();
         }
 
         private void grdCLUT_KeyDown(object sender, KeyEventArgs e)
@@ -181,6 +183,19 @@ namespace CrashEdit.CE.Controls
             //}
         }
 
+        private static List<byte[]> GetCLUT(byte[] source, int clutsize, int count)
+        {
+            List<byte[]> clut = new List<byte[]>();
+
+            for (int i = 0; i < count * 0x200; i += clutsize)
+            {
+                byte[] chunk = new byte[clutsize];
+                Array.Copy(source, i, chunk, 0, clutsize);
+                clut.Add(chunk);
+            }
+            return clut;
+        }
+
         private Color GetColor(Color itemColor)
         {
             HslColor hslColor = new HslColor(itemColor);
@@ -193,38 +208,35 @@ namespace CrashEdit.CE.Controls
             return newColor;
         }
 
-        private void UpdateAllColors()
+        private void UpdateMultipleCells(bool isUpdatingColor)
+        {
+            UpdateMultipleCells(true, -1);
+        }
+
+        private void UpdateMultipleCells(bool isUpdatingColor, int STPbit)
         {
             if (!globalControlMode) return;
 
             grdCLUT.SuspendLayout();
+
             if (editMode == modeCLUT)
             {
                 int startRow = (int)numClutX1.Value + (int)numClutY1.Value * 16;
                 int endRow = (int)numClutX2.Value + (int)numClutY2.Value * 16;
 
-                if (startRow == 0)
-                    startRow++;
+                if (startRow == 0) startRow++;
 
-                editStartRow = startRow;
-                editEndRow = endRow;
+                if (startRow <= editStartRow)
+                    editStartRow = startRow;
+                if (endRow >= editEndRow)
+                    editEndRow = endRow;
 
                 for (int row = startRow; row <= endRow; row++)
                 {
                     for (int col = 1; col <= 16; col++)
                     {
                         var cell = grdCLUT.Rows[row].Cells[col];
-
-                        Color itemColor = LoadColorFromValue(cell);
-                        Color newColor = GetColor(itemColor);
-
-                        ushort rgba5551 = TextureConv.ConvertToRGBA5551(newColor.B, newColor.G, newColor.R, newColor.A);
-                        byte[] convertedPalette = BitConverter.GetBytes(rgba5551);
-
-                        int offset = (int)cell.Tag;
-                        Array.Copy(convertedPalette, 0, chunk.Data, offset, 2);
-
-                        cell.Style.BackColor = newColor;
+                        UpdateColor(cell, STPbit);
                     }
                 }
             }
@@ -232,29 +244,44 @@ namespace CrashEdit.CE.Controls
             {
                 foreach (DataGridViewCell cell in grdCLUT.SelectedCells)
                 {
-                    if (grdCLUT.SelectedCells.Count > 0 && cell.RowIndex > 0 && cell.ColumnIndex > 0)
+                    if (cell.RowIndex > 0 && cell.ColumnIndex > 0)
                     {
                         if (cell.RowIndex <= editStartRow)
                             editStartRow = cell.RowIndex;
                         if (cell.RowIndex >= editEndRow)
                             editEndRow = cell.RowIndex;
 
-                        Color itemColor = LoadColorFromValue(cell);
-                        Color newColor = GetColor(itemColor);
-
-                        ushort rgba5551 = TextureConv.ConvertToRGBA5551(newColor.B, newColor.G, newColor.R, newColor.A);
-                        byte[] convertedPalette = BitConverter.GetBytes(rgba5551);
-
-                        int offset = (int)cell.Tag;
-                        Array.Copy(convertedPalette, 0, chunk.Data, offset, 2);
-
-                        cell.Style.BackColor = newColor;
-                        
+                        UpdateColor(cell, STPbit);
                     }
                 }
             }
-            //Console.WriteLine($"{editStartRow}, {editEndRow}");
+            if (Settings.Default.OutputCLUTInfo)
+                Console.WriteLine($"Start {editStartRow}, End {editEndRow}");
             grdCLUT.ResumeLayout();
+            grdCLUT.Refresh();
+        }
+
+        private void UpdateColor(DataGridViewCell cell, int STPbit)
+        {
+            var tags = cell.Tag as List<object>;
+            Color currentColor = LoadColorFromValue(cell);
+            Color newColor = GetColor(currentColor);
+
+            ushort rgba5551;
+            if (STPbit >= 0) // set STPbit
+            {
+                tags[1] = STPbit;
+                rgba5551 = TextureConv.ConvertToRGBA5551(currentColor.B, currentColor.G, currentColor.R, Convert.ToByte(tags[1]));
+            }
+            else // change color
+            {
+                rgba5551 = TextureConv.ConvertToRGBA5551(newColor.B, newColor.G, newColor.R, Convert.ToByte(tags[1]));
+                cell.Style.BackColor = newColor;
+            }
+
+            byte[] convertedPalette = BitConverter.GetBytes(rgba5551);
+            int offset = (int)tags[0];
+            Array.Copy(convertedPalette, 0, chunk.Data, offset, 2);
         }
 
         private void UpdateSelectedColor(Color color)
@@ -263,12 +290,13 @@ namespace CrashEdit.CE.Controls
             if (cell.Count > 0 && cell[0].ColumnIndex > 0 && cell[0].RowIndex > 0)
             {
                 colorEditor.Enabled = true;
-                grdCLUT.SelectedCells[0].Style.BackColor = color;
+                cell[0].Style.BackColor = color;
+                var tags = cell[0].Tag as List<object>;
 
-                ushort rgba5551 = TextureConv.ConvertToRGBA5551(color.B, color.G, color.R, color.A);
+                ushort rgba5551 = TextureConv.ConvertToRGBA5551(color.B, color.G, color.R, Convert.ToByte(tags[1]));
                 byte[] convertedPalette = BitConverter.GetBytes(rgba5551);
 
-                int offset = (int)grdCLUT.SelectedCells[0].Tag;
+                int offset = (int)tags[0];
                 Array.Copy(convertedPalette, 0, chunk.Data, offset, 2);
             }
             else
@@ -276,27 +304,6 @@ namespace CrashEdit.CE.Controls
                 colorEditor.Enabled = false;
                 return;
             }
-        }
-
-        internal static HslColor ChangeHue(HslColor color, double increment)
-        {
-            HslColor copy;
-            double value;
-
-            copy = new HslColor(color);
-            value = copy.H + increment;
-
-            if (increment > 0 && value > 359)
-            {
-                value -= 360;
-            }
-            else if (increment < 0 && value < 0)
-            {
-                value += 360;
-            }
-
-            copy.H = value;
-            return copy;
         }
 
         private void colorEditor_ColorChanged(object sender, EventArgs e)
@@ -308,7 +315,7 @@ namespace CrashEdit.CE.Controls
         private void colorEditorGlobal_ColorChanged(object sender, EventArgs e)
         {
             if (!dirty)
-                UpdateAllColors();
+                UpdateMultipleCells(true);
             dirty = false;
         }
 
@@ -319,10 +326,10 @@ namespace CrashEdit.CE.Controls
             {
                 for (int col = 1; col <= 16; col++)
                 {
-                    var item = grdCLUT.Rows[row].Cells[col];
+                    var cell = grdCLUT.Rows[row].Cells[col];
 
-                    Color color = item.Style.BackColor;
-                    item.Value = ColorTranslator.ToHtml(color);
+                    Color color = cell.Style.BackColor;
+                    cell.Value = ColorTranslator.ToHtml(color);
                 }
             }
             grdCLUT.ResumeLayout();
@@ -357,31 +364,59 @@ namespace CrashEdit.CE.Controls
 
         private void grdCLUT_SelectionChanged(object sender, EventArgs e)
         {
-            UpdateNumricValues();
-            ResetColorSliders();
+            if (grdCLUT.SelectedCells.Count > 0)
+            {
+                var cell = grdCLUT.SelectedCells[0];
+                if (cell.RowIndex > 0 && cell.ColumnIndex > 0)
+                {
+                    var tags = cell.Tag as List<object>;
+
+                    chkSTPbit.Checked = (int)tags[1] == 0 ? false : true;
+
+                    if (Settings.Default.OutputCLUTInfo)
+                        Console.WriteLine($"{cell.Style.BackColor}, Offset: {(int)tags[0]}, STP bit : {(int)tags[1]}");
+                }
+
+                colorEditor.Color = grdCLUT.SelectedCells[0].Style.BackColor;
+                UpdateNumricValues();
+                ResetColorSliders();
+            }
+        }
+
+        private void chkSTPbit_Click(object sender, EventArgs e)
+        {
+            if (grdCLUT.SelectedCells.Count > 0)
+            {
+                var tags = grdCLUT.SelectedCells[0].Tag as List<object>;
+                tags[1] = chkSTPbit.Checked ? 1 : 0;
+            }
+        }
+
+        private void cmdSetSTPbit_Click(object sender, EventArgs e)
+        {
+            UpdateMultipleCells(false, 1);
+        }
+
+        private void cmdRemoveSTPbit_Click(object sender, EventArgs e)
+        {
+            UpdateMultipleCells(false, 0);
         }
 
         private void UpdateNumricValues()
         {
-            if (grdCLUT.SelectedCells.Count > 0)
+            if (grdCLUT.SelectedCells.Count > 0 && editMode == modeCLUT)
             {
-                colorEditor.Color = grdCLUT.SelectedCells[0].Style.BackColor;
+                var rowIndices = grdCLUT.SelectedCells
+                                          .Cast<DataGridViewCell>()
+                                          .Select(cell => cell.RowIndex);
 
-                if (editMode == modeCLUT)
-                {
-                    var rowIndices = grdCLUT.SelectedCells
-                                              .Cast<DataGridViewCell>()
-                                              .Select(cell => cell.RowIndex);
+                int firstRowIndex = rowIndices.Min();
+                int lastRowIndex = rowIndices.Max();
 
-                    int firstRowIndex = rowIndices.Min();
-                    int lastRowIndex = rowIndices.Max();
-
-                    numClutX1.Value = firstRowIndex % 16;
-                    numClutX2.Value = lastRowIndex % 16;
-                    numClutY1.Value = firstRowIndex / 16;
-                    numClutY2.Value = lastRowIndex / 16;
-                }
-
+                numClutX1.Value = firstRowIndex % 16;
+                numClutX2.Value = lastRowIndex % 16;
+                numClutY1.Value = firstRowIndex / 16;
+                numClutY2.Value = lastRowIndex / 16;
             }
         }
 
@@ -391,7 +426,7 @@ namespace CrashEdit.CE.Controls
             if (globalControlMode)
             {
                 fraCount.Enabled =
-                pnSliders.Enabled = false;
+                fraSlider.Enabled = false;
                 pnGlobalControl.Enabled =
                 cmdApply.Enabled =
                 cmdCancel.Enabled = true;
@@ -400,7 +435,7 @@ namespace CrashEdit.CE.Controls
             else
             {
                 fraCount.Enabled =
-                pnSliders.Enabled = true;
+                fraSlider.Enabled = true;
                 pnGlobalControl.Enabled =
                 cmdApply.Enabled =
                 cmdCancel.Enabled = false;
@@ -436,17 +471,18 @@ namespace CrashEdit.CE.Controls
             {
                 for (int col = 1; col <= 16; col++)
                 {
-                    var item = grdCLUT.Rows[row].Cells[col];
+                    var cell = grdCLUT.Rows[row].Cells[col];
+                    var tags = cell.Tag as List<object>;
 
-                    Color oldColor = LoadColorFromValue(item);
+                    Color oldColor = LoadColorFromValue(cell);
 
-                    ushort rgba5551 = TextureConv.ConvertToRGBA5551(oldColor.B, oldColor.G, oldColor.R, oldColor.A);
+                    ushort rgba5551 = TextureConv.ConvertToRGBA5551(oldColor.B, oldColor.G, oldColor.R, Convert.ToByte(tags[1]));
                     byte[] convertedPalette = BitConverter.GetBytes(rgba5551);
 
-                    int offset = (int)item.Tag;
+                    int offset = (int)tags[0];
                     Array.Copy(convertedPalette, 0, chunk.Data, offset, 2);
 
-                    item.Style.BackColor = oldColor;
+                    cell.Style.BackColor = oldColor;
                 }
             }
             grdCLUT.ResumeLayout();
@@ -501,7 +537,7 @@ namespace CrashEdit.CE.Controls
                 radioButton.Checked = false;
 
             editMode = modeCLUT;
-            pnCLUT.Enabled = true;
+            fraCLUT.Enabled = true;
             UpdateNumricValues();
             ResetColorSliders();
         }
@@ -514,8 +550,34 @@ namespace CrashEdit.CE.Controls
                 radioButton.Checked = false;
 
             editMode = modeSelectedCells;
-            pnCLUT.Enabled = false;
+            fraCLUT.Enabled = false;
             ResetColorSliders();
+        }
+
+        private void chkHighlightSTPbit_CheckedChanged(object sender, EventArgs e)
+        {
+            grdCLUT.Refresh();
+        }
+
+        internal static HslColor ChangeHue(HslColor color, double increment)
+        {
+            HslColor copy;
+            double value;
+
+            copy = new HslColor(color);
+            value = copy.H + increment;
+
+            if (increment > 0 && value > 359)
+            {
+                value -= 360;
+            }
+            else if (increment < 0 && value < 0)
+            {
+                value += 360;
+            }
+
+            copy.H = value;
+            return copy;
         }
 
         private void EnableDoubleBuffering()
@@ -559,5 +621,6 @@ namespace CrashEdit.CE.Controls
             dataGridView.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
             dataGridView.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
         }
+
     }
 }

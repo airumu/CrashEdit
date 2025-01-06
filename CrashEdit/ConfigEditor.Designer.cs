@@ -80,6 +80,7 @@ namespace CrashEdit.CE
             tbpMisc = new TabPage();
             fraMiscDebug = new DarkGroupBox();
             chkOutputCopyTextureResult = new CheckBox();
+            chkOutputCLUTInfo = new CheckBox();
             chkOutputModelTextureInfo = new CheckBox();
             chkEnableLegacyEntityBox = new CheckBox();
             fraExtra = new DarkGroupBox();
@@ -338,7 +339,7 @@ namespace CrashEdit.CE
             fraFont.Margin = new Padding(4, 3, 4, 3);
             fraFont.Name = "fraFont";
             fraFont.Padding = new Padding(4, 3, 4, 3);
-            fraFont.Size = new Size(206, 82);
+            fraFont.Size = new Size(206, 79);
             fraFont.TabIndex = 8;
             fraFont.TabStop = false;
             fraFont.Text = "3D Text";
@@ -775,10 +776,11 @@ namespace CrashEdit.CE
             // 
             fraMiscDebug.BackColor = Color.Transparent;
             fraMiscDebug.Controls.Add(chkOutputCopyTextureResult);
+            fraMiscDebug.Controls.Add(chkOutputCLUTInfo);
             fraMiscDebug.Controls.Add(chkOutputModelTextureInfo);
             fraMiscDebug.Location = new Point(0, 106);
             fraMiscDebug.Name = "fraMiscDebug";
-            fraMiscDebug.Size = new Size(417, 72);
+            fraMiscDebug.Size = new Size(417, 100);
             fraMiscDebug.TabIndex = 20;
             fraMiscDebug.TabStop = false;
             fraMiscDebug.Text = "Debug";
@@ -794,6 +796,18 @@ namespace CrashEdit.CE
             chkOutputCopyTextureResult.Text = "Output copying texture result to the console";
             chkOutputCopyTextureResult.UseVisualStyleBackColor = true;
             chkOutputCopyTextureResult.CheckedChanged += chkOutputCopyTextureResult_CheckedChanged;
+            // 
+            // chkOutputCLUTInfo
+            // 
+            chkOutputCLUTInfo.AutoSize = true;
+            chkOutputCLUTInfo.Location = new Point(6, 72);
+            chkOutputCLUTInfo.Margin = new Padding(4, 3, 4, 3);
+            chkOutputCLUTInfo.Name = "chkOutputCLUTInfo";
+            chkOutputCLUTInfo.Size = new Size(239, 19);
+            chkOutputCLUTInfo.TabIndex = 19;
+            chkOutputCLUTInfo.Text = "Output CLUT information to the console";
+            chkOutputCLUTInfo.UseVisualStyleBackColor = true;
+            chkOutputCLUTInfo.CheckedChanged += chkOutputCLUTInfo_CheckedChanged;
             // 
             // chkOutputModelTextureInfo
             // 
@@ -825,7 +839,7 @@ namespace CrashEdit.CE
             fraExtra.Controls.Add(chkShowCustomCrates);
             fraExtra.Controls.Add(chkOldPatchNSD);
             fraExtra.Controls.Add(chkEnableC2TT);
-            fraExtra.Location = new Point(0, 184);
+            fraExtra.Location = new Point(0, 212);
             fraExtra.Name = "fraExtra";
             fraExtra.Size = new Size(417, 100);
             fraExtra.TabIndex = 18;
@@ -1012,5 +1026,6 @@ namespace CrashEdit.CE
         private CheckBox chkOutputModelTextureInfo;
         private DarkGroupBox fraMiscDebug;
         private CheckBox chkApplyMica;
+        private CheckBox chkOutputCLUTInfo;
     }
 }
