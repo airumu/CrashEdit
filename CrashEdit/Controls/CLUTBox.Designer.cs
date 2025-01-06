@@ -38,6 +38,7 @@ namespace CrashEdit.CE.Controls
             cmdCancel = new AltUI.Controls.DarkButton();
             cmdApply = new AltUI.Controls.DarkButton();
             pnGlobalControl = new Panel();
+            colorEditorGlobal = new Cyotek.Windows.Forms.ColorEditor();
             rdiModeSelectedCells = new MetroSet_UI.Controls.MetroSetRadioButton();
             pnCLUT = new Panel();
             lblCLUTTo = new Label();
@@ -50,9 +51,6 @@ namespace CrashEdit.CE.Controls
             numClutY1 = new AltUI.Controls.DarkNumericUpDown();
             lblClutY = new Label();
             numClutX1 = new AltUI.Controls.DarkNumericUpDown();
-            saturationColorSlider = new Cyotek.Windows.Forms.SaturationColorSlider();
-            hueColorSlider = new Cyotek.Windows.Forms.HueColorSlider();
-            lightnessColorSlider = new Cyotek.Windows.Forms.LightnessColorSlider();
             rdiModeCLUT = new MetroSet_UI.Controls.MetroSetRadioButton();
             tglGlobalControl = new MetroSet_UI.Controls.MetroSetSwitch();
             fraSlider = new AltUI.Controls.DarkGroupBox();
@@ -118,6 +116,7 @@ namespace CrashEdit.CE.Controls
             // 
             // colorEditor
             // 
+            colorEditor.AutoSize = true;
             colorEditor.Color = Color.FromArgb(0, 0, 0);
             colorEditor.Enabled = false;
             colorEditor.Location = new Point(1, 1);
@@ -126,7 +125,7 @@ namespace CrashEdit.CE.Controls
             colorEditor.Padding = new Padding(9);
             colorEditor.ShowAlphaChannel = false;
             colorEditor.ShowColorSpaceLabels = false;
-            colorEditor.Size = new Size(284, 195);
+            colorEditor.Size = new Size(284, 200);
             colorEditor.TabIndex = 0;
             colorEditor.ColorChanged += colorEditor_ColorChanged;
             // 
@@ -138,9 +137,9 @@ namespace CrashEdit.CE.Controls
             fraGlobalControl.Controls.Add(pnGlobalControl);
             fraGlobalControl.Controls.Add(tglGlobalControl);
             fraGlobalControl.Enabled = false;
-            fraGlobalControl.Location = new Point(544, 295);
+            fraGlobalControl.Location = new Point(544, 301);
             fraGlobalControl.Name = "fraGlobalControl";
-            fraGlobalControl.Size = new Size(239, 282);
+            fraGlobalControl.Size = new Size(297, 278);
             fraGlobalControl.TabIndex = 8;
             fraGlobalControl.TabStop = false;
             fraGlobalControl.Text = "Global Controller";
@@ -177,17 +176,31 @@ namespace CrashEdit.CE.Controls
             // 
             // pnGlobalControl
             // 
+            pnGlobalControl.Controls.Add(colorEditorGlobal);
             pnGlobalControl.Controls.Add(rdiModeSelectedCells);
             pnGlobalControl.Controls.Add(pnCLUT);
-            pnGlobalControl.Controls.Add(saturationColorSlider);
-            pnGlobalControl.Controls.Add(hueColorSlider);
-            pnGlobalControl.Controls.Add(lightnessColorSlider);
             pnGlobalControl.Controls.Add(rdiModeCLUT);
             pnGlobalControl.Enabled = false;
             pnGlobalControl.Location = new Point(6, 50);
             pnGlobalControl.Name = "pnGlobalControl";
-            pnGlobalControl.Size = new Size(227, 223);
+            pnGlobalControl.Size = new Size(288, 223);
             pnGlobalControl.TabIndex = 4;
+            // 
+            // colorEditorGlobal
+            // 
+            colorEditorGlobal.AutoSize = true;
+            colorEditorGlobal.Color = Color.FromArgb(0, 0, 0);
+            colorEditorGlobal.Location = new Point(1, 121);
+            colorEditorGlobal.Margin = new Padding(4, 3, 4, 3);
+            colorEditorGlobal.Name = "colorEditorGlobal";
+            colorEditorGlobal.Padding = new Padding(9);
+            colorEditorGlobal.ShowAlphaChannel = false;
+            colorEditorGlobal.ShowColorSpaceLabels = false;
+            colorEditorGlobal.ShowHex = false;
+            colorEditorGlobal.ShowRgb = false;
+            colorEditorGlobal.Size = new Size(284, 96);
+            colorEditorGlobal.TabIndex = 0;
+            colorEditorGlobal.ColorChanged += colorEditorGlobal_ColorChanged;
             // 
             // rdiModeSelectedCells
             // 
@@ -320,34 +333,6 @@ namespace CrashEdit.CE.Controls
             numClutX1.Value = new decimal(new int[] { 1, 0, 0, 0 });
             numClutX1.ValueChanged += numClutX1_ValueChanged;
             // 
-            // saturationColorSlider
-            // 
-            saturationColorSlider.Location = new Point(3, 157);
-            saturationColorSlider.Name = "saturationColorSlider";
-            saturationColorSlider.Size = new Size(219, 29);
-            saturationColorSlider.TabIndex = 0;
-            saturationColorSlider.Value = 50F;
-            saturationColorSlider.ValueChanged += saturationColorSlider_ValueChanged;
-            // 
-            // hueColorSlider
-            // 
-            hueColorSlider.Location = new Point(3, 120);
-            hueColorSlider.Name = "hueColorSlider";
-            hueColorSlider.Size = new Size(219, 29);
-            hueColorSlider.TabIndex = 0;
-            hueColorSlider.Value = 180F;
-            hueColorSlider.ValueChanged += hueColorSlider_ValueChanged;
-            // 
-            // lightnessColorSlider
-            // 
-            lightnessColorSlider.Color = Color.FromArgb(127, 127, 127);
-            lightnessColorSlider.Location = new Point(3, 193);
-            lightnessColorSlider.Name = "lightnessColorSlider";
-            lightnessColorSlider.Size = new Size(219, 29);
-            lightnessColorSlider.TabIndex = 0;
-            lightnessColorSlider.Value = 50F;
-            lightnessColorSlider.ValueChanged += lightnessColorSlider_ValueChanged;
-            // 
             // rdiModeCLUT
             // 
             rdiModeCLUT.BackgroundColor = Color.FromArgb(30, 30, 30);
@@ -401,7 +386,7 @@ namespace CrashEdit.CE.Controls
             fraSlider.Enabled = false;
             fraSlider.Location = new Point(544, 85);
             fraSlider.Name = "fraSlider";
-            fraSlider.Size = new Size(297, 206);
+            fraSlider.Size = new Size(297, 210);
             fraSlider.TabIndex = 9;
             fraSlider.TabStop = false;
             // 
@@ -410,7 +395,7 @@ namespace CrashEdit.CE.Controls
             pnSliders.Controls.Add(colorEditor);
             pnSliders.Location = new Point(3, 3);
             pnSliders.Name = "pnSliders";
-            pnSliders.Size = new Size(291, 197);
+            pnSliders.Size = new Size(291, 203);
             pnSliders.TabIndex = 1;
             // 
             // fraCount
@@ -441,6 +426,7 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)numLoadClut).EndInit();
             fraGlobalControl.ResumeLayout(false);
             pnGlobalControl.ResumeLayout(false);
+            pnGlobalControl.PerformLayout();
             pnCLUT.ResumeLayout(false);
             pnCLUT.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numClutX2).EndInit();
@@ -449,6 +435,7 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)numClutX1).EndInit();
             fraSlider.ResumeLayout(false);
             pnSliders.ResumeLayout(false);
+            pnSliders.PerformLayout();
             fraCount.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -464,9 +451,6 @@ namespace CrashEdit.CE.Controls
         private Label lblClutX;
         private AltUI.Controls.DarkButton cmdApply;
         private Panel pnGlobalControl;
-        private Cyotek.Windows.Forms.SaturationColorSlider saturationColorSlider;
-        private Cyotek.Windows.Forms.HueColorSlider hueColorSlider;
-        private Cyotek.Windows.Forms.LightnessColorSlider lightnessColorSlider;
         private MetroSet_UI.Controls.MetroSetSwitch tglGlobalControl;
         private AltUI.Controls.DarkNumericUpDown numClutY2;
         private AltUI.Controls.DarkNumericUpDown numClutX2;
@@ -483,5 +467,6 @@ namespace CrashEdit.CE.Controls
         private AltUI.Controls.DarkGroupBox fraCount;
         private Label lblCLUTTo;
         private Label lblCLUTFrom;
+        private Cyotek.Windows.Forms.ColorEditor colorEditorGlobal;
     }
 }

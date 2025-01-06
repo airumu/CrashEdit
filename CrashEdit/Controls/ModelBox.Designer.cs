@@ -70,14 +70,11 @@ namespace CrashEdit.CE.Controls
             cmdCancel = new DarkButton();
             cmdApply = new DarkButton();
             pnGlobalControl = new Panel();
-            saturationColorSlider = new Cyotek.Windows.Forms.SaturationColorSlider();
-            hueColorSlider = new Cyotek.Windows.Forms.HueColorSlider();
-            lightnessColorSlider = new Cyotek.Windows.Forms.LightnessColorSlider();
+            colorEditorGlobal = new Cyotek.Windows.Forms.ColorEditor();
             tglGlobalControl = new MetroSetSwitch();
             pnSliders = new Panel();
-            darkGroupBox1 = new DarkGroupBox();
+            fraColorSlider = new DarkGroupBox();
             colorEditor = new Cyotek.Windows.Forms.ColorEditor();
-            picPreview = new PictureBox();
             colorWheel = new Cyotek.Windows.Forms.ColorWheel();
             lstColor = new DoubleBufferedListView();
             tbpTextures = new TabPage();
@@ -117,8 +114,7 @@ namespace CrashEdit.CE.Controls
             fraGlobalControl.SuspendLayout();
             pnGlobalControl.SuspendLayout();
             pnSliders.SuspendLayout();
-            darkGroupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)picPreview).BeginInit();
+            fraColorSlider.SuspendLayout();
             tbpTextures.SuspendLayout();
             fraReplaceTexture.SuspendLayout();
             fraSwitches.SuspendLayout();
@@ -145,7 +141,7 @@ namespace CrashEdit.CE.Controls
             tabModel.Location = new Point(0, 0);
             tabModel.Multiline = true;
             tabModel.Name = "tabModel";
-            tabModel.SelectedIndex = 0;
+            tabModel.SelectedIndex = 1;
             tabModel.SelectedTextColor = Color.White;
             tabModel.Size = new Size(1040, 800);
             tabModel.SizeMode = TabSizeMode.Fixed;
@@ -401,7 +397,7 @@ namespace CrashEdit.CE.Controls
             fraGlobalControl.Controls.Add(tglGlobalControl);
             fraGlobalControl.Location = new Point(304, 218);
             fraGlobalControl.Name = "fraGlobalControl";
-            fraGlobalControl.Size = new Size(239, 167);
+            fraGlobalControl.Size = new Size(293, 154);
             fraGlobalControl.TabIndex = 7;
             fraGlobalControl.TabStop = false;
             fraGlobalControl.Text = "Global Controller";
@@ -438,42 +434,28 @@ namespace CrashEdit.CE.Controls
             // 
             // pnGlobalControl
             // 
-            pnGlobalControl.Controls.Add(saturationColorSlider);
-            pnGlobalControl.Controls.Add(hueColorSlider);
-            pnGlobalControl.Controls.Add(lightnessColorSlider);
+            pnGlobalControl.Controls.Add(colorEditorGlobal);
             pnGlobalControl.Enabled = false;
-            pnGlobalControl.Location = new Point(6, 50);
+            pnGlobalControl.Location = new Point(0, 50);
             pnGlobalControl.Name = "pnGlobalControl";
-            pnGlobalControl.Size = new Size(227, 111);
+            pnGlobalControl.Size = new Size(293, 100);
             pnGlobalControl.TabIndex = 4;
             // 
-            // saturationColorSlider
+            // colorEditorGlobal
             // 
-            saturationColorSlider.Location = new Point(3, 38);
-            saturationColorSlider.Name = "saturationColorSlider";
-            saturationColorSlider.Size = new Size(219, 29);
-            saturationColorSlider.TabIndex = 0;
-            saturationColorSlider.Value = 50F;
-            saturationColorSlider.ValueChanged += saturationColorSlider_ValueChanged;
-            // 
-            // hueColorSlider
-            // 
-            hueColorSlider.Location = new Point(3, 3);
-            hueColorSlider.Name = "hueColorSlider";
-            hueColorSlider.Size = new Size(219, 29);
-            hueColorSlider.TabIndex = 0;
-            hueColorSlider.Value = 180F;
-            hueColorSlider.ValueChanged += hueColorSlider_ValueChangedHandler;
-            // 
-            // lightnessColorSlider
-            // 
-            lightnessColorSlider.Color = Color.FromArgb(127, 127, 127);
-            lightnessColorSlider.Location = new Point(3, 73);
-            lightnessColorSlider.Name = "lightnessColorSlider";
-            lightnessColorSlider.Size = new Size(219, 29);
-            lightnessColorSlider.TabIndex = 0;
-            lightnessColorSlider.Value = 50F;
-            lightnessColorSlider.ValueChanged += lightnessColorSlider_ValueChanged;
+            colorEditorGlobal.AutoSize = true;
+            colorEditorGlobal.Color = Color.FromArgb(0, 0, 0);
+            colorEditorGlobal.Location = new Point(4, 3);
+            colorEditorGlobal.Margin = new Padding(4, 3, 4, 3);
+            colorEditorGlobal.Name = "colorEditorGlobal";
+            colorEditorGlobal.Padding = new Padding(9);
+            colorEditorGlobal.ShowAlphaChannel = false;
+            colorEditorGlobal.ShowColorSpaceLabels = false;
+            colorEditorGlobal.ShowHex = false;
+            colorEditorGlobal.ShowRgb = false;
+            colorEditorGlobal.Size = new Size(284, 96);
+            colorEditorGlobal.TabIndex = 0;
+            colorEditorGlobal.ColorChanged += colorEditorGlobal_ColorChanged;
             // 
             // tglGlobalControl
             // 
@@ -502,23 +484,22 @@ namespace CrashEdit.CE.Controls
             // 
             // pnSliders
             // 
-            pnSliders.Controls.Add(darkGroupBox1);
-            pnSliders.Controls.Add(picPreview);
+            pnSliders.Controls.Add(fraColorSlider);
             pnSliders.Controls.Add(colorWheel);
             pnSliders.Enabled = false;
             pnSliders.Location = new Point(301, 3);
             pnSliders.Name = "pnSliders";
-            pnSliders.Size = new Size(578, 209);
+            pnSliders.Size = new Size(486, 209);
             pnSliders.TabIndex = 3;
             // 
-            // darkGroupBox1
+            // fraColorSlider
             // 
-            darkGroupBox1.Controls.Add(colorEditor);
-            darkGroupBox1.Location = new Point(3, 3);
-            darkGroupBox1.Name = "darkGroupBox1";
-            darkGroupBox1.Size = new Size(293, 203);
-            darkGroupBox1.TabIndex = 3;
-            darkGroupBox1.TabStop = false;
+            fraColorSlider.Controls.Add(colorEditor);
+            fraColorSlider.Location = new Point(3, 3);
+            fraColorSlider.Name = "fraColorSlider";
+            fraColorSlider.Size = new Size(293, 203);
+            fraColorSlider.TabIndex = 3;
+            fraColorSlider.TabStop = false;
             // 
             // colorEditor
             // 
@@ -533,18 +514,9 @@ namespace CrashEdit.CE.Controls
             colorEditor.TabIndex = 0;
             colorEditor.ColorChanged += colorEditor_ColorChanged;
             // 
-            // picPreview
-            // 
-            picPreview.Enabled = false;
-            picPreview.Location = new Point(486, 6);
-            picPreview.Name = "picPreview";
-            picPreview.Size = new Size(84, 50);
-            picPreview.TabIndex = 2;
-            picPreview.TabStop = false;
-            picPreview.Visible = false;
-            // 
             // colorWheel
             // 
+            colorWheel.Alpha = 1D;
             colorWheel.Color = Color.FromArgb(255, 255, 255);
             colorWheel.Enabled = false;
             colorWheel.Location = new Point(302, 5);
@@ -906,9 +878,9 @@ namespace CrashEdit.CE.Controls
             tbpColors.ResumeLayout(false);
             fraGlobalControl.ResumeLayout(false);
             pnGlobalControl.ResumeLayout(false);
+            pnGlobalControl.PerformLayout();
             pnSliders.ResumeLayout(false);
-            darkGroupBox1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)picPreview).EndInit();
+            fraColorSlider.ResumeLayout(false);
             tbpTextures.ResumeLayout(false);
             fraReplaceTexture.ResumeLayout(false);
             fraReplaceTexture.PerformLayout();
@@ -936,9 +908,6 @@ namespace CrashEdit.CE.Controls
         private Cyotek.Windows.Forms.ColorEditor colorEditor;
         private Cyotek.Windows.Forms.ColorWheel colorWheel;
         private MetroSetSwitch tglGlobalControl;
-        private Cyotek.Windows.Forms.HueColorSlider hueColorSlider;
-        private Cyotek.Windows.Forms.SaturationColorSlider saturationColorSlider;
-        private Cyotek.Windows.Forms.LightnessColorSlider lightnessColorSlider;
         private Panel pnSliders;
         private Panel pnGlobalControl;
         private AltUI.Controls.DarkButton cmdApply;
@@ -963,8 +932,7 @@ namespace CrashEdit.CE.Controls
         private CheckBox chkReplaceCLUT;
         private Label lblModelInfo;
         private MetroSetRadioButton rbtReloadTPage;
-        private PictureBox picPreview;
-        private DarkGroupBox darkGroupBox1;
+        private DarkGroupBox fraColorSlider;
         private DarkGroupBox fraScales;
         private DarkNumericUpDown numScaleZ;
         private Label lblScaleZ;
@@ -983,5 +951,6 @@ namespace CrashEdit.CE.Controls
         private Label lblOffsetX;
         private Panel panel1;
         private DarkButton cmdLoadTexture;
+        private Cyotek.Windows.Forms.ColorEditor colorEditorGlobal;
     }
 }

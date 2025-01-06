@@ -1,4 +1,5 @@
-﻿using CrashEdit.Crash;
+﻿using AltUI.Forms;
+using CrashEdit.Crash;
 using MetroSet_UI.Controls;
 using Color = System.Drawing.Color;
 using HslColor = Cyotek.Windows.Forms.HslColor;
@@ -9,12 +10,14 @@ namespace CrashEdit.CE.Controls
     {
         private TextureChunk chunk;
 
-        private bool IsEditMode;
-        private int EditMode;
+        private bool globalControlMode;
+        private int editMode;
 
-        private float MasterHue => hueColorSlider.Value;
-        private float MasterSaturation => saturationColorSlider.Value;
-        private float MasterLightness => lightnessColorSlider.Value;
+        private double MasterHue => colorEditorGlobal.HslColor.H;
+        private double MasterSaturation => colorEditorGlobal.HslColor.S;
+        private double MasterLightness => colorEditorGlobal.HslColor.L;
+
+        internal bool dirty;
 
         public CLUTBox(TextureChunk texturechunk)
         {
@@ -24,9 +27,10 @@ namespace CrashEdit.CE.Controls
 
             SetDarkTheme(grdCLUT);
             EnableDoubleBuffering();
+            ResetColorSliders();
 
-            IsEditMode = false;
-            EditMode = 0;
+            globalControlMode = false;
+            editMode = 0;
 
             numClutX1.Enabled = false;
             numClutX2.Enabled = false;
@@ -207,8 +211,8 @@ namespace CrashEdit.CE.Controls
             HslColor hslColor = new HslColor(itemColor);
 
             hslColor = ChangeHue(hslColor, hslColor.H + (MasterHue));
-            hslColor.S += (double)(MasterSaturation - 50) / 100;
-            hslColor.L += (double)(MasterLightness - 50) / 100;
+            hslColor.S += (double)(MasterSaturation - 0.5) / 1.0;
+            hslColor.L += (double)(MasterLightness - 0.5) / 1.0;
 
             Color newColor = hslColor.ToRgbColor();
             return newColor;
@@ -216,10 +220,10 @@ namespace CrashEdit.CE.Controls
 
         private void UpdateAllColors()
         {
-            if (IsEditMode)
+            if (globalControlMode)
             {
                 grdCLUT.SuspendLayout();
-                if (EditMode == 0)
+                if (editMode == 0)
                 {
                     int startRow = (int)numClutX1.Value + (int)numClutY1.Value * 16;
                     int endRow = (int)numClutX2.Value + (int)numClutY2.Value * 16;
@@ -313,38 +317,20 @@ namespace CrashEdit.CE.Controls
 
         private void colorEditor_ColorChanged(object sender, EventArgs e)
         {
-            if (!IsEditMode)
+            if (!globalControlMode)
                 UpdateSelectedColor(colorEditor.Color);
         }
 
-        private void hueColorSlider_ValueChanged(object sender, EventArgs e)
+        private void colorEditorGlobal_ColorChanged(object sender, EventArgs e)
         {
-            if (hueColorSlider.Focused)
-            {
+            if (!dirty)
                 UpdateAllColors();
-            }
+            dirty = false;
         }
 
-        private void saturationColorSlider_ValueChanged(object sender, EventArgs e)
-        {
-            if (saturationColorSlider.Focused)
-            {
-                UpdateAllColors();
-            }
-        }
-
-        private void lightnessColorSlider_ValueChanged(object sender, EventArgs e)
-        {
-            if (lightnessColorSlider.Focused)
-            {
-                UpdateAllColors();
-            }
-        }
-
-        private void cmdApply_Click(object sender, EventArgs e)
+        private void ApplyChanges()
         {
             grdCLUT.SuspendLayout();
-
             int startRow = (int)numClutX1.Value + (int)numClutY1.Value * 16;
             int endRow = (int)numClutX2.Value + (int)numClutY2.Value * 16;
             for (int row = startRow; row <= endRow; row++)
@@ -358,19 +344,33 @@ namespace CrashEdit.CE.Controls
                 }
             }
             grdCLUT.ResumeLayout();
+        }
+
+        private void cmdApply_Click(object sender, EventArgs e)
+        {
+            ApplyChanges();
             tglGlobalControl.Switched = false;
         }
 
         private void cmdCancel_Click(object sender, EventArgs e)
         {
-            ResetColorList();
             tglGlobalControl.Switched = false;
         }
 
         private void CLUTBox_Leave(object sender, EventArgs e)
         {
-            ResetColorList();
-            tglGlobalControl.Switched = false;
+            if (globalControlMode)
+            {
+                if (DarkMessageBox.ShowWarning("The changes have not been saved. Do you want to apply them?", "Global Controller", DarkDialogButton.YesNo) == DialogResult.Yes)
+                {
+                    ApplyChanges();
+                    tglGlobalControl.Switched = false;
+                }
+                else
+                {
+                    tglGlobalControl.Switched = false;
+                }
+            }
         }
 
         private void grdCLUT_SelectionChanged(object sender, EventArgs e)
@@ -385,7 +385,7 @@ namespace CrashEdit.CE.Controls
             {
                 colorEditor.Color = grdCLUT.SelectedCells[0].Style.BackColor;
 
-                if (EditMode == 0)
+                if (editMode == 0)
                 {
                     var rowIndices = grdCLUT.SelectedCells
                                               .Cast<DataGridViewCell>()
@@ -405,8 +405,8 @@ namespace CrashEdit.CE.Controls
 
         private void tglGlobalControl_SwitchedChanged(object sender)
         {
-            IsEditMode = tglGlobalControl.Switched;
-            if (IsEditMode)
+            globalControlMode = tglGlobalControl.Switched;
+            if (globalControlMode)
             {
                 fraCount.Enabled =
                 pnSliders.Enabled = false;
@@ -423,21 +423,24 @@ namespace CrashEdit.CE.Controls
                 cmdApply.Enabled =
                 cmdCancel.Enabled = false;
                 ResetColorList();
+                ResetColorSliders();
             }
-            ResetColorSliders();
         }
 
         private void ResetColorSliders()
         {
-            hueColorSlider.Value = 180F;
-            saturationColorSlider.Value = 50F;
-            lightnessColorSlider.Value = 50F;
+            var hslColor = colorEditorGlobal.HslColor;
+            hslColor.H = 180;
+            hslColor.S = 0.5;
+            hslColor.L = 0.5;
+            colorEditorGlobal.HslColor = hslColor;
+
+            dirty = true;
         }
 
         private void ResetColorList()
         {
             grdCLUT.SuspendLayout();
-
             int startRow = 1;
             int endRow = grdCLUT.RowCount;
             for (int row = startRow; row < endRow; row++)
@@ -508,9 +511,10 @@ namespace CrashEdit.CE.Controls
             if (radioButton != null && radioButton.Checked)
                 radioButton.Checked = false;
 
-            EditMode = 0;
+            editMode = 0;
             pnCLUT.Enabled = true;
             UpdateNumricValues();
+            ResetColorSliders();
         }
 
         private void rdiModeSelectedCells_Click(object sender, EventArgs e)
@@ -520,8 +524,9 @@ namespace CrashEdit.CE.Controls
             if (radioButton != null && radioButton.Checked)
                 radioButton.Checked = false;
 
-            EditMode = 1;
+            editMode = 1;
             pnCLUT.Enabled = false;
+            ResetColorSliders();
         }
 
     }

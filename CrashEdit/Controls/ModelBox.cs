@@ -55,9 +55,9 @@ namespace CrashEdit.CE.Controls
         private int ColBlendMode = 15;
         private int ColColorMode = 16;
 
-        private float MasterHue => hueColorSlider.Value;
-        private float MasterSaturation => saturationColorSlider.Value;
-        private float MasterLightness => lightnessColorSlider.Value;
+        private double MasterHue => colorEditorGlobal.HslColor.H;
+        private double MasterSaturation => colorEditorGlobal.HslColor.S;
+        private double MasterLightness => colorEditorGlobal.HslColor.L;
 
         public ModelBox(ModelEntryController controller)
         {
@@ -1089,6 +1089,7 @@ namespace CrashEdit.CE.Controls
 
         private void tbpColors_Enter(object sender, EventArgs e)
         {
+            ResetColorSliders();
             UpdateColorList();
             tbpColors.Enter -= tbpColors_Enter;
         }
@@ -1236,8 +1237,7 @@ namespace CrashEdit.CE.Controls
             UpdateColorCopy();
 
             colorEditor.Color = color;
-            colorWheel.Color = color;
-            picPreview.BackColor = color;
+            //colorWheel.Color = color;
         }
 
         private void UpdateAllColors()
@@ -1252,8 +1252,8 @@ namespace CrashEdit.CE.Controls
                     HslColor hslColor = new HslColor(itemColor);
 
                     hslColor = ChangeHue(hslColor, hslColor.H + (MasterHue));
-                    hslColor.S += (double)(MasterSaturation - 50) / 100;
-                    hslColor.L += (double)(MasterLightness - 50) / 100;
+                    hslColor.S += (double)(MasterSaturation - 0.5) / 1.0;
+                    hslColor.L += (double)(MasterLightness - 0.5) / 1.0;
 
                     Color newColor = hslColor.ToRgbColor();
 
@@ -1293,15 +1293,17 @@ namespace CrashEdit.CE.Controls
                 cmdApply.Enabled =
                 cmdCancel.Enabled = false;
                 ResetColorList();
+                ResetColorSliders();
             }
-            ResetColorSliders();
         }
 
         private void ResetColorSliders()
         {
-            hueColorSlider.Value = 180F;
-            saturationColorSlider.Value = 50F;
-            lightnessColorSlider.Value = 50F;
+            var hslColor = colorEditorGlobal.HslColor;
+            hslColor.H = 180;
+            hslColor.S = 0.5;
+            hslColor.L = 0.5;
+            colorEditorGlobal.HslColor = hslColor;
         }
 
         private Color GetSelectedItemColor()
@@ -1330,13 +1332,6 @@ namespace CrashEdit.CE.Controls
                 colorEditor.HslColor = hslColor;
             }
             //colorWheel.Color = color;
-            //picPreview.BackColor = color;
-        }
-
-        private void colorEditor_ColorChanged(object sender, EventArgs e)
-        {
-            if (!globalControlMode)
-                OnValueChanged(false, colorEditor.Color);
         }
 
         private void colorWheel_ColorChanged(object sender, EventArgs e)
@@ -1345,28 +1340,15 @@ namespace CrashEdit.CE.Controls
                 OnValueChanged(false, colorWheel.Color);
         }
 
-        private void hueColorSlider_ValueChangedHandler(object sender, EventArgs e)
+        private void colorEditor_ColorChanged(object sender, EventArgs e)
         {
-            if (hueColorSlider.Focused)
-            {
-                OnValueChanged(true);
-            }
+            if (!globalControlMode)
+                OnValueChanged(false, colorEditor.Color);
         }
 
-        private void saturationColorSlider_ValueChanged(object sender, EventArgs e)
+        private void colorEditorGlobal_ColorChanged(object sender, EventArgs e)
         {
-            if (saturationColorSlider.Focused)
-            {
-                OnValueChanged(true);
-            }
-        }
-
-        private void lightnessColorSlider_ValueChanged(object sender, EventArgs e)
-        {
-            if (lightnessColorSlider.Focused)
-            {
-                OnValueChanged(true);
-            }
+            OnValueChanged(true);
         }
 
         internal static HslColor ChangeHue(HslColor color, double increment)
@@ -1390,7 +1372,7 @@ namespace CrashEdit.CE.Controls
             return copy;
         }
 
-        private void cmdApply_Click(object sender, EventArgs e)
+        private void ApplyChanges()
         {
             foreach (ListViewItem item in lstColor.Items)
             {
@@ -1398,21 +1380,32 @@ namespace CrashEdit.CE.Controls
                 SetModelColor(item.BackColor, i);
             }
             UpdateColorCopy();
+        }
+
+        private void cmdApply_Click(object sender, EventArgs e)
+        {
+            ApplyChanges();
             tglGlobalControl.Switched = false;
         }
 
         private void cmdCancel_Click(object sender, EventArgs e)
         {
             tglGlobalControl.Switched = false;
-            ResetColorSliders();
         }
 
         private void tbpColors_Leave(object sender, EventArgs e)
         {
             if (globalControlMode)
             {
-                tglGlobalControl.Switched = false;
-                ResetColorSliders();
+                if (DarkMessageBox.ShowWarning("The changes have not been saved. Do you want to apply them?", "Global Controller", DarkDialogButton.YesNo) == DialogResult.Yes)
+                {
+                    ApplyChanges();
+                    tglGlobalControl.Switched = false;
+                }
+                else
+                {
+                    tglGlobalControl.Switched = false;
+                }
             }
         }
 
