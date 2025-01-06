@@ -134,7 +134,7 @@ namespace CrashEdit.CE.Forms
             btnSavePath.Padding = new Padding(5);
             btnSavePath.Size = new Size(75, 23);
             btnSavePath.TabIndex = 4;
-            btnSavePath.Text = "Browse";
+            btnSavePath.Text = "Browse...";
             btnSavePath.Click += btnSavePath_Click;
             // 
             // btnPath
@@ -148,7 +148,7 @@ namespace CrashEdit.CE.Forms
             btnPath.Padding = new Padding(5);
             btnPath.Size = new Size(75, 23);
             btnPath.TabIndex = 3;
-            btnPath.Text = "Browse";
+            btnPath.Text = "Browse...";
             btnPath.Click += btnPath_Click;
             // 
             // darkLabel3
