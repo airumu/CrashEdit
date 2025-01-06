@@ -136,7 +136,7 @@ namespace CrashEdit.CE.Controls
             {
                 var rows = await Task.Run(() =>
                 {
-                    var rowsToAdd = new List<(int Index, ListViewItem Row)>();
+                    var rowsToAdd = new ConcurrentBag<(int Index, ListViewItem Row)>();
 
                     Parallel.For(0, colorCount, i =>
                     {
