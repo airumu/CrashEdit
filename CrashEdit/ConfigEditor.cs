@@ -101,7 +101,6 @@ namespace CrashEdit.CE
             chkViewCameraAngle.Checked = Settings.Default.ViewCameraAngle;
             chkShowEntityParams.Checked = Settings.Default.ShowEntityParams;
             chkPatchNSDSavesNSF.Checked = Settings.Default.PatchNSDSavesNSF;
-            chkEnableVisual.Checked = Settings.Default.EnableVisual;
             // added
             chkOldPatchNSD.Checked = Settings.Default.UseOldPatchNSD;
             chkLiteralCollisionTypes.Checked = Settings.Default.ShowliteralCollisionTypes;
@@ -307,12 +306,6 @@ namespace CrashEdit.CE
         private void chkViewCameraAngle_CheckedChanged(object sender, EventArgs e)
         {
             Settings.Default.ViewCameraAngle = chkViewCameraAngle.Checked;
-            Settings.Default.Save();
-        }
-
-        private void chkDisableVisual_CheckedChanged(object sender, EventArgs e)
-        {
-            Settings.Default.EnableVisual = chkEnableVisual.Checked;
             Settings.Default.Save();
         }
 

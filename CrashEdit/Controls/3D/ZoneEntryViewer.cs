@@ -93,6 +93,7 @@ namespace CrashEdit.CE
         {
             base.PrintHelp();
             con_help += octree_renderer.PrintHelp();
+            con_help += KeyboardControls.ToggleEntityVisual.Print(OnOffName(Settings.Default.EnableVisual));
             con_help += KeyboardControls.ToggleTimeTrial.Print(OnOffName(time_trial_mode));
         }
 
@@ -100,6 +101,11 @@ namespace CrashEdit.CE
         {
             base.RunLogic();
             octree_renderer.RunLogic();
+            if (KPress(KeyboardControls.ToggleEntityVisual))
+            {
+                Settings.Default.EnableVisual = !Settings.Default.EnableVisual;
+                Settings.Default.Save();
+            }
             if (KPress(KeyboardControls.ToggleTimeTrial)) time_trial_mode = !time_trial_mode;
         }
 

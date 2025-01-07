@@ -221,6 +221,7 @@ namespace CrashEdit.CE
             public static readonly ControlsKeyboardInfo ToggleSlowAnim = new(Keys.O, Resources.ViewerControls_ToggleSlowAnim);
             public static readonly ControlsKeyboardInfo ToggleModelCycle = new(Keys.Y, Resources.ViewerControls_ToggleModelCycle);
             public static readonly ControlsKeyboardInfo ToggleAlignedMovement = new(Keys.Z, Resources.ViewerControls_MoveAligned);
+            public static readonly ControlsKeyboardInfo ToggleEntityVisual = new(Keys.G, Resources.ViewerControls_ToggleEntityVisual);
         }
         #endregion
 
@@ -432,7 +433,11 @@ namespace CrashEdit.CE
             }
             if (KPress(KeyboardControls.ToggleTextures)) render.EnableTexture = !render.EnableTexture;
             if (KPress(KeyboardControls.ToggleHelp)) showHelp = !showHelp;
-            if (KPress(KeyboardControls.ToggleAlignedMovement)) Settings.Default.AlignedMovement = !Settings.Default.AlignedMovement;
+            if (KPress(KeyboardControls.ToggleAlignedMovement))
+            {
+                Settings.Default.AlignedMovement = !Settings.Default.AlignedMovement;
+                Settings.Default.Save();
+            }
         }
 
         protected virtual bool CanMove() => true;

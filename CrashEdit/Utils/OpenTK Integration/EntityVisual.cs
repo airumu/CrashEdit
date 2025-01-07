@@ -90,30 +90,30 @@ namespace CrashEdit.CE
 
             MapCrash2.AddVisual(0, 0, new("Cr10V")); // crash
             MapCrash2.AddVisual(1, 1, new("WWP0V")); // warp out
-            MapCrash2.AddVisual(1, 7 + 0000, new("WGB0V", 0)); // warp gate bottom 1
-            MapCrash2.AddVisual(1, 8 + 0000, new("WGb0V", 0)); // warp gate bottom exit 1
-            MapCrash2.AddVisual(1, 7 + 0900, new("WGT0V", 0)); // warp gate top 1
-            MapCrash2.AddVisual(1, 8 + 0900, new("WGt0V", 0)); // warp gate top exit 1
-            MapCrash2.AddVisual(1, 7 + 1000, new("WGB5V", 0)); // warp gate bottom 2
-            MapCrash2.AddVisual(1, 8 + 1000, new("WGb5V", 0)); // warp gate bottom exit 2
-            MapCrash2.AddVisual(1, 7 + 1900, new("WGT5V", 0)); // warp gate top 2
-            MapCrash2.AddVisual(1, 8 + 1900, new("WGt5V", 0)); // warp gate top exit 2
-            MapCrash2.AddVisual(1, 7 + 2000, new("WGBzV", 0)); // warp gate bottom 3
-            MapCrash2.AddVisual(1, 8 + 2000, new("WGbzV", 0)); // warp gate bottom exit 3
-            MapCrash2.AddVisual(1, 7 + 2900, new("WGTzV", 0)); // warp gate top 3
-            MapCrash2.AddVisual(1, 8 + 2900, new("WGtzV", 0)); // warp gate top exit 3
-            MapCrash2.AddVisual(1, 7 + 3000, new("WGBdV", 0)); // warp gate bottom 4
-            MapCrash2.AddVisual(1, 8 + 3000, new("WGbdV", 0)); // warp gate bottom exit 4
-            MapCrash2.AddVisual(1, 7 + 3900, new("WGTdV", 0)); // warp gate top 4
-            MapCrash2.AddVisual(1, 8 + 3900, new("WGtdV", 0)); // warp gate top exit 4
-            MapCrash2.AddVisual(1, 7 + 4000, new("WGBiV", 0)); // warp gate bottom 5
-            MapCrash2.AddVisual(1, 8 + 4000, new("WGbiV", 0)); // warp gate bottom exit 5
-            MapCrash2.AddVisual(1, 7 + 4900, new("WGTiV", 0)); // warp gate top 5
-            MapCrash2.AddVisual(1, 8 + 4900, new("WGtiV", 0)); // warp gate top exit 5
-            MapCrash2.AddVisual(1, 7 + 5000, new("WGBBV", 0)); // warp gate bottom 6
-            MapCrash2.AddVisual(1, 8 + 5000, new("WGbBV", 0)); // warp gate bottom exit 6
-            MapCrash2.AddVisual(1, 7 + 5900, new("WGTBV", 0)); // warp gate top 6
-            MapCrash2.AddVisual(1, 8 + 5900, new("WGtBV", 0)); // warp gate top exit 6
+            MapCrash2.AddVisual(1, 7 + 0000, new("WGB0V", 2)); // warp gate bottom 1
+            MapCrash2.AddVisual(1, 8 + 0000, new("WGb0V", 2)); // warp gate bottom exit 1
+            MapCrash2.AddVisual(1, 7 + 0900, new("WGT0V", 2)); // warp gate top 1
+            MapCrash2.AddVisual(1, 8 + 0900, new("WGt0V", 2)); // warp gate top exit 1
+            MapCrash2.AddVisual(1, 7 + 1000, new("WGB5V", 2)); // warp gate bottom 2
+            MapCrash2.AddVisual(1, 8 + 1000, new("WGb5V", 2)); // warp gate bottom exit 2
+            MapCrash2.AddVisual(1, 7 + 1900, new("WGT5V", 2)); // warp gate top 2
+            MapCrash2.AddVisual(1, 8 + 1900, new("WGt5V", 2)); // warp gate top exit 2
+            MapCrash2.AddVisual(1, 7 + 2000, new("WGBzV", 2)); // warp gate bottom 3
+            MapCrash2.AddVisual(1, 8 + 2000, new("WGbzV", 2)); // warp gate bottom exit 3
+            MapCrash2.AddVisual(1, 7 + 2900, new("WGTzV", 2)); // warp gate top 3
+            MapCrash2.AddVisual(1, 8 + 2900, new("WGtzV", 2)); // warp gate top exit 3
+            MapCrash2.AddVisual(1, 7 + 3000, new("WGBdV", 2)); // warp gate bottom 4
+            MapCrash2.AddVisual(1, 8 + 3000, new("WGbdV", 2)); // warp gate bottom exit 4
+            MapCrash2.AddVisual(1, 7 + 3900, new("WGTdV", 2)); // warp gate top 4
+            MapCrash2.AddVisual(1, 8 + 3900, new("WGtdV", 2)); // warp gate top exit 4
+            MapCrash2.AddVisual(1, 7 + 4000, new("WGBiV", 2)); // warp gate bottom 5
+            MapCrash2.AddVisual(1, 8 + 4000, new("WGbiV", 2)); // warp gate bottom exit 5
+            MapCrash2.AddVisual(1, 7 + 4900, new("WGTiV", 2)); // warp gate top 5
+            MapCrash2.AddVisual(1, 8 + 4900, new("WGtiV", 2)); // warp gate top exit 5
+            MapCrash2.AddVisual(1, 7 + 5000, new("WGBBV", 2)); // warp gate bottom 6
+            MapCrash2.AddVisual(1, 8 + 5000, new("WGbBV", 2)); // warp gate bottom exit 6
+            MapCrash2.AddVisual(1, 7 + 5900, new("WGTBV", 2)); // warp gate top 6
+            MapCrash2.AddVisual(1, 8 + 5900, new("WGtBV", 2)); // warp gate top exit 6
             MapCrash2.AddVisual(2, 0, new("Ts1bV")); // spike turtle
             MapCrash2.AddVisual(2, 5, new("Tu1bV")); // saw turtle
             MapCrash2.AddVisual(3, 24, new("Cry1V")); // crystal

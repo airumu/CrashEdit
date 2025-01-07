@@ -75,7 +75,6 @@ namespace CrashEdit.CE
             chkViewZoneName = new CheckBox();
             darkGroupBox1 = new DarkGroupBox();
             chkShowEntityParams = new CheckBox();
-            chkEnableVisual = new CheckBox();
             tbpPatchNSD = new TabPage();
             tbpMisc = new TabPage();
             fraMiscDebug = new DarkGroupBox();
@@ -632,7 +631,7 @@ namespace CrashEdit.CE
             darkGroupBox3.BackColor = Color.Transparent;
             darkGroupBox3.Controls.Add(chkViewCamera);
             darkGroupBox3.Controls.Add(chkViewCameraAngle);
-            darkGroupBox3.Location = new Point(3, 281);
+            darkGroupBox3.Location = new Point(3, 262);
             darkGroupBox3.Name = "darkGroupBox3";
             darkGroupBox3.Size = new Size(200, 72);
             darkGroupBox3.TabIndex = 16;
@@ -670,7 +669,7 @@ namespace CrashEdit.CE
             darkGroupBox2.BackColor = Color.Transparent;
             darkGroupBox2.Controls.Add(chkViewZoneBox);
             darkGroupBox2.Controls.Add(chkViewZoneName);
-            darkGroupBox2.Location = new Point(3, 203);
+            darkGroupBox2.Location = new Point(3, 184);
             darkGroupBox2.Name = "darkGroupBox2";
             darkGroupBox2.Size = new Size(200, 72);
             darkGroupBox2.TabIndex = 15;
@@ -708,10 +707,9 @@ namespace CrashEdit.CE
             darkGroupBox1.BackColor = Color.Transparent;
             darkGroupBox1.Controls.Add(chkFont3DEnable);
             darkGroupBox1.Controls.Add(chkShowEntityParams);
-            darkGroupBox1.Controls.Add(chkEnableVisual);
             darkGroupBox1.Location = new Point(3, 106);
             darkGroupBox1.Name = "darkGroupBox1";
-            darkGroupBox1.Size = new Size(200, 95);
+            darkGroupBox1.Size = new Size(200, 72);
             darkGroupBox1.TabIndex = 14;
             darkGroupBox1.TabStop = false;
             darkGroupBox1.Text = "Entities";
@@ -729,20 +727,6 @@ namespace CrashEdit.CE
             chkShowEntityParams.Text = "Show entity parameters";
             chkShowEntityParams.UseVisualStyleBackColor = true;
             chkShowEntityParams.CheckedChanged += chkShowEntityParams_CheckedChanged;
-            // 
-            // chkEnableVisual
-            // 
-            chkEnableVisual.AutoSize = true;
-            chkEnableVisual.BackColor = Color.Transparent;
-            chkEnableVisual.Checked = true;
-            chkEnableVisual.CheckState = CheckState.Checked;
-            chkEnableVisual.Location = new Point(7, 72);
-            chkEnableVisual.Name = "chkEnableVisual";
-            chkEnableVisual.Size = new Size(151, 19);
-            chkEnableVisual.TabIndex = 12;
-            chkEnableVisual.Text = "Enable 3D entity display";
-            chkEnableVisual.UseVisualStyleBackColor = false;
-            chkEnableVisual.CheckedChanged += chkDisableVisual_CheckedChanged;
             // 
             // tbpPatchNSD
             // 
@@ -1007,7 +991,6 @@ namespace CrashEdit.CE
         private CheckBox chkViewCameraAngle;
         private CheckBox chkViewZoneName;
         private CheckBox chkViewCamera;
-        private CheckBox chkEnableVisual;
         private DarkGroupBox fraLang;
         private CheckBox chkShowEntityParams;
         private CheckBox chkOldPatchNSD;

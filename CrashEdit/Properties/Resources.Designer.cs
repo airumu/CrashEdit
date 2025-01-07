@@ -2078,6 +2078,15 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
+        ///   Toggle 3D entity display ({0}) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string ViewerControls_ToggleEntityVisual {
+            get {
+                return ResourceManager.GetString("ViewerControls_ToggleEntityVisual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Toggle help text ({0}) に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string ViewerControls_ToggleHelp {
