@@ -1,6 +1,4 @@
-using System.Data.Common;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
 using CrashEdit.Crash;
 
 namespace CrashEdit.CE
@@ -9,9 +7,14 @@ namespace CrashEdit.CE
     {
         private readonly DataGridView dgvCode;
 
+        List<int> indentEndIndexes = new List<int>();
+        List<int> processedRows = new List<int>();
+
         private int headerCount;
         private int titleCount;
         private int addressIndex;
+        private string indent;
+        private int lockindent;
 
         public GOOLBox(GOOLEntry goolentry)
         {
@@ -27,12 +30,12 @@ namespace CrashEdit.CE
                 ReadOnly = true,
                 SelectionMode = DataGridViewSelectionMode.FullRowSelect,
                 RowHeadersVisible = false,
-                //ColumnHeadersVisible = false,
+                ColumnHeadersVisible = false,
                 AllowUserToDeleteRows = false,
                 AllowUserToResizeRows = false,
                 AllowUserToResizeColumns = false,
                 AllowUserToOrderColumns = false,
-
+                ShowCellToolTips = false
             };
             SetDarkTheme(dgvCode);
             EnableDoubleBuffering();
@@ -46,10 +49,15 @@ namespace CrashEdit.CE
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
                 SortMode = DataGridViewColumnSortMode.NotSortable
             });
+            dgvCode.CellPainting += dgvCode_CellPainting;
             dgvCode.CellClick += dgvCode_CellClick;
 
             headerCount = 0;
             addressIndex = 0;
+            indent = string.Empty;
+            indentEndIndexes = new List<int>();
+            processedRows = new List<int>();
+            lockindent = 1;
 
             PopulateData(goolentry);
 
@@ -127,27 +135,33 @@ namespace CrashEdit.CE
                     short cpc = (short)(goolentry.StateDescriptors[i].CodeHook & 0x3FFF);
                     int stategooleid = goolentry.Data[goolentry.StateDescriptors[i].GOOLIndex];
                     
-                    rows.Add($"State_{i} [{Entry.EIDToEName(stategooleid)}] (State Flags: {string.Format("0x{0:X}", goolentry.StateDescriptors[i].StateFlags)} | Block Flags: {string.Format("0x{0:X}", goolentry.StateDescriptors[i].BlockFlags)}))");
+                    rows.Add($"State_{i} [{Entry.EIDToEName(stategooleid)}] State Flags: {string.Format("0x{0:X}", goolentry.StateDescriptors[i].StateFlags)} | Block Flags: {string.Format("0x{0:X}", goolentry.StateDescriptors[i].BlockFlags)}");
                     if (epc != 0x3FFF)
                     {
-                        addressIndex = rows.Add($"    Event: {epc}" + ((goolentry.StateDescriptors[i].EventHook & 0x4000) != 0 ? " (external)" : ""));
-                        dgvCode.Rows[addressIndex].Tag = epc;
+                        bool isexternal = (goolentry.StateDescriptors[i].EventHook & 0x4000) != 0;
+                        addressIndex = rows.Add($"    Event: {epc}" + (isexternal ? " (external)" : ""));
+                        if (!isexternal)
+                            dgvCode.Rows[addressIndex].Tag = epc;
                         ++addressIndex;
                     }
                     else
                         rows.Add("      (no event hook)");
                     if (cpc != 0x3FFF)
                     {
-                        addressIndex = rows.Add($"    Code: {cpc}" + ((goolentry.StateDescriptors[i].CodeHook & 0x4000) != 0 ? " (external)" : ""));
-                        dgvCode.Rows[addressIndex].Tag = cpc;
+                        bool isexternal = (goolentry.StateDescriptors[i].CodeHook & 0x4000) != 0;
+                        addressIndex = rows.Add($"    Code: {cpc}" + (isexternal ? " (external)" : ""));
+                        if (!isexternal)
+                            dgvCode.Rows[addressIndex].Tag = cpc;
                         ++addressIndex;
                     }
                     else
                         rows.Add("      ERROR! No code thread! This state will not work.");
                     if (tpc != 0x3FFF)
                     {
-                        addressIndex = rows.Add($"    Trans: {tpc}" + ((goolentry.StateDescriptors[i].TransHook & 0x4000) != 0 ? " (external)" : ""));
-                        dgvCode.Rows[addressIndex].Tag = tpc;
+                        bool isexternal = (goolentry.StateDescriptors[i].TransHook & 0x4000) != 0;
+                        addressIndex = rows.Add($"    Trans: {tpc}" + (isexternal ? " (external)" : ""));
+                        if (!isexternal)
+                            dgvCode.Rows[addressIndex].Tag = tpc;
                         ++addressIndex;
                     }
                     else
@@ -217,9 +231,62 @@ namespace CrashEdit.CE
                         ++goolcount;
                 }
 
-                int instIndex = dgvCode.Rows.Add($"{i,-6} {ins.GetName(),-6} {ins.Arguments,-28} {(!string.IsNullOrWhiteSpace(ins.GetComment()) ? $"# {ins.GetComment()}" : "")}");
+                string insName = ins.GetName();
+
+                int instIndex = dgvCode.Rows.Add($"{i,-6} {insName,-6} {ins.Arguments,-32} {(!string.IsNullOrWhiteSpace(ins.GetComment()) ? $"# {indent}{ins.GetComment()}" : "")}");
                 dgvCode.Rows[instIndex].Tag = i;
+                processedRows.Add(instIndex);
                 ++instIndex;
+
+                int number = 0;
+                if (!string.IsNullOrWhiteSpace(ins.GetComment()))
+                {
+                    string insComment = ins.GetComment();
+                    if (insComment.Contains("move"))
+                    {
+                        string pattern = @"[-+]?\d+";
+                        Match match = Regex.Match(insComment, pattern);
+                        if (match.Success)
+                        {
+                            number = int.Parse(match.Value);
+                            int indentEndIndex = instIndex + number;
+                            indentEndIndexes.Add(indentEndIndex);
+                            indent += "  ";
+
+                            // if the number is minus
+                            if (indentEndIndex < instIndex)
+                            {
+                                int rowsToModify = Math.Abs(number) - 1;
+                                for (int j = processedRows.Count - 1; j >= 0 && rowsToModify > 0; j--)
+                                {
+                                    int previousRowIndex = processedRows[j];
+                                    if (previousRowIndex < instIndex - 1)
+                                    {
+                                        DataGridViewRow row = dgvCode.Rows[previousRowIndex];
+                                        string lineText = row.Cells[0].Value.ToString();
+                                        int hashIndex = lineText.IndexOf('#');
+                                        if (hashIndex != -1)
+                                        {
+                                            lineText = lineText.Insert(hashIndex + 1, "  ");
+                                        }
+                                        row.Cells[0].Value = lineText;
+
+                                        rowsToModify--;
+                                    }
+                                }
+                                indent = indent.Substring(2);
+                            }
+                        }
+                    }
+                }
+
+                foreach (int indentEndIndex in indentEndIndexes)
+                {
+                    if (instIndex == indentEndIndex)
+                    {
+                        indent = indent.Substring(2);
+                    }
+                }
             }
 
             // Add statistics
@@ -244,61 +311,187 @@ namespace CrashEdit.CE
             }
         }
 
-        private void AddHookInfo(List<(string Index, string Description)> rows, string type, int value)
-        {
-            if ((value & 0x3FFF) != 0x3FFF)
-                rows.Add(("", $"    {type}: {value & 0x3FFF}" + ((value & 0x4000) != 0 ? " (external)" : "")));
-            else
-                rows.Add(("", $"      (no {type.ToLower()} hook)"));
-        }
-
-        private void AddLabel(Dictionary<int, List<string>> labels, int hook, string label)
-        {
-            if ((hook & 0x3FFF) != 0x3FFF)
-            {
-                if (!labels.ContainsKey(hook))
-                    labels[hook] = new List<string>();
-                labels[hook].Add(label);
-            }
-        }
-
         private void dgvCode_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex > 0 && e.RowIndex < headerCount && dgvCode.Rows[e.RowIndex].Tag != null)
+            if (e.RowIndex > 0 && dgvCode.Rows[e.RowIndex].Tag != null)
             {
-                int targetIndex = Convert.ToInt32(dgvCode.Rows[e.RowIndex].Tag);
-
-                for (int i = headerCount; i < dgvCode.Rows.Count; i++)
+                if (e.RowIndex < headerCount)
                 {
-                    if (dgvCode.Rows[i].Tag != null)
+                    int targetIndex = Convert.ToInt32(dgvCode.Rows[e.RowIndex].Tag);
+
+                    for (int i = headerCount; i < dgvCode.Rows.Count; i++)
                     {
-                        int targetTagValue = (int)dgvCode.Rows[i].Tag;
-                        if (targetIndex == targetTagValue)
+                        if (dgvCode.Rows[i].Tag != null)
                         {
-                            int targetRowIndex = dgvCode.Rows[i].Index;
-                            dgvCode.FirstDisplayedScrollingRowIndex = targetRowIndex;
-                            dgvCode.ClearSelection();
-                            dgvCode.Rows[targetRowIndex].Selected = true;
+                            int targetTagValue = (int)dgvCode.Rows[i].Tag;
+                            if (targetIndex == targetTagValue)
+                            {
+                                int targetRowIndex = dgvCode.Rows[i].Index;
+                                dgvCode.FirstDisplayedScrollingRowIndex = targetRowIndex;
+                                dgvCode.ClearSelection();
+                                dgvCode.Rows[targetRowIndex].Selected = true;
+                            }
                         }
                     }
-
                 }
+                else
+                {
+                    string cellText = dgvCode.Rows[e.RowIndex].Cells[e.ColumnIndex].Value?.ToString() ?? "";
 
+                    if (cellText.Contains("instructions"))
+                    {
+                        string target = "move";
+                        string numberPattern = $@"(?<={Regex.Escape(target)}\s*)[-+]?\d+";
+                        var match = Regex.Match(cellText, numberPattern);
+
+                        if (match.Success)
+                        {
+                            int number = int.Parse(match.Value);
+                            int moveAmount = number + 1;
+                            int targetRowIndex = e.RowIndex + moveAmount;
+
+                            if (targetRowIndex >= 0 && targetRowIndex < dgvCode.RowCount)
+                            {
+                                dgvCode.CurrentCell = dgvCode.Rows[targetRowIndex].Cells[0];
+                            }
+                        }
+                    }
+                    else if (cellText.Contains("subroutine"))
+                    {
+                        string target = "at";
+                        string numberPattern = $@"(?<={Regex.Escape(target)}\s*)[-+]?\d+";
+                        var match = Regex.Match(cellText, numberPattern);
+
+                        if (match.Success)
+                        {
+                            int number = int.Parse(match.Value);
+                            for (int i = headerCount; i < dgvCode.Rows.Count; i++)
+                            {
+                                if (dgvCode.Rows[i].Tag != null)
+                                {
+                                    int targetTagValue = (int)dgvCode.Rows[i].Tag;
+                                    if (number == targetTagValue)
+                                    {
+                                        int targetRowIndex = dgvCode.Rows[i].Index;
+                                        dgvCode.FirstDisplayedScrollingRowIndex = targetRowIndex;
+                                        dgvCode.ClearSelection();
+                                        dgvCode.Rows[targetRowIndex].Selected = true;
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                    else if (cellText.Contains("state"))
+                    {
+                        string target = "state";
+                        string numberPattern = $@"(?<={Regex.Escape(target)}\s*)[-+]?\d+";
+                        var match = Regex.Match(cellText, numberPattern);
+
+                        if (match.Success)
+                        {
+                            int number = int.Parse(match.Value);
+                            string pattern = $@"State_{number}_code:";
+
+                            foreach (DataGridViewRow row in dgvCode.Rows)
+                            {
+                                string targetCellText = row.Cells[0].Value?.ToString() ?? "";
+
+                                if (Regex.IsMatch(targetCellText, pattern))
+                                {
+                                    dgvCode.CurrentCell = row.Cells[0];
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
-        private string ExtractNumbers(string input)
+        private void dgvCode_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
-            Regex regex = new Regex(@"\d+");
-            Match match = regex.Match(input);
-
-            if (match.Success)
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
             {
-                return match.Value;
+                string cellText = dgvCode.Rows[e.RowIndex].Cells[e.ColumnIndex].Value?.ToString() ?? "";
+
+                var targetWords = new Dictionary<string, Color>();
+
+                Color title =      Color.FromArgb(93, 179, 149);  // teal
+                Color keywords =   Color.FromArgb(114, 159, 255); // blue
+                Color states =     Color.FromArgb(129, 198, 255); // sky blue
+                Color logicals =   Color.FromArgb(255, 130, 130); // red
+                Color numbers =    Color.FromArgb(240, 200, 87);  // orange
+                Color classes =    Color.FromArgb(216, 160, 213); // pink
+                Color names =      Color.FromArgb(91, 191, 139);  // green
+                Color operators =  Color.FromArgb(255, 166, 77);  // red-orange
+
+                var wordGroups = new Dictionary<Color, string[]>
+                {
+                    { Color.Gray, new[] { "#" } },
+                    { keywords, new[] { "move", "go", "change", "call", "to", "at" } },
+                    { states, new[] { "state", "instructions","subroutine" } },
+                    { logicals, new[] { "true", "false", "accept", "reject" } },
+                    { classes, new[] { "if", "else", "return" } },
+                    //{ names, new[] { "sp", "[sp]" } },
+                    { names, new[] { "play", "set", "spawn", "force", "send", "push", "pop" } },
+                    { operators, new[] { "=", "==", "!", "!!", "!=", "|", "||", "|=", "&", "&&", "&=", "^", ">", ">>", ">=", "<", "<<", "<=", "+", "+=", "-", "-=", "*", "*=", "/", "/=", "%" } }
+                };
+
+                foreach (var group in wordGroups)
+                {
+                    foreach (var word in group.Value)
+                    {
+                        targetWords[word] = group.Key;
+                    }
+                }
+
+                e.PaintBackground(e.CellBounds, true);
+
+                float currentX = e.CellBounds.Left;
+                float top = e.CellBounds.Top + (e.CellBounds.Height - e.Graphics.MeasureString(cellText, e.CellStyle.Font).Height) / 2;
+
+                var numberPattern = @"^([-+]?(\(\s*[-+]?\d+(\.\d+)?\s*\)|\(\s*[-+]?(0x[0-9a-fA-F]+)\s*\)|\d+(\.\d+)?|0x[0-9a-fA-F]+))$";
+                var statePattern = @"^(State_\d+_(event|code|trans):|Sub_\d+:)$";
+
+                using (Brush defaultBrush = new SolidBrush(e.CellStyle.ForeColor))
+                {
+                    string[] words = cellText.Split(' ');
+
+                    int charWidth = TextRenderer.MeasureText("A", e.CellStyle.Font).Width;
+                    foreach (string word in words)
+                    {
+                        string cleanedWord = word.TrimEnd(',');
+                        string displayWord = word + " ";
+                        Color currentColor = e.CellStyle.ForeColor;
+
+                        if (Regex.IsMatch(cleanedWord, statePattern))
+                        {
+                            currentColor = title;
+                        }
+                        else if (Regex.IsMatch(cleanedWord, numberPattern))
+                        {
+                            currentColor = numbers; // numbers
+                        }
+                        else if (targetWords.ContainsKey(cleanedWord))
+                        {
+                            currentColor = targetWords[cleanedWord];
+                        }
+
+                        using (Brush brush = new SolidBrush(currentColor))
+                        {
+                            e.Graphics.DrawString(displayWord, e.CellStyle.Font, brush, currentX, top);
+                        }
+
+                        currentX += charWidth / 2 * displayWord.Length;
+                    }
+                }
+
+                e.Handled = true;
             }
             else
             {
-                return string.Empty;
+                e.PaintBackground(e.CellBounds, true);
+                e.PaintContent(e.CellBounds);
             }
         }
 
@@ -316,12 +509,12 @@ namespace CrashEdit.CE
             dataGridView.BackgroundColor = Color.FromArgb(30, 30, 30);
 
             // Color of the grid lines
-            dataGridView.GridColor = Color.FromArgb(40, 40, 40);
+            dataGridView.GridColor = Color.FromArgb(30, 30, 30);
 
             // Default style for cells
             dataGridView.DefaultCellStyle.BackColor = Color.FromArgb(40, 40, 40);
             dataGridView.DefaultCellStyle.ForeColor = Color.White;
-            dataGridView.DefaultCellStyle.SelectionBackColor = Color.FromArgb(70, 70, 70);
+            dataGridView.DefaultCellStyle.SelectionBackColor = Color.FromArgb(60, 60, 60);
             dataGridView.DefaultCellStyle.SelectionForeColor = Color.White;
 
             // Style for column headers

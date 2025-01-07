@@ -1065,7 +1065,7 @@ namespace CrashEdit.Crash.GOOLIns
             }
             else if (ins.Args['T'].Value == 1)
             {
-                str += $" and change state to {ins.GetArg('I')}";
+                str += $" and go to state {ins.GetArg('I')}";
             }
             else if (ins.Args['T'].Value == 2)
             {
@@ -1104,7 +1104,7 @@ namespace CrashEdit.Crash.GOOLIns
             }
             else if (ins.Args['T'].Value == 1)
             {
-                str += $" and change state to {ins.GetArg('I')}";
+                str += $" and go to state {ins.GetArg('I')}";
             }
             else if (ins.Args['T'].Value == 2)
             {
