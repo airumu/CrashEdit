@@ -1,76 +1,158 @@
-using AltUI.Controls;
+using System.Data.Common;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
 using CrashEdit.Crash;
 
 namespace CrashEdit.CE
 {
     public sealed class GOOLBox : UserControl
     {
-        private readonly DarkListBox lstCode;
+        private readonly DataGridView dgvCode;
+
+        private int headerCount;
+        private int titleCount;
+        private int addressIndex;
 
         public GOOLBox(GOOLEntry goolentry)
         {
             BackColor = Color.FromArgb(31, 31, 32);
-            lstCode = new DarkListBox
+
+            dgvCode = new DataGridView
             {
                 Dock = DockStyle.Fill,
-                Font = new System.Drawing.Font("Cascadia Code SemiLight", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0)
+                Font = new Font("Cascadia Code SemiLight", 8F, FontStyle.Regular, GraphicsUnit.Point, 0),
+                ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize,
+                AutoGenerateColumns = false,
+                AllowUserToAddRows = false,
+                ReadOnly = true,
+                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
+                RowHeadersVisible = false,
+                //ColumnHeadersVisible = false,
+                AllowUserToDeleteRows = false,
+                AllowUserToResizeRows = false,
+                AllowUserToResizeColumns = false,
+                AllowUserToOrderColumns = false,
+
             };
-            lstCode.Items.Add($"Type: {goolentry.ID}");
-            lstCode.Items.Add($"Class: {goolentry.Class / 0x100}");
-            lstCode.Items.Add($"Format: {goolentry.Format}");
-            lstCode.Items.Add(string.Format("Heap Base: {0} ({1})", (ObjectFields)goolentry.HeapBase, (goolentry.HeapBase * 4 + GOOLInterpreter.GetProcessOff(goolentry.Version)).TransformedString()));
-            lstCode.Items.Add($"Interrupt Count: {goolentry.EventCount}");
-            lstCode.Items.Add($"Entry Count: {goolentry.EntryCount}");
-            Dictionary<int, List<string>> labels = [];
+            SetDarkTheme(dgvCode);
+            EnableDoubleBuffering();
+            dgvCode.RowTemplate.Height = 16;
+            dgvCode.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dgvCode.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "Description",
+                HeaderText = "Description",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                SortMode = DataGridViewColumnSortMode.NotSortable
+            });
+            dgvCode.CellClick += dgvCode_CellClick;
+
+            headerCount = 0;
+            addressIndex = 0;
+
+            PopulateData(goolentry);
+
+            Controls.Add(dgvCode);
+        }
+
+        private void PopulateData(GOOLEntry goolentry)
+        {
+            // Data container
+            //var rows = new List<(string Index, string Description)>();
+            var rows = dgvCode.Rows;
+
+            // Add header information
+            rows.Add($"Type {goolentry.ID}");
+            rows.Add($"Class {goolentry.Class / 0x100}");
+            rows.Add($"Format {goolentry.Format}");
+            rows.Add($"Heap Base {(ObjectFields)goolentry.HeapBase} ({(goolentry.HeapBase * 4 + GOOLInterpreter.GetProcessOff(goolentry.Version)).TransformedString()})");
+            rows.Add($"Interrupt Count {goolentry.EventCount}");
+            rows.Add($"Entry Count {goolentry.EntryCount}");
+            headerCount += 6;
+
+            var labels = new Dictionary<int, List<string>>();
+
             if (goolentry.Format == 1)
             {
-                lstCode.Items.Add("");
-                bool addedinterrupts = false;
+                rows.Add("");
+                headerCount ++;
+                bool addedInterrupts = false;
+
+                // Process interrupts
                 for (int i = 0; i < goolentry.EventCount; ++i)
                 {
                     if (goolentry.StateMap[i] == 255)
                         continue;
                     else
                     {
-                        if (!addedinterrupts)
+                        if (!addedInterrupts)
                         {
-                            lstCode.Items.Add("Interrupts:");
-                            addedinterrupts = true;
+                            rows.Add("Interrupts:");
+                            ++headerCount;
+                            addedInterrupts = true;
                         }
                         if ((goolentry.StateMap[i] & 0x8000) != 0)
-                            lstCode.Items.Add($"    Interrupt {i}: Sub_{goolentry.StateMap[i] & 0x3FFF}");
+                        {
+                            int offset = goolentry.StateMap[i] & 0x3FFF;
+                            addressIndex = rows.Add($"    Interrupt {i}: Sub_{offset}");
+                            dgvCode.Rows[addressIndex].Tag = offset;
+                            ++addressIndex;
+                        }
                         else
-                            lstCode.Items.Add($"    Interrupt {i}: State_{goolentry.StateMap[i]}");
+                            rows.Add($"    Interrupt {i}: State_{goolentry.StateMap[i]}");
+                        ++headerCount;
                     }
                 }
 
-                lstCode.Items.Add($"Available Subtypes: {goolentry.StateMap.Length - goolentry.EventCount}");
+                rows.Add($"Available Subtypes: {goolentry.StateMap.Length - goolentry.EventCount}");
+                ++headerCount;
+
+                // Process subtypes
                 for (int i = goolentry.EventCount; i < goolentry.StateMap.Length; ++i)
                 {
                     if (i > goolentry.EventCount && i + 1 == goolentry.StateMap.Length && goolentry.StateMap[i] == 0) continue;
-                    lstCode.Items.Add($"    Subtype {i - goolentry.EventCount}: {(goolentry.StateMap[i] == 255 ? "invalid" : $"State_{goolentry.StateMap[i]}")}");
+                    rows.Add($"    Subtype {i - goolentry.EventCount}: {(goolentry.StateMap[i] == 255 ? "invalid" : $"State_{goolentry.StateMap[i]}")}");
+                    ++headerCount;
                 }
 
-                lstCode.Items.Add("");
+                rows.Add("");
+                ++headerCount;
+
+                // Process states
                 for (int i = 0; i < goolentry.StateDescriptors.Count; ++i)
                 {
                     short epc = (short)(goolentry.StateDescriptors[i].EventHook & 0x3FFF);
                     short tpc = (short)(goolentry.StateDescriptors[i].TransHook & 0x3FFF);
                     short cpc = (short)(goolentry.StateDescriptors[i].CodeHook & 0x3FFF);
                     int stategooleid = goolentry.Data[goolentry.StateDescriptors[i].GOOLIndex];
-                    lstCode.Items.Add($"State_{i} [{Entry.EIDToEName(stategooleid)}] (State Flags: {string.Format("0x{0:X}", goolentry.StateDescriptors[i].StateFlags)} | Block Flags: {string.Format("0x{0:X}", goolentry.StateDescriptors[i].BlockFlags)})");
+                    
+                    rows.Add($"State_{i} [{Entry.EIDToEName(stategooleid)}] (State Flags: {string.Format("0x{0:X}", goolentry.StateDescriptors[i].StateFlags)} | Block Flags: {string.Format("0x{0:X}", goolentry.StateDescriptors[i].BlockFlags)}))");
                     if (epc != 0x3FFF)
-                        lstCode.Items.Add($"    Event: {epc}" + ((goolentry.StateDescriptors[i].EventHook & 0x4000) != 0 ? " (external)" : ""));
+                    {
+                        addressIndex = rows.Add($"    Event: {epc}" + ((goolentry.StateDescriptors[i].EventHook & 0x4000) != 0 ? " (external)" : ""));
+                        dgvCode.Rows[addressIndex].Tag = epc;
+                        ++addressIndex;
+                    }
                     else
-                        lstCode.Items.Add("      (no event hook)");
+                        rows.Add("      (no event hook)");
                     if (cpc != 0x3FFF)
-                        lstCode.Items.Add($"    Code: {cpc}" + ((goolentry.StateDescriptors[i].CodeHook & 0x4000) != 0 ? " (external)" : ""));
+                    {
+                        addressIndex = rows.Add($"    Code: {cpc}" + ((goolentry.StateDescriptors[i].CodeHook & 0x4000) != 0 ? " (external)" : ""));
+                        dgvCode.Rows[addressIndex].Tag = cpc;
+                        ++addressIndex;
+                    }
                     else
-                        lstCode.Items.Add("      ERROR! No code thread! This state will not work.");
+                        rows.Add("      ERROR! No code thread! This state will not work.");
                     if (tpc != 0x3FFF)
-                        lstCode.Items.Add($"    Trans: {tpc}" + ((goolentry.StateDescriptors[i].TransHook & 0x4000) != 0 ? " (external)" : ""));
+                    {
+                        addressIndex = rows.Add($"    Trans: {tpc}" + ((goolentry.StateDescriptors[i].TransHook & 0x4000) != 0 ? " (external)" : ""));
+                        dgvCode.Rows[addressIndex].Tag = tpc;
+                        ++addressIndex;
+                    }
                     else
-                        lstCode.Items.Add("      (no trans hook)");
+                        rows.Add("      (no trans hook)");
+                    headerCount += 4;
 
                     if (stategooleid == goolentry.EID)
                     {
@@ -96,24 +178,31 @@ namespace CrashEdit.CE
                 }
             }
 
-            lstCode.Items.Add("");
+            rows.Add("");
+            ++headerCount;
             bool returned = true;
             int mipscount = 0;
             int goolcount = 0;
             string str;
-            for (short i = 0; i < goolentry.Instructions.Count; ++i)
+            // Process instructions
+            for (int i = 0; i < goolentry.Instructions.Count; ++i)
             {
+                bool hastitle = false;
                 if (labels.ContainsKey(i))
                 {
                     foreach (string label in labels[i])
                     {
-                        lstCode.Items.Add(label);
+                        rows.Add(label);
+                        ++titleCount;
                     }
                     returned = false;
+                    hastitle = true;
                 }
                 if (returned)
                 {
-                    lstCode.Items.Add($"Sub_{i}:");
+                    rows.Add($"Sub_{i}:");
+                    ++titleCount;
+                    hastitle = true;
                 }
                 GOOLInstruction ins = goolentry.Instructions[i];
                 if (ins is MIPSInstruction)
@@ -127,24 +216,141 @@ namespace CrashEdit.CE
                     if (ins is not GOOLUnknownInstruction)
                         ++goolcount;
                 }
-                string name = ins.GetName();
-                string args = ins.Arguments;
-                string comment = ins.GetComment();
-                lstCode.Items.Add(string.Format("{0,-6} {1,-6} {2,-28} {3}", i, name, args, !string.IsNullOrWhiteSpace(comment) ? $"# {comment}" : ""));
+
+                int instIndex = dgvCode.Rows.Add($"{i,-6} {ins.GetName(),-6} {ins.Arguments,-28} {(!string.IsNullOrWhiteSpace(ins.GetComment()) ? $"# {ins.GetComment()}" : "")}");
+                dgvCode.Rows[instIndex].Tag = i;
+                ++instIndex;
             }
 
+            // Add statistics
             if (goolcount != goolentry.Instructions.Count)
             {
-                lstCode.Items.Add("");
-                str = string.Format("Instructions: {0:P} GOOL", (float)goolcount / goolentry.Instructions.Count);
-                if (mipscount > 0)
-                    str += string.Format(", {0:P} MIPS", (float)mipscount / goolentry.Instructions.Count);
-                if (goolentry.Instructions.Count - mipscount - goolcount > 0)
-                    str += string.Format(", {0:P} invalid", (float)(goolentry.Instructions.Count - mipscount - goolcount) / goolentry.Instructions.Count);
-                lstCode.Items.Add(str);
-            }
+                rows.Add("");
+                string gool = $"Instructions: {(float)goolcount / goolentry.Instructions.Count:P} GOOL";
+                string mips = string.Empty;
+                string invalid = string.Empty;
 
-            Controls.Add(lstCode);
+                if (mipscount > 0)
+                    mips = $", {(float)mipscount / goolentry.Instructions.Count:P} MIPS";
+                if (goolentry.Instructions.Count - mipscount - goolcount > 0)
+                    invalid = $"{(float)(goolentry.Instructions.Count - mipscount - goolcount) / goolentry.Instructions.Count:P} invalid";
+
+                rows.Add(gool + mips + invalid);
+
+                //foreach (var row in rows)
+                //{
+                //    dgvCode.Rows.Add(row.Index, row.Description);
+                //}
+            }
+        }
+
+        private void AddHookInfo(List<(string Index, string Description)> rows, string type, int value)
+        {
+            if ((value & 0x3FFF) != 0x3FFF)
+                rows.Add(("", $"    {type}: {value & 0x3FFF}" + ((value & 0x4000) != 0 ? " (external)" : "")));
+            else
+                rows.Add(("", $"      (no {type.ToLower()} hook)"));
+        }
+
+        private void AddLabel(Dictionary<int, List<string>> labels, int hook, string label)
+        {
+            if ((hook & 0x3FFF) != 0x3FFF)
+            {
+                if (!labels.ContainsKey(hook))
+                    labels[hook] = new List<string>();
+                labels[hook].Add(label);
+            }
+        }
+
+        private void dgvCode_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex > 0 && e.RowIndex < headerCount && dgvCode.Rows[e.RowIndex].Tag != null)
+            {
+                int targetIndex = Convert.ToInt32(dgvCode.Rows[e.RowIndex].Tag);
+
+                for (int i = headerCount; i < dgvCode.Rows.Count; i++)
+                {
+                    if (dgvCode.Rows[i].Tag != null)
+                    {
+                        int targetTagValue = (int)dgvCode.Rows[i].Tag;
+                        if (targetIndex == targetTagValue)
+                        {
+                            int targetRowIndex = dgvCode.Rows[i].Index;
+                            dgvCode.FirstDisplayedScrollingRowIndex = targetRowIndex;
+                            dgvCode.ClearSelection();
+                            dgvCode.Rows[targetRowIndex].Selected = true;
+                        }
+                    }
+
+                }
+
+            }
+        }
+
+        private string ExtractNumbers(string input)
+        {
+            Regex regex = new Regex(@"\d+");
+            Match match = regex.Match(input);
+
+            if (match.Success)
+            {
+                return match.Value;
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        private void EnableDoubleBuffering()
+        {
+            typeof(DataGridView).InvokeMember("DoubleBuffered",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance |
+                System.Reflection.BindingFlags.SetProperty,
+                null, dgvCode, new object[] { true });
+        }
+
+        private void SetDarkTheme(DataGridView dataGridView)
+        {
+            // Background color of the entire grid
+            dataGridView.BackgroundColor = Color.FromArgb(30, 30, 30);
+
+            // Color of the grid lines
+            dataGridView.GridColor = Color.FromArgb(40, 40, 40);
+
+            // Default style for cells
+            dataGridView.DefaultCellStyle.BackColor = Color.FromArgb(40, 40, 40);
+            dataGridView.DefaultCellStyle.ForeColor = Color.White;
+            dataGridView.DefaultCellStyle.SelectionBackColor = Color.FromArgb(70, 70, 70);
+            dataGridView.DefaultCellStyle.SelectionForeColor = Color.White;
+
+            // Style for column headers
+            dataGridView.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(50, 50, 50);
+            dataGridView.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dataGridView.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(60, 60, 60);
+            dataGridView.ColumnHeadersDefaultCellStyle.SelectionForeColor = Color.White;
+            dataGridView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            // Style for row headers
+            dataGridView.RowHeadersDefaultCellStyle.BackColor = Color.FromArgb(50, 50, 50);
+            dataGridView.RowHeadersDefaultCellStyle.ForeColor = Color.White;
+            dataGridView.RowHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(60, 60, 60);
+            dataGridView.RowHeadersDefaultCellStyle.SelectionForeColor = Color.White;
+
+            // Background color for odd and even rows
+            dataGridView.RowsDefaultCellStyle.BackColor = Color.FromArgb(30, 30, 30);
+            dataGridView.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(30, 30, 30);
+
+            // Row border style
+            dataGridView.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+
+            // Header and gridline styles
+            dataGridView.EnableHeadersVisualStyles = false;
+
+            // Additional settings
+            dataGridView.BorderStyle = BorderStyle.None;
+            dataGridView.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+            dataGridView.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
         }
     }
 }
