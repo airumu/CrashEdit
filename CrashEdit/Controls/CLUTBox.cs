@@ -298,6 +298,8 @@ namespace CrashEdit.CE.Controls
 
                 int offset = (int)tags[0];
                 Array.Copy(convertedPalette, 0, chunk.Data, offset, 2);
+
+                cell[0].Value = ColorTranslator.ToHtml(color);
             }
             else
             {
