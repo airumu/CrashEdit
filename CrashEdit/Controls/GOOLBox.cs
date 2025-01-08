@@ -466,7 +466,7 @@ namespace CrashEdit.CE
                     { states,    new[] { "state", "instructions","subroutine" } },
                     { logicals,  new[] { "true", "false", "accept", "reject", "invalid" } },
                     { classes,   new[] { "if", "else", "return" } },
-                    //{ stacks,  new[] { "sp", "[sp]" } },
+                    //{ stacks,    new[] { "sp", "[sp]" } },
                     { actions,   new[] { "play", "set", "spawn", "force", "send", "cascade",  "push", "pop" } },
                     { operators, new[] { "=", "==", "!", "!=", "|", "||", "|=", "&", "&&", "&=", "^", ">", ">>", ">=", "<", "<<", "<=", "+", "+=", "-", "-=", "*", "*=", "/", "/=", "%" } }
                 };

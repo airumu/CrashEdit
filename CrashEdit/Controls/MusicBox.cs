@@ -11,7 +11,7 @@ namespace CrashEdit.CE
         private TableLayoutPanel pnMain;
         private TableLayoutPanel pnSub1;
         private TableLayoutPanel pnSub2;
-        private ListView lstMusic;
+        private DoubleBufferedListView lstMusic;
         private DarkTextBox txtMusic;
         private Label lblEIDError;
         private Label lblMasterVolume;
@@ -24,11 +24,14 @@ namespace CrashEdit.CE
             this.controller = controller;
             musicentry = controller.MusicEntry;
 
-            lstMusic = new ListView()
+            lstMusic = new DoubleBufferedListView()
             {
+                BorderStyle = BorderStyle.FixedSingle,
+                FullRowSelect = true,
+                UseCompatibleStateImageBehavior = false,
                 View = View.Details,
                 Size = new Size(120, 200),
-                FullRowSelect = true
+               
             };
             lstMusic.Click += lstMusic_Click;
             lstMusic.Columns.Add("Item");
@@ -63,7 +66,6 @@ namespace CrashEdit.CE
             //{
             //    column.Width = -2;
             //}
-            lstMusic.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
             lstMusic.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
 
             txtMusic = new DarkTextBox()
@@ -186,6 +188,14 @@ namespace CrashEdit.CE
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
+        }
+    }
+    public class DoubleBufferedListView : ListView
+    {
+        public DoubleBufferedListView()
+        {
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
+            this.UpdateStyles();
         }
     }
 }

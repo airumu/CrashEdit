@@ -10,14 +10,6 @@ namespace CrashEdit.CE.Controls
 {
     partial class ModelBox
     {
-        public class DoubleBufferedListView : ListView
-        {
-            public DoubleBufferedListView()
-            {
-                this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
-                this.UpdateStyles();
-            }
-        }
 
         /// <summary> 
         /// 必要なデザイナー変数です。
@@ -1023,5 +1015,14 @@ namespace CrashEdit.CE.Controls
         private MetroSetTrackBar trkPictureSize;
         private Panel panel2;
         private Panel pnTextureControls;
+    }
+
+    public class DoubleBufferedListView : ListView
+    {
+        public DoubleBufferedListView()
+        {
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
+            this.UpdateStyles();
+        }
     }
 }

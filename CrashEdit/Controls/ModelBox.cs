@@ -1064,7 +1064,7 @@ namespace CrashEdit.CE.Controls
                     {
                         row.Cells[i].Value = updatedValues[i - ColX1];
                     }
-
+                    row.Cells[ColClutX].Value = 0;
                     row.Cells[ColLeft].Value = newLeft;
                     //model.Textures[row.Index].Left = newLeft;
 
