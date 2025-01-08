@@ -1145,11 +1145,11 @@ namespace CrashEdit.Crash.GOOLIns
             {
                 if (i == 1)
                 {
-                    str += $"load anim {ins.GetArg('E')}";
+                    str += $"load {ins.GetArg('E')}";
                 }
                 else if (i == 2)
                 {
-                    str += $"deload anim {ins.GetArg('E')}";
+                    str += $"deload {ins.GetArg('E')}";
                 }
                 else if (i == 3)
                 {
@@ -1165,7 +1165,7 @@ namespace CrashEdit.Crash.GOOLIns
                 }
                 else if (i == 6)
                 {
-                    str += $"load2 anim {ins.GetArg('E')}";
+                    str += $"load2 {ins.GetArg('E')}";
                 }
             }
 
