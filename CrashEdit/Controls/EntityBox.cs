@@ -4,7 +4,6 @@ using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace CrashEdit.CE
 {
@@ -62,7 +61,11 @@ namespace CrashEdit.CE
                 ZoneEntry zone = controller.ZoneEntryController.ZoneEntry;
                 if (zone.Entities.IndexOf(entity) < BitConv.FromInt32(zone.Header, 0x188))
                 {
-                    if (entity.CameraSubIndex > 0)
+                    if (entity.CameraSubIndex == 0)
+                    {
+                        OldMainForm.ListUpdated += OnEntityListUpdated;
+                    }
+                    else
                     {
                         tbcTabs.Controls.Remove(tabLoadLists);
                         tbcTabs.Controls.Remove(tabDrawLists);
@@ -809,7 +812,6 @@ namespace CrashEdit.CE
             lbVictimID.Focus();
         }
 
-
         private void cmdInsertVictim_Click(object sender, EventArgs e)
         {
             if (entity.Victims.Count > 0)
@@ -865,6 +867,18 @@ namespace CrashEdit.CE
                 return string.Empty;
             }
             return ename;
+        }
+
+        private void OnEntityListUpdated(object sender, EventArgs e)
+        {
+            if (InvokeRequired) Invoke(new Action(UpdateLoadLists));
+            else UpdateLoadLists();
+        }
+
+        private void UpdateLoadLists()
+        {
+            LoadEIDAList();
+            LoadEIDBList();
         }
 
         private void UpdateLoadListA()
@@ -1455,7 +1469,6 @@ namespace CrashEdit.CE
                             }
                         }
                     }
-
                 }
             }
             return 0;
@@ -1528,7 +1541,6 @@ namespace CrashEdit.CE
                 }
             }
         }
-
 
         private void lbEntityA_KeyPress(object sender, KeyPressEventArgs e)
         {

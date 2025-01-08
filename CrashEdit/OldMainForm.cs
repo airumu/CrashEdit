@@ -697,6 +697,7 @@ namespace CrashEdit.CE
                     }
                 }
             }
+            NotifyListUpdated();
             //}
         }
 
@@ -933,6 +934,13 @@ namespace CrashEdit.CE
             Settings.Default.FormWindowState = WindowState;
 
             Settings.Default.Save();
+        }
+
+        public static event EventHandler ListUpdated;
+
+        public static void NotifyListUpdated()
+        {
+            ListUpdated?.Invoke(null, EventArgs.Empty);
         }
     }
 }
