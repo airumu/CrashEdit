@@ -810,10 +810,12 @@ as Meters: {3:F3}m</value>
     <value>Export as COLLADA</value>
   </data>
   <data name="EntityBox_tipLists" xml:space="preserve">
-    <value>[Ctrl+C] Copy
-[Ctrl+X] Cut
-[Ctrl+V] Paste
-[Double-click / F2] Rename</value>
+    <value>[Ctrl+C] Copy the value of the selected item
+[Ctrl+V] Paste the copied value to the selected item
+[Double-click / F2] Rename the selected item
+[Ctrl+Shift+C] Copy the entire list
+[Ctrl+Shift+X] Cut the entire list
+[Ctrl+Shift+V] Paste the copied list</value>
   </data>
   <data name="EntityBox_fraVerifyDrawList" xml:space="preserve">
     <value>Verify Draw Lists</value>
@@ -838,17 +840,17 @@ as Meters: {3:F3}m</value>
     <comment>CE-tweaked</comment>
   </data>
   <data name="TextureViewer_tipViewer" xml:space="preserve">
-    <value>[Right-click] save texture region to file
-[Ctrl+C] copy texture to buffer
-[Ctrl+X] cut texture to buffer
-[Ctrl+V] paste texture from buffer</value>
+    <value>[Right-click] Save the selected texture region to a file
+[Ctrl+C] Copy the texture to the buffer
+[Ctrl+X] Cut the texture to the buffer
+[Ctrl+V] Paste the texture from the buffer</value>
   </data>
   <data name="Config_chkOutputModelTextureInfo" xml:space="preserve">
     <value>Output model's texture information to the console</value>
   </data>
   <data name="TextureChunkBox_TipText" xml:space="preserve">
-    <value>[Click] open the viewer
-[Ctrl+R] reload</value>
+    <value>[Click] Open the viewer
+[Ctrl+R] Reload</value>
   </data>
   <data name="Config_chkApplyMica" xml:space="preserve">
     <value>Apply Mica</value>

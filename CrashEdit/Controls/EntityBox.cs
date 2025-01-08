@@ -1,9 +1,11 @@
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows.Shapes;
 using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
+using static System.Windows.Forms.LinkLabel;
 
 namespace CrashEdit.CE
 {
@@ -714,10 +716,14 @@ namespace CrashEdit.CE
         private void lbVictimID_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyData == Keys.F2)
-                EnableVictimEditor(sender);
-
-            if ((e.KeyCode == Keys.C || e.KeyCode == Keys.X) && e.Modifiers == Keys.Control)
             {
+                EnableVictimEditor(sender);
+            }
+            // copy list
+            else if ((e.KeyCode == Keys.C || e.KeyCode == Keys.X) && (e.Modifiers & Keys.Control) == Keys.Control && (e.Modifiers & Keys.Shift) == Keys.Shift)
+            {
+                if (lbVictimID.Items.Count <= 0) return;
+
                 StringBuilder sb = new StringBuilder();
                 foreach (object item in lbVictimID.Items)
                 {
@@ -733,8 +739,8 @@ namespace CrashEdit.CE
                     UpdateVictim();
                 }
             }
-
-            if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
+            // pate list
+            else if (e.KeyCode == Keys.V && (e.Modifiers & Keys.Control) == Keys.Control && (e.Modifiers & Keys.Shift) == Keys.Shift)
             {
                 StringReader sr = new StringReader(Clipboard.GetText());
                 string line;
@@ -749,24 +755,46 @@ namespace CrashEdit.CE
                         lbVictimID.Items.Add(victimid);
                     }
                 }
-                if (lbVictimID.SelectedIndex == -1)
+                if (lbVictimID.Items.Count > 0 && lbVictimID.SelectedIndex == -1)
                     lbVictimID.SelectedIndex = 0;
                 UpdateVictim();
+            }
+            // copy selected item's eid
+            else if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control)
+            {
+                if (lbVictimID.Items.Count <= 0) return;
+
+                string s = lbVictimID.Items[victimlistindex].ToString();
+                Clipboard.SetText(s);
+            }
+            // paste eid to selected item
+            else if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
+            {
+                if (lbVictimID.Items.Count <= 0) return;
+
+                string s = Clipboard.GetText();
+                var match = Regex.Match(s, @"\d+");
+                if (match.Success)
+                {
+                    short victimid = Convert.ToInt16(match.Value);
+                    entity.Victims[victimlistindex] = new EntityVictim(victimid);
+                    lbVictimID.Items[victimlistindex] = victimid;
+                    UpdateVictim();
+                }
             }
         }
 
         private void EnableVictimEditor(object sender)
         {
-            if (lbVictimID.Items.Count > 0)
-            {
-                lbVictimID = (DarkListBox)sender;
-                numEditVictimID.Enabled = true;
-                numEditVictimID.Value = entity.Victims[victimlistindex].VictimID;
-                numEditVictimID.Focus();
-                numEditVictimID.Select(0, numEditVictimID.Text.Length);
-                numEditVictimID.KeyPress += new KeyPressEventHandler(VictimEditor_EditOver);
-                numEditVictimID.LostFocus += VictimEditor_FocusOver;
-            }
+            if (lbVictimID.Items.Count <= 0) return;
+
+            lbVictimID = (DarkListBox)sender;
+            numEditVictimID.Enabled = true;
+            numEditVictimID.Value = entity.Victims[victimlistindex].VictimID;
+            numEditVictimID.Focus();
+            numEditVictimID.Select(0, numEditVictimID.Text.Length);
+            numEditVictimID.KeyPress += new KeyPressEventHandler(VictimEditor_EditOver);
+            numEditVictimID.LostFocus += VictimEditor_FocusOver;
         }
 
         private void VictimEditor_FocusOver(object sender, EventArgs e)
@@ -957,6 +985,8 @@ namespace CrashEdit.CE
         {
             if (e.KeyChar == (char)Keys.Return)
                 EnableEIDAEditor(sender);
+
+            e.Handled = true;
         }
 
         private void lbEIDA_DoubleClick(object sender, EventArgs e)
@@ -967,10 +997,14 @@ namespace CrashEdit.CE
         private void lbEIDA_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyData == Keys.F2)
-                EnableEIDAEditor(sender);
-
-            if ((e.KeyCode == Keys.C || e.KeyCode == Keys.X) && e.Modifiers == Keys.Control)
             {
+                EnableEIDAEditor(sender);
+            }
+            // copy list
+            else if ((e.KeyCode == Keys.C || e.KeyCode == Keys.X) && (e.Modifiers & Keys.Control) == Keys.Control && (e.Modifiers & Keys.Shift) == Keys.Shift)
+            {
+                if (lbEIDA.Items.Count <= 0) return;
+
                 StringBuilder sb = new StringBuilder();
                 foreach (object item in lbEIDA.Items)
                 {
@@ -986,8 +1020,8 @@ namespace CrashEdit.CE
                     UpdateLoadListA();
                 }
             }
-
-            if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
+            // paste list
+            else if (e.KeyCode == Keys.V && (e.Modifiers & Keys.Control) == Keys.Control && (e.Modifiers & Keys.Shift) == Keys.Shift)
             {
                 StringReader sr = new StringReader(Clipboard.GetText());
                 string line;
@@ -1000,24 +1034,44 @@ namespace CrashEdit.CE
                         lbEIDA.Items.Add(line);
                     }
                 }
-                if (lbEIDA.SelectedIndex == -1)
+                if (lbEIDA.Items.Count > 0 && lbEIDA.SelectedIndex == -1)
                     lbEIDA.SelectedIndex = 0;
                 UpdateLoadListA();
+            }
+            // copy selected item's eid
+            else if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control)
+            {
+                if (lbEIDA.Items.Count <= 0) return;
+
+                string s = lbEIDA.Items[lbeidalindex].ToString();
+                Clipboard.SetText(s);
+            }
+            // paste eid to selected item
+            else if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
+            {
+                if (lbEIDA.Items.Count <= 0) return;
+
+                string s = Clipboard.GetText();
+                if (CheckEname(s).Length > 0)
+                {
+                    entity.LoadListA.Rows[loadlistarowindex].Values[lbeidalindex] = Entry.ENameToEID(s);
+                    lbEIDA.Items[lbeidalindex] = s;
+                    UpdateLoadListA();
+                }
             }
         }
 
         private void EnableEIDAEditor(object sender)
         {
-            if (lbEIDA.Items.Count > 0)
-            {
-                lbEIDA = (DarkListBox)sender;
-                txtEIDA.Enabled = true;
-                UpdatetxtEIDA();
-                txtEIDA.Focus();
-                txtEIDA.SelectAll();
-                txtEIDA.KeyPress += new KeyPressEventHandler(EIDAEditor_EditOver);
-                txtEIDA.LostFocus += EIDAEditor_FocusOver;
-            }
+            if (lbEIDA.Items.Count <= 0) return;
+
+            lbEIDA = (DarkListBox)sender;
+            txtEIDA.Enabled = true;
+            UpdatetxtEIDA();
+            txtEIDA.Focus();
+            txtEIDA.SelectAll();
+            txtEIDA.KeyPress += new KeyPressEventHandler(EIDAEditor_EditOver);
+            txtEIDA.LostFocus += EIDAEditor_FocusOver;
         }
 
         private void EIDAEditor_FocusOver(object sender, EventArgs e)
@@ -1243,6 +1297,8 @@ namespace CrashEdit.CE
         {
             if (e.KeyChar == (char)Keys.Return)
                 EnableEIDBEditor(sender);
+
+            e.Handled = true;
         }
 
         private void lbEIDB_DoubleClick(object sender, EventArgs e)
@@ -1253,10 +1309,14 @@ namespace CrashEdit.CE
         private void lbEIDB_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyData == Keys.F2)
-                EnableEIDBEditor(sender);
-
-            if ((e.KeyCode == Keys.C || e.KeyCode == Keys.X) && e.Modifiers == Keys.Control)
             {
+                EnableEIDBEditor(sender);
+            }
+            // copy list
+            else if ((e.KeyCode == Keys.C || e.KeyCode == Keys.X) && (e.Modifiers & Keys.Control) == Keys.Control && (e.Modifiers & Keys.Shift) == Keys.Shift)
+            {
+                if (lbEIDB.Items.Count <= 0) return;
+
                 StringBuilder sb = new StringBuilder();
                 foreach (object item in lbEIDB.Items)
                 {
@@ -1272,8 +1332,8 @@ namespace CrashEdit.CE
                     UpdateLoadListB();
                 }
             }
-
-            if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
+            // pate list
+            else if (e.KeyCode == Keys.V && (e.Modifiers & Keys.Control) == Keys.Control && (e.Modifiers & Keys.Shift) == Keys.Shift)
             {
                 StringReader sr = new StringReader(Clipboard.GetText());
                 string line;
@@ -1286,24 +1346,44 @@ namespace CrashEdit.CE
                         lbEIDB.Items.Add(line);
                     }
                 }
-                if (lbEIDB.SelectedIndex == -1)
+                if (lbEIDB.Items.Count > 0 && lbEIDB.SelectedIndex == -1)
                     lbEIDB.SelectedIndex = 0;
                 UpdateLoadListB();
+            }
+            // copy selected item's eid
+            else if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control)
+            {
+                if (lbEIDB.Items.Count <= 0) return;
+
+                string s = lbEIDB.Items[lbeidblindex].ToString();
+                Clipboard.SetText(s);
+            }
+            // paste eid to selected item
+            else if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
+            {
+                if (lbEIDB.Items.Count <= 0) return;
+
+                string s = Clipboard.GetText();
+                if (CheckEname(s).Length > 0)
+                {
+                    entity.LoadListB.Rows[loadlistbrowindex].Values[lbeidblindex] = Entry.ENameToEID(s);
+                    lbEIDB.Items[lbeidblindex] = s;
+                    UpdateLoadListB();
+                }
             }
         }
 
         private void EnableEIDBEditor(object sender)
         {
-            if (lbEIDB.Items.Count > 0)
-            {
-                lbEIDB = (DarkListBox)sender;
-                txtEIDB.Enabled = true;
-                UpdatetxtEIDB();
-                txtEIDB.Focus();
-                txtEIDB.SelectAll();
-                txtEIDB.KeyPress += new KeyPressEventHandler(EIDBEditor_EditOver);
-                txtEIDB.LostFocus += EIDBEditor_FocusOver;
-            }
+            if (lbEIDB.Items.Count <= 0) return;
+
+            lbEIDB = (DarkListBox)sender;
+            txtEIDB.Enabled = true;
+            UpdatetxtEIDB();
+            txtEIDB.Focus();
+            txtEIDB.SelectAll();
+            txtEIDB.KeyPress += new KeyPressEventHandler(EIDBEditor_EditOver);
+            txtEIDB.LostFocus += EIDBEditor_FocusOver;
         }
 
         private void EIDBEditor_FocusOver(object sender, EventArgs e)
@@ -1556,10 +1636,14 @@ namespace CrashEdit.CE
         private void lbEntityA_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyData == Keys.F2)
-                EnableDrawListAEditor(sender);
-
-            if ((e.KeyCode == Keys.C || e.KeyCode == Keys.X) && e.Modifiers == Keys.Control)
             {
+                EnableDrawListAEditor(sender);
+            }
+            // copy list
+            else if ((e.KeyCode == Keys.C || e.KeyCode == Keys.X) && (e.Modifiers & Keys.Control) == Keys.Control && (e.Modifiers & Keys.Shift) == Keys.Shift)
+            {
+                if (lbEntityA.Items.Count <= 0) return;
+
                 StringBuilder sb = new StringBuilder();
                 foreach (object item in lbEntityA.Items)
                 {
@@ -1575,8 +1659,8 @@ namespace CrashEdit.CE
                     UpdateDrawListA();
                 }
             }
-
-            if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
+            // paste list
+            else if (e.KeyCode == Keys.V && (e.Modifiers & Keys.Control) == Keys.Control && (e.Modifiers & Keys.Shift) == Keys.Shift)
             {
                 StringReader sr = new StringReader(Clipboard.GetText());
                 string line;
@@ -1595,24 +1679,49 @@ namespace CrashEdit.CE
                         }
                     }
                 }
-                if (lbEntityA.SelectedIndex == -1)
+                if (lbEntityA.Items.Count > 0 && lbEntityA.SelectedIndex == -1)
                     lbEntityA.SelectedIndex = 0;
                 UpdateDrawListA();
+            }
+            // copy selected item's eid
+            else if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control)
+            {
+                if (lbEntityA.Items.Count <= 0) return;
+
+                string s = lbEntityA.Items[lbentityaindex].ToString();
+                Clipboard.SetText(s);
+            }
+            // paste eid to selected item
+            else if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
+            {
+                if (lbEntityA.Items.Count <= 0) return;
+
+                string s = Clipboard.GetText();
+                var match = Regex.Match(s, @"\d+");
+                if (match.Success)
+                {
+                    int id = GetEntityID(Convert.ToInt16(match.Value));
+                    if (id > 0)
+                    {
+                        entity.DrawListA.Rows[drawlistarowindex].Values[lbentityaindex] = id;
+                        lbEntityA.Items[lbentityaindex] = id >> 8 & 0xFFFF;
+                        UpdateDrawListA();
+                    }
+                }
             }
         }
 
         private void EnableDrawListAEditor(object sender)
         {
-            if (lbEntityA.Items.Count > 0)
-            {
-                lbEntityA = (DarkListBox)sender;
-                numEntityA.Enabled = true;
-                UpdatenumEntityA();
-                numEntityA.Focus();
-                numEntityA.Select(0, numEntityA.Text.Length);
-                numEntityA.KeyPress += new KeyPressEventHandler(DrawListAEditor_EditOver);
-                numEntityA.LostFocus += DrawListAEditor_FocusOver;
-            }
+            if (lbEntityA.Items.Count <= 0) return;
+
+            lbEntityA = (DarkListBox)sender;
+            numEntityA.Enabled = true;
+            UpdatenumEntityA();
+            numEntityA.Focus();
+            numEntityA.Select(0, numEntityA.Text.Length);
+            numEntityA.KeyPress += new KeyPressEventHandler(DrawListAEditor_EditOver);
+            numEntityA.LostFocus += DrawListAEditor_FocusOver;
         }
 
         private void DrawListAEditor_FocusOver(object sender, EventArgs e)
@@ -1837,10 +1946,14 @@ namespace CrashEdit.CE
         private void lbEntityB_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyData == Keys.F2)
-                EnableDrawListBEditor(sender);
-
-            if ((e.KeyCode == Keys.C || e.KeyCode == Keys.X) && e.Modifiers == Keys.Control)
             {
+                EnableDrawListBEditor(sender);
+            }
+            // copy list
+            else if ((e.KeyCode == Keys.C || e.KeyCode == Keys.X) && (e.Modifiers & Keys.Control) == Keys.Control && (e.Modifiers & Keys.Shift) == Keys.Shift)
+            {
+                if (lbEntityB.Items.Count <= 0) return;
+
                 StringBuilder sb = new StringBuilder();
                 foreach (object item in lbEntityB.Items)
                 {
@@ -1856,8 +1969,8 @@ namespace CrashEdit.CE
                     UpdateDrawListB();
                 }
             }
-
-            if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
+            // paste list
+            else if (e.KeyCode == Keys.V && (e.Modifiers & Keys.Control) == Keys.Control && (e.Modifiers & Keys.Shift) == Keys.Shift)
             {
                 StringReader sr = new StringReader(Clipboard.GetText());
                 string line;
@@ -1876,24 +1989,49 @@ namespace CrashEdit.CE
                         }
                     }
                 }
-                if (lbEntityB.SelectedIndex == -1)
+                if (lbEntityB.Items.Count > 0 && lbEntityB.SelectedIndex == -1)
                     lbEntityB.SelectedIndex = 0;
                 UpdateDrawListB();
+            }
+            // copy selected item's eid
+            else if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control)
+            {
+                if (lbEntityB.Items.Count <= 0) return;
+
+                string s = lbEntityB.Items[lbentitybindex].ToString();
+                Clipboard.SetText(s);
+            }
+            // paste eid to selected item
+            else if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
+            {
+                if (lbEntityB.Items.Count <= 0) return;
+
+                string s = Clipboard.GetText();
+                var match = Regex.Match(s, @"\d+");
+                if (match.Success)
+                {
+                    int id = GetEntityID(Convert.ToInt16(match.Value));
+                    if (id > 0)
+                    {
+                        entity.DrawListB.Rows[drawlistbrowindex].Values[lbentitybindex] = id;
+                        lbEntityB.Items[lbentitybindex] = id >> 8 & 0xFFFF;
+                        UpdateDrawListB();
+                    }
+                }
             }
         }
 
         private void EnableDrawListBEditor(object sender)
         {
-            if (lbEntityB.Items.Count > 0)
-            {
-                lbEntityB = (DarkListBox)sender;
-                numEntityB.Enabled = true;
-                UpdatenumEntityB();
-                numEntityB.Focus();
-                numEntityB.Select(0, numEntityB.Text.Length);
-                numEntityB.KeyPress += new KeyPressEventHandler(DrawListBEditor_EditOver);
-                numEntityB.LostFocus += DrawListBEditor_FocusOver;
-            }
+            if (lbEntityB.Items.Count <= 0) return;
+
+            lbEntityB = (DarkListBox)sender;
+            numEntityB.Enabled = true;
+            UpdatenumEntityB();
+            numEntityB.Focus();
+            numEntityB.Select(0, numEntityB.Text.Length);
+            numEntityB.KeyPress += new KeyPressEventHandler(DrawListBEditor_EditOver);
+            numEntityB.LostFocus += DrawListBEditor_FocusOver;
         }
 
         private void DrawListBEditor_FocusOver(object sender, EventArgs e)

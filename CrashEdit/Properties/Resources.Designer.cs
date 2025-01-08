@@ -982,10 +982,12 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
-        ///   [Ctrl+C] Copy
-        ///[Ctrl+X] Cut
-        ///[Ctrl+V] Paste
-        ///[Double-click / F2] Rename に類似しているローカライズされた文字列を検索します。
+        ///   [Ctrl+C] Copy the value of the selected item
+        ///[Ctrl+V] Paste the copied value to the selected item
+        ///[Double-click / F2] Rename the selected item
+        ///[Ctrl+Shift+C] Copy the entire list
+        ///[Ctrl+Shift+X] Cut the entire list
+        ///[Ctrl+Shift+V] Paste the copied list に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string EntityBox_tipLists {
             get {
@@ -1795,8 +1797,8 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
-        ///   [Click] open the viewer
-        ///[Ctrl+R] reload に類似しているローカライズされた文字列を検索します。
+        ///   [Click] Open the viewer
+        ///[Ctrl+R] Reload に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string TextureChunkBox_TipText {
             get {
@@ -1841,10 +1843,10 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
-        ///   [Right-click] save texture region to file
-        ///[Ctrl+C] copy texture to buffer
-        ///[Ctrl+X] cut texture to buffer
-        ///[Ctrl+V] paste texture from buffer に類似しているローカライズされた文字列を検索します。
+        ///   [Right-click] Save the selected texture region to a file
+        ///[Ctrl+C] Copy the texture to the buffer
+        ///[Ctrl+X] Cut the texture to the buffer
+        ///[Ctrl+V] Paste the texture from the buffer に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string TextureViewer_tipViewer {
             get {
