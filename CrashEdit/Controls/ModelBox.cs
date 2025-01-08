@@ -65,6 +65,11 @@ namespace CrashEdit.CE.Controls
         private double MasterSaturation => colorEditorGlobal.HslColor.S;
         private double MasterLightness => colorEditorGlobal.HslColor.L;
 
+        private Color clrBackground = Color.FromArgb(40, 40, 40);
+        private Color clrAltBackground = Color.FromArgb(34, 34, 34);
+        private Color clrSelectionBackground = Color.FromArgb(70, 70, 70);
+        private Color clrText = Color.Gainsboro;
+
         public ModelBox(ModelEntryController controller)
         {
             MainInit(controller, false);
@@ -359,6 +364,8 @@ namespace CrashEdit.CE.Controls
 
         private async Task UpdateTextureListAsync(bool setMaxTags)
         {
+            grdTextures.SuspendLayout();
+            grdTextures.ScrollBars = ScrollBars.None;
             Stopwatch stopwatch = Stopwatch.StartNew();
             var seenTags = new ConcurrentDictionary<string, bool>();
 
@@ -384,6 +391,8 @@ namespace CrashEdit.CE.Controls
             });
 
             grdTextures.Rows.Clear();
+
+            int visibleRowIndex = 0;
             foreach (var row in rows)
             {
                 grdTextures.Rows.Add(row);
@@ -393,6 +402,8 @@ namespace CrashEdit.CE.Controls
                     if (!seenTags.ContainsKey(tagValue))
                     {
                         seenTags.TryAdd(tagValue, true);
+                        row.DefaultCellStyle.BackColor = (visibleRowIndex % 2 == 0) ? clrBackground : clrAltBackground;
+                        visibleRowIndex++;
                     }
                     else
                     {
@@ -416,6 +427,8 @@ namespace CrashEdit.CE.Controls
             int count = simpleMode ? seenTags.Count : rows.Count;
             Console.WriteLine($"Row count: {count}");
             Console.WriteLine($"Processing time: {stopwatch.Elapsed.TotalSeconds:F3} seconds");
+            grdTextures.ScrollBars = ScrollBars.Vertical;
+            grdTextures.ResumeLayout();
         }
 
         private void grdTextures_SelectionChanged(object sender, EventArgs e)
@@ -460,28 +473,6 @@ namespace CrashEdit.CE.Controls
                 e.Handled = true;
             }
         }
-
-        //private void HideDuplicateRowsByTag()
-        //{
-        //    List<string> seenTags = new List<string>();
-        //    for (int i = grdTextures.Rows.Count - 1; i >= 0; i--)
-        //    {
-        //        var row = grdTextures.Rows[i];
-        //        var tags = row.Cells[0].Tag as string;
-        //        if (tags != null)
-        //        {
-        //            if (seenTags.Contains(tags))
-        //            {
-        //                row.Visible = false;
-        //                Console.WriteLine($"{row.Index}");
-        //            }
-        //            else
-        //            {
-        //                seenTags.Add(tags);
-        //            }
-        //        }
-        //    }
-        //}
 
         private async void cmdLoadTexture_Click(object sender, EventArgs e)
         {
@@ -528,8 +519,8 @@ namespace CrashEdit.CE.Controls
                     grdTextures.Columns[i].Visible = true;
             }
 
-            grdTextures.ScrollBars = ScrollBars.Vertical;
             fraReplace.Enabled = !simpleMode;
+            grdTextures.ScrollBars = ScrollBars.Vertical;
             grdTextures.ResumeLayout();
         }
 
@@ -599,7 +590,8 @@ namespace CrashEdit.CE.Controls
 
                 int xoffEnd = xoff + xoffUnit;
                 maxValue = xoffEnd - width;
-                Console.WriteLine($"Segment {segment}, maxValue {maxValue}");
+                if (Settings.Default.OutputModelTextureInfo)
+                    Console.WriteLine($"Segment {segment}, maxValue {maxValue}");
             }
             // Y (Top)
             else if (columnIndex == ColTop)
@@ -612,7 +604,8 @@ namespace CrashEdit.CE.Controls
 
                 maxValue = xoffUnit - (value - xoff);
                 minValue = 4;
-                Console.WriteLine($"Segment {segment}, maxValue {maxValue}");
+                if (Settings.Default.OutputModelTextureInfo)
+                    Console.WriteLine($"Segment {segment}, maxValue {maxValue}");
             }
             // Height
             else if (columnIndex == ColHeight)
@@ -650,7 +643,8 @@ namespace CrashEdit.CE.Controls
                     maxValue = xoffEnd - width;
                     minValue = xoff;
                 }
-                Console.WriteLine($"Segment {segment}, minValue {minValue}, maxValue {maxValue}");
+                if (Settings.Default.OutputModelTextureInfo)
+                    Console.WriteLine($"Segment {segment}, minValue {minValue}, maxValue {maxValue}");
             }
             // Y1-Y4
             else if (columnIndex >= ColY1 && columnIndex <= ColY4)
@@ -805,7 +799,8 @@ namespace CrashEdit.CE.Controls
                 Console.WriteLine($"Finished updating cells with tag: {editedCellTag}");
 
             stopwatch.Stop();
-            Console.WriteLine($"Processing time: {stopwatch.Elapsed.TotalSeconds:F3} seconds");
+            if (Settings.Default.OutputModelTextureInfo)
+                Console.WriteLine($"Processing time: {stopwatch.Elapsed.TotalSeconds:F3} seconds");
         }
 
         private void GetXOff(int colorMode, int value, out int xoffUnit, out int segment, out int xoff)
@@ -1001,7 +996,8 @@ namespace CrashEdit.CE.Controls
                 Console.WriteLine($"Finished updating cells with tag: {editedCellTag}");
 
             stopwatch.Stop();
-            Console.WriteLine($"Processing time: {stopwatch.Elapsed.TotalSeconds:F3} seconds");
+            if (Settings.Default.OutputModelTextureInfo)
+                Console.WriteLine($"Processing time: {stopwatch.Elapsed.TotalSeconds:F3} seconds");
         }
 
         private async Task UpdateRowsColorModeAsync(int rowIndex, int newValue, string editedCellTag)
@@ -1099,6 +1095,11 @@ namespace CrashEdit.CE.Controls
             tipReloadTPage.SetToolTip(rbtReloadTPage, "Reload");
             SetDarkTheme(grdTextures);
             EnableDoubleBuffering();
+            if (isScenery)
+            {
+                grdTextures.Width = 612;
+                pnTextureControls.Location = new Point(759, 0);
+            }
             CreateTextureListColumns();
             UpdateTPageList();
             await UpdateTextureListAsync(true);
@@ -1653,6 +1654,11 @@ namespace CrashEdit.CE.Controls
             numOffsetZ.Hexadecimal = chkOffsetsShowAsHex.Checked;
         }
 
+        private void numReplaceTo_Click(object sender, EventArgs e)
+        {
+            numReplaceTo.Select(0, numReplaceTo.Text.Length);
+        }
+
         private void ScrollHandlerFunction(object sender, MouseEventArgs e)
         {
             if (sender is NumericUpDown numericUpDown)
@@ -1683,33 +1689,33 @@ namespace CrashEdit.CE.Controls
         private void SetDarkTheme(DataGridView dataGridView)
         {
             // Background color of the entire grid
-            dataGridView.BackgroundColor = Color.FromArgb(30, 30, 30);
+            dataGridView.BackgroundColor = Color.FromArgb(31, 31, 32);
 
             // Color of the grid lines
             dataGridView.GridColor = Color.FromArgb(50, 50, 50);
 
             // Default style for cells
-            dataGridView.DefaultCellStyle.BackColor = Color.FromArgb(40, 40, 40);
-            dataGridView.DefaultCellStyle.ForeColor = Color.White;
-            dataGridView.DefaultCellStyle.SelectionBackColor = Color.FromArgb(70, 70, 70);
-            dataGridView.DefaultCellStyle.SelectionForeColor = Color.White;
+            dataGridView.DefaultCellStyle.BackColor = clrBackground;
+            dataGridView.DefaultCellStyle.ForeColor = clrText;
+            dataGridView.DefaultCellStyle.SelectionBackColor = clrSelectionBackground;
+            dataGridView.DefaultCellStyle.SelectionForeColor = clrText;
 
             // Style for column headers
             dataGridView.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(50, 50, 50);
-            dataGridView.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dataGridView.ColumnHeadersDefaultCellStyle.ForeColor = clrText;
             dataGridView.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(60, 60, 60);
-            dataGridView.ColumnHeadersDefaultCellStyle.SelectionForeColor = Color.White;
+            dataGridView.ColumnHeadersDefaultCellStyle.SelectionForeColor = clrText;
             dataGridView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
             // Style for row headers
             dataGridView.RowHeadersDefaultCellStyle.BackColor = Color.FromArgb(50, 50, 50);
-            dataGridView.RowHeadersDefaultCellStyle.ForeColor = Color.White;
+            dataGridView.RowHeadersDefaultCellStyle.ForeColor = clrText ;
             dataGridView.RowHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(60, 60, 60);
-            dataGridView.RowHeadersDefaultCellStyle.SelectionForeColor = Color.White;
+            dataGridView.RowHeadersDefaultCellStyle.SelectionForeColor = clrText;
 
             // Background color for odd and even rows
-            dataGridView.RowsDefaultCellStyle.BackColor = Color.FromArgb(40, 40, 40);
-            dataGridView.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(30, 30, 30);
+            dataGridView.RowsDefaultCellStyle.BackColor = clrBackground;
+            dataGridView.AlternatingRowsDefaultCellStyle.BackColor = clrAltBackground;
 
             // Row border style
             dataGridView.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;

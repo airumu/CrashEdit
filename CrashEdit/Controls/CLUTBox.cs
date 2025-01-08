@@ -592,33 +592,47 @@ namespace CrashEdit.CE.Controls
 
         private void SetDarkTheme(DataGridView dataGridView)
         {
+            Color clrBackground = Color.FromArgb(40, 40, 40);
+            Color clrAltBackground = Color.FromArgb(34, 34, 34);
+            Color clrSelectionBackground = Color.FromArgb(70, 70, 70);
+            Color clrText = Color.Gainsboro;
+
+            // Background color of the entire grid
             dataGridView.BackgroundColor = Color.FromArgb(31, 31, 32);
 
+            // Color of the grid lines
             dataGridView.GridColor = Color.FromArgb(50, 50, 50);
 
-            dataGridView.DefaultCellStyle.BackColor = Color.FromArgb(40, 40, 40);
-            dataGridView.DefaultCellStyle.ForeColor = Color.White;
-            dataGridView.DefaultCellStyle.SelectionBackColor = Color.FromArgb(70, 70, 70);
-            dataGridView.DefaultCellStyle.SelectionForeColor = Color.White;
+            // Default style for cells
+            dataGridView.DefaultCellStyle.BackColor = clrBackground;
+            dataGridView.DefaultCellStyle.ForeColor = clrText;
+            dataGridView.DefaultCellStyle.SelectionBackColor = clrSelectionBackground;
+            dataGridView.DefaultCellStyle.SelectionForeColor = clrText;
 
+            // Style for column headers
             dataGridView.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(50, 50, 50);
-            dataGridView.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dataGridView.ColumnHeadersDefaultCellStyle.ForeColor = clrText;
             dataGridView.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(60, 60, 60);
-            dataGridView.ColumnHeadersDefaultCellStyle.SelectionForeColor = Color.White;
-            dataGridView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridView.ColumnHeadersDefaultCellStyle.SelectionForeColor = clrText;
+            dataGridView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
+            // Style for row headers
             dataGridView.RowHeadersDefaultCellStyle.BackColor = Color.FromArgb(50, 50, 50);
-            dataGridView.RowHeadersDefaultCellStyle.ForeColor = Color.White;
+            dataGridView.RowHeadersDefaultCellStyle.ForeColor = clrText;
             dataGridView.RowHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(60, 60, 60);
-            dataGridView.RowHeadersDefaultCellStyle.SelectionForeColor = Color.White;
+            dataGridView.RowHeadersDefaultCellStyle.SelectionForeColor = clrText;
 
-            dataGridView.RowsDefaultCellStyle.BackColor = Color.FromArgb(40, 40, 40);
-            dataGridView.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(30, 30, 30);
+            // Background color for odd and even rows
+            dataGridView.RowsDefaultCellStyle.BackColor = clrBackground;
+            dataGridView.AlternatingRowsDefaultCellStyle.BackColor = clrAltBackground;
 
+            // Row border style
             dataGridView.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
 
+            // Header and gridline styles
             dataGridView.EnableHeadersVisualStyles = false;
 
+            // Additional settings
             dataGridView.BorderStyle = BorderStyle.None;
             dataGridView.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
             dataGridView.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;

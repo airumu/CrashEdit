@@ -81,6 +81,20 @@ namespace CrashEdit.CE.Controls
             pnPicture = new Panel();
             pictureBox1 = new PictureBox();
             panel2 = new Panel();
+            pnTextureControls = new Panel();
+            fraSwitches = new DarkGroupBox();
+            tglSimpleMode = new MetroSetSwitch();
+            fraReplaceTexture = new DarkGroupBox();
+            cmdReplaceTexture = new DarkButton();
+            chkReplaceCLUT = new CheckBox();
+            chkBGRA = new CheckBox();
+            numRowIndex = new DarkNumericUpDown();
+            cmdLoadTexture = new DarkButton();
+            fraReplace = new DarkGroupBox();
+            label1 = new Label();
+            numReplaceTo = new DarkNumericUpDown();
+            numReplace = new DarkNumericUpDown();
+            cmdReplace = new DarkButton();
             fraTPage = new DarkGroupBox();
             rbtReloadTPage = new MetroSetRadioButton();
             dpdTPage = new DarkComboBox();
@@ -89,19 +103,6 @@ namespace CrashEdit.CE.Controls
             lstTPages = new DoubleBufferedListView();
             trkPictureSize = new MetroSetTrackBar();
             grdTextures = new DataGridView();
-            fraReplace = new DarkGroupBox();
-            label1 = new Label();
-            numReplaceTo = new DarkNumericUpDown();
-            numReplace = new DarkNumericUpDown();
-            cmdReplace = new DarkButton();
-            cmdLoadTexture = new DarkButton();
-            numRowIndex = new DarkNumericUpDown();
-            fraReplaceTexture = new DarkGroupBox();
-            cmdReplaceTexture = new DarkButton();
-            chkReplaceCLUT = new CheckBox();
-            chkBGRA = new CheckBox();
-            fraSwitches = new DarkGroupBox();
-            tglSimpleMode = new MetroSetSwitch();
             tabModel.SuspendLayout();
             tbpGeneral.SuspendLayout();
             panel1.SuspendLayout();
@@ -122,14 +123,15 @@ namespace CrashEdit.CE.Controls
             pnPicture.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel2.SuspendLayout();
-            fraTPage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)grdTextures).BeginInit();
+            pnTextureControls.SuspendLayout();
+            fraSwitches.SuspendLayout();
+            fraReplaceTexture.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numRowIndex).BeginInit();
             fraReplace.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numReplaceTo).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numReplace).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numRowIndex).BeginInit();
-            fraReplaceTexture.SuspendLayout();
-            fraSwitches.SuspendLayout();
+            fraTPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)grdTextures).BeginInit();
             SuspendLayout();
             // 
             // tabModel
@@ -580,19 +582,203 @@ namespace CrashEdit.CE.Controls
             // panel2
             // 
             panel2.AutoSize = true;
+            panel2.Controls.Add(pnTextureControls);
             panel2.Controls.Add(fraTPage);
             panel2.Controls.Add(trkPictureSize);
             panel2.Controls.Add(grdTextures);
-            panel2.Controls.Add(fraReplace);
-            panel2.Controls.Add(cmdLoadTexture);
-            panel2.Controls.Add(numRowIndex);
-            panel2.Controls.Add(fraReplaceTexture);
-            panel2.Controls.Add(fraSwitches);
             panel2.Dock = DockStyle.Top;
             panel2.Location = new Point(0, 0);
             panel2.Name = "panel2";
             panel2.Size = new Size(1032, 378);
             panel2.TabIndex = 13;
+            // 
+            // pnTextureControls
+            // 
+            pnTextureControls.Controls.Add(fraSwitches);
+            pnTextureControls.Controls.Add(fraReplaceTexture);
+            pnTextureControls.Controls.Add(numRowIndex);
+            pnTextureControls.Controls.Add(cmdLoadTexture);
+            pnTextureControls.Controls.Add(fraReplace);
+            pnTextureControls.Location = new Point(671, 0);
+            pnTextureControls.Name = "pnTextureControls";
+            pnTextureControls.Size = new Size(214, 372);
+            pnTextureControls.TabIndex = 13;
+            // 
+            // fraSwitches
+            // 
+            fraSwitches.BackColor = Color.Transparent;
+            fraSwitches.Controls.Add(tglSimpleMode);
+            fraSwitches.Enabled = false;
+            fraSwitches.Location = new Point(3, 3);
+            fraSwitches.Name = "fraSwitches";
+            fraSwitches.Size = new Size(107, 53);
+            fraSwitches.TabIndex = 7;
+            fraSwitches.TabStop = false;
+            fraSwitches.Text = "Simple View";
+            // 
+            // tglSimpleMode
+            // 
+            tglSimpleMode.BackColor = Color.Transparent;
+            tglSimpleMode.BackgroundColor = Color.Empty;
+            tglSimpleMode.BorderColor = Color.FromArgb(155, 155, 155);
+            tglSimpleMode.CheckColor = Color.FromArgb(65, 177, 225);
+            tglSimpleMode.CheckState = MetroSet_UI.Enums.CheckState.Unchecked;
+            tglSimpleMode.DisabledBorderColor = Color.FromArgb(85, 85, 85);
+            tglSimpleMode.DisabledCheckColor = Color.FromArgb(100, 65, 177, 225);
+            tglSimpleMode.DisabledUnCheckColor = Color.FromArgb(200, 205, 205, 205);
+            tglSimpleMode.IsDerivedStyle = true;
+            tglSimpleMode.Location = new Point(16, 22);
+            tglSimpleMode.Name = "tglSimpleMode";
+            tglSimpleMode.Size = new Size(58, 22);
+            tglSimpleMode.Style = MetroSet_UI.Enums.Style.Dark;
+            tglSimpleMode.StyleManager = null;
+            tglSimpleMode.Switched = false;
+            tglSimpleMode.SymbolColor = Color.FromArgb(92, 92, 92);
+            tglSimpleMode.TabIndex = 2;
+            tglSimpleMode.Text = "Toggle simple mode";
+            tglSimpleMode.ThemeAuthor = "Narwin";
+            tglSimpleMode.ThemeName = "MetroDark";
+            tglSimpleMode.UnCheckColor = Color.FromArgb(155, 155, 155);
+            tglSimpleMode.SwitchedChanged += tglSimpleMode_SwitchedChanged;
+            // 
+            // fraReplaceTexture
+            // 
+            fraReplaceTexture.BackColor = Color.Transparent;
+            fraReplaceTexture.Controls.Add(cmdReplaceTexture);
+            fraReplaceTexture.Controls.Add(chkReplaceCLUT);
+            fraReplaceTexture.Controls.Add(chkBGRA);
+            fraReplaceTexture.Enabled = false;
+            fraReplaceTexture.Location = new Point(3, 195);
+            fraReplaceTexture.Name = "fraReplaceTexture";
+            fraReplaceTexture.Size = new Size(121, 109);
+            fraReplaceTexture.TabIndex = 9;
+            fraReplaceTexture.TabStop = false;
+            fraReplaceTexture.Text = "Replace Texture";
+            // 
+            // cmdReplaceTexture
+            // 
+            cmdReplaceTexture.BorderColour = Color.Empty;
+            cmdReplaceTexture.CustomColour = false;
+            cmdReplaceTexture.FlatBottom = false;
+            cmdReplaceTexture.FlatTop = false;
+            cmdReplaceTexture.Location = new Point(16, 22);
+            cmdReplaceTexture.Name = "cmdReplaceTexture";
+            cmdReplaceTexture.Padding = new Padding(5);
+            cmdReplaceTexture.Size = new Size(75, 23);
+            cmdReplaceTexture.TabIndex = 5;
+            cmdReplaceTexture.Text = "Browse...";
+            cmdReplaceTexture.Click += cmdReplaceTexture_Click;
+            // 
+            // chkReplaceCLUT
+            // 
+            chkReplaceCLUT.AutoSize = true;
+            chkReplaceCLUT.BackColor = Color.Transparent;
+            chkReplaceCLUT.Checked = true;
+            chkReplaceCLUT.CheckState = CheckState.Checked;
+            chkReplaceCLUT.Location = new Point(6, 51);
+            chkReplaceCLUT.Name = "chkReplaceCLUT";
+            chkReplaceCLUT.Size = new Size(98, 19);
+            chkReplaceCLUT.TabIndex = 8;
+            chkReplaceCLUT.Text = "Replace CLUT";
+            chkReplaceCLUT.UseVisualStyleBackColor = false;
+            chkReplaceCLUT.CheckedChanged += chkReplaceCLUT_CheckedChanged;
+            // 
+            // chkBGRA
+            // 
+            chkBGRA.AutoSize = true;
+            chkBGRA.BackColor = Color.Transparent;
+            chkBGRA.Checked = true;
+            chkBGRA.CheckState = CheckState.Checked;
+            chkBGRA.Location = new Point(6, 76);
+            chkBGRA.Name = "chkBGRA";
+            chkBGRA.Size = new Size(95, 19);
+            chkBGRA.TabIndex = 8;
+            chkBGRA.Text = "BGRA format";
+            chkBGRA.UseVisualStyleBackColor = false;
+            chkBGRA.CheckedChanged += chkBGRA_CheckedChanged;
+            // 
+            // numRowIndex
+            // 
+            numRowIndex.Location = new Point(116, 3);
+            numRowIndex.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numRowIndex.Name = "numRowIndex";
+            numRowIndex.Size = new Size(95, 23);
+            numRowIndex.TabIndex = 6;
+            numRowIndex.Visible = false;
+            // 
+            // cmdLoadTexture
+            // 
+            cmdLoadTexture.BackColor = Color.Transparent;
+            cmdLoadTexture.BorderColour = Color.Empty;
+            cmdLoadTexture.CustomColour = false;
+            cmdLoadTexture.FlatBottom = false;
+            cmdLoadTexture.FlatTop = false;
+            cmdLoadTexture.Location = new Point(116, 32);
+            cmdLoadTexture.Name = "cmdLoadTexture";
+            cmdLoadTexture.Padding = new Padding(5);
+            cmdLoadTexture.Size = new Size(75, 23);
+            cmdLoadTexture.TabIndex = 10;
+            cmdLoadTexture.Text = "Load";
+            cmdLoadTexture.Visible = false;
+            cmdLoadTexture.Click += cmdLoadTexture_Click;
+            // 
+            // fraReplace
+            // 
+            fraReplace.BackColor = Color.Transparent;
+            fraReplace.Controls.Add(label1);
+            fraReplace.Controls.Add(numReplaceTo);
+            fraReplace.Controls.Add(numReplace);
+            fraReplace.Controls.Add(cmdReplace);
+            fraReplace.Enabled = false;
+            fraReplace.Location = new Point(3, 62);
+            fraReplace.Name = "fraReplace";
+            fraReplace.Size = new Size(107, 127);
+            fraReplace.TabIndex = 6;
+            fraReplace.TabStop = false;
+            fraReplace.Text = "Replace Values";
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(44, 48);
+            label1.Name = "label1";
+            label1.Size = new Size(13, 15);
+            label1.TabIndex = 7;
+            label1.Text = "↓";
+            // 
+            // numReplaceTo
+            // 
+            numReplaceTo.Location = new Point(6, 66);
+            numReplaceTo.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numReplaceTo.Name = "numReplaceTo";
+            numReplaceTo.Size = new Size(95, 23);
+            numReplaceTo.TabIndex = 6;
+            numReplaceTo.Click += numReplaceTo_Click;
+            // 
+            // numReplace
+            // 
+            numReplace.Enabled = false;
+            numReplace.InterceptArrowKeys = false;
+            numReplace.Location = new Point(6, 22);
+            numReplace.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numReplace.Name = "numReplace";
+            numReplace.ReadOnly = true;
+            numReplace.Size = new Size(95, 23);
+            numReplace.TabIndex = 6;
+            // 
+            // cmdReplace
+            // 
+            cmdReplace.BorderColour = Color.Empty;
+            cmdReplace.CustomColour = false;
+            cmdReplace.FlatBottom = false;
+            cmdReplace.FlatTop = false;
+            cmdReplace.Location = new Point(16, 95);
+            cmdReplace.Name = "cmdReplace";
+            cmdReplace.Padding = new Padding(5);
+            cmdReplace.Size = new Size(75, 23);
+            cmdReplace.TabIndex = 5;
+            cmdReplace.Text = "Replace";
+            cmdReplace.Click += cmdReplace_Click;
             // 
             // fraTPage
             // 
@@ -723,188 +909,13 @@ namespace CrashEdit.CE.Controls
             grdTextures.RowHeadersWidth = 24;
             grdTextures.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             grdTextures.ScrollBars = ScrollBars.Vertical;
-            grdTextures.Size = new Size(525, 372);
+            grdTextures.Size = new Size(524, 372);
             grdTextures.TabIndex = 0;
             grdTextures.CellEndEdit += grdTextures_CellEndEdit;
             grdTextures.CellValidating += grdTextures_CellValidating;
             grdTextures.CellValueChanged += grdTextures_CellValueChanged;
             grdTextures.EditingControlShowing += grdTextures_EditingControlShowing;
             grdTextures.SelectionChanged += grdTextures_SelectionChanged;
-            // 
-            // fraReplace
-            // 
-            fraReplace.BackColor = Color.Transparent;
-            fraReplace.Controls.Add(label1);
-            fraReplace.Controls.Add(numReplaceTo);
-            fraReplace.Controls.Add(numReplace);
-            fraReplace.Controls.Add(cmdReplace);
-            fraReplace.Enabled = false;
-            fraReplace.Location = new Point(672, 62);
-            fraReplace.Name = "fraReplace";
-            fraReplace.Size = new Size(107, 127);
-            fraReplace.TabIndex = 6;
-            fraReplace.TabStop = false;
-            fraReplace.Text = "Replace Values";
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(44, 48);
-            label1.Name = "label1";
-            label1.Size = new Size(13, 15);
-            label1.TabIndex = 7;
-            label1.Text = "↓";
-            // 
-            // numReplaceTo
-            // 
-            numReplaceTo.Location = new Point(6, 66);
-            numReplaceTo.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
-            numReplaceTo.Name = "numReplaceTo";
-            numReplaceTo.Size = new Size(95, 23);
-            numReplaceTo.TabIndex = 6;
-            // 
-            // numReplace
-            // 
-            numReplace.Enabled = false;
-            numReplace.InterceptArrowKeys = false;
-            numReplace.Location = new Point(6, 22);
-            numReplace.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
-            numReplace.Name = "numReplace";
-            numReplace.ReadOnly = true;
-            numReplace.Size = new Size(95, 23);
-            numReplace.TabIndex = 6;
-            // 
-            // cmdReplace
-            // 
-            cmdReplace.BorderColour = Color.Empty;
-            cmdReplace.CustomColour = false;
-            cmdReplace.FlatBottom = false;
-            cmdReplace.FlatTop = false;
-            cmdReplace.Location = new Point(16, 95);
-            cmdReplace.Name = "cmdReplace";
-            cmdReplace.Padding = new Padding(5);
-            cmdReplace.Size = new Size(75, 23);
-            cmdReplace.TabIndex = 5;
-            cmdReplace.Text = "Replace";
-            cmdReplace.Click += cmdReplace_Click;
-            // 
-            // cmdLoadTexture
-            // 
-            cmdLoadTexture.BackColor = Color.Transparent;
-            cmdLoadTexture.BorderColour = Color.Empty;
-            cmdLoadTexture.CustomColour = false;
-            cmdLoadTexture.FlatBottom = false;
-            cmdLoadTexture.FlatTop = false;
-            cmdLoadTexture.Location = new Point(785, 32);
-            cmdLoadTexture.Name = "cmdLoadTexture";
-            cmdLoadTexture.Padding = new Padding(5);
-            cmdLoadTexture.Size = new Size(75, 23);
-            cmdLoadTexture.TabIndex = 10;
-            cmdLoadTexture.Text = "Load";
-            cmdLoadTexture.Visible = false;
-            cmdLoadTexture.Click += cmdLoadTexture_Click;
-            // 
-            // numRowIndex
-            // 
-            numRowIndex.Location = new Point(785, 3);
-            numRowIndex.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
-            numRowIndex.Name = "numRowIndex";
-            numRowIndex.Size = new Size(95, 23);
-            numRowIndex.TabIndex = 6;
-            numRowIndex.Visible = false;
-            // 
-            // fraReplaceTexture
-            // 
-            fraReplaceTexture.BackColor = Color.Transparent;
-            fraReplaceTexture.Controls.Add(cmdReplaceTexture);
-            fraReplaceTexture.Controls.Add(chkReplaceCLUT);
-            fraReplaceTexture.Controls.Add(chkBGRA);
-            fraReplaceTexture.Enabled = false;
-            fraReplaceTexture.Location = new Point(672, 195);
-            fraReplaceTexture.Name = "fraReplaceTexture";
-            fraReplaceTexture.Size = new Size(121, 109);
-            fraReplaceTexture.TabIndex = 9;
-            fraReplaceTexture.TabStop = false;
-            fraReplaceTexture.Text = "Replace Texture";
-            // 
-            // cmdReplaceTexture
-            // 
-            cmdReplaceTexture.BorderColour = Color.Empty;
-            cmdReplaceTexture.CustomColour = false;
-            cmdReplaceTexture.FlatBottom = false;
-            cmdReplaceTexture.FlatTop = false;
-            cmdReplaceTexture.Location = new Point(16, 22);
-            cmdReplaceTexture.Name = "cmdReplaceTexture";
-            cmdReplaceTexture.Padding = new Padding(5);
-            cmdReplaceTexture.Size = new Size(75, 23);
-            cmdReplaceTexture.TabIndex = 5;
-            cmdReplaceTexture.Text = "Browse...";
-            cmdReplaceTexture.Click += cmdReplaceTexture_Click;
-            // 
-            // chkReplaceCLUT
-            // 
-            chkReplaceCLUT.AutoSize = true;
-            chkReplaceCLUT.BackColor = Color.Transparent;
-            chkReplaceCLUT.Checked = true;
-            chkReplaceCLUT.CheckState = CheckState.Checked;
-            chkReplaceCLUT.Location = new Point(6, 51);
-            chkReplaceCLUT.Name = "chkReplaceCLUT";
-            chkReplaceCLUT.Size = new Size(98, 19);
-            chkReplaceCLUT.TabIndex = 8;
-            chkReplaceCLUT.Text = "Replace CLUT";
-            chkReplaceCLUT.UseVisualStyleBackColor = false;
-            chkReplaceCLUT.CheckedChanged += chkReplaceCLUT_CheckedChanged;
-            // 
-            // chkBGRA
-            // 
-            chkBGRA.AutoSize = true;
-            chkBGRA.BackColor = Color.Transparent;
-            chkBGRA.Checked = true;
-            chkBGRA.CheckState = CheckState.Checked;
-            chkBGRA.Location = new Point(6, 76);
-            chkBGRA.Name = "chkBGRA";
-            chkBGRA.Size = new Size(95, 19);
-            chkBGRA.TabIndex = 8;
-            chkBGRA.Text = "BGRA format";
-            chkBGRA.UseVisualStyleBackColor = false;
-            chkBGRA.CheckedChanged += chkBGRA_CheckedChanged;
-            // 
-            // fraSwitches
-            // 
-            fraSwitches.BackColor = Color.Transparent;
-            fraSwitches.Controls.Add(tglSimpleMode);
-            fraSwitches.Enabled = false;
-            fraSwitches.Location = new Point(672, 3);
-            fraSwitches.Name = "fraSwitches";
-            fraSwitches.Size = new Size(107, 53);
-            fraSwitches.TabIndex = 7;
-            fraSwitches.TabStop = false;
-            fraSwitches.Text = "Simple View";
-            // 
-            // tglSimpleMode
-            // 
-            tglSimpleMode.BackColor = Color.Transparent;
-            tglSimpleMode.BackgroundColor = Color.Empty;
-            tglSimpleMode.BorderColor = Color.FromArgb(155, 155, 155);
-            tglSimpleMode.CheckColor = Color.FromArgb(65, 177, 225);
-            tglSimpleMode.CheckState = MetroSet_UI.Enums.CheckState.Unchecked;
-            tglSimpleMode.DisabledBorderColor = Color.FromArgb(85, 85, 85);
-            tglSimpleMode.DisabledCheckColor = Color.FromArgb(100, 65, 177, 225);
-            tglSimpleMode.DisabledUnCheckColor = Color.FromArgb(200, 205, 205, 205);
-            tglSimpleMode.IsDerivedStyle = true;
-            tglSimpleMode.Location = new Point(16, 22);
-            tglSimpleMode.Name = "tglSimpleMode";
-            tglSimpleMode.Size = new Size(58, 22);
-            tglSimpleMode.Style = MetroSet_UI.Enums.Style.Dark;
-            tglSimpleMode.StyleManager = null;
-            tglSimpleMode.Switched = false;
-            tglSimpleMode.SymbolColor = Color.FromArgb(92, 92, 92);
-            tglSimpleMode.TabIndex = 2;
-            tglSimpleMode.Text = "Toggle simple mode";
-            tglSimpleMode.ThemeAuthor = "Narwin";
-            tglSimpleMode.ThemeName = "MetroDark";
-            tglSimpleMode.UnCheckColor = Color.FromArgb(155, 155, 155);
-            tglSimpleMode.SwitchedChanged += tglSimpleMode_SwitchedChanged;
             // 
             // ModelBox
             // 
@@ -938,16 +949,17 @@ namespace CrashEdit.CE.Controls
             pnPicture.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             panel2.ResumeLayout(false);
-            fraTPage.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)grdTextures).EndInit();
+            pnTextureControls.ResumeLayout(false);
+            fraSwitches.ResumeLayout(false);
+            fraReplaceTexture.ResumeLayout(false);
+            fraReplaceTexture.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numRowIndex).EndInit();
             fraReplace.ResumeLayout(false);
             fraReplace.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numReplaceTo).EndInit();
             ((System.ComponentModel.ISupportInitialize)numReplace).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numRowIndex).EndInit();
-            fraReplaceTexture.ResumeLayout(false);
-            fraReplaceTexture.PerformLayout();
-            fraSwitches.ResumeLayout(false);
+            fraTPage.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)grdTextures).EndInit();
             ResumeLayout(false);
         }
 
@@ -1010,5 +1022,6 @@ namespace CrashEdit.CE.Controls
         private Panel pnPicture;
         private MetroSetTrackBar trkPictureSize;
         private Panel panel2;
+        private Panel pnTextureControls;
     }
 }

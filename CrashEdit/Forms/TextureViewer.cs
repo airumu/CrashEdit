@@ -508,6 +508,7 @@ namespace CrashEdit.CE
                     DarkMessageBox.ShowError("Textures cannot be copied outside the bounds.", "Texture replacement");
                     return;
                 }
+                Console.WriteLine("========================================");
 
                 var temp = TextureConv.CopyTexture(chunk.Data, currentBpp, (int)C2numX.Value, (int)C2numY.Value, (int)C2numW.Value, (int)C2numH.Value);
                 tempTexture = temp.tempTexture;
@@ -571,6 +572,7 @@ namespace CrashEdit.CE
                     DarkMessageBox.ShowError("There is no texture in buffer.", "Texture replacement");
                     return;
                 }
+                Console.WriteLine("========================================");
 
                 tempTexture = File.ReadAllBytes(Path.Combine(basePath, "tempTexture"));
                 tempCLUT = File.ReadAllBytes(Path.Combine(basePath, "tempCLUT"));
@@ -611,9 +613,7 @@ namespace CrashEdit.CE
 
                 TextureConv.ReplaceTexture(tempTexture, chunk.Data, tempWidth, tempHeight, tempBpp, 0, 0, tempWidth, tempHeight, (int)C2numX.Value, (int)C2numY.Value, false);
 
-                if (Settings.Default.OutputCopyTextureResult)
-                    Console.WriteLine($"{tempWidth} x {tempHeight}, {tempBpp}bpp");
-
+                Console.WriteLine($"{tempWidth} x {tempHeight}, {tempBpp}bpp");
                 Console.WriteLine("Successfully pasted texture.");
 
                 if (replaceCLUT)

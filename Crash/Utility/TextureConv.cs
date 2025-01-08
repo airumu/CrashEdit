@@ -3,6 +3,7 @@ using System.Drawing;
 using CrashEdit.CE.Properties;
 using AltUI.Forms;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace CrashEdit.Crash
 {
@@ -60,6 +61,12 @@ namespace CrashEdit.Crash
             int paletteCount = rgba5551List.Length / 2;
             int bpp = (paletteCount <= 16) ? 4 : 8;
 
+            if (bpp != oldBpp)
+            {
+                DarkMessageBox.ShowError("The color depth of the selected image differs from the current one.", "Texture replacement");
+                return currentData;
+            }
+
             byte[] newTextureData = ReplaceTexture(rawImageData, currentData, width, height, bpp, 0, 0, width, height, destX / (bpp == 8 ? 2 : 1), destY, true);
             byte[] newTPage = newTextureData;
 
@@ -77,7 +84,8 @@ namespace CrashEdit.Crash
 
         private static void WriteResult(byte[] rgba5551List, byte[] rawImageData, int paletteCount, int bpp, int width, int height)
         {
-            Console.WriteLine($"[] Raw Image Data Length: {rawImageData.Length}");
+            Console.WriteLine("========================================");
+            Console.WriteLine($"Raw Image Data Length: {rawImageData.Length}");
             Console.WriteLine($"Image Size: {width} x {height}");
             Console.WriteLine($"Palette Count: {paletteCount}, {bpp}bpp");
             string hexString = BitConverter.ToString(rgba5551List).Replace("-", "");

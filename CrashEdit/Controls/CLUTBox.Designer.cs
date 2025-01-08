@@ -91,7 +91,7 @@ namespace CrashEdit.CE.Controls
             grdCLUT.RowHeadersWidth = 24;
             grdCLUT.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             grdCLUT.ScrollBars = ScrollBars.Vertical;
-            grdCLUT.Size = new Size(516, 646);
+            grdCLUT.Size = new Size(516, 624);
             grdCLUT.TabIndex = 0;
             grdCLUT.CellPainting += grdCLUT_CellPainting;
             grdCLUT.SelectionChanged += grdCLUT_SelectionChanged;
