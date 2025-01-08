@@ -1,5 +1,6 @@
 using System.Text.RegularExpressions;
 using CrashEdit.Crash;
+using CrashEdit.Crash.GOOLIns;
 
 namespace CrashEdit.CE
 {
@@ -251,7 +252,7 @@ namespace CrashEdit.CE
                             number = int.Parse(match.Value);
                             int indentEndIndex = instIndex + number;
                             indentEndIndexes.Add(indentEndIndex);
-                            indent += "  ";
+                            indent += "Åb ";
 
                             // if the number is minus
                             if (indentEndIndex < instIndex)
@@ -267,7 +268,7 @@ namespace CrashEdit.CE
                                         int hashIndex = lineText.IndexOf('#');
                                         if (hashIndex != -1)
                                         {
-                                            lineText = lineText.Insert(hashIndex + 1, "  ");
+                                            lineText = lineText.Insert(hashIndex + 1, " Åb");
                                         }
                                         row.Cells[0].Value = lineText;
 
@@ -404,6 +405,37 @@ namespace CrashEdit.CE
                             }
                         }
                     }
+                    else if (cellText.Contains("ins"))
+                    {
+                        string target = "ins";
+                        string hexPattern = $@"{Regex.Escape(target)}\[\s*(0x[0-9a-fA-F]+|\d+)\s*\]";
+                        var match = Regex.Match(cellText, hexPattern);
+
+                        if (match.Success)
+                        {
+                            string value = match.Groups[1].Value;
+                            int number;
+                            if (value.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
+                                number = Convert.ToInt32(value, 16);
+                            else
+                                number = int.Parse(value);
+                            for (int i = headerCount; i < dgvCode.Rows.Count; i++)
+                            {
+                                if (dgvCode.Rows[i].Tag != null)
+                                {
+                                    int targetTagValue = (int)dgvCode.Rows[i].Tag;
+                                    if (number == targetTagValue)
+                                    {
+                                        int targetRowIndex = dgvCode.Rows[i].Index;
+                                        dgvCode.FirstDisplayedScrollingRowIndex = targetRowIndex;
+                                        dgvCode.ClearSelection();
+                                        dgvCode.Rows[targetRowIndex].Selected = true;
+                                    }
+                                }
+
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -416,25 +448,27 @@ namespace CrashEdit.CE
 
                 var targetWords = new Dictionary<string, Color>();
 
-                Color title =      Color.FromArgb(93, 179, 149);  // teal
-                Color keywords =   Color.FromArgb(114, 159, 255); // blue
-                Color states =     Color.FromArgb(129, 198, 255); // sky blue
-                Color logicals =   Color.FromArgb(255, 130, 130); // red
-                Color numbers =    Color.FromArgb(240, 200, 87);  // orange
-                Color classes =    Color.FromArgb(216, 160, 213); // pink
-                Color names =      Color.FromArgb(91, 191, 139);  // green
-                Color operators =  Color.FromArgb(255, 166, 77);  // red-orange
+                Color comments =   Color.FromArgb(84, 84, 109);   // gray
+                Color titles =     Color.FromArgb(152, 187, 108); // light green
+                Color keywords =   Color.FromArgb(126, 156, 216); // blue
+                Color states =     Color.FromArgb(127, 180, 201); // light blue
+                Color logicals =   Color.FromArgb(228, 104, 118); // red
+                Color numbers =    Color.FromArgb(230, 194, 132); // orange
+                Color classes =    Color.FromArgb(149, 127, 184); // purple
+                Color actions =    Color.FromArgb(122, 167, 159); // green
+                Color globals =    Color.FromArgb(220, 215, 186); // light yellow
+                Color operators =  Color.FromArgb(209, 126, 153); // red-orange
 
                 var wordGroups = new Dictionary<Color, string[]>
                 {
-                    { Color.Gray, new[] { "#" } },
-                    { keywords, new[] { "move", "go", "change", "call", "to", "at" } },
-                    { states, new[] { "state", "instructions","subroutine" } },
-                    { logicals, new[] { "true", "false", "accept", "reject" } },
-                    { classes, new[] { "if", "else", "return" } },
-                    //{ names, new[] { "sp", "[sp]" } },
-                    { names, new[] { "play", "set", "spawn", "force", "send", "push", "pop" } },
-                    { operators, new[] { "=", "==", "!", "!!", "!=", "|", "||", "|=", "&", "&&", "&=", "^", ">", ">>", ">=", "<", "<<", "<=", "+", "+=", "-", "-=", "*", "*=", "/", "/=", "%" } }
+                    { comments,  new[] { "#", "Åb" } },
+                    { keywords,  new[] { "move", "go", "change", "call", "to", "at" } },
+                    { states,    new[] { "state", "instructions","subroutine" } },
+                    { logicals,  new[] { "true", "false", "accept", "reject", "invalid" } },
+                    { classes,   new[] { "if", "else", "return" } },
+                    //{ stacks,  new[] { "sp", "[sp]" } },
+                    { actions,   new[] { "play", "set", "spawn", "force", "send", "cascade",  "push", "pop" } },
+                    { operators, new[] { "=", "==", "!", "!=", "|", "||", "|=", "&", "&&", "&=", "^", ">", ">>", ">=", "<", "<<", "<=", "+", "+=", "-", "-=", "*", "*=", "/", "/=", "%" } }
                 };
 
                 foreach (var group in wordGroups)
@@ -452,6 +486,13 @@ namespace CrashEdit.CE
 
                 var numberPattern = @"^([-+]?(\(\s*[-+]?\d+(\.\d+)?\s*\)|\(\s*[-+]?(0x[0-9a-fA-F]+)\s*\)|\d+(\.\d+)?|0x[0-9a-fA-F]+))$";
                 var statePattern = @"^(State_\d+_(event|code|trans):|Sub_\d+:)$";
+                var insPattern = @"(ins|ext)\[[^\]]+\]";
+                var animPattern = @"^(&anim\[\(?0x[0-9A-Fa-f]+\)?\]|&0x[A-F0-9]+)$";
+                var EIDPattern = @"\((?!(0x))[a-zA-Z0-9_!]{4}(G|V|T|A|O|I)\)";
+                var goolEIDPattern = @"\[[a-zA-Z0-9]{4}C\]";
+                var globalPattern = @"^(<[A-Z0-9]+>|global\[0x[0-9]+\])$";
+                var extraPattern = @"(rand|VEL|degdiff|seek|degseek|loop)\(.*\)";
+                var extraNumPattern = @"^(\(?-?[0-9A-F]+\)?)|(\(?-?0x?[0-9A-F]+\)?)";
 
                 using (Brush defaultBrush = new SolidBrush(e.CellStyle.ForeColor))
                 {
@@ -462,27 +503,122 @@ namespace CrashEdit.CE
                     {
                         string cleanedWord = word.TrimEnd(',');
                         string displayWord = word + " ";
+                        int exOffset = 0;
                         Color currentColor = e.CellStyle.ForeColor;
 
-                        if (Regex.IsMatch(cleanedWord, statePattern))
+                        if (Regex.IsMatch(cleanedWord, statePattern)) // State_{<number>}_<number>, Sub_<number>
                         {
-                            currentColor = title;
+                            currentColor = titles;
                         }
-                        else if (Regex.IsMatch(cleanedWord, numberPattern))
+                        else if (Regex.IsMatch(cleanedWord, insPattern)) // ins[<number>]
                         {
-                            currentColor = numbers; // numbers
+                            currentColor = states;
+                        }
+                        else if (Regex.IsMatch(cleanedWord, animPattern)) // &anim[<hex>]
+                        {
+                            currentColor = titles;
+                        }
+                        else if (Regex.IsMatch(cleanedWord, EIDPattern)) // (<EID>) *end with '(G|V|T|A|I)'
+                        {
+                            currentColor = titles;
+                        }
+                        else if (Regex.IsMatch(cleanedWord, goolEIDPattern)) // [<EID>] *end with 'C'
+                        {
+                            currentColor = titles;
+                        }
+                        else if (Regex.IsMatch(cleanedWord, globalPattern)) // <GLOBAL>
+                        {
+                            currentColor = globals;
+                        }
+                        else if (Regex.IsMatch(cleanedWord, extraPattern)) // arg(x, y) or arg(x, y, z)
+                        {
+                            exOffset = charWidth / 4;
+
+                            int openParenIndex = word.IndexOf('(');
+                            string prefix = word.Substring(0, openParenIndex + 1);  // "arg("
+                            string args = word.Substring(openParenIndex + 1); // "x, y)" or "x, y, z)"
+
+                            openParenIndex = args.IndexOf(',');
+                            string arg1 = args.Substring(0, openParenIndex + 1);  // "x,"
+                            string arg2 = args.Substring(openParenIndex + 1); // "y)" or "y, z)"
+
+                            string arg3 = string.Empty;
+
+                            if (word.StartsWith("seek") || word.StartsWith("degseek") || word.StartsWith("loop"))
+                            {
+                                string oldArgs = arg2;
+                                openParenIndex = oldArgs.IndexOf(',');
+                                arg2 = oldArgs.Substring(0, openParenIndex + 1);  // "y,"
+                                arg3 = oldArgs.Substring(openParenIndex + 1); // "z)"
+
+                                arg3 = arg3.Substring(0, arg3.Length - 1); // "z"
+                            }
+                            else
+                            {
+                                arg2 = arg2.Substring(0, arg2.Length - 1); // "y"
+                            }
+
+                            // "arg("
+                            using (Brush brush = new SolidBrush(e.CellStyle.ForeColor))
+                            {
+                                e.Graphics.DrawString(prefix, e.CellStyle.Font, brush, currentX, top);
+                            }
+                            currentX += (charWidth / 2 * prefix.Length) + exOffset;
+
+                            // "x,"
+                            currentColor = Regex.IsMatch(arg1, extraNumPattern) ? numbers : e.CellStyle.ForeColor;
+                            using (Brush brush = new SolidBrush(currentColor))
+                            {
+                                e.Graphics.DrawString(arg1, e.CellStyle.Font, brush, currentX, top);
+                            }
+                            currentX += (charWidth / 2 * arg1.Length) + exOffset;
+
+                            // "y" or "y,"
+                            currentColor = Regex.IsMatch(arg2, extraNumPattern) ? numbers : e.CellStyle.ForeColor;
+                            using (Brush brush = new SolidBrush(currentColor))
+                            {
+                                e.Graphics.DrawString(arg2, e.CellStyle.Font, brush, currentX, top);
+                            }
+                            currentX += (charWidth / 2 * arg2.Length) + exOffset;
+
+                            // "z"
+                            if (arg3 != string.Empty)
+                            {
+                                currentColor = Regex.IsMatch(arg3, extraNumPattern) ? numbers : e.CellStyle.ForeColor;
+                                using (Brush brush = new SolidBrush(currentColor))
+                                {
+                                    e.Graphics.DrawString(arg3, e.CellStyle.Font, brush, currentX, top);
+                                }
+                                currentX += (charWidth / 2 * arg3.Length) + exOffset;
+                            }
+
+                            // ")"
+                            using (Brush brush = new SolidBrush(e.CellStyle.ForeColor))
+                            {
+                                e.Graphics.DrawString(")", e.CellStyle.Font, brush, currentX, top);
+                            }
+                            currentX += (charWidth / 2) + exOffset;
+
+                            continue;
+                        }
+                        else if (Regex.IsMatch(cleanedWord, numberPattern)) // numbers
+                        {
+                            currentColor = numbers;
+                        }
+                        else if (wordGroups.ContainsKey(operators) && wordGroups[operators].Contains(cleanedWord))
+                        {
+                            exOffset = charWidth / 4;
+                            currentColor = targetWords[cleanedWord];
                         }
                         else if (targetWords.ContainsKey(cleanedWord))
                         {
                             currentColor = targetWords[cleanedWord];
                         }
-
                         using (Brush brush = new SolidBrush(currentColor))
                         {
-                            e.Graphics.DrawString(displayWord, e.CellStyle.Font, brush, currentX, top);
+                            e.Graphics.DrawString(displayWord, e.CellStyle.Font, brush, currentX + exOffset, top);
                         }
-
-                        currentX += charWidth / 2 * displayWord.Length;
+                        currentX += (charWidth / 2 * displayWord.Length) + exOffset;
                     }
                 }
 
@@ -505,34 +641,38 @@ namespace CrashEdit.CE
 
         private void SetDarkTheme(DataGridView dataGridView)
         {
+            Color clrText = Color.FromArgb(220, 220, 240);
+            Color clrBackground = Color.FromArgb(31, 31, 40);
+            Color clrSelectionBackground = Color.FromArgb(54, 54, 70);
+
             // Background color of the entire grid
-            dataGridView.BackgroundColor = Color.FromArgb(30, 30, 30);
+            dataGridView.BackgroundColor = clrBackground;
 
             // Color of the grid lines
-            dataGridView.GridColor = Color.FromArgb(30, 30, 30);
+            dataGridView.GridColor = clrBackground;
 
             // Default style for cells
-            dataGridView.DefaultCellStyle.BackColor = Color.FromArgb(40, 40, 40);
-            dataGridView.DefaultCellStyle.ForeColor = Color.White;
-            dataGridView.DefaultCellStyle.SelectionBackColor = Color.FromArgb(60, 60, 60);
-            dataGridView.DefaultCellStyle.SelectionForeColor = Color.White;
+            dataGridView.DefaultCellStyle.BackColor = clrBackground;
+            dataGridView.DefaultCellStyle.ForeColor = clrText;
+            dataGridView.DefaultCellStyle.SelectionBackColor = clrSelectionBackground;
+            dataGridView.DefaultCellStyle.SelectionForeColor = clrText;
 
             // Style for column headers
             dataGridView.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(50, 50, 50);
-            dataGridView.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dataGridView.ColumnHeadersDefaultCellStyle.ForeColor = clrText;
             dataGridView.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(60, 60, 60);
-            dataGridView.ColumnHeadersDefaultCellStyle.SelectionForeColor = Color.White;
+            dataGridView.ColumnHeadersDefaultCellStyle.SelectionForeColor = clrText;
             dataGridView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
             // Style for row headers
             dataGridView.RowHeadersDefaultCellStyle.BackColor = Color.FromArgb(50, 50, 50);
-            dataGridView.RowHeadersDefaultCellStyle.ForeColor = Color.White;
+            dataGridView.RowHeadersDefaultCellStyle.ForeColor = clrText;
             dataGridView.RowHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(60, 60, 60);
-            dataGridView.RowHeadersDefaultCellStyle.SelectionForeColor = Color.White;
+            dataGridView.RowHeadersDefaultCellStyle.SelectionForeColor = clrText;
 
             // Background color for odd and even rows
-            dataGridView.RowsDefaultCellStyle.BackColor = Color.FromArgb(30, 30, 30);
-            dataGridView.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(30, 30, 30);
+            dataGridView.RowsDefaultCellStyle.BackColor = clrBackground;
+            dataGridView.AlternatingRowsDefaultCellStyle.BackColor = clrBackground;
 
             // Row border style
             dataGridView.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
