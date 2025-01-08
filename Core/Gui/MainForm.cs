@@ -2,7 +2,6 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using AltUI.Forms;
-using MetroSet_UI.Controls;
 
 namespace CrashEdit
 {
@@ -11,7 +10,6 @@ namespace CrashEdit
     {
         public MainForm()
         {
-
             TabControl = new FlatTabControl
             {
                 Dock = DockStyle.Fill,
@@ -19,8 +17,6 @@ namespace CrashEdit
                 SizeMode = TabSizeMode.FillToRight,
                 Padding = new Point(0, 0),
                 DrawMode = TabDrawMode.OwnerDrawFixed,
-                //TabStyle = MetroSet_UI.Enums.TabStyle.Style2,
-                //Style = MetroSet_UI.Enums.Style.Dark,
                 ShowTabCloseButton = false,
                 SelectedForeColor = Color.WhiteSmoke,
                 BackColor = Color.FromArgb(31, 31, 32)
@@ -358,6 +354,7 @@ namespace CrashEdit
         }
 
     }
+
     public class FlatTabControl : TabControl
     {
         #region Public Properties
@@ -390,7 +387,6 @@ namespace CrashEdit
         public Color TabCloseColor { get; set; }
 
         #endregion Public Properties
-
 
         public FlatTabControl()
         {
@@ -425,7 +421,6 @@ namespace CrashEdit
             DrawControl(e.Graphics);
         }
 
-
         private delegate bool PreRemoveTab(int indx);
         private PreRemoveTab PreRemoveTabPage;
         private bool OverCloseTab = false;
@@ -449,6 +444,7 @@ namespace CrashEdit
                 }
             }
         }
+
         protected override void OnMouseMove(MouseEventArgs e)
         {
             /* Hightlighs the Close Button when the Mouse is over it  */
@@ -501,6 +497,7 @@ namespace CrashEdit
             }
             Cursor = cursorOnOtherTab ? Cursors.Hand : Cursors.Default;
         }
+
         protected override void OnMouseLeave(EventArgs e)
         {
             Cursor = Cursors.Default;
