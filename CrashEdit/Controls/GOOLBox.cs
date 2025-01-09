@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 using CrashEdit.Crash;
-using CrashEdit.Crash.GOOLIns;
 
 namespace CrashEdit.CE
 {
@@ -50,8 +50,14 @@ namespace CrashEdit.CE
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
                 SortMode = DataGridViewColumnSortMode.NotSortable
             });
+            ContextMenuStrip contextMenuStrip = new ContextMenuStrip();
+            contextMenuStrip.Items.Add("Copy Offset as hex", null, CopyOffsetToClipboard);
+            dgvCode.ContextMenuStrip = contextMenuStrip;
+            contextMenuStrip.Opening += ContextMenuStrip_Opening;
+
             dgvCode.CellPainting += dgvCode_CellPainting;
-            dgvCode.CellClick += dgvCode_CellClick;
+            dgvCode.MouseDown += dgvCode_MouseDown;
+            dgvCode.CellDoubleClick += dgvCode_CellDoubleClick;
 
             headerCount = 0;
             addressIndex = 0;
@@ -146,7 +152,7 @@ namespace CrashEdit.CE
                         ++addressIndex;
                     }
                     else
-                        rows.Add("      (no event hook)");
+                        rows.Add("    (no\u00A0event\u00A0hook)");
                     if (cpc != 0x3FFF)
                     {
                         bool isexternal = (goolentry.StateDescriptors[i].CodeHook & 0x4000) != 0;
@@ -156,7 +162,7 @@ namespace CrashEdit.CE
                         ++addressIndex;
                     }
                     else
-                        rows.Add("      ERROR! No code thread! This state will not work.");
+                        rows.Add("    ERROR! No code thread! This state will not work.");
                     if (tpc != 0x3FFF)
                     {
                         bool isexternal = (goolentry.StateDescriptors[i].TransHook & 0x4000) != 0;
@@ -166,7 +172,7 @@ namespace CrashEdit.CE
                         ++addressIndex;
                     }
                     else
-                        rows.Add("      (no trans hook)");
+                        rows.Add("    (no\u00A0trans\u00A0hook)");
                     headerCount += 4;
 
                     if (stategooleid == goolentry.EID)
@@ -312,10 +318,49 @@ namespace CrashEdit.CE
             }
         }
 
-        private void dgvCode_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void dgvCode_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                var hitTest = dgvCode.HitTest(e.X, e.Y);
+                if (hitTest.Type == DataGridViewHitTestType.Cell)
+                {
+                    dgvCode.CurrentCell = dgvCode[hitTest.ColumnIndex, hitTest.RowIndex];
+                }
+            }
+        }
+
+        private void CopyOffsetToClipboard(object sender, EventArgs e)
+        {
+            var cellValue = dgvCode.CurrentCell?.Value?.ToString();
+
+            if (!string.IsNullOrEmpty(cellValue))
+            {
+                var match = Regex.Match(cellValue, @"\d+");
+                if (match.Success)
+                {
+                    int number = Convert.ToInt32(match.Value);
+                    string offset = (number * 4).ToString("X");
+                    Clipboard.SetText(offset);
+                }
+            }
+        }
+
+        private void ContextMenuStrip_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var cell = dgvCode.CurrentCell;
+            if (cell != null)
+            {
+                ToolStripMenuItem copyItem = (ToolStripMenuItem)dgvCode.ContextMenuStrip.Items[0]; // "Copy Offset as hex"
+                copyItem.Enabled = dgvCode.Rows[cell.RowIndex].Tag != null;
+            }
+        }
+
+        private void dgvCode_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex > 0 && dgvCode.Rows[e.RowIndex].Tag != null)
             {
+                // header
                 if (e.RowIndex < headerCount)
                 {
                     int targetIndex = Convert.ToInt32(dgvCode.Rows[e.RowIndex].Tag);
@@ -335,6 +380,7 @@ namespace CrashEdit.CE
                         }
                     }
                 }
+                // body
                 else
                 {
                     string cellText = dgvCode.Rows[e.RowIndex].Cells[e.ColumnIndex].Value?.ToString() ?? "";
@@ -485,15 +531,16 @@ namespace CrashEdit.CE
                 float top = e.CellBounds.Top + (e.CellBounds.Height - e.Graphics.MeasureString(cellText, e.CellStyle.Font).Height) / 2;
 
                 var numberPattern = @"^([-+]?(\(\s*[-+]?\d+(\.\d+)?\s*\)|\(\s*[-+]?(0x[0-9a-fA-F]+)\s*\)|\d+(\.\d+)?|0x[0-9a-fA-F]+))$";
-                var statePattern = @"^(State_\d+_(event|code|trans):|Sub_\d+:)$";
+                var statePattern = @"^(State_\d+_.*:|Sub_\d+:)$";
+                var disablePattern = @"\(no\s*.*\s*hook\)";
                 var insPattern = @"(ins|ext)\[[^\]]+\]";
-                var animPattern = @"^(&anim\[\(?0x[0-9A-Fa-f]+\)?\]|&0x[A-F0-9]+)$";
+                var animPattern = @"(&anim\[\(?0x[0-9A-Fa-f]+\)?\]|&\d+)";
                 var EIDPattern = @"\((?!(0x))[a-zA-Z0-9_!]{4}(G|V|T|A|O|I)\)";
                 var goolEIDPattern = @"\[[a-zA-Z0-9]{4}C\]";
                 var globalPattern = @"^(<[A-Z0-9]+>|global\[0x[0-9]+\])$";
                 var extraPattern = @"(rand|VEL|degdiff|seek|degseek|loop)\(.*\)";
                 var extraNumPattern = @"^(\(?-?[0-9A-F]+\)?)|(\(?-?0x?[0-9A-F]+\)?)";
-
+               
                 using (Brush defaultBrush = new SolidBrush(e.CellStyle.ForeColor))
                 {
                     string[] words = cellText.Split(' ');
@@ -509,6 +556,10 @@ namespace CrashEdit.CE
                         if (Regex.IsMatch(cleanedWord, statePattern)) // State_{<number>}_<number>, Sub_<number>
                         {
                             currentColor = titles;
+                        }
+                        else if (Regex.IsMatch(cleanedWord, disablePattern)) // (no_xxxx_hook)
+                        {
+                            currentColor = comments;
                         }
                         else if (Regex.IsMatch(cleanedWord, insPattern)) // ins[<number>]
                         {
