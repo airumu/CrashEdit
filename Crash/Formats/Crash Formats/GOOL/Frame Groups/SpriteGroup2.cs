@@ -1,6 +1,6 @@
 ﻿namespace CrashEdit.Crash
 {
-    public sealed class SpriteGroup2(List<SpriteTexture2> frames, int eid, int index) : GOOLFrameGroup<SpriteTexture2>(frames, eid)
+    public sealed class SpriteGroup2 : GOOLFrameGroup<SpriteTexture2>
     {
         public override short Type() => 2;
 
@@ -29,7 +29,14 @@
             return new SpriteGroup2(frames, eid, idx);
         }
 
-        public int Index { get; set; } = index;
+        public SpriteGroup2(List<SpriteTexture2> frames, int eid, int index) : base(frames, eid)
+        {
+            Frames = frames;
+            Index = index;
+        }
+
+        public List<SpriteTexture2> Frames { get; }
+        public int Index { get; set; }
 
         public override byte[] Save()
         {
