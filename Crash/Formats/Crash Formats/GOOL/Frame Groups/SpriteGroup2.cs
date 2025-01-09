@@ -1,6 +1,6 @@
 ﻿namespace CrashEdit.Crash
 {
-    public sealed class SpriteGroup2(List<SpriteTexture2> frames, int eid) : GOOLFrameGroup<SpriteTexture2>(frames, eid)
+    public sealed class SpriteGroup2(List<SpriteTexture2> frames, int eid, int index) : GOOLFrameGroup<SpriteTexture2>(frames, eid)
     {
         public override short Type() => 2;
 
@@ -10,6 +10,7 @@
             {
                 ErrorManager.SignalError("Sprite frame group version is wrong");
             }
+            int idx = index;
             index += 2;
             
             short framecount = BitConv.FromInt16(data, index);
@@ -25,8 +26,10 @@
                 index += 16;
             }
 
-            return new SpriteGroup2(frames, eid);
+            return new SpriteGroup2(frames, eid, idx);
         }
+
+        public int Index { get; set; } = index;
 
         public override byte[] Save()
         {
