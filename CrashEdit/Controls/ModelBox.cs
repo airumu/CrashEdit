@@ -16,6 +16,9 @@ namespace CrashEdit.CE.Controls
         DataGridViewCellStyle maxValueStyle = new DataGridViewCellStyle
         {
             ForeColor = Color.Turquoise
+        }; DataGridViewCellStyle defaultValueStyle = new DataGridViewCellStyle
+        {
+            ForeColor = Color.Gainsboro
         };
 
         //private ModelEntryController modelcontroller;
@@ -294,6 +297,19 @@ namespace CrashEdit.CE.Controls
             }
         }
 
+        private void chkMaxValueFlag_Click(object sender, EventArgs e)
+        {
+            if (!(grdTextures.SelectedCells.Count > 0)) return;
+
+            foreach (DataGridViewCell cell in grdTextures.SelectedCells)
+            {
+                if ((cell.ColumnIndex >= ColX1 && cell.ColumnIndex <= ColY4))
+                {
+                    cell.Style = chkMaxValueFlag.Checked ? maxValueStyle : defaultValueStyle;
+                }
+            }
+        }
+
         private void SetMaxValueTag(int start, int end)
         {
             int startColumnIndex = start;
@@ -440,6 +456,10 @@ namespace CrashEdit.CE.Controls
             {
                 int rowIndex = grdTextures.SelectedCells[0].RowIndex;
                 var row = grdTextures.Rows[rowIndex];
+                var cell = grdTextures.SelectedCells[0];
+
+                chkMaxValueFlag.Enabled = (cell.ColumnIndex >= ColX1 && cell.ColumnIndex <= ColY4) ? true : false;
+                chkMaxValueFlag.Checked = cell.Style == maxValueStyle ? true : false;
 
                 var pageIndex = Convert.ToInt32(row.Cells[ColPage].Value);
                 string cid = lstTPages.Items[pageIndex].SubItems[1].Text;
@@ -1712,7 +1732,7 @@ namespace CrashEdit.CE.Controls
 
             // Style for row headers
             dataGridView.RowHeadersDefaultCellStyle.BackColor = Color.FromArgb(50, 50, 50);
-            dataGridView.RowHeadersDefaultCellStyle.ForeColor = clrText ;
+            dataGridView.RowHeadersDefaultCellStyle.ForeColor = clrText;
             dataGridView.RowHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(60, 60, 60);
             dataGridView.RowHeadersDefaultCellStyle.SelectionForeColor = clrText;
 

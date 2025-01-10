@@ -95,6 +95,7 @@ namespace CrashEdit.CE.Controls
             lstTPages = new DoubleBufferedListView();
             trkPictureSize = new MetroSetTrackBar();
             grdTextures = new DataGridView();
+            chkMaxValueFlag = new CheckBox();
             tabModel.SuspendLayout();
             tbpGeneral.SuspendLayout();
             panel1.SuspendLayout();
@@ -586,6 +587,7 @@ namespace CrashEdit.CE.Controls
             // 
             // pnTextureControls
             // 
+            pnTextureControls.Controls.Add(chkMaxValueFlag);
             pnTextureControls.Controls.Add(fraSwitches);
             pnTextureControls.Controls.Add(fraReplaceTexture);
             pnTextureControls.Controls.Add(numRowIndex);
@@ -603,7 +605,7 @@ namespace CrashEdit.CE.Controls
             fraSwitches.Enabled = false;
             fraSwitches.Location = new Point(3, 3);
             fraSwitches.Name = "fraSwitches";
-            fraSwitches.Size = new Size(107, 53);
+            fraSwitches.Size = new Size(107, 52);
             fraSwitches.TabIndex = 7;
             fraSwitches.TabStop = false;
             fraSwitches.Text = "Simple View";
@@ -640,7 +642,7 @@ namespace CrashEdit.CE.Controls
             fraReplaceTexture.Controls.Add(chkReplaceCLUT);
             fraReplaceTexture.Controls.Add(chkBGRA);
             fraReplaceTexture.Enabled = false;
-            fraReplaceTexture.Location = new Point(3, 195);
+            fraReplaceTexture.Location = new Point(3, 219);
             fraReplaceTexture.Name = "fraReplaceTexture";
             fraReplaceTexture.Size = new Size(121, 109);
             fraReplaceTexture.TabIndex = 9;
@@ -722,7 +724,7 @@ namespace CrashEdit.CE.Controls
             fraReplace.Controls.Add(numReplace);
             fraReplace.Controls.Add(cmdReplace);
             fraReplace.Enabled = false;
-            fraReplace.Location = new Point(3, 62);
+            fraReplace.Location = new Point(3, 86);
             fraReplace.Name = "fraReplace";
             fraReplace.Size = new Size(107, 127);
             fraReplace.TabIndex = 6;
@@ -909,6 +911,18 @@ namespace CrashEdit.CE.Controls
             grdTextures.EditingControlShowing += grdTextures_EditingControlShowing;
             grdTextures.SelectionChanged += grdTextures_SelectionChanged;
             // 
+            // chkMaxValueFlag
+            // 
+            chkMaxValueFlag.AutoSize = true;
+            chkMaxValueFlag.Enabled = false;
+            chkMaxValueFlag.Location = new Point(3, 61);
+            chkMaxValueFlag.Name = "chkMaxValueFlag";
+            chkMaxValueFlag.Size = new Size(83, 19);
+            chkMaxValueFlag.TabIndex = 11;
+            chkMaxValueFlag.Text = "RegionEnd";
+            chkMaxValueFlag.UseVisualStyleBackColor = true;
+            chkMaxValueFlag.Click += chkMaxValueFlag_Click;
+            // 
             // ModelBox
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -942,6 +956,7 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             panel2.ResumeLayout(false);
             pnTextureControls.ResumeLayout(false);
+            pnTextureControls.PerformLayout();
             fraSwitches.ResumeLayout(false);
             fraReplaceTexture.ResumeLayout(false);
             fraReplaceTexture.PerformLayout();
@@ -1015,6 +1030,7 @@ namespace CrashEdit.CE.Controls
         private MetroSetTrackBar trkPictureSize;
         private Panel panel2;
         private Panel pnTextureControls;
+        private CheckBox chkMaxValueFlag;
     }
 
     public class DoubleBufferedListView : ListView

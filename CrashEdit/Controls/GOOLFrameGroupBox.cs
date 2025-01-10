@@ -175,12 +175,11 @@ namespace CrashEdit.CE
                 for (int i = ColX1; i <= ColY4; i++)
                     dgvTexture.Columns[i].Visible = true;
             }
-            chkMaxValueFlag.Visible = simpleMode;
 
             dgvTexture.ResumeLayout();
         }
 
-        private void chkMaxFlag_CheckedChanged(object sender, EventArgs e)
+        private void chkMaxValueFlag_Click(object sender, EventArgs e)
         {
             if (!(dgvTexture.SelectedCells.Count > 0)) return;
 
@@ -470,14 +469,12 @@ namespace CrashEdit.CE
                 GetXOff(currentColorMode, value, out int xoffUnit, out int segment, out int xoff);
 
                 maxValue = xoffUnit - (value - xoff);
-                minValue = 4;
                 DebugOutput($"Segment {segment}, maxValue {maxValue}");
             }
             // Height
             else if (columnIndex == ColHeight)
             {
                 maxValue = 128 - Convert.ToInt32(dgvTexture.Rows[rowIndex].Cells[ColTop].Value);
-                minValue = 4;
             }
             // Blend Mode
             else if (columnIndex == ColBlendMode)

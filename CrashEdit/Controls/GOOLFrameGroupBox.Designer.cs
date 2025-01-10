@@ -79,14 +79,14 @@ namespace CrashEdit.CE
             // chkMaxValueFlag
             // 
             chkMaxValueFlag.AutoSize = true;
+            chkMaxValueFlag.Enabled = false;
             chkMaxValueFlag.Location = new Point(458, 5);
             chkMaxValueFlag.Name = "chkMaxValueFlag";
             chkMaxValueFlag.Size = new Size(83, 19);
             chkMaxValueFlag.TabIndex = 6;
             chkMaxValueFlag.Text = "RegionEnd";
             chkMaxValueFlag.UseVisualStyleBackColor = true;
-            chkMaxValueFlag.Visible = false;
-            chkMaxValueFlag.CheckedChanged += chkMaxFlag_CheckedChanged;
+            chkMaxValueFlag.Click += chkMaxValueFlag_Click;
             // 
             // lblSimpleMode
             // 
@@ -194,11 +194,11 @@ namespace CrashEdit.CE
             dgvFrameGroup.AllowUserToAddRows = false;
             dgvFrameGroup.AllowUserToResizeColumns = false;
             dgvFrameGroup.AllowUserToResizeRows = false;
-            dgvFrameGroup.MultiSelect = false;
             dgvFrameGroup.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dgvFrameGroup.ColumnHeadersHeight = 24;
             dgvFrameGroup.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgvFrameGroup.Location = new Point(3, 3);
+            dgvFrameGroup.MultiSelect = false;
             dgvFrameGroup.Name = "dgvFrameGroup";
             dgvFrameGroup.RowHeadersWidth = 24;
             dgvFrameGroup.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
