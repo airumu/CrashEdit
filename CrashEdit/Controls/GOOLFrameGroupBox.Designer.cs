@@ -81,9 +81,9 @@ namespace CrashEdit.CE
             chkMaxValueFlag.AutoSize = true;
             chkMaxValueFlag.Location = new Point(458, 5);
             chkMaxValueFlag.Name = "chkMaxValueFlag";
-            chkMaxValueFlag.Size = new Size(102, 19);
+            chkMaxValueFlag.Size = new Size(83, 19);
             chkMaxValueFlag.TabIndex = 6;
-            chkMaxValueFlag.Text = "MaxValue Flag";
+            chkMaxValueFlag.Text = "RegionEnd";
             chkMaxValueFlag.UseVisualStyleBackColor = true;
             chkMaxValueFlag.Visible = false;
             chkMaxValueFlag.CheckedChanged += chkMaxFlag_CheckedChanged;
