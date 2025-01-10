@@ -54,10 +54,8 @@ namespace CrashEdit.CE
         private readonly int ColBlendMode = 17;
         private readonly int ColColorMode = 18;
 
-        private string titleError = "Error";
-        private string titleInputError = "Input Error";
-        private string titleValidationError = "Validation Error";
-        private string errorCannotEdit = "This cell cannot be edited.";
+        private readonly string titleInputError = "Input Error";
+        private readonly string titleValidationError = "Validation Error";
 
         public GOOLFrameGroupBox(GOOLEntryController controller)
         {
@@ -289,7 +287,7 @@ namespace CrashEdit.CE
 
             if (e.ColumnIndex >= ColIndex && e.ColumnIndex <= ColIndexAlt)
             {
-                DarkMessageBox.ShowError(errorCannotEdit, titleError);
+                DarkMessageBox.ShowError("This cell cannot be edited.", titleInputError);
                 e.Cancel = true;
             }
 
@@ -300,7 +298,7 @@ namespace CrashEdit.CE
                 if ((e.ColumnIndex == ColFrameCount && row.Tag != null) || // SpriteGroup2 FrameCount
                     (dgvFrameGroup.SelectedCells[0].Value.ToString() == "-")) // SpriteGroup2 Interpolated
                 {
-                    DarkMessageBox.ShowError(errorCannotEdit, titleError);
+                    DarkMessageBox.ShowError("This cell cannot be edited.", titleInputError);
                     e.Cancel = true;
                 }
             }
@@ -471,7 +469,7 @@ namespace CrashEdit.CE
         {
             if (e.ColumnIndex >= ColX1 && e.ColumnIndex <= ColY4)
             {
-                DarkMessageBox.ShowError(errorCannotEdit, titleError);
+                DarkMessageBox.ShowError("This cell cannot be edited.", titleInputError);
                 e.Cancel = true;
             }
         }
@@ -480,7 +478,9 @@ namespace CrashEdit.CE
         {
             if (e.ColumnIndex >= ColX1 && e.ColumnIndex <= ColY4) return;
 
-            if (int.TryParse(e.FormattedValue.ToString(), out int newValue))
+            string inputValue = e.FormattedValue.ToString();
+
+            if (int.TryParse(inputValue, out int newValue))
             {
                 try
                 {
@@ -502,7 +502,7 @@ namespace CrashEdit.CE
                 }
                 catch (Exception ex)
                 {
-                    DarkMessageBox.ShowError($"Invalid value: {newValue}\nError: {ex.Message}", titleValidationError);
+                    DarkMessageBox.ShowError($"Invalid value: {inputValue}\nError: {ex.Message}", titleValidationError);
                     e.Cancel = true;
                 }
             }
@@ -796,7 +796,6 @@ namespace CrashEdit.CE
             }
 
             Bitmap filteredBitmap = ApplyTexel(bitmap, texelColor);
-
             pictureBox1.Image = filteredBitmap;
 
             float zoom = trkPictureSize.Value / 100f;

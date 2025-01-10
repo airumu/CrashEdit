@@ -13,6 +13,9 @@ namespace CrashEdit.Crash
         const int VRAMHeight = 128;
         private static byte[] vram = new byte[VRAMWidth * VRAMHeight];
 
+        private static string titleTextureReplacement = "Texture Replacement";
+        private static string titleCLUTReplacement = "CLUT Replacement";
+
         public static byte[] ReplaceTextureFromFile(string filePath, string extension, bool isBGRA, byte[] currentData, int destX, int destY, bool replaceCLUT, int oldBpp, int clutX, int clutY)
         {
             byte[] newData = currentData;
@@ -63,7 +66,7 @@ namespace CrashEdit.Crash
 
             if (bpp != oldBpp)
             {
-                DarkMessageBox.ShowError("The color depth of the selected image differs from the current one.", "Texture replacement");
+                DarkMessageBox.ShowError("The color depth of the selected image differs from the current one.", titleTextureReplacement);
                 return currentData;
             }
 
@@ -97,13 +100,13 @@ namespace CrashEdit.Crash
             bool doProcess = true;
             if (bpp != oldBpp)
             {
-                if (DarkMessageBox.ShowWarning("The color depth of the selected image differs from the current one. Do you want to process anyway?", "CLUT replacement", DarkDialogButton.YesNo) != DialogResult.Yes)
+                if (DarkMessageBox.ShowWarning("The color depth of the selected image differs from the current one. Do you want to process anyway?", titleCLUTReplacement, DarkDialogButton.YesNo) != DialogResult.Yes)
                     doProcess = false;
             }
 
             if ((clutX == 0 || bpp == 8) && clutY == 0)
             {
-                DarkMessageBox.ShowError("CLUT cannot be replaced on the header.", "CLUT replacement");
+                DarkMessageBox.ShowError("CLUT cannot be replaced on the header.", titleCLUTReplacement);
                 doProcess = false;
             }
 

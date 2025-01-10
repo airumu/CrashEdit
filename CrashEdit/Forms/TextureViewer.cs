@@ -36,6 +36,9 @@ namespace CrashEdit.CE
         private bool replaceCLUT;
 
         private DarkToolTip tipViewer;
+
+        private readonly string titleTextureReplacement = "Texture Replacement";
+
         public TextureViewer(TextureChunk texturechunk)
         {
             chunk = texturechunk;
@@ -446,12 +449,12 @@ namespace CrashEdit.CE
         {
             if (TexColorMode == 2)
             {
-                DarkMessageBox.ShowError("Unsupported color depth.", "Texture replacement");
+                DarkMessageBox.ShowError("Unsupported color depth.", titleTextureReplacement);
                 return;
             }
             if ((int)C2numX.Value < 32 && (int)C2numY.Value == 0)
             {
-                DarkMessageBox.ShowError("Textures cannot be replaced on the header.", "Texture replacement");
+                DarkMessageBox.ShowError("Textures cannot be replaced on the header.", titleTextureReplacement);
                 return;
             }
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
@@ -500,12 +503,12 @@ namespace CrashEdit.CE
             {
                 if (TexColorMode == 2)
                 {
-                    DarkMessageBox.ShowError("Unsupported color depth.", "Texture replacement");
+                    DarkMessageBox.ShowError("Unsupported color depth.", titleTextureReplacement);
                     return;
                 }
                 else if ((int)C2numX.Value + (int)C2numW.Value > (256 << (2 - TexColorMode)) || (int)C2numY.Value + (int)C2numH.Value > 128)
                 {
-                    DarkMessageBox.ShowError("Textures cannot be copied outside the bounds.", "Texture replacement");
+                    DarkMessageBox.ShowError("Textures cannot be copied outside the bounds.", titleTextureReplacement);
                     return;
                 }
                 Console.WriteLine("========================================");
@@ -544,7 +547,7 @@ namespace CrashEdit.CE
                 {
                     if ((int)C2numX.Value < 32 && (int)C2numY.Value == 0)
                     {
-                        DarkMessageBox.ShowError("Textures cannot be replaced on the header.", "Texture replacement");
+                        DarkMessageBox.ShowError("Textures cannot be replaced on the header.", titleTextureReplacement);
                     }
                     else
                     {
@@ -562,14 +565,14 @@ namespace CrashEdit.CE
             {
                 if (TexColorMode == 2)
                 {
-                    DarkMessageBox.ShowError("Unsupported color depth.", "Texture replacement");
+                    DarkMessageBox.ShowError("Unsupported color depth.", titleTextureReplacement);
                     return;
                 }
 
                 string[] files = Directory.GetFiles(basePath);
                 if (!Directory.Exists(basePath) || files.Length != 3)
                 {
-                    DarkMessageBox.ShowError("There is no texture in buffer.", "Texture replacement");
+                    DarkMessageBox.ShowError("There is no texture in buffer.", titleTextureReplacement);
                     return;
                 }
                 Console.WriteLine("========================================");
@@ -591,17 +594,17 @@ namespace CrashEdit.CE
                 bool failed = false;
                 if ((int)C2numX.Value < 32 && (int)C2numY.Value == 0)
                 {
-                    DarkMessageBox.ShowError("Textures cannot be replaced on the header.", "Texture replacement");
+                    DarkMessageBox.ShowError("Textures cannot be replaced on the header.", titleTextureReplacement);
                     failed = true;
                 }
                 else if ((int)C2numX.Value + tempWidth > (256 << (2 - TexColorMode)) || (int)C2numY.Value + tempHeight > 128)
                 {
-                    DarkMessageBox.ShowError("Textures cannot be pasted outside the bounds.", "Texture replacement");
+                    DarkMessageBox.ShowError("Textures cannot be pasted outside the bounds.", titleTextureReplacement);
                     failed = true;
                 }
                 else if (currentBpp != tempBpp)
                 {
-                    DarkMessageBox.ShowError("The color depth of the selected image differs from the current one.", "Texture replacement");
+                    DarkMessageBox.ShowError("The color depth of the selected image differs from the current one.", titleTextureReplacement);
                     failed = true;
                 }
 

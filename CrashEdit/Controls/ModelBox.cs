@@ -70,6 +70,9 @@ namespace CrashEdit.CE.Controls
         private Color clrSelectionBackground = Color.FromArgb(70, 70, 70);
         private Color clrText = Color.Gainsboro;
 
+        private readonly string titleInputError = "Input Error";
+        private readonly string titleTextureReplacement = "Texture Replacement";
+
         public ModelBox(ModelEntryController controller)
         {
             MainInit(controller, false);
@@ -528,7 +531,7 @@ namespace CrashEdit.CE.Controls
         {
             if (selectedRegionX < 32 && selectedRegionY == 0)
             {
-                DarkMessageBox.ShowError("Textures cannot be replaced on the header.", "Texture replacement");
+                DarkMessageBox.ShowError("Textures cannot be replaced on the header.", titleTextureReplacement);
                 return;
             }
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
@@ -660,20 +663,20 @@ namespace CrashEdit.CE.Controls
                 if (newValue > maxValue)
                 {
                     if (e.ColumnIndex >= ColLeft && e.ColumnIndex <= ColHeight)
-                        DarkMessageBox.ShowError($"The UV does not fit within the segment. The value must be less than or equal to {maxValue}.", "Input Error");
+                        DarkMessageBox.ShowError($"The UV does not fit within the segment. The value must be less than or equal to {maxValue}.", titleInputError);
                     else
-                        DarkMessageBox.ShowError($"The value must be less than or equal to {maxValue}.", "Input Error");
+                        DarkMessageBox.ShowError($"The value must be less than or equal to {maxValue}.", titleInputError);
                     e.Cancel = true;
                 }
                 else if (newValue < minValue)
                 {
-                    DarkMessageBox.ShowError($"The value must be greater than or equal to {minValue}.", "Input Error");
+                    DarkMessageBox.ShowError($"The value must be greater than or equal to {minValue}.", titleInputError);
                     e.Cancel = true;
                 }
             }
             else
             {
-                DarkMessageBox.ShowError($"Invalid input. Please enter an integer.", "Input Error");
+                DarkMessageBox.ShowError($"Invalid input. Please enter an integer.", titleInputError);
                 e.Cancel = true;
             }
         }
@@ -692,9 +695,9 @@ namespace CrashEdit.CE.Controls
                 if (newValue > maxValue)
                 {
                     if (columnIndex >= ColLeft && columnIndex <= ColHeight)
-                        DarkMessageBox.ShowError($"The UV does not fit within the segment. The value must be less than or equal to {maxValue}.", "Input Error");
+                        DarkMessageBox.ShowError($"The UV does not fit within the segment. The value must be less than or equal to {maxValue}.", titleInputError);
                     else
-                        DarkMessageBox.ShowError($"The value must be less than or equal to {maxValue}.", "Input Error");
+                        DarkMessageBox.ShowError($"The value must be less than or equal to {maxValue}.", titleInputError);
                     return;
                 }
 
@@ -706,7 +709,7 @@ namespace CrashEdit.CE.Controls
                         newValue -= (int)row.Cells[ColWidth].Value;
                     if (newValue < 0)
                     {
-                        DarkMessageBox.ShowError($"The value must be greater than or equal to {row.Cells[ColWidth].Value}.", "Input Error");
+                        DarkMessageBox.ShowError($"The value must be greater than or equal to {row.Cells[ColWidth].Value}.", titleInputError);
                         return;
                     }
                     await UpdateRowsXYAsync(rowIndex, newValue, newValue + (int)row.Cells[ColWidth].Value, true, editedCellTag);
@@ -717,7 +720,7 @@ namespace CrashEdit.CE.Controls
                         newValue -= (int)row.Cells[ColHeight].Value;
                     if (newValue < 0)
                     {
-                        DarkMessageBox.ShowError($"The value must be greater than or equal to {row.Cells[ColHeight].Value}.", "Input Error");
+                        DarkMessageBox.ShowError($"The value must be greater than or equal to {row.Cells[ColHeight].Value}.", titleInputError);
                         return;
                     }
                     await UpdateRowsXYAsync(rowIndex, newValue, newValue + (int)row.Cells[ColHeight].Value, false, editedCellTag);
