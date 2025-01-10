@@ -11,6 +11,7 @@ namespace CrashEdit.CE
         GOOLEntryController controller;
         GOOLEntry goolentry;
         List<VertexGroup2> vertexGroup2;
+        List<VertexGroup3to2> vertexGroup3to2;
         List<SpriteGroup2> spriteGroup2;
         DataGridViewCellStyle maxValueStyle = new DataGridViewCellStyle
         {
@@ -53,6 +54,10 @@ namespace CrashEdit.CE
         private readonly int ColY4 = 16;
         private readonly int ColBlendMode = 17;
         private readonly int ColColorMode = 18;
+
+        private readonly int typeVertex2 = 0;
+        private readonly int typeVertex3to2 = 1;
+        private readonly int typeSprite2 = 2;
 
         private readonly string titleInputError = "Input Error";
         private readonly string titleValidationError = "Validation Error";
@@ -231,7 +236,9 @@ namespace CrashEdit.CE
 
         private void dgvFrameGroupCreateRows()
         {
+            // Todo something better
             vertexGroup2 = new List<VertexGroup2>();
+            vertexGroup3to2 = new List<VertexGroup3to2>();
             spriteGroup2 = new List<SpriteGroup2>();
 
             dgvFrameGroup.SuspendLayout();
@@ -243,37 +250,42 @@ namespace CrashEdit.CE
                 {
                     var vgroup = (VertexGroup2)group;
                     vertexGroup2.Add(vgroup);
+                    vertexGroup3to2.Add(null);
                     spriteGroup2.Add(null);
                     DataGridViewRow row = new DataGridViewRow();
 
                     GetIndex(vgroup.Index / 4, out string index1, out string index2);
 
                     row.CreateCells(dgvFrameGroup, index1, index2, vgroup.FrameCount, Entry.EIDToEName(vgroup.EID), vgroup.Interpolated);
+                    row.Tag = (typeVertex2, 0);
                     dgvFrameGroup.Rows.Add(row);
                 }
                 else if (group is VertexGroup3to2)
                 {
                     var vgroup = (VertexGroup3to2)group;
                     vertexGroup2.Add(null);
+                    vertexGroup3to2.Add(vgroup);
                     spriteGroup2.Add(null);
                     DataGridViewRow row = new DataGridViewRow();
 
                     GetIndex(vgroup.Index / 4, out string index1, out string index2);
 
                     row.CreateCells(dgvFrameGroup, index1, index2, vgroup.FrameCount, Entry.EIDToEName(vgroup.EID), vgroup.Interpolated);
+                    row.Tag = (typeVertex3to2, 0);
                     dgvFrameGroup.Rows.Add(row);
                 }
                 else if (group is SpriteGroup2)
                 {
                     var vgroup = (SpriteGroup2)group;
                     vertexGroup2.Add(null);
+                    vertexGroup3to2.Add(null);
                     spriteGroup2.Add(vgroup);
                     DataGridViewRow row = new DataGridViewRow();
 
                     GetIndex(vgroup.Index / 4, out string index1, out string index2);
 
                     row.CreateCells(dgvFrameGroup, index1, index2, vgroup.FrameCount, Entry.EIDToEName(vgroup.EID), "-");
-                    row.Tag = vgroup.Index;
+                    row.Tag = (typeSprite2, vgroup.Index);
                     dgvFrameGroup.Rows.Add(row);
                 }
             }
@@ -294,12 +306,15 @@ namespace CrashEdit.CE
             if (dgvFrameGroup.SelectedCells.Count > 0)
             {
                 var row = dgvFrameGroup.Rows[e.RowIndex];
-
-                if ((e.ColumnIndex == ColFrameCount && row.Tag != null) || // SpriteGroup2 FrameCount
-                    (dgvFrameGroup.SelectedCells[0].Value.ToString() == "-")) // SpriteGroup2 Interpolated
+                if (row.Tag is ValueTuple<int, int> tag)
                 {
-                    DarkMessageBox.ShowError("This cell cannot be edited.", titleInputError);
-                    e.Cancel = true;
+                    int type = tag.Item1;
+                    if ((e.ColumnIndex == ColFrameCount && type == typeSprite2) || // SpriteGroup2 FrameCount
+                    (dgvFrameGroup.SelectedCells[0].Value.ToString() == "-")) // SpriteGroup2 Interpolated
+                    {
+                        DarkMessageBox.ShowError("This cell cannot be edited.", titleInputError);
+                        e.Cancel = true;
+                    }
                 }
             }
         }
@@ -368,35 +383,40 @@ namespace CrashEdit.CE
             if (e.RowIndex < 0 || e.ColumnIndex < 0 || !(dgvFrameGroup.SelectedCells.Count > 0)) return;
 
             var row = dgvFrameGroup.Rows[e.RowIndex];
-
-            // Determine the group type
-            object selectedGroup = row.Tag == null ? vertexGroup2[e.RowIndex] : spriteGroup2[e.RowIndex];
-            if (selectedGroup == null) return;
-
-            // Cast to the correct type
-            if (!(selectedGroup is VertexGroup2 vertexGroup) && !(selectedGroup is SpriteGroup2 spriteGroup)) return;
-            dynamic og = selectedGroup;
-
-            // FrameCount
-            if (e.ColumnIndex == ColFrameCount)
+            if (row.Tag is ValueTuple<int, int> tag)
             {
-                og.FrameCount = Convert.ToByte(row.Cells[ColFrameCount].Value);
-            }
-            // EID
-            else if (e.ColumnIndex == ColEID)
-            {
-                og.EID = Entry.ENameToEID(row.Cells[ColEID].Value.ToString());
-            }
-            // Interpolated
-            else if (e.ColumnIndex == ColInterpolated)
-            {
-                if (bool.TryParse(row.Cells[ColInterpolated].Value.ToString(), out bool result))
+                int type = tag.Item1;
+
+                object selectedGroup =
+                    type == typeVertex2 ? vertexGroup2[e.RowIndex] :
+                    type == typeVertex3to2 ? vertexGroup3to2[e.RowIndex] :
+                    spriteGroup2[e.RowIndex];
+                if (selectedGroup == null) return;
+
+                if (!(selectedGroup is VertexGroup2 vertexGroup) && !(selectedGroup is VertexGroup3to2 vertexGroup3) && !(selectedGroup is SpriteGroup2 spriteGroup)) return;
+                dynamic og = selectedGroup;
+
+                // FrameCount
+                if (e.ColumnIndex == ColFrameCount)
                 {
-                    og.Interpolated = result;
+                    og.FrameCount = Convert.ToByte(row.Cells[ColFrameCount].Value);
                 }
-            }
+                // EID
+                else if (e.ColumnIndex == ColEID)
+                {
+                    og.EID = Entry.ENameToEID(row.Cells[ColEID].Value.ToString());
+                }
+                // Interpolated
+                else if (e.ColumnIndex == ColInterpolated)
+                {
+                    if (bool.TryParse(row.Cells[ColInterpolated].Value.ToString(), out bool result))
+                    {
+                        og.Interpolated = result;
+                    }
+                }
 
-            DebugOutput($"FrameGroup Index: {e.RowIndex}");
+                DebugOutput($"FrameGroup Index: {e.RowIndex}");
+            }
         }
 
 
@@ -617,11 +637,15 @@ namespace CrashEdit.CE
             string text = dpdTPages.Text;
             int rowIndex = dgvFrameGroup.SelectedCells[0].RowIndex;
             var row = dgvFrameGroup.Rows[rowIndex];
-            if (!(dgvFrameGroup.SelectedCells.Count > 0) || text == string.Empty || row.Tag == null) return;
+            if (row.Tag is ValueTuple<int, int> tag)
+            {
+                int type = tag.Item1;
+                if (!(dgvFrameGroup.SelectedCells.Count > 0) || text == string.Empty || type != typeSprite2) return;
 
-            dgvFrameGroup.Rows[rowIndex].Cells[ColEID].Value = text;
-            pictureBox1.Visible = true;
-            UpdatePicture();
+                dgvFrameGroup.Rows[rowIndex].Cells[ColEID].Value = text;
+                pictureBox1.Visible = true;
+                UpdatePicture();
+            }
         }
 
         private void dgvFrameGroup_SelectionChanged(object sender, EventArgs e)
@@ -639,33 +663,38 @@ namespace CrashEdit.CE
                     int index = vgroup.Index / 4;
                     string _index = index.ToString("X");
                     DebugOutput($"Current index: 0x{_index}");
-                    if (vgroup.Index == Convert.ToInt32(_row.Tag) && _row.Tag != null)
+                    if (_row.Tag is ValueTuple<int, int> tag)
                     {
-                        dgvTexture.SuspendLayout();
-                        dgvTexture.ScrollBars = ScrollBars.None;
-                        dirty = true;
-                        dgvTexture.Rows.Clear();
-                        foreach (var frame in vgroup.Frames)
+                        int type = tag.Item1;
+                        int index2 = tag.Item2;
+                        if (vgroup.Index == index2 && type == typeSprite2)
                         {
-                            DataGridViewRow row = new DataGridViewRow();
+                            dgvTexture.SuspendLayout();
+                            dgvTexture.ScrollBars = ScrollBars.None;
+                            dirty = true;
+                            dgvTexture.Rows.Clear();
+                            foreach (var frame in vgroup.Frames)
+                            {
+                                DataGridViewRow row = new DataGridViewRow();
 
-                            row.CreateCells(dgvTexture, frame.R, frame.G, frame.B, frame.ClutX, frame.ClutY, frame.Left, frame.Top, frame.Width, frame.Height,
-                                frame.X1, frame.X2, frame.X3, frame.X4, frame.Y1, frame.Y2, frame.Y3, frame.Y4, frame.BlendMode, frame.ColorMode);
-                            dgvTexture.Rows.Add(row);
+                                row.CreateCells(dgvTexture, frame.R, frame.G, frame.B, frame.ClutX, frame.ClutY, frame.Left, frame.Top, frame.Width, frame.Height,
+                                    frame.X1, frame.X2, frame.X3, frame.X4, frame.Y1, frame.Y2, frame.Y3, frame.Y4, frame.BlendMode, frame.ColorMode);
+                                dgvTexture.Rows.Add(row);
+                            }
+
+                            SetMaxValueTag(ColX1, ColX4);
+                            SetMaxValueTag(ColY1, ColY4);
+
+                            dgvTexture.ResumeLayout();
+                            dgvTexture.ScrollBars = ScrollBars.Both;
+                            dirty = false;
+
+                            dgvTexture.Visible =
+                            pnTextureControls.Visible =
+                            pictureBox1.Visible = true;
+                            UpdatePicture();
+                            return;
                         }
-
-                        SetMaxValueTag(ColX1, ColX4);
-                        SetMaxValueTag(ColY1, ColY4);
-
-                        dgvTexture.ResumeLayout();
-                        dgvTexture.ScrollBars = ScrollBars.Both;
-                        dirty = false;
-
-                        dgvTexture.Visible =
-                        pnTextureControls.Visible =
-                        pictureBox1.Visible = true;
-                        UpdatePicture();
-                        return;
                     }
                 }
             }
