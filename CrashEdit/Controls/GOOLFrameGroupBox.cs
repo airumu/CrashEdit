@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Drawing.Imaging;
+﻿using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography;
-using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
-using CrashEdit.Crash.GOOLIns;
-using Chunk = CrashEdit.Crash.Chunk;
 
 namespace CrashEdit.CE
 {
@@ -21,6 +15,10 @@ namespace CrashEdit.CE
         DataGridViewCellStyle maxValueStyle = new DataGridViewCellStyle
         {
             ForeColor = Color.Turquoise
+        };
+        DataGridViewCellStyle defaultValueStyle = new DataGridViewCellStyle
+        {
+            ForeColor = Color.Gainsboro
         };
 
         private TextureChunk chunk { get; set; }
@@ -170,8 +168,22 @@ namespace CrashEdit.CE
                 for (int i = ColX1; i <= ColY4; i++)
                     dgvTexture.Columns[i].Visible = true;
             }
+            chkMaxValueFlag.Visible = simpleMode;
 
             dgvTexture.ResumeLayout();
+        }
+
+        private void chkMaxFlag_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!(dgvTexture.SelectedCells.Count > 0)) return;
+
+            foreach (DataGridViewCell cell in dgvTexture.SelectedCells)
+            {
+                if (cell.ColumnIndex >= ColX1 && cell.ColumnIndex <= ColY4)
+                {
+                    cell.Style = chkMaxValueFlag.Checked ? maxValueStyle : defaultValueStyle;
+                }
+            }
         }
 
         private void SetMaxValueTag(int start, int end)
@@ -548,11 +560,11 @@ namespace CrashEdit.CE
                 int newMinU = left - xoff;
                 int newMaxU = newMinU + width - 1;
 
+                og.U1 = (item.Cells[ColX1].Style != maxValueStyle) ? newMinU : newMaxU;
+                og.U2 = (item.Cells[ColX2].Style != maxValueStyle) ? newMinU : newMaxU;
+                og.U3 = (item.Cells[ColX3].Style != maxValueStyle) ? newMinU : newMaxU;
+                og.U4 = (item.Cells[ColX4].Style != maxValueStyle) ? newMinU : newMaxU;
                 og.Segment = (byte)segment;
-                og.U1 = (x1 == minX) ? newMinU : newMaxU;
-                og.U2 = (x2 == minX) ? newMinU : newMaxU;
-                og.U3 = (x3 == minX) ? newMinU : newMaxU;
-                og.U4 = (x4 == minX) ? newMinU : newMaxU;
 
                 DebugOutput($"left: {left}, width: {width}, xoffUnit: {xoffUnit}, segment: {segment}, xoff: {xoff}\n" +
                     $" x1: {x1}, x2: {x2}. x3: {x3}, x4: {x4}, minX: {minX}, maxX: {maxX}\n" +
@@ -573,10 +585,10 @@ namespace CrashEdit.CE
                 int newMinV = top;
                 int newMaxV = newMinV + height - 1;
 
-                og.V1 = (y1 == minY) ? newMinV : newMaxV;
-                og.V2 = (y2 == minY) ? newMinV : newMaxV;
-                og.V3 = (y3 == minY) ? newMinV : newMaxV;
-                og.V4 = (y4 == minY) ? newMinV : newMaxV;
+                og.V1 = (item.Cells[ColY1].Style != maxValueStyle) ? newMinV : newMaxV;
+                og.V2 = (item.Cells[ColY2].Style != maxValueStyle) ? newMinV : newMaxV;
+                og.V3 = (item.Cells[ColY3].Style != maxValueStyle) ? newMinV : newMaxV;
+                og.V4 = (item.Cells[ColY4].Style != maxValueStyle) ? newMinV : newMaxV;
 
                 DebugOutput($"top: {top}, height: {height}\n" +
                     $" y1: {y1}, y2: {y2}. y3: {y3}, y4: {y4}, minX: {minY}, maxY: {maxY}\n" +
@@ -656,6 +668,11 @@ namespace CrashEdit.CE
 
         private void dgvTexture_SelectionChanged(object sender, EventArgs e)
         {
+            if (!(dgvTexture.SelectedCells.Count > 0)) return;
+
+            var cell = dgvTexture.SelectedCells[0];
+            chkMaxValueFlag.Enabled = (cell.ColumnIndex >= ColX1 && cell.ColumnIndex <= ColY4) ? true : false;
+            chkMaxValueFlag.Checked = cell.Style == maxValueStyle ? true : false;
             UpdatePicture();
         }
 

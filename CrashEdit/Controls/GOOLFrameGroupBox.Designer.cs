@@ -32,6 +32,7 @@ namespace CrashEdit.CE
         {
             panel1 = new Panel();
             pnTextureControls = new Panel();
+            chkMaxValueFlag = new CheckBox();
             lblSimpleMode = new Label();
             tglSimpleMode = new MetroSet_UI.Controls.MetroSetSwitch();
             lblEIDError = new Label();
@@ -63,6 +64,7 @@ namespace CrashEdit.CE
             // 
             // pnTextureControls
             // 
+            pnTextureControls.Controls.Add(chkMaxValueFlag);
             pnTextureControls.Controls.Add(lblSimpleMode);
             pnTextureControls.Controls.Add(tglSimpleMode);
             pnTextureControls.Controls.Add(lblEIDError);
@@ -74,14 +76,26 @@ namespace CrashEdit.CE
             pnTextureControls.TabIndex = 6;
             pnTextureControls.Visible = false;
             // 
+            // chkMaxValueFlag
+            // 
+            chkMaxValueFlag.AutoSize = true;
+            chkMaxValueFlag.Location = new Point(458, 5);
+            chkMaxValueFlag.Name = "chkMaxValueFlag";
+            chkMaxValueFlag.Size = new Size(102, 19);
+            chkMaxValueFlag.TabIndex = 6;
+            chkMaxValueFlag.Text = "MaxValue Flag";
+            chkMaxValueFlag.UseVisualStyleBackColor = true;
+            chkMaxValueFlag.Visible = false;
+            chkMaxValueFlag.CheckedChanged += chkMaxFlag_CheckedChanged;
+            // 
             // lblSimpleMode
             // 
             lblSimpleMode.AutoSize = true;
             lblSimpleMode.Location = new Point(393, 6);
             lblSimpleMode.Name = "lblSimpleMode";
-            lblSimpleMode.Size = new Size(104, 15);
+            lblSimpleMode.Size = new Size(59, 15);
             lblSimpleMode.TabIndex = 5;
-            lblSimpleMode.Text = "Show UVs (debug)";
+            lblSimpleMode.Text = "Show UVs";
             // 
             // tglSimpleMode
             // 
@@ -248,5 +262,6 @@ namespace CrashEdit.CE
         private MetroSet_UI.Controls.MetroSetSwitch tglSimpleMode;
         private Label lblSimpleMode;
         private Panel pnTextureControls;
+        private CheckBox chkMaxValueFlag;
     }
 }
