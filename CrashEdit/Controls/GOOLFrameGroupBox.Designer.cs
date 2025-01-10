@@ -176,7 +176,7 @@ namespace CrashEdit.CE
             dgvTexture.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dgvTexture.ColumnHeadersHeight = 24;
             dgvTexture.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dgvTexture.Location = new Point(328, 3);
+            dgvTexture.Location = new Point(341, 3);
             dgvTexture.Name = "dgvTexture";
             dgvTexture.RowHeadersWidth = 24;
             dgvTexture.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
@@ -194,6 +194,7 @@ namespace CrashEdit.CE
             dgvFrameGroup.AllowUserToAddRows = false;
             dgvFrameGroup.AllowUserToResizeColumns = false;
             dgvFrameGroup.AllowUserToResizeRows = false;
+            dgvFrameGroup.MultiSelect = false;
             dgvFrameGroup.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dgvFrameGroup.ColumnHeadersHeight = 24;
             dgvFrameGroup.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
@@ -201,7 +202,7 @@ namespace CrashEdit.CE
             dgvFrameGroup.Name = "dgvFrameGroup";
             dgvFrameGroup.RowHeadersWidth = 24;
             dgvFrameGroup.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dgvFrameGroup.Size = new Size(322, 403);
+            dgvFrameGroup.Size = new Size(338, 403);
             dgvFrameGroup.TabIndex = 0;
             dgvFrameGroup.CellBeginEdit += dgvFrameGroup_CellBeginEdit;
             dgvFrameGroup.CellValidating += dgvFrameGroup_CellValidating;

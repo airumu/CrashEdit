@@ -110,7 +110,7 @@ namespace CrashEdit.CE
             dgvFrameGroup.Columns.Add("Index", "Index");
             dgvFrameGroup.Columns.Add("IndexAlt", "Index (Alt)");
             dgvFrameGroup.Columns.Add("FrameCount", "Frames");
-            dgvFrameGroup.Columns.Add("EID", "EID\u3000\u3000");
+            dgvFrameGroup.Columns.Add("EID", "EID\u3000\u3000\u3000\u3000");
             dgvFrameGroup.Columns.Add("Interpolated", "Interpolated");
         }
 
@@ -291,7 +291,7 @@ namespace CrashEdit.CE
                     dgvFrameGroup.Rows.Add(row);
                 }
             }
-            dgvFrameGroup.ScrollBars = ScrollBars.Both;
+            dgvFrameGroup.ScrollBars = ScrollBars.Vertical;
             dgvFrameGroup.ResumeLayout();
             dirty = false;
         }
@@ -687,7 +687,7 @@ namespace CrashEdit.CE
                             SetMaxValueTag(ColX1, ColX4);
                             SetMaxValueTag(ColY1, ColY4);
 
-                            dgvTexture.ScrollBars = ScrollBars.Both;
+                            dgvTexture.ScrollBars = ScrollBars.Vertical;
                             dgvTexture.ResumeLayout();
                             dirty = false;
 
