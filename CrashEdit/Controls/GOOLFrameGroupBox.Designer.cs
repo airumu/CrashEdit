@@ -31,14 +31,18 @@ namespace CrashEdit.CE
         private void InitializeComponent()
         {
             panel1 = new Panel();
-            lblTPageError = new Label();
-            dgvTexture = new DataGridView();
+            pnTextureControls = new Panel();
+            lblSimpleMode = new Label();
+            tglSimpleMode = new MetroSet_UI.Controls.MetroSetSwitch();
+            lblEIDError = new Label();
             trkPictureSize = new MetroSet_UI.Controls.MetroSetTrackBar();
-            dgvFrameGroup = new DataGridView();
             dpdTPages = new DarkComboBox();
+            dgvTexture = new DataGridView();
+            dgvFrameGroup = new DataGridView();
             panel2 = new Panel();
             pictureBox1 = new PictureBox();
             panel1.SuspendLayout();
+            pnTextureControls.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvTexture).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvFrameGroup).BeginInit();
             panel2.SuspendLayout();
@@ -48,43 +52,72 @@ namespace CrashEdit.CE
             // panel1
             // 
             panel1.BackColor = Color.Transparent;
-            panel1.Controls.Add(lblTPageError);
+            panel1.Controls.Add(pnTextureControls);
             panel1.Controls.Add(dgvTexture);
-            panel1.Controls.Add(trkPictureSize);
             panel1.Controls.Add(dgvFrameGroup);
-            panel1.Controls.Add(dpdTPages);
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
             panel1.Size = new Size(800, 440);
             panel1.TabIndex = 0;
             // 
-            // lblTPageError
+            // pnTextureControls
             // 
-            lblTPageError.AutoSize = true;
-            lblTPageError.ForeColor = Color.Red;
-            lblTPageError.Location = new Point(171, 415);
-            lblTPageError.Name = "lblTPageError";
-            lblTPageError.Size = new Size(153, 15);
-            lblTPageError.TabIndex = 3;
-            lblTPageError.Text = "Texture page does not exist!";
-            lblTPageError.Visible = false;
+            pnTextureControls.Controls.Add(lblSimpleMode);
+            pnTextureControls.Controls.Add(tglSimpleMode);
+            pnTextureControls.Controls.Add(lblEIDError);
+            pnTextureControls.Controls.Add(trkPictureSize);
+            pnTextureControls.Controls.Add(dpdTPages);
+            pnTextureControls.Location = new Point(3, 408);
+            pnTextureControls.Name = "pnTextureControls";
+            pnTextureControls.Size = new Size(794, 32);
+            pnTextureControls.TabIndex = 6;
+            pnTextureControls.Visible = false;
             // 
-            // dgvTexture
+            // lblSimpleMode
             // 
-            dgvTexture.AllowUserToAddRows = false;
-            dgvTexture.AllowUserToResizeColumns = false;
-            dgvTexture.AllowUserToResizeRows = false;
-            dgvTexture.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-            dgvTexture.ColumnHeadersHeight = 24;
-            dgvTexture.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dgvTexture.Location = new Point(330, 3);
-            dgvTexture.Name = "dgvTexture";
-            dgvTexture.RowHeadersWidth = 24;
-            dgvTexture.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dgvTexture.Size = new Size(443, 403);
-            dgvTexture.TabIndex = 0;
-            dgvTexture.Visible = false;
+            lblSimpleMode.AutoSize = true;
+            lblSimpleMode.Location = new Point(393, 6);
+            lblSimpleMode.Name = "lblSimpleMode";
+            lblSimpleMode.Size = new Size(104, 15);
+            lblSimpleMode.TabIndex = 5;
+            lblSimpleMode.Text = "Show UVs (debug)";
+            // 
+            // tglSimpleMode
+            // 
+            tglSimpleMode.BackColor = Color.Transparent;
+            tglSimpleMode.BackgroundColor = Color.Empty;
+            tglSimpleMode.BorderColor = Color.FromArgb(155, 155, 155);
+            tglSimpleMode.CheckColor = Color.FromArgb(65, 177, 225);
+            tglSimpleMode.CheckState = MetroSet_UI.Enums.CheckState.Unchecked;
+            tglSimpleMode.DisabledBorderColor = Color.FromArgb(85, 85, 85);
+            tglSimpleMode.DisabledCheckColor = Color.FromArgb(100, 65, 177, 225);
+            tglSimpleMode.DisabledUnCheckColor = Color.FromArgb(200, 205, 205, 205);
+            tglSimpleMode.IsDerivedStyle = true;
+            tglSimpleMode.Location = new Point(329, 3);
+            tglSimpleMode.Name = "tglSimpleMode";
+            tglSimpleMode.Size = new Size(58, 22);
+            tglSimpleMode.Style = MetroSet_UI.Enums.Style.Dark;
+            tglSimpleMode.StyleManager = null;
+            tglSimpleMode.Switched = false;
+            tglSimpleMode.SymbolColor = Color.FromArgb(92, 92, 92);
+            tglSimpleMode.TabIndex = 4;
+            tglSimpleMode.Text = "metroSetSwitch1";
+            tglSimpleMode.ThemeAuthor = "Narwin";
+            tglSimpleMode.ThemeName = "MetroDark";
+            tglSimpleMode.UnCheckColor = Color.FromArgb(155, 155, 155);
+            tglSimpleMode.SwitchedChanged += tglSimpleMode_SwitchedChanged;
+            // 
+            // lblEIDError
+            // 
+            lblEIDError.AutoSize = true;
+            lblEIDError.ForeColor = Color.Red;
+            lblEIDError.Location = new Point(170, 6);
+            lblEIDError.Name = "lblEIDError";
+            lblEIDError.Size = new Size(153, 15);
+            lblEIDError.TabIndex = 3;
+            lblEIDError.Text = "Texture page does not exist!";
+            lblEIDError.Visible = false;
             // 
             // trkPictureSize
             // 
@@ -95,7 +128,7 @@ namespace CrashEdit.CE
             trkPictureSize.DisabledValueColor = Color.FromArgb(109, 109, 109);
             trkPictureSize.HandlerColor = Color.FromArgb(143, 143, 143);
             trkPictureSize.IsDerivedStyle = true;
-            trkPictureSize.Location = new Point(3, 414);
+            trkPictureSize.Location = new Point(3, 5);
             trkPictureSize.Maximum = 100;
             trkPictureSize.Minimum = 80;
             trkPictureSize.Name = "trkPictureSize";
@@ -111,6 +144,37 @@ namespace CrashEdit.CE
             trkPictureSize.ValueColor = Color.FromArgb(65, 177, 225);
             trkPictureSize.ValueChanged += trkPictureSize_ValueChanged;
             // 
+            // dpdTPages
+            // 
+            dpdTPages.DrawMode = DrawMode.OwnerDrawVariable;
+            dpdTPages.FormattingEnabled = true;
+            dpdTPages.Location = new Point(84, 3);
+            dpdTPages.Name = "dpdTPages";
+            dpdTPages.Size = new Size(81, 24);
+            dpdTPages.TabIndex = 2;
+            dpdTPages.SelectedIndexChanged += dpdTPages_SelectedIndexChanged;
+            // 
+            // dgvTexture
+            // 
+            dgvTexture.AllowUserToAddRows = false;
+            dgvTexture.AllowUserToResizeColumns = false;
+            dgvTexture.AllowUserToResizeRows = false;
+            dgvTexture.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dgvTexture.ColumnHeadersHeight = 24;
+            dgvTexture.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvTexture.Location = new Point(328, 3);
+            dgvTexture.Name = "dgvTexture";
+            dgvTexture.RowHeadersWidth = 24;
+            dgvTexture.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dgvTexture.Size = new Size(446, 403);
+            dgvTexture.TabIndex = 0;
+            dgvTexture.Visible = false;
+            dgvTexture.CellBeginEdit += dgvTexture_CellBeginEdit;
+            dgvTexture.CellValidating += dgvTexture_CellValidating;
+            dgvTexture.CellValueChanged += dgvTexture_CellValueChanged;
+            dgvTexture.EditingControlShowing += dgvTexture_EditingControlShowing;
+            dgvTexture.SelectionChanged += dgvTexture_SelectionChanged;
+            // 
             // dgvFrameGroup
             // 
             dgvFrameGroup.AllowUserToAddRows = false;
@@ -123,17 +187,13 @@ namespace CrashEdit.CE
             dgvFrameGroup.Name = "dgvFrameGroup";
             dgvFrameGroup.RowHeadersWidth = 24;
             dgvFrameGroup.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dgvFrameGroup.Size = new Size(314, 403);
+            dgvFrameGroup.Size = new Size(322, 403);
             dgvFrameGroup.TabIndex = 0;
-            // 
-            // dpdTPages
-            // 
-            dpdTPages.DrawMode = DrawMode.OwnerDrawVariable;
-            dpdTPages.FormattingEnabled = true;
-            dpdTPages.Location = new Point(84, 412);
-            dpdTPages.Name = "dpdTPages";
-            dpdTPages.Size = new Size(81, 24);
-            dpdTPages.TabIndex = 2;
+            dgvFrameGroup.CellBeginEdit += dgvFrameGroup_CellBeginEdit;
+            dgvFrameGroup.CellValidating += dgvFrameGroup_CellValidating;
+            dgvFrameGroup.CellValueChanged += dgvFrameGroup_CellValueChanged;
+            dgvFrameGroup.EditingControlShowing += dgvFrameGroup_EditingControlShowing;
+            dgvFrameGroup.SelectionChanged += dgvFrameGroup_SelectionChanged;
             // 
             // panel2
             // 
@@ -166,7 +226,8 @@ namespace CrashEdit.CE
             Name = "GOOLFrameGroupBox";
             Size = new Size(800, 800);
             panel1.ResumeLayout(false);
-            panel1.PerformLayout();
+            pnTextureControls.ResumeLayout(false);
+            pnTextureControls.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvTexture).EndInit();
             ((System.ComponentModel.ISupportInitialize)dgvFrameGroup).EndInit();
             panel2.ResumeLayout(false);
@@ -183,6 +244,9 @@ namespace CrashEdit.CE
         private PictureBox pictureBox1;
         private MetroSet_UI.Controls.MetroSetTrackBar trkPictureSize;
         private DarkComboBox dpdTPages;
-        private Label lblTPageError;
+        private Label lblEIDError;
+        private MetroSet_UI.Controls.MetroSetSwitch tglSimpleMode;
+        private Label lblSimpleMode;
+        private Panel pnTextureControls;
     }
 }

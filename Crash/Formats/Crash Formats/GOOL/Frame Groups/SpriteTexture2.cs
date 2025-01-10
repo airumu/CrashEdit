@@ -134,13 +134,51 @@
         public int Top { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
-        public float X1 { get; set; }
-        public float X2 { get; set; }
-        public float X3 { get; set; }
-        public float X4 { get; set; }
-        public float Y1 { get; set; }
-        public float Y2 { get; set; }
-        public float Y3 { get; set; }
-        public float Y4 { get; set; }
+        public int X1 { get; set; }
+        public int X2 { get; set; }
+        public int X3 { get; set; }
+        public int X4 { get; set; }
+        public int Y1 { get; set; }
+        public int Y2 { get; set; }
+        public int Y3 { get; set; }
+        public int Y4 { get; set; }
+
+        public byte[] Save()
+        {
+            byte[] result = new byte[16];
+            PackedValue1 =
+                (R & 0xff) |
+                ((G & 0xff) << 8) |
+                ((B & 0xff) << 16) |
+                ((Unk1 & 0x1) << 24) |
+                ((BlendMode & 0x1) << 25) |
+                ((PrimType & 0x3f) << 26);
+            PackedValue2 =
+                (U1 & 0xff) |
+                ((V1 & 0xff) << 8) |
+                ((ClutX & 0xf) << 16) |
+                ((Unk2 & 0x3) << 20) |
+                ((ClutY & 0x7f) << 22) |
+                ((Unk3 & 0x7) << 29);
+            PackedValue3 =
+                (U2 & 0xff) |
+                ((V2 & 0xff) << 8) |
+                ((Segment & 0x3) << 16) |
+                ((Unk4 & 0x7) << 18) |
+                ((Additive & 0x1) << 21) |
+                ((Unk5 & 0x1) << 22) |
+                ((ColorMode & 0x3) << 23) |
+                ((Unk6 & 0x7f) << 25);
+            PackedValue4 =
+                (U3 & 0xff) |
+                ((V3 & 0xff) << 8) |
+                ((U4 & 0xff) << 16) |
+                ((V4 & 0xff) << 24);
+            BitConv.ToInt32(result, 0, PackedValue1);
+            BitConv.ToInt32(result, 4, PackedValue2);
+            BitConv.ToInt32(result, 8, PackedValue3);
+            BitConv.ToInt32(result, 12, PackedValue4);
+            return result;
+        }
     }
 }

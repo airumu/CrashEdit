@@ -1,10 +1,13 @@
-﻿using System.Drawing.Imaging;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
+using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
+using CrashEdit.Crash.GOOLIns;
 using Chunk = CrashEdit.Crash.Chunk;
 
 namespace CrashEdit.CE
@@ -12,32 +15,47 @@ namespace CrashEdit.CE
     public partial class GOOLFrameGroupBox : UserControl
     {
         GOOLEntryController controller;
-
         GOOLEntry goolentry;
+        List<VertexGroup2> vertexGroup2;
+        List<SpriteGroup2> spriteGroup2;
+        DataGridViewCellStyle maxValueStyle = new DataGridViewCellStyle
+        {
+            ForeColor = Color.Turquoise
+        };
 
         private TextureChunk chunk { get; set; }
-        private Rectangle selectedregion;
-        private bool dirty;
-        private bool simpleMode;
-        private bool BGRAMode;
-        private bool replaceCLUT;
-        private int selectedRegionX;
-        private int selectedRegionY;
-        private int currentColorMode;
-        private int oldRowIndex;
 
-        private int ColPage = 0;
-        private int ColR = 1;
-        private int ColG = 2;
-        private int ColB = 3;
-        private int ColClutX = 4;
-        private int ColClutY = 5;
-        private int ColLeft = 6;
-        private int ColTop = 7;
-        private int ColWidth = 8;
-        private int ColHeight = 9;
-        private int ColBlendMode = 10;
-        private int ColColorMode = 11;
+        private int currentColorMode = 0;
+        private bool simpleMode = false;
+        private bool dirty = false;
+        private bool tpagedirty = false;
+
+        private readonly int ColIndex = 0;
+        private readonly int ColIndexAlt = 1;
+        private readonly int ColFrameCount = 2;
+        private readonly int ColEID = 3;
+        private readonly int ColInterpolated = 4;
+
+        private readonly int ColPage = 0;
+        private readonly int ColR = 1;
+        private readonly int ColG = 2;
+        private readonly int ColB = 3;
+        private readonly int ColClutX = 4;
+        private readonly int ColClutY = 5;
+        private readonly int ColLeft = 6;
+        private readonly int ColTop = 7;
+        private readonly int ColWidth = 8;
+        private readonly int ColHeight = 9;
+        private readonly int ColX1 = 10;
+        private readonly int ColX2 = 11;
+        private readonly int ColX3 = 12;
+        private readonly int ColX4 = 13;
+        private readonly int ColY1 = 14;
+        private readonly int ColY2 = 15;
+        private readonly int ColY3 = 16;
+        private readonly int ColY4 = 17;
+        private readonly int ColBlendMode = 18;
+        private readonly int ColColorMode = 19;
 
         public GOOLFrameGroupBox(GOOLEntryController controller)
         {
@@ -57,18 +75,10 @@ namespace CrashEdit.CE
             SetDarkTheme(dgvFrameGroup);
             SetDarkTheme(dgvTexture);
 
-            //dgvFrameGroup.CellEndEdit += dgvFrameGroup_CellEndEdit;
-            //dgvFrameGroup.CellValidating += dgvFrameGroup_CellValidating;
-            //dgvFrameGroup.CellValueChanged += dgvFrameGroup_CellValueChanged;
-            //dgvFrameGroup.EditingControlShowing += dgvFrameGroup_EditingControlShowing;
-            dgvFrameGroup.SelectionChanged += dgvFrameGroup_SelectionChanged;
-            dgvTexture.SelectionChanged += dgvTexture_SelectionChanged;
-
             dgvFrameGroupCreateColumns();
             dgvTextureCreateColumns();
 
             dgvFrameGroupCreateRows();
-            dgvTextureCreateRows();
 
             AdjustColumnwidth(dgvFrameGroup);
             AdjustColumnwidth(dgvTexture);
@@ -93,26 +103,36 @@ namespace CrashEdit.CE
             dgvFrameGroup.Columns.Add("Index", "Index");
             dgvFrameGroup.Columns.Add("IndexAlt", "Index (Alt)");
             dgvFrameGroup.Columns.Add("FrameCount", "Frames");
-            dgvFrameGroup.Columns.Add("EID", "EID");
+            dgvFrameGroup.Columns.Add("EID", "EID\u3000\u3000");
             dgvFrameGroup.Columns.Add("Interpolated", "Interpolated");
         }
 
         private void dgvTextureCreateColumns()
         {
             dgvTexture.Columns.Add("Page", "Page");
-            dgvTexture.Columns.Add("R", "R");
-            dgvTexture.Columns.Add("G", "G");
-            dgvTexture.Columns.Add("B", "B");
+            dgvTexture.Columns.Add("R", "R\u3000");
+            dgvTexture.Columns.Add("G", "G\u3000");
+            dgvTexture.Columns.Add("B", "B\u3000");
             dgvTexture.Columns.Add("ClutX", "Clut X");
             dgvTexture.Columns.Add("ClutY", "Clut Y");
-            dgvTexture.Columns.Add("Left", "X  ");
-            dgvTexture.Columns.Add("Top", "Y  ");
+            dgvTexture.Columns.Add("Left", "X\u3000");
+            dgvTexture.Columns.Add("Top", "Y\u3000");
             dgvTexture.Columns.Add("Width", "Width");
             dgvTexture.Columns.Add("Height", "Height");
+            dgvTexture.Columns.Add("X1", "X1");
+            dgvTexture.Columns.Add("X2", "X2");
+            dgvTexture.Columns.Add("X3", "X3");
+            dgvTexture.Columns.Add("X4", "X4");
+            dgvTexture.Columns.Add("Y1", "Y1");
+            dgvTexture.Columns.Add("Y2", "Y2");
+            dgvTexture.Columns.Add("Y3", "Y3");
+            dgvTexture.Columns.Add("Y4", "Y4");
             dgvTexture.Columns.Add("BlendMode", "Blend");
             dgvTexture.Columns.Add("ColorMode", "Color");
 
             dgvTexture.Columns[ColPage].Visible = false;
+            for (int i = ColX1; i <= ColY4; i++)
+                dgvTexture.Columns[i].Visible = false;
         }
 
         private void AdjustColumnwidth(DataGridView dataGridView)
@@ -120,13 +140,78 @@ namespace CrashEdit.CE
             foreach (DataGridViewColumn column in dataGridView.Columns)
             {
                 column.SortMode = DataGridViewColumnSortMode.NotSortable;
-                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
                 //column.Width = 80;
                 column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft;
             }
         }
 
-        private void GetIndex(int index,  out string index1, out string index2)
+        private void ToggleSimpleMode()
+        {
+            if (dgvTexture.IsCurrentCellInEditMode)
+                dgvTexture.CancelEdit();
+            dgvTexture.SuspendLayout();
+
+            if (!simpleMode)
+            {
+                dgvTexture.Width = 446;
+                for (int i = ColLeft; i <= ColHeight; i++)
+                    dgvTexture.Columns[i].Visible = true;
+
+                for (int i = ColX1; i <= ColY4; i++)
+                    dgvTexture.Columns[i].Visible = false;
+            }
+            else
+            {
+                dgvTexture.Width = 498;
+                for (int i = ColLeft; i <= ColHeight; i++)
+                    dgvTexture.Columns[i].Visible = false;
+
+                for (int i = ColX1; i <= ColY4; i++)
+                    dgvTexture.Columns[i].Visible = true;
+            }
+
+            dgvTexture.ResumeLayout();
+        }
+
+        private void SetMaxValueTag(int start, int end)
+        {
+            int startColumnIndex = start;
+            int endColumnIndex = end;
+
+            Parallel.For(0, dgvTexture.Rows.Count, rowIndex =>
+            {
+                var row = dgvTexture.Rows[rowIndex];
+                double maxValue = double.MinValue;
+
+                for (int col = startColumnIndex; col <= endColumnIndex; col++)
+                {
+                    var cellValue = row.Cells[col].Value;
+
+                    if (cellValue != null && double.TryParse(cellValue.ToString(), out double value))
+                    {
+                        if (value > maxValue)
+                        {
+                            maxValue = value;
+                        }
+                    }
+                }
+                for (int col = startColumnIndex; col <= endColumnIndex; col++)
+                {
+                    var cellValue = row.Cells[col].Value;
+
+                    if (cellValue != null && double.TryParse(cellValue.ToString(), out double value))
+                    {
+                        if (value == maxValue)
+                        {
+                            row.Cells[col].Style = maxValueStyle;
+                        }
+                    }
+                }
+            });
+        }
+
+        private void GetIndex(int index, out string index1, out string index2)
         {
             index1 = string.Format("{0:X}", NumberExt.TransformedString(index));
             index2 = string.Format("0x{0:X}00", index.ToString("X"));
@@ -134,6 +219,9 @@ namespace CrashEdit.CE
 
         private void dgvFrameGroupCreateRows()
         {
+            vertexGroup2 = new List<VertexGroup2>();
+            spriteGroup2 = new List<SpriteGroup2>();
+
             dgvFrameGroup.SuspendLayout();
             dgvFrameGroup.ScrollBars = ScrollBars.None;
             dirty = true;
@@ -142,6 +230,8 @@ namespace CrashEdit.CE
                 if (group is VertexGroup2)
                 {
                     var vgroup = (VertexGroup2)group;
+                    vertexGroup2.Add(vgroup);
+                    spriteGroup2.Add(null);
                     DataGridViewRow row = new DataGridViewRow();
 
                     GetIndex(vgroup.Index / 4, out string index1, out string index2);
@@ -152,6 +242,8 @@ namespace CrashEdit.CE
                 else if (group is VertexGroup3to2)
                 {
                     var vgroup = (VertexGroup3to2)group;
+                    vertexGroup2.Add(null);
+                    spriteGroup2.Add(null);
                     DataGridViewRow row = new DataGridViewRow();
 
                     GetIndex(vgroup.Index / 4, out string index1, out string index2);
@@ -162,6 +254,8 @@ namespace CrashEdit.CE
                 else if (group is SpriteGroup2)
                 {
                     var vgroup = (SpriteGroup2)group;
+                    vertexGroup2.Add(null);
+                    spriteGroup2.Add(vgroup);
                     DataGridViewRow row = new DataGridViewRow();
 
                     GetIndex(vgroup.Index / 4, out string index1, out string index2);
@@ -176,15 +270,341 @@ namespace CrashEdit.CE
             dirty = false;
         }
 
-        private void dgvTextureCreateRows()
+        private string errorCannotEdit = "This cell cannot be edited.";
+        private string errorTitle = "Error";
+
+        private void dgvFrameGroup_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
-               
+
+            if (e.ColumnIndex >= ColIndex && e.ColumnIndex <= ColIndexAlt)
+            {
+                DarkMessageBox.ShowError(errorCannotEdit, errorTitle);
+                e.Cancel = true;
+            }
+
+            if (dgvFrameGroup.SelectedCells.Count > 0)
+            {
+                var row = dgvFrameGroup.Rows[e.RowIndex];
+
+                if ((e.ColumnIndex == ColFrameCount && row.Tag != null) || // SpriteGroup2 FrameCount
+                    (dgvFrameGroup.SelectedCells[0].Value.ToString() == "-")) // SpriteGroup2 Interpolated
+                {
+                    DarkMessageBox.ShowError(errorCannotEdit, errorTitle);
+                    e.Cancel = true;
+                }
+            }
+        }
+
+        private void dgvFrameGroup_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            if (e.ColumnIndex >= ColIndex && e.ColumnIndex <= ColIndexAlt) return;
+            if (e.RowIndex < 0 || e.ColumnIndex < 0 || !(dgvFrameGroup.SelectedCells.Count > 0)) return;
+
+            string inputValue = e.FormattedValue.ToString();
+
+            if (e.ColumnIndex == ColFrameCount)
+            {
+                if (int.TryParse(inputValue, out int newValue))
+                {
+                    try
+                    {
+                        int maxValue = 255, minValue = 0;
+                        if (newValue > maxValue)
+                        {
+                            DarkMessageBox.ShowError($"The value must be less than or equal to {maxValue}.", "Input Error");
+                            e.Cancel = true;
+                        }
+                        else if (newValue < minValue)
+                        {
+                            DarkMessageBox.ShowError($"The value must be greater than or equal to {minValue}.", "Input Error");
+                            e.Cancel = true;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        DarkMessageBox.ShowError($"Invalid value: {inputValue}\nError: {ex.Message}", "Validation Error");
+                        e.Cancel = true;
+                    }
+                }
+                else
+                {
+                    DarkMessageBox.ShowError($"Invalid input. Please enter an integer.", "Input Error");
+                    e.Cancel = true;
+                }
+            }
+            else if (e.ColumnIndex == ColEID)
+            {
+                string input = Entry.CheckEIDErrors(inputValue, true);
+                if (input != string.Empty)
+                {
+                    DarkMessageBox.ShowError($"Invalid EID string: {inputValue}", "Input Error");
+                    e.Cancel = true;
+                }
+            }
+            else if (e.ColumnIndex == ColInterpolated)
+            {
+                if (dgvFrameGroup.SelectedCells[0].Value.ToString() == "-") return;
+
+                if (!(inputValue == "True" || inputValue == "False" || inputValue == "true" || inputValue == "false"))
+                {
+                    DarkMessageBox.ShowError($"Invalid string: {inputValue}", "Input Error");
+                    e.Cancel = true;
+                }
+            }
+
+        }
+
+        private void dgvFrameGroup_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0 || !(dgvFrameGroup.SelectedCells.Count > 0)) return;
+
+            var row = dgvFrameGroup.Rows[e.RowIndex];
+
+            // Determine the group type
+            object selectedGroup = row.Tag == null ? vertexGroup2[e.RowIndex] : spriteGroup2[e.RowIndex];
+            if (selectedGroup == null) return;
+
+            // Cast to the correct type
+            if (!(selectedGroup is VertexGroup2 vertexGroup) && !(selectedGroup is SpriteGroup2 spriteGroup)) return;
+            dynamic og = selectedGroup;
+
+            // FrameCount
+            if (e.ColumnIndex == ColFrameCount)
+            {
+                og.FrameCount = Convert.ToByte(row.Cells[ColFrameCount].Value);
+            }
+            // EID
+            else if (e.ColumnIndex == ColEID)
+            {
+                og.EID = Entry.ENameToEID(row.Cells[ColEID].Value.ToString());
+            }
+            // Interpolated
+            else if (e.ColumnIndex == ColInterpolated)
+            {
+                if (bool.TryParse(row.Cells[ColInterpolated].Value.ToString(), out bool result))
+                {
+                    og.Interpolated = result;
+                }
+            }
+
+            DebugOutput($"FrameGroup Index: {e.RowIndex}");
+        }
+
+
+        private void GetXOff(int colorMode, int value, out int xoffUnit, out int segment, out int xoff)
+        {
+            xoffUnit = (1 << (2 - colorMode)) * 64;
+            segment = value / xoffUnit;
+            xoff = xoffUnit * segment;
+        }
+
+        private void GetMaxValue(int rowIndex, int columnIndex, int newValue, out int minValue, out int maxValue, out bool isMaxCell)
+        {
+            isMaxCell = dgvTexture.Rows[rowIndex].Cells[columnIndex].Style == maxValueStyle;
+            maxValue = 0; minValue = 0;
+            // R, G, B
+            if (columnIndex >= ColR && columnIndex <= ColB)
+                maxValue = 255;
+            // ClutX
+            else if (columnIndex == ColClutX)
+                maxValue = 15;
+            // ClutY
+            else if (columnIndex == ColClutY)
+                maxValue = 127;
+            // X (Left)
+            else if (columnIndex == ColLeft)
+            {
+                int width = Convert.ToInt32(dgvTexture.Rows[rowIndex].Cells[ColWidth].Value);
+                GetXOff(currentColorMode, newValue, out int xoffUnit, out int segment, out int xoff);
+
+                int pw = 256 << (2 - currentColorMode);
+                if (newValue >= (isMaxCell ? pw + width : pw))
+                {
+                    maxValue = isMaxCell ? pw : pw - width;
+                    return;
+                }
+
+                int xoffEnd = xoff + xoffUnit;
+                maxValue = xoffEnd - width;
+                DebugOutput($"Segment {segment}, maxValue {maxValue}");
+            }
+            // Y (Top)
+            else if (columnIndex == ColTop)
+                maxValue = 128 - Convert.ToInt32(dgvTexture.Rows[rowIndex].Cells[ColHeight].Value);
+            // Width
+            else if (columnIndex == ColWidth)
+            {
+                int value = Convert.ToInt32(dgvTexture.Rows[rowIndex].Cells[ColLeft].Value);
+
+                GetXOff(currentColorMode, value, out int xoffUnit, out int segment, out int xoff);
+
+                maxValue = xoffUnit - (value - xoff);
+                minValue = 4;
+                DebugOutput($"Segment {segment}, maxValue {maxValue}");
+            }
+            // Height
+            else if (columnIndex == ColHeight)
+            {
+                maxValue = 128 - Convert.ToInt32(dgvTexture.Rows[rowIndex].Cells[ColTop].Value);
+                minValue = 4;
+            }
+            // Blend Mode
+            else if (columnIndex == ColBlendMode)
+                maxValue = 3;
+            // Color Mode
+            else if (columnIndex == ColColorMode)
+                maxValue = 2;
+        }
+
+        private void dgvTexture_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            if (e.ColumnIndex >= ColX1 && e.ColumnIndex <= ColY4)
+            {
+                DarkMessageBox.ShowError("This cell cannot be edited.", "Error");
+                e.Cancel = true;
+            }
+        }
+
+        private void dgvTexture_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            if (e.ColumnIndex >= ColX1 && e.ColumnIndex <= ColY4) return;
+
+            if (int.TryParse(e.FormattedValue.ToString(), out int newValue))
+            {
+                try
+                {
+                    GetMaxValue(e.RowIndex, e.ColumnIndex, newValue, out int minValue, out int maxValue, out bool isMaxCell);
+
+                    if (newValue > maxValue)
+                    {
+                        if (e.ColumnIndex >= ColLeft && e.ColumnIndex <= ColHeight)
+                            DarkMessageBox.ShowError($"The UV does not fit within the segment. The value must be less than or equal to {maxValue}.", "Input Error");
+                        else
+                            DarkMessageBox.ShowError($"The value must be less than or equal to {maxValue}.", "Input Error");
+                        e.Cancel = true;
+                    }
+                    else if (newValue < minValue)
+                    {
+                        DarkMessageBox.ShowError($"The value must be greater than or equal to {minValue}.", "Input Error");
+                        e.Cancel = true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    DarkMessageBox.ShowError($"Invalid value: {newValue}\nError: {ex.Message}", "Validation Error");
+                    e.Cancel = true;
+                }
+            }
+            else
+            {
+                DarkMessageBox.ShowError($"Invalid input. Please enter an integer.", "Input Error");
+                e.Cancel = true;
+            }
+        }
+
+        private void dgvTexture_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0 || !(dgvFrameGroup.SelectedCells.Count > 0) || !(dgvTexture.SelectedCells.Count > 0)) return;
+
+            int rowIndex = dgvFrameGroup.SelectedCells[0].RowIndex;
+
+            var selectedGroup = spriteGroup2[rowIndex];
+            if (selectedGroup == null || !(selectedGroup is SpriteGroup2 spriteGroup)) return;
+
+            var og = spriteGroup.Frames[e.RowIndex];
+            var item = dgvTexture.Rows[e.RowIndex];
+            int colorMode = Convert.ToInt32(item.Cells[ColColorMode].Value);
+
+            DebugOutput($"FrameGroup Index: {rowIndex}, Frame Index: {e.RowIndex}");
+
+            // R
+            if (e.ColumnIndex == ColR)
+                og.R = Convert.ToByte(item.Cells[ColR].Value);
+            // G
+            else if (e.ColumnIndex == ColG)
+                og.G = Convert.ToByte(item.Cells[ColG].Value);
+            // B
+            else if (e.ColumnIndex == ColB)
+                og.B = Convert.ToByte(item.Cells[ColB].Value);
+            // ClutX
+            else if (e.ColumnIndex == ColClutX)
+                og.ClutX = Convert.ToByte(item.Cells[ColClutX].Value);
+            // ClutY
+            else if (e.ColumnIndex == ColClutY)
+                og.ClutY = Convert.ToByte(item.Cells[ColClutY].Value);
+            // X (Left), Width
+            else if (e.ColumnIndex == ColLeft || e.ColumnIndex == ColWidth)
+            {
+                int left = Convert.ToInt32(item.Cells[ColLeft].Value);
+                int width = Convert.ToInt32(item.Cells[ColWidth].Value);
+                og.Left = left;
+                og.Width = width;
+
+                int x1 = og.X1, x2 = og.X2, x3 = og.X3, x4 = og.X4;
+                int minX = Math.Min(x1, Math.Min(x2, Math.Min(x3, x4)));
+                int maxX = Math.Max(x1, Math.Max(x2, Math.Max(x3, x4)));
+
+                GetXOff(colorMode, left, out int xoffUnit, out int segment, out int xoff);
+                int newMinU = left - xoff;
+                int newMaxU = newMinU + width - 1;
+
+                og.Segment = (byte)segment;
+                og.U1 = (x1 == minX) ? newMinU : newMaxU;
+                og.U2 = (x2 == minX) ? newMinU : newMaxU;
+                og.U3 = (x3 == minX) ? newMinU : newMaxU;
+                og.U4 = (x4 == minX) ? newMinU : newMaxU;
+
+                DebugOutput($"left: {left}, width: {width}, xoffUnit: {xoffUnit}, segment: {segment}, xoff: {xoff}\n" +
+                    $" x1: {x1}, x2: {x2}. x3: {x3}, x4: {x4}, minX: {minX}, maxX: {maxX}\n" +
+                    $" u1: {og.U1}, u2: {og.U2}, u3: {og.U3}, u4: {og.U4}, newMinU: {newMinU}, newMaxU: {newMaxU}");
+            }
+            // Y (Top), Height
+            else if (e.ColumnIndex == ColTop || e.ColumnIndex == ColHeight)
+            {
+                int top = Convert.ToInt32(item.Cells[ColTop].Value);
+                int height = Convert.ToInt32(item.Cells[ColHeight].Value);
+                og.Top = top;
+                og.Height = height;
+
+                int y1 = og.Y1, y2 = og.Y2, y3 = og.Y3, y4 = og.Y4;
+                int minY = Math.Min(y1, Math.Min(y2, Math.Min(y3, y4)));
+                int maxY = Math.Max(y1, Math.Max(y2, Math.Max(y3, y4)));
+
+                int newMinV = top;
+                int newMaxV = newMinV + height - 1;
+
+                og.V1 = (y1 == minY) ? newMinV : newMaxV;
+                og.V2 = (y2 == minY) ? newMinV : newMaxV;
+                og.V3 = (y3 == minY) ? newMinV : newMaxV;
+                og.V4 = (y4 == minY) ? newMinV : newMaxV;
+
+                DebugOutput($"top: {top}, height: {height}\n" +
+                    $" y1: {y1}, y2: {y2}. y3: {y3}, y4: {y4}, minX: {minY}, maxY: {maxY}\n" +
+                    $" v1: {og.V1}, v2: {og.V2}, v3: {og.V3}, v4: {og.V4}, newMinV: {newMinV}, newMaxV: {newMaxV}");
+            }
+            // Blend Mode
+            else if (e.ColumnIndex == ColBlendMode)
+                og.BlendMode = Convert.ToByte(item.Cells[ColBlendMode].Value);
+            // Color Mode
+            else if (e.ColumnIndex == ColColorMode)
+                og.ColorMode = Convert.ToByte(item.Cells[ColColorMode].Value);
+        }
+
+        private void dpdTPages_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string text = dpdTPages.Text;
+            int rowIndex = dgvFrameGroup.SelectedCells[0].RowIndex;
+            var row = dgvFrameGroup.Rows[rowIndex];
+            if (!(dgvFrameGroup.SelectedCells.Count > 0) || text == string.Empty || row.Tag == null) return;
+
+            dgvFrameGroup.Rows[rowIndex].Cells[ColEID].Value = text;
+            pictureBox1.Visible = true;
+            UpdatePicture(text);
         }
 
         private void dgvFrameGroup_SelectionChanged(object sender, EventArgs e)
         {
             if (!(dgvFrameGroup.SelectedCells.Count > 0) || dirty) return;
-
             int rowIndex = dgvFrameGroup.SelectedCells[0].RowIndex;
             var _row = dgvFrameGroup.Rows[rowIndex];
 
@@ -193,11 +613,10 @@ namespace CrashEdit.CE
                 if (group is SpriteGroup2)
                 {
                     var vgroup = (SpriteGroup2)group;
-                    if (Settings.Default.OutputModelTextureInfo)
-                    {
-                        int index = vgroup.Index / 4;
-                        Console.WriteLine(index.ToString("X"));
-                    }
+
+                    int index = vgroup.Index / 4;
+                    string _index = index.ToString("X");
+                    DebugOutput($"Current index: 0x{_index}");
                     if (vgroup.Index == Convert.ToInt32(_row.Tag) && _row.Tag != null)
                     {
                         dgvTexture.SuspendLayout();
@@ -208,15 +627,20 @@ namespace CrashEdit.CE
                         {
                             DataGridViewRow row = new DataGridViewRow();
 
-                            SpriteTexture2 tex = SpriteTexture2.Load(frame.PackedValue1, frame.PackedValue2, frame.PackedValue3, frame.PackedValue4);
-                            row.CreateCells(dgvTexture, Entry.EIDToEName(vgroup.EID), tex.R, tex.G, tex.B, tex.ClutX, tex.ClutY, tex.Left, tex.Top, tex.Width, tex.Height, tex.BlendMode, tex.ColorMode);
+                            row.CreateCells(dgvTexture, Entry.EIDToEName(vgroup.EID), frame.R, frame.G, frame.B, frame.ClutX, frame.ClutY, frame.Left, frame.Top, frame.Width, frame.Height,
+                                frame.X1, frame.X2, frame.X3, frame.X4, frame.Y1, frame.Y2, frame.Y3, frame.Y4, frame.BlendMode, frame.ColorMode);
                             dgvTexture.Rows.Add(row);
                         }
+
+                        SetMaxValueTag(ColX1, ColX4);
+                        SetMaxValueTag(ColY1, ColY4);
+
                         dgvTexture.ResumeLayout();
                         dgvTexture.ScrollBars = ScrollBars.Both;
                         dirty = false;
 
                         dgvTexture.Visible =
+                        pnTextureControls.Visible =
                         pictureBox1.Visible = true;
                         UpdatePicture();
                         return;
@@ -224,8 +648,9 @@ namespace CrashEdit.CE
                 }
             }
             dgvTexture.Visible =
+            pnTextureControls.Visible =
             pictureBox1.Visible =
-            lblTPageError.Visible = false;
+            lblEIDError.Visible = false;
             dpdTPages.SelectedItem = null;
         }
 
@@ -240,22 +665,31 @@ namespace CrashEdit.CE
 
             int rowIndex = dgvTexture.SelectedCells[0].RowIndex;
             var row = dgvTexture.Rows[rowIndex];
+            string eid = row.Cells[ColPage].Value.ToString();
+            UpdatePicture(eid);
+        }
+
+        private void UpdatePicture(string eid)
+        {
+            if (!(dgvTexture.SelectedCells.Count > 0) || dirty) return;
+
+            int rowIndex = dgvTexture.SelectedCells[0].RowIndex;
+            var row = dgvTexture.Rows[rowIndex];
             int _r = Convert.ToInt32(row.Cells[ColR].Value);
             int _g = Convert.ToInt32(row.Cells[ColG].Value);
             int _b = Convert.ToInt32(row.Cells[ColB].Value);
             Color texelColor = Color.FromArgb(_r, _g, _b);
 
-            string eid = row.Cells[ColPage].Value.ToString();
             if (dpdTPages.Items.Contains(eid))
             {
                 chunk = controller.GetEntry<TextureChunk>(Entry.ENameToEID(eid));
-                lblTPageError.Visible = false;
+                lblEIDError.Visible = false;
                 dpdTPages.SelectedItem = eid;
             }
             else
             {
                 pictureBox1.Visible = false;
-                lblTPageError.Visible = true;
+                lblEIDError.Visible = true;
                 dpdTPages.SelectedItem = null;
                 return;
             }
@@ -269,7 +703,7 @@ namespace CrashEdit.CE
 
             int colormode = Convert.ToInt32(row.Cells[ColColorMode].Value);
             int blendmode = Convert.ToInt32(row.Cells[ColBlendMode].Value);
-           
+
             int pw = 256 << (2 - colormode);
             int ph = 128;
             Bitmap bitmap = new Bitmap(pw + 2, ph + 2, PixelFormat.Format32bppArgb);
@@ -338,12 +772,6 @@ namespace CrashEdit.CE
                     pen.Color = Color.White;
                     g.DrawRectangle(pen, new Rectangle(x - 2, y - 2, w + 3, h + 3));
                 }
-                selectedregion.X = x;
-                selectedregion.Y = y;
-                selectedregion.Width = w;
-                selectedregion.Height = h;
-                selectedRegionX = x;
-                selectedRegionY = y;
             }
 
             Bitmap filteredBitmap = ApplyTexel(bitmap, texelColor);
@@ -365,6 +793,42 @@ namespace CrashEdit.CE
                 pictureBox1.Width = (int)(pictureBox1.Image.Width * zoom);
                 pictureBox1.Height = (int)(pictureBox1.Image.Height * zoom);
                 pictureBox1.Invalidate();
+            }
+        }
+
+        private void dgvFrameGroup_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            if (dgvFrameGroup.SelectedCells.Count > 0)
+            {
+                if (e.Control is TextBox textbox)
+                {
+                    if (dgvFrameGroup.SelectedCells[0].ColumnIndex == ColFrameCount)
+                    {
+                        textbox.KeyPress -= TextBox_KeyPress;
+                        textbox.KeyPress += TextBox_KeyPress;
+                    }
+                    else
+                    {
+                        textbox.KeyPress -= TextBox_KeyPress;
+                    }
+                }
+            }
+        }
+
+        private void dgvTexture_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            if (e.Control is TextBox textbox)
+            {
+                textbox.KeyPress -= TextBox_KeyPress;
+                textbox.KeyPress += TextBox_KeyPress;
+            }
+        }
+
+        private void TextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back)
+            {
+                e.Handled = true;
             }
         }
 
@@ -394,7 +858,7 @@ namespace CrashEdit.CE
                     byte vr = vertexBytes[i + 2]; // R
                     byte vg = vertexBytes[i + 1]; // G
                     byte vb = vertexBytes[i];     // B
-                    byte va = vertexBytes[i + 3]; // Al
+                    byte va = vertexBytes[i + 3]; // A
 
                     outputBytes[i + 2] = (byte)Math.Min(255, vr * rFactor * 2);
                     outputBytes[i + 1] = (byte)Math.Min(255, vg * gFactor * 2);
@@ -411,6 +875,18 @@ namespace CrashEdit.CE
             }
 
             return outputBitmap;
+        }
+
+        private void tglSimpleMode_SwitchedChanged(object sender)
+        {
+            simpleMode = tglSimpleMode.Switched;
+            ToggleSimpleMode();
+        }
+
+        private void DebugOutput(string line)
+        {
+            if (Settings.Default.OutputModelTextureInfo)
+                Console.WriteLine(line);
         }
 
 
