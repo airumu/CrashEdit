@@ -80,6 +80,7 @@ namespace CrashEdit.CE
             SetDarkTheme(dgvFrameGroup);
             SetDarkTheme(dgvTexture);
 
+            dgvFrameGroup.Visible = false;
             dgvFrameGroupCreateColumns();
             dgvTextureCreateColumns();
 
@@ -89,6 +90,7 @@ namespace CrashEdit.CE
             AdjustColumnwidth(dgvTexture);
 
             GetTpage();
+            dgvFrameGroup.Visible = true;
         }
 
         private void GetTpage()
@@ -241,8 +243,8 @@ namespace CrashEdit.CE
             vertexGroup3to2 = new List<VertexGroup3to2>();
             spriteGroup2 = new List<SpriteGroup2>();
 
-            dgvFrameGroup.SuspendLayout();
             dgvFrameGroup.ScrollBars = ScrollBars.None;
+            dgvFrameGroup.SuspendLayout();
             dirty = true;
             foreach (var group in goolentry.FrameGroups)
             {
@@ -289,8 +291,8 @@ namespace CrashEdit.CE
                     dgvFrameGroup.Rows.Add(row);
                 }
             }
-            dgvFrameGroup.ResumeLayout();
             dgvFrameGroup.ScrollBars = ScrollBars.Both;
+            dgvFrameGroup.ResumeLayout();
             dirty = false;
         }
 
@@ -669,8 +671,8 @@ namespace CrashEdit.CE
                         int index2 = tag.Item2;
                         if (vgroup.Index == index2 && type == typeSprite2)
                         {
-                            dgvTexture.SuspendLayout();
                             dgvTexture.ScrollBars = ScrollBars.None;
+                            dgvTexture.SuspendLayout();
                             dirty = true;
                             dgvTexture.Rows.Clear();
                             foreach (var frame in vgroup.Frames)
@@ -685,8 +687,8 @@ namespace CrashEdit.CE
                             SetMaxValueTag(ColX1, ColX4);
                             SetMaxValueTag(ColY1, ColY4);
 
-                            dgvTexture.ResumeLayout();
                             dgvTexture.ScrollBars = ScrollBars.Both;
+                            dgvTexture.ResumeLayout();
                             dirty = false;
 
                             dgvTexture.Visible =
