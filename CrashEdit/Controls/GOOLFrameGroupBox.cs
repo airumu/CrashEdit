@@ -34,26 +34,25 @@ namespace CrashEdit.CE
         private readonly int ColEID = 3;
         private readonly int ColInterpolated = 4;
 
-        private readonly int ColPage = 0;
-        private readonly int ColR = 1;
-        private readonly int ColG = 2;
-        private readonly int ColB = 3;
-        private readonly int ColClutX = 4;
-        private readonly int ColClutY = 5;
-        private readonly int ColLeft = 6;
-        private readonly int ColTop = 7;
-        private readonly int ColWidth = 8;
-        private readonly int ColHeight = 9;
-        private readonly int ColX1 = 10;
-        private readonly int ColX2 = 11;
-        private readonly int ColX3 = 12;
-        private readonly int ColX4 = 13;
-        private readonly int ColY1 = 14;
-        private readonly int ColY2 = 15;
-        private readonly int ColY3 = 16;
-        private readonly int ColY4 = 17;
-        private readonly int ColBlendMode = 18;
-        private readonly int ColColorMode = 19;
+        private readonly int ColR = 0;
+        private readonly int ColG = 1;
+        private readonly int ColB = 2;
+        private readonly int ColClutX = 3;
+        private readonly int ColClutY = 4;
+        private readonly int ColLeft = 5;
+        private readonly int ColTop = 6;
+        private readonly int ColWidth = 7;
+        private readonly int ColHeight = 8;
+        private readonly int ColX1 = 9;
+        private readonly int ColX2 = 10;
+        private readonly int ColX3 = 11;
+        private readonly int ColX4 = 12;
+        private readonly int ColY1 = 13;
+        private readonly int ColY2 = 14;
+        private readonly int ColY3 = 15;
+        private readonly int ColY4 = 16;
+        private readonly int ColBlendMode = 17;
+        private readonly int ColColorMode = 18;
 
         public GOOLFrameGroupBox(GOOLEntryController controller)
         {
@@ -107,7 +106,6 @@ namespace CrashEdit.CE
 
         private void dgvTextureCreateColumns()
         {
-            dgvTexture.Columns.Add("Page", "Page");
             dgvTexture.Columns.Add("R", "R\u3000");
             dgvTexture.Columns.Add("G", "G\u3000");
             dgvTexture.Columns.Add("B", "B\u3000");
@@ -128,7 +126,6 @@ namespace CrashEdit.CE
             dgvTexture.Columns.Add("BlendMode", "Blend");
             dgvTexture.Columns.Add("ColorMode", "Color");
 
-            dgvTexture.Columns[ColPage].Visible = false;
             for (int i = ColX1; i <= ColY4; i++)
                 dgvTexture.Columns[i].Visible = false;
         }
@@ -611,7 +608,7 @@ namespace CrashEdit.CE
 
             dgvFrameGroup.Rows[rowIndex].Cells[ColEID].Value = text;
             pictureBox1.Visible = true;
-            UpdatePicture(text);
+            UpdatePicture();
         }
 
         private void dgvFrameGroup_SelectionChanged(object sender, EventArgs e)
@@ -639,7 +636,7 @@ namespace CrashEdit.CE
                         {
                             DataGridViewRow row = new DataGridViewRow();
 
-                            row.CreateCells(dgvTexture, Entry.EIDToEName(vgroup.EID), frame.R, frame.G, frame.B, frame.ClutX, frame.ClutY, frame.Left, frame.Top, frame.Width, frame.Height,
+                            row.CreateCells(dgvTexture, frame.R, frame.G, frame.B, frame.ClutX, frame.ClutY, frame.Left, frame.Top, frame.Width, frame.Height,
                                 frame.X1, frame.X2, frame.X3, frame.X4, frame.Y1, frame.Y2, frame.Y3, frame.Y4, frame.BlendMode, frame.ColorMode);
                             dgvTexture.Rows.Add(row);
                         }
@@ -678,17 +675,7 @@ namespace CrashEdit.CE
 
         private void UpdatePicture()
         {
-            if (!(dgvTexture.SelectedCells.Count > 0) || dirty) return;
-
-            int rowIndex = dgvTexture.SelectedCells[0].RowIndex;
-            var row = dgvTexture.Rows[rowIndex];
-            string eid = row.Cells[ColPage].Value.ToString();
-            UpdatePicture(eid);
-        }
-
-        private void UpdatePicture(string eid)
-        {
-            if (!(dgvTexture.SelectedCells.Count > 0) || dirty) return;
+            if (!(dgvTexture.SelectedCells.Count > 0) || !(dgvFrameGroup.SelectedCells.Count > 0) || dirty) return;
 
             int rowIndex = dgvTexture.SelectedCells[0].RowIndex;
             var row = dgvTexture.Rows[rowIndex];
@@ -696,6 +683,10 @@ namespace CrashEdit.CE
             int _g = Convert.ToInt32(row.Cells[ColG].Value);
             int _b = Convert.ToInt32(row.Cells[ColB].Value);
             Color texelColor = Color.FromArgb(_r, _g, _b);
+
+            int _rowIndex = dgvFrameGroup.SelectedCells[0].RowIndex;
+            var _row = dgvFrameGroup.Rows[_rowIndex];
+            string eid = _row.Cells[ColEID].Value.ToString();
 
             if (dpdTPages.Items.Contains(eid))
             {
