@@ -1,6 +1,5 @@
 using AltUI.Forms;
 using CrashEdit.Crash;
-using MetroSet_UI.Controls;
 
 namespace CrashEdit.CE
 {
@@ -17,38 +16,7 @@ namespace CrashEdit.CE
 
         public override Control CreateEditor()
         {
-            MetroSetTabControl tbcTabs = new MetroSetTabControl()
-            {
-                BackgroundColor = Color.FromArgb(31, 31, 32),
-                Dock = DockStyle.Fill,
-                IsDerivedStyle = false,
-                ItemSize = new Size(100, 28),
-                Style = MetroSet_UI.Enums.Style.Dark,
-                TabStyle = MetroSet_UI.Enums.TabStyle.Style1
-            };
-            OldModelEntry modelentry = GetEntry<OldModelEntry>(OldFrame.ModelEID);
-
-            var framebox = new OldFrameBox(this)
-            {
-                Dock = DockStyle.Fill
-            };
-            var entry = OldAnimationEntryController.OldAnimationEntry;
-            var viewerbox = new OldAnimationEntryViewer(GetNSF(), entry.EID, entry.Frames.IndexOf(OldFrame))
-            {
-                Dock = DockStyle.Fill
-            };
-            framebox.Dock = DockStyle.Fill;
-
-            TabPage edittab = new TabPage("Editor");
-            edittab.Controls.Add(framebox);
-            TabPage viewertab = new TabPage("Viewer");
-            viewertab.Controls.Add(viewerbox);
-
-            tbcTabs.TabPages.Add(viewertab);
-            tbcTabs.TabPages.Add(edittab);
-            tbcTabs.SelectedTab = viewertab;
-
-            return tbcTabs;
+            return new OldFrameBox(this);
         }
 
         public OldAnimationEntryController OldAnimationEntryController => Modern.Parent.Legacy as OldAnimationEntryController;

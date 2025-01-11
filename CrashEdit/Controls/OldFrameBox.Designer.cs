@@ -79,6 +79,7 @@ namespace CrashEdit.CE
             numZOffset = new DarkNumericUpDown();
             numYOffset = new DarkNumericUpDown();
             numXOffset = new DarkNumericUpDown();
+            pnOldFrameBox = new Panel();
             fraVertice.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numNZ).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numNY).BeginInit();
@@ -714,17 +715,26 @@ namespace CrashEdit.CE
             numXOffset.TabIndex = 2;
             numXOffset.ValueChanged += numXOffset_ValueChanged;
             // 
+            // pnOldFrameBox
+            // 
+            pnOldFrameBox.Dock = DockStyle.Fill;
+            pnOldFrameBox.Location = new Point(0, 0);
+            pnOldFrameBox.Name = "pnOldFrameBox";
+            pnOldFrameBox.Size = new Size(464, 524);
+            pnOldFrameBox.TabIndex = 13;
+            pnOldFrameBox.Controls.Add(fraG1);
+            pnOldFrameBox.Controls.Add(fraG2);
+            pnOldFrameBox.Controls.Add(fraGG);
+            pnOldFrameBox.Controls.Add(fraOffset);
+            pnOldFrameBox.Controls.Add(fraUnknown);
+            pnOldFrameBox.Controls.Add(fraVertice);
+            // 
             // OldFrameBox
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(31, 31, 32);
-            Controls.Add(fraG1);
-            Controls.Add(fraG2);
-            Controls.Add(fraGG);
-            Controls.Add(fraOffset);
-            Controls.Add(fraUnknown);
-            Controls.Add(fraVertice);
+            Controls.Add(pnOldFrameBox);
             Margin = new Padding(4, 3, 4, 3);
             Name = "OldFrameBox";
             Size = new Size(464, 524);
@@ -812,5 +822,6 @@ namespace CrashEdit.CE
         private DarkNumericUpDown numXOffsetCollision;
         private DarkGroupBox fraUnknown;
         private DarkNumericUpDown numUnknown;
+        private Panel pnOldFrameBox;
     }
 }

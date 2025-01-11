@@ -1,4 +1,5 @@
 using CrashEdit.Crash;
+using MetroSet_UI.Controls;
 
 namespace CrashEdit.CE
 {
@@ -22,6 +23,39 @@ namespace CrashEdit.CE
             UpdateFactorG();
             UpdateOffset();
             vertexindex = 0;
+
+            CreateTabs();
+        }
+
+        private void CreateTabs()
+        {
+            MetroSetTabControl tbcTabs = new MetroSetTabControl()
+            {
+                BackgroundColor = Color.FromArgb(31, 31, 32),
+                Dock = DockStyle.Fill,
+                IsDerivedStyle = false,
+                ItemSize = new Size(100, 28),
+                Style = MetroSet_UI.Enums.Style.Dark,
+                TabStyle = MetroSet_UI.Enums.TabStyle.Style1
+            };
+            OldModelEntry modelentry = controller.GetEntry<OldModelEntry>(frame.ModelEID);
+
+            var entry = controller.OldAnimationEntryController.OldAnimationEntry;
+            var viewerbox = new OldAnimationEntryViewer(controller.GetNSF(), entry.EID, entry.Frames.IndexOf(frame))
+            {
+                Dock = DockStyle.Fill
+            };
+
+            TabPage viewertab = new TabPage("Viewer");
+            viewertab.Controls.Add(viewerbox);
+            TabPage edittab = new TabPage("Editor");
+            edittab.Controls.Add(pnOldFrameBox);
+
+            tbcTabs.TabPages.Add(viewertab);
+            tbcTabs.TabPages.Add(edittab);
+            tbcTabs.SelectedTab = viewertab;
+
+            Controls.Add(tbcTabs);
         }
 
         private void UpdateVertice()
