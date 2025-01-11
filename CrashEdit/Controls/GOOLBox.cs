@@ -80,40 +80,48 @@ namespace CrashEdit.CE
 
         private void CreateTabs()
         {
-            MetroSetTabControl tbcTabs = new MetroSetTabControl()
+            if (!(goolentry.Version == GOOLVersion.Version0))
             {
-                BackgroundColor = Color.FromArgb(31, 31, 32),
-                Dock = DockStyle.Fill,
-                IsDerivedStyle = false,
-                ItemSize = new Size(100, 28),
-                Style = MetroSet_UI.Enums.Style.Dark,
-                TabStyle = MetroSet_UI.Enums.TabStyle.Style1
-            };
-            TabPage tab1 = new TabPage("Code");
-            tab1.Controls.Add(dgvCode);
-            TabPage tab2 = new TabPage("FrameGroup");
-            var goolFrameGroupBox = new GOOLFrameGroupBox(controller, goolentry)
-            {
-                Dock = DockStyle.Fill
-            };
-            tab2.Controls.Add(goolFrameGroupBox);
-
-            tbcTabs.TabPages.Add(tab1);
-            tbcTabs.TabPages.Add(tab2);
-
-            EventHandler tabChangedHandler = null;
-            tabChangedHandler = (sender, e) =>
-            {
-                if (tbcTabs.SelectedTab == tab2)
+                MetroSetTabControl tbcTabs = new MetroSetTabControl()
                 {
-                    goolFrameGroupBox.OnTabSelected();
-                    tbcTabs.SelectedIndexChanged -= tabChangedHandler;
-                }
-            };
-            tbcTabs.SelectedIndexChanged += tabChangedHandler;
+                    BackgroundColor = Color.FromArgb(31, 31, 32),
+                    Dock = DockStyle.Fill,
+                    IsDerivedStyle = false,
+                    ItemSize = new Size(100, 28),
+                    Style = MetroSet_UI.Enums.Style.Dark,
+                    TabStyle = MetroSet_UI.Enums.TabStyle.Style1
+                };
+                TabPage tab1 = new TabPage("Code");
+                tab1.Controls.Add(dgvCode);
+                TabPage tab2 = new TabPage("FrameGroup");
+                var goolFrameGroupBox = new GOOLFrameGroupBox(controller, goolentry)
+                {
+                    Dock = DockStyle.Fill
+                };
+                tab2.Controls.Add(goolFrameGroupBox);
 
-            tbcTabs.SelectedTab = tab1;
-            Controls.Add(tbcTabs);
+                tbcTabs.TabPages.Add(tab1);
+                tbcTabs.TabPages.Add(tab2);
+
+                EventHandler tabChangedHandler = null;
+                tabChangedHandler = (sender, e) =>
+                {
+                    if (tbcTabs.SelectedTab == tab2)
+                    {
+                        goolFrameGroupBox.OnTabSelected();
+                        tbcTabs.SelectedIndexChanged -= tabChangedHandler;
+                    }
+                };
+                tbcTabs.SelectedIndexChanged += tabChangedHandler;
+
+                tbcTabs.SelectedTab = tab1;
+                Controls.Add(tbcTabs);
+            }
+            else
+            {
+                Controls.Add(dgvCode);
+            }
+            
         }
 
         private void PopulateData(GOOLEntry goolentry)
