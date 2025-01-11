@@ -189,6 +189,10 @@ namespace CrashEdit.CE
             C2numW.ValueChanged += new EventHandler(Control_UpdatePicture);
             C2numH.ValueChanged += new EventHandler(Control_UpdatePicture);
 
+            C1numX.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
+            C1numY.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
+            C1numCX.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
+            C1numCY.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
             C2numCX.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
             C2numCY.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
             C2numX.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
@@ -445,6 +449,11 @@ namespace CrashEdit.CE
             tabControl1.Focus();
         }
 
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdatePicture();
+        }
+
         private void cmdReplace_Click(object sender, EventArgs e)
         {
             if (TexColorMode == 2)
@@ -523,7 +532,7 @@ namespace CrashEdit.CE
                 {
                     Directory.CreateDirectory(basePath);
                 }
-              
+
                 File.WriteAllBytes(Path.Combine(basePath, "tempTexture"), tempTexture);
                 List<string> tempInfo = new List<string> { tempWidth.ToString(), tempHeight.ToString(), tempBpp.ToString() };
                 File.WriteAllLines(Path.Combine(basePath, "tempInfo"), tempInfo);
@@ -557,7 +566,7 @@ namespace CrashEdit.CE
                         BitConv.ToInt32(chunk.Data, 12, Chunk.CalculateChecksum(chunk.Data));
                     }
                 }
-                  
+
                 Console.WriteLine("Successfully copied texture.");
                 UpdatePicture();
             }
@@ -609,7 +618,7 @@ namespace CrashEdit.CE
                 }
 
                 if (failed)
-{
+                {
                     Console.WriteLine("Failed to paste texture.");
                     return;
                 }
@@ -660,10 +669,11 @@ namespace CrashEdit.CE
                 if (e.Delta > 0 && newValue + 8 < numericUpDown.Maximum)
                     newValue += 8;
 
-                else if (e.Delta < 0 && newValue - 8 > numericUpDown.Minimum)
+                else if (e.Delta < 0 && newValue - 8 >= numericUpDown.Minimum)
                     newValue -= 8;
 
                 numericUpDown.Value = newValue;
+                UpdatePicture();
             }
         }
 

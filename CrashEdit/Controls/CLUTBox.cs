@@ -255,8 +255,6 @@ namespace CrashEdit.CE.Controls
                     }
                 }
             }
-            if (Settings.Default.OutputCLUTInfo)
-                Console.WriteLine($"Start {editStartRow}, End {editEndRow}");
             grdCLUT.ResumeLayout();
             grdCLUT.Refresh();
         }
@@ -323,6 +321,8 @@ namespace CrashEdit.CE.Controls
 
         private void ApplyChanges()
         {
+            if (editStartRow == grdCLUT.RowCount - 1 && editEndRow == 0) return;
+
             grdCLUT.SuspendLayout();
             for (int row = editStartRow; row <= editEndRow; row++)
             {
@@ -335,6 +335,14 @@ namespace CrashEdit.CE.Controls
                 }
             }
             grdCLUT.ResumeLayout();
+            if (Settings.Default.OutputCLUTInfo)
+            {
+                int startX = editStartRow % 16;
+                int startY = editStartRow / 16;
+                int endX = editEndRow % 16;
+                int endY = editEndRow / 16;
+                Console.WriteLine($"Start [X{startX}, Y{startY}] End [X{endX}, Y{endY}]");
+            }
         }
 
         private void cmdApply_Click(object sender, EventArgs e)

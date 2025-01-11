@@ -198,6 +198,7 @@ namespace CrashEdit.CE
             tabControl1.ThemeName = "MetroDark";
             tabControl1.UnselectedTextColor = Color.Gray;
             tabControl1.UseAnimation = false;
+            tabControl1.SelectedIndexChanged += tabControl1_SelectedIndexChanged;
             tabControl1.KeyDown += tabControl1_KeyDown;
             // 
             // tabC1
@@ -1028,9 +1029,9 @@ namespace CrashEdit.CE
             Controls.Add(splitContainer1);
             CornerStyle = CornerPreference.Default;
             DoubleBuffered = true;
+            FormBorderStyle = FormBorderStyle.FixedDialog;
             Margin = new Padding(4);
             Name = "TextureViewer";
-            FormBorderStyle = FormBorderStyle.FixedDialog;
             TransparencyKey = Color.FromArgb(31, 31, 32);
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
