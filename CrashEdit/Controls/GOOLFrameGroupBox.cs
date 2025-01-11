@@ -87,7 +87,8 @@ namespace CrashEdit.CE
 
         private void GOOLFrameGroupBox_Enter(object sender, EventArgs e)
         {
-            EnableDoubleBuffering();
+            EnableDoubleBuffering(dgvFrameGroup);
+            EnableDoubleBuffering(dgvTexture);
             SetDarkTheme(dgvFrameGroup);
             SetDarkTheme(dgvTexture);
 
@@ -1152,12 +1153,12 @@ namespace CrashEdit.CE
         }
 
 
-        private void EnableDoubleBuffering()
+        private void EnableDoubleBuffering(DataGridView dataGridView)
         {
             typeof(DataGridView).InvokeMember("DoubleBuffered",
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance |
                 System.Reflection.BindingFlags.SetProperty,
-                null, dgvFrameGroup, new object[] { true });
+                null, dataGridView, new object[] { true });
         }
 
         private void SetDarkTheme(DataGridView dataGridView)
