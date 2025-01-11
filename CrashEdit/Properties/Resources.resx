@@ -193,7 +193,7 @@
     <value>Open</value>
   </data>
   <data name="Toolbar_PatchNSD" xml:space="preserve">
-    <value>Patch NSD (Ctrl + S)</value>
+    <value>Patch NSD (Ctrl + Shift + S)</value>
   </data>
   <data name="Toolbar_RedoAction" xml:space="preserve">
     <value>Redo {0}</value>
@@ -202,7 +202,7 @@
     <value>Redo</value>
   </data>
   <data name="Toolbar_Save" xml:space="preserve">
-    <value>Save</value>
+    <value>Save (Ctrl + S)</value>
   </data>
   <data name="Toolbar_UndoAction" xml:space="preserve">
     <value>Undo {0}</value>
@@ -846,7 +846,7 @@ as Meters: {3:F3}m</value>
 [Ctrl+V] Paste the texture from the buffer</value>
   </data>
   <data name="Config_chkOutputModelTextureInfo" xml:space="preserve">
-    <value>Output model's texture information to the console</value>
+    <value>Output texture information to the console</value>
   </data>
   <data name="TextureChunkBox_TipText" xml:space="preserve">
     <value>[Click] Open the viewer

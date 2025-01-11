@@ -196,7 +196,7 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
-        ///   Output model&apos;s texture information to the console に類似しているローカライズされた文字列を検索します。
+        ///   Output texture information to the console に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Config_chkOutputModelTextureInfo {
             get {
@@ -1909,7 +1909,7 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
-        ///   Patch NSD (Ctrl + S) に類似しているローカライズされた文字列を検索します。
+        ///   Patch NSD (Ctrl + Shift + S) に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Toolbar_PatchNSD {
             get {
@@ -1945,7 +1945,7 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
-        ///   Save に類似しているローカライズされた文字列を検索します。
+        ///   Save (Ctrl + S) に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Toolbar_Save {
             get {

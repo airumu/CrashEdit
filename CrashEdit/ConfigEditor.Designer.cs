@@ -801,7 +801,7 @@ namespace CrashEdit.CE
             chkOutputModelTextureInfo.Name = "chkOutputModelTextureInfo";
             chkOutputModelTextureInfo.Size = new Size(293, 19);
             chkOutputModelTextureInfo.TabIndex = 19;
-            chkOutputModelTextureInfo.Text = "Output model's texture information to the console";
+            chkOutputModelTextureInfo.Text = "Output texture information to the console";
             chkOutputModelTextureInfo.UseVisualStyleBackColor = true;
             chkOutputModelTextureInfo.CheckedChanged += chkOutputModelTextureInfo_CheckedChanged;
             // 

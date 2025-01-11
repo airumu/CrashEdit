@@ -58,9 +58,9 @@ namespace CrashEdit.CE
             label6.Location = new Point(14, 288);
             label6.Margin = new Padding(4, 0, 4, 0);
             label6.Name = "label6";
-            label6.Size = new Size(187, 85);
+            label6.Size = new Size(187, 102);
             label6.TabIndex = 10;
-            label6.Text = "Patch NSD (Ctrl + S)\r\nFind (Ctrl + F)\r\nFind next node (F3)\r\nFind previous node (Shift + F3)\r\nPlay (F1)";
+            label6.Text = "Save NSF (Ctrl + S)\r\nPatch NSD (Ctrl + Shift + S)\r\nFind (Ctrl + F)\r\nFind next node (F3)\r\nFind previous node (Shift + F3)\r\nPlay (F1)";
             label6.Visible = false;
             // 
             // label3

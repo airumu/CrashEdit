@@ -203,11 +203,11 @@ namespace CrashEdit.CE
                 //    ToolStrip.Items[0].PerformClick();
                 //    break;
                 // Save NSF
-                //case (Keys.Control | Keys.Shift | Keys.S):
-                //    ToolStrip.Items[1].PerformClick();
-                //    break;
-                // Patch NSD
                 case (Keys.Control | Keys.S):
+                    ToolStrip.Items[1].PerformClick();
+                    break;
+                // Patch NSD
+                case (Keys.Control | Keys.Shift | Keys.S):
                     ToolStrip.Items[3].PerformClick();
                     break;
                 // Close NSF
