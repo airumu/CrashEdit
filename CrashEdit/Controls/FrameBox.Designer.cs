@@ -95,6 +95,7 @@ namespace CrashEdit.CE
             cmdCopyCollision = new DarkButton();
             fraCopy = new DarkGroupBox();
             cmdCopyOffset = new DarkButton();
+            pnFrameBox = new Panel();
             fraVertice.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numZ).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numY).BeginInit();
@@ -988,20 +989,29 @@ namespace CrashEdit.CE
             cmdCopyOffset.Text = "Offset";
             cmdCopyOffset.Click += cmdCopyOffset_Click;
             // 
+            // pnFrameBox
+            // 
+            pnFrameBox.Controls.Add(fraCopy);
+            pnFrameBox.Controls.Add(chkSyncFrames);
+            pnFrameBox.Controls.Add(lblEIDError);
+            pnFrameBox.Controls.Add(darkGroupBox1);
+            pnFrameBox.Controls.Add(groupBox2);
+            pnFrameBox.Controls.Add(groupBox1);
+            pnFrameBox.Controls.Add(fraCollision);
+            pnFrameBox.Controls.Add(fraOffset);
+            pnFrameBox.Controls.Add(fraVertice);
+            pnFrameBox.Dock = DockStyle.Fill;
+            pnFrameBox.Location = new Point(0, 0);
+            pnFrameBox.Name = "pnFrameBox";
+            pnFrameBox.Size = new Size(710, 524);
+            pnFrameBox.TabIndex = 21;
+            // 
             // FrameBox
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(31, 31, 32);
-            Controls.Add(fraCopy);
-            Controls.Add(chkSyncFrames);
-            Controls.Add(lblEIDError);
-            Controls.Add(darkGroupBox1);
-            Controls.Add(groupBox2);
-            Controls.Add(groupBox1);
-            Controls.Add(fraCollision);
-            Controls.Add(fraOffset);
-            Controls.Add(fraVertice);
+            Controls.Add(pnFrameBox);
             Font = new Font("Microsoft Sans Serif", 9F);
             ForeColor = SystemColors.Window;
             Margin = new Padding(3, 4, 3, 4);
@@ -1111,5 +1121,6 @@ namespace CrashEdit.CE
         private DarkButton cmdCopyCollision;
         private DarkGroupBox fraCopy;
         private DarkButton cmdCopyOffset;
+        private Panel pnFrameBox;
     }
 }

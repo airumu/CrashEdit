@@ -1,28 +1,29 @@
 using AltUI.Forms;
+using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
-using CrashEdit.Crash.GOOLIns;
+using MetroSet_UI.Controls;
 
 namespace CrashEdit.CE
 {
     public partial class FrameBox : UserControl
     {
         private FrameController controller;
+        private AnimationEntry animation;
         private Frame frame;
         private ModelEntry model;
-        private AnimationEntry animation;
 
         private bool vertexdirty;
         private bool collisiondirty;
-        private int vertexindex;
-        private int collisionindex;
         private bool syncedit;
+        private int vertexindex = 0;
+        private int collisionindex = 0;
 
-        public FrameBox(FrameController controller, AnimationEntry anim)
+        public FrameBox(FrameController controller, AnimationEntry animation)
         {
             this.controller = controller;
+            this.animation = animation;
             frame = controller.Frame;
             model = controller.Model;
-            animation = anim;
             InitializeComponent();
             UpdateVertice();
             UpdateCollision();
@@ -30,8 +31,51 @@ namespace CrashEdit.CE
             UpdateHeaderSize();
             UpdateSPVertex();
             UpdateModel();
-            vertexindex = 0;
-            collisionindex = 0;
+
+            CreateTabs();
+        }
+
+        private void CreateTabs()
+        {
+            MetroSetTabControl tbcTabs = new MetroSetTabControl()
+            {
+                BackgroundColor = Color.FromArgb(31, 31, 32),
+                Dock = DockStyle.Fill,
+                IsDerivedStyle = false,
+                ItemSize = new Size(100, 28),
+                Style = MetroSet_UI.Enums.Style.Dark,
+                TabStyle = MetroSet_UI.Enums.TabStyle.Style1
+            };
+            var viewerbox = new AnimationEntryViewer(controller.GetNSF(), animation.EID, animation.Frames.IndexOf(frame))
+            {
+                Dock = DockStyle.Fill
+            };
+
+            if (Settings.Default.SplitAnimViewerPanels)
+            {
+                SplitContainer pnSplit = new SplitContainer
+                {
+                    Orientation = Orientation.Horizontal,
+                    SplitterDistance = 35,
+                    IsSplitterFixed = true,
+                    Dock = DockStyle.Fill
+                };
+                pnSplit.Panel1.Controls.Add(pnFrameBox);
+                pnSplit.Panel2.Controls.Add(viewerbox);
+                Controls.Add(pnSplit);
+            }
+            else
+            {
+                TabPage viewertab = new TabPage("Viewer");
+                viewertab.Controls.Add(viewerbox);
+                TabPage edittab = new TabPage("Editor");
+                edittab.Controls.Add(pnFrameBox);
+
+                tbcTabs.TabPages.Add(viewertab);
+                tbcTabs.TabPages.Add(edittab);
+                tbcTabs.SelectedTab = viewertab;
+                Controls.Add(tbcTabs);
+            }
         }
 
         private void UpdateVertice()
