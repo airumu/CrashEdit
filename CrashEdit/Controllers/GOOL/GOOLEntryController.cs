@@ -26,45 +26,7 @@ namespace CrashEdit.CE
 
         public override Control CreateEditor()
         {
-            MetroSetTabControl tbcTabs = new MetroSetTabControl()
-            {
-                BackgroundColor = Color.FromArgb(31, 31, 32),
-                Dock = DockStyle.Fill,
-                IsDerivedStyle = false,
-                ItemSize = new Size(100, 28),
-                Style = MetroSet_UI.Enums.Style.Dark,
-                TabStyle = MetroSet_UI.Enums.TabStyle.Style1
-            };
-            var goolBox = new GOOLBox(GOOLEntry)
-            {
-                Dock = DockStyle.Fill
-            };
-            var goolFrameGroupBox = new GOOLFrameGroupBox(this)
-            {
-                Dock = DockStyle.Fill
-            };
-
-            TabPage tab1 = new TabPage("Code");
-            tab1.Controls.Add(goolBox);
-            TabPage tab2 = new TabPage("FrameGroup");
-            tab2.Controls.Add(goolFrameGroupBox);
-
-            tbcTabs.TabPages.Add(tab1);
-            tbcTabs.TabPages.Add(tab2);
-
-            EventHandler tabChangedHandler = null;
-            tabChangedHandler = (sender, e) =>
-            {
-                if (tbcTabs.SelectedTab == tab2)
-                {
-                    goolFrameGroupBox.OnTabSelected();
-                    tbcTabs.SelectedIndexChanged -= tabChangedHandler;
-                }
-            };
-            tbcTabs.SelectedIndexChanged += tabChangedHandler;
-
-            tbcTabs.SelectedTab = tab1;
-            return tbcTabs;
+            return new GOOLBox(this, GOOLEntry);
         }
 
         public GOOLEntry GOOLEntry { get; }

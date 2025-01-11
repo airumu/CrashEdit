@@ -1,4 +1,5 @@
-﻿using System.Drawing.Imaging;
+﻿using System.Diagnostics;
+using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
@@ -8,21 +9,21 @@ namespace CrashEdit.CE
 {
     public partial class GOOLFrameGroupBox : UserControl
     {
-        GOOLEntryController controller;
-        GOOLEntry goolentry;
-        List<VertexGroup2> vertexGroup2;
-        List<VertexGroup3to2> vertexGroup3to2;
-        List<SpriteGroup2> spriteGroup2;
-        DataGridViewCellStyle maxValueStyle = new DataGridViewCellStyle
+        private GOOLEntryController controller;
+        private GOOLEntry goolentry;
+        private TextureChunk chunk = null!;
+        private List<VertexGroup2> vertexGroup2 = new List<VertexGroup2>();
+        private List<VertexGroup3to2> vertexGroup3to2 = new List<VertexGroup3to2>();
+        private List<SpriteGroup2> spriteGroup2 = new List<SpriteGroup2>();
+
+        private DataGridViewCellStyle maxValueStyle = new DataGridViewCellStyle
         {
             ForeColor = Color.Turquoise
         };
-        DataGridViewCellStyle defaultValueStyle = new DataGridViewCellStyle
+        private DataGridViewCellStyle defaultValueStyle = new DataGridViewCellStyle
         {
             ForeColor = Color.Gainsboro
         };
-
-        private TextureChunk chunk { get; set; }
 
         private int currentColorMode = 0;
         private bool simpleMode = false;
@@ -62,10 +63,10 @@ namespace CrashEdit.CE
         private readonly string titleInputError = "Input Error";
         private readonly string titleValidationError = "Validation Error";
 
-        public GOOLFrameGroupBox(GOOLEntryController controller)
+        public GOOLFrameGroupBox(GOOLEntryController controller, GOOLEntry goolentry)
         {
+            this.goolentry = goolentry;
             this.controller = controller;
-            goolentry = controller.GOOLEntry;
             InitializeComponent();
         }
 
@@ -238,10 +239,6 @@ namespace CrashEdit.CE
         private void dgvFrameGroupCreateRows()
         {
             // Todo something better
-            vertexGroup2 = new List<VertexGroup2>();
-            vertexGroup3to2 = new List<VertexGroup3to2>();
-            spriteGroup2 = new List<SpriteGroup2>();
-
             dgvFrameGroup.ScrollBars = ScrollBars.None;
             dgvFrameGroup.SuspendLayout();
             dirty = true;
