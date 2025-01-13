@@ -77,7 +77,6 @@ namespace CrashEdit.CE
         {
             this.goolentry = goolentry;
             this.controller = controller;
-            InitializeComponent();
         }
 
         public void OnTabSelected()
@@ -87,6 +86,8 @@ namespace CrashEdit.CE
 
         private void GOOLFrameGroupBox_Enter(object sender, EventArgs e)
         {
+            InitializeComponent();
+
             EnableDoubleBuffering(dgvFrameGroup);
             EnableDoubleBuffering(dgvTexture);
             SetDarkTheme(dgvFrameGroup);

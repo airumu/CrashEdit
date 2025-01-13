@@ -4,8 +4,6 @@ using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 using MetroSet_UI.Controls;
 using System.Drawing.Imaging;
-using System.Runtime;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
 namespace CrashEdit.CE
 {
@@ -127,11 +125,23 @@ namespace CrashEdit.CE
                 };
                 TabPage page = new TabPage("CLUT");
                 page.Controls.Add(clut);
+               
+                EventHandler tabChangedHandler = null;
+                tabChangedHandler = (sender, e) =>
+                {
+                    if (tbcTabs.SelectedTab == page)
+                    {
+                        clut.OnTabSelected();
+                        tbcTabs.SelectedIndexChanged -= tabChangedHandler;
+                    }
+                };
+                tbcTabs.SelectedIndexChanged += tabChangedHandler;
+
                 tbcTabs.TabPages.Add(page);
             }
 
-            Controls.Add(tbcTabs);
             tbcTabs.SelectedIndex = 1;
+            Controls.Add(tbcTabs);
         }
 
         private void ReloadTab(TabControl tabControl, int tabIndex, byte[] newChunkData)

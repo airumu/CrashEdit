@@ -29,8 +29,17 @@ namespace CrashEdit.CE.Controls
         public CLUTBox(TextureChunk texturechunk)
         {
             chunk = texturechunk;
-            DoubleBuffered = true;
+        }
+
+        public void OnTabSelected()
+        {
+            CLUTBox_Enter(this, EventArgs.Empty);
+        }
+
+        private void CLUTBox_Enter(object sender, EventArgs e)
+        {
             InitializeComponent();
+            DoubleBuffered = true;
 
             SetDarkTheme(grdCLUT);
             EnableDoubleBuffering();
