@@ -83,8 +83,8 @@ namespace CrashEdit.CE
             chkOutputModelTextureInfo = new CheckBox();
             chkEnableLegacyEntityBox = new CheckBox();
             fraExtra = new DarkGroupBox();
-            chkShowCustomCrates = new CheckBox();
-            chkOldPatchNSD = new CheckBox();
+            chkEnableCustomCrates = new CheckBox();
+            chkLagacyPatchNSD = new CheckBox();
             chkEnableC2TT = new CheckBox();
             chkSplitViewerPanels = new CheckBox();
             chkLiteralCollisionTypes = new CheckBox();
@@ -820,8 +820,8 @@ namespace CrashEdit.CE
             // fraExtra
             // 
             fraExtra.BackColor = Color.Transparent;
-            fraExtra.Controls.Add(chkShowCustomCrates);
-            fraExtra.Controls.Add(chkOldPatchNSD);
+            fraExtra.Controls.Add(chkEnableCustomCrates);
+            fraExtra.Controls.Add(chkLagacyPatchNSD);
             fraExtra.Controls.Add(chkEnableC2TT);
             fraExtra.Location = new Point(0, 212);
             fraExtra.Name = "fraExtra";
@@ -830,28 +830,28 @@ namespace CrashEdit.CE
             fraExtra.TabStop = false;
             fraExtra.Text = "CE-tweaked";
             // 
-            // chkShowCustomCrates
+            // chkEnableCustomCrates
             // 
-            chkShowCustomCrates.AutoSize = true;
-            chkShowCustomCrates.Location = new Point(6, 22);
-            chkShowCustomCrates.Name = "chkShowCustomCrates";
-            chkShowCustomCrates.Size = new Size(132, 19);
-            chkShowCustomCrates.TabIndex = 15;
-            chkShowCustomCrates.Text = "Show custom crates";
-            chkShowCustomCrates.UseVisualStyleBackColor = true;
-            chkShowCustomCrates.CheckedChanged += chkShowCustomCrates_CheckedChanged;
+            chkEnableCustomCrates.AutoSize = true;
+            chkEnableCustomCrates.Location = new Point(6, 22);
+            chkEnableCustomCrates.Name = "chkEnableCustomCrates";
+            chkEnableCustomCrates.Size = new Size(132, 19);
+            chkEnableCustomCrates.TabIndex = 15;
+            chkEnableCustomCrates.Text = "Enable custom crates";
+            chkEnableCustomCrates.UseVisualStyleBackColor = true;
+            chkEnableCustomCrates.CheckedChanged += chkShowCustomCrates_CheckedChanged;
             // 
-            // chkOldPatchNSD
+            // chkLagacyPatchNSD
             // 
-            chkOldPatchNSD.AutoSize = true;
-            chkOldPatchNSD.Location = new Point(6, 72);
-            chkOldPatchNSD.Margin = new Padding(4, 3, 4, 3);
-            chkOldPatchNSD.Name = "chkOldPatchNSD";
-            chkOldPatchNSD.Size = new Size(271, 19);
-            chkOldPatchNSD.TabIndex = 9;
-            chkOldPatchNSD.Text = "Use old NSD patching from CrashEdit v0.2.49.0";
-            chkOldPatchNSD.UseVisualStyleBackColor = true;
-            chkOldPatchNSD.CheckedChanged += chkOldPatchNSD_CheckedChanged;
+            chkLagacyPatchNSD.AutoSize = true;
+            chkLagacyPatchNSD.Location = new Point(6, 72);
+            chkLagacyPatchNSD.Margin = new Padding(4, 3, 4, 3);
+            chkLagacyPatchNSD.Name = "chkLagacyPatchNSD";
+            chkLagacyPatchNSD.Size = new Size(271, 19);
+            chkLagacyPatchNSD.TabIndex = 9;
+            chkLagacyPatchNSD.Text = "Use legacy NSD patching from CrashEdit v0.2.49.0";
+            chkLagacyPatchNSD.UseVisualStyleBackColor = true;
+            chkLagacyPatchNSD.CheckedChanged += chkOldPatchNSD_CheckedChanged;
             // 
             // chkEnableC2TT
             // 
@@ -993,9 +993,9 @@ namespace CrashEdit.CE
         private CheckBox chkViewCamera;
         private DarkGroupBox fraLang;
         private CheckBox chkShowEntityParams;
-        private CheckBox chkOldPatchNSD;
+        private CheckBox chkLagacyPatchNSD;
         private CheckBox chkLiteralCollisionTypes;
-        private CheckBox chkShowCustomCrates;
+        private CheckBox chkEnableCustomCrates;
         private CheckBox chkEnableC2TT;
         private CheckBox chkPatchGOOLC3toC2;
         private CheckBox chkSplitViewerPanels;

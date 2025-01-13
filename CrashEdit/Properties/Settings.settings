@@ -86,7 +86,7 @@
     <Setting Name="ShowliteralCollisionTypes" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="ShowCustomCrates" Type="System.Boolean" Scope="User">
+    <Setting Name="EnableCustomCrates" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="EnableC2TTEditor" Type="System.Boolean" Scope="User">

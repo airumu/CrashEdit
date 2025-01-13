@@ -124,6 +124,15 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
+        ///   Enable custom crates に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Config_chkEnableCustomCrates {
+            get {
+                return ResourceManager.GetString("Config_chkEnableCustomCrates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Enable 3D entity display に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Config_chkEnableVisual {
@@ -151,6 +160,15 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
+        ///   Use legacy NSD patching from CrashEdit v0.2.49.0 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Config_chkLegacyPatchNSD {
+            get {
+                return ResourceManager.GetString("Config_chkLegacyPatchNSD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Show collision node types as literal values に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Config_chkLiteralCollisionTypes {
@@ -165,15 +183,6 @@ namespace CrashEdit.CE.Properties {
         internal static string Config_chkNormalDisplay {
             get {
                 return ResourceManager.GetString("Config_chkNormalDisplay", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Use old NSD patching from CrashEdit v0.2.49.0 に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string Config_chkOldPatchNSD {
-            get {
-                return ResourceManager.GetString("Config_chkOldPatchNSD", resourceCulture);
             }
         }
         
@@ -219,15 +228,6 @@ namespace CrashEdit.CE.Properties {
         internal static string Config_chkPatchNSDSavesNSF {
             get {
                 return ResourceManager.GetString("Config_chkPatchNSDSavesNSF", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Show custom crates に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string Config_chkShowCustomCrates {
-            get {
-                return ResourceManager.GetString("Config_chkShowCustomCrates", resourceCulture);
             }
         }
         

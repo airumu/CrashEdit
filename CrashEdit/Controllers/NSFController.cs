@@ -194,7 +194,7 @@ namespace CrashEdit.CE
                                             break;
                                     }
                                 }
-                                else if (Settings.Default.ShowCustomCrates)
+                                else if (Settings.Default.EnableCustomCrates)
                                 {
                                     switch (entity.Subtype)
                                     {

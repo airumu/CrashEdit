@@ -102,9 +102,9 @@ namespace CrashEdit.CE
             chkShowEntityParams.Checked = Settings.Default.ShowEntityParams;
             chkPatchNSDSavesNSF.Checked = Settings.Default.PatchNSDSavesNSF;
             // added
-            chkOldPatchNSD.Checked = Settings.Default.UseOldPatchNSD;
+            chkLagacyPatchNSD.Checked = Settings.Default.UseOldPatchNSD;
             chkLiteralCollisionTypes.Checked = Settings.Default.ShowliteralCollisionTypes;
-            chkShowCustomCrates.Checked = Settings.Default.ShowCustomCrates;
+            chkEnableCustomCrates.Checked = Settings.Default.EnableCustomCrates;
             chkEnableC2TT.Checked = Settings.Default.EnableC2TTEditor;
             chkPatchGOOLC3toC2.Checked = Settings.Default.PatchGOOLC3toC2;
             chkSplitViewerPanels.Checked = Settings.Default.SplitAnimViewerPanels;
@@ -140,9 +140,9 @@ namespace CrashEdit.CE
             lblNodeShadeAmt.Text = string.Format("{0:F0}%", sldNodeShadeAmt.Value);
             cmdReset.Text = Resources.Config_cmdReset;
             // added
-            chkOldPatchNSD.Text = Resources.Config_chkOldPatchNSD;
+            chkLagacyPatchNSD.Text = Resources.Config_chkLegacyPatchNSD;
             chkLiteralCollisionTypes.Text = Resources.Config_chkLiteralCollisionTypes;
-            chkShowCustomCrates.Text = Resources.Config_chkShowCustomCrates;
+            chkEnableCustomCrates.Text = Resources.Config_chkEnableCustomCrates;
             chkEnableC2TT.Text = Resources.Config_chkEnableC2TT;
             chkPatchGOOLC3toC2.Text = Resources.Config_chkPatchGOOLC3toC2;
             chkOutputCopyTextureResult.Text = Resources.Config_chkOutputCopyTextureResult;
@@ -317,7 +317,7 @@ namespace CrashEdit.CE
 
         private void chkOldPatchNSD_CheckedChanged(object sender, EventArgs e)
         {
-            Settings.Default.UseOldPatchNSD = chkOldPatchNSD.Checked;
+            Settings.Default.UseOldPatchNSD = chkLagacyPatchNSD.Checked;
             Settings.Default.Save();
         }
 
@@ -329,7 +329,7 @@ namespace CrashEdit.CE
 
         private void chkShowCustomCrates_CheckedChanged(object sender, EventArgs e)
         {
-            Settings.Default.ShowCustomCrates = chkShowCustomCrates.Checked;
+            Settings.Default.EnableCustomCrates = chkEnableCustomCrates.Checked;
             Settings.Default.Save();
         }
 

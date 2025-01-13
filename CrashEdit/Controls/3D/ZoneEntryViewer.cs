@@ -517,7 +517,7 @@ namespace CrashEdit.CE
                     {
                         draw_type = false;
                         int timetrialcontents;
-                        if (Settings.Default.ShowCustomCrates)
+                        if (Settings.Default.EnableCustomCrates)
                             timetrialcontents = entity.C2TTType.HasValue ? entity.C2TTType.Value >> 8 : 0;
                         else
                             timetrialcontents = entity.TimeTrialReward.HasValue ? entity.TimeTrialReward.Value >> 8 : 0;
@@ -724,7 +724,7 @@ namespace CrashEdit.CE
 
         private Bitmap GetBoxTopTexture(int subtype, int timetrialcontents)
         {
-            if (Settings.Default.ShowCustomCrates)
+            if (Settings.Default.EnableCustomCrates)
             {
                 if (time_trial_mode && timetrialcontents != 0)
                 {
@@ -832,7 +832,7 @@ namespace CrashEdit.CE
 
         private Bitmap GetBoxSideTexture(int subtype, int timetrialcontents)
         {
-            if (Settings.Default.ShowCustomCrates)
+            if (Settings.Default.EnableCustomCrates)
             {
                 if (time_trial_mode && timetrialcontents != 0)
                 {

@@ -362,12 +362,12 @@ namespace CrashEdit.CE.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool ShowCustomCrates {
+        public bool EnableCustomCrates {
             get {
-                return ((bool)(this["ShowCustomCrates"]));
+                return ((bool)(this["EnableCustomCrates"]));
             }
             set {
-                this["ShowCustomCrates"] = value;
+                this["EnableCustomCrates"] = value;
             }
         }
         
