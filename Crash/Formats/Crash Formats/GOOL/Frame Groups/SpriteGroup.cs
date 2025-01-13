@@ -19,7 +19,7 @@
             int eid = BitConv.FromInt32(data, index);
             index += 4;
 
-            if (index + framecount * 16 > data.Length)
+            if (index + framecount * 8 > data.Length)
             {
                 ErrorManager.SignalError("Sprite frame group framecount is wrong");
             }
