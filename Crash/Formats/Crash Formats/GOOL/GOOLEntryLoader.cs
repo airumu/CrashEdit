@@ -119,7 +119,7 @@ namespace CrashEdit.Crash
                                 i += 4;
 
                                 if (!warned)
-                                    ErrorManager.SignalIgnorableError(string.Format("Unknown frame groups in {0}", Entry.EIDToEName(eid)));
+                                    ErrorManager.SignalIgnorableError(string.Format("Unknown frame groups at 0x{1:X} in {0}", Entry.EIDToEName(eid), begin));
                             }
                         }
                     }
