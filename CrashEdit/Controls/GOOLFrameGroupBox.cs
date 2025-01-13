@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Drawing.Imaging;
+﻿using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
@@ -13,11 +11,7 @@ namespace CrashEdit.CE
         private GOOLEntryController controller;
         private GOOLEntry goolentry;
         private TextureChunk chunk = null!;
-        private List<VertexGroup> vertexGroup = new List<VertexGroup>();
-        private List<VertexGroup2> vertexGroup2 = new List<VertexGroup2>();
-        private List<VertexGroup3to2> vertexGroup3to2 = new List<VertexGroup3to2>();
-        private List<SpriteGroup> spriteGroup = new List<SpriteGroup>();
-        private List<SpriteGroup2> spriteGroup2 = new List<SpriteGroup2>();
+        private List<object> frameGroups = new List<object>();
 
         private DataGridViewCellStyle maxValueStyle = new DataGridViewCellStyle
         {
@@ -282,7 +276,6 @@ namespace CrashEdit.CE
 
         private void dgvFrameGroupCreateRows()
         {
-            // Todo something better
             dgvFrameGroup.ScrollBars = ScrollBars.None;
             dgvFrameGroup.SuspendLayout();
             dirty = true;
@@ -291,11 +284,7 @@ namespace CrashEdit.CE
                 if (group is VertexGroup)
                 {
                     var vgroup = (VertexGroup)group;
-                    vertexGroup.Add(vgroup);
-                    vertexGroup2.Add(null!);
-                    vertexGroup3to2.Add(null!);
-                    spriteGroup.Add(null!);
-                    spriteGroup2.Add(null!);
+                    frameGroups.Add(vgroup);
                     DataGridViewRow row = new DataGridViewRow();
 
                     GetIndex(vgroup.Index / 4, out string index1, out string index2);
@@ -307,11 +296,7 @@ namespace CrashEdit.CE
                 else if (group is VertexGroup2)
                 {
                     var vgroup = (VertexGroup2)group;
-                    vertexGroup.Add(null!);
-                    vertexGroup2.Add(vgroup);
-                    vertexGroup3to2.Add(null!);
-                    spriteGroup.Add(null!);
-                    spriteGroup2.Add(null!);
+                    frameGroups.Add(vgroup);
                     DataGridViewRow row = new DataGridViewRow();
 
                     GetIndex(vgroup.Index / 4, out string index1, out string index2);
@@ -323,11 +308,7 @@ namespace CrashEdit.CE
                 else if (group is VertexGroup3to2)
                 {
                     var vgroup = (VertexGroup3to2)group;
-                    vertexGroup.Add(null!);
-                    vertexGroup2.Add(null!);
-                    vertexGroup3to2.Add(vgroup);
-                    spriteGroup.Add(null!);
-                    spriteGroup2.Add(null!);
+                    frameGroups.Add(vgroup);
                     DataGridViewRow row = new DataGridViewRow();
 
                     GetIndex(vgroup.Index / 4, out string index1, out string index2);
@@ -339,11 +320,7 @@ namespace CrashEdit.CE
                 else if (group is SpriteGroup)
                 {
                     var vgroup = (SpriteGroup)group;
-                    vertexGroup.Add(null!);
-                    vertexGroup2.Add(null!);
-                    vertexGroup3to2.Add(null!);
-                    spriteGroup.Add(vgroup);
-                    spriteGroup2.Add(null!);
+                    frameGroups.Add(vgroup);
                     DataGridViewRow row = new DataGridViewRow();
 
                     GetIndex(vgroup.Index / 4, out string index1, out string index2);
@@ -355,11 +332,7 @@ namespace CrashEdit.CE
                 else if (group is SpriteGroup2)
                 {
                     var vgroup = (SpriteGroup2)group;
-                    vertexGroup.Add(null!);
-                    vertexGroup2.Add(null!);
-                    vertexGroup3to2.Add(null!);
-                    spriteGroup.Add(null!);
-                    spriteGroup2.Add(vgroup);
+                    frameGroups.Add(vgroup);
                     DataGridViewRow row = new DataGridViewRow();
 
                     GetIndex(vgroup.Index / 4, out string index1, out string index2);
@@ -467,12 +440,7 @@ namespace CrashEdit.CE
             {
                 int type = tag.Item1;
 
-                object selectedGroup =
-                    type == typeVertex ? vertexGroup[e.RowIndex] :
-                    type == typeVertex2 ? vertexGroup2[e.RowIndex] :
-                    type == typeVertex3to2 ? vertexGroup3to2[e.RowIndex] :
-                    type == typeSprite ? spriteGroup[e.RowIndex] :
-                    spriteGroup2[e.RowIndex];
+                object selectedGroup = frameGroups[e.RowIndex];
                 if (selectedGroup == null) return;
 
                 if (!(selectedGroup is VertexGroup _vertexGroup) &&
@@ -647,7 +615,7 @@ namespace CrashEdit.CE
 
             if (goolentry.Version == GOOLVersion.Version1)
             {
-                var selectedGroup = spriteGroup[rowIndex];
+                var selectedGroup = frameGroups[rowIndex];
                 if (selectedGroup == null || !(selectedGroup is SpriteGroup _spriteGroup)) return;
 
                 var og = _spriteGroup.Frames[e.RowIndex];
@@ -688,7 +656,7 @@ namespace CrashEdit.CE
             }
             else
             {
-                var selectedGroup = spriteGroup2[rowIndex];
+                var selectedGroup = frameGroups[rowIndex];
                 if (selectedGroup == null || !(selectedGroup is SpriteGroup2 _spriteGroup2)) return;
 
                 var og = _spriteGroup2.Frames[e.RowIndex];
