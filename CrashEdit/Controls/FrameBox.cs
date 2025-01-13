@@ -8,9 +8,9 @@ namespace CrashEdit.CE
     public partial class FrameBox : UserControl
     {
         private FrameController controller;
-        private AnimationEntry animation;
+        private AnimationEntry animationEntry;
         private Frame frame;
-        private ModelEntry model;
+        private ModelEntry? model;
 
         private bool vertexdirty;
         private bool collisiondirty;
@@ -18,12 +18,12 @@ namespace CrashEdit.CE
         private int vertexindex = 0;
         private int collisionindex = 0;
 
-        public FrameBox(FrameController controller, AnimationEntry animation)
+        public FrameBox(FrameController controller)
         {
             this.controller = controller;
-            this.animation = animation;
+            animationEntry = controller.AnimationEntryController.AnimationEntry;
             frame = controller.Frame;
-            model = controller.Model;
+            model = controller.GetEntry<ModelEntry>(frame.ModelEID);
             InitializeComponent();
             UpdateVertice();
             UpdateCollision();
@@ -46,7 +46,7 @@ namespace CrashEdit.CE
                 Style = MetroSet_UI.Enums.Style.Dark,
                 TabStyle = MetroSet_UI.Enums.TabStyle.Style1
             };
-            var viewerbox = new AnimationEntryViewer(controller.GetNSF(), animation.EID, animation.Frames.IndexOf(frame))
+            var viewerbox = new AnimationEntryViewer(controller.GetNSF(), animationEntry.EID, animationEntry.Frames.IndexOf(frame))
             {
                 Dock = DockStyle.Fill
             };
@@ -287,7 +287,7 @@ namespace CrashEdit.CE
         {
             if (syncedit)
             {
-                foreach (Frame frame in animation.Frames)
+                foreach (Frame frame in animationEntry.Frames)
                 {
                     AppendCollision(frame);
                 }
@@ -304,7 +304,7 @@ namespace CrashEdit.CE
         {
             if (syncedit)
             {
-                foreach (Frame frame in animation.Frames)
+                foreach (Frame frame in animationEntry.Frames)
                 {
                     frame.Collision.Insert(collisionindex, frame.Collision[collisionindex]);
                     frame.HeaderSize = (int)numHeader.Value + 40;
@@ -323,7 +323,7 @@ namespace CrashEdit.CE
         {
             if (syncedit)
             {
-                foreach (Frame frame in animation.Frames)
+                foreach (Frame frame in animationEntry.Frames)
                 {
                     frame.Collision.RemoveAt(collisionindex);
                     frame.HeaderSize = (int)numHeader.Value - 40;
@@ -394,7 +394,7 @@ namespace CrashEdit.CE
             short dif = (short)(newV - oldV);
             if (syncedit)
             {
-                foreach (Frame frame in animation.Frames)
+                foreach (Frame frame in animationEntry.Frames)
                     frame.XOffset += dif;
             }
             else
@@ -409,7 +409,7 @@ namespace CrashEdit.CE
             short dif = (short)(newV - oldV);
             if (syncedit)
             {
-                foreach (Frame frame in animation.Frames)
+                foreach (Frame frame in animationEntry.Frames)
                     frame.YOffset += dif;
             }
             else
@@ -423,7 +423,7 @@ namespace CrashEdit.CE
             short dif = (short)(newV - oldV);
             if (syncedit)
             {
-                foreach (Frame frame in animation.Frames)
+                foreach (Frame frame in animationEntry.Frames)
                     frame.ZOffset += dif;
             }
             else
@@ -439,7 +439,7 @@ namespace CrashEdit.CE
                 int dif = newV - oldV;
                 if (syncedit)
                 {
-                    foreach (Frame frame in animation.Frames)
+                    foreach (Frame frame in animationEntry.Frames)
                     {
                         var f = frame.Collision[collisionindex];
                         frame.Collision[collisionindex] = new FrameCollision(f.U, f.XOffset, f.YOffset, f.ZOffset, f.X1 + dif, f.Y1, f.Z1, f.X2, f.Y2, f.Z2);
@@ -462,7 +462,7 @@ namespace CrashEdit.CE
                 int dif = newV - oldV;
                 if (syncedit)
                 {
-                    foreach (Frame frame in animation.Frames)
+                    foreach (Frame frame in animationEntry.Frames)
                     {
                         var f = frame.Collision[collisionindex];
                         frame.Collision[collisionindex] = new FrameCollision(f.U, f.XOffset, f.YOffset, f.ZOffset, f.X1, f.Y1 + dif, f.Z1, f.X2, f.Y2, f.Z2);
@@ -485,7 +485,7 @@ namespace CrashEdit.CE
                 int dif = newV - oldV;
                 if (syncedit)
                 {
-                    foreach (Frame frame in animation.Frames)
+                    foreach (Frame frame in animationEntry.Frames)
                     {
                         var f = frame.Collision[collisionindex];
                         frame.Collision[collisionindex] = new FrameCollision(f.U, f.XOffset, f.YOffset, f.ZOffset, f.X1, f.Y1, f.Z1 + dif, f.X2, f.Y2, f.Z2);
@@ -508,7 +508,7 @@ namespace CrashEdit.CE
                 int dif = newV - oldV;
                 if (syncedit)
                 {
-                    foreach (Frame frame in animation.Frames)
+                    foreach (Frame frame in animationEntry.Frames)
                     {
                         var f = frame.Collision[collisionindex];
                         frame.Collision[collisionindex] = new FrameCollision(f.U, f.XOffset, f.YOffset, f.ZOffset, f.X1, f.Y1, f.Z1, f.X2 + dif, f.Y2, f.Z2);
@@ -531,7 +531,7 @@ namespace CrashEdit.CE
                 int dif = newV - oldV;
                 if (syncedit)
                 {
-                    foreach (Frame frame in animation.Frames)
+                    foreach (Frame frame in animationEntry.Frames)
                     {
                         var f = frame.Collision[collisionindex];
                         frame.Collision[collisionindex] = new FrameCollision(f.U, f.XOffset, f.YOffset, f.ZOffset, f.X1, f.Y1, f.Z1, f.X2, f.Y2 + dif, f.Z2);
@@ -554,7 +554,7 @@ namespace CrashEdit.CE
                 int dif = newV - oldV;
                 if (syncedit)
                 {
-                    foreach (Frame frame in animation.Frames)
+                    foreach (Frame frame in animationEntry.Frames)
                     {
                         var f = frame.Collision[collisionindex];
                         frame.Collision[collisionindex] = new FrameCollision(f.U, f.XOffset, f.YOffset, f.ZOffset, f.X1, f.Y1, f.Z1, f.X2, f.Y2, f.Z2 + dif);
@@ -577,7 +577,7 @@ namespace CrashEdit.CE
                 int dif = newV - oldV;
                 if (syncedit)
                 {
-                    foreach (Frame frame in animation.Frames)
+                    foreach (Frame frame in animationEntry.Frames)
                     {
                         var f = frame.Collision[collisionindex];
                         frame.Collision[collisionindex] = new FrameCollision(f.U, f.XOffset + dif, f.YOffset, f.ZOffset, f.X1, f.Y1, f.Z1, f.X2, f.Y2, f.Z2);
@@ -600,7 +600,7 @@ namespace CrashEdit.CE
                 int dif = newV - oldV;
                 if (syncedit)
                 {
-                    foreach (Frame frame in animation.Frames)
+                    foreach (Frame frame in animationEntry.Frames)
                     {
                         var f = frame.Collision[collisionindex];
                         frame.Collision[collisionindex] = new FrameCollision(f.U, f.XOffset, f.YOffset + dif, f.ZOffset, f.X1, f.Y1, f.Z1, f.X2, f.Y2, f.Z2);
@@ -623,7 +623,7 @@ namespace CrashEdit.CE
                 int dif = newV - oldV;
                 if (syncedit)
                 {
-                    foreach (Frame frame in animation.Frames)
+                    foreach (Frame frame in animationEntry.Frames)
                     {
                         var f = frame.Collision[collisionindex];
                         frame.Collision[collisionindex] = new FrameCollision(f.U, f.XOffset, f.YOffset, f.ZOffset + dif, f.X1, f.Y1, f.Z1, f.X2, f.Y2, f.Z2);
@@ -654,7 +654,7 @@ namespace CrashEdit.CE
             if (DarkMessageBox.ShowMessage("Are you sure you want to copy the current frame's collision values to other frames?", "Confirmation Prompt", DarkDialogButton.YesNo) == DialogResult.Yes)
             {
                 FrameCollision pos = frame.Collision[collisionindex];
-                foreach (Frame frame in animation.Frames)
+                foreach (Frame frame in animationEntry.Frames)
                 {
                     if (frame.Collision.Count > 0)
                         frame.Collision[collisionindex] = new FrameCollision(pos.U, pos.XOffset, pos.YOffset, pos.ZOffset, pos.X1, pos.Y1, pos.Z1, pos.X2, pos.Y2, pos.Z2);
@@ -666,7 +666,7 @@ namespace CrashEdit.CE
         {
             if (DarkMessageBox.ShowMessage("Are you sure you want to copy the current frame's offset values to other frames?", "Confirmation Prompt", DarkDialogButton.YesNo) == DialogResult.Yes)
             {
-                foreach (Frame frame in animation.Frames)
+                foreach (Frame frame in animationEntry.Frames)
                 {
                     frame.XOffset = (short)numXOffset.Value;
                     frame.YOffset = (short)numYOffset.Value;

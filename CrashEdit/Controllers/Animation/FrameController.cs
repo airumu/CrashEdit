@@ -11,7 +11,6 @@ namespace CrashEdit.CE
         public FrameController(Frame frame, SubcontrollerGroup parentGroup) : base(parentGroup, frame)
         {
             Frame = frame;
-            Model = GetEntry<ModelEntry>(frame.ModelEID) ?? throw new ArgumentNullException(nameof(frame.ModelEID), "Model entry not found.");
         }
 
         public override bool EditorAvailable => true;
@@ -21,7 +20,7 @@ namespace CrashEdit.CE
             var entry = AnimationEntryController.AnimationEntry;
             if (!Frame.IsNew)
             {
-                return new FrameBox(this, entry);
+                return new FrameBox(this);
             }
             else
             {
@@ -31,6 +30,5 @@ namespace CrashEdit.CE
 
         public AnimationEntryController AnimationEntryController => (AnimationEntryController)Modern.Parent.Legacy;
         public Frame Frame { get; }
-        public ModelEntry Model { get; }
     }
 }
