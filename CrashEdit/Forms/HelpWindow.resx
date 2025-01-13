@@ -124,7 +124,7 @@ Space: Clear selected cell
 Ctrl + Space: Clear selected chunk
 + / - : Change line width
 
-Right-click to select multiple cells
+Right-click: Set anchor to select multiple cells
 Ctrl + C: Copy selected chunks as bytes
 Ctrl + X: Cut selected chunks as bytes
 Ctrl + V: Paste to chunks as bytes
