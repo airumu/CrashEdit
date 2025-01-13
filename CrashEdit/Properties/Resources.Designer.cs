@@ -412,6 +412,15 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
+        ///   Delete Confirmation Prompt に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Delete_ConfirmationPrompt {
+            get {
+                return ResourceManager.GetString("Delete_ConfirmationPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Done. に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Done {

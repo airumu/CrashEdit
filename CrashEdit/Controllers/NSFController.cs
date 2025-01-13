@@ -98,123 +98,158 @@ namespace CrashEdit.CE
 
         private void Menu_Fix_Detonator()
         {
-            List<Entity> nitros = new List<Entity>();
-            List<Entity> detonators = new List<Entity>();
-            foreach (ZoneEntry entry in NSF.GetEntries<ZoneEntry>())
+            using (ExternalData externalData = new ExternalData(CrashUI.Properties.Resources.NSFController_AcFixDetonator))
             {
-                foreach (Entity entity in entry.Entities)
+                if (externalData.ShowDialog() == DialogResult.OK)
                 {
-                    if (entity.Type == 34)
+                    List<Entity> nitros = new List<Entity>();
+                    List<Entity> detonators = new List<Entity>();
+
+                    foreach (ZoneEntry entry in NSF.GetEntries<ZoneEntry>())
                     {
-                        if (entity.Subtype == 18 && entity.ID.HasValue)
+                        foreach (Entity entity in entry.Entities)
                         {
-                            nitros.Add(entity);
+                            if (entity.Type == 34)
+                            {
+                                if (entity.Subtype == 18 && entity.ID.HasValue)
+                                {
+                                    nitros.Add(entity);
+                                    Console.WriteLine($"34, 18, ID: {entity.ID.Value}");
+                                }
+                                if (entity.Subtype == 24)
+                                {
+                                    detonators.Add(entity);
+                                }
+                            }
+
+                            foreach (var pair in externalData.Group)
+                            {
+                                if (entity.Type == pair.Key)
+                                {
+                                    if (entity.Subtype == pair.Value && entity.ID.HasValue)
+                                    {
+                                        nitros.Add(entity);
+                                        Console.WriteLine($"{pair.Key:D2}, {pair.Value:D2}, ID: {entity.ID.Value}");
+                                    }
+                                }
+                            }
                         }
-                        else if (entity.Subtype == 24)
+                    }
+                    Console.WriteLine($"Total: {nitros.Count}");
+                    foreach (Entity detonator in detonators)
+                    {
+                        detonator.Victims.Clear();
+                        foreach (Entity nitro in nitros)
                         {
-                            detonators.Add(entity);
+                            detonator.Victims.Add(new EntityVictim((short)nitro.ID.Value));
                         }
                     }
                 }
             }
-            foreach (Entity detonator in detonators)
-            {
-                detonator.Victims.Clear();
-                foreach (Entity nitro in nitros)
-                {
-                    detonator.Victims.Add(new EntityVictim((short)nitro.ID.Value));
-                }
-            }
+          
         }
 
         private void Menu_Fix_BoxCount()
         {
-            int boxcount = 0;
-            List<Entity> willys = new List<Entity>();
-            foreach (ZoneEntry zone in NSF.GetEntries<ZoneEntry>())
+            using (ExternalData externalData = new ExternalData(CrashUI.Properties.Resources.NSFController_AcFixBoxCount))
             {
-                foreach (Entity entity in zone.Entities)
+                if (externalData.ShowDialog() == DialogResult.OK)
                 {
-                    if (entity.Type == 0 && entity.Subtype == 0)
+                    int boxcount = 0;
+                    List<Entity> willys = new List<Entity>();
+                    foreach (ZoneEntry zone in NSF.GetEntries<ZoneEntry>())
                     {
-                        willys.Add(entity);
+                        foreach (Entity entity in zone.Entities)
+                        {
+                            if ((entity.Type == 0 && entity.Subtype == 0) || (entity.Type == 4 && entity.Subtype == 17))
+                            {
+                                willys.Add(entity);
+                            }
+                            else if (entity.Type == 34)
+                            {
+                                if (GameVersion != GameVersion.Crash2 && GameVersion != GameVersion.Crash3)
+                                {
+                                    switch (entity.Subtype)
+                                    {
+                                        case 11: // pow
+                                        case 16: // auto tnt
+                                        case 17: // auto pickup
+                                        case 20: // auto empty
+                                        case 21: // empty 2
+                                            boxcount++;
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                                else if (GameVersion == GameVersion.Crash3)
+                                {
+                                    switch (entity.Subtype)
+                                    {
+                                        case 25: // slot
+                                            boxcount++;
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                                else if (Settings.Default.ShowCustomCrates)
+                                {
+                                    switch (entity.Subtype)
+                                    {
+                                        case 11: // pow
+                                        case 12: // purple
+                                        case 17: // slot
+                                        case 25: // steel pickup
+                                        case 26: // steel fruit
+                                            boxcount++;
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+
+                                switch (entity.Subtype)
+                                {
+                                    case 0: // tnt
+                                    case 2: // empty
+                                    case 3: // spring
+                                    case 4: // continue
+                                    case 6: // fruit
+                                    case 8: // life
+                                    case 9: // doctor
+                                    case 10: // pickup
+                                    case 13: // ghost
+                                    case 18: // nitro
+                                    case 23: // steel
+                                        boxcount++;
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+
+                            foreach (var pair in externalData.Group)
+                            {
+                                if (entity.Type == pair.Key)
+                                {
+                                    if (entity.Subtype == pair.Value && entity.ID.HasValue)
+                                    {
+                                        boxcount++;
+                                        Console.WriteLine($"{pair.Key:D2}, {pair.Value:D2}, ID: {entity.ID.Value}");
+                                    }
+                                }
+                            }
+                        }
                     }
-                    else if (entity.Type == 34)
+                    Console.WriteLine($"Total: {boxcount}");
+                    foreach (Entity willy in willys)
                     {
-                        if (GameVersion != GameVersion.Crash2 && GameVersion != GameVersion.Crash3)
+                        if (willy.BoxCount.HasValue)
                         {
-                            switch (entity.Subtype)
-                            {
-                                case 11: // pow
-                                case 16: // auto tnt
-                                case 17: // auto pickup
-                                case 20: // auto empty
-                                case 21: // empty 2
-                                    boxcount++;
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                        else if (GameVersion == GameVersion.Crash3)
-                        {
-                            switch (entity.Subtype)
-                            {
-                                case 25: // slot
-                                    boxcount++;
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                        else if (Settings.Default.ShowCustomCrates)
-                        {
-                            switch (entity.Subtype)
-                            {
-                                case 11: // pow
-                                case 12: // purple
-                                case 17: // slot
-                                case 25: // steel pickup
-                                case 26: // steel fruit
-                                    boxcount++;
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                        switch (entity.Subtype)
-                        {
-                            case 0: // tnt
-                            case 2: // empty
-                            case 3: // spring
-                            case 4: // continue
-                            case 6: // fruit
-                            case 8: // life
-                            case 9: // doctor
-                            case 10: // pickup
-                            case 13: // ghost
-                            case 18: // nitro
-                            case 23: // steel
-                                boxcount++;
-                                break;
-                            default:
-                                break;
+                            willy.BoxCount = new EntitySetting(0, boxcount);
                         }
                     }
-                    //else if (entity.Type == 36)
-                    //{
-                    //    if (entity.Subtype == 1)
-                    //    {
-                    //        boxcount++;
-                    //    }
-                    //}
-                }
-            }
-            foreach (Entity willy in willys)
-            {
-                if (willy.BoxCount.HasValue)
-                {
-                    willy.BoxCount = new EntitySetting(0, boxcount);
                 }
             }
         }

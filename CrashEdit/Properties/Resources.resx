@@ -861,4 +861,7 @@ as Meters: {3:F3}m</value>
   <data name="ViewerControls_ToggleEntityVisual" xml:space="preserve">
     <value>Toggle 3D entity display ({0})</value>
   </data>
+  <data name="Delete_ConfirmationPrompt" xml:space="preserve">
+    <value>Delete Confirmation Prompt</value>
+  </data>
 </root>
