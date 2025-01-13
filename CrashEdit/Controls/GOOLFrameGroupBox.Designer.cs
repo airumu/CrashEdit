@@ -40,13 +40,13 @@ namespace CrashEdit.CE
             dpdTPages = new DarkComboBox();
             dgvTexture = new DataGridView();
             dgvFrameGroup = new DataGridView();
-            panel2 = new Panel();
+            pnPicture = new Panel();
             pictureBox1 = new PictureBox();
             panel1.SuspendLayout();
             pnTextureControls.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvTexture).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvFrameGroup).BeginInit();
-            panel2.SuspendLayout();
+            pnPicture.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -210,16 +210,16 @@ namespace CrashEdit.CE
             dgvFrameGroup.EditingControlShowing += dgvFrameGroup_EditingControlShowing;
             dgvFrameGroup.SelectionChanged += dgvFrameGroup_SelectionChanged;
             // 
-            // panel2
+            // pnPicture
             // 
-            panel2.AutoScroll = true;
-            panel2.BackColor = Color.Transparent;
-            panel2.Controls.Add(pictureBox1);
-            panel2.Dock = DockStyle.Top;
-            panel2.Location = new Point(0, 440);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(800, 150);
-            panel2.TabIndex = 1;
+            pnPicture.AutoScroll = true;
+            pnPicture.BackColor = Color.Transparent;
+            pnPicture.Controls.Add(pictureBox1);
+            pnPicture.Dock = DockStyle.Top;
+            pnPicture.Location = new Point(0, 440);
+            pnPicture.Name = "pnPicture";
+            pnPicture.Size = new Size(800, 150);
+            pnPicture.TabIndex = 1;
             // 
             // pictureBox1
             // 
@@ -236,7 +236,7 @@ namespace CrashEdit.CE
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(31, 31, 32);
-            Controls.Add(panel2);
+            Controls.Add(pnPicture);
             Controls.Add(panel1);
             Name = "GOOLFrameGroupBox";
             Size = new Size(800, 800);
@@ -245,7 +245,7 @@ namespace CrashEdit.CE
             pnTextureControls.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvTexture).EndInit();
             ((System.ComponentModel.ISupportInitialize)dgvFrameGroup).EndInit();
-            panel2.ResumeLayout(false);
+            pnPicture.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
         }
@@ -254,7 +254,7 @@ namespace CrashEdit.CE
 
         private Panel panel1;
         private DataGridView dgvFrameGroup;
-        private Panel panel2;
+        private Panel pnPicture;
         private DataGridView dgvTexture;
         private PictureBox pictureBox1;
         private MetroSet_UI.Controls.MetroSetTrackBar trkPictureSize;
