@@ -35,8 +35,8 @@ namespace CrashEdit.CE
 
         private readonly int ColIndex = 0;
         private readonly int ColIndexAlt = 1;
-        private readonly int ColFrameCount = 2;
-        private readonly int ColEID = 3;
+        private readonly int ColEID = 2;
+        private readonly int ColFrameCount = 3;
         private readonly int ColInterpolated = 4;
 
         private int ColR = 0;
@@ -134,8 +134,8 @@ namespace CrashEdit.CE
         {
             dgvFrameGroup.Columns.Add("Index", "Index");
             dgvFrameGroup.Columns.Add("IndexAlt", "Index (Alt)");
-            dgvFrameGroup.Columns.Add("FrameCount", "Frames");
             dgvFrameGroup.Columns.Add("EID", "EID\u3000\u3000\u3000\u3000");
+            dgvFrameGroup.Columns.Add("FrameCount", "Frames");
             dgvFrameGroup.Columns.Add("Interpolated", "Interpolated");
         }
 
@@ -300,7 +300,7 @@ namespace CrashEdit.CE
 
                     GetIndex(vgroup.Index / 4, out string index1, out string index2);
 
-                    row.CreateCells(dgvFrameGroup, index1, index2, vgroup.FrameCount, Entry.EIDToEName(vgroup.EID), "-");
+                    row.CreateCells(dgvFrameGroup, index1, index2, Entry.EIDToEName(vgroup.EID), vgroup.FrameCount, "-");
                     row.Tag = (typeVertex, 0);
                     dgvFrameGroup.Rows.Add(row);
                 }
@@ -316,7 +316,7 @@ namespace CrashEdit.CE
 
                     GetIndex(vgroup.Index / 4, out string index1, out string index2);
 
-                    row.CreateCells(dgvFrameGroup, index1, index2, vgroup.FrameCount, Entry.EIDToEName(vgroup.EID), vgroup.Interpolated);
+                    row.CreateCells(dgvFrameGroup, index1, index2, Entry.EIDToEName(vgroup.EID), vgroup.FrameCount, vgroup.Interpolated);
                     row.Tag = (typeVertex2, 0);
                     dgvFrameGroup.Rows.Add(row);
                 }
@@ -332,7 +332,7 @@ namespace CrashEdit.CE
 
                     GetIndex(vgroup.Index / 4, out string index1, out string index2);
 
-                    row.CreateCells(dgvFrameGroup, index1, index2, vgroup.FrameCount, Entry.EIDToEName(vgroup.EID), vgroup.Interpolated);
+                    row.CreateCells(dgvFrameGroup, index1, index2, Entry.EIDToEName(vgroup.EID), vgroup.FrameCount, vgroup.Interpolated);
                     row.Tag = (typeVertex3to2, 0);
                     dgvFrameGroup.Rows.Add(row);
                 }
@@ -348,7 +348,7 @@ namespace CrashEdit.CE
 
                     GetIndex(vgroup.Index / 4, out string index1, out string index2);
 
-                    row.CreateCells(dgvFrameGroup, index1, index2, vgroup.FrameCount, Entry.EIDToEName(vgroup.EID), "-");
+                    row.CreateCells(dgvFrameGroup, index1, index2, Entry.EIDToEName(vgroup.EID), vgroup.FrameCount, "-");
                     row.Tag = (typeSprite, vgroup.Index);
                     dgvFrameGroup.Rows.Add(row);
                 }
@@ -364,7 +364,7 @@ namespace CrashEdit.CE
 
                     GetIndex(vgroup.Index / 4, out string index1, out string index2);
 
-                    row.CreateCells(dgvFrameGroup, index1, index2, vgroup.FrameCount, Entry.EIDToEName(vgroup.EID), "-");
+                    row.CreateCells(dgvFrameGroup, index1, index2, Entry.EIDToEName(vgroup.EID), vgroup.FrameCount, "-");
                     row.Tag = (typeSprite2, vgroup.Index);
                     dgvFrameGroup.Rows.Add(row);
                 }
