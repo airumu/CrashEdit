@@ -6,7 +6,9 @@ namespace CrashEdit.CE
 {
     public partial class ExternalData : DarkForm
     {
-        private Dictionary<string, List<KeyValuePair<int, int>>> groups = new();
+        private Dictionary<string, Dictionary<string, List<KeyValuePair<int, int>>>> groups;
+
+        private string groupIndex;
 
         private readonly string externalFileName = "CrashEdit.exe.externaldata.json";
         private readonly string defaultName = "None";
@@ -14,23 +16,39 @@ namespace CrashEdit.CE
         private readonly string titleError = "Error";
         private readonly string titleSuccess = "Success";
 
+        public List<KeyValuePair<int, int>> Group
+        {
+            get
+            {
+                if (cmbGroups.SelectedItem != null &&
+                    groups.TryGetValue(groupIndex, out var groupDict) &&
+                    groupDict.TryGetValue(cmbGroups.SelectedItem.ToString(), out var list))
+                {
+                    return list;
+                }
+
+                return new List<KeyValuePair<int, int>>();
+            }
+        }
+        public bool outputResult;
+
         public ExternalData(string name)
         {
             InitializeComponent();
-            Text = name;
+            this.Text = name;
+            groupIndex = name;
 
-            var dgv = dgvGroups;
-            EnableDoubleBuffering(dgv);
-            SetDarkTheme(dgv);
-
-            InitializeDataGridView(dgv);
+            EnableDoubleBuffering(dgvGroups);
+            SetDarkTheme(dgvGroups);
+            InitializeDataGridView(dgvGroups);
 
             LoadExternalData();
-            cmbGroups.DataSource = groups.Keys.ToList();
+            UpdateComboBox();
         }
 
         private void InitializeDataGridView(DataGridView dgv)
         {
+            dgv.Columns.Clear();
             var columns = new[]
             {
                 new { Header = "Type", MaxLength = 4 },
@@ -39,28 +57,19 @@ namespace CrashEdit.CE
 
             foreach (var col in columns)
             {
-                DataGridViewTextBoxColumn column = new DataGridViewTextBoxColumn
+                dgv.Columns.Add(new DataGridViewTextBoxColumn
                 {
                     HeaderText = col.Header,
                     MaxInputLength = col.MaxLength,
                     AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
                     Width = 60,
-                };
-                dgv.Columns.Add(column);
+                });
             }
         }
 
-        private void AddToListView(List<KeyValuePair<int, int>> list)
+        private void UpdateComboBox()
         {
-            dgvGroups.Rows.Clear();
-
-            foreach (var kvp in list)
-            {
-                DataGridViewRow row = new DataGridViewRow();
-
-                row.CreateCells(dgvGroups, kvp.Key, kvp.Value);
-                dgvGroups.Rows.Add(row);
-            }
+            cmbGroups.DataSource = groups[groupIndex].Keys.ToList();
         }
 
         private void LoadExternalData()
@@ -72,63 +81,52 @@ namespace CrashEdit.CE
             catch (Exception ex)
             {
                 DarkMessageBox.ShowError($"Failed to load groups: {ex.Message}", titleError);
-                groups = new Dictionary<string, List<KeyValuePair<int, int>>>
-                {
-                    { defaultName, new List<KeyValuePair<int, int>>() }
-                };
+                groups = CreateDefaultGroups();
             }
         }
 
-        private Dictionary<string, List<KeyValuePair<int, int>>> LoadGroups()
+        private Dictionary<string, Dictionary<string, List<KeyValuePair<int, int>>>> LoadGroups()
         {
             if (File.Exists(externalFileName))
             {
                 var jsonString = File.ReadAllText(externalFileName);
-                return JsonSerializer.Deserialize<Dictionary<string, List<KeyValuePair<int, int>>>>(jsonString)
-                       ?? new Dictionary<string, List<KeyValuePair<int, int>>>();
+                return JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, List<KeyValuePair<int, int>>>>>(jsonString)
+                       ?? CreateDefaultGroups();
             }
-
-            return new Dictionary<string, List<KeyValuePair<int, int>>>
-            {
-                { defaultName, new List<KeyValuePair<int, int>>() }
-            };
+            return CreateDefaultGroups();
         }
 
-        public List<KeyValuePair<int, int>> Group
+        private Dictionary<string, Dictionary<string, List<KeyValuePair<int, int>>>> CreateDefaultGroups()
         {
-            get
+            return new Dictionary<string, Dictionary<string, List<KeyValuePair<int, int>>>>
             {
-                if (cmbGroups.SelectedItem != null && groups.TryGetValue(cmbGroups.SelectedItem.ToString(), out var list))
-                {
-                    return list;
-                }
-
-                return new List<KeyValuePair<int, int>>();
-            }
+                { "Fix Nitro Detonators", new Dictionary<string, List<KeyValuePair<int, int>>>
+                    { { defaultName, new List<KeyValuePair<int, int>>() } } },
+                { "Fix Box Count", new Dictionary<string, List<KeyValuePair<int, int>>>
+                    { { defaultName, new List<KeyValuePair<int, int>>() } } }
+            };
         }
 
         private void SaveGroups()
         {
             try
             {
-                if (cmbGroups.SelectedItem != null && groups.TryGetValue(cmbGroups.SelectedItem.ToString(), out var list))
+                if (cmbGroups.SelectedItem != null &&
+                    groups.TryGetValue(groupIndex, out var groupDict) &&
+                    groupDict.TryGetValue(cmbGroups.SelectedItem.ToString(), out var list))
                 {
                     list.Clear();
                     foreach (DataGridViewRow row in dgvGroups.Rows)
                     {
-                        if (row.Cells[0].Value != null && row.Cells[1].Value != null)
+                        if (row.Cells[0].Value != null && row.Cells[1].Value != null &&
+                            int.TryParse(row.Cells[0].Value.ToString(), out var type) &&
+                            int.TryParse(row.Cells[1].Value.ToString(), out var subtype))
                         {
-                            if (int.TryParse(row.Cells[0].Value.ToString(), out var type) &&
-                                int.TryParse(row.Cells[1].Value.ToString(), out var subtype))
-                            {
-                                list.Add(new KeyValuePair<int, int>(type, subtype));
-                            }
+                            list.Add(new KeyValuePair<int, int>(type, subtype));
                         }
                     }
                 }
-
-                File.WriteAllText(externalFileName, JsonSerializer.Serialize(groups));
-                Console.WriteLine("Groups saved successfully.");
+                File.WriteAllText(externalFileName, JsonSerializer.Serialize(groups, new JsonSerializerOptions { WriteIndented = true }));
             }
             catch (Exception ex)
             {
@@ -136,46 +134,37 @@ namespace CrashEdit.CE
             }
         }
 
-        private void btnExecute_Click(object sender, EventArgs e)
-        {
-            SaveGroups();
-            DialogResult = DialogResult.OK;
-        }
-
         private void cmbGroups_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cmbGroups.SelectedItem != null && groups.TryGetValue(cmbGroups.SelectedItem.ToString(), out var list))
+            if (cmbGroups.SelectedItem != null &&
+                groups.TryGetValue(groupIndex, out var groupDict) &&
+                groupDict.TryGetValue(cmbGroups.SelectedItem.ToString(), out var list))
             {
-                AddToListView(list);
+                dgvGroups.Rows.Clear();
+                foreach (var kvp in list)
+                {
+                    dgvGroups.Rows.Add(kvp.Key, kvp.Value);
+                }
             }
-            txtGroups.Text = cmbGroups.SelectedItem.ToString();
 
-            if (cmbGroups.SelectedItem != null && cmbGroups.SelectedItem.ToString() == defaultName)
-            {
-                cmdRename.Enabled =
-                cmdRemove.Enabled = false;
-                dgvGroups.Visible = false;
-            }
-            else
-            {
-                cmdRename.Enabled =
-                cmdRemove.Enabled = true;
-                dgvGroups.Visible = true;
-            }
+            txtGroups.Text = cmbGroups.SelectedItem?.ToString();
+            bool isDefault = cmbGroups.SelectedItem?.ToString() == defaultName;
+
+            cmdRename.Enabled = cmdRemove.Enabled = !isDefault;
+            dgvGroups.Visible = !isDefault;
         }
 
         private void cmdAppend_Click(object sender, EventArgs e)
         {
             string newGroupName = txtGroups.Text.Trim();
-
-            if (!string.IsNullOrWhiteSpace(newGroupName) && !groups.ContainsKey(newGroupName))
+            if (!string.IsNullOrWhiteSpace(newGroupName) && !groups[groupIndex].ContainsKey(newGroupName))
             {
-                groups[newGroupName] = new List<KeyValuePair<int, int>>();
-
-                cmbGroups.DataSource = groups.Keys.ToList();
+                groups[groupIndex][newGroupName] = new List<KeyValuePair<int, int>>();
+                cmbGroups.DataSource = groups[groupIndex].Keys.ToList();
                 cmbGroups.SelectedItem = newGroupName;
 
                 DarkMessageBox.ShowInformation("Group added successfully.", titleSuccess);
+                SaveGroups();
             }
             else
             {
@@ -193,8 +182,9 @@ namespace CrashEdit.CE
                 if (result == DialogResult.Yes)
                 {
                     dgvGroups.Rows.Clear();
-                    groups.Remove(selectedGroup);
-                    cmbGroups.DataSource = groups.Keys.ToList();
+                    groups[groupIndex].Remove(selectedGroup);
+                    cmbGroups.DataSource = groups[groupIndex].Keys.ToList();
+                    SaveGroups();
                 }
             }
             else
@@ -210,14 +200,15 @@ namespace CrashEdit.CE
                 string selectedGroup = cmbGroups.SelectedItem.ToString();
                 string newGroupName = txtGroups.Text.Trim();
 
-                if (!string.IsNullOrWhiteSpace(newGroupName) && !groups.ContainsKey(newGroupName))
+                if (!string.IsNullOrWhiteSpace(newGroupName) && !groups[groupIndex].ContainsKey(newGroupName))
                 {
-                    var groupData = groups[selectedGroup];
-                    groups.Remove(selectedGroup);
-                    groups[newGroupName] = groupData;
+                    var groupData = groups[groupIndex][selectedGroup];
+                    groups[groupIndex].Remove(selectedGroup);
+                    groups[groupIndex][newGroupName] = groupData;
 
-                    cmbGroups.DataSource = groups.Keys.ToList();
+                    cmbGroups.DataSource = groups[groupIndex].Keys.ToList();
                     cmbGroups.SelectedItem = newGroupName;
+                    SaveGroups();
                 }
                 else
                 {
@@ -230,19 +221,33 @@ namespace CrashEdit.CE
             }
         }
 
+        private void btnExecute_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.OK;
+        }
+
         private void chkShowEditor_CheckedChanged(object sender, EventArgs e)
         {
             fraEditor.Visible = chkShowEditor.Checked;
         }
 
+        private void chkOutputResult_CheckedChanged(object sender, EventArgs e)
+        {
+            outputResult = chkOutputResult.Checked;
+        }
+
         private void dgvGroups_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
-
-            if (cmbGroups.SelectedItem != null && cmbGroups.SelectedItem.ToString() == defaultName)
+            if (cmbGroups.SelectedItem?.ToString() == defaultName)
             {
                 DarkMessageBox.ShowError("This group cannot be edited.", titleError);
                 e.Cancel = true;
             }
+        }
+
+        private void dgvGroups_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            SaveGroups();
         }
 
         private void dgvGroups_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
@@ -256,10 +261,7 @@ namespace CrashEdit.CE
 
         private void TextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back)
-            {
-                e.Handled = true;
-            }
+            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back;
         }
 
 

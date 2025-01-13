@@ -104,17 +104,16 @@ namespace CrashEdit.CE
                 {
                     List<Entity> nitros = new List<Entity>();
                     List<Entity> detonators = new List<Entity>();
-
                     foreach (ZoneEntry entry in NSF.GetEntries<ZoneEntry>())
                     {
                         foreach (Entity entity in entry.Entities)
                         {
-                            if (entity.Type == 34)
+                            if (entity.Type == 34 && entity.ID.HasValue)
                             {
-                                if (entity.Subtype == 18 && entity.ID.HasValue)
+                                if (entity.Subtype == 18)
                                 {
                                     nitros.Add(entity);
-                                    Console.WriteLine($"34, 18, ID: {entity.ID.Value}");
+                                    DebugOutput(externalData.outputResult, (int)entity.Type, (int)entity.Subtype, entity.ID.Value);
                                 }
                                 if (entity.Subtype == 24)
                                 {
@@ -124,12 +123,12 @@ namespace CrashEdit.CE
 
                             foreach (var pair in externalData.Group)
                             {
-                                if (entity.Type == pair.Key)
+                                if (entity.Type == pair.Key && entity.ID.HasValue)
                                 {
-                                    if (entity.Subtype == pair.Value && entity.ID.HasValue)
+                                    if (entity.Subtype == pair.Value)
                                     {
                                         nitros.Add(entity);
-                                        Console.WriteLine($"{pair.Key:D2}, {pair.Value:D2}, ID: {entity.ID.Value}");
+                                        DebugOutput(externalData.outputResult, pair.Key, pair.Value, entity.ID.Value);
                                     }
                                 }
                             }
@@ -165,7 +164,7 @@ namespace CrashEdit.CE
                             {
                                 willys.Add(entity);
                             }
-                            else if (entity.Type == 34)
+                            else if (entity.Type == 34 && entity.ID.HasValue)
                             {
                                 if (GameVersion != GameVersion.Crash2 && GameVersion != GameVersion.Crash3)
                                 {
@@ -177,6 +176,7 @@ namespace CrashEdit.CE
                                         case 20: // auto empty
                                         case 21: // empty 2
                                             boxcount++;
+                                            DebugOutput(externalData.outputResult, (int)entity.Type, (int)entity.Subtype, entity.ID.Value);
                                             break;
                                         default:
                                             break;
@@ -188,6 +188,7 @@ namespace CrashEdit.CE
                                     {
                                         case 25: // slot
                                             boxcount++;
+                                            DebugOutput(externalData.outputResult, (int)entity.Type, (int)entity.Subtype, entity.ID.Value);
                                             break;
                                         default:
                                             break;
@@ -203,6 +204,7 @@ namespace CrashEdit.CE
                                         case 25: // steel pickup
                                         case 26: // steel fruit
                                             boxcount++;
+                                            DebugOutput(externalData.outputResult, (int)entity.Type, (int)entity.Subtype, entity.ID.Value);
                                             break;
                                         default:
                                             break;
@@ -223,6 +225,7 @@ namespace CrashEdit.CE
                                     case 18: // nitro
                                     case 23: // steel
                                         boxcount++;
+                                        DebugOutput(externalData.outputResult, (int)entity.Type, (int)entity.Subtype, entity.ID.Value);
                                         break;
                                     default:
                                         break;
@@ -236,7 +239,7 @@ namespace CrashEdit.CE
                                     if (entity.Subtype == pair.Value && entity.ID.HasValue)
                                     {
                                         boxcount++;
-                                        Console.WriteLine($"{pair.Key:D2}, {pair.Value:D2}, ID: {entity.ID.Value}");
+                                        DebugOutput(externalData.outputResult, pair.Key, pair.Value, entity.ID.Value);
                                     }
                                 }
                             }
@@ -251,6 +254,14 @@ namespace CrashEdit.CE
                         }
                     }
                 }
+            }
+        }
+
+        private void DebugOutput(bool output, int type, int subtype, int id)
+        {
+            if (output)
+            {
+                Console.WriteLine($"{type:D2}, {subtype:D2}, [ID {id}]");
             }
         }
 

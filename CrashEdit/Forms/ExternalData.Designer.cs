@@ -41,6 +41,7 @@ namespace CrashEdit.CE
             txtGroups = new DarkTextBox();
             chkShowEditor = new CheckBox();
             darkGroupBox1 = new DarkGroupBox();
+            chkOutputResult = new CheckBox();
             fraEditor.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvGroups).BeginInit();
             darkGroupBox1.SuspendLayout();
@@ -80,7 +81,7 @@ namespace CrashEdit.CE
             cmdAppend.Name = "cmdAppend";
             cmdAppend.Padding = new Padding(5);
             cmdAppend.Size = new Size(75, 23);
-            cmdAppend.TabIndex = 4;
+            cmdAppend.TabIndex = 5;
             cmdAppend.Text = "Append";
             cmdAppend.Click += cmdAppend_Click;
             // 
@@ -93,7 +94,7 @@ namespace CrashEdit.CE
             fraEditor.Controls.Add(cmdAppend);
             fraEditor.Location = new Point(3, 83);
             fraEditor.Name = "fraEditor";
-            fraEditor.Size = new Size(256, 326);
+            fraEditor.Size = new Size(280, 326);
             fraEditor.TabIndex = 5;
             fraEditor.TabStop = false;
             fraEditor.Visible = false;
@@ -104,11 +105,11 @@ namespace CrashEdit.CE
             cmdRename.CustomColour = false;
             cmdRename.FlatBottom = false;
             cmdRename.FlatTop = false;
-            cmdRename.Location = new Point(18, 61);
+            cmdRename.Location = new Point(18, 64);
             cmdRename.Name = "cmdRename";
             cmdRename.Padding = new Padding(5);
             cmdRename.Size = new Size(75, 23);
-            cmdRename.TabIndex = 7;
+            cmdRename.TabIndex = 6;
             cmdRename.Text = "Rename";
             cmdRename.Click += cmdRename_Click;
             // 
@@ -122,9 +123,10 @@ namespace CrashEdit.CE
             dgvGroups.RowHeadersWidth = 24;
             dgvGroups.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dgvGroups.ScrollBars = ScrollBars.Vertical;
-            dgvGroups.Size = new Size(140, 314);
-            dgvGroups.TabIndex = 3;
+            dgvGroups.Size = new Size(162, 314);
+            dgvGroups.TabIndex = 8;
             dgvGroups.CellBeginEdit += dgvGroups_CellBeginEdit;
+            dgvGroups.CellEndEdit += dgvGroups_CellEndEdit;
             dgvGroups.EditingControlShowing += dgvGroups_EditingControlShowing;
             // 
             // cmdRemove
@@ -133,11 +135,11 @@ namespace CrashEdit.CE
             cmdRemove.CustomColour = false;
             cmdRemove.FlatBottom = false;
             cmdRemove.FlatTop = false;
-            cmdRemove.Location = new Point(18, 90);
+            cmdRemove.Location = new Point(18, 93);
             cmdRemove.Name = "cmdRemove";
             cmdRemove.Padding = new Padding(5);
             cmdRemove.Size = new Size(75, 23);
-            cmdRemove.TabIndex = 6;
+            cmdRemove.TabIndex = 7;
             cmdRemove.Text = "Remove";
             cmdRemove.Click += cmdRemove_Click;
             // 
@@ -149,7 +151,7 @@ namespace CrashEdit.CE
             txtGroups.Location = new Point(6, 6);
             txtGroups.Name = "txtGroups";
             txtGroups.Size = new Size(100, 23);
-            txtGroups.TabIndex = 5;
+            txtGroups.TabIndex = 4;
             // 
             // chkShowEditor
             // 
@@ -157,13 +159,14 @@ namespace CrashEdit.CE
             chkShowEditor.Location = new Point(9, 52);
             chkShowEditor.Name = "chkShowEditor";
             chkShowEditor.Size = new Size(89, 19);
-            chkShowEditor.TabIndex = 6;
+            chkShowEditor.TabIndex = 2;
             chkShowEditor.Text = "Show Editor";
             chkShowEditor.UseVisualStyleBackColor = true;
             chkShowEditor.CheckedChanged += chkShowEditor_CheckedChanged;
             // 
             // darkGroupBox1
             // 
+            darkGroupBox1.Controls.Add(chkOutputResult);
             darkGroupBox1.Controls.Add(chkShowEditor);
             darkGroupBox1.Controls.Add(cmbGroups);
             darkGroupBox1.Controls.Add(btnExecute);
@@ -174,13 +177,24 @@ namespace CrashEdit.CE
             darkGroupBox1.TabStop = false;
             darkGroupBox1.Text = "Use additional data";
             // 
+            // chkOutputResult
+            // 
+            chkOutputResult.AutoSize = true;
+            chkOutputResult.Location = new Point(104, 52);
+            chkOutputResult.Name = "chkOutputResult";
+            chkOutputResult.Size = new Size(99, 19);
+            chkOutputResult.TabIndex = 3;
+            chkOutputResult.Text = "Output Result";
+            chkOutputResult.UseVisualStyleBackColor = true;
+            chkOutputResult.CheckedChanged += chkOutputResult_CheckedChanged;
+            // 
             // ExternalData
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(267, 417);
+            ClientSize = new Size(350, 417);
             Controls.Add(darkGroupBox1);
             Controls.Add(fraEditor);
             CornerStyle = CornerPreference.Default;
@@ -211,5 +225,6 @@ namespace CrashEdit.CE
         private CheckBox chkShowEditor;
         private DataGridView dgvGroups;
         private DarkGroupBox darkGroupBox1;
+        private CheckBox chkOutputResult;
     }
 }
