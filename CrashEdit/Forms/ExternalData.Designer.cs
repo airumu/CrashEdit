@@ -40,11 +40,11 @@ namespace CrashEdit.CE
             cmdRemove = new DarkButton();
             txtGroups = new DarkTextBox();
             chkShowEditor = new CheckBox();
-            darkGroupBox1 = new DarkGroupBox();
+            fraUseAdditional = new DarkGroupBox();
             chkOutputResult = new CheckBox();
             fraEditor.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvGroups).BeginInit();
-            darkGroupBox1.SuspendLayout();
+            fraUseAdditional.SuspendLayout();
             SuspendLayout();
             // 
             // cmbGroups
@@ -94,7 +94,7 @@ namespace CrashEdit.CE
             fraEditor.Controls.Add(cmdAppend);
             fraEditor.Location = new Point(3, 83);
             fraEditor.Name = "fraEditor";
-            fraEditor.Size = new Size(280, 326);
+            fraEditor.Size = new Size(280, 330);
             fraEditor.TabIndex = 5;
             fraEditor.TabStop = false;
             fraEditor.Visible = false;
@@ -123,7 +123,7 @@ namespace CrashEdit.CE
             dgvGroups.RowHeadersWidth = 24;
             dgvGroups.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dgvGroups.ScrollBars = ScrollBars.Vertical;
-            dgvGroups.Size = new Size(162, 314);
+            dgvGroups.Size = new Size(162, 318);
             dgvGroups.TabIndex = 8;
             dgvGroups.CellBeginEdit += dgvGroups_CellBeginEdit;
             dgvGroups.CellEndEdit += dgvGroups_CellEndEdit;
@@ -164,18 +164,18 @@ namespace CrashEdit.CE
             chkShowEditor.UseVisualStyleBackColor = true;
             chkShowEditor.CheckedChanged += chkShowEditor_CheckedChanged;
             // 
-            // darkGroupBox1
+            // fraUseAdditional
             // 
-            darkGroupBox1.Controls.Add(chkOutputResult);
-            darkGroupBox1.Controls.Add(chkShowEditor);
-            darkGroupBox1.Controls.Add(cmbGroups);
-            darkGroupBox1.Controls.Add(btnExecute);
-            darkGroupBox1.Location = new Point(3, 3);
-            darkGroupBox1.Name = "darkGroupBox1";
-            darkGroupBox1.Size = new Size(216, 74);
-            darkGroupBox1.TabIndex = 8;
-            darkGroupBox1.TabStop = false;
-            darkGroupBox1.Text = "Use additional data";
+            fraUseAdditional.Controls.Add(chkOutputResult);
+            fraUseAdditional.Controls.Add(chkShowEditor);
+            fraUseAdditional.Controls.Add(cmbGroups);
+            fraUseAdditional.Controls.Add(btnExecute);
+            fraUseAdditional.Location = new Point(3, 3);
+            fraUseAdditional.Name = "fraUseAdditional";
+            fraUseAdditional.Size = new Size(216, 74);
+            fraUseAdditional.TabIndex = 8;
+            fraUseAdditional.TabStop = false;
+            fraUseAdditional.Text = "Use additional list";
             // 
             // chkOutputResult
             // 
@@ -194,8 +194,8 @@ namespace CrashEdit.CE
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(350, 417);
-            Controls.Add(darkGroupBox1);
+            ClientSize = new Size(286, 415);
+            Controls.Add(fraUseAdditional);
             Controls.Add(fraEditor);
             CornerStyle = CornerPreference.Default;
             FormBorderStyle = FormBorderStyle.FixedSingle;
@@ -208,8 +208,8 @@ namespace CrashEdit.CE
             fraEditor.ResumeLayout(false);
             fraEditor.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvGroups).EndInit();
-            darkGroupBox1.ResumeLayout(false);
-            darkGroupBox1.PerformLayout();
+            fraUseAdditional.ResumeLayout(false);
+            fraUseAdditional.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -224,7 +224,7 @@ namespace CrashEdit.CE
         private AltUI.Controls.DarkButton cmdRename;
         private CheckBox chkShowEditor;
         private DataGridView dgvGroups;
-        private DarkGroupBox darkGroupBox1;
+        private DarkGroupBox fraUseAdditional;
         private CheckBox chkOutputResult;
     }
 }
