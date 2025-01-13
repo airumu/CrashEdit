@@ -1,6 +1,6 @@
 ﻿namespace CrashEdit.Crash
 {
-    public sealed class FontGroup2(List<FontTexture2> frames, int eid) : GOOLFrameGroup<FontTexture2>(frames, eid)
+    public sealed class FontGroup2 : GOOLFrameGroup<FontTexture2>
     {
         public override short Type() => 3;
 
@@ -10,6 +10,7 @@
             {
                 ErrorManager.SignalError("Font group version is wrong");
             }
+            int idx = index;
             index += 2;
             
             short framecount = BitConv.FromInt16(data, index);
@@ -25,8 +26,17 @@
                 index += 20;
             }
 
-            return new FontGroup2(frames, eid);
+            return new FontGroup2(frames, eid, idx);
         }
+
+        public FontGroup2(List<FontTexture2> frames, int eid, int index) : base(frames, eid)
+        {
+            Frames = frames;
+            Index = index;
+        }
+
+        public List<FontTexture2> Frames { get; }
+        public int Index { get; set; }
 
         public override byte[] Save()
         {

@@ -296,6 +296,28 @@ namespace CrashEdit.CE
                 {
                     vgroup = (SpriteGroup2)group;
                 }
+                else if (group is FontGroup)
+                {
+                    vgroup = (FontGroup)group;
+                }
+                else if (group is FontGroup2)
+                {
+                    vgroup = (FontGroup2)group;
+                }
+                else if (group is TextGroup)
+                {
+                    vgroup = (TextGroup)group;
+                }
+                else if (group is ImageGroup)
+                {
+                    vgroup = (ImageGroup)group;
+                }
+                else if (group is ImageGroup2)
+                {
+                    vgroup = (ImageGroup2)group;
+                }
+                else continue;
+
                 frameGroups.Add(vgroup);
                 GetIndex(vgroup.Index / 4, out string index1, out string index2);
 
@@ -328,7 +350,7 @@ namespace CrashEdit.CE
             if (dgvFrameGroup.SelectedCells.Count > 0)
             {
                 object selectedGroup = frameGroups[e.RowIndex];
-                if ((e.ColumnIndex == ColFrameCount && (selectedGroup is SpriteGroup || selectedGroup is SpriteGroup2)) || // SpriteGroup/SpriteGroup2 FrameCount
+                if ((e.ColumnIndex == ColFrameCount && !(selectedGroup is VertexGroup2) && !(selectedGroup is VertexGroup3to2)) ||
                     (dgvFrameGroup.SelectedCells[0].Value.ToString() == "-")) // if interpolated is not set
                 {
                     DarkMessageBox.ShowError("This cell cannot be edited.", titleInputError);
@@ -401,15 +423,7 @@ namespace CrashEdit.CE
             if (e.RowIndex < 0 || e.ColumnIndex < 0 || !(dgvFrameGroup.SelectedCells.Count > 0)) return;
 
             var row = dgvFrameGroup.Rows[e.RowIndex];
-
-            object selectedGroup = frameGroups[e.RowIndex];
-            if (!(selectedGroup is VertexGroup) &&
-                !(selectedGroup is VertexGroup2) &&
-                !(selectedGroup is VertexGroup3to2) &&
-                !(selectedGroup is SpriteGroup) &&
-                !(selectedGroup is SpriteGroup2))
-                return;
-            dynamic og = selectedGroup;
+            dynamic og = frameGroups[e.RowIndex];
 
             // FrameCount
             if (e.ColumnIndex == ColFrameCount)
@@ -728,89 +742,86 @@ namespace CrashEdit.CE
             var _row = dgvFrameGroup.Rows[rowIndex];
 
             object selectedGroup = frameGroups[rowIndex];
-            if (selectedGroup is SpriteGroup || selectedGroup is SpriteGroup2)
+            if (selectedGroup is SpriteGroup)
             {
-                if (goolentry.Version == GOOLVersion.Version1)
+                foreach (var group in goolentry.FrameGroups)
                 {
-                    foreach (var group in goolentry.FrameGroups)
+                    if (group is SpriteGroup)
                     {
-                        if (group is SpriteGroup)
+                        var vgroup = (SpriteGroup)group;
+
+                        int index = vgroup.Index / 4;
+                        string _index = index.ToString("X");
+                        DebugOutput($"Current index: 0x{_index}");
+                        if (vgroup.Index == Convert.ToInt32(_row.Tag))
                         {
-                            var vgroup = (SpriteGroup)group;
-
-                            int index = vgroup.Index / 4;
-                            string _index = index.ToString("X");
-                            DebugOutput($"Current index: 0x{_index}");
-                            if (vgroup.Index == Convert.ToInt32(_row.Tag))
+                            dgvTexture.ScrollBars = ScrollBars.None;
+                            dgvTexture.SuspendLayout();
+                            dirty = true;
+                            dgvTexture.Rows.Clear();
+                            foreach (var frame in vgroup.Frames)
                             {
-                                dgvTexture.ScrollBars = ScrollBars.None;
-                                dgvTexture.SuspendLayout();
-                                dirty = true;
-                                dgvTexture.Rows.Clear();
-                                foreach (var frame in vgroup.Frames)
-                                {
-                                    DataGridViewRow row = new DataGridViewRow();
+                                DataGridViewRow row = new DataGridViewRow();
 
-                                    row.CreateCells(dgvTexture, frame.R, frame.G, frame.B, frame.ClutX, frame.ClutY, frame.X, frame.Y, frame.UV, frame.Segment,
-                                        frame.BlendMode, frame.ColorMode);
-                                    dgvTexture.Rows.Add(row);
-                                }
-
-                                dgvTexture.ScrollBars = ScrollBars.Vertical;
-                                dgvTexture.ResumeLayout();
-                                dirty = false;
-
-                                dgvTexture.Visible =
-                                pnTextureControls.Visible =
-                                pictureBox1.Visible = true;
-                                tglSimpleMode.Visible =
-                                lblSimpleMode.Visible =
-                                chkMaxValueFlag.Visible = false;
-                                UpdatePicture();
-                                return;
+                                row.CreateCells(dgvTexture, frame.R, frame.G, frame.B, frame.ClutX, frame.ClutY, frame.X, frame.Y, frame.UV, frame.Segment,
+                                    frame.BlendMode, frame.ColorMode);
+                                dgvTexture.Rows.Add(row);
                             }
+
+                            dgvTexture.ScrollBars = ScrollBars.Vertical;
+                            dgvTexture.ResumeLayout();
+                            dirty = false;
+
+                            dgvTexture.Visible =
+                            pnTextureControls.Visible =
+                            pnPicture.Visible = true;
+                            tglSimpleMode.Visible =
+                            lblSimpleMode.Visible =
+                            chkMaxValueFlag.Visible = false;
+                            UpdatePicture();
+                            return;
                         }
                     }
                 }
-                else
+            }
+            else if (selectedGroup is SpriteGroup2)
+            {
+                foreach (var group in goolentry.FrameGroups)
                 {
-                    foreach (var group in goolentry.FrameGroups)
+                    if (group is SpriteGroup2)
                     {
-                        if (group is SpriteGroup2)
+                        var vgroup = (SpriteGroup2)group;
+
+                        int index = vgroup.Index / 4;
+                        string _index = index.ToString("X");
+                        DebugOutput($"Current index: 0x{_index}");
+                        if (vgroup.Index == Convert.ToInt32(_row.Tag))
                         {
-                            var vgroup = (SpriteGroup2)group;
-
-                            int index = vgroup.Index / 4;
-                            string _index = index.ToString("X");
-                            DebugOutput($"Current index: 0x{_index}");
-                            if (vgroup.Index == Convert.ToInt32(_row.Tag))
+                            dgvTexture.ScrollBars = ScrollBars.None;
+                            dgvTexture.SuspendLayout();
+                            dirty = true;
+                            dgvTexture.Rows.Clear();
+                            foreach (var frame in vgroup.Frames)
                             {
-                                dgvTexture.ScrollBars = ScrollBars.None;
-                                dgvTexture.SuspendLayout();
-                                dirty = true;
-                                dgvTexture.Rows.Clear();
-                                foreach (var frame in vgroup.Frames)
-                                {
-                                    DataGridViewRow row = new DataGridViewRow();
+                                DataGridViewRow row = new DataGridViewRow();
 
-                                    row.CreateCells(dgvTexture, frame.R, frame.G, frame.B, frame.ClutX, frame.ClutY, frame.Left, frame.Top, frame.Width, frame.Height,
-                                        frame.X1, frame.X2, frame.X3, frame.X4, frame.Y1, frame.Y2, frame.Y3, frame.Y4, frame.BlendMode, frame.ColorMode);
-                                    dgvTexture.Rows.Add(row);
-                                }
-
-                                SetMaxValueStyle(ColX1, ColX4);
-                                SetMaxValueStyle(ColY1, ColY4);
-
-                                dgvTexture.ScrollBars = ScrollBars.Vertical;
-                                dgvTexture.ResumeLayout();
-                                dirty = false;
-
-                                dgvTexture.Visible =
-                                pnTextureControls.Visible =
-                                pnPicture.Visible = true;
-                                UpdatePicture();
-                                return;
+                                row.CreateCells(dgvTexture, frame.R, frame.G, frame.B, frame.ClutX, frame.ClutY, frame.Left, frame.Top, frame.Width, frame.Height,
+                                    frame.X1, frame.X2, frame.X3, frame.X4, frame.Y1, frame.Y2, frame.Y3, frame.Y4, frame.BlendMode, frame.ColorMode);
+                                dgvTexture.Rows.Add(row);
                             }
+
+                            SetMaxValueStyle(ColX1, ColX4);
+                            SetMaxValueStyle(ColY1, ColY4);
+
+                            dgvTexture.ScrollBars = ScrollBars.Vertical;
+                            dgvTexture.ResumeLayout();
+                            dirty = false;
+
+                            dgvTexture.Visible =
+                            pnTextureControls.Visible =
+                            pnPicture.Visible = true;
+                            UpdatePicture();
+                            return;
                         }
                     }
                 }
