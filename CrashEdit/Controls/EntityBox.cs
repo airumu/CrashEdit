@@ -1,11 +1,9 @@
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Windows.Shapes;
 using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
-using static System.Windows.Forms.LinkLabel;
 
 namespace CrashEdit.CE
 {
@@ -71,8 +69,11 @@ namespace CrashEdit.CE
                     {
                         tbcTabs.Controls.Remove(tabLoadLists);
                         tbcTabs.Controls.Remove(tabDrawLists);
+                        tabLoadLists.Dispose();
+                        tabDrawLists.Dispose();
                     }
                     tbcTabs.Controls.Remove(tabSpecial);
+                    tabSpecial.Dispose();
                     tabGeneral.Controls.Remove(fraName);
                     tabGeneral.Controls.Remove(fraID);
                     tabGeneral.Controls.Remove(fraType);
@@ -86,6 +87,9 @@ namespace CrashEdit.CE
                     tbcTabs.Controls.Remove(tabCamera);
                     tbcTabs.Controls.Remove(tabLoadLists);
                     tbcTabs.Controls.Remove(tabDrawLists);
+                    tabCamera.Dispose();
+                    tabLoadLists.Dispose();
+                    tabDrawLists.Dispose();
                 }
             }
             else

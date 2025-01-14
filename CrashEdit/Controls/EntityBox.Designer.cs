@@ -922,7 +922,6 @@ namespace CrashEdit.CE
             // 
             // tabGeneral
             // 
-            tabGeneral.AutoScroll = true;
             tabGeneral.BackColor = Color.FromArgb(31, 31, 32);
             tabGeneral.Controls.Add(fraC2TTSet);
             tabGeneral.Controls.Add(fraName);
@@ -1138,7 +1137,6 @@ namespace CrashEdit.CE
             // 
             // tabSpecial
             // 
-            tabSpecial.AutoScroll = true;
             tabSpecial.BackColor = Color.FromArgb(31, 31, 32);
             tabSpecial.Controls.Add(fraTTReward);
             tabSpecial.Controls.Add(fraOtherSettings);
