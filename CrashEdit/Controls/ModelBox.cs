@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Globalization;
-using System.Windows.Forms;
 using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
@@ -64,6 +63,21 @@ namespace CrashEdit.CE.Controls
         private int ColBlendMode = 15;
         private int ColColorMode = 16;
 
+        private const int ColOffset = 0;
+        private const int ColIsLOD = 1;
+        private const int ColMask = 2;
+        private const int ColDelay = 3;
+        private const int ColLatency = 4;
+        private const int ColLeap = 5;
+        private const int ColLOD0 = 6;
+        private const int ColLOD1 = 7;
+        private const int ColLOD2 = 8;
+        private const int ColLOD3 = 9;
+        private const int ColLOD4 = 10;
+        private const int ColLOD5 = 11;
+        private const int ColLOD6 = 12;
+        private const int ColLOD7 = 13;
+
         private double MasterHue => colorEditorGlobal.HslColor.H;
         private double MasterSaturation => colorEditorGlobal.HslColor.S;
         private double MasterLightness => colorEditorGlobal.HslColor.L;
@@ -115,6 +129,18 @@ namespace CrashEdit.CE.Controls
                 numScaleY.Value = model.ScaleY;
                 numScaleZ.Value = model.ScaleZ;
                 UpdateInfo();
+            }
+
+            if (!(model.Textures.Count > 0))
+            {
+                tabModel.Controls.Remove(tbpTextures);
+                tbpTextures.Dispose();
+
+            }
+            if (!(model.AnimatedTextures.Count > 0))
+            {
+                tabModel.Controls.Remove(tbpExtendedTextures);
+                tbpExtendedTextures.Dispose();
             }
         }
 
@@ -285,18 +311,6 @@ namespace CrashEdit.CE.Controls
             }
         }
 
-        private void AdjustColumnWidths()
-        {
-            //grdTextures.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
-            foreach (DataGridViewColumn column in grdTextures.Columns)
-            {
-                column.SortMode = DataGridViewColumnSortMode.NotSortable;
-                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-                column.Width = 44;
-                column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            }
-        }
-
         private void chkMaxValueFlag_Click(object sender, EventArgs e)
         {
             if (!(grdTextures.SelectedCells.Count > 0)) return;
@@ -378,7 +392,14 @@ namespace CrashEdit.CE.Controls
                 grdTextures.Columns[ColX4].Visible = false;
                 grdTextures.Columns[ColY4].Visible = false;
             }
-            AdjustColumnWidths();
+
+            foreach (DataGridViewColumn column in grdTextures.Columns)
+            {
+                column.SortMode = DataGridViewColumnSortMode.NotSortable;
+                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                column.Width = 44;
+                column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            }
         }
 
         private async Task UpdateTextureListAsync(bool setMaxTags)
@@ -585,7 +606,7 @@ namespace CrashEdit.CE.Controls
             }
         }
 
-        private void GetMaxValue(int rowIndex, int columnIndex, int newValue, out int minValue, out int maxValue, out bool isMaxCell)
+        private void grdTexturesGetMaxValue(int rowIndex, int columnIndex, int newValue, out int minValue, out int maxValue, out bool isMaxCell)
         {
             isMaxCell = grdTextures.Rows[rowIndex].Cells[columnIndex].Style == maxValueStyle;
             maxValue = 0; minValue = 0;
@@ -679,7 +700,7 @@ namespace CrashEdit.CE.Controls
         {
             if (int.TryParse(e.FormattedValue.ToString(), out int newValue))
             {
-                GetMaxValue(e.RowIndex, e.ColumnIndex, newValue, out int minValue, out int maxValue, out bool isMaxCell);
+                grdTexturesGetMaxValue(e.RowIndex, e.ColumnIndex, newValue, out int minValue, out int maxValue, out bool isMaxCell);
                 if (newValue > maxValue)
                 {
                     if (e.ColumnIndex >= ColLeft && e.ColumnIndex <= ColHeight)
@@ -711,7 +732,7 @@ namespace CrashEdit.CE.Controls
                 string? editedCellTag = grdTextures.SelectedCells[0].Tag?.ToString();
 
                 int newValue = (int)numReplaceTo.Value;
-                GetMaxValue(rowIndex, columnIndex, newValue, out int minValue, out int maxValue, out bool isMaxCell);
+                grdTexturesGetMaxValue(rowIndex, columnIndex, newValue, out int minValue, out int maxValue, out bool isMaxCell);
                 if (newValue > maxValue)
                 {
                     if (columnIndex >= ColLeft && columnIndex <= ColHeight)
@@ -1117,7 +1138,7 @@ namespace CrashEdit.CE.Controls
             tipReloadTPage = new DarkToolTip();
             tipReloadTPage.SetToolTip(rbtReloadTPage, "Reload");
             SetDarkTheme(grdTextures);
-            EnableDoubleBuffering();
+            EnableDoubleBuffering(grdTextures);
             if (isScenery)
             {
                 grdTextures.Width = 612;
@@ -1142,6 +1163,249 @@ namespace CrashEdit.CE.Controls
             numReplaceTo.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
 
             tbpTextures.Enter -= tbpTextures_Enter;
+        }
+
+        private async void tbpExtendedTextures_Enter(object sender, EventArgs e)
+        {
+            SetDarkTheme(dgvExtendedTextures);
+            EnableDoubleBuffering(dgvExtendedTextures);
+
+            CreateExtendedTextureListColumns();
+            await UpdateExtendedTextureListAsync();
+
+            tbpExtendedTextures.Enter -= tbpExtendedTextures_Enter;
+        }
+
+        private void CreateExtendedTextureListColumns()
+        {
+            dgvExtendedTextures.Columns.Add("Offset", "Offset");
+            dgvExtendedTextures.Columns.Add("IsLOD", "LOD");
+            dgvExtendedTextures.Columns.Add("Mask", "Mask");
+            dgvExtendedTextures.Columns.Add("Delay", "Delay");
+            dgvExtendedTextures.Columns.Add("Latency", "Latency");
+            dgvExtendedTextures.Columns.Add("Leap", "Leap");
+            dgvExtendedTextures.Columns.Add("LOD0", "LOD 0");
+            dgvExtendedTextures.Columns.Add("LOD1", "LOD 1");
+            dgvExtendedTextures.Columns.Add("LOD2", "LOD 2");
+            dgvExtendedTextures.Columns.Add("LOD3", "LOD 3");
+            dgvExtendedTextures.Columns.Add("LOD4", "LOD 4");
+            dgvExtendedTextures.Columns.Add("LOD5", "LOD 5");
+            dgvExtendedTextures.Columns.Add("LOD6", "LOD 6");
+            dgvExtendedTextures.Columns.Add("LOD7", "LOD 7");
+
+            foreach (DataGridViewColumn column in dgvExtendedTextures.Columns)
+            {
+                column.SortMode = DataGridViewColumnSortMode.NotSortable;
+                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                column.Width = 48;
+                column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            }
+        }
+        private async Task UpdateExtendedTextureListAsync()
+        {
+            dgvExtendedTextures.SuspendLayout();
+            dgvExtendedTextures.ScrollBars = ScrollBars.None;
+
+            var rows = await Task.Run(() =>
+            {
+                var rowsToAdd = new ConcurrentBag<(int Index, DataGridViewRow Row)>();
+
+                Parallel.ForEach(Enumerable.Range(0, (int)model.AnimatedTextures.Count), (int i) =>
+                {
+                    var item = model.AnimatedTextures[i];
+                    DataGridViewRow row = new DataGridViewRow();
+                    if (item.IsLOD)
+                    {
+                        row.CreateCells(dgvExtendedTextures, item.Offset, item.IsLOD, "-", "-", "-", "-",
+                            item.LOD0, item.LOD1, item.LOD2, item.LOD3, item.LOD4, item.LOD5, item.LOD6, item.LOD7);
+                    }
+                    else
+                    {
+                        row.CreateCells(dgvExtendedTextures, item.Offset, item.IsLOD, item.Mask, item.Delay, item.Latency, item.Leap,
+                            "-", "-", "-", "-", "-", "-", "-", "-");
+
+                    }
+
+                    rowsToAdd.Add((i, row));
+                });
+                return rowsToAdd.OrderBy(pair => pair.Index).Select(pair => pair.Row).ToList();
+            });
+
+            foreach (var row in rows)
+            {
+                dgvExtendedTextures.Rows.Add(row);
+            }
+
+            dgvExtendedTextures.ScrollBars = ScrollBars.Vertical;
+            dgvExtendedTextures.ResumeLayout();
+        }
+
+        private void dgvExtendedTextures_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            if (!(dgvExtendedTextures.SelectedCells.Count > 0)) return;
+
+            if (dgvExtendedTextures.SelectedCells[0].Value.ToString() == "-") {
+                DarkMessageBox.ShowError("This cell cannot be edited.", titleInputError);
+                e.Cancel = true;
+            }
+        }
+
+        private void dgvExtendedTexturesGetMaxValue(int columnIndex, out int minValue, out int maxValue)
+        {
+            maxValue = 0; minValue = 0;
+            switch (columnIndex)
+            {
+                case 0: // ColOffset
+                    maxValue = 2047;
+                    break;
+                case 1: // ColIsLOD
+                    maxValue = 1;
+                    break;
+                case 2: // ColMask
+                    maxValue = 127;
+                    break;
+                case 3: // ColDelay
+                    maxValue = 127;
+                    break;
+                case 4: // ColLatency
+                    maxValue = 31;
+                    break;
+                case 5: // ColLeap
+                    maxValue = 1;
+                    break;
+                case 6: // ColLOD0
+                case 7: // ColLOD1
+                case 8: // ColLOD2
+                case 9: // ColLOD3
+                case 10: // ColLOD4
+                case 11: // ColLOD5
+                case 12: // ColLOD6
+                case 13: // ColLOD7
+                    maxValue = 3;
+                    break;
+            }
+        }
+
+        private void dgvExtendedTextures_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            if (!(dgvExtendedTextures.SelectedCells.Count > 0)) return;
+            if (dgvExtendedTextures.SelectedCells[0].Value.ToString() == "-") return;
+
+            string inputValue = e.FormattedValue.ToString();
+
+            if (e.ColumnIndex == ColIsLOD || e.ColumnIndex == ColLeap)
+            {
+                if (dgvExtendedTextures.SelectedCells[0].Value.ToString() == "-") return;
+
+                if (!(inputValue == "True" || inputValue == "False" || inputValue == "true" || inputValue == "false"))
+                {
+                    DarkMessageBox.ShowError($"Invalid string: {inputValue}", titleInputError);
+                    e.Cancel = true;
+                }
+            }
+            else
+            {
+                if (int.TryParse(inputValue, out int newValue))
+                {
+                    dgvExtendedTexturesGetMaxValue(e.ColumnIndex, out int minValue, out int maxValue);
+                    if (newValue > maxValue)
+                    {
+                        DarkMessageBox.ShowError($"The value must be less than or equal to {maxValue}.", titleInputError);
+                        e.Cancel = true;
+                    }
+                    else if (newValue < minValue)
+                    {
+                        DarkMessageBox.ShowError($"The value must be greater than or equal to {minValue}.", titleInputError);
+                        e.Cancel = true;
+                    }
+                }
+                else
+                {
+                    DarkMessageBox.ShowError($"Invalid input. Please enter an integer.", titleInputError);
+                    e.Cancel = true;
+                }
+            }
+        }
+
+        private void dgvExtendedTextures_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0)
+                return;
+
+            var og = model.AnimatedTextures[e.RowIndex];
+            var item = dgvExtendedTextures.Rows[e.RowIndex];
+
+            switch (e.ColumnIndex)
+            {
+                case 0: // ColOffset
+                    og.Offset = Convert.ToInt32(item.Cells[ColOffset].Value);
+                    break;
+                case 1: // ColIsLOD
+                    if (bool.TryParse(item.Cells[ColIsLOD].Value.ToString(), out bool islod))
+                    {
+                        og.IsLOD = islod;
+                    }
+                    break;
+                case 2: // ColMask
+                    og.Mask = Convert.ToInt32(item.Cells[ColMask].Value);
+                    break;
+                case 3: // ColDelay
+                    og.Delay = Convert.ToInt32(item.Cells[ColDelay].Value);
+                    break;
+                case 4: // ColLatency
+                    og.Latency = Convert.ToInt32(item.Cells[ColLatency].Value);
+                    break;
+                case 5: // ColLeap
+                    if (bool.TryParse(item.Cells[ColLeap].Value.ToString(), out bool leap))
+                    {
+                        og.Leap = leap;
+                    }
+                    break;
+                case 6: // ColLOD0
+                    og.LOD0 = Convert.ToInt32(item.Cells[ColLOD0].Value);
+                    break;
+                case 7: // ColLOD1
+                    og.LOD1 = Convert.ToInt32(item.Cells[ColLOD1].Value);
+                    break;
+                case 8: // ColLOD2
+                    og.LOD2 = Convert.ToInt32(item.Cells[ColLOD2].Value);
+                    break;
+                case 9: // ColLOD3
+                    og.LOD3 = Convert.ToInt32(item.Cells[ColLOD3].Value);
+                    break;
+                case 10: // ColLOD4
+                    og.LOD4 = Convert.ToInt32(item.Cells[ColLOD4].Value);
+                    break;
+                case 11: // ColLOD5
+                    og.LOD5 = Convert.ToInt32(item.Cells[ColLOD5].Value);
+                    break;
+                case 12: // ColLOD6
+                    og.LOD6 = Convert.ToInt32(item.Cells[ColLOD6].Value);
+                    break;
+                case 13: // ColLOD7
+                    og.LOD7 = Convert.ToInt32(item.Cells[ColLOD7].Value);
+                    break;
+            }
+        }
+
+        private void dgvExtendedTextures_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            if (dgvExtendedTextures.SelectedCells.Count > 0)
+            {
+                if (e.Control is TextBox textbox)
+                {
+                    int col = dgvExtendedTextures.SelectedCells[0].ColumnIndex;
+                    if (col == ColIsLOD || col == ColLeap)
+                    {
+                        textbox.KeyPress -= TextBox_KeyPress;
+                    }
+                    else
+                    {
+                        textbox.KeyPress -= TextBox_KeyPress;
+                        textbox.KeyPress += TextBox_KeyPress;
+                    }
+                }
+            }
         }
 
         private void UpdateTPageList()
@@ -1701,12 +1965,12 @@ namespace CrashEdit.CE.Controls
             }
         }
 
-        private void EnableDoubleBuffering()
+        private void EnableDoubleBuffering(DataGridView dataGridView)
         {
             typeof(DataGridView).InvokeMember("DoubleBuffered",
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance |
                 System.Reflection.BindingFlags.SetProperty,
-                null, grdTextures, new object[] { true });
+                null, dataGridView, new object[] { true });
         }
 
         private void SetDarkTheme(DataGridView dataGridView)

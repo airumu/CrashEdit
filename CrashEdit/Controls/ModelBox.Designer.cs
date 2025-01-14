@@ -74,6 +74,7 @@ namespace CrashEdit.CE.Controls
             pictureBox1 = new PictureBox();
             panel2 = new Panel();
             pnTextureControls = new Panel();
+            chkMaxValueFlag = new CheckBox();
             fraSwitches = new DarkGroupBox();
             tglSimpleMode = new MetroSetSwitch();
             fraReplaceTexture = new DarkGroupBox();
@@ -95,7 +96,9 @@ namespace CrashEdit.CE.Controls
             lstTPages = new DoubleBufferedListView();
             trkPictureSize = new MetroSetTrackBar();
             grdTextures = new DataGridView();
-            chkMaxValueFlag = new CheckBox();
+            tbpExtendedTextures = new TabPage();
+            panel3 = new Panel();
+            dgvExtendedTextures = new DataGridView();
             tabModel.SuspendLayout();
             tbpGeneral.SuspendLayout();
             panel1.SuspendLayout();
@@ -125,6 +128,9 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)numReplace).BeginInit();
             fraTPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)grdTextures).BeginInit();
+            tbpExtendedTextures.SuspendLayout();
+            panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvExtendedTextures).BeginInit();
             SuspendLayout();
             // 
             // tabModel
@@ -135,6 +141,7 @@ namespace CrashEdit.CE.Controls
             tabModel.Controls.Add(tbpGeneral);
             tabModel.Controls.Add(tbpColors);
             tabModel.Controls.Add(tbpTextures);
+            tabModel.Controls.Add(tbpExtendedTextures);
             tabModel.Dock = DockStyle.Fill;
             tabModel.IsDerivedStyle = false;
             tabModel.ItemSize = new Size(100, 28);
@@ -598,6 +605,18 @@ namespace CrashEdit.CE.Controls
             pnTextureControls.Size = new Size(214, 372);
             pnTextureControls.TabIndex = 13;
             // 
+            // chkMaxValueFlag
+            // 
+            chkMaxValueFlag.AutoSize = true;
+            chkMaxValueFlag.Enabled = false;
+            chkMaxValueFlag.Location = new Point(3, 61);
+            chkMaxValueFlag.Name = "chkMaxValueFlag";
+            chkMaxValueFlag.Size = new Size(83, 19);
+            chkMaxValueFlag.TabIndex = 11;
+            chkMaxValueFlag.Text = "RegionEnd";
+            chkMaxValueFlag.UseVisualStyleBackColor = true;
+            chkMaxValueFlag.Click += chkMaxValueFlag_Click;
+            // 
             // fraSwitches
             // 
             fraSwitches.BackColor = Color.Transparent;
@@ -911,17 +930,46 @@ namespace CrashEdit.CE.Controls
             grdTextures.EditingControlShowing += grdTextures_EditingControlShowing;
             grdTextures.SelectionChanged += grdTextures_SelectionChanged;
             // 
-            // chkMaxValueFlag
+            // tbpExtendedTextures
             // 
-            chkMaxValueFlag.AutoSize = true;
-            chkMaxValueFlag.Enabled = false;
-            chkMaxValueFlag.Location = new Point(3, 61);
-            chkMaxValueFlag.Name = "chkMaxValueFlag";
-            chkMaxValueFlag.Size = new Size(83, 19);
-            chkMaxValueFlag.TabIndex = 11;
-            chkMaxValueFlag.Text = "RegionEnd";
-            chkMaxValueFlag.UseVisualStyleBackColor = true;
-            chkMaxValueFlag.Click += chkMaxValueFlag_Click;
+            tbpExtendedTextures.BackColor = Color.FromArgb(31, 31, 32);
+            tbpExtendedTextures.Controls.Add(panel3);
+            tbpExtendedTextures.Location = new Point(4, 32);
+            tbpExtendedTextures.Name = "tbpExtendedTextures";
+            tbpExtendedTextures.Size = new Size(1032, 764);
+            tbpExtendedTextures.TabIndex = 3;
+            tbpExtendedTextures.Text = "Extended Textures";
+            tbpExtendedTextures.Enter += tbpExtendedTextures_Enter;
+            // 
+            // panel3
+            // 
+            panel3.AutoSize = true;
+            panel3.Controls.Add(dgvExtendedTextures);
+            panel3.Dock = DockStyle.Top;
+            panel3.Location = new Point(0, 0);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(1032, 397);
+            panel3.TabIndex = 1;
+            // 
+            // dgvExtendedTextures
+            // 
+            dgvExtendedTextures.AllowUserToAddRows = false;
+            dgvExtendedTextures.AllowUserToResizeColumns = false;
+            dgvExtendedTextures.AllowUserToResizeRows = false;
+            dgvExtendedTextures.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dgvExtendedTextures.ColumnHeadersHeight = 24;
+            dgvExtendedTextures.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvExtendedTextures.Location = new Point(3, 3);
+            dgvExtendedTextures.Name = "dgvExtendedTextures";
+            dgvExtendedTextures.RowHeadersWidth = 24;
+            dgvExtendedTextures.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dgvExtendedTextures.ScrollBars = ScrollBars.Vertical;
+            dgvExtendedTextures.Size = new Size(712, 391);
+            dgvExtendedTextures.TabIndex = 0;
+            dgvExtendedTextures.CellBeginEdit += dgvExtendedTextures_CellBeginEdit;
+            dgvExtendedTextures.CellValidating += dgvExtendedTextures_CellValidating;
+            dgvExtendedTextures.CellValueChanged += dgvExtendedTextures_CellValueChanged;
+            dgvExtendedTextures.EditingControlShowing += dgvExtendedTextures_EditingControlShowing;
             // 
             // ModelBox
             // 
@@ -967,6 +1015,10 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)numReplace).EndInit();
             fraTPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)grdTextures).EndInit();
+            tbpExtendedTextures.ResumeLayout(false);
+            tbpExtendedTextures.PerformLayout();
+            panel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvExtendedTextures).EndInit();
             ResumeLayout(false);
         }
 
@@ -976,6 +1028,7 @@ namespace CrashEdit.CE.Controls
         private TabPage tbpGeneral;
         private TabPage tbpColors;
         private TabPage tbpTextures;
+        private TabPage tbpExtendedTextures;
         private AltUI.Controls.DarkGroupBox fraTPage;
         private DoubleBufferedListView lstTPages;
         private DoubleBufferedListView lstColor;
@@ -1031,6 +1084,8 @@ namespace CrashEdit.CE.Controls
         private Panel panel2;
         private Panel pnTextureControls;
         private CheckBox chkMaxValueFlag;
+        private DataGridView dgvExtendedTextures;
+        private Panel panel3;
     }
 
     public class DoubleBufferedListView : ListView
