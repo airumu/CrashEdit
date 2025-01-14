@@ -23,34 +23,6 @@ namespace CrashEdit.CE
 
         public override Control CreateEditor()
         {
-            MetroSetTabControl tbcTabs = new MetroSetTabControl()
-            {
-                BackgroundColor = Color.FromArgb(31, 31, 32),
-                Dock = DockStyle.Fill,
-                IsDerivedStyle = false,
-                ItemSize = new Size(100, 28),
-                Style = MetroSet_UI.Enums.Style.Dark,
-                TabStyle = MetroSet_UI.Enums.TabStyle.Style1
-            };
-
-            var viewerbox = new SceneryEntryViewer(GetNSF(), Entry.EID)
-            {
-                Dock = DockStyle.Fill
-            };
-            var framebox = new ModelBox(this)
-            {
-                Dock = DockStyle.Fill
-            };
-            TabPage viewertab = new TabPage("Viewer");
-            viewertab.Controls.Add(viewerbox);
-            TabPage edittab = new TabPage("Editor");
-            edittab.Controls.Add(framebox);
-
-            tbcTabs.TabPages.Add(viewertab);
-            tbcTabs.TabPages.Add(edittab);
-            tbcTabs.SelectedTab = viewertab;
-            return tbcTabs;
-
             return new SceneryEntryViewer(GetNSF(), Entry.EID);
         }
 
