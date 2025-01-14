@@ -34,6 +34,7 @@ namespace CrashEdit.CE
             this_zone = zone_eid;
             octree_renderer = new(this);
             animation_renderer = new() { TPages = tpages, Render = render };
+            GetGOOLs();
         }
 
         public ZoneEntryViewer(NSF nsf, List<int> zone_eids) : base(nsf, new List<int>())
@@ -42,6 +43,7 @@ namespace CrashEdit.CE
             this_zone = Entry.NullEID;
             octree_renderer = new(this);
             animation_renderer = new() { TPages = tpages, Render = render };
+            GetGOOLs();
         }
 
         protected override void OnInvalidated(InvalidateEventArgs e)
@@ -138,6 +140,18 @@ namespace CrashEdit.CE
                 return nsf.GetEntry<ZoneEntry>(this_zone);
         }
 
+        private void GetGOOLs()
+        {
+            gools.Clear();
+            foreach (var e in nsf.GetEntries<GOOLEntry>())
+            {
+                if (e.ParentGOOL == null)
+                {
+                    gools.Add(e.ID, e);
+                }
+            }
+        }
+
         protected override void Render()
         {
             var allzones = GetZones();
@@ -156,15 +170,6 @@ namespace CrashEdit.CE
                 }
             }
             SetWorlds(worlds);
-
-            gools.Clear();
-            foreach (var e in nsf.GetEntries<GOOLEntry>())
-            {
-                if (e.ParentGOOL == null)
-                {
-                    gools.Add(e.ID, e);
-                }
-            }
 
             animation_renderer.Setup(true, true);
 
@@ -510,7 +515,8 @@ namespace CrashEdit.CE
                         {
                             draw_type = false;
                             int gem_id = entity.Settings[0].ValueB;
-                            text_y += AddText3D(gem_id.ToString(), trans, GetZoneColor(GetColorForGemId(gem_id)), size: text_size, ofs_y: text_y).Y;
+                            string gem_name = $"id {gem_id}";
+                            text_y += AddText3D(gem_name, trans, GetZoneColor(GetColorForGemId(gem_id)), size: text_size, ofs_y: text_y).Y;
                         }
                     }
                     else if (entity.Subtype.HasValue && entity.Type == 34)
