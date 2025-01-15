@@ -26,16 +26,8 @@ namespace CrashEdit.CE
             animationEntry = controller.AnimationEntryController.AnimationEntry;
             frame = controller.Frame;
             model = controller.GetEntry<ModelEntry>(frame.ModelEID);
-            frame.MakeVertices(model);
 
             InitializeComponent();
-            UpdateVertice();
-            UpdateCollision();
-            UpdateOffset();
-            UpdateHeaderSize();
-            UpdateSPVertex();
-            UpdateModel();
-
             CreateTabs();
         }
 
@@ -67,6 +59,7 @@ namespace CrashEdit.CE
                 pnSplit.Panel1.Controls.Add(pnFrameBox);
                 pnSplit.Panel2.Controls.Add(viewerbox);
                 Controls.Add(pnSplit);
+                MainInit();
             }
             else
             {
@@ -77,9 +70,32 @@ namespace CrashEdit.CE
 
                 tbcTabs.TabPages.Add(viewertab);
                 tbcTabs.TabPages.Add(edittab);
+
+                EventHandler tabChangedHandler = null;
+                tabChangedHandler = (sender, e) =>
+                {
+                    if (tbcTabs.SelectedTab == edittab)
+                    {
+                        MainInit();
+                        tbcTabs.SelectedIndexChanged -= tabChangedHandler;
+                    }
+                };
+                tbcTabs.SelectedIndexChanged += tabChangedHandler;
+
                 tbcTabs.SelectedTab = viewertab;
                 Controls.Add(tbcTabs);
             }
+        }
+
+        private void MainInit()
+        {
+            frame.MakeVertices(model);
+            UpdateVertice();
+            UpdateCollision();
+            UpdateOffset();
+            UpdateHeaderSize();
+            UpdateSPVertex();
+            UpdateModel();
         }
 
         private void UpdateVertice()
