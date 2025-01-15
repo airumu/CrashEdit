@@ -168,7 +168,7 @@ namespace CrashEdit.Crash
         public string Title =>
             (Name != null && ID != null) ? $"{Name} [ID {ID}]" :
             (ID != null) ? $"Entity [ID {ID}]" :
-            (cameraindex != null && camerasubindex != null) ? $"Camera" :
+            (cameraindex != null && camerasubindex != null) ? $"Camera[{cameraindex}]" :
             "Entity";
 
         public string ImageKey => "Arrow";
