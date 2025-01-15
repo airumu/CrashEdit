@@ -376,14 +376,64 @@ namespace CrashEdit.CE
             txtModel.Text = Entry.EIDToEName(frame.ModelEID);
         }
 
+        private T ValidateValue<T>(T value, T dif) where T : struct, IComparable<T>
+        {
+            T result;
+            try
+            {
+                long tempResult = Convert.ToInt64(value) + Convert.ToInt64(dif);
+
+                T max = (T)typeof(T).GetField("MaxValue")?.GetValue(null);
+                T min = (T)typeof(T).GetField("MinValue")?.GetValue(null);
+
+                tempResult = Math.Clamp(tempResult, Convert.ToInt64(min), Convert.ToInt64(max));
+                result = (T)Convert.ChangeType(tempResult, typeof(T));
+            }
+            catch (OverflowException)
+            {
+                T max = (T)typeof(T).GetField("MaxValue")?.GetValue(null);
+                T min = (T)typeof(T).GetField("MinValue")?.GetValue(null);
+                result = dif.CompareTo(default(T)) > 0 ? max : min;
+            }
+
+            return result;
+        }
+
+        private float ValidateVertexValue(float value, float dif)
+        {
+            float result = value + dif;
+            if (result > byte.MaxValue)
+                result = byte.MaxValue;
+            else if (result < byte.MinValue)
+                result = byte.MinValue;
+
+            return result;
+        }
+
         private void numX_ValueChanged(object sender, EventArgs e)
         {
             if (!vertexdirty)
             {
                 //FrameVertex pos = frame.Vertices[vertexindex];
                 //frame.Vertices[vertexindex] = new FrameVertex((byte)numX.Value, pos.Y, pos.Z);
-                Position pos = frame.Positions[vertexindex];
-                frame.Positions[vertexindex] = new Position((float)numX.Value, pos.Y, pos.Z);
+
+                float oldV = frame.Positions[vertexindex].X;
+                float newV = (float)numX.Value;
+                float dif = newV - oldV;
+                if (syncedit)
+                {
+                    foreach (Frame frame in animationEntry.Frames)
+                    {
+                        var f = frame.Positions[vertexindex];
+                        float result = ValidateVertexValue(f.X, dif);
+                        frame.Positions[vertexindex] = new Position(result, f.Y, f.Z);
+                    }
+                }
+                else
+                {
+                    Position pos = frame.Positions[vertexindex];
+                    frame.Positions[vertexindex] = new Position(newV, pos.Y, pos.Z);
+                }
             }
         }
 
@@ -393,8 +443,24 @@ namespace CrashEdit.CE
             {
                 //FrameVertex pos = frame.Vertices[vertexindex];
                 //frame.Vertices[vertexindex] = new FrameVertex(pos.X, (byte)numY.Value, pos.Z);
-                Position pos = frame.Positions[vertexindex];
-                frame.Positions[vertexindex] = new Position(pos.X, (float)numY.Value, pos.Z);
+
+                float oldV = frame.Positions[vertexindex].Y;
+                float newV = (float)numY.Value;
+                float dif = newV - oldV;
+                if (syncedit)
+                {
+                    foreach (Frame frame in animationEntry.Frames)
+                    {
+                        var f = frame.Positions[vertexindex];
+                        float result = ValidateVertexValue(f.Y, dif);
+                        frame.Positions[vertexindex] = new Position(f.X, result, f.Z);
+                    }
+                }
+                else
+                {
+                    Position pos = frame.Positions[vertexindex];
+                    frame.Positions[vertexindex] = new Position(pos.X, newV, pos.Z);
+                }
             }
         }
 
@@ -404,8 +470,24 @@ namespace CrashEdit.CE
             {
                 //FrameVertex pos = frame.Vertices[vertexindex];
                 //frame.Vertices[vertexindex] = new FrameVertex(pos.X, pos.Y, (byte)numZ.Value);
-                Position pos = frame.Positions[vertexindex];
-                frame.Positions[vertexindex] = new Position(pos.X, pos.Y, (float)numZ.Value);
+
+                float oldV = frame.Positions[vertexindex].Z;
+                float newV = (float)numZ.Value;
+                float dif = newV - oldV;
+                if (syncedit)
+                {
+                    foreach (Frame frame in animationEntry.Frames)
+                    {
+                        var f = frame.Positions[vertexindex];
+                        float result = ValidateVertexValue(f.Z, dif);
+                        frame.Positions[vertexindex] = new Position(f.X, f.Y, result);
+                    }
+                }
+                else
+                {
+                    Position pos = frame.Positions[vertexindex];
+                    frame.Positions[vertexindex] = new Position(pos.X, pos.Y, newV);
+                }
             }
         }
 
@@ -417,7 +499,10 @@ namespace CrashEdit.CE
             if (syncedit)
             {
                 foreach (Frame frame in animationEntry.Frames)
-                    frame.XOffset += dif;
+                {
+                    short result = ValidateValue(frame.XOffset, dif);
+                    frame.XOffset = result;
+                }
             }
             else
                 frame.XOffset = newV;
@@ -432,7 +517,10 @@ namespace CrashEdit.CE
             if (syncedit)
             {
                 foreach (Frame frame in animationEntry.Frames)
-                    frame.YOffset += dif;
+                {
+                    short result = ValidateValue(frame.YOffset, dif);
+                    frame.YOffset = result;
+                }
             }
             else
                 frame.YOffset = newV;
@@ -446,7 +534,10 @@ namespace CrashEdit.CE
             if (syncedit)
             {
                 foreach (Frame frame in animationEntry.Frames)
-                    frame.ZOffset += dif;
+                {
+                    short result = ValidateValue(frame.ZOffset, dif);
+                    frame.ZOffset = result;
+                }
             }
             else
                 frame.ZOffset = newV;
@@ -464,7 +555,8 @@ namespace CrashEdit.CE
                     foreach (Frame frame in animationEntry.Frames)
                     {
                         var f = frame.Collision[collisionindex];
-                        frame.Collision[collisionindex] = new FrameCollision(f.U, f.XOffset, f.YOffset, f.ZOffset, f.X1 + dif, f.Y1, f.Z1, f.X2, f.Y2, f.Z2);
+                        int result = ValidateValue(f.X1, dif);
+                        frame.Collision[collisionindex] = new FrameCollision(f.U, f.XOffset, f.YOffset, f.ZOffset, result, f.Y1, f.Z1, f.X2, f.Y2, f.Z2);
                     }
                 }
                 else
@@ -487,7 +579,8 @@ namespace CrashEdit.CE
                     foreach (Frame frame in animationEntry.Frames)
                     {
                         var f = frame.Collision[collisionindex];
-                        frame.Collision[collisionindex] = new FrameCollision(f.U, f.XOffset, f.YOffset, f.ZOffset, f.X1, f.Y1 + dif, f.Z1, f.X2, f.Y2, f.Z2);
+                        int result = ValidateValue(f.Y1, dif);
+                        frame.Collision[collisionindex] = new FrameCollision(f.U, f.XOffset, f.YOffset, f.ZOffset, f.X1, result, f.Z1, f.X2, f.Y2, f.Z2);
                     }
                 }
                 else
@@ -510,7 +603,8 @@ namespace CrashEdit.CE
                     foreach (Frame frame in animationEntry.Frames)
                     {
                         var f = frame.Collision[collisionindex];
-                        frame.Collision[collisionindex] = new FrameCollision(f.U, f.XOffset, f.YOffset, f.ZOffset, f.X1, f.Y1, f.Z1 + dif, f.X2, f.Y2, f.Z2);
+                        int result = ValidateValue(f.Z1, dif);
+                        frame.Collision[collisionindex] = new FrameCollision(f.U, f.XOffset, f.YOffset, f.ZOffset, f.X1, f.Y1, result, f.X2, f.Y2, f.Z2);
                     }
                 }
                 else
@@ -533,7 +627,8 @@ namespace CrashEdit.CE
                     foreach (Frame frame in animationEntry.Frames)
                     {
                         var f = frame.Collision[collisionindex];
-                        frame.Collision[collisionindex] = new FrameCollision(f.U, f.XOffset, f.YOffset, f.ZOffset, f.X1, f.Y1, f.Z1, f.X2 + dif, f.Y2, f.Z2);
+                        int result = ValidateValue(f.X2, dif);
+                        frame.Collision[collisionindex] = new FrameCollision(f.U, f.XOffset, f.YOffset, f.ZOffset, f.X1, f.Y1, f.Z1, result, f.Y2, f.Z2);
                     }
                 }
                 else
@@ -556,7 +651,8 @@ namespace CrashEdit.CE
                     foreach (Frame frame in animationEntry.Frames)
                     {
                         var f = frame.Collision[collisionindex];
-                        frame.Collision[collisionindex] = new FrameCollision(f.U, f.XOffset, f.YOffset, f.ZOffset, f.X1, f.Y1, f.Z1, f.X2, f.Y2 + dif, f.Z2);
+                        int result = ValidateValue(f.Y2, dif);
+                        frame.Collision[collisionindex] = new FrameCollision(f.U, f.XOffset, f.YOffset, f.ZOffset, f.X1, f.Y1, f.Z1, f.X2, result, f.Z2);
                     }
                 }
                 else
@@ -579,7 +675,8 @@ namespace CrashEdit.CE
                     foreach (Frame frame in animationEntry.Frames)
                     {
                         var f = frame.Collision[collisionindex];
-                        frame.Collision[collisionindex] = new FrameCollision(f.U, f.XOffset, f.YOffset, f.ZOffset, f.X1, f.Y1, f.Z1, f.X2, f.Y2, f.Z2 + dif);
+                        int result = ValidateValue(f.Z2, dif);
+                        frame.Collision[collisionindex] = new FrameCollision(f.U, f.XOffset, f.YOffset, f.ZOffset, f.X1, f.Y1, f.Z1, f.X2, f.Y2, result);
                     }
                 }
                 else
@@ -602,7 +699,8 @@ namespace CrashEdit.CE
                     foreach (Frame frame in animationEntry.Frames)
                     {
                         var f = frame.Collision[collisionindex];
-                        frame.Collision[collisionindex] = new FrameCollision(f.U, f.XOffset + dif, f.YOffset, f.ZOffset, f.X1, f.Y1, f.Z1, f.X2, f.Y2, f.Z2);
+                        int result = ValidateValue(f.XOffset, dif);
+                        frame.Collision[collisionindex] = new FrameCollision(f.U, result, f.YOffset, f.ZOffset, f.X1, f.Y1, f.Z1, f.X2, f.Y2, f.Z2);
                     }
                 }
                 else
@@ -625,7 +723,8 @@ namespace CrashEdit.CE
                     foreach (Frame frame in animationEntry.Frames)
                     {
                         var f = frame.Collision[collisionindex];
-                        frame.Collision[collisionindex] = new FrameCollision(f.U, f.XOffset, f.YOffset + dif, f.ZOffset, f.X1, f.Y1, f.Z1, f.X2, f.Y2, f.Z2);
+                        int result = ValidateValue(f.YOffset, dif);
+                        frame.Collision[collisionindex] = new FrameCollision(f.U, f.XOffset, result, f.ZOffset, f.X1, f.Y1, f.Z1, f.X2, f.Y2, f.Z2);
                     }
                 }
                 else
@@ -648,7 +747,8 @@ namespace CrashEdit.CE
                     foreach (Frame frame in animationEntry.Frames)
                     {
                         var f = frame.Collision[collisionindex];
-                        frame.Collision[collisionindex] = new FrameCollision(f.U, f.XOffset, f.YOffset, f.ZOffset + dif, f.X1, f.Y1, f.Z1, f.X2, f.Y2, f.Z2);
+                        int result = ValidateValue(f.ZOffset, dif);
+                        frame.Collision[collisionindex] = new FrameCollision(f.U, f.XOffset, f.YOffset, result, f.X1, f.Y1, f.Z1, f.X2, f.Y2, f.Z2);
                     }
                 }
                 else
