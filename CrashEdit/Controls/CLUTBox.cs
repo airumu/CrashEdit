@@ -112,7 +112,7 @@ namespace CrashEdit.CE.Controls
             numClutY2.Value = 0;
 
             grdCLUT.Columns.Clear();
-            grdCLUT.Columns.Add($"Clut", $"Clut");
+            grdCLUT.Columns.Add($"CLUT", $"CLUT");
             for (int i = 0; i < 16; i++)
             {
                 grdCLUT.Columns.Add($"Color{i + 1}", $"{i + 1}");
@@ -390,10 +390,16 @@ namespace CrashEdit.CE.Controls
                 {
                     var tags = cell.Tag as List<object>;
 
+                    chkSTPbit.Enabled = true;
                     chkSTPbit.Checked = (int)tags[1] == 0 ? false : true;
 
                     if (Settings.Default.OutputCLUTInfo)
                         Console.WriteLine($"{cell.Style.BackColor}, Offset: {(int)tags[0]}, STP bit : {(int)tags[1]}");
+                }
+                else
+                {
+                    chkSTPbit.Enabled = false;
+                    chkSTPbit.Checked = false;
                 }
 
                 colorEditor.Color = grdCLUT.SelectedCells[0].Style.BackColor;
