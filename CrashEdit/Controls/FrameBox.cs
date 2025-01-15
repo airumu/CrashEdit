@@ -12,6 +12,8 @@ namespace CrashEdit.CE
         private Frame frame;
         private ModelEntry? model;
 
+        SplitContainer pnSplit;
+
         private bool vertexdirty;
         private bool collisiondirty;
         private bool syncedit;
@@ -24,6 +26,8 @@ namespace CrashEdit.CE
             animationEntry = controller.AnimationEntryController.AnimationEntry;
             frame = controller.Frame;
             model = controller.GetEntry<ModelEntry>(frame.ModelEID);
+            frame.MakeVertices(model);
+
             InitializeComponent();
             UpdateVertice();
             UpdateCollision();
@@ -53,7 +57,7 @@ namespace CrashEdit.CE
 
             if (Settings.Default.SplitAnimViewerPanels)
             {
-                SplitContainer pnSplit = new SplitContainer
+                pnSplit = new SplitContainer
                 {
                     Orientation = Orientation.Horizontal,
                     SplitterDistance = 35,
@@ -118,13 +122,9 @@ namespace CrashEdit.CE
                 numX.Enabled = true;
                 numY.Enabled = true;
                 numZ.Enabled = true;
-                //numX.Value = frame.Vertices[vertexindex].X;
-                //numY.Value = frame.Vertices[vertexindex].Y;
-                //numZ.Value = frame.Vertices[vertexindex].Z;
-                var verts = frame.MakeVertices(model);
-                numX.Value = (decimal)verts[vertexindex].X;
-                numY.Value = (decimal)verts[vertexindex].Y;
-                numZ.Value = (decimal)verts[vertexindex].Z;
+                numX.Value = (decimal)frame.Positions[vertexindex].X;
+                numY.Value = (decimal)frame.Positions[vertexindex].Y;
+                numZ.Value = (decimal)frame.Positions[vertexindex].Z;
                 if (vertexindex <= frame.SpecialVertexCount - 1)
                 {
                     lblVerticeIndex.ForeColor = Color.MediumTurquoise;
@@ -364,8 +364,10 @@ namespace CrashEdit.CE
         {
             if (!vertexdirty)
             {
-                FrameVertex pos = frame.Vertices[vertexindex];
-                frame.Vertices[vertexindex] = new FrameVertex((byte)numX.Value, pos.Y, pos.Z);
+                //FrameVertex pos = frame.Vertices[vertexindex];
+                //frame.Vertices[vertexindex] = new FrameVertex((byte)numX.Value, pos.Y, pos.Z);
+                Position pos = frame.Positions[vertexindex];
+                frame.Positions[vertexindex] = new Position((float)numX.Value, pos.Y, pos.Z);
             }
         }
 
@@ -373,8 +375,10 @@ namespace CrashEdit.CE
         {
             if (!vertexdirty)
             {
-                FrameVertex pos = frame.Vertices[vertexindex];
-                frame.Vertices[vertexindex] = new FrameVertex(pos.X, (byte)numY.Value, pos.Z);
+                //FrameVertex pos = frame.Vertices[vertexindex];
+                //frame.Vertices[vertexindex] = new FrameVertex(pos.X, (byte)numY.Value, pos.Z);
+                Position pos = frame.Positions[vertexindex];
+                frame.Positions[vertexindex] = new Position(pos.X, (float)numY.Value, pos.Z);
             }
         }
 
@@ -382,8 +386,10 @@ namespace CrashEdit.CE
         {
             if (!vertexdirty)
             {
-                FrameVertex pos = frame.Vertices[vertexindex];
-                frame.Vertices[vertexindex] = new FrameVertex(pos.X, pos.Y, (byte)numZ.Value);
+                //FrameVertex pos = frame.Vertices[vertexindex];
+                //frame.Vertices[vertexindex] = new FrameVertex(pos.X, pos.Y, (byte)numZ.Value);
+                Position pos = frame.Positions[vertexindex];
+                frame.Positions[vertexindex] = new Position(pos.X, pos.Y, (float)numZ.Value);
             }
         }
 
@@ -647,6 +653,15 @@ namespace CrashEdit.CE
         private void chkSyncFrames_CheckedChanged(object sender, EventArgs e)
         {
             syncedit = chkSyncFrames.Checked;
+        }
+
+        private void chkShowVertices_CheckedChanged(object sender, EventArgs e)
+        {
+            fraVertice.Visible = chkShowVertices.Checked;
+            if (Settings.Default.SplitAnimViewerPanels && pnSplit != null)
+            {
+                pnSplit.SplitterDistance = chkShowVertices.Checked ? 480 : 300;
+            }
         }
 
         private void cmdCopyCollision_Click(object sender, EventArgs e)
