@@ -129,6 +129,11 @@ namespace CrashEdit.Crash
         [EntityPropertyField(0x337)]
         private EntitySetting? bonusboxcount = null;
 
+        // camera 1
+        [EntityPropertyField(0x198)]
+        private EntitySettingProperty field0x198 = null;
+        [EntityPropertyField(0x1A8)]
+        private EntityUInt32Property field0x1A8 = null;
         // camera 2
         [EntityPropertyField(0x183)]
         private EntityVictimProperty field0x183 = null;
@@ -140,6 +145,8 @@ namespace CrashEdit.Crash
         private EntityUInt32Property rain2 = null;
         [EntityPropertyField(0x1B8)]
         private EntityInt32Property rain4 = null;
+        [EntityPropertyField(0x1DE)]
+        private EntityUInt32Property fogdist = null;
         [EntityPropertyField(0x1F9)]
         private EntityVictimProperty field0x1F9 = null;
         [EntityPropertyField(0x1FA)]
@@ -375,16 +382,27 @@ namespace CrashEdit.Crash
             set => bonusboxcount = value;
         }
 
-        // camera 2
-        public EntityUInt32Property Flags
+        // camera 1
+        public EntitySettingProperty Field0x198
         {
-            get => flags;
-            set => flags = value;
+            get => field0x198;
+            set => field0x198 = value;
         }
+        public EntityUInt32Property Field0x1A8
+        {
+            get => field0x1A8;
+            set => field0x1A8 = value;
+        }
+        // camera 2
         public EntityVictimProperty Field0x183
         {
             get => field0x183;
             set => field0x183 = value;
+        }
+        public EntityUInt32Property Flags
+        {
+            get => flags;
+            set => flags = value;
         }
         public EntityVictimProperty Rain1
         {
@@ -400,6 +418,11 @@ namespace CrashEdit.Crash
         {
             get => rain4;
             set => rain4 = value;
+        }
+        public EntityUInt32Property FogDist
+        {
+            get => fogdist;
+            set => fogdist = value;
         }
         public EntityVictimProperty Field0x1F9
         {
