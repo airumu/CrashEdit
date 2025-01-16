@@ -139,10 +139,14 @@ namespace CrashEdit.Crash
         private EntityVictimProperty field0x183 = null;
         [EntityPropertyField(0x185)]
         private EntityUInt32Property flags = null;
+        [EntityPropertyField(0x186)]
+        private EntityUInt32Property flagwater = null;
         [EntityPropertyField(0x1B5)]
         private EntityVictimProperty rain1 = null;
         [EntityPropertyField(0x1B6)]
         private EntityUInt32Property rain2 = null;
+        [EntityPropertyField(0x1B7)]
+        private EntityUInt32Property rain3 = null;
         [EntityPropertyField(0x1B8)]
         private EntityInt32Property rain4 = null;
         [EntityPropertyField(0x1DE)]
@@ -151,6 +155,8 @@ namespace CrashEdit.Crash
         private EntityVictimProperty field0x1F9 = null;
         [EntityPropertyField(0x1FA)]
         private EntityUInt32Property field0x1FA = null;
+        [EntityPropertyField(0x2AA)]
+        private EntityVictimProperty flagstars = null;
 
         // C2-tweaked
         [EntityPropertyField(0x338)]
@@ -404,6 +410,11 @@ namespace CrashEdit.Crash
             get => flags;
             set => flags = value;
         }
+        public EntityUInt32Property FlagWater
+        {
+            get => flagwater;
+            set => flagwater = value;
+        }
         public EntityVictimProperty Rain1
         {
             get => rain1;
@@ -413,6 +424,11 @@ namespace CrashEdit.Crash
         {
             get => rain2;
             set => rain2 = value;
+        }
+        public EntityUInt32Property Rain3
+        {
+            get => rain3;
+            set => rain3 = value;
         }
         public EntityInt32Property Rain4
         {
@@ -433,6 +449,11 @@ namespace CrashEdit.Crash
         {
             get => field0x1FA;
             set => field0x1FA = value;
+        }
+        public EntityVictimProperty FlagStars
+        {
+            get => flagstars;
+            set => flagstars = value;
         }
 
         // C2-tweaked

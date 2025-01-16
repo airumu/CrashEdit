@@ -250,14 +250,14 @@ namespace CrashEdit.CE
             cmdPrevRowDrawA = new DarkButton();
             cmdNextRowDrawA = new DarkButton();
             tabProperties = new TabPage();
+            lbPropertyRaw = new DarkListBox();
+            lvPropertyHeader = new ListView();
             chkPropertyStyle = new CheckBox();
             lblUnsupportedProperty = new Label();
             txtProperty = new DarkTextBox();
             cmdAddProperty = new DarkButton();
-            dgvPropertyRaw = new DataGridView();
             dgvPropertyMetaValues = new DataGridView();
             dgvPropertyValues = new DataGridView();
-            dgvPropertyHeader = new DataGridView();
             lbProperties = new DarkListBox();
             ((System.ComponentModel.ISupportInitialize)numType).BeginInit();
             fraType.SuspendLayout();
@@ -344,10 +344,8 @@ namespace CrashEdit.CE
             fraEntityA.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numEntityA).BeginInit();
             tabProperties.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvPropertyRaw).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvPropertyMetaValues).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvPropertyValues).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dgvPropertyHeader).BeginInit();
             SuspendLayout();
             // 
             // chkType
@@ -3316,14 +3314,14 @@ namespace CrashEdit.CE
             // tabProperties
             // 
             tabProperties.BackColor = Color.FromArgb(31, 31, 32);
+            tabProperties.Controls.Add(lbPropertyRaw);
+            tabProperties.Controls.Add(lvPropertyHeader);
             tabProperties.Controls.Add(chkPropertyStyle);
             tabProperties.Controls.Add(lblUnsupportedProperty);
             tabProperties.Controls.Add(txtProperty);
             tabProperties.Controls.Add(cmdAddProperty);
-            tabProperties.Controls.Add(dgvPropertyRaw);
             tabProperties.Controls.Add(dgvPropertyMetaValues);
             tabProperties.Controls.Add(dgvPropertyValues);
-            tabProperties.Controls.Add(dgvPropertyHeader);
             tabProperties.Controls.Add(lbProperties);
             tabProperties.Location = new Point(4, 32);
             tabProperties.Margin = new Padding(4, 3, 4, 3);
@@ -3334,14 +3332,38 @@ namespace CrashEdit.CE
             tabProperties.Text = "Properties";
             tabProperties.Enter += tabProperties_Enter;
             // 
+            // lbPropertyRaw
+            // 
+            lbPropertyRaw.BackColor = Color.FromArgb(26, 26, 28);
+            lbPropertyRaw.BorderStyle = BorderStyle.FixedSingle;
+            lbPropertyRaw.ForeColor = Color.FromArgb(213, 213, 213);
+            lbPropertyRaw.FormattingEnabled = true;
+            lbPropertyRaw.HorizontalScrollbar = true;
+            lbPropertyRaw.Location = new Point(91, 60);
+            lbPropertyRaw.Name = "lbPropertyRaw";
+            lbPropertyRaw.Size = new Size(340, 47);
+            lbPropertyRaw.TabIndex = 7;
+            // 
+            // lvPropertyHeader
+            // 
+            lvPropertyHeader.BorderStyle = BorderStyle.FixedSingle;
+            lvPropertyHeader.FullRowSelect = true;
+            lvPropertyHeader.Location = new Point(91, 6);
+            lvPropertyHeader.Name = "lvPropertyHeader";
+            lvPropertyHeader.Scrollable = false;
+            lvPropertyHeader.Size = new Size(340, 48);
+            lvPropertyHeader.TabIndex = 6;
+            lvPropertyHeader.UseCompatibleStateImageBehavior = false;
+            lvPropertyHeader.View = View.Details;
+            // 
             // chkPropertyStyle
             // 
             chkPropertyStyle.AutoSize = true;
             chkPropertyStyle.Location = new Point(7, 297);
             chkPropertyStyle.Name = "chkPropertyStyle";
-            chkPropertyStyle.Size = new Size(51, 19);
+            chkPropertyStyle.Size = new Size(61, 19);
             chkPropertyStyle.TabIndex = 5;
-            chkPropertyStyle.Text = "Style";
+            chkPropertyStyle.Text = "Toggle";
             chkPropertyStyle.UseVisualStyleBackColor = true;
             chkPropertyStyle.CheckedChanged += chkPropertyStyle_CheckedChanged;
             // 
@@ -3349,7 +3371,7 @@ namespace CrashEdit.CE
             // 
             lblUnsupportedProperty.AutoSize = true;
             lblUnsupportedProperty.ForeColor = Color.Red;
-            lblUnsupportedProperty.Location = new Point(91, 382);
+            lblUnsupportedProperty.Location = new Point(432, 6);
             lblUnsupportedProperty.Name = "lblUnsupportedProperty";
             lblUnsupportedProperty.Size = new Size(153, 15);
             lblUnsupportedProperty.TabIndex = 4;
@@ -3380,23 +3402,6 @@ namespace CrashEdit.CE
             cmdAddProperty.Text = "Add";
             cmdAddProperty.Click += cmdAddProperty_Click;
             // 
-            // dgvPropertyRaw
-            // 
-            dgvPropertyRaw.AllowUserToAddRows = false;
-            dgvPropertyRaw.AllowUserToResizeColumns = false;
-            dgvPropertyRaw.AllowUserToResizeRows = false;
-            dgvPropertyRaw.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-            dgvPropertyRaw.ColumnHeadersHeight = 24;
-            dgvPropertyRaw.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dgvPropertyRaw.Location = new Point(91, 76);
-            dgvPropertyRaw.Name = "dgvPropertyRaw";
-            dgvPropertyRaw.RowHeadersWidth = 24;
-            dgvPropertyRaw.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dgvPropertyRaw.ScrollBars = ScrollBars.Horizontal;
-            dgvPropertyRaw.ShowCellToolTips = false;
-            dgvPropertyRaw.Size = new Size(494, 64);
-            dgvPropertyRaw.TabIndex = 1;
-            // 
             // dgvPropertyMetaValues
             // 
             dgvPropertyMetaValues.AllowUserToAddRows = false;
@@ -3405,12 +3410,12 @@ namespace CrashEdit.CE
             dgvPropertyMetaValues.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dgvPropertyMetaValues.ColumnHeadersHeight = 24;
             dgvPropertyMetaValues.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dgvPropertyMetaValues.Location = new Point(91, 146);
+            dgvPropertyMetaValues.Location = new Point(91, 113);
             dgvPropertyMetaValues.Name = "dgvPropertyMetaValues";
             dgvPropertyMetaValues.RowHeadersWidth = 24;
             dgvPropertyMetaValues.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dgvPropertyMetaValues.ShowCellToolTips = false;
-            dgvPropertyMetaValues.Size = new Size(112, 233);
+            dgvPropertyMetaValues.Size = new Size(80, 233);
             dgvPropertyMetaValues.TabIndex = 1;
             dgvPropertyMetaValues.CellValueChanged += dgvPropertyMetaValues_CellValueChanged;
             dgvPropertyMetaValues.EditingControlShowing += dgvPropertyMetaValues_EditingControlShowing;
@@ -3424,33 +3429,18 @@ namespace CrashEdit.CE
             dgvPropertyValues.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dgvPropertyValues.ColumnHeadersHeight = 24;
             dgvPropertyValues.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dgvPropertyValues.Location = new Point(203, 146);
+            dgvPropertyValues.Location = new Point(177, 113);
             dgvPropertyValues.Name = "dgvPropertyValues";
             dgvPropertyValues.RowHeadersWidth = 24;
             dgvPropertyValues.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dgvPropertyValues.ShowCellToolTips = false;
-            dgvPropertyValues.Size = new Size(382, 233);
+            dgvPropertyValues.Size = new Size(254, 233);
             dgvPropertyValues.TabIndex = 1;
             dgvPropertyValues.CellFormatting += dgvPropertyValues_CellFormatting;
             dgvPropertyValues.CellParsing += dgvPropertyValues_CellParsing;
             dgvPropertyValues.CellValidating += dgvPropertyValues_CellValidating;
             dgvPropertyValues.CellValueChanged += dgvPropertyValues_CellValueChanged;
             dgvPropertyValues.EditingControlShowing += dgvPropertyValues_EditingControlShowing;
-            // 
-            // dgvPropertyHeader
-            // 
-            dgvPropertyHeader.AllowUserToAddRows = false;
-            dgvPropertyHeader.AllowUserToResizeColumns = false;
-            dgvPropertyHeader.AllowUserToResizeRows = false;
-            dgvPropertyHeader.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-            dgvPropertyHeader.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvPropertyHeader.Location = new Point(91, 6);
-            dgvPropertyHeader.Name = "dgvPropertyHeader";
-            dgvPropertyHeader.RowHeadersWidth = 24;
-            dgvPropertyHeader.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dgvPropertyHeader.ShowCellToolTips = false;
-            dgvPropertyHeader.Size = new Size(494, 64);
-            dgvPropertyHeader.TabIndex = 1;
             // 
             // lbProperties
             // 
@@ -3593,10 +3583,8 @@ namespace CrashEdit.CE
             ((System.ComponentModel.ISupportInitialize)numEntityA).EndInit();
             tabProperties.ResumeLayout(false);
             tabProperties.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvPropertyRaw).EndInit();
             ((System.ComponentModel.ISupportInitialize)dgvPropertyMetaValues).EndInit();
             ((System.ComponentModel.ISupportInitialize)dgvPropertyValues).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dgvPropertyHeader).EndInit();
             ResumeLayout(false);
         }
 
@@ -3831,14 +3819,14 @@ namespace CrashEdit.CE
         private DarkButton cmdVerifyDrawList;
         private DarkListBox lbEntityA;
         private DarkListBox lbEntityB;
-        private DataGridView dgvPropertyHeader;
         private DarkListBox lbProperties;
         private DataGridView dgvPropertyValues;
-        private DataGridView dgvPropertyRaw;
         private DataGridView dgvPropertyMetaValues;
         private DarkButton cmdAddProperty;
         private DarkTextBox txtProperty;
         private Label lblUnsupportedProperty;
         private CheckBox chkPropertyStyle;
+        private ListView lvPropertyHeader;
+        private DarkListBox lbPropertyRaw;
     }
 }

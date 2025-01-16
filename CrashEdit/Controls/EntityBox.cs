@@ -1,5 +1,7 @@
+using System.Data.Common;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
@@ -2389,12 +2391,8 @@ namespace CrashEdit.CE
 
         private void tabProperties_Enter(object sender, EventArgs e)
         {
-            EnableDoubleBuffering(dgvPropertyHeader);
-            EnableDoubleBuffering(dgvPropertyRaw);
             EnableDoubleBuffering(dgvPropertyMetaValues);
             EnableDoubleBuffering(dgvPropertyValues);
-            SetDarkTheme(dgvPropertyHeader);
-            SetDarkTheme(dgvPropertyRaw);
             SetDarkTheme(dgvPropertyMetaValues);
             SetDarkTheme(dgvPropertyValues);
 
@@ -2413,7 +2411,6 @@ namespace CrashEdit.CE
             dgvPropertyValues.CellMouseDown += DataGridView_CellMouseDown;
 
             CreatePropertyHeaderColumns();
-            CreatePropertyRawColumns();
             CreatePropertyMetaValuesColumns();
             UpdatePropertyIDList();
             tabProperties.Enter -= tabProperties_Enter;
@@ -2564,14 +2561,14 @@ namespace CrashEdit.CE
                 else
                 {
                     if (selectedRow == -1)
-                        dgvPropertyValues.Rows.Add("0", "0", "0", "0");
+                        dgvPropertyValues.Rows.Add("0", "0", "0", "0", "0");
                     else
                     {
-                        long value1 = (newValue & (0xFF << 0)) >> 0;
-                        long value2 = (newValue & (0xFF << 8)) >> 8;
-                        long value3 = (newValue & (0xFF << 16)) >> 16;
-                        long value4 = (newValue & (0xFF << 24)) >> 24;
-                        dgvPropertyValues.Rows.Insert(selectedRow, value1.ToString("X"), value2.ToString("X"), value3.ToString("X"), value4.ToString("X"));
+                        byte byte0 = (byte)(newValue & 0xFF);
+                        byte byte1 = (byte)((newValue >> 8) & 0xFF);
+                        byte byte2 = (byte)((newValue >> 16) & 0xFF);
+                        byte byte3 = (byte)((newValue >> 24) & 0xFF);
+                        dgvPropertyValues.Rows.Insert(selectedRow, newValue.ToString("X"), byte0.ToString("X2"), byte1.ToString("X2"), byte2.ToString("X2"), byte3.ToString("X2"));
                     }
                 }
             }
@@ -2621,13 +2618,16 @@ namespace CrashEdit.CE
             {
                 case 0x183: entity.Field0x183 = null!; break;
                 case 0x185: entity.Flags = null!; break;
+                case 0x186: entity.FlagWater = null!; break;
                 case 0x198: entity.Field0x198 = null!; break;
                 case 0x1A8: entity.Field0x1A8 = null!; break;
                 case 0x1B5: entity.Rain1 = null!; break;
                 case 0x1B6: entity.Rain2 = null!; break;
+                case 0x1B7: entity.Rain3 = null!; break;
                 case 0x1B8: entity.Rain4 = null!; break;
                 case 0x1F9: entity.Field0x1F9 = null!; break;
                 case 0x1FA: entity.Field0x1FA = null!; break;
+                case 0x2AA: entity.FlagStars = null!; break;
             }
         }
 
@@ -2644,6 +2644,11 @@ namespace CrashEdit.CE
                     entity.Flags = new EntityUInt32Property();
                     entity.Flags.Rows.Add(new EntityPropertyRow<uint>());
                     entity.Flags.Rows[0].MetaValue = 0;
+                    break;
+                case 0x186:
+                    entity.FlagWater = new EntityUInt32Property();
+                    entity.FlagWater.Rows.Add(new EntityPropertyRow<uint>());
+                    entity.FlagWater.Rows[0].MetaValue = 0;
                     break;
                 case 0x198:
                     entity.Field0x198 = new EntitySettingProperty();
@@ -2666,6 +2671,11 @@ namespace CrashEdit.CE
                     entity.Rain2.Rows[0].MetaValue = 0;
                     break;
                 case 0x1B7:
+                    entity.Rain3 = new EntityUInt32Property();
+                    entity.Rain3.Rows.Add(new EntityPropertyRow<uint>());
+                    entity.Rain3.Rows[0].MetaValue = 0;
+                    break;
+                case 0x1B8:
                     entity.Rain4 = new EntityInt32Property();
                     entity.Rain4.Rows.Add(new EntityPropertyRow<int>());
                     entity.Rain4.Rows[0].MetaValue = 0;
@@ -2685,6 +2695,11 @@ namespace CrashEdit.CE
                     entity.Field0x1FA.Rows.Add(new EntityPropertyRow<uint>());
                     entity.Field0x1FA.Rows[0].MetaValue = 0;
                     break;
+                case 0x2AA:
+                    entity.FlagStars = new EntityVictimProperty();
+                    entity.FlagStars.Rows.Add(new EntityPropertyRow<EntityVictim>());
+                    entity.FlagStars.Rows[0].MetaValue = 0;
+                    break;
                 default:
                     DarkMessageBox.ShowError($"Unsupported or invalid field: {id:X}", titleError);
                     return;
@@ -2693,14 +2708,17 @@ namespace CrashEdit.CE
 
         private const short Field0x183 = 0x183;
         private const short Flags = 0x185;
+        private const short FlagWater = 0x186;
         private const short Field0x198 = 0x198;
         private const short Field0x1A8 = 0x1A8;
         private const short Rain1 = 0x1B5;
         private const short Rain2 = 0x1B6;
+        private const short Rain3 = 0x1B7;
         private const short Rain4 = 0x1B8;
         private const short FogDist = 0x1DE;
         private const short Field0x1F9 = 0x1F9;
         private const short Field0x1FA = 0x1FA;
+        private const short FlagStars = 0x2AA;
 
         private object GetField(short id, Entity entity)
         {
@@ -2708,43 +2726,29 @@ namespace CrashEdit.CE
             {
                 Field0x183 => entity.Field0x183,
                 Flags => entity.Flags,
-                Rain1 => entity.Rain1,
+                FlagWater => entity.FlagWater,
                 Field0x198 => entity.Field0x198,
                 Field0x1A8 => entity.Field0x1A8,
+                Rain1 => entity.Rain1,
+                Rain3 => entity.Rain3,
                 Rain2 => entity.Rain2,
                 Rain4 => entity.Rain4,
                 FogDist => entity.FogDist,
                 Field0x1F9 => entity.Field0x1F9,
                 Field0x1FA => entity.Field0x1FA,
+                FlagStars => entity.FlagStars,
                 _ => null!
             };
         }
 
         private void CreatePropertyHeaderColumns()
         {
-            dgvPropertyHeader.Columns.Add("Type", "Type");
-            dgvPropertyHeader.Columns.Add("ElementSize", "ElementSize");
-            dgvPropertyHeader.Columns.Add("RowCount", "RowCount");
-            dgvPropertyHeader.Columns.Add("IsSparse", "IsSparse");
-            dgvPropertyHeader.Columns.Add("HasMetaValues", "HasMetaValues");
-
-            foreach (DataGridViewColumn column in dgvPropertyHeader.Columns)
-            {
-                column.SortMode = DataGridViewColumnSortMode.NotSortable;
-                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            }
-        }
-
-        private void CreatePropertyRawColumns()
-        {
-            dgvPropertyRaw.Columns.Add("Raw", "Raw");
-            foreach (DataGridViewColumn column in dgvPropertyRaw.Columns)
-            {
-                column.SortMode = DataGridViewColumnSortMode.NotSortable;
-                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            }
+            lvPropertyHeader.Columns.Add("Type");
+            lvPropertyHeader.Columns.Add("ElementSize");
+            lvPropertyHeader.Columns.Add("RowCount");
+            lvPropertyHeader.Columns.Add("IsSparse");
+            lvPropertyHeader.Columns.Add("HasMetaValues");
+            lvPropertyHeader.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
         }
 
         private void CreatePropertyMetaValuesColumns()
@@ -2752,6 +2756,7 @@ namespace CrashEdit.CE
             dgvPropertyMetaValues.Columns.Clear();
             string columnMetaValue = "Position";
             dgvPropertyMetaValues.Columns.Add(columnMetaValue, columnMetaValue);
+            dgvPropertyMetaValues.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
         }
 
         private void CreatePropertyValuesColumns()
@@ -2786,6 +2791,11 @@ namespace CrashEdit.CE
             {
                 string columnValue = "Value";
                 dgvPropertyValues.Columns.Add(columnValue, columnValue);
+            }
+
+            foreach (DataGridViewColumn column in dgvPropertyValues.Columns)
+            {
+                column.SortMode = DataGridViewColumnSortMode.NotSortable;
             }
         }
 
@@ -2845,21 +2855,23 @@ namespace CrashEdit.CE
             {
                 var item = entity.KnownProperties[id];
                 {
-                    dgvPropertyHeader.Rows.Clear();
+                    lvPropertyHeader.Items.Clear();
 
-                    DataGridViewRow row = new DataGridViewRow();
-                    row.CreateCells(dgvPropertyHeader, item.Type, item.ElementSize, item.RowCount, item.IsSparse, item.HasMetaValues);
-                    dgvPropertyHeader.Rows.Add(row);
+                    ListViewItem newitem = new ListViewItem(item.Type.ToString());
+                    newitem.SubItems.Add(item.ElementSize.ToString());
+                    newitem.SubItems.Add(item.RowCount.ToString());
+                    newitem.SubItems.Add(item.IsSparse.ToString());
+                    newitem.SubItems.Add(item.HasMetaValues.ToString());
+                    lvPropertyHeader.Items.Add(newitem);
                 }
                 {
-                    dgvPropertyRaw.Rows.Clear();
+                    lbPropertyRaw.Items.Clear();
 
                     byte[] values = item.Save();
                     string result = string.Join(" ", values.Select(b => b.ToString("X2")));
 
-                    DataGridViewRow row = new DataGridViewRow();
-                    row.CreateCells(dgvPropertyRaw, result);
-                    dgvPropertyRaw.Rows.Add(row);
+                    lbPropertyRaw.Items.Add(result);
+
                 }
             }
         }
@@ -2905,14 +2917,6 @@ namespace CrashEdit.CE
                     {
                         row.CreateCells(dgvPropertyValues, value.Value);
                     }
-                    else if (field is EntityUInt32Property)
-                    {
-                        long value1 = (value & (0xFF << 0)) >> 0;
-                        long value2 = (value & (0xFF << 8)) >> 8;
-                        long value3 = (value & (0xFF << 16)) >> 16;
-                        long value4 = (value & (0xFF << 24)) >> 24;
-                        row.CreateCells(dgvPropertyValues, value.ToString("X"), value1.ToString("X2"), value2.ToString("X2"), value3.ToString("X2"), value4.ToString("X2"));
-                    }
                     else
                     {
                         byte byte0 = (byte)(value & 0xFF);
@@ -2920,7 +2924,6 @@ namespace CrashEdit.CE
                         byte byte2 = (byte)((value >> 16) & 0xFF);
                         byte byte3 = (byte)((value >> 24) & 0xFF);
                         row.CreateCells(dgvPropertyValues, value.ToString("X"), byte0.ToString("X2"), byte1.ToString("X2"), byte2.ToString("X2"), byte3.ToString("X2"));
-
                     }
                     dgvPropertyValues.Rows.Add(row);
                 }
@@ -3082,12 +3085,18 @@ namespace CrashEdit.CE
         {
             if (e.Value is uint uintValue)
             {
-                e.Value = uintValue.ToString("X");
+                if (propertyStyle)
+                    e.Value = uintValue.ToString("X");
+                else
+                    e.Value = uintValue.ToString("X2");
                 e.FormattingApplied = true;
             }
             else if (e.Value is int intValue)
             {
-                e.Value = intValue.ToString("X2");
+                if (propertyStyle)
+                    e.Value = intValue.ToString("X");
+                else
+                    e.Value = intValue.ToString("X2");
                 e.FormattingApplied = true;
             }
             else if(e.Value is short shortValue)
