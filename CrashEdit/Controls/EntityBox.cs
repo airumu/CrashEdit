@@ -733,7 +733,7 @@ namespace CrashEdit.CE
                 {
                     sb.Append(item + Environment.NewLine);
                 }
-                if (sb .Length > 0)
+                if (sb.Length > 0)
                     Clipboard.SetText(sb.ToString());
 
                 if (e.KeyCode == Keys.X) // clear
@@ -1328,7 +1328,7 @@ namespace CrashEdit.CE
                 }
                 if (sb.Length > 0)
                     Clipboard.SetText(sb.ToString());
-                
+
                 if (e.KeyCode == Keys.X) // clear
                 {
                     entity.LoadListB.Rows[loadlistbrowindex].Values.Clear();
@@ -2387,6 +2387,449 @@ namespace CrashEdit.CE
             tabDrawLists.Enter -= tabDrawLists_Enter;
         }
 
+        private void tabProperties_Enter(object sender, EventArgs e)
+        {
+            EnableDoubleBuffering(dgvPropertyMeta);
+            EnableDoubleBuffering(dgvPropertyRaw);
+            EnableDoubleBuffering(dgvPropertyMetaValues);
+            EnableDoubleBuffering(dgvPropertyValues);
+            SetDarkTheme(dgvPropertyMeta);
+            SetDarkTheme(dgvPropertyRaw);
+            SetDarkTheme(dgvPropertyMetaValues);
+            SetDarkTheme(dgvPropertyValues);
+
+            ContextMenuStrip contextMenu = new ContextMenuStrip();
+            ToolStripMenuItem insertRowItem = new ToolStripMenuItem("Insert Row");
+            ToolStripMenuItem deleteRowItem = new ToolStripMenuItem("Delete Row");
+
+            insertRowItem.Click += InsertRowItem_Click;
+            deleteRowItem.Click += DeleteRowItem_Click;
+            contextMenu.Items.Add(insertRowItem);
+            contextMenu.Items.Add(deleteRowItem);
+
+            dgvPropertyMetaValues.ContextMenuStrip = contextMenu;
+            dgvPropertyValues.ContextMenuStrip = contextMenu;
+            dgvPropertyMetaValues.CellMouseDown += DataGridView_CellMouseDown;
+            dgvPropertyValues.CellMouseDown += DataGridView_CellMouseDown;
+
+            UpdatePropertyMeta();
+            UpdatePropertyRaw();
+            UpdatePropertyList();
+            LoadPropertyList();
+            tabProperties.Enter -= tabProperties_Enter;
+        }
+
+        private DataGridView currentDataGridView;
+
+        private void DataGridView_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                currentDataGridView = sender as DataGridView;
+                if (e.RowIndex >= 0)
+                {
+                    currentDataGridView.ClearSelection();
+                    currentDataGridView.Rows[e.RowIndex].Selected = true;
+                }
+            }
+        }
+
+        private void InsertRowItem_Click(object sender, EventArgs e)
+        {
+            if (currentDataGridView == null)
+            {
+                DarkMessageBox.ShowError("Please select a row to insert.", titleError);
+                return;
+            }
+            if (lbProperties.SelectedItem == null) return;
+            short index = Convert.ToInt16(lbProperties.SelectedItem.ToString(), 16);
+
+            if (currentDataGridView == dgvPropertyMetaValues)
+            {
+                dynamic newRow = null!;
+                int selectedRow = -1;
+
+                if (index == Field0x183)
+                {
+                    if (entity.Field0x183 == null || entity.Field0x183.Rows.Count == 0)
+                    {
+                        entity.Field0x183 = new EntityVictimProperty();
+                        entity.Field0x183.Rows.Add(new EntityPropertyRow<EntityVictim>());
+                        entity.Field0x183.Rows[entity.Field0x183.RowCount - 1].MetaValue = 0;
+                    }
+                    else
+                    {
+                        if (!(dgvPropertyMetaValues.SelectedCells.Count > 0)) return;
+                        selectedRow = dgvPropertyMetaValues.SelectedCells[0].RowIndex;
+                        newRow = new EntityPropertyRow<EntityVictim>();
+                        newRow.MetaValue = entity.Field0x183.Rows[selectedRow].MetaValue;
+                        foreach (var val in entity.Field0x183.Rows[selectedRow].Values)
+                            newRow.Values.Add(val);
+                        entity.Field0x183.Rows.Insert(selectedRow, newRow);
+                    }
+                }
+                else if (index == Flags)
+                {
+                    if (entity.Flags == null || entity.Flags.Rows.Count == 0)
+                    {
+                        entity.Flags = new EntityUInt32Property();
+                        entity.Flags.Rows.Add(new EntityPropertyRow<uint>());
+                        entity.Flags.Rows[entity.Flags.RowCount - 1].MetaValue = 0;
+                    }
+                    else
+                    {
+                        if (!(dgvPropertyMetaValues.SelectedCells.Count > 0)) return;
+                        selectedRow = dgvPropertyMetaValues.SelectedCells[0].RowIndex;
+                        newRow = new EntityPropertyRow<uint>();
+                        newRow.MetaValue = entity.Flags.Rows[selectedRow].MetaValue;
+                        foreach (var val in entity.Flags.Rows[selectedRow].Values)
+                            newRow.Values.Add(val);
+                        entity.Flags.Rows.Insert(selectedRow, newRow);
+                    }
+                }
+
+                if (selectedRow == -1)
+                    dgvPropertyMetaValues.Rows.Add("0");
+                else
+                    dgvPropertyMetaValues.Rows.Insert(selectedRow, $"{newRow.MetaValue}");
+            }
+            else if (currentDataGridView == dgvPropertyValues)
+            {
+                dynamic newValue = null!;
+                int selectedRow = -1;
+                int rowindex = dgvPropertyMetaValues.SelectedCells[0].RowIndex;
+
+                if (index == Field0x183)
+                {
+                    if (entity.Field0x183.Rows[rowindex].Values.Count == 0)
+                        entity.Field0x183.Rows[rowindex].Values.Add(new EntityVictim());
+                    else
+                    {
+                        selectedRow = dgvPropertyValues.SelectedCells[0].RowIndex;
+                        newValue = entity.Field0x183.Rows[rowindex].Values[selectedRow];
+                        entity.Field0x183.Rows[rowindex].Values.Insert(selectedRow, newValue);
+                        newValue = newValue.VictimID;
+                    }
+
+                }
+                else if (index == Flags)
+                {
+                    if (entity.Flags.Rows[rowindex].Values.Count == 0)
+                        entity.Flags.Rows[rowindex].Values.Add(0);
+                    else
+                    {
+                        selectedRow = dgvPropertyValues.SelectedCells[0].RowIndex;
+                        newValue = entity.Flags.Rows[rowindex].Values[selectedRow];
+                        entity.Flags.Rows[rowindex].Values.Insert(selectedRow, newValue);
+                    }
+                }
+
+                if (selectedRow == -1)
+                {
+                    dgvPropertyValues.Rows.Add("0");
+                }
+                else
+                {
+                    string str = newValue.ToString("X");
+                    dgvPropertyValues.Rows.Insert(selectedRow, $"{str}");
+                }
+            }
+            LoadProperties();
+        }
+
+        private void DeleteRowItem_Click(object sender, EventArgs e)
+        {
+            if (currentDataGridView == null)
+            {
+                DarkMessageBox.ShowError("Please select a row to delete.", titleError);
+                return;
+            }
+            if (lbProperties.SelectedItem == null || !(currentDataGridView.SelectedRows.Count > 0) || !(dgvPropertyMetaValues.SelectedCells.Count > 0)) return;
+            short index = Convert.ToInt16(lbProperties.SelectedItem.ToString(), 16);
+            int rowindex = dgvPropertyMetaValues.SelectedCells[0].RowIndex;
+
+            foreach (DataGridViewRow selectedRow in currentDataGridView.SelectedRows)
+            {
+                if (!selectedRow.IsNewRow)
+                {
+                    if (currentDataGridView == dgvPropertyMetaValues)
+                    {
+                        if (index == Field0x183)
+                        {
+                            entity.Field0x183.Rows.RemoveAt(selectedRow.Index);
+                        }
+                        else if (index == Flags)
+                        {
+                            entity.Flags.Rows.RemoveAt(selectedRow.Index);
+                        }
+                    }
+                    else if (currentDataGridView == dgvPropertyValues)
+                    {
+                        if (index == Field0x183)
+                        {
+                            entity.Field0x183.Rows[rowindex].Values.RemoveAt(selectedRow.Index);
+                        }
+                        else if (index == Flags)
+                        {
+                            entity.Flags.Rows[rowindex].Values.RemoveAt(selectedRow.Index);
+                        }
+                    }
+
+                    currentDataGridView.Rows.Remove(selectedRow);
+                }
+            }
+
+            if (entity.Field0x183 == null || entity.Field0x183.RowCount == 0) entity.Field0x183 = null;
+            if (entity.Flags == null || entity.Flags.RowCount == 0) entity.Flags = null;
+
+            LoadProperties();
+        }
+
+        private readonly string titleError = "Error";
+        private readonly string titleInputError = "Input Error";
+        private readonly string columnMetaValue = "Position";
+        private readonly string columnValue = "Value";
+        private readonly short Field0x183 = 0x183;
+        private readonly short Flags = 0x185;
+
+        private void UpdatePropertyMeta()
+        {
+            dgvPropertyMeta.Columns.Add("Type", "Type");
+            dgvPropertyMeta.Columns.Add("ElementSize", "ElementSize");
+            dgvPropertyMeta.Columns.Add("RowCount", "RowCount");
+            dgvPropertyMeta.Columns.Add("IsSparse", "IsSparse");
+            dgvPropertyMeta.Columns.Add("HasMetaValues", "HasMetaValues");
+
+            foreach (DataGridViewColumn column in dgvPropertyMeta.Columns)
+            {
+                column.SortMode = DataGridViewColumnSortMode.NotSortable;
+                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            }
+        }
+
+        private void UpdatePropertyRaw()
+        {
+            dgvPropertyRaw.Columns.Add("Raw", "Raw");
+            foreach (DataGridViewColumn column in dgvPropertyRaw.Columns)
+            {
+                column.SortMode = DataGridViewColumnSortMode.NotSortable;
+                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            }
+        }
+
+        private void UpdatePropertyList()
+        {
+            if (entity.ExtraProperties != null && entity.ExtraProperties.Count > 0)
+            {
+                lbProperties.Enabled = true;
+            }
+        }
+
+        private void LoadPropertyList()
+        {
+            if (entity.KnownProperties != null && entity.KnownProperties.Count > 0)
+            {
+                foreach (var item in entity.KnownProperties)
+                {
+                    lbProperties.Items.Add(item.Key.ToString("X"));
+                }
+                lbProperties.SelectedIndex = 0;
+            }
+        }
+
+        private void LoadProperties()
+        {
+            if (lbProperties.SelectedItem == null) return;
+            short index = Convert.ToInt16(lbProperties.SelectedItem.ToString(), 16);
+            var item = entity.KnownProperties[index];
+            {
+                dgvPropertyMeta.Rows.Clear();
+
+                DataGridViewRow row = new DataGridViewRow();
+                row.CreateCells(dgvPropertyMeta, item.Type, item.ElementSize, item.RowCount, item.IsSparse, item.HasMetaValues);
+                dgvPropertyMeta.Rows.Add(row);
+            }
+            {
+                dgvPropertyRaw.Rows.Clear();
+
+                byte[] values = item.Save();
+                string result = string.Join(" ", values.Select(b => b.ToString("X2")));
+
+                DataGridViewRow row = new DataGridViewRow();
+                row.CreateCells(dgvPropertyRaw, result);
+                dgvPropertyRaw.Rows.Add(row);
+            }
+        }
+
+        private void UpdatePropertyValues()
+        {
+            if (lbProperties.SelectedItem == null) return;
+            short index = Convert.ToInt16(lbProperties.SelectedItem.ToString(), 16);
+
+            dgvPropertyMetaValues.Columns.Clear();
+            dgvPropertyValues.Columns.Clear();
+            if (index == Field0x183)
+            {
+                dgvPropertyMetaValues.Columns.Add(columnMetaValue, columnMetaValue);
+                dgvPropertyValues.Columns.Add(columnValue, columnValue);
+            }
+            else if (index == Flags)
+            {
+                dgvPropertyMetaValues.Columns.Add(columnMetaValue, columnMetaValue);
+                dgvPropertyValues.Columns.Add(columnValue, columnValue);
+            }
+        }
+
+        private void LoadPropertyMetaValues()
+        {
+            if (lbProperties.SelectedItem == null) return;
+            short index = Convert.ToInt16(lbProperties.SelectedItem.ToString(), 16);
+
+            dgvPropertyMetaValues.Rows.Clear();
+            if (index == Field0x183 && entity.Field0x183 != null)
+            {
+                for (int i = 0; i < entity.Field0x183.Rows.Count; ++i)
+                {
+                    DataGridViewRow row = new DataGridViewRow();
+                    row.CreateCells(dgvPropertyMetaValues, entity.Field0x183.Rows[i].MetaValue.Value);
+                    dgvPropertyMetaValues.Rows.Add(row);
+                }
+            }
+            else if (index == Flags && entity.Flags != null)
+            {
+                for (int i = 0; i < entity.Flags.Rows.Count; ++i)
+                {
+                    DataGridViewRow row = new DataGridViewRow();
+                    row.CreateCells(dgvPropertyMetaValues, entity.Flags.Rows[i].MetaValue.Value);
+                    dgvPropertyMetaValues.Rows.Add(row);
+                }
+            }
+        }
+
+        private void LoadPropertyValues()
+        {
+            if (lbProperties.SelectedItem == null) return;
+            short index = Convert.ToInt16(lbProperties.SelectedItem.ToString(), 16);
+            dgvPropertyValues.Rows.Clear();
+
+            if (!(dgvPropertyMetaValues.SelectedCells.Count > 0) || !(dgvPropertyMetaValues.Rows.Count > 0)) return;
+            int rowIndex = dgvPropertyMetaValues.SelectedCells[0].RowIndex;
+            if (index == Field0x183)
+            {
+                for (int j = 0; j < entity.Field0x183.Rows[rowIndex].Values.Count; ++j)
+                {
+                    DataGridViewRow row = new DataGridViewRow();
+                    row.CreateCells(dgvPropertyValues, entity.Field0x183.Rows[rowIndex].Values[j].VictimID.ToString("X"));
+                    dgvPropertyValues.Rows.Add(row);
+                }
+            }
+            else if (index == Flags)
+            {
+                for (int j = 0; j < entity.Flags.Rows[rowIndex].Values.Count; ++j)
+                {
+                    DataGridViewRow row = new DataGridViewRow();
+                    row.CreateCells(dgvPropertyValues, entity.Flags.Rows[rowIndex].Values[j].ToString("X"));
+                    dgvPropertyValues.Rows.Add(row);
+                }
+            }
+            //numNeighborFlag.Value = (entity.Neighbors.Rows[neighborindex].Values[neighborsettingindex] & (0xFF << 0)) >> 0;
+            //numNeighborCamera.Value = (entity.Neighbors.Rows[neighborindex].Values[neighborsettingindex] & (0xFF << 8)) >> 8;
+            //numNeighborZone.Value = (entity.Neighbors.Rows[neighborindex].Values[neighborsettingindex] & (0xFF << 16)) >> 16;
+            //numNeighborLink.Value = (entity.Neighbors.Rows[neighborindex].Values[neighborsettingindex] & (0xFF << 24)) >> 24;
+        }
+
+        private void dgvPropertyMetaValues_SelectionChanged(object sender, EventArgs e)
+        {
+            LoadPropertyValues();
+        }
+
+        private void dgvPropertyMetaValues_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (lbProperties.SelectedItem == null || !(dgvPropertyMetaValues.SelectedCells.Count > 0)) return;
+            short index = Convert.ToInt16(lbProperties.SelectedItem.ToString(), 16);
+
+            if (index == Field0x183)
+            {
+                entity.Field0x183.Rows[e.RowIndex].MetaValue = Convert.ToInt16(dgvPropertyMetaValues.Rows[e.RowIndex].Cells[0].Value);
+            }
+            else if (index == Flags)
+            {
+                entity.Flags.Rows[e.RowIndex].MetaValue = Convert.ToInt16(dgvPropertyMetaValues.Rows[e.RowIndex].Cells[0].Value);
+            }
+            LoadProperties();
+        }
+
+        private void dgvPropertyValues_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (lbProperties.SelectedItem == null || !(dgvPropertyValues.SelectedCells.Count > 0) || !(dgvPropertyMetaValues.SelectedCells.Count > 0)) return;
+            short index = Convert.ToInt16(lbProperties.SelectedItem.ToString(), 16);
+            int rowIndex = dgvPropertyMetaValues.SelectedCells[0].RowIndex;
+
+            if (index == Field0x183)
+            {
+                entity.Field0x183.Rows[rowIndex].Values[e.RowIndex] = new EntityVictim(Convert.ToInt16(dgvPropertyValues.Rows[e.RowIndex].Cells[0].Value));
+            }
+            else if (index == Flags)
+            {
+                entity.Flags.Rows[rowIndex].Values[e.RowIndex] = Convert.ToUInt32(dgvPropertyValues.Rows[e.RowIndex].Cells[0].Value);
+            }
+            LoadProperties();
+        }
+
+
+        private void dgvPropertyValues_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.Value is int intValue)
+            {
+                e.Value = intValue.ToString("X");
+                e.FormattingApplied = true;
+            }
+            else if (e.Value is byte byteValue)
+            {
+                e.Value = byteValue.ToString("X2");
+                e.FormattingApplied = true;
+            }
+        }
+
+        private void dgvPropertyValues_CellParsing(object sender, DataGridViewCellParsingEventArgs e)
+        {
+            if (e.Value is string stringValue)
+            {
+                try
+                {
+                    e.Value = Convert.ToInt32(stringValue, 16);
+                    e.ParsingApplied = true;
+                }
+                catch
+                {
+                    DarkMessageBox.ShowError("Invalid value.", titleInputError);
+                    e.ParsingApplied = false;
+                }
+            }
+        }
+
+        private void lbProperties_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadProperties();
+            UpdatePropertyValues();
+            LoadPropertyMetaValues();
+        }
+
+        private void cmdAddProperty_Click(object sender, EventArgs e)
+        {
+            string field = txtProperty.Text;
+            if (!lbProperties.Items.Contains(field))
+            {
+                lbProperties.Items.Add(field);
+            }
+            else
+            {
+                DarkMessageBox.ShowError($"Duplicated field: {field}", titleError);
+            }
+        }
+
         private void txtEIDA_LostFocus(object sender, EventArgs e)
         {
             UpdateLoadListA();
@@ -3267,5 +3710,65 @@ namespace CrashEdit.CE
         {
             entity.FOV.Rows[fovframeindex].Values[fovindex] = new EntityVictim((short)numFOV.Value);
         }
+
+
+
+        private void EnableDoubleBuffering(DataGridView dataGridView)
+        {
+            typeof(DataGridView).InvokeMember("DoubleBuffered",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance |
+                System.Reflection.BindingFlags.SetProperty,
+                null, dataGridView, new object[] { true });
+        }
+
+        private void SetDarkTheme(DataGridView dataGridView)
+        {
+            Color clrBackground = Color.FromArgb(40, 40, 40);
+            Color clrAltBackground = Color.FromArgb(34, 34, 34);
+            Color clrSelectionBackground = Color.FromArgb(70, 70, 70);
+            Color clrText = Color.Gainsboro;
+
+            // Background color of the entire grid
+            dataGridView.BackgroundColor = Color.FromArgb(31, 31, 32);
+
+            // Color of the grid lines
+            dataGridView.GridColor = Color.FromArgb(50, 50, 50);
+
+            // Default style for cells
+            dataGridView.DefaultCellStyle.BackColor = clrBackground;
+            dataGridView.DefaultCellStyle.ForeColor = clrText;
+            dataGridView.DefaultCellStyle.SelectionBackColor = clrSelectionBackground;
+            dataGridView.DefaultCellStyle.SelectionForeColor = clrText;
+
+            // Style for column headers
+            dataGridView.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(50, 50, 50);
+            dataGridView.ColumnHeadersDefaultCellStyle.ForeColor = clrText;
+            dataGridView.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(60, 60, 60);
+            dataGridView.ColumnHeadersDefaultCellStyle.SelectionForeColor = clrText;
+            dataGridView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            // Style for row headers
+            dataGridView.RowHeadersDefaultCellStyle.BackColor = Color.FromArgb(50, 50, 50);
+            dataGridView.RowHeadersDefaultCellStyle.ForeColor = clrText;
+            dataGridView.RowHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(60, 60, 60);
+            dataGridView.RowHeadersDefaultCellStyle.SelectionForeColor = clrText;
+
+            // Background color for odd and even rows
+            dataGridView.RowsDefaultCellStyle.BackColor = clrBackground;
+            dataGridView.AlternatingRowsDefaultCellStyle.BackColor = clrAltBackground;
+
+            // Row border style
+            dataGridView.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+
+            // Header and gridline styles
+            dataGridView.EnableHeadersVisualStyles = false;
+
+            // Additional settings
+            dataGridView.BorderStyle = BorderStyle.None;
+            dataGridView.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+            dataGridView.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+        }
+
+
     }
 }

@@ -129,7 +129,23 @@ namespace CrashEdit.Crash
         [EntityPropertyField(0x337)]
         private EntitySetting? bonusboxcount = null;
 
-        // added
+        // camera 2
+        [EntityPropertyField(0x183)]
+        private EntityVictimProperty field0x183 = null;
+        [EntityPropertyField(0x185)]
+        private EntityUInt32Property flags = null;
+        [EntityPropertyField(0x1B5)]
+        private EntityVictimProperty rain1 = null;
+        [EntityPropertyField(0x1B6)]
+        private EntityUInt32Property rain2 = null;
+        [EntityPropertyField(0x1B8)]
+        private EntityInt32Property rain4 = null;
+        [EntityPropertyField(0x1F9)]
+        private EntityVictimProperty field0x1F9 = null;
+        [EntityPropertyField(0x1FA)]
+        private EntityUInt32Property field0x1FA = null;
+
+        // C2-tweaked
         [EntityPropertyField(0x338)]
         private int? C2TTtype = null;
         [EntityPropertyField(0x339)]
@@ -140,10 +156,12 @@ namespace CrashEdit.Crash
         private int? C2TTghosttarget = null;
 
         private readonly Dictionary<short, EntityProperty> extraproperties;
+        private readonly Dictionary<short, EntityProperty> knownproperties;
 
         public Entity(IDictionary<short, EntityProperty> properties)
         {
             extraproperties = new Dictionary<short, EntityProperty>(properties);
+            knownproperties = new Dictionary<short, EntityProperty>(properties);
             foreach (KeyValuePair<short, FieldInfo> pair in propertyfields)
             {
                 short id = pair.Key;
@@ -357,7 +375,44 @@ namespace CrashEdit.Crash
             set => bonusboxcount = value;
         }
 
-        // added
+        // camera 2
+        public EntityUInt32Property Flags
+        {
+            get => flags;
+            set => flags = value;
+        }
+        public EntityVictimProperty Field0x183
+        {
+            get => field0x183;
+            set => field0x183 = value;
+        }
+        public EntityVictimProperty Rain1
+        {
+            get => rain1;
+            set => rain1 = value;
+        }
+        public EntityUInt32Property Rain2
+        {
+            get => rain2;
+            set => rain2 = value;
+        }
+        public EntityInt32Property Rain4
+        {
+            get => rain4;
+            set => rain4 = value;
+        }
+        public EntityVictimProperty Field0x1F9
+        {
+            get => field0x1F9;
+            set => field0x1F9 = value;
+        }
+        public EntityUInt32Property Field0x1FA
+        {
+            get => field0x1FA;
+            set => field0x1FA = value;
+        }
+
+        // C2-tweaked
         public int? C2TTType
         {
             get => C2TTtype;
@@ -380,6 +435,8 @@ namespace CrashEdit.Crash
         }
 
         public IDictionary<short, EntityProperty> ExtraProperties => extraproperties;
+        public IDictionary<short, EntityProperty> KnownProperties => knownproperties;
+        public IDictionary<short, FieldInfo> PropertyFields => propertyfields;
 
         public byte[] Save()
         {

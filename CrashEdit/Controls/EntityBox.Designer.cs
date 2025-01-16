@@ -1,3 +1,4 @@
+using System.Windows.Forms;
 using AltUI.Controls;
 using MetroSet_UI.Controls;
 
@@ -248,6 +249,14 @@ namespace CrashEdit.CE
             cmdInsertEntityA = new DarkButton();
             cmdPrevRowDrawA = new DarkButton();
             cmdNextRowDrawA = new DarkButton();
+            tabProperties = new TabPage();
+            txtProperty = new DarkTextBox();
+            cmdAddProperty = new DarkButton();
+            dgvPropertyRaw = new DataGridView();
+            dgvPropertyMetaValues = new DataGridView();
+            dgvPropertyValues = new DataGridView();
+            dgvPropertyMeta = new DataGridView();
+            lbProperties = new DarkListBox();
             ((System.ComponentModel.ISupportInitialize)numType).BeginInit();
             fraType.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numSubtype).BeginInit();
@@ -332,6 +341,11 @@ namespace CrashEdit.CE
             ((System.ComponentModel.ISupportInitialize)numMetavalueDrawA).BeginInit();
             fraEntityA.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numEntityA).BeginInit();
+            tabProperties.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvPropertyRaw).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvPropertyMetaValues).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvPropertyValues).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvPropertyMeta).BeginInit();
             SuspendLayout();
             // 
             // chkType
@@ -901,13 +915,14 @@ namespace CrashEdit.CE
             tbcTabs.Controls.Add(tabCamera);
             tbcTabs.Controls.Add(tabLoadLists);
             tbcTabs.Controls.Add(tabDrawLists);
+            tbcTabs.Controls.Add(tabProperties);
             tbcTabs.Dock = DockStyle.Fill;
             tbcTabs.IsDerivedStyle = false;
             tbcTabs.ItemSize = new Size(100, 28);
             tbcTabs.Location = new Point(0, 0);
             tbcTabs.Margin = new Padding(4, 3, 4, 3);
             tbcTabs.Name = "tbcTabs";
-            tbcTabs.SelectedIndex = 0;
+            tbcTabs.SelectedIndex = 5;
             tbcTabs.SelectedTextColor = Color.White;
             tbcTabs.Size = new Size(600, 600);
             tbcTabs.SizeMode = TabSizeMode.Fixed;
@@ -3296,6 +3311,130 @@ namespace CrashEdit.CE
             cmdNextRowDrawA.Text = "Next";
             cmdNextRowDrawA.Click += cmdNextRowDrawA_Click;
             // 
+            // tabProperties
+            // 
+            tabProperties.BackColor = Color.FromArgb(31, 31, 32);
+            tabProperties.Controls.Add(txtProperty);
+            tabProperties.Controls.Add(cmdAddProperty);
+            tabProperties.Controls.Add(dgvPropertyRaw);
+            tabProperties.Controls.Add(dgvPropertyMetaValues);
+            tabProperties.Controls.Add(dgvPropertyValues);
+            tabProperties.Controls.Add(dgvPropertyMeta);
+            tabProperties.Controls.Add(lbProperties);
+            tabProperties.Location = new Point(4, 32);
+            tabProperties.Margin = new Padding(4, 3, 4, 3);
+            tabProperties.Name = "tabProperties";
+            tabProperties.Padding = new Padding(4, 3, 4, 3);
+            tabProperties.Size = new Size(592, 564);
+            tabProperties.TabIndex = 2;
+            tabProperties.Text = "Properties";
+            tabProperties.Enter += tabProperties_Enter;
+            // 
+            // txtProperty
+            // 
+            txtProperty.BackColor = Color.FromArgb(26, 26, 28);
+            txtProperty.BorderStyle = BorderStyle.FixedSingle;
+            txtProperty.ForeColor = Color.FromArgb(213, 213, 213);
+            txtProperty.Location = new Point(7, 239);
+            txtProperty.Name = "txtProperty";
+            txtProperty.Size = new Size(75, 23);
+            txtProperty.TabIndex = 3;
+            // 
+            // cmdAddProperty
+            // 
+            cmdAddProperty.BorderColour = Color.Empty;
+            cmdAddProperty.CustomColour = false;
+            cmdAddProperty.FlatBottom = false;
+            cmdAddProperty.FlatTop = false;
+            cmdAddProperty.Location = new Point(7, 268);
+            cmdAddProperty.Name = "cmdAddProperty";
+            cmdAddProperty.Padding = new Padding(5);
+            cmdAddProperty.Size = new Size(75, 23);
+            cmdAddProperty.TabIndex = 2;
+            cmdAddProperty.Text = "Add";
+            cmdAddProperty.Click += cmdAddProperty_Click;
+            // 
+            // dgvPropertyRaw
+            // 
+            dgvPropertyRaw.AllowUserToAddRows = false;
+            dgvPropertyRaw.AllowUserToResizeColumns = false;
+            dgvPropertyRaw.AllowUserToResizeRows = false;
+            dgvPropertyRaw.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dgvPropertyRaw.ColumnHeadersHeight = 24;
+            dgvPropertyRaw.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvPropertyRaw.Location = new Point(91, 76);
+            dgvPropertyRaw.Name = "dgvPropertyRaw";
+            dgvPropertyRaw.RowHeadersWidth = 24;
+            dgvPropertyRaw.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dgvPropertyRaw.ScrollBars = ScrollBars.Horizontal;
+            dgvPropertyRaw.ShowCellToolTips = false;
+            dgvPropertyRaw.Size = new Size(494, 64);
+            dgvPropertyRaw.TabIndex = 1;
+            // 
+            // dgvPropertyMetaValues
+            // 
+            dgvPropertyMetaValues.AllowUserToAddRows = false;
+            dgvPropertyMetaValues.AllowUserToResizeColumns = false;
+            dgvPropertyMetaValues.AllowUserToResizeRows = false;
+            dgvPropertyMetaValues.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dgvPropertyMetaValues.ColumnHeadersHeight = 24;
+            dgvPropertyMetaValues.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvPropertyMetaValues.Location = new Point(91, 146);
+            dgvPropertyMetaValues.Name = "dgvPropertyMetaValues";
+            dgvPropertyMetaValues.RowHeadersWidth = 24;
+            dgvPropertyMetaValues.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dgvPropertyMetaValues.ShowCellToolTips = false;
+            dgvPropertyMetaValues.Size = new Size(112, 233);
+            dgvPropertyMetaValues.TabIndex = 1;
+            dgvPropertyMetaValues.CellEndEdit += dgvPropertyMetaValues_CellValueChanged;
+            dgvPropertyMetaValues.SelectionChanged += dgvPropertyMetaValues_SelectionChanged;
+            // 
+            // dgvPropertyValues
+            // 
+            dgvPropertyValues.AllowUserToAddRows = false;
+            dgvPropertyValues.AllowUserToResizeColumns = false;
+            dgvPropertyValues.AllowUserToResizeRows = false;
+            dgvPropertyValues.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dgvPropertyValues.ColumnHeadersHeight = 24;
+            dgvPropertyValues.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvPropertyValues.Location = new Point(203, 146);
+            dgvPropertyValues.Name = "dgvPropertyValues";
+            dgvPropertyValues.RowHeadersWidth = 24;
+            dgvPropertyValues.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dgvPropertyValues.ShowCellToolTips = false;
+            dgvPropertyValues.Size = new Size(382, 233);
+            dgvPropertyValues.TabIndex = 1;
+            dgvPropertyValues.CellEndEdit += dgvPropertyValues_CellValueChanged;
+            dgvPropertyValues.CellFormatting += dgvPropertyValues_CellFormatting;
+            dgvPropertyValues.CellParsing += dgvPropertyValues_CellParsing;
+            // 
+            // dgvPropertyMeta
+            // 
+            dgvPropertyMeta.AllowUserToAddRows = false;
+            dgvPropertyMeta.AllowUserToResizeColumns = false;
+            dgvPropertyMeta.AllowUserToResizeRows = false;
+            dgvPropertyMeta.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dgvPropertyMeta.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvPropertyMeta.Location = new Point(91, 6);
+            dgvPropertyMeta.Name = "dgvPropertyMeta";
+            dgvPropertyMeta.RowHeadersWidth = 24;
+            dgvPropertyMeta.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dgvPropertyMeta.ShowCellToolTips = false;
+            dgvPropertyMeta.Size = new Size(494, 64);
+            dgvPropertyMeta.TabIndex = 1;
+            // 
+            // lbProperties
+            // 
+            lbProperties.BackColor = Color.FromArgb(26, 26, 28);
+            lbProperties.BorderStyle = BorderStyle.FixedSingle;
+            lbProperties.ForeColor = Color.FromArgb(213, 213, 213);
+            lbProperties.FormattingEnabled = true;
+            lbProperties.Location = new Point(7, 6);
+            lbProperties.Name = "lbProperties";
+            lbProperties.Size = new Size(75, 227);
+            lbProperties.TabIndex = 0;
+            lbProperties.SelectedIndexChanged += lbProperties_SelectedIndexChanged;
+            // 
             // EntityBox
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -3423,7 +3562,23 @@ namespace CrashEdit.CE
             ((System.ComponentModel.ISupportInitialize)numMetavalueDrawA).EndInit();
             fraEntityA.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)numEntityA).EndInit();
+            tabProperties.ResumeLayout(false);
+            tabProperties.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvPropertyRaw).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvPropertyMetaValues).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvPropertyValues).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvPropertyMeta).EndInit();
             ResumeLayout(false);
+        }
+
+        private void DgvpropertyValues_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void LbProperties_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
@@ -3506,6 +3661,7 @@ namespace CrashEdit.CE
         private DarkTextBox txtSLST;
         private System.Windows.Forms.CheckBox chkSLST;
         private System.Windows.Forms.TabPage tabCamera;
+        private System.Windows.Forms.TabPage tabProperties;
         private System.Windows.Forms.Label lblEIDErr1;
         private System.Windows.Forms.Label lblEIDErrA;
         private DarkGroupBox fraLoadListB;
@@ -3646,5 +3802,12 @@ namespace CrashEdit.CE
         private DarkButton cmdVerifyDrawList;
         private DarkListBox lbEntityA;
         private DarkListBox lbEntityB;
+        private DataGridView dgvPropertyMeta;
+        private DarkListBox lbProperties;
+        private DataGridView dgvPropertyValues;
+        private DataGridView dgvPropertyRaw;
+        private DataGridView dgvPropertyMetaValues;
+        private DarkButton cmdAddProperty;
+        private DarkTextBox txtProperty;
     }
 }
