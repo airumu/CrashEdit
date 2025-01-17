@@ -107,7 +107,7 @@ namespace CrashEdit.Crash
         [EntityPropertyField(0x13C)]
         private EntityInt32Property drawlistb = null;
         [EntityPropertyField(0x173)]
-        private int? cameraindex = null;
+        private int? cameparticlesdex = null;
         [EntityPropertyField(0x174)]
         private int? camerasubindex = null;
         [EntityPropertyField(0x208)]
@@ -129,36 +129,56 @@ namespace CrashEdit.Crash
         [EntityPropertyField(0x337)]
         private EntitySetting? bonusboxcount = null;
 
-        // camera 1
+        // Camera 1
+        [EntityPropertyField(0x162)]
+        private EntityUInt32Property field0x162 = null;
+        [EntityPropertyField(0x16D)]
+        private EntitySettingProperty field0x16D = null;
+        [EntityPropertyField(0x176)]
+        private EntityVictimProperty pathlinks = null;
         [EntityPropertyField(0x198)]
-        private EntitySettingProperty field0x198 = null;
+        private EntitySettingProperty eventsender = null;
         [EntityPropertyField(0x1A8)]
-        private EntityUInt32Property field0x1A8 = null;
-        // camera 2
+        private EntityUInt32Property transitions = null;
+        [EntityPropertyField(0x1AA)]
+        private EntityVictimProperty field0x1AA = null;
+        [EntityPropertyField(0x27F)]
+        private EntityUInt8Property field0x27F = null;
+        // Camera 2
+        [EntityPropertyField(0x119)]
+        private EntityVictimProperty panning = null;
+        [EntityPropertyField(0x131)]
+        private EntityVictimProperty field0x131 = null;
+        [EntityPropertyField(0x142)]
+        private EntityVictimProperty cameradistance = null;
+        [EntityPropertyField(0x16E)]
+        private EntityVictimProperty field0x16E = null;
         [EntityPropertyField(0x183)]
         private EntityVictimProperty field0x183 = null;
         [EntityPropertyField(0x185)]
         private EntityUInt32Property flags = null;
         [EntityPropertyField(0x186)]
-        private EntityUInt32Property flagwater = null;
+        private EntityUInt32Property water = null;
         [EntityPropertyField(0x1B5)]
-        private EntityVictimProperty rain1 = null;
+        private EntityVictimProperty particles1 = null;
         [EntityPropertyField(0x1B6)]
-        private EntityUInt32Property rain2 = null;
+        private EntityUInt32Property particles2 = null;
         [EntityPropertyField(0x1B7)]
-        private EntityUInt32Property rain3 = null;
+        private EntityUInt32Property field0x1B7 = null;
         [EntityPropertyField(0x1B8)]
-        private EntityInt32Property rain4 = null;
+        private EntityInt32Property fxcontrol = null;
         [EntityPropertyField(0x1DE)]
-        private EntityUInt32Property fogdist = null;
+        private EntityUInt32Property fogdistance = null;
         [EntityPropertyField(0x1F9)]
         private EntityVictimProperty field0x1F9 = null;
         [EntityPropertyField(0x1FA)]
-        private EntityUInt32Property field0x1FA = null;
+        private EntityUInt32Property backgrounds = null;
+        [EntityPropertyField(0x297)]
+        private EntityUInt32Property mirrors = null;
         [EntityPropertyField(0x2AA)]
-        private EntityVictimProperty flagstars = null;
+        private EntityVictimProperty stars = null;
 
-        // C2-tweaked
+        // CE-tweaked
         [EntityPropertyField(0x338)]
         private int? C2TTtype = null;
         [EntityPropertyField(0x339)]
@@ -199,7 +219,7 @@ namespace CrashEdit.Crash
         public string Title =>
             (Name != null && ID != null) ? $"{Name} [ID {ID}]" :
             (ID != null) ? $"Entity [ID {ID}]" :
-            (cameraindex != null && camerasubindex != null) ? $"Camera[{cameraindex}]" :
+            (cameparticlesdex != null && camerasubindex != null) ? $"Camera[{cameparticlesdex}]" :
             "Entity";
 
         public string ImageKey => "Arrow";
@@ -316,8 +336,8 @@ namespace CrashEdit.Crash
 
         public int? CameraIndex
         {
-            get => cameraindex;
-            set => cameraindex = value;
+            get => cameparticlesdex;
+            set => cameparticlesdex = value;
         }
 
         public int? CameraSubIndex
@@ -388,18 +408,63 @@ namespace CrashEdit.Crash
             set => bonusboxcount = value;
         }
 
-        // camera 1
-        public EntitySettingProperty Field0x198
+        // Camera 1
+        public EntityUInt32Property Field0x162
         {
-            get => field0x198;
-            set => field0x198 = value;
+            get => field0x162;
+            set => field0x162 = value;
         }
-        public EntityUInt32Property Field0x1A8
+        public EntitySettingProperty Field0x16D
         {
-            get => field0x1A8;
-            set => field0x1A8 = value;
+            get => field0x16D;
+            set => field0x16D = value;
         }
-        // camera 2
+        public EntityVictimProperty PathLinks
+        {
+            get => pathlinks;
+            set => pathlinks = value;
+        }
+        public EntitySettingProperty EventSender
+        {
+            get => eventsender;
+            set => eventsender = value;
+        }
+        public EntityUInt32Property Transitions
+        {
+            get => transitions;
+            set => transitions = value;
+        }
+        public EntityVictimProperty Field0x1AA
+        {
+            get => field0x1AA;
+            set => field0x1AA = value;
+        }
+        public EntityUInt8Property Field0x27F
+        {
+            get => field0x27F;
+            set => field0x27F = value;
+        }
+        // Camera 2
+        public EntityVictimProperty Panning
+        {
+            get => panning;
+            set => panning = value;
+        }
+        public EntityVictimProperty Field0x131
+        {
+            get => field0x131;
+            set => field0x131 = value;
+        }
+        public EntityVictimProperty CameraDistance
+        {
+            get => cameradistance;
+            set => cameradistance = value;
+        }
+        public EntityVictimProperty Field0x16E
+        {
+            get => field0x16E;
+            set => field0x16E = value;
+        }
         public EntityVictimProperty Field0x183
         {
             get => field0x183;
@@ -410,53 +475,58 @@ namespace CrashEdit.Crash
             get => flags;
             set => flags = value;
         }
-        public EntityUInt32Property FlagWater
+        public EntityUInt32Property Water
         {
-            get => flagwater;
-            set => flagwater = value;
+            get => water;
+            set => water = value;
         }
-        public EntityVictimProperty Rain1
+        public EntityVictimProperty Particles1
         {
-            get => rain1;
-            set => rain1 = value;
+            get => particles1;
+            set => particles1 = value;
         }
-        public EntityUInt32Property Rain2
+        public EntityUInt32Property Particles2
         {
-            get => rain2;
-            set => rain2 = value;
+            get => particles2;
+            set => particles2 = value;
         }
-        public EntityUInt32Property Rain3
+        public EntityUInt32Property Field0x1B7
         {
-            get => rain3;
-            set => rain3 = value;
+            get => field0x1B7;
+            set => field0x1B7 = value;
         }
-        public EntityInt32Property Rain4
+        public EntityInt32Property FXControl
         {
-            get => rain4;
-            set => rain4 = value;
+            get => fxcontrol;
+            set => fxcontrol = value;
         }
-        public EntityUInt32Property FogDist
+        public EntityUInt32Property FogDistance
         {
-            get => fogdist;
-            set => fogdist = value;
+            get => fogdistance;
+            set => fogdistance = value;
         }
         public EntityVictimProperty Field0x1F9
         {
             get => field0x1F9;
             set => field0x1F9 = value;
         }
-        public EntityUInt32Property Field0x1FA
+        public EntityUInt32Property Backgrounds
         {
-            get => field0x1FA;
-            set => field0x1FA = value;
+            get => backgrounds;
+            set => backgrounds = value;
         }
-        public EntityVictimProperty FlagStars
+        public EntityUInt32Property Mirrors
         {
-            get => flagstars;
-            set => flagstars = value;
+            get => mirrors;
+            set => mirrors = value;
+        }
+        public EntityVictimProperty Stars
+        {
+            get => stars;
+            set => stars = value;
         }
 
-        // C2-tweaked
+        // CE-tweaked
         public int? C2TTType
         {
             get => C2TTtype;
@@ -528,7 +598,7 @@ namespace CrashEdit.Crash
         }
 
         [AttributeUsage(AttributeTargets.Field)]
-        private class EntityPropertyFieldAttribute : Attribute
+        public class EntityPropertyFieldAttribute : Attribute
         {
             public EntityPropertyFieldAttribute(short id)
             {

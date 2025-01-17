@@ -1,11 +1,15 @@
+using System.ComponentModel;
 using System.Data.Common;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
+using CrashEdit.Crash.GOOLIns;
 
 namespace CrashEdit.CE
 {
@@ -2376,7 +2380,6 @@ namespace CrashEdit.CE
             LoadEIDBList();
             UpdateLoadListA();
             UpdateLoadListB();
-            //CheckPayload();
             tabLoadLists.Enter -= tabLoadLists_Enter;
         }
 
@@ -2419,6 +2422,10 @@ namespace CrashEdit.CE
         private DataGridView currentDataGridView;
         private object selectedField = new object();
         private bool propertyStyle = false;
+        private bool metavalueDirty = false;
+
+        private static readonly string nullMeta = "-";
+
         private const string titleError = "Error";
         private const string titleInputError = "Input Error";
 
@@ -2452,6 +2459,13 @@ namespace CrashEdit.CE
                 dynamic newRow = null!;
                 int selectedRow = -1;
 
+                if (!(dgvPropertyMetaValues.SelectedCells.Count > 0)) return;
+                if (dgvPropertyMetaValues.SelectedCells[0].Value == nullMeta)
+                {
+                    DarkMessageBox.ShowError("You cannot add meta values when the meta value is null.", titleError);
+                    return;
+                }
+
                 if (field == null || field.RowCount == 0)
                 {
                     if (field is EntityVictimProperty)
@@ -2474,12 +2488,16 @@ namespace CrashEdit.CE
                         field = new EntitySettingProperty();
                         field.Rows.Add(new EntityPropertyRow<EntitySetting>());
                     }
+                    else if (field is EntityUInt8Property)
+                    {
+                        field = new EntityUInt8Property();
+                        field.Rows.Add(new EntityPropertyRow<byte>());
+                    }
                     field.Rows[field.RowCount - 1].MetaValue = 0;
                     Console.WriteLine("Added MetaValue.");
                 }
                 else
                 {
-                    if (!(dgvPropertyMetaValues.SelectedCells.Count > 0)) return;
                     selectedRow = dgvPropertyMetaValues.SelectedCells[0].RowIndex;
                     if (field is EntityVictimProperty)
                     {
@@ -2496,6 +2514,10 @@ namespace CrashEdit.CE
                     else if (field is EntitySettingProperty)
                     {
                         newRow = new EntityPropertyRow<EntitySetting>();
+                    }
+                    else if (field is EntityUInt8Property)
+                    {
+                        newRow = new EntityPropertyRow<byte>();
                     }
                     newRow.MetaValue = field.Rows[selectedRow].MetaValue;
                     foreach (var val in field.Rows[selectedRow].Values)
@@ -2558,6 +2580,13 @@ namespace CrashEdit.CE
                     else
                         dgvPropertyValues.Rows.Insert(selectedRow, newValue.ToString("X"));
                 }
+                else if (field is EntityUInt8Property)
+                {
+                    if (selectedRow == -1)
+                        dgvPropertyValues.Rows.Add("00");
+                    else
+                        dgvPropertyValues.Rows.Insert(selectedRow, newValue.ToString("X2"));
+                }
                 else
                 {
                     if (selectedRow == -1)
@@ -2572,7 +2601,7 @@ namespace CrashEdit.CE
                     }
                 }
             }
-            UpdatePropertyHeader();
+            UpdatePropertyHeaderAndRaw();
         }
 
         private void DeleteRowItem_Click(object sender, EventArgs e)
@@ -2609,25 +2638,30 @@ namespace CrashEdit.CE
                     currentDataGridView.Rows.Remove(selectedRow);
                 }
             }
-            UpdatePropertyHeader();
+            UpdatePropertyHeaderAndRaw();
         }
 
         private void NullifyField(short id)
         {
             switch (id)
             {
+                case 0x162: entity.Field0x162 = null!; break;
+                case 0x16D: entity.Field0x16D = null!; break;
+                case 0x176: entity.PathLinks = null!; break;
                 case 0x183: entity.Field0x183 = null!; break;
                 case 0x185: entity.Flags = null!; break;
-                case 0x186: entity.FlagWater = null!; break;
-                case 0x198: entity.Field0x198 = null!; break;
-                case 0x1A8: entity.Field0x1A8 = null!; break;
-                case 0x1B5: entity.Rain1 = null!; break;
-                case 0x1B6: entity.Rain2 = null!; break;
-                case 0x1B7: entity.Rain3 = null!; break;
-                case 0x1B8: entity.Rain4 = null!; break;
+                case 0x186: entity.Water = null!; break;
+                case 0x198: entity.EventSender = null!; break;
+                case 0x1A8: entity.Transitions = null!; break;
+                case 0x1AA: entity.Field0x1AA = null!; break;
+                case 0x1B5: entity.Particles1 = null!; break;
+                case 0x1B6: entity.Particles2 = null!; break;
+                case 0x1B7: entity.Field0x1B7 = null!; break;
+                case 0x1B8: entity.FXControl = null!; break;
                 case 0x1F9: entity.Field0x1F9 = null!; break;
-                case 0x1FA: entity.Field0x1FA = null!; break;
-                case 0x2AA: entity.FlagStars = null!; break;
+                case 0x1FA: entity.Backgrounds = null!; break;
+                case 0x27F: entity.Field0x27F = null!; break;
+                case 0x2AA: entity.Stars = null!; break;
             }
         }
 
@@ -2635,6 +2669,46 @@ namespace CrashEdit.CE
         {
             switch (id)
             {
+                case 0x119:
+                    entity.Panning = new EntityVictimProperty();
+                    entity.Panning.Rows.Add(new EntityPropertyRow<EntityVictim>());
+                    entity.Panning.Rows[0].MetaValue = 0;
+                    break;
+                case 0x131:
+                    entity.Field0x131 = new EntityVictimProperty();
+                    entity.Field0x131.Rows.Add(new EntityPropertyRow<EntityVictim>());
+                    entity.Field0x131.Rows[0].MetaValue = 0;
+                    break;
+                case 0x142:
+                    entity.CameraDistance = new EntityVictimProperty();
+                    entity.CameraDistance.Rows.Add(new EntityPropertyRow<EntityVictim>());
+                    entity.CameraDistance.Rows[0].MetaValue = 0;
+                    break;
+                case 0x162:
+                    entity.Field0x162 = new EntityUInt32Property();
+                    entity.Field0x162.Rows.Add(new EntityPropertyRow<uint>());
+                    entity.Field0x162.Rows[0].MetaValue = 0;
+                    break;
+                case 0x16D:
+                    entity.Field0x16D = new EntitySettingProperty();
+                    entity.Field0x16D.Rows.Add(new EntityPropertyRow<EntitySetting>());
+                    entity.Field0x16D.Rows[0].MetaValue = 0;
+                    break;
+                case 0x16E:
+                    entity.Field0x16E = new EntityVictimProperty();
+                    entity.Field0x16E.Rows.Add(new EntityPropertyRow<EntityVictim>());
+                    entity.Field0x16E.Rows[0].MetaValue = 0;
+                    break;
+                case 0x176:
+                    entity.PathLinks = new EntityVictimProperty();
+                    entity.PathLinks.Rows.Add(new EntityPropertyRow<EntityVictim>());
+                    entity.PathLinks.Rows[0].MetaValue = 0;
+                    break;
+                case 0x1AA:
+                    entity.Field0x1AA = new EntityVictimProperty();
+                    entity.Field0x1AA.Rows.Add(new EntityPropertyRow<EntityVictim>());
+                    entity.Field0x1AA.Rows[0].MetaValue = 0;
+                    break;
                 case 0x183:
                     entity.Field0x183 = new EntityVictimProperty();
                     entity.Field0x183.Rows.Add(new EntityPropertyRow<EntityVictim>());
@@ -2646,44 +2720,44 @@ namespace CrashEdit.CE
                     entity.Flags.Rows[0].MetaValue = 0;
                     break;
                 case 0x186:
-                    entity.FlagWater = new EntityUInt32Property();
-                    entity.FlagWater.Rows.Add(new EntityPropertyRow<uint>());
-                    entity.FlagWater.Rows[0].MetaValue = 0;
+                    entity.Water = new EntityUInt32Property();
+                    entity.Water.Rows.Add(new EntityPropertyRow<uint>());
+                    entity.Water.Rows[0].MetaValue = 0;
                     break;
                 case 0x198:
-                    entity.Field0x198 = new EntitySettingProperty();
-                    entity.Field0x198.Rows.Add(new EntityPropertyRow<EntitySetting>());
-                    entity.Field0x198.Rows[0].MetaValue = 0;
+                    entity.EventSender = new EntitySettingProperty();
+                    entity.EventSender.Rows.Add(new EntityPropertyRow<EntitySetting>());
+                    entity.EventSender.Rows[0].MetaValue = 0;
                     break;
                 case 0x1A8:
-                    entity.Field0x1A8 = new EntityUInt32Property();
-                    entity.Field0x1A8.Rows.Add(new EntityPropertyRow<uint>());
-                    entity.Field0x1A8.Rows[0].MetaValue = 0;
+                    entity.Transitions = new EntityUInt32Property();
+                    entity.Transitions.Rows.Add(new EntityPropertyRow<uint>());
+                    entity.Transitions.Rows[0].MetaValue = 0;
                     break;
                 case 0x1B5:
-                    entity.Rain1 = new EntityVictimProperty();
-                    entity.Rain1.Rows.Add(new EntityPropertyRow<EntityVictim>());
-                    entity.Rain1.Rows[0].MetaValue = 0;
+                    entity.Particles1 = new EntityVictimProperty();
+                    entity.Particles1.Rows.Add(new EntityPropertyRow<EntityVictim>());
+                    entity.Particles1.Rows[0].MetaValue = 0;
                     break;
                 case 0x1B6:
-                    entity.Rain2 = new EntityUInt32Property();
-                    entity.Rain2.Rows.Add(new EntityPropertyRow<uint>());
-                    entity.Rain2.Rows[0].MetaValue = 0;
+                    entity.Particles2 = new EntityUInt32Property();
+                    entity.Particles2.Rows.Add(new EntityPropertyRow<uint>());
+                    entity.Particles2.Rows[0].MetaValue = 0;
                     break;
                 case 0x1B7:
-                    entity.Rain3 = new EntityUInt32Property();
-                    entity.Rain3.Rows.Add(new EntityPropertyRow<uint>());
-                    entity.Rain3.Rows[0].MetaValue = 0;
+                    entity.Field0x1B7 = new EntityUInt32Property();
+                    entity.Field0x1B7.Rows.Add(new EntityPropertyRow<uint>());
+                    entity.Field0x1B7.Rows[0].MetaValue = 0;
                     break;
                 case 0x1B8:
-                    entity.Rain4 = new EntityInt32Property();
-                    entity.Rain4.Rows.Add(new EntityPropertyRow<int>());
-                    entity.Rain4.Rows[0].MetaValue = 0;
+                    entity.FXControl = new EntityInt32Property();
+                    entity.FXControl.Rows.Add(new EntityPropertyRow<int>());
+                    entity.FXControl.Rows[0].MetaValue = 0;
                     break;
                 case 0x1DE:
-                    entity.FogDist = new EntityUInt32Property();
-                    entity.FogDist.Rows.Add(new EntityPropertyRow<uint>());
-                    entity.FogDist.Rows[0].MetaValue = 0;
+                    entity.FogDistance = new EntityUInt32Property();
+                    entity.FogDistance.Rows.Add(new EntityPropertyRow<uint>());
+                    entity.FogDistance.Rows[0].MetaValue = 0;
                     break;
                 case 0x1F9:
                     entity.Field0x1F9 = new EntityVictimProperty();
@@ -2691,52 +2765,86 @@ namespace CrashEdit.CE
                     entity.Field0x1F9.Rows[0].MetaValue = 0;
                     break;
                 case 0x1FA:
-                    entity.Field0x1FA = new EntityUInt32Property();
-                    entity.Field0x1FA.Rows.Add(new EntityPropertyRow<uint>());
-                    entity.Field0x1FA.Rows[0].MetaValue = 0;
+                    entity.Backgrounds = new EntityUInt32Property();
+                    entity.Backgrounds.Rows.Add(new EntityPropertyRow<uint>());
+                    entity.Backgrounds.Rows[0].MetaValue = 0;
+                    break;
+                case 0x27F:
+                    entity.Field0x27F = new EntityUInt8Property();
+                    entity.Field0x27F.Rows.Add(new EntityPropertyRow<byte>());
+                    entity.Field0x27F.Rows[0].MetaValue = 0;
+                    break;
+                case 0x297:
+                    entity.Mirrors = new EntityUInt32Property();
+                    entity.Mirrors.Rows.Add(new EntityPropertyRow<uint>());
+                    entity.Mirrors.Rows[0].MetaValue = 0;
                     break;
                 case 0x2AA:
-                    entity.FlagStars = new EntityVictimProperty();
-                    entity.FlagStars.Rows.Add(new EntityPropertyRow<EntityVictim>());
-                    entity.FlagStars.Rows[0].MetaValue = 0;
+                    entity.Stars = new EntityVictimProperty();
+                    entity.Stars.Rows.Add(new EntityPropertyRow<EntityVictim>());
+                    entity.Stars.Rows[0].MetaValue = 0;
                     break;
                 default:
-                    DarkMessageBox.ShowError($"Unsupported or invalid field: {id:X}", titleError);
-                    return;
+                    throw new ArgumentException("Unsupported or invalid field.");
             }
         }
 
-        private const short Field0x183 = 0x183;
+        // Camera 1
+        private const short Field0x162 = 0x162;     // ?
+        private const short Field0x16D = 0x16D;     // ?
+        private const short PathLinks = 0x176;
+        private const short EventSender = 0x198;    // Sends an event with args to the player, used in secret warp transitions
+        private const short Transitions = 0x1A8;    // Transitions related
+        private const short Field0x1AA = 0x1AA;     // ?
+        private const short Field0x27F = 0x27F;     // ? Camera related
+        // Camera 2
+        private const short Panning = 0x119;
+        private const short Field0x131 = 0x131;     // ?
+        private const short CameraDistance = 0x142;
+        private const short Field0x16E = 0x16E;     // ?
+        private const short Field0x183 = 0x183;     // ?
         private const short Flags = 0x185;
-        private const short FlagWater = 0x186;
-        private const short Field0x198 = 0x198;
-        private const short Field0x1A8 = 0x1A8;
-        private const short Rain1 = 0x1B5;
-        private const short Rain2 = 0x1B6;
-        private const short Rain3 = 0x1B7;
-        private const short Rain4 = 0x1B8;
-        private const short FogDist = 0x1DE;
-        private const short Field0x1F9 = 0x1F9;
-        private const short Field0x1FA = 0x1FA;
-        private const short FlagStars = 0x2AA;
+        private const short Water = 0x186;          // Water(ponds/river) related, [{Y coord}, {colors}, {?}, {z-index above the water surface}, {z-index below the water surface}]
+        private const short Particles1 = 0x1B5;     // Particles(like rain and snow) properties
+        private const short Particles2 = 0x1B6;     // Particles colors and something
+        private const short Field0x1B7 = 0x1B7;     // ? Used in Totally Bear and night jungle levels, darkness related?
+        private const short FXControl = 0x1B8;      // Vertex FX related, such as moving sewer pond vertices
+        private const short FogDistance = 0x1DE;
+        private const short Field0x1F9 = 0x1F9;     // ?
+        private const short Backgrounds = 0x1FA;
+        private const short Mirrors = 0x297;        // Mirror related, [{Y coord}, {z-index above the mirror}, {z-index below the mirror}]
+        private const short Stars = 0x2AA;
+
+        private readonly HashSet<short> validFields = new HashSet<short> { Panning, Field0x131, CameraDistance, Field0x162, Field0x16D, Field0x16E, PathLinks, Field0x183,
+            Flags, Water, EventSender, Transitions, Field0x1AA, Particles1, Particles2, Field0x1B7, FXControl, FogDistance, Field0x1F9, Backgrounds, Field0x27F, Mirrors, Stars };
 
         private object GetField(short id, Entity entity)
         {
             return id switch
             {
+                Panning => entity.Panning,
+                Field0x131 => entity.Field0x131,
+                CameraDistance => entity.CameraDistance,
+                Field0x162 => entity.Field0x162,
+                Field0x16D => entity.Field0x16D,
+                Field0x16E => entity.Field0x16E,
+                PathLinks => entity.PathLinks,
                 Field0x183 => entity.Field0x183,
                 Flags => entity.Flags,
-                FlagWater => entity.FlagWater,
-                Field0x198 => entity.Field0x198,
-                Field0x1A8 => entity.Field0x1A8,
-                Rain1 => entity.Rain1,
-                Rain3 => entity.Rain3,
-                Rain2 => entity.Rain2,
-                Rain4 => entity.Rain4,
-                FogDist => entity.FogDist,
+                Water => entity.Water,
+                EventSender => entity.EventSender,
+                Transitions => entity.Transitions,
+                Field0x1AA => entity.Field0x1AA,
+                Particles1 => entity.Particles1,
+                Field0x1B7 => entity.Field0x1B7,
+                Particles2 => entity.Particles2,
+                FXControl => entity.FXControl,
+                FogDistance => entity.FogDistance,
                 Field0x1F9 => entity.Field0x1F9,
-                Field0x1FA => entity.Field0x1FA,
-                FlagStars => entity.FlagStars,
+                Backgrounds => entity.Backgrounds,
+                Field0x27F => entity.Field0x27F,
+                Mirrors => entity.Mirrors,
+                Stars => entity.Stars,
                 _ => null!
             };
         }
@@ -2763,10 +2871,11 @@ namespace CrashEdit.CE
         {
             dgvPropertyValues.Columns.Clear();
 
-            if (!(selectedField is EntityVictimProperty) && !(selectedField is EntitySettingProperty))
+            string columnValue = "Value";
+            dgvPropertyValues.Columns.Add(columnValue, columnValue);
+
+            if (!(selectedField is EntityVictimProperty || selectedField is EntitySettingProperty || selectedField is EntityUInt8Property))
             {
-                string columnValue = "Value";
-                dgvPropertyValues.Columns.Add(columnValue, columnValue);
                 string columnValue1 = "Seg1";
                 string columnValue2 = "Seg2";
                 string columnValue3 = "Seg3";
@@ -2787,11 +2896,6 @@ namespace CrashEdit.CE
                     dgvPropertyValues.Columns[0].Visible = false;
                 }
             }
-            else
-            {
-                string columnValue = "Value";
-                dgvPropertyValues.Columns.Add(columnValue, columnValue);
-            }
 
             foreach (DataGridViewColumn column in dgvPropertyValues.Columns)
             {
@@ -2799,55 +2903,100 @@ namespace CrashEdit.CE
             }
         }
 
+        // Predefined and editable fields
+        private BindingList<string> listKnownFields;
+        // Predefined fields, includes not editable fields
+        private BindingList<string> listAllKnownFields;
+
         private void UpdatePropertyIDList()
         {
             if (entity.KnownProperties != null && entity.KnownProperties.Count > 0)
             {
-                lbProperties.Enabled = true;
                 lbProperties.Items.Clear();
+                listKnownFields = new BindingList<string>();
                 foreach (var item in entity.KnownProperties)
                 {
-                    lbProperties.Items.Add(item.Key.ToString("X"));
+                    listKnownFields.Add(item.Key.ToString("X"));
                 }
-                lbProperties.SelectedIndex = 0;
-                LoadField();
+
+                listAllKnownFields = new BindingList<string>(listKnownFields.Where(item =>
+                    short.TryParse(item, System.Globalization.NumberStyles.HexNumber, null, out short field) &&
+                    validFields.Contains(field)).ToList());
+
+                lbProperties.DataSource = listAllKnownFields;
+                LoadFieldFromSelectedItem();
             }
-            else
-                lbProperties.Enabled = false;
         }
 
-        private void LoadField()
+        private void chkPropertyShowAllFields_CheckedChanged(object sender, EventArgs e)
+        {
+            string? selectedItem = lbProperties.SelectedItem?.ToString();
+
+            lbProperties.DataSource = chkPropertyShowAllFields.Checked ? listKnownFields : listAllKnownFields;
+
+            if (selectedItem != null && lbProperties.Items.Contains(selectedItem))
+            {
+                lbProperties.SelectedItem = selectedItem;
+            }
+        }
+
+        private void LoadFieldFromSelectedItem()
         {
             if (lbProperties.SelectedItem == null) return;
             short id = Convert.ToInt16(lbProperties.SelectedItem.ToString(), 16);
+
+            chkPropertyMetaValue.Enabled = true;
 
             object field = GetField(id, entity);
             if (field is EntityVictimProperty victimProperty)
             {
                 selectedField = victimProperty;
+                lblFieldType.Text = "(short)";
             }
             else if (field is EntityInt32Property int32Property)
             {
                 selectedField = int32Property;
+                lblFieldType.Text = "(int32)";
             }
             else if (field is EntityUInt32Property uint32Property)
             {
                 selectedField = uint32Property;
+                lblFieldType.Text = "(uint32)";
             }
             else if (field is EntitySettingProperty entitySettingProperty)
             {
                 selectedField = entitySettingProperty;
+                lblFieldType.Text = "(int32)";
+            }
+            else if (field is EntityUInt8Property uint8Property)
+            {
+                selectedField = uint8Property;
+                lblFieldType.Text = "(uint8)";
             }
             else
             {
                 selectedField = null!;
+                lblFieldType.Text = "";
+                chkPropertyMetaValue.Enabled = false;
+
+                string name = string.Empty;
+                if (entity.PropertyFields.ContainsKey(id))
+                {
+                    var item = entity.PropertyFields[id];
+                    name = $"({item.Name})";
+                }
+                else if (id == 0x29)
+                {
+                    name = "(cameramode)";
+                }
+                lblUnsupportedProperty.Text = $"Unsupported property field!\n{name}";
             }
             Console.WriteLine(selectedField);
 
             lblUnsupportedProperty.Visible = field == null;
         }
 
-        private void UpdatePropertyHeader()
+        private void UpdatePropertyHeaderAndRaw()
         {
             if (lbProperties.SelectedItem == null) return;
             short id = Convert.ToInt16(lbProperties.SelectedItem.ToString(), 16);
@@ -2888,8 +3037,15 @@ namespace CrashEdit.CE
             foreach (var row in field.Rows)
             {
                 DataGridViewRow dgvRow = new DataGridViewRow();
-                dgvRow.CreateCells(dgvPropertyMetaValues, row.MetaValue);
+                if (row.MetaValue == null)
+                    dgvRow.CreateCells(dgvPropertyMetaValues, nullMeta);
+                else
+                    dgvRow.CreateCells(dgvPropertyMetaValues, row.MetaValue);
                 dgvPropertyMetaValues.Rows.Add(dgvRow);
+
+                metavalueDirty = true;
+                chkPropertyMetaValue.Checked = row.MetaValue != null;
+                metavalueDirty = false;
             }
         }
 
@@ -2917,6 +3073,10 @@ namespace CrashEdit.CE
                     {
                         row.CreateCells(dgvPropertyValues, value.Value);
                     }
+                    else if (field is EntityUInt8Property)
+                    {
+                        row.CreateCells(dgvPropertyValues, value.ToString("X2"));
+                    }
                     else
                     {
                         byte byte0 = (byte)(value & 0xFF);
@@ -2932,7 +3092,17 @@ namespace CrashEdit.CE
 
         private void dgvPropertyMetaValues_SelectionChanged(object sender, EventArgs e)
         {
+            CreatePropertyValuesColumns();
             UpdatePropertyValues();
+        }
+
+        private void dgvPropertyMetaValues_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            if (dgvPropertyMetaValues.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == nullMeta)
+            {
+                DarkMessageBox.ShowError("This cell cannot be edited.", titleInputError);
+                e.Cancel = true;
+            }
         }
 
         private void TextBox_KeyPress(object sender, KeyPressEventArgs e)
@@ -2954,14 +3124,15 @@ namespace CrashEdit.CE
 
         private void dgvPropertyMetaValues_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            if (lbProperties.SelectedItem == null || !(dgvPropertyMetaValues.SelectedCells.Count > 0)) return;
-            short newValue = Convert.ToInt16(dgvPropertyMetaValues.Rows[e.RowIndex].Cells[0].Value);
+            if (lbProperties.SelectedItem == null || dgvPropertyMetaValues.CurrentCell == null) return;
+            if (dgvPropertyMetaValues.CurrentCell.Value == nullMeta) return;
+            short newValue = Convert.ToInt16(dgvPropertyMetaValues.CurrentCell.Value);
 
             dynamic field = selectedField;
             if (field == null) return;
 
             field.Rows[e.RowIndex].MetaValue = newValue;
-            UpdatePropertyHeader();
+            UpdatePropertyHeaderAndRaw();
         }
 
         private void TextBox2_KeyPress(object sender, KeyPressEventArgs e)
@@ -2981,12 +3152,13 @@ namespace CrashEdit.CE
 
         private void dgvPropertyValues_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
+            if (dgvPropertyValues.CurrentCell == null) return;
             if (e.Control is TextBox textbox)
             {
                 textbox.KeyPress -= TextBox2_KeyPress;
                 textbox.KeyPress += TextBox2_KeyPress;
 
-                if (dgvPropertyValues.CurrentCell.ColumnIndex != 0)
+                if (dgvPropertyValues.CurrentCell.ColumnIndex != 0 || selectedField is EntityUInt8Property)
                     textbox.MaxLength = 2;
                 else if (selectedField is EntityVictimProperty)
                     textbox.MaxLength = 4;
@@ -3008,13 +3180,13 @@ namespace CrashEdit.CE
 
         private void dgvPropertyValues_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            if (lbProperties.SelectedItem == null || !(dgvPropertyValues.SelectedCells.Count > 0) || !(dgvPropertyMetaValues.SelectedCells.Count > 0)) return;
-            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+            if (lbProperties.SelectedItem == null || dgvPropertyValues.CurrentCell == null || dgvPropertyMetaValues.CurrentCell == null ||
+                e.RowIndex < 0 || e.ColumnIndex < 0) return;
             dynamic field = selectedField;
             if (field == null) return;
 
-            int rowIndex = dgvPropertyMetaValues.SelectedCells[0].RowIndex;
-            object cellValue = dgvPropertyValues.SelectedCells[0].Value;
+            int rowIndex = dgvPropertyMetaValues.CurrentCell.RowIndex;
+            object? cellValue = dgvPropertyValues.CurrentCell.Value;
 
             if (field is EntityVictimProperty)
             {
@@ -3078,7 +3250,11 @@ namespace CrashEdit.CE
             {
                 field.Rows[rowIndex].Values[e.RowIndex] = new EntitySetting(Convert.ToInt32(cellValue));
             }
-            UpdatePropertyHeader();
+            else if (field is EntityUInt8Property)
+            {
+                field.Rows[rowIndex].Values[e.RowIndex] = Convert.ToByte(cellValue);
+            }
+            UpdatePropertyHeaderAndRaw();
         }
 
         private void dgvPropertyValues_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -3093,13 +3269,13 @@ namespace CrashEdit.CE
             }
             else if (e.Value is int intValue)
             {
-                if (propertyStyle)
+                if (propertyStyle || selectedField is EntitySettingProperty)
                     e.Value = intValue.ToString("X");
                 else
                     e.Value = intValue.ToString("X2");
                 e.FormattingApplied = true;
             }
-            else if(e.Value is short shortValue)
+            else if (e.Value is short shortValue)
             {
                 e.Value = shortValue.ToString("X");
                 e.FormattingApplied = true;
@@ -3160,35 +3336,110 @@ namespace CrashEdit.CE
             }
         }
 
-
         private void lbProperties_SelectedIndexChanged(object sender, EventArgs e)
         {
-            LoadField();
-            UpdatePropertyHeader();
-            CreatePropertyValuesColumns();
+            LoadFieldFromSelectedItem();
+            UpdatePropertyHeaderAndRaw();
             UpdatePropertyMetaValues();
         }
 
         private void chkPropertyStyle_CheckedChanged(object sender, EventArgs e)
         {
             propertyStyle = chkPropertyStyle.Checked;
-            LoadField();
-            UpdatePropertyHeader();
-            CreatePropertyValuesColumns();
+            LoadFieldFromSelectedItem();
+            UpdatePropertyHeaderAndRaw();
             UpdatePropertyMetaValues();
         }
 
-        private void cmdAddProperty_Click(object sender, EventArgs e)
+        private void chkPropertyMetaValue_Click(object sender, EventArgs e)
         {
-            short id = Convert.ToInt16(txtProperty.Text.ToString(), 16);
-            if (lbProperties.Items.Contains(txtProperty.Text))
+            if (lbProperties.SelectedItem == null || dgvPropertyMetaValues.CurrentCell == null || !(dgvPropertyMetaValues.Rows.Count > 0) || metavalueDirty) return;
+           
+            if (dgvPropertyMetaValues.Rows.Count > 1)
             {
-                DarkMessageBox.ShowError($"Duplicated field: {id:X}", titleError);
+                chkPropertyMetaValue.Checked = true;
+                DarkMessageBox.ShowError("You cannot nullify the meta value while other meta values are present.", titleError);
                 return;
             }
 
-            AddField(id);
-            lbProperties.Items.Add(id.ToString("X"));
+            dynamic field = selectedField;
+            if (field == null) return;
+
+            if (dgvPropertyMetaValues.CurrentCell.Value != nullMeta)
+            {
+                field.Rows[0].MetaValue = null;
+                dgvPropertyMetaValues.CurrentCell.Value = nullMeta;
+                chkPropertyMetaValue.Checked = false;
+            }
+            else
+            {
+                field.Rows[0].MetaValue = 0;
+                dgvPropertyMetaValues.CurrentCell.Value = 0;
+                chkPropertyMetaValue.Checked = true;
+            }
+            UpdatePropertyHeaderAndRaw();
+        }
+
+        private void txtProperty_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!Char.IsControl(e.KeyChar) && !((e.KeyChar >= '0' && e.KeyChar <= '9') || (e.KeyChar >= 'A' && e.KeyChar <= 'F') || (e.KeyChar >= 'a' && e.KeyChar <= 'f')))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtProperty_TextChanged(object sender, EventArgs e)
+        {
+            string hexValue = txtProperty.Text;
+            string validHexValue = "";
+
+            foreach (char c in hexValue)
+            {
+                if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f'))
+                {
+                    validHexValue += c;
+                }
+            }
+
+            if (validHexValue != hexValue)
+            {
+                txtProperty.Text = validHexValue;
+                txtProperty.SelectionStart = txtProperty.Text.Length;
+            }
+        }
+
+
+        private void cmdAddProperty_Click(object sender, EventArgs e)
+        {
+            short id;
+            try
+            {
+                id = Convert.ToInt16(txtProperty.Text.ToString(), 16);
+            }
+            catch
+            {
+                DarkMessageBox.ShowError("Invalid field value.", titleError);
+                return;
+            }
+
+            try
+            {
+                AddField(id);
+            }
+            catch (ArgumentException ex)
+            {
+                DarkMessageBox.ShowError(ex.Message, titleError);
+                return;
+            }
+
+            if (lbProperties.Items.Contains(txtProperty.Text))
+            {
+                DarkMessageBox.ShowError("The field already exists.", titleError);
+                return;
+            }
+
+            listKnownFields.Add(id.ToString("X"));
+            listAllKnownFields.Add(id.ToString("X"));
             Console.WriteLine($"Added field: {id:X}");
         }
 
@@ -4130,7 +4381,6 @@ namespace CrashEdit.CE
             dataGridView.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
             dataGridView.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
         }
-
 
     }
 }

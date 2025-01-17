@@ -250,6 +250,9 @@ namespace CrashEdit.CE
             cmdPrevRowDrawA = new DarkButton();
             cmdNextRowDrawA = new DarkButton();
             tabProperties = new TabPage();
+            chkPropertyMetaValue = new CheckBox();
+            chkPropertyShowAllFields = new CheckBox();
+            lblFieldType = new Label();
             lbPropertyRaw = new DarkListBox();
             lvPropertyHeader = new ListView();
             chkPropertyStyle = new CheckBox();
@@ -3314,6 +3317,9 @@ namespace CrashEdit.CE
             // tabProperties
             // 
             tabProperties.BackColor = Color.FromArgb(31, 31, 32);
+            tabProperties.Controls.Add(chkPropertyMetaValue);
+            tabProperties.Controls.Add(chkPropertyShowAllFields);
+            tabProperties.Controls.Add(lblFieldType);
             tabProperties.Controls.Add(lbPropertyRaw);
             tabProperties.Controls.Add(lvPropertyHeader);
             tabProperties.Controls.Add(chkPropertyStyle);
@@ -3331,6 +3337,38 @@ namespace CrashEdit.CE
             tabProperties.TabIndex = 2;
             tabProperties.Text = "Properties";
             tabProperties.Enter += tabProperties_Enter;
+            // 
+            // chkPropertyMetaValue
+            // 
+            chkPropertyMetaValue.AutoSize = true;
+            chkPropertyMetaValue.Enabled = false;
+            chkPropertyMetaValue.Location = new Point(7, 297);
+            chkPropertyMetaValue.Name = "chkPropertyMetaValue";
+            chkPropertyMetaValue.Size = new Size(81, 19);
+            chkPropertyMetaValue.TabIndex = 10;
+            chkPropertyMetaValue.Text = "MetaValue";
+            chkPropertyMetaValue.UseVisualStyleBackColor = true;
+            chkPropertyMetaValue.Click += chkPropertyMetaValue_Click;
+            // 
+            // chkPropertyShowAllFields
+            // 
+            chkPropertyShowAllFields.AutoSize = true;
+            chkPropertyShowAllFields.Location = new Point(437, 85);
+            chkPropertyShowAllFields.Name = "chkPropertyShowAllFields";
+            chkPropertyShowAllFields.Size = new Size(101, 19);
+            chkPropertyShowAllFields.TabIndex = 9;
+            chkPropertyShowAllFields.Text = "Show all fields";
+            chkPropertyShowAllFields.UseVisualStyleBackColor = true;
+            chkPropertyShowAllFields.CheckedChanged += chkPropertyShowAllFields_CheckedChanged;
+            // 
+            // lblFieldType
+            // 
+            lblFieldType.AutoSize = true;
+            lblFieldType.Location = new Point(437, 39);
+            lblFieldType.Name = "lblFieldType";
+            lblFieldType.Size = new Size(41, 15);
+            lblFieldType.TabIndex = 8;
+            lblFieldType.Text = "(int32)";
             // 
             // lbPropertyRaw
             // 
@@ -3359,11 +3397,11 @@ namespace CrashEdit.CE
             // chkPropertyStyle
             // 
             chkPropertyStyle.AutoSize = true;
-            chkPropertyStyle.Location = new Point(7, 297);
+            chkPropertyStyle.Location = new Point(437, 60);
             chkPropertyStyle.Name = "chkPropertyStyle";
-            chkPropertyStyle.Size = new Size(61, 19);
+            chkPropertyStyle.Size = new Size(120, 19);
             chkPropertyStyle.TabIndex = 5;
-            chkPropertyStyle.Text = "Toggle";
+            chkPropertyStyle.Text = "Change ViewStyle";
             chkPropertyStyle.UseVisualStyleBackColor = true;
             chkPropertyStyle.CheckedChanged += chkPropertyStyle_CheckedChanged;
             // 
@@ -3371,11 +3409,11 @@ namespace CrashEdit.CE
             // 
             lblUnsupportedProperty.AutoSize = true;
             lblUnsupportedProperty.ForeColor = Color.Red;
-            lblUnsupportedProperty.Location = new Point(432, 6);
+            lblUnsupportedProperty.Location = new Point(437, 6);
             lblUnsupportedProperty.Name = "lblUnsupportedProperty";
-            lblUnsupportedProperty.Size = new Size(153, 15);
+            lblUnsupportedProperty.Size = new Size(153, 30);
             lblUnsupportedProperty.TabIndex = 4;
-            lblUnsupportedProperty.Text = "Unsupported property field!";
+            lblUnsupportedProperty.Text = "Unsupported property field!\r\n(unknown)";
             lblUnsupportedProperty.Visible = false;
             // 
             // txtProperty
@@ -3384,9 +3422,12 @@ namespace CrashEdit.CE
             txtProperty.BorderStyle = BorderStyle.FixedSingle;
             txtProperty.ForeColor = Color.FromArgb(213, 213, 213);
             txtProperty.Location = new Point(7, 239);
+            txtProperty.MaxLength = 4;
             txtProperty.Name = "txtProperty";
             txtProperty.Size = new Size(75, 23);
             txtProperty.TabIndex = 3;
+            txtProperty.TextChanged += txtProperty_TextChanged;
+            txtProperty.KeyPress += txtProperty_KeyPress;
             // 
             // cmdAddProperty
             // 
@@ -3414,9 +3455,11 @@ namespace CrashEdit.CE
             dgvPropertyMetaValues.Name = "dgvPropertyMetaValues";
             dgvPropertyMetaValues.RowHeadersWidth = 24;
             dgvPropertyMetaValues.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dgvPropertyMetaValues.ScrollBars = ScrollBars.Vertical;
             dgvPropertyMetaValues.ShowCellToolTips = false;
-            dgvPropertyMetaValues.Size = new Size(80, 233);
+            dgvPropertyMetaValues.Size = new Size(96, 279);
             dgvPropertyMetaValues.TabIndex = 1;
+            dgvPropertyMetaValues.CellBeginEdit += dgvPropertyMetaValues_CellBeginEdit;
             dgvPropertyMetaValues.CellValueChanged += dgvPropertyMetaValues_CellValueChanged;
             dgvPropertyMetaValues.EditingControlShowing += dgvPropertyMetaValues_EditingControlShowing;
             dgvPropertyMetaValues.SelectionChanged += dgvPropertyMetaValues_SelectionChanged;
@@ -3429,12 +3472,13 @@ namespace CrashEdit.CE
             dgvPropertyValues.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dgvPropertyValues.ColumnHeadersHeight = 24;
             dgvPropertyValues.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dgvPropertyValues.Location = new Point(177, 113);
+            dgvPropertyValues.Location = new Point(193, 113);
             dgvPropertyValues.Name = "dgvPropertyValues";
             dgvPropertyValues.RowHeadersWidth = 24;
             dgvPropertyValues.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dgvPropertyValues.ScrollBars = ScrollBars.Vertical;
             dgvPropertyValues.ShowCellToolTips = false;
-            dgvPropertyValues.Size = new Size(254, 233);
+            dgvPropertyValues.Size = new Size(238, 279);
             dgvPropertyValues.TabIndex = 1;
             dgvPropertyValues.CellFormatting += dgvPropertyValues_CellFormatting;
             dgvPropertyValues.CellParsing += dgvPropertyValues_CellParsing;
@@ -3828,5 +3872,8 @@ namespace CrashEdit.CE
         private CheckBox chkPropertyStyle;
         private ListView lvPropertyHeader;
         private DarkListBox lbPropertyRaw;
+        private Label lblFieldType;
+        private CheckBox chkPropertyShowAllFields;
+        private CheckBox chkPropertyMetaValue;
     }
 }
