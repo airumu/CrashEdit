@@ -10,6 +10,7 @@ using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 using CrashEdit.Crash.GOOLIns;
+using SharpFont;
 
 namespace CrashEdit.CE
 {
@@ -2416,6 +2417,8 @@ namespace CrashEdit.CE
             CreatePropertyHeaderColumns();
             CreatePropertyMetaValuesColumns();
             UpdatePropertyIDList();
+            chkPropertyShowAsHex.Checked = propertyShowAsHex;
+
             tabProperties.Enter -= tabProperties_Enter;
         }
 
@@ -2423,6 +2426,7 @@ namespace CrashEdit.CE
         private object selectedField = new object();
         private bool propertyStyle = false;
         private bool metavalueDirty = false;
+        private bool propertyShowAsHex = true;
 
         private static readonly string nullMeta = "-";
 
@@ -2590,7 +2594,7 @@ namespace CrashEdit.CE
                 else
                 {
                     if (selectedRow == -1)
-                        dgvPropertyValues.Rows.Add("0", "0", "0", "0", "0");
+                        dgvPropertyValues.Rows.Add("0", "00", "00", "00", "00");
                     else
                     {
                         byte byte0 = (byte)(newValue & 0xFF);
@@ -2626,8 +2630,12 @@ namespace CrashEdit.CE
                         field.Rows.RemoveAt(selectedRow.Index);
                         if (field.RowCount == 0)
                         {
-                            short id = Convert.ToInt16(lbProperties.SelectedItem.ToString(), 16);
+                            string str = lbProperties.SelectedItem.ToString();
+                            short id = Convert.ToInt16(str, 16);
                             NullifyField(id);
+                            entity.KnownProperties.Remove(id);
+                            listKnownFields.Remove(str);
+                            listAllKnownFields.Remove(str);
                         }
                     }
                     else if (currentDataGridView == dgvPropertyValues)
@@ -2645,8 +2653,12 @@ namespace CrashEdit.CE
         {
             switch (id)
             {
+                case 0x119: entity.Panning = null!; break;
+                case 0x131: entity.Field0x131 = null!; break;
+                case 0x142: entity.CameraDistance = null!; break;
                 case 0x162: entity.Field0x162 = null!; break;
                 case 0x16D: entity.Field0x16D = null!; break;
+                case 0x16E: entity.Field0x16E = null!; break;
                 case 0x176: entity.PathLinks = null!; break;
                 case 0x183: entity.Field0x183 = null!; break;
                 case 0x185: entity.Flags = null!; break;
@@ -2659,131 +2671,97 @@ namespace CrashEdit.CE
                 case 0x1B7: entity.Field0x1B7 = null!; break;
                 case 0x1B8: entity.FXControl = null!; break;
                 case 0x1F9: entity.Field0x1F9 = null!; break;
+                case 0x1DE: entity.FogDistance = null!; break;
                 case 0x1FA: entity.Backgrounds = null!; break;
                 case 0x27F: entity.Field0x27F = null!; break;
+                case 0x297: entity.Mirrors = null!; break;
                 case 0x2AA: entity.Stars = null!; break;
             }
         }
 
-        private void AddField(short id)
+        private TProperty InitializeProperty<TProperty, TRow>()
+            where TProperty : new()
+            where TRow : new()
+        {
+            dynamic property = new TProperty();
+            property.Rows.Add(new EntityPropertyRow<TRow>());
+            property.Rows[0].MetaValue = 0;
+            return property;
+        }
+
+        private object AddField(short id)
         {
             switch (id)
             {
                 case 0x119:
-                    entity.Panning = new EntityVictimProperty();
-                    entity.Panning.Rows.Add(new EntityPropertyRow<EntityVictim>());
-                    entity.Panning.Rows[0].MetaValue = 0;
-                    break;
+                    entity.Panning = InitializeProperty<EntityVictimProperty, EntityVictim>();
+                    return entity.Panning;
                 case 0x131:
-                    entity.Field0x131 = new EntityVictimProperty();
-                    entity.Field0x131.Rows.Add(new EntityPropertyRow<EntityVictim>());
-                    entity.Field0x131.Rows[0].MetaValue = 0;
-                    break;
+                    entity.Field0x131 = InitializeProperty<EntityVictimProperty, EntityVictim>();
+                    return entity.Field0x131;
                 case 0x142:
-                    entity.CameraDistance = new EntityVictimProperty();
-                    entity.CameraDistance.Rows.Add(new EntityPropertyRow<EntityVictim>());
-                    entity.CameraDistance.Rows[0].MetaValue = 0;
-                    break;
+                    entity.CameraDistance = InitializeProperty<EntityVictimProperty, EntityVictim>();
+                    return entity.CameraDistance;
                 case 0x162:
-                    entity.Field0x162 = new EntityUInt32Property();
-                    entity.Field0x162.Rows.Add(new EntityPropertyRow<uint>());
-                    entity.Field0x162.Rows[0].MetaValue = 0;
-                    break;
+                    entity.Field0x162 = InitializeProperty<EntityUInt32Property, uint>();
+                    return entity.Field0x162;
                 case 0x16D:
-                    entity.Field0x16D = new EntitySettingProperty();
-                    entity.Field0x16D.Rows.Add(new EntityPropertyRow<EntitySetting>());
-                    entity.Field0x16D.Rows[0].MetaValue = 0;
-                    break;
+                    entity.Field0x16D = InitializeProperty<EntitySettingProperty, EntitySetting>();
+                    return entity.Field0x16D;
                 case 0x16E:
-                    entity.Field0x16E = new EntityVictimProperty();
-                    entity.Field0x16E.Rows.Add(new EntityPropertyRow<EntityVictim>());
-                    entity.Field0x16E.Rows[0].MetaValue = 0;
-                    break;
+                    entity.Field0x16E = InitializeProperty<EntityVictimProperty, EntityVictim>();
+                    return entity.Field0x16E;
                 case 0x176:
-                    entity.PathLinks = new EntityVictimProperty();
-                    entity.PathLinks.Rows.Add(new EntityPropertyRow<EntityVictim>());
-                    entity.PathLinks.Rows[0].MetaValue = 0;
-                    break;
+                    entity.PathLinks = InitializeProperty<EntityVictimProperty, EntityVictim>();
+                    return entity.PathLinks;
                 case 0x1AA:
-                    entity.Field0x1AA = new EntityVictimProperty();
-                    entity.Field0x1AA.Rows.Add(new EntityPropertyRow<EntityVictim>());
-                    entity.Field0x1AA.Rows[0].MetaValue = 0;
-                    break;
+                    entity.Field0x1AA = InitializeProperty<EntityVictimProperty, EntityVictim>();
+                    return entity.Field0x1AA;
                 case 0x183:
-                    entity.Field0x183 = new EntityVictimProperty();
-                    entity.Field0x183.Rows.Add(new EntityPropertyRow<EntityVictim>());
-                    entity.Field0x183.Rows[0].MetaValue = 0;
-                    break;
+                    entity.Field0x183 = InitializeProperty<EntityVictimProperty, EntityVictim>();
+                    return entity.Field0x183;
                 case 0x185:
-                    entity.Flags = new EntityUInt32Property();
-                    entity.Flags.Rows.Add(new EntityPropertyRow<uint>());
-                    entity.Flags.Rows[0].MetaValue = 0;
-                    break;
+                    entity.Flags = InitializeProperty<EntityUInt32Property, uint>();
+                    return entity.Flags;
                 case 0x186:
-                    entity.Water = new EntityUInt32Property();
-                    entity.Water.Rows.Add(new EntityPropertyRow<uint>());
-                    entity.Water.Rows[0].MetaValue = 0;
-                    break;
+                    entity.Water = InitializeProperty<EntityUInt32Property, uint>();
+                    return entity.Water;
                 case 0x198:
-                    entity.EventSender = new EntitySettingProperty();
-                    entity.EventSender.Rows.Add(new EntityPropertyRow<EntitySetting>());
-                    entity.EventSender.Rows[0].MetaValue = 0;
-                    break;
+                    entity.EventSender = InitializeProperty<EntitySettingProperty, EntitySetting>();
+                    return entity.EventSender;
                 case 0x1A8:
-                    entity.Transitions = new EntityUInt32Property();
-                    entity.Transitions.Rows.Add(new EntityPropertyRow<uint>());
-                    entity.Transitions.Rows[0].MetaValue = 0;
-                    break;
+                    entity.Transitions = InitializeProperty<EntityUInt32Property, uint>();
+                    return entity.Transitions;
                 case 0x1B5:
-                    entity.Particles1 = new EntityVictimProperty();
-                    entity.Particles1.Rows.Add(new EntityPropertyRow<EntityVictim>());
-                    entity.Particles1.Rows[0].MetaValue = 0;
-                    break;
+                    entity.Particles1 = InitializeProperty<EntityVictimProperty, EntityVictim>();
+                    return entity.Particles1;
                 case 0x1B6:
-                    entity.Particles2 = new EntityUInt32Property();
-                    entity.Particles2.Rows.Add(new EntityPropertyRow<uint>());
-                    entity.Particles2.Rows[0].MetaValue = 0;
-                    break;
+                    entity.Particles2 = InitializeProperty<EntityUInt32Property, uint>();
+                    return entity.Particles2;
                 case 0x1B7:
-                    entity.Field0x1B7 = new EntityUInt32Property();
-                    entity.Field0x1B7.Rows.Add(new EntityPropertyRow<uint>());
-                    entity.Field0x1B7.Rows[0].MetaValue = 0;
-                    break;
+                    entity.Field0x1B7 = InitializeProperty<EntityUInt32Property, uint>();
+                    return entity.Field0x1B7;
                 case 0x1B8:
-                    entity.FXControl = new EntityInt32Property();
-                    entity.FXControl.Rows.Add(new EntityPropertyRow<int>());
-                    entity.FXControl.Rows[0].MetaValue = 0;
-                    break;
+                    entity.FXControl = InitializeProperty<EntityInt32Property, int>();
+                    return entity.FXControl;
                 case 0x1DE:
-                    entity.FogDistance = new EntityUInt32Property();
-                    entity.FogDistance.Rows.Add(new EntityPropertyRow<uint>());
-                    entity.FogDistance.Rows[0].MetaValue = 0;
-                    break;
+                    entity.FogDistance = InitializeProperty<EntityUInt32Property, uint>();
+                    return entity.FogDistance;
                 case 0x1F9:
-                    entity.Field0x1F9 = new EntityVictimProperty();
-                    entity.Field0x1F9.Rows.Add(new EntityPropertyRow<EntityVictim>());
-                    entity.Field0x1F9.Rows[0].MetaValue = 0;
-                    break;
+                    entity.Field0x1F9 = InitializeProperty<EntityVictimProperty, EntityVictim>();
+                    return entity.Field0x1F9;
                 case 0x1FA:
-                    entity.Backgrounds = new EntityUInt32Property();
-                    entity.Backgrounds.Rows.Add(new EntityPropertyRow<uint>());
-                    entity.Backgrounds.Rows[0].MetaValue = 0;
-                    break;
+                    entity.Backgrounds = InitializeProperty<EntityUInt32Property, uint>();
+                    return entity.Backgrounds;
                 case 0x27F:
-                    entity.Field0x27F = new EntityUInt8Property();
-                    entity.Field0x27F.Rows.Add(new EntityPropertyRow<byte>());
-                    entity.Field0x27F.Rows[0].MetaValue = 0;
-                    break;
+                    entity.Field0x27F = InitializeProperty<EntityUInt8Property, byte>();
+                    return entity.Field0x27F;
                 case 0x297:
-                    entity.Mirrors = new EntityUInt32Property();
-                    entity.Mirrors.Rows.Add(new EntityPropertyRow<uint>());
-                    entity.Mirrors.Rows[0].MetaValue = 0;
-                    break;
+                    entity.Mirrors = InitializeProperty<EntityUInt32Property, uint>();
+                    return entity.Mirrors;
                 case 0x2AA:
-                    entity.Stars = new EntityVictimProperty();
-                    entity.Stars.Rows.Add(new EntityPropertyRow<EntityVictim>());
-                    entity.Stars.Rows[0].MetaValue = 0;
-                    break;
+                    entity.Stars = InitializeProperty<EntityVictimProperty, EntityVictim>();
+                    return entity.Stars;
                 default:
                     throw new ArgumentException("Unsupported or invalid field.");
             }
@@ -2818,7 +2796,7 @@ namespace CrashEdit.CE
         private readonly HashSet<short> validFields = new HashSet<short> { Panning, Field0x131, CameraDistance, Field0x162, Field0x16D, Field0x16E, PathLinks, Field0x183,
             Flags, Water, EventSender, Transitions, Field0x1AA, Particles1, Particles2, Field0x1B7, FXControl, FogDistance, Field0x1F9, Backgrounds, Field0x27F, Mirrors, Stars };
 
-        private object GetField(short id, Entity entity)
+        private object GetField(short id)
         {
             return id switch
             {
@@ -2913,17 +2891,17 @@ namespace CrashEdit.CE
             if (entity.KnownProperties != null && entity.KnownProperties.Count > 0)
             {
                 lbProperties.Items.Clear();
-                listKnownFields = new BindingList<string>();
+                listAllKnownFields = new BindingList<string>();
                 foreach (var item in entity.KnownProperties)
                 {
-                    listKnownFields.Add(item.Key.ToString("X"));
+                    listAllKnownFields.Add(item.Key.ToString("X"));
                 }
 
-                listAllKnownFields = new BindingList<string>(listKnownFields.Where(item =>
+                listKnownFields = new BindingList<string>(listAllKnownFields.Where(item =>
                     short.TryParse(item, System.Globalization.NumberStyles.HexNumber, null, out short field) &&
                     validFields.Contains(field)).ToList());
 
-                lbProperties.DataSource = listAllKnownFields;
+                lbProperties.DataSource = listKnownFields;
                 LoadFieldFromSelectedItem();
             }
         }
@@ -2932,11 +2910,21 @@ namespace CrashEdit.CE
         {
             string? selectedItem = lbProperties.SelectedItem?.ToString();
 
-            lbProperties.DataSource = chkPropertyShowAllFields.Checked ? listKnownFields : listAllKnownFields;
+            lbProperties.DataSource = chkPropertyShowAllFields.Checked ? listAllKnownFields : listKnownFields;
 
             if (selectedItem != null && lbProperties.Items.Contains(selectedItem))
             {
                 lbProperties.SelectedItem = selectedItem;
+            }
+
+            if ((chkPropertyShowAllFields.Checked && !(listAllKnownFields.Count > 0)) ||
+                (!chkPropertyShowAllFields.Checked && !(listKnownFields.Count > 0)))
+            {
+                ClearPropertyControls();
+            }
+            else
+            {
+                cmdRemoveProperty.Enabled = true;
             }
         }
 
@@ -2947,7 +2935,7 @@ namespace CrashEdit.CE
 
             chkPropertyMetaValue.Enabled = true;
 
-            object field = GetField(id, entity);
+            object field = GetField(id);
             if (field is EntityVictimProperty victimProperty)
             {
                 selectedField = victimProperty;
@@ -3020,7 +3008,6 @@ namespace CrashEdit.CE
                     string result = string.Join(" ", values.Select(b => b.ToString("X2")));
 
                     lbPropertyRaw.Items.Add(result);
-
                 }
             }
         }
@@ -3338,23 +3325,36 @@ namespace CrashEdit.CE
 
         private void lbProperties_SelectedIndexChanged(object sender, EventArgs e)
         {
-            LoadFieldFromSelectedItem();
-            UpdatePropertyHeaderAndRaw();
-            UpdatePropertyMetaValues();
+            UpdatePropertyControls();
         }
 
         private void chkPropertyStyle_CheckedChanged(object sender, EventArgs e)
         {
             propertyStyle = chkPropertyStyle.Checked;
+            UpdatePropertyControls();
+        }
+
+        private void UpdatePropertyControls()
+        {
             LoadFieldFromSelectedItem();
             UpdatePropertyHeaderAndRaw();
             UpdatePropertyMetaValues();
         }
 
+        private void ClearPropertyControls()
+        {
+            cmdRemoveProperty.Enabled = false;
+            lblUnsupportedProperty.Visible = false;
+            lvPropertyHeader.Items.Clear();
+            lbPropertyRaw.Items.Clear();
+            dgvPropertyMetaValues.Rows.Clear();
+            dgvPropertyValues.Rows.Clear();
+        }
+
         private void chkPropertyMetaValue_Click(object sender, EventArgs e)
         {
             if (lbProperties.SelectedItem == null || dgvPropertyMetaValues.CurrentCell == null || !(dgvPropertyMetaValues.Rows.Count > 0) || metavalueDirty) return;
-           
+
             if (dgvPropertyMetaValues.Rows.Count > 1)
             {
                 chkPropertyMetaValue.Checked = true;
@@ -3409,7 +3409,7 @@ namespace CrashEdit.CE
         }
 
 
-        private void cmdAddProperty_Click(object sender, EventArgs e)
+        private void cmdAppendProperty_Click(object sender, EventArgs e)
         {
             short id;
             try
@@ -3422,9 +3422,16 @@ namespace CrashEdit.CE
                 return;
             }
 
+            if (entity.KnownProperties.Keys.Contains(id))
+            {
+                DarkMessageBox.ShowError("The field already exists.", titleError);
+                return;
+            }
+
+            dynamic field;
             try
             {
-                AddField(id);
+                field = AddField(id);
             }
             catch (ArgumentException ex)
             {
@@ -3432,16 +3439,40 @@ namespace CrashEdit.CE
                 return;
             }
 
-            if (lbProperties.Items.Contains(txtProperty.Text))
-            {
-                DarkMessageBox.ShowError("The field already exists.", titleError);
-                return;
-            }
-
             listKnownFields.Add(id.ToString("X"));
             listAllKnownFields.Add(id.ToString("X"));
+
+            entity.KnownProperties.Add(id, field);
             Console.WriteLine($"Added field: {id:X}");
+
+            lbProperties.SelectedIndex = lbProperties.Items.Count - 1;
+            cmdRemoveProperty.Enabled = true;
+            UpdatePropertyControls();
         }
+
+        private void cmdRemoveProperty_Click(object sender, EventArgs e)
+        {
+            if (lbProperties.SelectedItem == null) return;
+
+            string str = lbProperties.SelectedItem.ToString();
+            short id = Convert.ToInt16(str, 16);
+            NullifyField(id);
+            entity.KnownProperties.Remove(id);
+            listKnownFields.Remove(str);
+            listAllKnownFields.Remove(str);
+            Console.WriteLine($"Removed field: {id:X}");
+
+            if (!(lbProperties.Items.Count > 0))
+            {
+                ClearPropertyControls();
+            }
+        }
+
+        private void chkPropertyShowAsHex_Click(object sender, EventArgs e)
+        {
+
+        }
+
 
         private void txtEIDA_LostFocus(object sender, EventArgs e)
         {
