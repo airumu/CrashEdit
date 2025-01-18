@@ -250,13 +250,15 @@ namespace CrashEdit.CE
             cmdPrevRowDrawA = new DarkButton();
             cmdNextRowDrawA = new DarkButton();
             tabProperties = new TabPage();
-            chkPropertyShowAsHex = new CheckBox();
+            fraPropertyControls = new DarkGroupBox();
             chkPropertyMetaValue = new CheckBox();
+            fraPropertyViewControls = new DarkGroupBox();
             chkPropertyShowAllFields = new CheckBox();
+            chkPropertyShowAsHex = new CheckBox();
+            chkPropertyStyle = new CheckBox();
             lblFieldType = new Label();
             lbPropertyRaw = new DarkListBox();
             lvPropertyHeader = new ListView();
-            chkPropertyStyle = new CheckBox();
             lblUnsupportedProperty = new Label();
             txtProperty = new DarkTextBox();
             cmdRemoveProperty = new DarkButton();
@@ -264,6 +266,8 @@ namespace CrashEdit.CE
             dgvPropertyMetaValues = new DataGridView();
             dgvPropertyValues = new DataGridView();
             lbProperties = new DarkListBox();
+            cmdCopyProperty = new DarkButton();
+            cmdPasteProperty = new DarkButton();
             ((System.ComponentModel.ISupportInitialize)numType).BeginInit();
             fraType.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numSubtype).BeginInit();
@@ -349,6 +353,8 @@ namespace CrashEdit.CE
             fraEntityA.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numEntityA).BeginInit();
             tabProperties.SuspendLayout();
+            fraPropertyControls.SuspendLayout();
+            fraPropertyViewControls.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvPropertyMetaValues).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvPropertyValues).BeginInit();
             SuspendLayout();
@@ -3319,13 +3325,13 @@ namespace CrashEdit.CE
             // tabProperties
             // 
             tabProperties.BackColor = Color.FromArgb(31, 31, 32);
-            tabProperties.Controls.Add(chkPropertyShowAsHex);
-            tabProperties.Controls.Add(chkPropertyMetaValue);
-            tabProperties.Controls.Add(chkPropertyShowAllFields);
+            tabProperties.Controls.Add(cmdPasteProperty);
+            tabProperties.Controls.Add(cmdCopyProperty);
+            tabProperties.Controls.Add(fraPropertyControls);
+            tabProperties.Controls.Add(fraPropertyViewControls);
             tabProperties.Controls.Add(lblFieldType);
             tabProperties.Controls.Add(lbPropertyRaw);
             tabProperties.Controls.Add(lvPropertyHeader);
-            tabProperties.Controls.Add(chkPropertyStyle);
             tabProperties.Controls.Add(lblUnsupportedProperty);
             tabProperties.Controls.Add(txtProperty);
             tabProperties.Controls.Add(cmdRemoveProperty);
@@ -3342,12 +3348,57 @@ namespace CrashEdit.CE
             tabProperties.Text = "Properties";
             tabProperties.Enter += tabProperties_Enter;
             // 
+            // fraPropertyControls
+            // 
+            fraPropertyControls.Controls.Add(chkPropertyMetaValue);
+            fraPropertyControls.Location = new Point(437, 162);
+            fraPropertyControls.Name = "fraPropertyControls";
+            fraPropertyControls.Size = new Size(148, 47);
+            fraPropertyControls.TabIndex = 13;
+            fraPropertyControls.TabStop = false;
+            fraPropertyControls.Text = "Editor";
+            // 
+            // chkPropertyMetaValue
+            // 
+            chkPropertyMetaValue.AutoSize = true;
+            chkPropertyMetaValue.Enabled = false;
+            chkPropertyMetaValue.Location = new Point(6, 22);
+            chkPropertyMetaValue.Name = "chkPropertyMetaValue";
+            chkPropertyMetaValue.Size = new Size(119, 19);
+            chkPropertyMetaValue.TabIndex = 10;
+            chkPropertyMetaValue.Text = "Toggle MetaValue";
+            chkPropertyMetaValue.UseVisualStyleBackColor = true;
+            chkPropertyMetaValue.Click += chkPropertyMetaValue_Click;
+            // 
+            // fraPropertyViewControls
+            // 
+            fraPropertyViewControls.Controls.Add(chkPropertyShowAllFields);
+            fraPropertyViewControls.Controls.Add(chkPropertyShowAsHex);
+            fraPropertyViewControls.Controls.Add(chkPropertyStyle);
+            fraPropertyViewControls.Location = new Point(437, 60);
+            fraPropertyViewControls.Name = "fraPropertyViewControls";
+            fraPropertyViewControls.Size = new Size(148, 96);
+            fraPropertyViewControls.TabIndex = 12;
+            fraPropertyViewControls.TabStop = false;
+            fraPropertyViewControls.Text = "Visual";
+            // 
+            // chkPropertyShowAllFields
+            // 
+            chkPropertyShowAllFields.AutoSize = true;
+            chkPropertyShowAllFields.Location = new Point(6, 21);
+            chkPropertyShowAllFields.Name = "chkPropertyShowAllFields";
+            chkPropertyShowAllFields.Size = new Size(101, 19);
+            chkPropertyShowAllFields.TabIndex = 9;
+            chkPropertyShowAllFields.Text = "Show all fields";
+            chkPropertyShowAllFields.UseVisualStyleBackColor = true;
+            chkPropertyShowAllFields.CheckedChanged += chkPropertyShowAllFields_CheckedChanged;
+            // 
             // chkPropertyShowAsHex
             // 
             chkPropertyShowAsHex.AutoSize = true;
             chkPropertyShowAsHex.Checked = true;
             chkPropertyShowAsHex.CheckState = CheckState.Checked;
-            chkPropertyShowAsHex.Location = new Point(437, 110);
+            chkPropertyShowAsHex.Location = new Point(6, 71);
             chkPropertyShowAsHex.Name = "chkPropertyShowAsHex";
             chkPropertyShowAsHex.Size = new Size(47, 19);
             chkPropertyShowAsHex.TabIndex = 11;
@@ -3355,28 +3406,16 @@ namespace CrashEdit.CE
             chkPropertyShowAsHex.UseVisualStyleBackColor = true;
             chkPropertyShowAsHex.Click += chkPropertyShowAsHex_Click;
             // 
-            // chkPropertyMetaValue
+            // chkPropertyStyle
             // 
-            chkPropertyMetaValue.AutoSize = true;
-            chkPropertyMetaValue.Enabled = false;
-            chkPropertyMetaValue.Location = new Point(7, 350);
-            chkPropertyMetaValue.Name = "chkPropertyMetaValue";
-            chkPropertyMetaValue.Size = new Size(81, 19);
-            chkPropertyMetaValue.TabIndex = 10;
-            chkPropertyMetaValue.Text = "MetaValue";
-            chkPropertyMetaValue.UseVisualStyleBackColor = true;
-            chkPropertyMetaValue.Click += chkPropertyMetaValue_Click;
-            // 
-            // chkPropertyShowAllFields
-            // 
-            chkPropertyShowAllFields.AutoSize = true;
-            chkPropertyShowAllFields.Location = new Point(437, 60);
-            chkPropertyShowAllFields.Name = "chkPropertyShowAllFields";
-            chkPropertyShowAllFields.Size = new Size(101, 19);
-            chkPropertyShowAllFields.TabIndex = 9;
-            chkPropertyShowAllFields.Text = "Show all fields";
-            chkPropertyShowAllFields.UseVisualStyleBackColor = true;
-            chkPropertyShowAllFields.CheckedChanged += chkPropertyShowAllFields_CheckedChanged;
+            chkPropertyStyle.AutoSize = true;
+            chkPropertyStyle.Location = new Point(6, 46);
+            chkPropertyStyle.Name = "chkPropertyStyle";
+            chkPropertyStyle.Size = new Size(89, 19);
+            chkPropertyStyle.TabIndex = 5;
+            chkPropertyStyle.Text = "Toggle View";
+            chkPropertyStyle.UseVisualStyleBackColor = true;
+            chkPropertyStyle.CheckedChanged += chkPropertyStyle_CheckedChanged;
             // 
             // lblFieldType
             // 
@@ -3410,17 +3449,6 @@ namespace CrashEdit.CE
             lvPropertyHeader.TabIndex = 6;
             lvPropertyHeader.UseCompatibleStateImageBehavior = false;
             lvPropertyHeader.View = View.Details;
-            // 
-            // chkPropertyStyle
-            // 
-            chkPropertyStyle.AutoSize = true;
-            chkPropertyStyle.Location = new Point(437, 85);
-            chkPropertyStyle.Name = "chkPropertyStyle";
-            chkPropertyStyle.Size = new Size(120, 19);
-            chkPropertyStyle.TabIndex = 5;
-            chkPropertyStyle.Text = "Change ViewStyle";
-            chkPropertyStyle.UseVisualStyleBackColor = true;
-            chkPropertyStyle.CheckedChanged += chkPropertyStyle_CheckedChanged;
             // 
             // lblUnsupportedProperty
             // 
@@ -3491,6 +3519,7 @@ namespace CrashEdit.CE
             dgvPropertyMetaValues.Size = new Size(96, 279);
             dgvPropertyMetaValues.TabIndex = 1;
             dgvPropertyMetaValues.CellBeginEdit += dgvPropertyMetaValues_CellBeginEdit;
+            dgvPropertyMetaValues.CellValidating += dgvPropertyMetaValues_CellValidating;
             dgvPropertyMetaValues.CellValueChanged += dgvPropertyMetaValues_CellValueChanged;
             dgvPropertyMetaValues.EditingControlShowing += dgvPropertyMetaValues_EditingControlShowing;
             dgvPropertyMetaValues.SelectionChanged += dgvPropertyMetaValues_SelectionChanged;
@@ -3528,6 +3557,34 @@ namespace CrashEdit.CE
             lbProperties.Size = new Size(75, 227);
             lbProperties.TabIndex = 0;
             lbProperties.SelectedIndexChanged += lbProperties_SelectedIndexChanged;
+            // 
+            // cmdCopyProperty
+            // 
+            cmdCopyProperty.BorderColour = Color.Empty;
+            cmdCopyProperty.CustomColour = false;
+            cmdCopyProperty.FlatBottom = false;
+            cmdCopyProperty.FlatTop = false;
+            cmdCopyProperty.Location = new Point(7, 340);
+            cmdCopyProperty.Name = "cmdCopyProperty";
+            cmdCopyProperty.Padding = new Padding(5);
+            cmdCopyProperty.Size = new Size(75, 23);
+            cmdCopyProperty.TabIndex = 14;
+            cmdCopyProperty.Text = "Copy";
+            cmdCopyProperty.Click += cmdCopyProperty_Click;
+            // 
+            // cmdPasteProperty
+            // 
+            cmdPasteProperty.BorderColour = Color.Empty;
+            cmdPasteProperty.CustomColour = false;
+            cmdPasteProperty.FlatBottom = false;
+            cmdPasteProperty.FlatTop = false;
+            cmdPasteProperty.Location = new Point(7, 369);
+            cmdPasteProperty.Name = "cmdPasteProperty";
+            cmdPasteProperty.Padding = new Padding(5);
+            cmdPasteProperty.Size = new Size(75, 23);
+            cmdPasteProperty.TabIndex = 14;
+            cmdPasteProperty.Text = "Paste";
+            cmdPasteProperty.Click += cmdPasteProperty_Click;
             // 
             // EntityBox
             // 
@@ -3658,6 +3715,10 @@ namespace CrashEdit.CE
             ((System.ComponentModel.ISupportInitialize)numEntityA).EndInit();
             tabProperties.ResumeLayout(false);
             tabProperties.PerformLayout();
+            fraPropertyControls.ResumeLayout(false);
+            fraPropertyControls.PerformLayout();
+            fraPropertyViewControls.ResumeLayout(false);
+            fraPropertyViewControls.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvPropertyMetaValues).EndInit();
             ((System.ComponentModel.ISupportInitialize)dgvPropertyValues).EndInit();
             ResumeLayout(false);
@@ -3908,5 +3969,9 @@ namespace CrashEdit.CE
         private CheckBox chkPropertyMetaValue;
         private DarkButton cmdRemoveProperty;
         private CheckBox chkPropertyShowAsHex;
+        private DarkGroupBox fraPropertyControls;
+        private DarkGroupBox fraPropertyViewControls;
+        private DarkButton cmdPasteProperty;
+        private DarkButton cmdCopyProperty;
     }
 }

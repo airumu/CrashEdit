@@ -107,7 +107,7 @@ namespace CrashEdit.Crash
         [EntityPropertyField(0x13C)]
         private EntityInt32Property drawlistb = null;
         [EntityPropertyField(0x173)]
-        private int? cameparticlesdex = null;
+        private int? cameraindex = null;
         [EntityPropertyField(0x174)]
         private int? camerasubindex = null;
         [EntityPropertyField(0x208)]
@@ -219,7 +219,7 @@ namespace CrashEdit.Crash
         public string Title =>
             (Name != null && ID != null) ? $"{Name} [ID {ID}]" :
             (ID != null) ? $"Entity [ID {ID}]" :
-            (cameparticlesdex != null && camerasubindex != null) ? $"Camera[{cameparticlesdex}]" :
+            (cameraindex != null && camerasubindex != null) ? $"Camera[{cameraindex}]" :
             "Entity";
 
         public string ImageKey => "Arrow";
@@ -336,8 +336,8 @@ namespace CrashEdit.Crash
 
         public int? CameraIndex
         {
-            get => cameparticlesdex;
-            set => cameparticlesdex = value;
+            get => cameraindex;
+            set => cameraindex = value;
         }
 
         public int? CameraSubIndex
