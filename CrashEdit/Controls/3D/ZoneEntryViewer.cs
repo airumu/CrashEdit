@@ -408,6 +408,11 @@ namespace CrashEdit.CE
                     }
                     return ok;
                 }
+                else if (type == 38 && subtype == 0) // spore plant
+                {
+                    if (map.TryGetVisual(type, subtype, out visual))
+                        return RenderEntityVisual(visual, trans, scale: new Vector3(3276f / 4096f));
+                }
                 else if (type == 38 && subtype == 4) // evil plant
                 {
                     if (map.TryGetVisual(type, subtype, out visual))
