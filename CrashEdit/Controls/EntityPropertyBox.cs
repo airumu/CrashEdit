@@ -19,6 +19,9 @@ namespace CrashEdit.CE
         // Predefined fields, includes not editable ones
         private BindingList<string> listAllKnownFields;
 
+        // Saved items list
+        private List<ListItem> savedItems = new List<ListItem>();
+
         private DataGridView currentDataGridView;
         private object selectedField;
 
@@ -32,11 +35,18 @@ namespace CrashEdit.CE
         private const string TitleInputError = "Input Error";
 
         private const string FilePath = "CrashEdit.exe.entityproperty.json";
+
         public class FieldData
         {
             public short Id { get; set; }
             public string FieldType { get; set; }
             public object Field { get; set; }
+            public string Comment { get; set; }
+        }
+        public class ListItem
+        {
+            public string Name { get; set; }
+            public List<FieldData> Fields { get; set; } = new List<FieldData>();
         }
 
         public EntityPropertyBox(EntityController controller)
@@ -56,6 +66,7 @@ namespace CrashEdit.CE
 
             DoubleBufferedDataGridView.Initialize(dgvPropertyMetaValues);
             DoubleBufferedDataGridView.Initialize(dgvPropertyValues);
+            DoubleBufferedDataGridView.Initialize(dgvSavePropertyValues);
 
             ContextMenuStrip contextMenu = new ContextMenuStrip();
             ToolStripMenuItem insertRowItem = new ToolStripMenuItem("Insert Row");
@@ -74,7 +85,10 @@ namespace CrashEdit.CE
             chkPropertyShowAsHex.Checked = propertyShowAsHex;
             CreatePropertyHeaderColumns();
             CreatePropertyMetaValuesColumns();
+            CreateSavedPropertyListColumns();
+            CreateSavedPropertyValuesColumns();
             UpdatePropertyIDList();
+            LoadItemsFromFile();
         }
 
         private void DataGridView_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
@@ -603,6 +617,17 @@ namespace CrashEdit.CE
             }
         }
 
+        private void CreateSavedPropertyListColumns()
+        {
+            lvSavedProperties.Columns.Add("", 120);
+        }
+
+        private void CreateSavedPropertyValuesColumns()
+        {
+            dgvSavePropertyValues.Columns.Add("ID", "ID");
+            dgvSavePropertyValues.Columns.Add("Comment", "Comment");
+        }
+
         private void UpdatePropertyIDList()
         {
             if (entity.KnownProperties != null && entity.KnownProperties.Count > 0)
@@ -629,6 +654,19 @@ namespace CrashEdit.CE
                     cmdCopyProperty.Enabled = false;
                 }
             }
+        }
+
+        private void AddSavedItem(string itemName, List<FieldData> fields)
+        {
+            var newItem = new ListItem
+            {
+                Name = itemName,
+                Fields = fields
+            };
+            savedItems.Add(newItem);
+            SaveItemsToFile();
+            var listViewItem = new ListViewItem(itemName);
+            lvSavedProperties.Items.Add(listViewItem);
         }
 
         private void chkPropertyShowAllFields_CheckedChanged(object sender, EventArgs e)
@@ -1398,38 +1436,69 @@ namespace CrashEdit.CE
             UpdatePropertyValues();
         }
 
-        public static void SaveObject(short id, object obj)
+        public static void SaveObjects(List<FieldData> fields)
         {
             try
             {
-                var fieldData = new FieldData
-                {
-                    Id = id,
-                    FieldType = obj.ToString(),
-                    Field = obj
-                };
-                string jsonString = JsonSerializer.Serialize(fieldData, new JsonSerializerOptions { WriteIndented = true });
+                string jsonString = JsonSerializer.Serialize(fields, new JsonSerializerOptions { WriteIndented = true });
                 File.WriteAllText(FilePath, jsonString);
 
-                Console.WriteLine($"ID: {id:X}, Type: {obj.ToString()}");
-                Console.WriteLine("Field saved successfully.");
+                Console.WriteLine($"Saved {fields.Count} fields successfully.");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error saving object: {ex.Message}");
+                Console.WriteLine($"Error saving fields: {ex.Message}");
             }
         }
 
-        public static FieldData LoadObject()
+        private void cmdCopyProperty_Click(object sender, EventArgs e)
+        {
+            if (lbProperties.SelectedItems.Count == 0) return;
+
+            List<FieldData> fieldsToSave = new List<FieldData>();
+
+            foreach (var selectedItem in lbProperties.SelectedItems)
+            {
+                short id = Convert.ToInt16(selectedItem.ToString(), 16);
+                object field = GetField(id);
+
+                if (field == null)
+                {
+                    DarkMessageBox.ShowError($"Unsupported field for ID {id:X}.", TitleError);
+                    continue;
+                }
+
+                fieldsToSave.Add(new FieldData
+                {
+                    Id = id,
+                    FieldType = field.ToString(),
+                    Field = field,
+                    Comment = string.Empty
+                });
+            }
+
+            if (fieldsToSave.Count > 0)
+            {
+                SaveObjects(fieldsToSave);
+                int idx = savedItems.Count + 1;
+                AddSavedItem($"New list {idx}", fieldsToSave);
+            }
+            else
+            {
+                DarkMessageBox.ShowError("No valid fields were selected.", TitleError);
+            }
+        }
+
+        public static List<FieldData> LoadObjects()
         {
             try
             {
                 if (File.Exists(FilePath))
                 {
                     string jsonString = File.ReadAllText(FilePath);
-                    var fieldData = JsonSerializer.Deserialize<FieldData>(jsonString);
-                    Console.WriteLine("Field loaded successfully.");
-                    return fieldData;
+                    var fieldDataList = JsonSerializer.Deserialize<List<FieldData>>(jsonString);
+                    Console.WriteLine("Fields loaded successfully.");
+                    return fieldDataList;
                 }
                 else
                 {
@@ -1439,87 +1508,78 @@ namespace CrashEdit.CE
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error loading object: {ex.Message}");
+                Console.WriteLine($"Error loading fields: {ex.Message}");
                 return null;
             }
         }
 
-        private void cmdCopyProperty_Click(object sender, EventArgs e)
+        private void cmdPasteProperty_Click(object sender, EventArgs e)
         {
-            if (lbProperties.SelectedItem == null) return;
-            short id = Convert.ToInt16(lbProperties.SelectedItem.ToString(), 16);
-
-            object field = GetField(id);
-            if (field == null)
+            List<FieldData> loadedFieldDataList = LoadObjects();
+            if (loadedFieldDataList == null)
             {
-                DarkMessageBox.ShowError("Unsupported field.", TitleError);
+                Console.WriteLine("No fields to load.");
                 return;
             }
 
-            SaveObject(id, field);
+            CopyFieldsFromList(loadedFieldDataList);
         }
 
-        private void cmdPasteProperty_Click(object sender, EventArgs e)
+        private void CopyFieldsFromList(List<FieldData> loadedFieldDataList)
         {
-            short id = 0;
-            string fieldType = string.Empty;
-            dynamic loadedField = null;
+            foreach (var loadedFieldData in loadedFieldDataList)
+            {
+                short id = loadedFieldData.Id;
+                string fieldType = loadedFieldData.FieldType;
+                dynamic loadedField = loadedFieldData.Field;
 
-            FieldData loadedFieldData = LoadObject();
-            if (loadedFieldData != null)
-            {
-                id = loadedFieldData.Id;
-                fieldType = loadedFieldData.FieldType;
-                loadedField = loadedFieldData.Field;
-            }
-            else return;
+                dynamic field = null!;
+                if (fieldType.Contains("CrashEdit.Crash.EntityVictimProperty"))
+                {
+                    field = EntityPropertyConverter.ConvertJsonToEntityVictimProperty(loadedField);
+                }
+                else if (fieldType.Contains("CrashEdit.Crash.EntityInt32Property"))
+                {
+                    field = EntityPropertyConverter.ConvertJsonToEntityInt32Property(loadedField);
+                }
+                else if (fieldType.Contains("CrashEdit.Crash.EntityUInt32Property"))
+                {
+                    field = EntityPropertyConverter.ConvertJsonToEntityUInt32Property(loadedField);
+                }
+                else if (fieldType.Contains("CrashEdit.Crash.EntitySettingProperty"))
+                {
+                    field = EntityPropertyConverter.ConvertJsonToEntitySettingProperty(loadedField);
+                }
+                else if (fieldType.Contains("CrashEdit.Crash.EntityUInt8Property"))
+                {
+                    field = EntityPropertyConverter.ConvertJsonToEntityUInt8Property(loadedField);
+                }
 
-            dynamic field = null!;
-            if (fieldType.Contains("CrashEdit.Crash.EntityVictimProperty"))
-            {
-                field = EntityPropertyConverter.ConvertJsonToEntityVictimProperty(loadedField);
-            }
-            else if (fieldType.Contains("CrashEdit.Crash.EntityInt32Property"))
-            {
-                field = EntityPropertyConverter.ConvertJsonToEntityInt32Property(loadedField);
-            }
-            else if (fieldType.Contains("CrashEdit.Crash.EntityUInt32Property"))
-            {
-                field = EntityPropertyConverter.ConvertJsonToEntityUInt32Property(loadedField);
-            }
-            else if (fieldType.Contains("CrashEdit.Crash.EntitySettingProperty"))
-            {
-                field = EntityPropertyConverter.ConvertJsonToEntitySettingProperty(loadedField);
-            }
-            else if (fieldType.Contains("CrashEdit.Crash.EntityUInt8Property"))
-            {
-                field = EntityPropertyConverter.ConvertJsonToEntityUInt8Property(loadedField);
-            }
+                if (entity.KnownProperties.Keys.Contains(id))
+                {
+                    entity.KnownProperties.Remove(id);
+                    NullifyField(id);
 
-            if (entity.KnownProperties.Keys.Contains(id))
-            {
-                entity.KnownProperties.Remove(id);
-                NullifyField(id);
+                    entity.KnownProperties.Add(id, field);
+                    ReplaceField(id, field);
+                    Console.WriteLine($"Replaced field: {id:X}");
+                }
+                else
+                {
+                    listKnownFields.Add(id.ToString("X"));
+                    listAllKnownFields.Add(id.ToString("X"));
 
-                entity.KnownProperties.Add(id, field);
-                ReplaceField(id, field);
-                Console.WriteLine($"Replaced field: {id:X}");
+                    entity.KnownProperties.Add(id, field);
+                    ReplaceField(id, field);
+                    Console.WriteLine($"Added field: {id:X}");
+
+                    cmdRemoveProperty.Enabled =
+                    cmdCopyProperty.Enabled = true;
+                }
+                UpdatePropertyControls();
             }
-            else
-            {
-                listKnownFields.Add(id.ToString("X"));
-                listAllKnownFields.Add(id.ToString("X"));
-
-                entity.KnownProperties.Add(id, field);
-                ReplaceField(id, field);
-                Console.WriteLine($"Added field: {id:X}");
-
-                cmdRemoveProperty.Enabled =
-                cmdCopyProperty.Enabled = true;
-            }
-            UpdatePropertyControls();
         }
-      
+
         private void lbProperties_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Control && e.KeyCode == Keys.C)
@@ -1546,6 +1606,148 @@ namespace CrashEdit.CE
                 }
                 e.Handled = true;
             }
+        }
+
+        private void lvSavedProperties_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lvSavedProperties.SelectedItems.Count > 0)
+            {
+                string selectedItemName = lvSavedProperties.SelectedItems[0].Text;
+                var selectedItem = savedItems.FirstOrDefault(item => item.Name == selectedItemName);
+                if (selectedItem != null)
+                {
+                    dgvSavePropertyValues.Rows.Clear();
+                    foreach (var field in selectedItem.Fields)
+                    {
+                        dgvSavePropertyValues.Rows.Add(field.Id.ToString("X"), field.Comment);
+                    }
+                    //dgvSavePropertyValues.DataSource = null;
+                    //dgvSavePropertyValues.DataSource = selectedItem.Fields;
+                }
+            }
+        }
+
+        private const string SavedFilePath = "SavedFields.json";
+
+        private void SaveItemsToFile()
+        {
+            try
+            {
+                string jsonString = JsonSerializer.Serialize(savedItems, new JsonSerializerOptions { WriteIndented = true });
+                File.WriteAllText(SavedFilePath, jsonString);
+                Console.WriteLine("Saved fields list saved successfully.");
+            }
+            catch (Exception ex)
+            {
+                DarkMessageBox.ShowError($"Error saving saved fields list: {ex.Message}", TitleError);
+            }
+        }
+
+        private void LoadItemsFromFile()
+        {
+            try
+            {
+                if (File.Exists(SavedFilePath))
+                {
+                    string jsonString = File.ReadAllText(SavedFilePath);
+                    savedItems = JsonSerializer.Deserialize<List<ListItem>>(jsonString) ?? new List<ListItem>();
+
+                    lvSavedProperties.Items.Clear();
+                    foreach (var item in savedItems)
+                    {
+                        lvSavedProperties.Items.Add(new ListViewItem(item.Name));
+                    }
+
+                    Console.WriteLine("Saved fields list loaded successfully.");
+                }
+            }
+            catch (Exception ex)
+            {
+                DarkMessageBox.ShowError($"Error loading saved fields list: {ex.Message}", TitleError);
+            }
+        }
+
+        private void cmdCopyFromSaved_Click(object sender, EventArgs e)
+        {
+            if (lvSavedProperties.SelectedItems.Count > 0)
+            {
+                string selectedItemName = lvSavedProperties.SelectedItems[0].Text;
+                var selectedItem = savedItems.FirstOrDefault(item => item.Name == selectedItemName);
+                if (selectedItem != null)
+                {
+                    CopyFieldsFromList(selectedItem.Fields);
+                }
+            }
+        }
+
+        private void cmdRenameSavedList_Click(object sender, EventArgs e)
+        {
+            if (lvSavedProperties.SelectedItems.Count > 0)
+            {
+                string selectedItemName = lvSavedProperties.SelectedItems[0].Text;
+                var selectedItem = savedItems.FirstOrDefault(item => item.Name == selectedItemName);
+                if (selectedItem != null)
+                {
+                    string newName = Prompt.ShowDialog("Enter new name:", "Rename List", selectedItemName);
+                    if (!string.IsNullOrWhiteSpace(newName))
+                    {
+                        lvSavedProperties.SelectedItems[0].Text = newName;
+                        selectedItem.Name = newName;
+                        SaveItemsToFile();
+                    }
+                }
+            }
+        }
+
+        private void dgvSavePropertyValues_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            if (e.ColumnIndex == 0)
+            {
+                DarkMessageBox.ShowError("This cell cannot be edited.", TitleInputError);
+                e.Cancel = true;
+            }
+        }
+
+        private void dgvSavePropertyValues_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            string selectedItemName = lvSavedProperties.SelectedItems[0].Text;
+            var selectedItem = savedItems.FirstOrDefault(item => item.Name == selectedItemName);
+            if (selectedItem != null)
+            {
+                selectedItem.Fields[e.RowIndex].Comment = dgvSavePropertyValues.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                SaveItemsToFile();
+            }
+        }
+       
+    }
+
+    public static class Prompt
+    {
+        public static string ShowDialog(string text, string caption, string curText)
+        {
+            DarkForm prompt = new DarkForm()
+            {
+                Width = 300,
+                Height = 150,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                Text = caption,
+                StartPosition = FormStartPosition.CenterScreen
+            };
+
+            DarkLabel textLabel = new DarkLabel() { Left = 10, Top = 20, Text = text, Width = 260 };
+            DarkTextBox textBox = new DarkTextBox() { Left = 10, Top = 50, Text = curText, Width = 260 };
+
+            DarkButton confirmation = new DarkButton() { Text = "OK", Left = 200, Width = 70, Top = 80, DialogResult = DialogResult.OK };
+            confirmation.Click += (sender, e) => { prompt.Close(); };
+
+            prompt.Controls.Add(textBox);
+            prompt.Controls.Add(confirmation);
+            prompt.Controls.Add(textLabel);
+            prompt.AcceptButton = confirmation;
+            prompt.MinimizeBox = false;
+            prompt.MaximizeBox = false;
+
+            return prompt.ShowDialog() == DialogResult.OK ? textBox.Text : string.Empty;
         }
     }
 
