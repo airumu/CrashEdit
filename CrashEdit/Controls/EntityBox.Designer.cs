@@ -249,25 +249,6 @@ namespace CrashEdit.CE
             cmdInsertEntityA = new DarkButton();
             cmdPrevRowDrawA = new DarkButton();
             cmdNextRowDrawA = new DarkButton();
-            tabProperties = new TabPage();
-            fraPropertyControls = new DarkGroupBox();
-            chkPropertyMetaValue = new CheckBox();
-            fraPropertyViewControls = new DarkGroupBox();
-            chkPropertyShowAllFields = new CheckBox();
-            chkPropertyShowAsHex = new CheckBox();
-            chkPropertyStyle = new CheckBox();
-            lblFieldType = new Label();
-            lbPropertyRaw = new DarkListBox();
-            lvPropertyHeader = new ListView();
-            lblUnsupportedProperty = new Label();
-            txtProperty = new DarkTextBox();
-            cmdRemoveProperty = new DarkButton();
-            cmdAppendProperty = new DarkButton();
-            dgvPropertyMetaValues = new DataGridView();
-            dgvPropertyValues = new DataGridView();
-            lbProperties = new DarkListBox();
-            cmdCopyProperty = new DarkButton();
-            cmdPasteProperty = new DarkButton();
             ((System.ComponentModel.ISupportInitialize)numType).BeginInit();
             fraType.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numSubtype).BeginInit();
@@ -352,11 +333,6 @@ namespace CrashEdit.CE
             ((System.ComponentModel.ISupportInitialize)numMetavalueDrawA).BeginInit();
             fraEntityA.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numEntityA).BeginInit();
-            tabProperties.SuspendLayout();
-            fraPropertyControls.SuspendLayout();
-            fraPropertyViewControls.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvPropertyMetaValues).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dgvPropertyValues).BeginInit();
             SuspendLayout();
             // 
             // chkType
@@ -926,14 +902,13 @@ namespace CrashEdit.CE
             tbcTabs.Controls.Add(tabCamera);
             tbcTabs.Controls.Add(tabLoadLists);
             tbcTabs.Controls.Add(tabDrawLists);
-            tbcTabs.Controls.Add(tabProperties);
             tbcTabs.Dock = DockStyle.Fill;
             tbcTabs.IsDerivedStyle = false;
             tbcTabs.ItemSize = new Size(100, 28);
             tbcTabs.Location = new Point(0, 0);
             tbcTabs.Margin = new Padding(4, 3, 4, 3);
             tbcTabs.Name = "tbcTabs";
-            tbcTabs.SelectedIndex = 5;
+            tbcTabs.SelectedIndex = 0;
             tbcTabs.SelectedTextColor = Color.White;
             tbcTabs.Size = new Size(600, 600);
             tbcTabs.SizeMode = TabSizeMode.Fixed;
@@ -3322,270 +3297,6 @@ namespace CrashEdit.CE
             cmdNextRowDrawA.Text = "Next";
             cmdNextRowDrawA.Click += cmdNextRowDrawA_Click;
             // 
-            // tabProperties
-            // 
-            tabProperties.BackColor = Color.FromArgb(31, 31, 32);
-            tabProperties.Controls.Add(cmdPasteProperty);
-            tabProperties.Controls.Add(cmdCopyProperty);
-            tabProperties.Controls.Add(fraPropertyControls);
-            tabProperties.Controls.Add(fraPropertyViewControls);
-            tabProperties.Controls.Add(lblFieldType);
-            tabProperties.Controls.Add(lbPropertyRaw);
-            tabProperties.Controls.Add(lvPropertyHeader);
-            tabProperties.Controls.Add(lblUnsupportedProperty);
-            tabProperties.Controls.Add(txtProperty);
-            tabProperties.Controls.Add(cmdRemoveProperty);
-            tabProperties.Controls.Add(cmdAppendProperty);
-            tabProperties.Controls.Add(dgvPropertyMetaValues);
-            tabProperties.Controls.Add(dgvPropertyValues);
-            tabProperties.Controls.Add(lbProperties);
-            tabProperties.Location = new Point(4, 32);
-            tabProperties.Margin = new Padding(4, 3, 4, 3);
-            tabProperties.Name = "tabProperties";
-            tabProperties.Padding = new Padding(4, 3, 4, 3);
-            tabProperties.Size = new Size(592, 564);
-            tabProperties.TabIndex = 2;
-            tabProperties.Text = "Properties";
-            tabProperties.Enter += tabProperties_Enter;
-            // 
-            // fraPropertyControls
-            // 
-            fraPropertyControls.Controls.Add(chkPropertyMetaValue);
-            fraPropertyControls.Location = new Point(437, 162);
-            fraPropertyControls.Name = "fraPropertyControls";
-            fraPropertyControls.Size = new Size(148, 47);
-            fraPropertyControls.TabIndex = 13;
-            fraPropertyControls.TabStop = false;
-            fraPropertyControls.Text = "Editor";
-            // 
-            // chkPropertyMetaValue
-            // 
-            chkPropertyMetaValue.AutoSize = true;
-            chkPropertyMetaValue.Enabled = false;
-            chkPropertyMetaValue.Location = new Point(6, 22);
-            chkPropertyMetaValue.Name = "chkPropertyMetaValue";
-            chkPropertyMetaValue.Size = new Size(119, 19);
-            chkPropertyMetaValue.TabIndex = 10;
-            chkPropertyMetaValue.Text = "Toggle MetaValue";
-            chkPropertyMetaValue.UseVisualStyleBackColor = true;
-            chkPropertyMetaValue.Click += chkPropertyMetaValue_Click;
-            // 
-            // fraPropertyViewControls
-            // 
-            fraPropertyViewControls.Controls.Add(chkPropertyShowAllFields);
-            fraPropertyViewControls.Controls.Add(chkPropertyShowAsHex);
-            fraPropertyViewControls.Controls.Add(chkPropertyStyle);
-            fraPropertyViewControls.Location = new Point(437, 60);
-            fraPropertyViewControls.Name = "fraPropertyViewControls";
-            fraPropertyViewControls.Size = new Size(148, 96);
-            fraPropertyViewControls.TabIndex = 12;
-            fraPropertyViewControls.TabStop = false;
-            fraPropertyViewControls.Text = "Visual";
-            // 
-            // chkPropertyShowAllFields
-            // 
-            chkPropertyShowAllFields.AutoSize = true;
-            chkPropertyShowAllFields.Location = new Point(6, 21);
-            chkPropertyShowAllFields.Name = "chkPropertyShowAllFields";
-            chkPropertyShowAllFields.Size = new Size(101, 19);
-            chkPropertyShowAllFields.TabIndex = 9;
-            chkPropertyShowAllFields.Text = "Show all fields";
-            chkPropertyShowAllFields.UseVisualStyleBackColor = true;
-            chkPropertyShowAllFields.CheckedChanged += chkPropertyShowAllFields_CheckedChanged;
-            // 
-            // chkPropertyShowAsHex
-            // 
-            chkPropertyShowAsHex.AutoSize = true;
-            chkPropertyShowAsHex.Checked = true;
-            chkPropertyShowAsHex.CheckState = CheckState.Checked;
-            chkPropertyShowAsHex.Location = new Point(6, 71);
-            chkPropertyShowAsHex.Name = "chkPropertyShowAsHex";
-            chkPropertyShowAsHex.Size = new Size(47, 19);
-            chkPropertyShowAsHex.TabIndex = 11;
-            chkPropertyShowAsHex.Text = "Hex";
-            chkPropertyShowAsHex.UseVisualStyleBackColor = true;
-            chkPropertyShowAsHex.Click += chkPropertyShowAsHex_Click;
-            // 
-            // chkPropertyStyle
-            // 
-            chkPropertyStyle.AutoSize = true;
-            chkPropertyStyle.Location = new Point(6, 46);
-            chkPropertyStyle.Name = "chkPropertyStyle";
-            chkPropertyStyle.Size = new Size(89, 19);
-            chkPropertyStyle.TabIndex = 5;
-            chkPropertyStyle.Text = "Toggle View";
-            chkPropertyStyle.UseVisualStyleBackColor = true;
-            chkPropertyStyle.CheckedChanged += chkPropertyStyle_CheckedChanged;
-            // 
-            // lblFieldType
-            // 
-            lblFieldType.AutoSize = true;
-            lblFieldType.Location = new Point(437, 39);
-            lblFieldType.Name = "lblFieldType";
-            lblFieldType.Size = new Size(41, 15);
-            lblFieldType.TabIndex = 8;
-            lblFieldType.Text = "(int32)";
-            // 
-            // lbPropertyRaw
-            // 
-            lbPropertyRaw.BackColor = Color.FromArgb(26, 26, 28);
-            lbPropertyRaw.BorderStyle = BorderStyle.FixedSingle;
-            lbPropertyRaw.ForeColor = Color.FromArgb(213, 213, 213);
-            lbPropertyRaw.FormattingEnabled = true;
-            lbPropertyRaw.HorizontalScrollbar = true;
-            lbPropertyRaw.Location = new Point(91, 60);
-            lbPropertyRaw.Name = "lbPropertyRaw";
-            lbPropertyRaw.Size = new Size(340, 47);
-            lbPropertyRaw.TabIndex = 7;
-            // 
-            // lvPropertyHeader
-            // 
-            lvPropertyHeader.BorderStyle = BorderStyle.FixedSingle;
-            lvPropertyHeader.FullRowSelect = true;
-            lvPropertyHeader.Location = new Point(91, 6);
-            lvPropertyHeader.Name = "lvPropertyHeader";
-            lvPropertyHeader.Scrollable = false;
-            lvPropertyHeader.Size = new Size(340, 48);
-            lvPropertyHeader.TabIndex = 6;
-            lvPropertyHeader.UseCompatibleStateImageBehavior = false;
-            lvPropertyHeader.View = View.Details;
-            // 
-            // lblUnsupportedProperty
-            // 
-            lblUnsupportedProperty.AutoSize = true;
-            lblUnsupportedProperty.ForeColor = Color.Red;
-            lblUnsupportedProperty.Location = new Point(437, 6);
-            lblUnsupportedProperty.Name = "lblUnsupportedProperty";
-            lblUnsupportedProperty.Size = new Size(153, 30);
-            lblUnsupportedProperty.TabIndex = 4;
-            lblUnsupportedProperty.Text = "Unsupported property field!\r\n(unknown)";
-            lblUnsupportedProperty.Visible = false;
-            // 
-            // txtProperty
-            // 
-            txtProperty.BackColor = Color.FromArgb(26, 26, 28);
-            txtProperty.BorderStyle = BorderStyle.FixedSingle;
-            txtProperty.ForeColor = Color.FromArgb(213, 213, 213);
-            txtProperty.Location = new Point(7, 239);
-            txtProperty.MaxLength = 4;
-            txtProperty.Name = "txtProperty";
-            txtProperty.Size = new Size(75, 23);
-            txtProperty.TabIndex = 3;
-            txtProperty.TextChanged += txtProperty_TextChanged;
-            txtProperty.KeyPress += txtProperty_KeyPress;
-            // 
-            // cmdRemoveProperty
-            // 
-            cmdRemoveProperty.BorderColour = Color.Empty;
-            cmdRemoveProperty.CustomColour = false;
-            cmdRemoveProperty.FlatBottom = false;
-            cmdRemoveProperty.FlatTop = false;
-            cmdRemoveProperty.Location = new Point(7, 297);
-            cmdRemoveProperty.Name = "cmdRemoveProperty";
-            cmdRemoveProperty.Padding = new Padding(5);
-            cmdRemoveProperty.Size = new Size(75, 23);
-            cmdRemoveProperty.TabIndex = 2;
-            cmdRemoveProperty.Text = "Remove";
-            cmdRemoveProperty.Click += cmdRemoveProperty_Click;
-            // 
-            // cmdAppendProperty
-            // 
-            cmdAppendProperty.BorderColour = Color.Empty;
-            cmdAppendProperty.CustomColour = false;
-            cmdAppendProperty.FlatBottom = false;
-            cmdAppendProperty.FlatTop = false;
-            cmdAppendProperty.Location = new Point(7, 268);
-            cmdAppendProperty.Name = "cmdAppendProperty";
-            cmdAppendProperty.Padding = new Padding(5);
-            cmdAppendProperty.Size = new Size(75, 23);
-            cmdAppendProperty.TabIndex = 2;
-            cmdAppendProperty.Text = "Append";
-            cmdAppendProperty.Click += cmdAppendProperty_Click;
-            // 
-            // dgvPropertyMetaValues
-            // 
-            dgvPropertyMetaValues.AllowUserToAddRows = false;
-            dgvPropertyMetaValues.AllowUserToResizeColumns = false;
-            dgvPropertyMetaValues.AllowUserToResizeRows = false;
-            dgvPropertyMetaValues.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-            dgvPropertyMetaValues.ColumnHeadersHeight = 24;
-            dgvPropertyMetaValues.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dgvPropertyMetaValues.Location = new Point(91, 113);
-            dgvPropertyMetaValues.Name = "dgvPropertyMetaValues";
-            dgvPropertyMetaValues.RowHeadersWidth = 24;
-            dgvPropertyMetaValues.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dgvPropertyMetaValues.ScrollBars = ScrollBars.Vertical;
-            dgvPropertyMetaValues.ShowCellToolTips = false;
-            dgvPropertyMetaValues.Size = new Size(96, 279);
-            dgvPropertyMetaValues.TabIndex = 1;
-            dgvPropertyMetaValues.CellBeginEdit += dgvPropertyMetaValues_CellBeginEdit;
-            dgvPropertyMetaValues.CellValidating += dgvPropertyMetaValues_CellValidating;
-            dgvPropertyMetaValues.CellValueChanged += dgvPropertyMetaValues_CellValueChanged;
-            dgvPropertyMetaValues.EditingControlShowing += dgvPropertyMetaValues_EditingControlShowing;
-            dgvPropertyMetaValues.SelectionChanged += dgvPropertyMetaValues_SelectionChanged;
-            // 
-            // dgvPropertyValues
-            // 
-            dgvPropertyValues.AllowUserToAddRows = false;
-            dgvPropertyValues.AllowUserToResizeColumns = false;
-            dgvPropertyValues.AllowUserToResizeRows = false;
-            dgvPropertyValues.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-            dgvPropertyValues.ColumnHeadersHeight = 24;
-            dgvPropertyValues.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dgvPropertyValues.Location = new Point(193, 113);
-            dgvPropertyValues.Name = "dgvPropertyValues";
-            dgvPropertyValues.RowHeadersWidth = 24;
-            dgvPropertyValues.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dgvPropertyValues.ScrollBars = ScrollBars.Vertical;
-            dgvPropertyValues.ShowCellToolTips = false;
-            dgvPropertyValues.Size = new Size(238, 279);
-            dgvPropertyValues.TabIndex = 1;
-            dgvPropertyValues.CellFormatting += dgvPropertyValues_CellFormatting;
-            dgvPropertyValues.CellParsing += dgvPropertyValues_CellParsing;
-            dgvPropertyValues.CellValidating += dgvPropertyValues_CellValidating;
-            dgvPropertyValues.CellValueChanged += dgvPropertyValues_CellValueChanged;
-            dgvPropertyValues.EditingControlShowing += dgvPropertyValues_EditingControlShowing;
-            // 
-            // lbProperties
-            // 
-            lbProperties.BackColor = Color.FromArgb(26, 26, 28);
-            lbProperties.BorderStyle = BorderStyle.FixedSingle;
-            lbProperties.ForeColor = Color.FromArgb(213, 213, 213);
-            lbProperties.FormattingEnabled = true;
-            lbProperties.Location = new Point(7, 6);
-            lbProperties.Name = "lbProperties";
-            lbProperties.Size = new Size(75, 227);
-            lbProperties.TabIndex = 0;
-            lbProperties.SelectedIndexChanged += lbProperties_SelectedIndexChanged;
-            // 
-            // cmdCopyProperty
-            // 
-            cmdCopyProperty.BorderColour = Color.Empty;
-            cmdCopyProperty.CustomColour = false;
-            cmdCopyProperty.FlatBottom = false;
-            cmdCopyProperty.FlatTop = false;
-            cmdCopyProperty.Location = new Point(7, 340);
-            cmdCopyProperty.Name = "cmdCopyProperty";
-            cmdCopyProperty.Padding = new Padding(5);
-            cmdCopyProperty.Size = new Size(75, 23);
-            cmdCopyProperty.TabIndex = 14;
-            cmdCopyProperty.Text = "Copy";
-            cmdCopyProperty.Click += cmdCopyProperty_Click;
-            // 
-            // cmdPasteProperty
-            // 
-            cmdPasteProperty.BorderColour = Color.Empty;
-            cmdPasteProperty.CustomColour = false;
-            cmdPasteProperty.FlatBottom = false;
-            cmdPasteProperty.FlatTop = false;
-            cmdPasteProperty.Location = new Point(7, 369);
-            cmdPasteProperty.Name = "cmdPasteProperty";
-            cmdPasteProperty.Padding = new Padding(5);
-            cmdPasteProperty.Size = new Size(75, 23);
-            cmdPasteProperty.TabIndex = 14;
-            cmdPasteProperty.Text = "Paste";
-            cmdPasteProperty.Click += cmdPasteProperty_Click;
-            // 
             // EntityBox
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -3713,14 +3424,6 @@ namespace CrashEdit.CE
             ((System.ComponentModel.ISupportInitialize)numMetavalueDrawA).EndInit();
             fraEntityA.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)numEntityA).EndInit();
-            tabProperties.ResumeLayout(false);
-            tabProperties.PerformLayout();
-            fraPropertyControls.ResumeLayout(false);
-            fraPropertyControls.PerformLayout();
-            fraPropertyViewControls.ResumeLayout(false);
-            fraPropertyViewControls.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvPropertyMetaValues).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dgvPropertyValues).EndInit();
             ResumeLayout(false);
         }
 
@@ -3814,7 +3517,6 @@ namespace CrashEdit.CE
         private DarkTextBox txtSLST;
         private System.Windows.Forms.CheckBox chkSLST;
         private System.Windows.Forms.TabPage tabCamera;
-        private System.Windows.Forms.TabPage tabProperties;
         private System.Windows.Forms.Label lblEIDErr1;
         private System.Windows.Forms.Label lblEIDErrA;
         private DarkGroupBox fraLoadListB;
@@ -3955,23 +3657,5 @@ namespace CrashEdit.CE
         private DarkButton cmdVerifyDrawList;
         private DarkListBox lbEntityA;
         private DarkListBox lbEntityB;
-        private DarkListBox lbProperties;
-        private DataGridView dgvPropertyValues;
-        private DataGridView dgvPropertyMetaValues;
-        private DarkButton cmdAppendProperty;
-        private DarkTextBox txtProperty;
-        private Label lblUnsupportedProperty;
-        private CheckBox chkPropertyStyle;
-        private ListView lvPropertyHeader;
-        private DarkListBox lbPropertyRaw;
-        private Label lblFieldType;
-        private CheckBox chkPropertyShowAllFields;
-        private CheckBox chkPropertyMetaValue;
-        private DarkButton cmdRemoveProperty;
-        private CheckBox chkPropertyShowAsHex;
-        private DarkGroupBox fraPropertyControls;
-        private DarkGroupBox fraPropertyViewControls;
-        private DarkButton cmdPasteProperty;
-        private DarkButton cmdCopyProperty;
     }
 }
