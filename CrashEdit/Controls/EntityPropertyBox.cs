@@ -14,17 +14,30 @@ namespace CrashEdit.CE
         private EntityController controller;
         private Entity entity;
 
+        // Predefined and editable fields
+        private BindingList<string> listKnownFields;
+        // Predefined fields, includes not editable ones
+        private BindingList<string> listAllKnownFields;
+
         private DataGridView currentDataGridView;
         private object selectedField;
+
         private bool propertyStyle = false;
         private bool metavalueDirty = false;
         private bool valueDirty = false;
         private bool propertyShowAsHex = true;
 
-        private static readonly string nullMeta = "-";
+        private const string NullMeta = "-";
+        private const string TitleError = "Error";
+        private const string TitleInputError = "Input Error";
 
-        private const string titleError = "Error";
-        private const string titleInputError = "Input Error";
+        private const string FilePath = "CrashEdit.exe.entityproperty.json";
+        public class FieldData
+        {
+            public short Id { get; set; }
+            public string FieldType { get; set; }
+            public object Field { get; set; }
+        }
 
         public EntityPropertyBox(EntityController controller)
         {
@@ -41,10 +54,8 @@ namespace CrashEdit.CE
         {
             InitializeComponent();
 
-            EnableDoubleBuffering(dgvPropertyMetaValues);
-            EnableDoubleBuffering(dgvPropertyValues);
-            SetDarkTheme(dgvPropertyMetaValues);
-            SetDarkTheme(dgvPropertyValues);
+            DoubleBufferedDataGridView.Initialize(dgvPropertyMetaValues);
+            DoubleBufferedDataGridView.Initialize(dgvPropertyValues);
 
             ContextMenuStrip contextMenu = new ContextMenuStrip();
             ToolStripMenuItem insertRowItem = new ToolStripMenuItem("Insert Row");
@@ -83,7 +94,7 @@ namespace CrashEdit.CE
         {
             if (currentDataGridView == null)
             {
-                DarkMessageBox.ShowError("Please select a row to insert.", titleError);
+                DarkMessageBox.ShowError("Please select a row to insert.", TitleError);
                 return;
             }
             if (lbProperties.SelectedItem == null) return;
@@ -97,9 +108,9 @@ namespace CrashEdit.CE
                 int selectedRow = -1;
 
                 if (!(dgvPropertyMetaValues.SelectedCells.Count > 0)) return;
-                if (dgvPropertyMetaValues.SelectedCells[0].Value == nullMeta)
+                if (dgvPropertyMetaValues.SelectedCells[0].Value == NullMeta)
                 {
-                    DarkMessageBox.ShowError("You cannot add meta values when the meta value is null.", titleError);
+                    DarkMessageBox.ShowError("You cannot add meta values while the meta value is null.", TitleError);
                     return;
                 }
 
@@ -245,7 +256,7 @@ namespace CrashEdit.CE
         {
             if (currentDataGridView == null)
             {
-                DarkMessageBox.ShowError("Please select a row to delete.", titleError);
+                DarkMessageBox.ShowError("Please select a row to delete.", TitleError);
                 return;
             }
             if (lbProperties.SelectedItem == null || !(currentDataGridView.SelectedRows.Count > 0) || !(dgvPropertyMetaValues.SelectedCells.Count > 0)) return;
@@ -592,11 +603,6 @@ namespace CrashEdit.CE
             }
         }
 
-        // Predefined and editable fields
-        private BindingList<string> listKnownFields;
-        // Predefined fields, includes not editable fields
-        private BindingList<string> listAllKnownFields;
-
         private void UpdatePropertyIDList()
         {
             if (entity.KnownProperties != null && entity.KnownProperties.Count > 0)
@@ -694,13 +700,13 @@ namespace CrashEdit.CE
 
             string name = string.Empty;
             string text = string.Empty;
+            lblUnsupportedProperty.ForeColor = Color.Red;
             if (entity.PropertyFields.ContainsKey(id))
             {
                 name = $"({entity.PropertyFields[id].Name})";
                 if (selectedField == null)
                 {
                     text = $"Unsupported property field!\n{name}";
-                    lblUnsupportedProperty.ForeColor = Color.Red;
                 }
                 else
                 {
@@ -712,7 +718,10 @@ namespace CrashEdit.CE
             {
                 name = "(cameramode)";
                 text = $"Unsupported property field!\n{name}";
-                lblUnsupportedProperty.ForeColor = Color.Red;
+            }
+            else
+            {
+                text = $"Unknown property field!";
             }
             lblUnsupportedProperty.Visible = true;
             lblUnsupportedProperty.Text = text;
@@ -759,7 +768,7 @@ namespace CrashEdit.CE
             {
                 DataGridViewRow dgvRow = new DataGridViewRow();
                 if (row.MetaValue == null)
-                    dgvRow.CreateCells(dgvPropertyMetaValues, nullMeta);
+                    dgvRow.CreateCells(dgvPropertyMetaValues, NullMeta);
                 else
                     dgvRow.CreateCells(dgvPropertyMetaValues, row.MetaValue);
                 dgvPropertyMetaValues.Rows.Add(dgvRow);
@@ -850,9 +859,9 @@ namespace CrashEdit.CE
 
         private void dgvPropertyMetaValues_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
-            if (dgvPropertyMetaValues.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == nullMeta)
+            if (dgvPropertyMetaValues.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == NullMeta)
             {
-                DarkMessageBox.ShowError("This cell cannot be edited.", titleInputError);
+                DarkMessageBox.ShowError("This cell cannot be edited.", TitleInputError);
                 e.Cancel = true;
             }
         }
@@ -886,11 +895,11 @@ namespace CrashEdit.CE
         private void dgvPropertyMetaValues_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
             string inputValue = e.FormattedValue.ToString();
-            if (inputValue == nullMeta) return;
+            if (inputValue == NullMeta) return;
 
             if (!Regex.IsMatch(inputValue, @"^-?[0-9]+$"))
             {
-                DarkMessageBox.ShowError("Please enter a valid decimal value.", titleInputError);
+                DarkMessageBox.ShowError("Please enter a valid decimal value.", TitleInputError);
                 dgvPropertyValues.CancelEdit();
                 e.Cancel = true;
             }
@@ -901,13 +910,13 @@ namespace CrashEdit.CE
             {
                 if (newValue > maxValue)
                 {
-                    DarkMessageBox.ShowError($"The value must be less than or equal to\n{maxValue}.", titleInputError);
+                    DarkMessageBox.ShowError($"The value must be less than or equal to\n{maxValue}.", TitleInputError);
                     dgvPropertyValues.CancelEdit();
                     e.Cancel = true;
                 }
                 else if (newValue < minValue)
                 {
-                    DarkMessageBox.ShowError($"The value must be greater than or equal to\n{minValue}.", titleInputError);
+                    DarkMessageBox.ShowError($"The value must be greater than or equal to\n{minValue}.", TitleInputError);
                     dgvPropertyValues.CancelEdit();
                     e.Cancel = true;
                 }
@@ -917,7 +926,7 @@ namespace CrashEdit.CE
         private void dgvPropertyMetaValues_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             if (lbProperties.SelectedItem == null || dgvPropertyMetaValues.CurrentCell == null) return;
-            if (dgvPropertyMetaValues.CurrentCell.Value == nullMeta) return;
+            if (dgvPropertyMetaValues.CurrentCell.Value == NullMeta) return;
             short newValue = Convert.ToInt16(dgvPropertyMetaValues.CurrentCell.Value);
 
             dynamic field = selectedField;
@@ -985,7 +994,7 @@ namespace CrashEdit.CE
             {
                 if (!Regex.IsMatch(inputValue, @"\A\b[0-9a-fA-F]+\b\Z"))
                 {
-                    DarkMessageBox.ShowError("Please enter a valid hexadecimal value.", titleInputError);
+                    DarkMessageBox.ShowError("Please enter a valid hexadecimal value.", TitleInputError);
                     dgvPropertyValues.CancelEdit();
                     e.Cancel = true;
                 }
@@ -994,7 +1003,7 @@ namespace CrashEdit.CE
             {
                 if (!Regex.IsMatch(inputValue, @"^-?[0-9]+$"))
                 {
-                    DarkMessageBox.ShowError("Please enter a valid decimal value.", titleInputError);
+                    DarkMessageBox.ShowError("Please enter a valid decimal value.", TitleInputError);
                     dgvPropertyValues.CancelEdit();
                     e.Cancel = true;
                 }
@@ -1042,13 +1051,13 @@ namespace CrashEdit.CE
                 {
                     if (newValue > maxValue)
                     {
-                        DarkMessageBox.ShowError($"The value must be less than or equal to\n{maxValue}.", titleInputError);
+                        DarkMessageBox.ShowError($"The value must be less than or equal to\n{maxValue}.", TitleInputError);
                         dgvPropertyValues.CancelEdit();
                         e.Cancel = true;
                     }
                     else if (newValue < minValue)
                     {
-                        DarkMessageBox.ShowError($"The value must be greater than or equal to\n{minValue}.", titleInputError);
+                        DarkMessageBox.ShowError($"The value must be greater than or equal to\n{minValue}.", TitleInputError);
                         dgvPropertyValues.CancelEdit();
                         e.Cancel = true;
                     }
@@ -1195,7 +1204,7 @@ namespace CrashEdit.CE
 
                             if (parsedValue > uint.MaxValue)
                             {
-                                DarkMessageBox.ShowWarning("The entered value exceeds the range of a 32-bit unsigned integer.", titleInputError);
+                                DarkMessageBox.ShowWarning("The entered value exceeds the range of a 32-bit unsigned integer.", TitleInputError);
                                 e.Value = uint.MaxValue;
                             }
                             else
@@ -1213,7 +1222,7 @@ namespace CrashEdit.CE
                     }
                     catch
                     {
-                        DarkMessageBox.ShowError("Invalid hex value. Please enter a valid 16-bit hex value.", titleInputError);
+                        DarkMessageBox.ShowError("Invalid hex value. Please enter a valid 16-bit hex value.", TitleInputError);
                         e.ParsingApplied = false;
                     }
                 }
@@ -1272,17 +1281,17 @@ namespace CrashEdit.CE
             if (dgvPropertyMetaValues.Rows.Count > 1)
             {
                 chkPropertyMetaValue.Checked = true;
-                DarkMessageBox.ShowError("You cannot nullify the meta value while other meta values are present.", titleError);
+                DarkMessageBox.ShowError("You cannot nullify the meta value while other meta values are present.", TitleError);
                 return;
             }
 
             dynamic field = selectedField;
             if (field == null) return;
 
-            if (dgvPropertyMetaValues.CurrentCell.Value != nullMeta)
+            if (dgvPropertyMetaValues.CurrentCell.Value != NullMeta)
             {
                 field.Rows[0].MetaValue = null;
-                dgvPropertyMetaValues.CurrentCell.Value = nullMeta;
+                dgvPropertyMetaValues.CurrentCell.Value = NullMeta;
                 chkPropertyMetaValue.Checked = false;
             }
             else
@@ -1332,13 +1341,13 @@ namespace CrashEdit.CE
             }
             catch
             {
-                DarkMessageBox.ShowError("Invalid field value.", titleError);
+                DarkMessageBox.ShowError("Invalid field value.", TitleError);
                 return;
             }
 
             if (entity.KnownProperties.Keys.Contains(id))
             {
-                DarkMessageBox.ShowError("The field already exists.", titleError);
+                DarkMessageBox.ShowError("The field already exists.", TitleError);
                 return;
             }
 
@@ -1349,7 +1358,7 @@ namespace CrashEdit.CE
             }
             catch (ArgumentException ex)
             {
-                DarkMessageBox.ShowError(ex.Message, titleError);
+                DarkMessageBox.ShowError(ex.Message, TitleError);
                 return;
             }
 
@@ -1359,7 +1368,6 @@ namespace CrashEdit.CE
             entity.KnownProperties.Add(id, field);
             Console.WriteLine($"Added field: {id:X}");
 
-            lbProperties.SelectedIndex = lbProperties.Items.Count - 1;
             cmdRemoveProperty.Enabled =
             cmdCopyProperty.Enabled = true;
             UpdatePropertyControls();
@@ -1388,15 +1396,6 @@ namespace CrashEdit.CE
         {
             propertyShowAsHex = chkPropertyShowAsHex.Checked;
             UpdatePropertyValues();
-        }
-
-
-        private const string FilePath = "CrashEdit.exe.entityproperty.json";
-        public class FieldData
-        {
-            public short Id { get; set; }
-            public string FieldType { get; set; }
-            public object Field { get; set; }
         }
 
         public static void SaveObject(short id, object obj)
@@ -1453,7 +1452,7 @@ namespace CrashEdit.CE
             object field = GetField(id);
             if (field == null)
             {
-                DarkMessageBox.ShowError("Unsupported field.", titleError);
+                DarkMessageBox.ShowError("Unsupported field.", TitleError);
                 return;
             }
 
@@ -1476,26 +1475,25 @@ namespace CrashEdit.CE
             else return;
 
             dynamic field = null!;
-            EntityPropertyConverter converter = new EntityPropertyConverter();
             if (fieldType.Contains("CrashEdit.Crash.EntityVictimProperty"))
             {
-                field = converter.ConvertJsonToEntityVictimProperty(loadedField);
+                field = EntityPropertyConverter.ConvertJsonToEntityVictimProperty(loadedField);
             }
             else if (fieldType.Contains("CrashEdit.Crash.EntityInt32Property"))
             {
-                field = converter.ConvertJsonToEntityInt32Property(loadedField);
+                field = EntityPropertyConverter.ConvertJsonToEntityInt32Property(loadedField);
             }
             else if (fieldType.Contains("CrashEdit.Crash.EntityUInt32Property"))
             {
-                field = converter.ConvertJsonToEntityUInt32Property(loadedField);
+                field = EntityPropertyConverter.ConvertJsonToEntityUInt32Property(loadedField);
             }
             else if (fieldType.Contains("CrashEdit.Crash.EntitySettingProperty"))
             {
-                field = converter.ConvertJsonToEntitySettingProperty(loadedField);
+                field = EntityPropertyConverter.ConvertJsonToEntitySettingProperty(loadedField);
             }
             else if (fieldType.Contains("CrashEdit.Crash.EntityUInt8Property"))
             {
-                field = converter.ConvertJsonToEntityUInt8Property(loadedField);
+                field = EntityPropertyConverter.ConvertJsonToEntityUInt8Property(loadedField);
             }
 
             if (entity.KnownProperties.Keys.Contains(id))
@@ -1516,23 +1514,50 @@ namespace CrashEdit.CE
                 ReplaceField(id, field);
                 Console.WriteLine($"Added field: {id:X}");
 
-                lbProperties.SelectedIndex = lbProperties.Items.Count - 1;
                 cmdRemoveProperty.Enabled =
                 cmdCopyProperty.Enabled = true;
             }
             UpdatePropertyControls();
         }
+      
+        private void lbProperties_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.C)
+            {
+                if (lbProperties.SelectedItems.Count > 0)
+                {
+                    cmdCopyProperty_Click(this, EventArgs.Empty);
+                }
+                e.Handled = true;
+            }
+            //else if (e.Control && e.KeyCode == Keys.X)
+            //{
+            //    if (lbProperties.SelectedItems.Count > 0)
+            //    {
+            //        cmdCopyProperty_Click(this, EventArgs.Empty);
+            //    }
+            //    e.Handled = true;
+            //}
+            else if (e.Control && e.KeyCode == Keys.V)
+            {
+                if (lbProperties.SelectedItems.Count > 0)
+                {
+                    cmdPasteProperty_Click(this, EventArgs.Empty);
+                }
+                e.Handled = true;
+            }
+        }
+    }
 
-        private void EnableDoubleBuffering(DataGridView dataGridView)
+    public sealed class DoubleBufferedDataGridView
+    {
+        public static void Initialize(DataGridView dataGridView)
         {
             typeof(DataGridView).InvokeMember("DoubleBuffered",
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance |
                 System.Reflection.BindingFlags.SetProperty,
                 null, dataGridView, new object[] { true });
-        }
 
-        private void SetDarkTheme(DataGridView dataGridView)
-        {
             Color clrBackground = Color.FromArgb(40, 40, 40);
             Color clrAltBackground = Color.FromArgb(34, 34, 34);
             Color clrSelectionBackground = Color.FromArgb(70, 70, 70);
@@ -1580,9 +1605,9 @@ namespace CrashEdit.CE
         }
     }
 
-    public class EntityPropertyConverter
+    public sealed class EntityPropertyConverter
     {
-        public EntityVictimProperty ConvertJsonToEntityVictimProperty(JsonElement jsonElement)
+        public static EntityVictimProperty ConvertJsonToEntityVictimProperty(JsonElement jsonElement)
         {
             var entityVictimProperty = new EntityVictimProperty();
             if (jsonElement.TryGetProperty("Rows", out JsonElement rowsElement))
@@ -1619,7 +1644,7 @@ namespace CrashEdit.CE
             return entityVictimProperty;
         }
 
-        public EntityInt32Property ConvertJsonToEntityInt32Property(JsonElement jsonElement)
+        public static EntityInt32Property ConvertJsonToEntityInt32Property(JsonElement jsonElement)
         {
             var entityInt32Property = new EntityInt32Property();
             if (jsonElement.TryGetProperty("Rows", out JsonElement rowsElement))
@@ -1653,7 +1678,7 @@ namespace CrashEdit.CE
             return entityInt32Property;
         }
 
-        public EntityUInt32Property ConvertJsonToEntityUInt32Property(JsonElement jsonElement)
+        public static EntityUInt32Property ConvertJsonToEntityUInt32Property(JsonElement jsonElement)
         {
             var entityUInt32Property = new EntityUInt32Property();
             if (jsonElement.TryGetProperty("Rows", out JsonElement rowsElement))
@@ -1687,7 +1712,7 @@ namespace CrashEdit.CE
             return entityUInt32Property;
         }
 
-        public EntitySettingProperty ConvertJsonToEntitySettingProperty(JsonElement jsonElement)
+        public static EntitySettingProperty ConvertJsonToEntitySettingProperty(JsonElement jsonElement)
         {
             var entitySettingProperty = new EntitySettingProperty();
             if (jsonElement.TryGetProperty("Rows", out JsonElement rowsElement))
@@ -1725,7 +1750,7 @@ namespace CrashEdit.CE
             return entitySettingProperty;
         }
 
-        public EntityUInt8Property ConvertJsonToEntityUInt8Property(JsonElement jsonElement)
+        public static EntityUInt8Property ConvertJsonToEntityUInt8Property(JsonElement jsonElement)
         {
             var entityUInt8Property = new EntityUInt8Property();
             if (jsonElement.TryGetProperty("Rows", out JsonElement rowsElement))

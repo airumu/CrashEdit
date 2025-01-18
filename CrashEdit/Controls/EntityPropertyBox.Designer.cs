@@ -52,6 +52,34 @@
             ((System.ComponentModel.ISupportInitialize)dgvPropertyValues).BeginInit();
             SuspendLayout();
             // 
+            // cmdPasteProperty
+            // 
+            cmdPasteProperty.BorderColour = Color.Empty;
+            cmdPasteProperty.CustomColour = false;
+            cmdPasteProperty.FlatBottom = false;
+            cmdPasteProperty.FlatTop = false;
+            cmdPasteProperty.Location = new Point(7, 369);
+            cmdPasteProperty.Name = "cmdPasteProperty";
+            cmdPasteProperty.Padding = new Padding(5);
+            cmdPasteProperty.Size = new Size(75, 23);
+            cmdPasteProperty.TabIndex = 14;
+            cmdPasteProperty.Text = "Paste";
+            cmdPasteProperty.Click += cmdPasteProperty_Click;
+            // 
+            // cmdCopyProperty
+            // 
+            cmdCopyProperty.BorderColour = Color.Empty;
+            cmdCopyProperty.CustomColour = false;
+            cmdCopyProperty.FlatBottom = false;
+            cmdCopyProperty.FlatTop = false;
+            cmdCopyProperty.Location = new Point(7, 340);
+            cmdCopyProperty.Name = "cmdCopyProperty";
+            cmdCopyProperty.Padding = new Padding(5);
+            cmdCopyProperty.Size = new Size(75, 23);
+            cmdCopyProperty.TabIndex = 14;
+            cmdCopyProperty.Text = "Copy";
+            cmdCopyProperty.Click += cmdCopyProperty_Click;
+            // 
             // fraPropertyControls
             // 
             fraPropertyControls.Controls.Add(chkPropertyMetaValue);
@@ -258,37 +286,12 @@
             lbProperties.FormattingEnabled = true;
             lbProperties.Location = new Point(7, 6);
             lbProperties.Name = "lbProperties";
+            lbProperties.SelectionMode = SelectionMode.MultiExtended;
             lbProperties.Size = new Size(75, 227);
+            lbProperties.Sorted = true;
             lbProperties.TabIndex = 0;
             lbProperties.SelectedIndexChanged += lbProperties_SelectedIndexChanged;
-            // 
-            // cmdCopyProperty
-            // 
-            cmdCopyProperty.BorderColour = Color.Empty;
-            cmdCopyProperty.CustomColour = false;
-            cmdCopyProperty.FlatBottom = false;
-            cmdCopyProperty.FlatTop = false;
-            cmdCopyProperty.Location = new Point(7, 340);
-            cmdCopyProperty.Name = "cmdCopyProperty";
-            cmdCopyProperty.Padding = new Padding(5);
-            cmdCopyProperty.Size = new Size(75, 23);
-            cmdCopyProperty.TabIndex = 14;
-            cmdCopyProperty.Text = "Copy";
-            cmdCopyProperty.Click += cmdCopyProperty_Click;
-            // 
-            // cmdPasteProperty
-            // 
-            cmdPasteProperty.BorderColour = Color.Empty;
-            cmdPasteProperty.CustomColour = false;
-            cmdPasteProperty.FlatBottom = false;
-            cmdPasteProperty.FlatTop = false;
-            cmdPasteProperty.Location = new Point(7, 369);
-            cmdPasteProperty.Name = "cmdPasteProperty";
-            cmdPasteProperty.Padding = new Padding(5);
-            cmdPasteProperty.Size = new Size(75, 23);
-            cmdPasteProperty.TabIndex = 14;
-            cmdPasteProperty.Text = "Paste";
-            cmdPasteProperty.Click += cmdPasteProperty_Click;
+            lbProperties.KeyDown += lbProperties_KeyDown;
             // 
             // EntityPropertyBox
             // 
