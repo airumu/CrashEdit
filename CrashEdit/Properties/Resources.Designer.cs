@@ -1005,6 +1005,29 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
+        ///   [Ctrl+C] Save the selected fields
+        ///[Delete] Remove the selected fields に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityPropertyBox_tipProperties {
+            get {
+                return ResourceManager.GetString("EntityPropertyBox_tipProperties", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   [Ctrl+V] Copy the fields in the selected item
+        ///[Double-click / F2] Rename the selected item
+        ///[Delete] Remove the selected items
+        ///--------------------------------
+        ///[Ctrl+R] Reload the list に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityPropertyBox_tipSavedProperties {
+            get {
+                return ResourceManager.GetString("EntityPropertyBox_tipSavedProperties", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Abort this operation. に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string ErrorReporter_Abort {

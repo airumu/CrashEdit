@@ -827,7 +827,7 @@ namespace CrashEdit.CE.Controls
             rbtReloadTPage.TabIndex = 10;
             rbtReloadTPage.ThemeAuthor = "Narwin";
             rbtReloadTPage.ThemeName = "MetroDark";
-            rbtReloadTPage.Click += metroSetRadioButton1_Click;
+            rbtReloadTPage.Click += rbtReloadTPage_Click;
             // 
             // dpdTPage
             // 

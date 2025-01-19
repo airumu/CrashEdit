@@ -1877,7 +1877,7 @@ namespace CrashEdit.CE.Controls
             UpdatePicture();
         }
 
-        private void metroSetRadioButton1_Click(object sender, EventArgs e)
+        private void rbtReloadTPage_Click(object sender, EventArgs e)
         {
             if (lstTPages.Items.Count > 0)
             {

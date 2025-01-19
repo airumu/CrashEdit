@@ -864,4 +864,15 @@ as Meters: {3:F3}m</value>
     <value>Use legacy NSD patching from CrashEdit v0.2.49.0</value>
     <comment>CE-tweaked</comment>
   </data>
+  <data name="EntityPropertyBox_tipSavedProperties" xml:space="preserve">
+    <value>[Ctrl+V] Copy the fields in the selected item
+[Double-click / F2] Rename the selected item
+[Delete] Remove the selected items
+--------------------------------
+[Ctrl+R] Reload the list</value>
+  </data>
+  <data name="EntityPropertyBox_tipProperties" xml:space="preserve">
+    <value>[Ctrl+C] Save the selected fields
+[Delete] Remove the selected fields</value>
+  </data>
 </root>

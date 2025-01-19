@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using AltUI.Controls;
@@ -22,6 +21,9 @@ namespace CrashEdit.CE
         // Saved items list
         private List<ListItem> savedItems = new List<ListItem>();
 
+        private DarkToolTip tipProperties = new DarkToolTip();
+        private DarkToolTip tipSavedProperties = new DarkToolTip();
+        private DarkToolTip tipReloadTPage = new DarkToolTip();
         private DataGridView currentDataGridView;
         private object selectedField;
 
@@ -34,7 +36,7 @@ namespace CrashEdit.CE
         private const string TitleError = "Error";
         private const string TitleInputError = "Input Error";
 
-        private const string FilePath = "CrashEdit.exe.entityproperty.json";
+        private const string FilePath = "CrashEdit.exe.savedentityproperties.json";
 
         public class FieldData
         {
@@ -81,6 +83,10 @@ namespace CrashEdit.CE
             dgvPropertyValues.ContextMenuStrip = contextMenu;
             dgvPropertyMetaValues.CellMouseDown += DataGridView_CellMouseDown;
             dgvPropertyValues.CellMouseDown += DataGridView_CellMouseDown;
+
+            tipSavedProperties.SetToolTip(lbProperties, Resources.EntityPropertyBox_tipProperties);
+            tipSavedProperties.SetToolTip(lbSavedProperties, Resources.EntityPropertyBox_tipSavedProperties);
+            tipReloadTPage.SetToolTip(rbtReload, "Reload");
 
             chkPropertyShowAsHex.Checked = propertyShowAsHex;
             CreatePropertyHeaderColumns();
@@ -619,14 +625,15 @@ namespace CrashEdit.CE
 
         private void CreateSavedPropertyListColumns()
         {
-            lvSavedProperties.Columns.Add("", lvSavedProperties.ClientSize.Width);
-            lvSavedProperties.HeaderStyle = ColumnHeaderStyle.None;
         }
 
         private void CreateSavedPropertyValuesColumns()
         {
             dgvSavePropertyValues.Columns.Add("ID", "ID");
             dgvSavePropertyValues.Columns.Add("Comment", "Comment");
+            dgvSavePropertyValues.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+            dgvSavePropertyValues.Columns[0].Width = 40;
+            dgvSavePropertyValues.Columns[1].Width = 378;
             dgvSavePropertyValues.Visible = false;
         }
 
@@ -666,9 +673,15 @@ namespace CrashEdit.CE
                 Fields = fields
             };
             savedItems.Add(newItem);
-            SaveItemsToFile();
-            var listViewItem = new ListViewItem(itemName);
-            lvSavedProperties.Items.Add(listViewItem);
+            try
+            {
+                SaveItemsToFile();
+                DarkMessageBox.ShowInformation($"Saved selected {fields.Count} field(s) successfully.", "Save Properties");
+            }
+            catch (Exception ex)
+            {
+                DarkMessageBox.ShowError($"Error saving fields: {ex.Message}", TitleError);
+            }
         }
 
         private void chkPropertyShowAllFields_CheckedChanged(object sender, EventArgs e)
@@ -901,7 +914,7 @@ namespace CrashEdit.CE
         {
             if (dgvPropertyMetaValues.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == NullMeta)
             {
-                DarkMessageBox.ShowError("This cell cannot be edited.", TitleInputError);
+                DarkMessageBox.ShowError("This cell cannot be edited.", TitleError);
                 e.Cancel = true;
             }
         }
@@ -1371,7 +1384,6 @@ namespace CrashEdit.CE
             }
         }
 
-
         private void cmdAppendProperty_Click(object sender, EventArgs e)
         {
             short id;
@@ -1415,15 +1427,19 @@ namespace CrashEdit.CE
 
         private void cmdRemoveProperty_Click(object sender, EventArgs e)
         {
-            if (!(lbProperties.SelectedItems.Count > 0)) return;
+            if (lbProperties.SelectedIndex < 0) return;
 
-            string str = lbProperties.SelectedItem.ToString();
-            short id = Convert.ToInt16(str, 16);
-            NullifyField(id);
-            entity.KnownProperties.Remove(id);
-            listKnownFields.Remove(str);
-            listAllKnownFields.Remove(str);
-            Console.WriteLine($"Removed field: {id:X}");
+            var selectedItemsCopy = lbProperties.SelectedItems.Cast<object>().ToList();
+            foreach (var selectedItem in selectedItemsCopy)
+            {
+                string str = selectedItem.ToString();
+                short id = Convert.ToInt16(str, 16);
+                NullifyField(id);
+                entity.KnownProperties.Remove(id);
+                listKnownFields.Remove(str);
+                listAllKnownFields.Remove(str);
+                Console.WriteLine($"Removed field: {id:X}");
+            }
 
             UpdatePropertyControls();
             if (!(lbProperties.Items.Count > 0))
@@ -1438,24 +1454,9 @@ namespace CrashEdit.CE
             UpdatePropertyValues();
         }
 
-        public static void SaveObjects(List<FieldData> fields)
-        {
-            try
-            {
-                string jsonString = JsonSerializer.Serialize(fields, new JsonSerializerOptions { WriteIndented = true });
-                File.WriteAllText(FilePath, jsonString);
-
-                Console.WriteLine($"Saved {fields.Count} fields successfully.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error saving fields: {ex.Message}");
-            }
-        }
-
         private void cmdCopyProperty_Click(object sender, EventArgs e)
         {
-            if (!(lbProperties.SelectedItems.Count > 0)) return;
+            if (lbProperties.SelectedIndex < 0) return;
 
             List<FieldData> fieldsToSave = new List<FieldData>();
 
@@ -1481,9 +1482,8 @@ namespace CrashEdit.CE
 
             if (fieldsToSave.Count > 0)
             {
-                SaveObjects(fieldsToSave);
-                string uniqueName = GetUniqueName(lvSavedProperties, "Item");
-                AddSavedItem($"{uniqueName}", fieldsToSave);
+                AddSavedItem(GetUniqueName("Item"), fieldsToSave);
+                LoadItemsFromFile();
             }
             else
             {
@@ -1491,54 +1491,19 @@ namespace CrashEdit.CE
             }
         }
 
-        private string GetUniqueName(ListView listView, string baseName)
+        private string GetUniqueName(string baseName)
         {
             string uniqueName = baseName;
-            int counter = 1;
+            int i = 1;
 
-            while (listView.Items.Cast<ListViewItem>().Any(item => item.Text == uniqueName))
+            while (lbSavedProperties.Items.Cast<object>().Any(item => string.Equals(item.ToString(), uniqueName, StringComparison.Ordinal)))
             {
-                uniqueName = $"{baseName} ({counter})";
-                counter++;
+                uniqueName = $"{baseName} ({i})";
+                i++;
             }
 
             return uniqueName;
-        }
 
-        public static List<FieldData> LoadObjects()
-        {
-            try
-            {
-                if (File.Exists(FilePath))
-                {
-                    string jsonString = File.ReadAllText(FilePath);
-                    var fieldDataList = JsonSerializer.Deserialize<List<FieldData>>(jsonString);
-                    Console.WriteLine("Fields loaded successfully.");
-                    return fieldDataList;
-                }
-                else
-                {
-                    Console.WriteLine("File not found.");
-                    return null;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error loading fields: {ex.Message}");
-                return null;
-            }
-        }
-
-        private void cmdPasteProperty_Click(object sender, EventArgs e)
-        {
-            List<FieldData> loadedFieldDataList = LoadObjects();
-            if (loadedFieldDataList == null)
-            {
-                Console.WriteLine("No fields to load.");
-                return;
-            }
-
-            CopyFieldsFromList(loadedFieldDataList);
         }
 
         private void CopyFieldsFromList(List<FieldData> loadedFieldDataList)
@@ -1602,39 +1567,38 @@ namespace CrashEdit.CE
             {
                 if (lbProperties.SelectedItems.Count > 0)
                 {
-                    cmdCopyProperty_Click(this, EventArgs.Empty);
+                    cmdCopyProperty.PerformClick();
                 }
+                e.Handled = true;
+            }
+            else if (e.KeyCode == Keys.Delete)
+            {
+                cmdRemoveProperty.PerformClick();
                 e.Handled = true;
             }
             //else if (e.Control && e.KeyCode == Keys.X)
             //{
             //    if (lbProperties.SelectedItems.Count > 0)
             //    {
-            //        cmdCopyProperty_Click(this, EventArgs.Empty);
+            //        cmdCopyProperty.PerformClick();
             //    }
             //    e.Handled = true;
             //}
-            else if (e.Control && e.KeyCode == Keys.V)
-            {
-                if (lbProperties.SelectedItems.Count > 0)
-                {
-                    cmdPasteProperty_Click(this, EventArgs.Empty);
-                }
-                e.Handled = true;
-            }
         }
 
-        private void lvSavedProperties_SelectedIndexChanged(object sender, EventArgs e)
+        private void lbSavedProperties_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!(lvSavedProperties.SelectedItems.Count > 0))
+            if (lbSavedProperties.SelectedIndex < 0)
             {
                 dgvSavePropertyValues.Visible = false;
+                pnControlsSaved.Enabled = false;
                 return;
             }
             dgvSavePropertyValues.Visible = true;
+            pnControlsSaved.Enabled = true;
 
-            string selectedItemName = lvSavedProperties.SelectedItems[0].Text;
-            var selectedItem = savedItems.FirstOrDefault(item => item.Name == selectedItemName);
+            string selectedItemName = lbSavedProperties.SelectedItem.ToString();
+            var selectedItem = savedItems.FirstOrDefault(item => string.Equals(item.Name, selectedItemName, StringComparison.Ordinal));
             if (selectedItem != null)
             {
                 dgvSavePropertyValues.Rows.Clear();
@@ -1642,24 +1606,20 @@ namespace CrashEdit.CE
                 {
                     dgvSavePropertyValues.Rows.Add(field.Id.ToString("X"), field.Comment);
                 }
-                //dgvSavePropertyValues.DataSource = null;
-                //dgvSavePropertyValues.DataSource = selectedItem.Fields;
             }
         }
-
-        private const string SavedFilePath = "SavedFields.json";
 
         private void SaveItemsToFile()
         {
             try
             {
                 string jsonString = JsonSerializer.Serialize(savedItems, new JsonSerializerOptions { WriteIndented = true });
-                File.WriteAllText(SavedFilePath, jsonString);
-                Console.WriteLine("Saved fields list saved successfully.");
+                File.WriteAllText(FilePath, jsonString);
+                Console.WriteLine("Properties list saved successfully.");
             }
             catch (Exception ex)
             {
-                DarkMessageBox.ShowError($"Error saving saved fields list: {ex.Message}", TitleError);
+                DarkMessageBox.ShowError($"Error saving properties list: {ex.Message}", TitleError);
             }
         }
 
@@ -1667,32 +1627,32 @@ namespace CrashEdit.CE
         {
             try
             {
-                if (File.Exists(SavedFilePath))
+                if (File.Exists(FilePath))
                 {
-                    string jsonString = File.ReadAllText(SavedFilePath);
+                    string jsonString = File.ReadAllText(FilePath);
                     savedItems = JsonSerializer.Deserialize<List<ListItem>>(jsonString) ?? new List<ListItem>();
 
-                    lvSavedProperties.Items.Clear();
+                    lbSavedProperties.Items.Clear();
                     foreach (var item in savedItems)
                     {
-                        lvSavedProperties.Items.Add(new ListViewItem(item.Name));
+                        lbSavedProperties.Items.Add(item.Name);
                     }
 
-                    Console.WriteLine("Saved fields list loaded successfully.");
+                    Console.WriteLine("Properties list loaded successfully.");
                 }
             }
             catch (Exception ex)
             {
-                DarkMessageBox.ShowError($"Error loading saved fields list: {ex.Message}", TitleError);
+                DarkMessageBox.ShowError($"Error loading properties list: {ex.Message}", TitleError);
             }
         }
 
         private void cmdCopyFromSaved_Click(object sender, EventArgs e)
         {
-            if (!(lvSavedProperties.SelectedItems.Count > 0)) return;
+            if (lbSavedProperties.SelectedIndex < 0) return;
 
-            string selectedItemName = lvSavedProperties.SelectedItems[0].Text;
-            var selectedItem = savedItems.FirstOrDefault(item => item.Name == selectedItemName);
+            string selectedItemName = lbSavedProperties.SelectedItem.ToString();
+            var selectedItem = savedItems.FirstOrDefault(item => string.Equals(item.Name, selectedItemName, StringComparison.Ordinal));
             if (selectedItem != null)
             {
                 CopyFieldsFromList(selectedItem.Fields);
@@ -1701,21 +1661,65 @@ namespace CrashEdit.CE
 
         private void cmdRenameSavedList_Click(object sender, EventArgs e)
         {
-            if (!(lvSavedProperties.SelectedItems.Count > 0)) return;
+            if (lbSavedProperties.SelectedIndex < 0) return;
 
-            string selectedItemName = lvSavedProperties.SelectedItems[0].Text;
-            var selectedItem = savedItems.FirstOrDefault(item => item.Name == selectedItemName);
+            string selectedItemName = lbSavedProperties.SelectedItem.ToString();
+            var selectedItem = savedItems.FirstOrDefault(item => string.Equals(item.Name, selectedItemName, StringComparison.Ordinal));
             if (selectedItem != null)
             {
-                string newName = Prompt.ShowDialog("Enter new name:", "Rename List", selectedItemName);
-                if (!string.IsNullOrWhiteSpace(newName))
+                string newName = Prompt.ShowDialog("Enter new name:", "Rename", selectedItemName);
+                if (!string.IsNullOrWhiteSpace(newName) &&
+                    !string.Equals(newName, selectedItemName, StringComparison.Ordinal))
                 {
-                    string uniqueName = GetUniqueName(lvSavedProperties, newName);
+                    string uniqueName = GetUniqueName(newName);
 
-                    lvSavedProperties.SelectedItems[0].Text = uniqueName;
                     selectedItem.Name = uniqueName;
                     SaveItemsToFile();
+                    int selectedIndex = lbSavedProperties.SelectedIndex;
+                    lbSavedProperties.Items[selectedIndex] = string.Empty;
+                    lbSavedProperties.Items[selectedIndex] = uniqueName;
                 }
+            }
+        }
+
+        private void cmdRemoveSavedList_Click(object sender, EventArgs e)
+        {
+            if (lbSavedProperties.SelectedIndex < 0) return;
+
+            if (DarkMessageBox.ShowWarning("Are you sure you want to remove the selected items?", Resources.Delete_ConfirmationPrompt, DarkDialogButton.YesNo) == DialogResult.Yes)
+            {
+                foreach (var selectedItem in lbSavedProperties.SelectedItems.Cast<string>().ToList())
+                {
+                    savedItems.RemoveAll(item => string.Equals(item.Name, selectedItem, StringComparison.Ordinal));
+                    lbSavedProperties.Items.Remove(selectedItem);
+                }
+                SaveItemsToFile();
+            }
+        }
+
+        private void lbSavedProperties_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (lbSavedProperties.SelectedIndex < 0) return;
+
+            if (e.KeyCode == Keys.F2)
+            {
+                cmdRenameSavedList.PerformClick();
+                e.Handled = true;
+            }
+            else if (e.KeyCode == Keys.Delete)
+            {
+                cmdRemoveSavedList.PerformClick();
+                e.Handled = true;
+            }
+            else if (e.Control && e.KeyCode == Keys.V)
+            {
+                cmdCopyFromSaved.PerformClick();
+                e.Handled = true;
+            }
+            else if (e.Control && e.KeyCode == Keys.R)
+            {
+                  ReloadSavedProperties();
+                e.Handled = true;
             }
         }
 
@@ -1723,80 +1727,44 @@ namespace CrashEdit.CE
         {
             if (e.ColumnIndex == 0)
             {
-                DarkMessageBox.ShowError("This cell cannot be edited.", TitleInputError);
+                DarkMessageBox.ShowError("This cell cannot be edited.", TitleError);
                 e.Cancel = true;
             }
         }
 
         private void dgvSavePropertyValues_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            if (!(lvSavedProperties.SelectedItems.Count > 0)) return;
+            if (lbSavedProperties.SelectedIndex < 0) return;
 
-            string selectedItemName = lvSavedProperties.SelectedItems[0].Text;
-            var selectedItem = savedItems.FirstOrDefault(item => item.Name == selectedItemName);
+            string selectedItemName = lbSavedProperties.SelectedItem.ToString();
+            var selectedItem = savedItems.FirstOrDefault(item => string.Equals(item.Name, selectedItemName, StringComparison.Ordinal));
             if (selectedItem != null)
             {
-                selectedItem.Fields[e.RowIndex].Comment = dgvSavePropertyValues.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                selectedItem.Fields[e.RowIndex].Comment = dgvSavePropertyValues.Rows[e.RowIndex].Cells[e.ColumnIndex].Value?.ToString() ?? string.Empty;
                 SaveItemsToFile();
             }
         }
 
-        private void lvSavedProperties_KeyDown(object sender, KeyEventArgs e)
+        private void ReloadSavedProperties()
         {
-            if (!(lvSavedProperties.SelectedItems.Count > 0)) return;
-
-            if (e.KeyCode == Keys.F2)
+            string? selectedItem = lbSavedProperties.SelectedItem?.ToString();
+            LoadItemsFromFile();
+            if (selectedItem != null && lbSavedProperties.Items.Contains(selectedItem))
             {
-                lvSavedProperties.SelectedItems[0].BeginEdit();
+                lbSavedProperties.SelectedItem = selectedItem;
             }
-            else if (e.KeyCode == Keys.Delete)
+            else
             {
-                foreach (ListViewItem item in lvSavedProperties.SelectedItems)
-                {
-                    string selectedItemName = item.Text;
-                    var selectedItem = savedItems.FirstOrDefault(item => item.Name == selectedItemName);
-                    if (selectedItem != null)
-                    {
-                        savedItems.RemoveAt(item.Index);
-                        SaveItemsToFile();
-                        lvSavedProperties.Items.RemoveAt(item.Index);
-                    }
-                }
+                dgvSavePropertyValues.Visible = false;
+                pnControlsSaved.Enabled = false;
             }
         }
 
-        private void lvSavedProperties_AfterLabelEdit(object sender, LabelEditEventArgs e)
+        private void rbtReload_Click(object sender, EventArgs e)
         {
-            if (e.Label == null) return;
-
-            if (lvSavedProperties.Items[e.Item] != null)
-            {
-                string originalName = lvSavedProperties.Items[e.Item].Text;
-                string newName = e.Label.Trim();
-
-                if (string.IsNullOrWhiteSpace(newName))
-                {
-                    e.CancelEdit = true;
-                    DarkMessageBox.ShowError("Invalid name.", TitleError);
-                    return;
-                }
-
-                if (lvSavedProperties.Items.Cast<ListViewItem>().Any(item => item.Text == newName && item.Index != e.Item))
-                {
-                    e.CancelEdit = true;
-                    newName = GetUniqueName(lvSavedProperties, newName);
-                    lvSavedProperties.Items[e.Item].Text = newName;
-                }
-
-                var selectedItem = savedItems.FirstOrDefault(item => item.Name == originalName);
-                if (selectedItem != null)
-                {
-                    selectedItem.Name = newName;
-                    SaveItemsToFile();
-                }
-            }
+            ReloadSavedProperties();
+            rbtReload.Checked = false;
         }
-
     }
 
     public static class Prompt
