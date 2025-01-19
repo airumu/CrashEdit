@@ -357,6 +357,8 @@
             lvSavedProperties.UseCompatibleStateImageBehavior = false;
             lvSavedProperties.View = View.Details;
             lvSavedProperties.SelectedIndexChanged += lvSavedProperties_SelectedIndexChanged;
+            lvSavedProperties.KeyDown += lvSavedProperties_KeyDown;
+            lvSavedProperties.AfterLabelEdit += lvSavedProperties_AfterLabelEdit;
             // 
             // dgvSavePropertyValues
             // 
