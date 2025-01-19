@@ -160,6 +160,15 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
+        ///   Ignore errors when processing duplicated entries に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Config_chkIgnoreDuplicatedEntryError {
+            get {
+                return ResourceManager.GetString("Config_chkIgnoreDuplicatedEntryError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Use legacy NSD patching from CrashEdit v0.2.49.0 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Config_chkLegacyPatchNSD {

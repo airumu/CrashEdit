@@ -77,6 +77,7 @@ namespace CrashEdit.CE
             chkShowEntityParams = new CheckBox();
             tbpPatchNSD = new TabPage();
             tbpMisc = new TabPage();
+            chkIgnoreDuplicatedEntryError = new CheckBox();
             fraMiscDebug = new DarkGroupBox();
             chkOutputCopyTextureResult = new CheckBox();
             chkOutputCLUTInfo = new CheckBox();
@@ -743,6 +744,7 @@ namespace CrashEdit.CE
             // tbpMisc
             // 
             tbpMisc.BackColor = Color.FromArgb(31, 31, 32);
+            tbpMisc.Controls.Add(chkIgnoreDuplicatedEntryError);
             tbpMisc.Controls.Add(fraMiscDebug);
             tbpMisc.Controls.Add(chkEnableLegacyEntityBox);
             tbpMisc.Controls.Add(fraExtra);
@@ -756,13 +758,24 @@ namespace CrashEdit.CE
             tbpMisc.TabIndex = 2;
             tbpMisc.Text = "Misc";
             // 
+            // chkIgnoreDuplicatedEntryError
+            // 
+            chkIgnoreDuplicatedEntryError.AutoSize = true;
+            chkIgnoreDuplicatedEntryError.Location = new Point(6, 31);
+            chkIgnoreDuplicatedEntryError.Name = "chkIgnoreDuplicatedEntryError";
+            chkIgnoreDuplicatedEntryError.Size = new Size(282, 19);
+            chkIgnoreDuplicatedEntryError.TabIndex = 21;
+            chkIgnoreDuplicatedEntryError.Text = "Ignore errors when processing duplicated entries";
+            chkIgnoreDuplicatedEntryError.UseVisualStyleBackColor = true;
+            chkIgnoreDuplicatedEntryError.CheckedChanged += chkIgnoreDuplicatedEntryError_CheckedChanged;
+            // 
             // fraMiscDebug
             // 
             fraMiscDebug.BackColor = Color.Transparent;
             fraMiscDebug.Controls.Add(chkOutputCopyTextureResult);
             fraMiscDebug.Controls.Add(chkOutputCLUTInfo);
             fraMiscDebug.Controls.Add(chkOutputModelTextureInfo);
-            fraMiscDebug.Location = new Point(0, 106);
+            fraMiscDebug.Location = new Point(0, 131);
             fraMiscDebug.Name = "fraMiscDebug";
             fraMiscDebug.Size = new Size(417, 100);
             fraMiscDebug.TabIndex = 20;
@@ -799,7 +812,7 @@ namespace CrashEdit.CE
             chkOutputModelTextureInfo.Location = new Point(6, 47);
             chkOutputModelTextureInfo.Margin = new Padding(4, 3, 4, 3);
             chkOutputModelTextureInfo.Name = "chkOutputModelTextureInfo";
-            chkOutputModelTextureInfo.Size = new Size(293, 19);
+            chkOutputModelTextureInfo.Size = new Size(248, 19);
             chkOutputModelTextureInfo.TabIndex = 19;
             chkOutputModelTextureInfo.Text = "Output texture information to the console";
             chkOutputModelTextureInfo.UseVisualStyleBackColor = true;
@@ -808,7 +821,7 @@ namespace CrashEdit.CE
             // chkEnableLegacyEntityBox
             // 
             chkEnableLegacyEntityBox.AutoSize = true;
-            chkEnableLegacyEntityBox.Location = new Point(7, 81);
+            chkEnableLegacyEntityBox.Location = new Point(6, 106);
             chkEnableLegacyEntityBox.Margin = new Padding(4, 3, 4, 3);
             chkEnableLegacyEntityBox.Name = "chkEnableLegacyEntityBox";
             chkEnableLegacyEntityBox.Size = new Size(165, 19);
@@ -823,7 +836,7 @@ namespace CrashEdit.CE
             fraExtra.Controls.Add(chkEnableCustomCrates);
             fraExtra.Controls.Add(chkLagacyPatchNSD);
             fraExtra.Controls.Add(chkEnableC2TT);
-            fraExtra.Location = new Point(0, 212);
+            fraExtra.Location = new Point(0, 237);
             fraExtra.Name = "fraExtra";
             fraExtra.Size = new Size(417, 100);
             fraExtra.TabIndex = 18;
@@ -835,7 +848,7 @@ namespace CrashEdit.CE
             chkEnableCustomCrates.AutoSize = true;
             chkEnableCustomCrates.Location = new Point(6, 22);
             chkEnableCustomCrates.Name = "chkEnableCustomCrates";
-            chkEnableCustomCrates.Size = new Size(132, 19);
+            chkEnableCustomCrates.Size = new Size(138, 19);
             chkEnableCustomCrates.TabIndex = 15;
             chkEnableCustomCrates.Text = "Enable custom crates";
             chkEnableCustomCrates.UseVisualStyleBackColor = true;
@@ -847,7 +860,7 @@ namespace CrashEdit.CE
             chkLagacyPatchNSD.Location = new Point(6, 72);
             chkLagacyPatchNSD.Margin = new Padding(4, 3, 4, 3);
             chkLagacyPatchNSD.Name = "chkLagacyPatchNSD";
-            chkLagacyPatchNSD.Size = new Size(271, 19);
+            chkLagacyPatchNSD.Size = new Size(288, 19);
             chkLagacyPatchNSD.TabIndex = 9;
             chkLagacyPatchNSD.Text = "Use legacy NSD patching from CrashEdit v0.2.49.0";
             chkLagacyPatchNSD.UseVisualStyleBackColor = true;
@@ -867,7 +880,7 @@ namespace CrashEdit.CE
             // chkSplitViewerPanels
             // 
             chkSplitViewerPanels.AutoSize = true;
-            chkSplitViewerPanels.Location = new Point(7, 56);
+            chkSplitViewerPanels.Location = new Point(6, 81);
             chkSplitViewerPanels.Margin = new Padding(4, 3, 4, 3);
             chkSplitViewerPanels.Name = "chkSplitViewerPanels";
             chkSplitViewerPanels.Size = new Size(180, 19);
@@ -879,7 +892,7 @@ namespace CrashEdit.CE
             // chkLiteralCollisionTypes
             // 
             chkLiteralCollisionTypes.AutoSize = true;
-            chkLiteralCollisionTypes.Location = new Point(7, 31);
+            chkLiteralCollisionTypes.Location = new Point(6, 56);
             chkLiteralCollisionTypes.Name = "chkLiteralCollisionTypes";
             chkLiteralCollisionTypes.Size = new Size(245, 19);
             chkLiteralCollisionTypes.TabIndex = 14;
@@ -890,7 +903,7 @@ namespace CrashEdit.CE
             // chkPatchGOOLC3toC2
             // 
             chkPatchGOOLC3toC2.AutoSize = true;
-            chkPatchGOOLC3toC2.Location = new Point(7, 6);
+            chkPatchGOOLC3toC2.Location = new Point(6, 6);
             chkPatchGOOLC3toC2.Margin = new Padding(4, 3, 4, 3);
             chkPatchGOOLC3toC2.Name = "chkPatchGOOLC3toC2";
             chkPatchGOOLC3toC2.Size = new Size(338, 19);
@@ -1010,5 +1023,6 @@ namespace CrashEdit.CE
         private DarkGroupBox fraMiscDebug;
         private CheckBox chkApplyMica;
         private CheckBox chkOutputCLUTInfo;
+        private CheckBox chkIgnoreDuplicatedEntryError;
     }
 }

@@ -1,3 +1,5 @@
+using CrashEdit.CE.Properties;
+
 namespace CrashEdit.Crash
 {
 
@@ -49,22 +51,35 @@ namespace CrashEdit.Crash
             if (NSF != null)
             {
                 int chunkid = -1;
-                foreach (var chunk in NSF.Chunks)
-                {
-                    chunkid += 2;
-                    chunk.ChunkId = chunkid;
-                    //if (chunk is IEntry ientry)
-                    //{
-                    //    AllEntriesByEid.Add(ientry.EID, ientry);
-                    //}
 
-                    //if (chunk is EntryChunk ec)
-                    //{
-                    //    foreach (var entry in ec.Entries)
-                    //    {
-                    //        AllEntriesByEid.Add(entry.EID, entry);
-                    //    }
-                    //}
+                Settings.Default.Reload();
+                if (Settings.Default.IgnoreDuplicatedEntryError)
+                {
+                    foreach (var chunk in NSF.Chunks)
+                    {
+                        chunkid += 2;
+                        chunk.ChunkId = chunkid;
+                    }
+                }
+                else
+                {
+                    foreach (var chunk in NSF.Chunks)
+                    {
+                        chunkid += 2;
+                        chunk.ChunkId = chunkid;
+                        if (chunk is IEntry ientry)
+                        {
+                            AllEntriesByEid.Add(ientry.EID, ientry);
+                        }
+
+                        if (chunk is EntryChunk ec)
+                        {
+                            foreach (var entry in ec.Entries)
+                            {
+                                AllEntriesByEid.Add(entry.EID, entry);
+                            }
+                        }
+                    }
                 }
             }
         }

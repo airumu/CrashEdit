@@ -526,5 +526,17 @@ namespace CrashEdit.CE.Properties {
                 this["OutputCLUTInfo"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IgnoreDuplicatedEntryError {
+            get {
+                return ((bool)(this["IgnoreDuplicatedEntryError"]));
+            }
+            set {
+                this["IgnoreDuplicatedEntryError"] = value;
+            }
+        }
     }
 }
