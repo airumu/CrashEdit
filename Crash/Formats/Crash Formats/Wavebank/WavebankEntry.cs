@@ -11,7 +11,7 @@ namespace CrashEdit.Crash
         }
 
         public override string Title => $"Wavebank ({EName})";
-        public override string ImageKey => "MusicNoteYellow";
+        public override string ImageKey => "MusicNoteRed";
 
         public override int Type => 14;
         public int ID { get; }
