@@ -327,8 +327,14 @@
   <data name="Config_chkAnimGrid" xml:space="preserve">
     <value>有効化</value>
   </data>
+  <data name="Config_chkCollisionDisplay" xml:space="preserve">
+    <value>コリジョンをデフォルトで表示する</value>
+  </data>
   <data name="Config_chkDeleteInvalidEntries" xml:space="preserve">
     <value>存在しないエントリをロードリストから削除する</value>
+  </data>
+  <data name="Config_chkNormalDisplay" xml:space="preserve">
+    <value>(クラッシュ1) アニメーションのノーマルを表示する</value>
   </data>
   <data name="Config_cmdReset" xml:space="preserve">
     <value>設定のリセット</value>
@@ -355,7 +361,7 @@
     <value>検証</value>
   </data>
   <data name="EntityBox_cmdPayload" xml:space="preserve">
-    <value>ﾍﾟｲﾛｰﾄﾞをﾁｪｯｸ</value>
+    <value>ペイロードの確認</value>
   </data>
   <data name="EntityBox_fraCameraIndex" xml:space="preserve">
     <value>カメラ インデックス</value>
@@ -618,8 +624,17 @@
   <data name="Playtest_Title" xml:space="preserve">
     <value>プレイテスト</value>
   </data>
+  <data name="Config_chkPatchNSDSavesNSF" xml:space="preserve">
+    <value>NSDパッチ後にNSFを保存する</value>
+  </data>
   <data name="MakeBIN_Making" xml:space="preserve">
     <value>BIN の作成</value>
+  </data>
+  <data name="EntityBox_lblArgAs" xml:space="preserve">
+    <value>数値として: {0:F3}  
+角度として: {1:F}度  
+時間として: {2:F}秒  
+メートルとして: {3:F3}m</value>
   </data>
   <data name="Config_fraFont" xml:space="preserve">
     <value>3Dテキスト</value>
@@ -630,6 +645,9 @@
   <data name="Config_lblFontSize" xml:space="preserve">
     <value>フォントサイズ</value>
   </data>
+  <data name="Config_chkFont2DEnable" xml:space="preserve">
+    <value>デバッグ情報を表示する</value>
+  </data>
   <data name="Config_chkFont3DEnable" xml:space="preserve">
     <value>エンティティ名前を表示する</value>
   </data>
@@ -639,10 +657,219 @@
   <data name="Misc" xml:space="preserve">
     <value>雑</value>
   </data>
+  <data name="Config_chkViewerShowHelp" xml:space="preserve">
+    <value>ヘルプ文字をデフォルトで表示する</value>
+  </data>
+  <data name="ViewerControls_AimAndZoom" xml:space="preserve">
+    <value>左クリックで視点の操作、マウスホイールでズーム</value>
+  </data>
+  <data name="ViewerControls_ChangeCullMode" xml:space="preserve">
+    <value>カリングモードを変更 (現在の設定: {0})</value>
+  </data>
+  <data name="ViewerControls_Move" xml:space="preserve">
+    <value>W/A/S/Dで移動、Q/Eで上下移動</value>
+  </data>
+  <data name="ViewerControls_MoveAligned" xml:space="preserve">
+    <value>整列移動を切り替え ({0})</value>
+  </data>
+  <data name="ViewerControls_OpenOctreeWindow" xml:space="preserve">
+    <value>オクツリーノード ウィンドウを開く</value>
+  </data>
+  <data name="ViewerControls_ResetCamera" xml:space="preserve">
+    <value>カメラをリセット</value>
+  </data>
+  <data name="ViewerControls_ToggleCollisionAnim" xml:space="preserve">
+    <value>コリジョンの表示 ({0})</value>
+  </data>
+  <data name="ViewerControls_ToggleHelp" xml:space="preserve">
+    <value>ヘルプテキストの表示 ({0})</value>
+  </data>
+  <data name="ViewerControls_ToggleLerp" xml:space="preserve">
+    <value>アニメーション補間 ({0})</value>
+  </data>
+  <data name="ViewerControls_ToggleNormals" xml:space="preserve">
+    <value>ノーマル ({0})</value>
+  </data>
+  <data name="ViewerControls_ToggleTextures" xml:space="preserve">
+    <value>テクスチャ ({0})</value>
+  </data>
+  <data name="ViewerControls_ToggleTimeTrial" xml:space="preserve">
+    <value>タイムトライアル モード ({0})</value>
+  </data>
+  <data name="ViewerControls_ToggleZoneOctree" xml:space="preserve">
+    <value>コリジョン オクツリー ({0})</value>
+  </data>
+  <data name="ViewerControls_ToggleZoneOctreeFlip" xml:space="preserve">
+    <value>オクツリーを反転 ({0})</value>
+  </data>
+  <data name="ViewerControls_ToggleZoneOctreeNeighbors" xml:space="preserve">
+    <value>隣接ゾーンのオクツリー ({0})</value>
+  </data>
+  <data name="ViewerControls_ToggleZoneOctreeOutline" xml:space="preserve">
+    <value>オクツリーのワイヤーフレーム化 ({0})</value>
+  </data>
+  <data name="Config_fraNodeShadeAmt" xml:space="preserve">
+    <value>コリジョンノードのコントラスト</value>
+  </data>
+  <data name="ViewerControls_EnterZoneAnchor" xml:space="preserve">
+    <value>カメラレール ビュー</value>
+  </data>
+  <data name="ViewerControls_ExitZoneAnchor" xml:space="preserve">
+    <value>カメラレール ビューをやめる</value>
+  </data>
+  <data name="ViewerControls_ZoneAnchorMove" xml:space="preserve">
+    <value>W/A/S/D/Q/Eで移動</value>
+  </data>
+  <data name="ViewerControls_ZoneAnchorPan" xml:space="preserve">
+    <value>マウスでパン</value>
+  </data>
+  <data name="ViewerControls_ZoneAnchorPrevCam" xml:space="preserve">
+    <value>前のカメラへ移動</value>
+  </data>
+  <data name="ViewerControls_ZoneAnchorNextCam" xml:space="preserve">
+    <value>次のカメラへ移動</value>
+  </data>
+  <data name="ViewerControls_ZoneAnchorSortList" xml:space="preserve">
+    <value>ソートリストの切り替え ({0})</value>
+  </data>
+  <data name="ViewerControls_ZoneAnchorDetach" xml:space="preserve">
+    <value>レールから切り離す ({0})</value>
+  </data>
+  <data name="ViewerControls_Aim" xml:space="preserve">
+    <value>左クリックで視点の操作</value>
+  </data>
+  <data name="ViewerControls_Zoom" xml:space="preserve">
+    <value>マウスホイールでズーム</value>
+  </data>
+  <data name="ViewerControls_ToggleSlowAnim" xml:space="preserve">
+    <value>半分の速度のアニメーション ({0})</value>
+  </data>
+  <data name="Config_chkViewCamera" xml:space="preserve">
+    <value>カメラを表示する</value>
+  </data>
+  <data name="Config_chkViewCameraAngle" xml:space="preserve">
+    <value>カメラのアングルを表示する</value>
+  </data>
+  <data name="Config_chkViewZoneBox" xml:space="preserve">
+    <value>ゾーンの境界線を表示する</value>
+  </data>
+  <data name="Config_chkViewZoneName" xml:space="preserve">
+    <value>ゾーンの名前を表示する</value>
+  </data>
+  <data name="ViewerControls_ToggleModelCycle" xml:space="preserve">
+    <value>自動モデルサイクリング ({0})</value>
+  </data>
+  <data name="ViewerControls_PickModel" xml:space="preserve">
+    <value>左/右でモデルを変更 (現在の設定: {0})</value>
+  </data>
+  <data name="Config_chkShowEntityParams" xml:space="preserve">
+    <value>エンティティのパラメータを表示する</value>
+  </data>
+  <data name="Restart" xml:space="preserve">
+    <value>この操作にはアプリケーションの再起動が必要です。続けますか？</value>
+  </data>
+  <data name="Restart_ConfirmationPrompt" xml:space="preserve">
+    <value>再起動の確認</value>
+  </data>
+  <data name="Config_chkPatchGOOLC3toC2" xml:space="preserve">
+    <value>(クラッシュ2) クラッシュ3からインポートされた GOOL フレームグループのパッチ</value>
+  </data>
+  <data name="Config_chkEnableC2TT" xml:space="preserve">
+    <value>クラッシュ2 タイムトライアルエディタを有効化する</value>
+  </data>
+  <data name="Config_chkLiteralCollisionTypes" xml:space="preserve">
+    <value>コリジョンノードのタイプをリテラル数値として表示する</value>
+  </data>
+  <data name="Scenery_ExportOBJ" xml:space="preserve">
+    <value>Wavefront OBJ (.obj) 形式へのエクスポートは実験的な機能です。テクスチャ情報および色情報はエクスポートされません。それでも続行しますか？</value>
+  </data>
+  <data name="Scenery_ExportPLY" xml:space="preserve">
+    <value>Stanford PLY (.ply) 形式へのエクスポートは実験的な機能です。テクスチャ情報はエクスポートされません。それでも続行しますか？</value>
+  </data>
+  <data name="Scenery_ExportOBJ_Title" xml:space="preserve">
+    <value>OBJ形式としてエクスポート</value>
+  </data>
+  <data name="Scenery_ExportPLY_Title" xml:space="preserve">
+    <value>PLY形式としてエクスポート</value>
+  </data>
+  <data name="Scenery_ExportCOLLADA" xml:space="preserve">
+    <value>COLLADA形式へのエクスポートは実験的な機能です。テクスチャ情報はエクスポートされません。それでも続行しますか？</value>
+  </data>
+  <data name="Scenery_ExportCOLLADA_Title" xml:space="preserve">
+    <value>COLLADA形式としてエクスポート</value>
+  </data>
+  <data name="EntityBox_tipLists" xml:space="preserve">
+    <value>[Ctrl+C] 選択したアイテムの値をコピー  
+[Ctrl+V] コピーした値を選択したアイテムに貼り付け  
+[ダブルクリック / F2] 選択したアイテムの名前を変更  
+[Ctrl+Shift+C] リスト全体をコピー  
+[Ctrl+Shift+X] リスト全体をカット  
+[Ctrl+Shift+V] コピーしたリストを貼り付け</value>
+  </data>
+  <data name="EntityBox_fraVerifyDrawList" xml:space="preserve">
+    <value>描画リストの検証</value>
+  </data>
+  <data name="ViewerControls_FastMove" xml:space="preserve">
+    <value>右クリックをホールドして移動速度を上げる</value>
+  </data>
+  <data name="Config_chkEnableVisual" xml:space="preserve">
+    <value>EDエンティティを表示する</value>
+  </data>
   <data name="Toolbar_Play" xml:space="preserve">
     <value>Play (F1)</value>
   </data>
   <data name="Toolbar_BIN" xml:space="preserve">
     <value>BINの作成</value>
+  </data>
+  <data name="Playtest_Error5" xml:space="preserve">
+    <value>pcsx-hdbg が見つかりませんでした。CrashEditと同じディレクトリへ置いてください。</value>
+  </data>
+  <data name="Config_chkOutputCopyTextureResult" xml:space="preserve">
+    <value>テクスチャのコピーの情報をコンソールへ出力する</value>
+  </data>
+  <data name="TextureViewer_tipViewer" xml:space="preserve">
+    <value>[右クリック] 選択したテクスチャをファイルに保存  
+[Ctrl+C] テクスチャをバッファにコピー  
+[Ctrl+X] テクスチャをバッファにカット  
+[Ctrl+V] バッファからテクスチャを貼り付け  </value>
+  </data>
+  <data name="Config_chkOutputModelTextureInfo" xml:space="preserve">
+    <value>テクスチャの情報をコンソールへ出力する</value>
+  </data>
+  <data name="TextureChunkBox_TipText" xml:space="preserve">
+    <value>[Click] ビューワーを表示
+[Ctrl+R] 再読み込み</value>
+  </data>
+  <data name="Config_chkApplyMica" xml:space="preserve">
+    <value>Micaの有効化</value>
+  </data>
+  <data name="Config_chkOutputCLUTInfo" xml:space="preserve">
+    <value>CLUTの情報をコンソールへ出力する</value>
+  </data>
+  <data name="ViewerControls_ToggleEntityVisual" xml:space="preserve">
+    <value>3Dエンティティの表示({0})</value>
+  </data>
+  <data name="Delete_ConfirmationPrompt" xml:space="preserve">
+    <value>削除の確認</value>
+  </data>
+  <data name="Config_chkEnableCustomCrates" xml:space="preserve">
+    <value>カスタムクレートを有効化する</value>
+  </data>
+  <data name="Config_chkLegacyPatchNSD" xml:space="preserve">
+    <value>CrashEdit v0.2.49.0 の古い NSD パッチを使用する</value>
+  </data>
+  <data name="EntityPropertyBox_tipSavedProperties" xml:space="preserve">
+    <value>[Ctrl+V] 選択したアイテムのフィールドをコピー  
+[ダブルクリック / F2] 選択したアイテムの名前を変更  
+[Delete] 選択したアイテムを削除  
+--------------------------------  
+[Ctrl+R] リストを再読み込み</value>
+  </data>
+  <data name="EntityPropertyBox_tipProperties" xml:space="preserve">
+    <value>[Ctrl+C] 選択したフィールドを保存  
+[Delete] 選択したフィールドを削除</value>
+  </data>
+  <data name="Config_chkIgnoreDuplicatedEntryError" xml:space="preserve">
+    <value>重複したエントリを処理する際のエラーを無視する</value>
   </data>
 </root>
