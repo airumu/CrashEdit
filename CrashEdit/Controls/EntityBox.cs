@@ -59,7 +59,7 @@ namespace CrashEdit.CE
             {
                 // Check CameraCout to see if the entity is a camera
                 ZoneEntry zone = controller.ZoneEntryController.ZoneEntry;
-                if (zone.Entities.IndexOf(entity) < BitConv.FromInt32(zone.Header, 0x188))
+                if (zone.Entities.IndexOf(entity) < zone.CameraCount)
                 {
                     if (entity.CameraSubIndex == 0)
                     {
@@ -1567,9 +1567,9 @@ namespace CrashEdit.CE
                     {
                         for (int i = 0; i < controller.ZoneEntryController.ZoneEntry.ZoneCount; ++i)
                         {
-                            if (zone.EID == BitConv.FromInt32(controller.ZoneEntryController.ZoneEntry.Header, 0x194 + i * 4))
+                            if (zone.EID == controller.ZoneEntryController.ZoneEntry.GetLinkedZone(i))
                             {
-                                return (int)(i | (otherentity.ID << 8) | ((zone.Entities.IndexOf(otherentity) - BitConv.FromInt32(zone.Header, 0x188)) << 24));
+                                return (int)(i | (otherentity.ID << 8) | ((zone.Entities.IndexOf(otherentity) - zone.CameraCount) << 24));
                             }
                         }
                     }
