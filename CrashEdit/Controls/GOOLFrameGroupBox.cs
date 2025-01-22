@@ -12,6 +12,7 @@ namespace CrashEdit.CE
         private GOOLEntry goolentry;
         private TextureChunk chunk = null!;
         private List<object> frameGroups = new List<object>();
+        private DataGridViewCell previousCell = null!;
 
         private DataGridViewCellStyle maxValueStyle = new DataGridViewCellStyle
         {
@@ -444,7 +445,7 @@ namespace CrashEdit.CE
                 }
             }
 
-            DebugOutput($"FrameGroup Index: {e.RowIndex}");
+            DebugOutput($"Row Index: {e.RowIndex}");
         }
 
 
@@ -738,6 +739,14 @@ namespace CrashEdit.CE
         private void dgvFrameGroup_SelectionChanged(object sender, EventArgs e)
         {
             if (!(dgvFrameGroup.SelectedCells.Count > 0) || dirty) return;
+
+            DataGridViewCell currentCell = dgvFrameGroup.CurrentCell;
+
+            if (previousCell != null && previousCell.RowIndex == currentCell.RowIndex)
+            {
+                return;
+            }
+
             int rowIndex = dgvFrameGroup.SelectedCells[0].RowIndex;
             var _row = dgvFrameGroup.Rows[rowIndex];
 
@@ -752,7 +761,7 @@ namespace CrashEdit.CE
 
                         int index = vgroup.Index / 4;
                         string _index = index.ToString("X");
-                        DebugOutput($"Current index: 0x{_index}");
+                        //DebugOutput($"Current index: 0x{_index}");
                         if (vgroup.Index == Convert.ToInt32(_row.Tag))
                         {
                             dgvTexture.ScrollBars = ScrollBars.None;
@@ -794,7 +803,7 @@ namespace CrashEdit.CE
 
                         int index = vgroup.Index / 4;
                         string _index = index.ToString("X");
-                        DebugOutput($"Current index: 0x{_index}");
+                        //DebugOutput($"Current index: 0x{_index}");
                         if (vgroup.Index == Convert.ToInt32(_row.Tag))
                         {
                             dgvTexture.ScrollBars = ScrollBars.None;
@@ -833,7 +842,15 @@ namespace CrashEdit.CE
                 pnPicture.Visible =
                 lblEIDError.Visible = false;
                 dpdTPages.SelectedItem = null;
+
+                if (selectedGroup is not VertexGroup && selectedGroup is not VertexGroup2 && selectedGroup is not VertexGroup3to2)
+                {
+                    string name = selectedGroup.GetType().Name;
+                    Console.WriteLine($"{name} is not supported.");
+                }
             }
+
+            previousCell = currentCell;
         }
 
         private void dgvTexture_SelectionChanged(object sender, EventArgs e)
