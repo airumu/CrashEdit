@@ -1586,6 +1586,15 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
+        ///   Show GOOL Map に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string OldMainForm_tbxShowGOOLMap {
+            get {
+                return ResourceManager.GetString("OldMainForm_tbxShowGOOLMap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Can&apos;t figure out NSD filename. Make sure NSF file ends in \&quot;f\&quot; (case-insensitive)!\n\nFOO.NSF -&gt; FOO.NSD\n\n{0} -&gt; ??? に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string PatchNSD_Error1 {

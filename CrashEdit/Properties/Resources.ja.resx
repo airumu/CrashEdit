@@ -884,4 +884,7 @@
   <data name="Title_TextureReplacement" xml:space="preserve">
     <value>テクスチャの置き換え</value>
   </data>
+  <data name="OldMainForm_tbxShowGOOLMap" xml:space="preserve">
+    <value>GOOLマップを表示</value>
+  </data>
 </root>

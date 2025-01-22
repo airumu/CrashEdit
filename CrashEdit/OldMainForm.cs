@@ -6,9 +6,7 @@ using CrashEdit.CrashUI;
 using DiscUtils.Iso9660;
 using System.ComponentModel;
 using System.Reflection;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
 
 namespace CrashEdit.CE
 {
@@ -23,6 +21,7 @@ namespace CrashEdit.CE
         private ToolStripMenuItem tbxMakeBIN;
         private ToolStripMenuItem tbxConvertVHVB;
         private ToolStripMenuItem tbxConvertVAB;
+        private ToolStripMenuItem tbxShowGOOLMap;
         private ToolStripMenuItem tbbExtra;
         private ToolStripButton tbbPlay;
         private ToolStripButton tbbBIN;
@@ -35,6 +34,8 @@ namespace CrashEdit.CE
 
         private BackgroundWorker bgwMakeBIN;
         private ProgressBarForm dlgProgress;
+
+        private DarkForm? ShowGOOLMapForm { get; set; }
 
         public static bool PAL { get; private set; } = Settings.Default.ModePAL;
         private const int RateNTSC = 30;
@@ -102,6 +103,10 @@ namespace CrashEdit.CE
             tbxConvertVAB.Text = Resources.OldMainForm_tbxConvertVAB;
             tbxConvertVAB.Click += new EventHandler(tbxConvertVAB_Click);
 
+            tbxShowGOOLMap = new ToolStripMenuItem();
+            tbxShowGOOLMap.Text = Resources.OldMainForm_tbxShowGOOLMap;
+            tbxShowGOOLMap.Click += new EventHandler(tbxShowGOOLMap_Click);
+
             tbbExtra = new ToolStripMenuItem();
             tbbExtra.Text = Resources.OldMainForm_tbbExtra;
             tbbExtra.DropDown.Items.Add(tlbDefaultVersion);
@@ -111,6 +116,7 @@ namespace CrashEdit.CE
             tbbExtra.DropDown.Items.Add("-");
             tbbExtra.DropDown.Items.Add(tbxConvertVHVB);
             tbbExtra.DropDown.Items.Add(tbxConvertVAB);
+            tbbExtra.DropDown.Items.Add(tbxShowGOOLMap);
 
             tbbPAL = new ToolStripButton
             {
@@ -229,7 +235,8 @@ namespace CrashEdit.CE
             tbbSave.Enabled =
             tbbPatchNSD.Enabled =
             tbbClose.Enabled =
-            tbbPlay.Enabled = tab != null && tab.Tag is NSFBox;
+            tbbPlay.Enabled =
+            tbxShowGOOLMap.Enabled = tab != null && tab.Tag is NSFBox;
         }
 
         void tbbPAL_Click(object sender, EventArgs e)
@@ -905,6 +912,100 @@ namespace CrashEdit.CE
             catch (LoadAbortedException)
             {
             }
+        }
+
+        dynamic GetNSD()
+        {
+            string filename = string.Empty;
+            NSFBox nsfbox = (NSFBox)tbcTabs.SelectedTab.Tag;
+            bool exists = true;
+            if (tbcTabs.SelectedTab != null)
+            {
+                filename = tbcTabs.SelectedTab.Text;
+                if (filename.EndsWith("F"))
+                {
+                    filename = filename.Remove(filename.Length - 1);
+                    filename += "D";
+                }
+                else if (filename.EndsWith("f"))
+                {
+                    filename = filename.Remove(filename.Length - 1);
+                    filename += "d";
+                }
+                else
+                {
+                    DarkMessageBox.ShowError(string.Format(Resources.PatchNSD_Error1, filename), Resources.Title_Error);
+                    return null;
+                }
+                if (!File.Exists(filename))
+                {
+                    return null;
+                }
+            }
+            byte[] data = exists ? File.ReadAllBytes(filename) : null;
+
+            NSFController nsfc = nsfbox.NSFController;
+            dynamic nsd = null;
+            switch (nsfc.GameVersion)
+            {
+                case GameVersion.Crash1BetaMAR08:
+                    nsd = data != null ? ProtoNSD.Load(data) : new ProtoNSD(new int[256], 0, new NSDLink[0]);
+                    break;
+                case GameVersion.Crash1:
+                    nsd = data != null ? OldNSD.Load(data) : new OldNSD(new int[256], 0, new int[4], 0, 0, new int[64], new NSDLink[0], 1, 0x3F, Entry.NullEID, 0, 0, new int[64], new byte[0xFC]);
+                    break;
+                case GameVersion.Crash2:
+                    nsd = data != null ? NSD.Load(data) : new NSD(new int[256], 0, new int[4], 0, 0, new int[64], new NSDLink[0], 0, 0x3F, 0, new int[64], new byte[0xFC], new NSDSpawnPoint[1] { new NSDSpawnPoint(Entry.NullEID, 0, 0, 0, 0, 0) }, new byte[0]);
+                    break;
+                case GameVersion.Crash3:
+                    nsd = data != null ? NSD.LoadC3(data) : new NSD(new int[256], 0, new int[4], 0, 0, new int[64], new NSDLink[0], 0, 0x3F, 0, new int[128], new byte[0xFC], new NSDSpawnPoint[1] { new NSDSpawnPoint(Entry.NullEID, 0, 0, 0, 0, 0) }, new byte[0]);
+                    break;
+                default:
+                    return null;
+            }
+            return nsd;
+        }
+
+        void tbxShowGOOLMap_Click(object sender, EventArgs e)
+        {
+            var nsd = GetNSD();
+            if (nsd == null) return;
+
+            if (ShowGOOLMapForm != null)
+            {
+                ShowGOOLMapForm.Focus();
+                return;
+            }
+            ShowGOOLMapForm = new()
+            {
+                Text = "GOOL Map",
+                BackColor = Color.FromArgb(31, 31, 32),
+                Width = 584,
+                Height = 380
+            };
+            ListView lst = new()
+            {
+                Dock = DockStyle.Fill,
+                BackColor = Color.FromArgb(31, 31, 32)
+            };
+            List<string> BaseGOOL = new List<string> { "WillC", "WarpC", "FruiC", "DispC", "DoctC", "PartC", "ShadC", "BoxsC" };
+            int i = 0;
+            foreach (int gool in nsd.GOOLMap)
+            {
+                ListViewItem lsi = new();
+                lsi.Text = $"{i:D2}: {Entry.EIDToEName(gool)}";
+                lsi.ForeColor = lsi.Text.Contains(Entry.NullEName) ? SystemColors.ControlDarkDark:
+                                BaseGOOL.Any(item => lsi.Text.Contains(item)) ? Color.Turquoise :
+                                Color.Gainsboro;
+                lst.Items.Add(lsi);
+                ++i;
+            }
+            ShowGOOLMapForm.Controls.Add(lst);
+            ShowGOOLMapForm.FormClosing += (object sender, FormClosingEventArgs e) =>
+            {
+                ShowGOOLMapForm = null;
+            };
+            ShowGOOLMapForm.Show();
         }
 
         public void ResetConfig()
