@@ -93,7 +93,7 @@ namespace CrashEdit.CE
                 };
                 TabPage tab1 = new TabPage("Code");
                 tab1.Controls.Add(dgvCode);
-                TabPage tab2 = new TabPage("FrameGroup");
+                TabPage tab2 = new TabPage("Frame Groups");
                 var goolFrameGroupBox = new GOOLFrameGroupBox(controller, goolentry)
                 {
                     Dock = DockStyle.Fill

@@ -130,7 +130,7 @@ namespace CrashEdit.CE
                 if (!(dgvPropertyMetaValues.SelectedCells.Count > 0)) return;
                 if (dgvPropertyMetaValues.SelectedCells[0].Value == NullMeta)
                 {
-                    DarkMessageBox.ShowError("You cannot add meta values while the meta value is null.", TitleError);
+                    DarkMessageBox.ShowError("Meta values cannot be added if the MetaValues flag is not set.", TitleError);
                     return;
                 }
 
@@ -572,10 +572,10 @@ namespace CrashEdit.CE
         private void CreatePropertyHeaderColumns()
         {
             lvPropertyHeader.Columns.Add("Type");
-            lvPropertyHeader.Columns.Add("ElementSize");
-            lvPropertyHeader.Columns.Add("RowCount");
-            lvPropertyHeader.Columns.Add("IsSparse");
-            lvPropertyHeader.Columns.Add("HasMetaValues");
+            lvPropertyHeader.Columns.Add("Element Size");
+            lvPropertyHeader.Columns.Add("Row Count");
+            lvPropertyHeader.Columns.Add("Sparse");
+            lvPropertyHeader.Columns.Add("MetaValues");
             lvPropertyHeader.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
         }
 
@@ -1334,7 +1334,7 @@ namespace CrashEdit.CE
             if (dgvPropertyMetaValues.Rows.Count > 1)
             {
                 chkPropertyMetaValue.Checked = true;
-                DarkMessageBox.ShowError("You cannot nullify the meta value while other meta values are present.", TitleError);
+                DarkMessageBox.ShowError("The MetaValues flag cannot be toggled while other meta values exist.", TitleError);
                 return;
             }
 

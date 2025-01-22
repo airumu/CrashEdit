@@ -90,7 +90,7 @@ namespace CrashEdit.CE
             fraPropertyControls.Size = new Size(148, 47);
             fraPropertyControls.TabIndex = 13;
             fraPropertyControls.TabStop = false;
-            fraPropertyControls.Text = "Editor";
+            fraPropertyControls.Text = "Data Editor";
             // 
             // chkPropertyMetaValue
             // 
@@ -100,7 +100,7 @@ namespace CrashEdit.CE
             chkPropertyMetaValue.Name = "chkPropertyMetaValue";
             chkPropertyMetaValue.Size = new Size(119, 19);
             chkPropertyMetaValue.TabIndex = 10;
-            chkPropertyMetaValue.Text = "Toggle MetaValue";
+            chkPropertyMetaValue.Text = "Toggle MetaValues";
             chkPropertyMetaValue.UseVisualStyleBackColor = true;
             chkPropertyMetaValue.Click += chkPropertyMetaValue_Click;
             // 
@@ -114,7 +114,7 @@ namespace CrashEdit.CE
             fraPropertyViewControls.Size = new Size(148, 96);
             fraPropertyViewControls.TabIndex = 12;
             fraPropertyViewControls.TabStop = false;
-            fraPropertyViewControls.Text = "Visual";
+            fraPropertyViewControls.Text = "Visuals";
             // 
             // chkPropertyShowAllFields
             // 
@@ -123,7 +123,7 @@ namespace CrashEdit.CE
             chkPropertyShowAllFields.Name = "chkPropertyShowAllFields";
             chkPropertyShowAllFields.Size = new Size(101, 19);
             chkPropertyShowAllFields.TabIndex = 9;
-            chkPropertyShowAllFields.Text = "Show all fields";
+            chkPropertyShowAllFields.Text = "Show all properties";
             chkPropertyShowAllFields.UseVisualStyleBackColor = true;
             chkPropertyShowAllFields.CheckedChanged += chkPropertyShowAllFields_CheckedChanged;
             // 
@@ -308,7 +308,7 @@ namespace CrashEdit.CE
             fraPropertyID.Size = new Size(87, 423);
             fraPropertyID.TabIndex = 15;
             fraPropertyID.TabStop = false;
-            fraPropertyID.Text = "ID";
+            fraPropertyID.Text = "IDs";
             // 
             // fraPropertyField
             // 
@@ -322,7 +322,7 @@ namespace CrashEdit.CE
             fraPropertyField.Size = new Size(353, 423);
             fraPropertyField.TabIndex = 16;
             fraPropertyField.TabStop = false;
-            fraPropertyField.Text = "Field";
+            fraPropertyField.Text = "Properties";
             // 
             // fraSaveProperties
             // 
