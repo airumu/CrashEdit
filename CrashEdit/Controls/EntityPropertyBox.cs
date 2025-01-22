@@ -33,9 +33,6 @@ namespace CrashEdit.CE
         private bool propertyShowAsHex = true;
 
         private const string NullMeta = "-";
-        private const string TitleError = "Error";
-        private const string TitleInputError = "Input Error";
-
         private const string FilePath = "CrashEdit.exe.savedentityproperties.json";
 
         public class FieldData
@@ -114,7 +111,7 @@ namespace CrashEdit.CE
         {
             if (currentDataGridView == null)
             {
-                DarkMessageBox.ShowError("Please select a row to insert.", TitleError);
+                DarkMessageBox.ShowError("Please select a row to insert.", Resources.Title_Error);
                 return;
             }
             if (lbProperties.SelectedItem == null) return;
@@ -130,7 +127,7 @@ namespace CrashEdit.CE
                 if (!(dgvPropertyMetaValues.SelectedCells.Count > 0)) return;
                 if (dgvPropertyMetaValues.SelectedCells[0].Value == NullMeta)
                 {
-                    DarkMessageBox.ShowError("Meta values cannot be added if the MetaValues flag is not set.", TitleError);
+                    DarkMessageBox.ShowError("Meta values cannot be added if the MetaValues flag is not set.", Resources.Title_Error);
                     return;
                 }
 
@@ -276,7 +273,7 @@ namespace CrashEdit.CE
         {
             if (currentDataGridView == null)
             {
-                DarkMessageBox.ShowError("Please select a row to delete.", TitleError);
+                DarkMessageBox.ShowError("Please select a row to delete.", Resources.Title_Error);
                 return;
             }
             if (lbProperties.SelectedItem == null || !(currentDataGridView.SelectedRows.Count > 0) || !(dgvPropertyMetaValues.SelectedCells.Count > 0)) return;
@@ -680,7 +677,7 @@ namespace CrashEdit.CE
             }
             catch (Exception ex)
             {
-                DarkMessageBox.ShowError($"Error saving fields: {ex.Message}", TitleError);
+                DarkMessageBox.ShowError($"Error saving fields: {ex.Message}", Resources.Title_Error);
             }
         }
 
@@ -914,7 +911,7 @@ namespace CrashEdit.CE
         {
             if (dgvPropertyMetaValues.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == NullMeta)
             {
-                DarkMessageBox.ShowError("This cell cannot be edited.", TitleError);
+                DarkMessageBox.ShowError("This cell cannot be edited.", Resources.Title_Error);
                 e.Cancel = true;
             }
         }
@@ -952,7 +949,7 @@ namespace CrashEdit.CE
 
             if (!Regex.IsMatch(inputValue, @"^-?[0-9]+$"))
             {
-                DarkMessageBox.ShowError("Please enter a valid decimal value.", TitleInputError);
+                DarkMessageBox.ShowError("Please enter a valid decimal value.", Resources.Title_InputError);
                 dgvPropertyValues.CancelEdit();
                 e.Cancel = true;
             }
@@ -963,13 +960,13 @@ namespace CrashEdit.CE
             {
                 if (newValue > maxValue)
                 {
-                    DarkMessageBox.ShowError($"The value must be less than or equal to\n{maxValue}.", TitleInputError);
+                    DarkMessageBox.ShowError($"The value must be less than or equal to\n{maxValue}.", Resources.Title_InputError);
                     dgvPropertyValues.CancelEdit();
                     e.Cancel = true;
                 }
                 else if (newValue < minValue)
                 {
-                    DarkMessageBox.ShowError($"The value must be greater than or equal to\n{minValue}.", TitleInputError);
+                    DarkMessageBox.ShowError($"The value must be greater than or equal to\n{minValue}.", Resources.Title_InputError);
                     dgvPropertyValues.CancelEdit();
                     e.Cancel = true;
                 }
@@ -1047,7 +1044,7 @@ namespace CrashEdit.CE
             {
                 if (!Regex.IsMatch(inputValue, @"\A\b[0-9a-fA-F]+\b\Z"))
                 {
-                    DarkMessageBox.ShowError("Please enter a valid hexadecimal value.", TitleInputError);
+                    DarkMessageBox.ShowError("Please enter a valid hexadecimal value.", Resources.Title_InputError);
                     dgvPropertyValues.CancelEdit();
                     e.Cancel = true;
                 }
@@ -1056,7 +1053,7 @@ namespace CrashEdit.CE
             {
                 if (!Regex.IsMatch(inputValue, @"^-?[0-9]+$"))
                 {
-                    DarkMessageBox.ShowError("Please enter a valid decimal value.", TitleInputError);
+                    DarkMessageBox.ShowError("Please enter a valid decimal value.", Resources.Title_InputError);
                     dgvPropertyValues.CancelEdit();
                     e.Cancel = true;
                 }
@@ -1104,13 +1101,13 @@ namespace CrashEdit.CE
                 {
                     if (newValue > maxValue)
                     {
-                        DarkMessageBox.ShowError($"The value must be less than or equal to\n{maxValue}.", TitleInputError);
+                        DarkMessageBox.ShowError($"The value must be less than or equal to\n{maxValue}.", Resources.Title_InputError);
                         dgvPropertyValues.CancelEdit();
                         e.Cancel = true;
                     }
                     else if (newValue < minValue)
                     {
-                        DarkMessageBox.ShowError($"The value must be greater than or equal to\n{minValue}.", TitleInputError);
+                        DarkMessageBox.ShowError($"The value must be greater than or equal to\n{minValue}.", Resources.Title_InputError);
                         dgvPropertyValues.CancelEdit();
                         e.Cancel = true;
                     }
@@ -1257,7 +1254,7 @@ namespace CrashEdit.CE
 
                             if (parsedValue > uint.MaxValue)
                             {
-                                DarkMessageBox.ShowWarning("The entered value exceeds the range of a 32-bit unsigned integer.", TitleInputError);
+                                DarkMessageBox.ShowWarning("The entered value exceeds the range of a 32-bit unsigned integer.", Resources.Title_InputError);
                                 e.Value = uint.MaxValue;
                             }
                             else
@@ -1275,7 +1272,7 @@ namespace CrashEdit.CE
                     }
                     catch
                     {
-                        DarkMessageBox.ShowError("Invalid hex value. Please enter a valid 16-bit hex value.", TitleInputError);
+                        DarkMessageBox.ShowError("Invalid hex value. Please enter a valid 16-bit hex value.", Resources.Title_InputError);
                         e.ParsingApplied = false;
                     }
                 }
@@ -1334,7 +1331,7 @@ namespace CrashEdit.CE
             if (dgvPropertyMetaValues.Rows.Count > 1)
             {
                 chkPropertyMetaValue.Checked = true;
-                DarkMessageBox.ShowError("The MetaValues flag cannot be toggled while other meta values exist.", TitleError);
+                DarkMessageBox.ShowError("The MetaValues flag cannot be toggled while other meta values exist.", Resources.Title_Error);
                 return;
             }
 
@@ -1393,13 +1390,13 @@ namespace CrashEdit.CE
             }
             catch
             {
-                DarkMessageBox.ShowError("Invalid field value.", TitleError);
+                DarkMessageBox.ShowError("Invalid field value.", Resources.Title_Error);
                 return;
             }
 
             if (entity.KnownProperties.Keys.Contains(id))
             {
-                DarkMessageBox.ShowError("The field already exists.", TitleError);
+                DarkMessageBox.ShowError("The field already exists.", Resources.Title_Error);
                 return;
             }
 
@@ -1410,7 +1407,7 @@ namespace CrashEdit.CE
             }
             catch (ArgumentException ex)
             {
-                DarkMessageBox.ShowError(ex.Message, TitleError);
+                DarkMessageBox.ShowError(ex.Message, Resources.Title_Error);
                 return;
             }
 
@@ -1467,7 +1464,7 @@ namespace CrashEdit.CE
 
                 if (field == null)
                 {
-                    DarkMessageBox.ShowError($"Unsupported field for ID {id:X}.", TitleError);
+                    DarkMessageBox.ShowError($"Unsupported field for ID {id:X}.", Resources.Title_Error);
                     continue;
                 }
 
@@ -1487,7 +1484,7 @@ namespace CrashEdit.CE
             }
             else
             {
-                DarkMessageBox.ShowError("No valid fields were selected.", TitleError);
+                DarkMessageBox.ShowError("No valid fields were selected.", Resources.Title_Error);
             }
         }
 
@@ -1619,7 +1616,7 @@ namespace CrashEdit.CE
             }
             catch (Exception ex)
             {
-                DarkMessageBox.ShowError($"Error saving properties list: {ex.Message}", TitleError);
+                DarkMessageBox.ShowError($"Error saving properties list: {ex.Message}", Resources.Title_Error);
             }
         }
 
@@ -1643,7 +1640,7 @@ namespace CrashEdit.CE
             }
             catch (Exception ex)
             {
-                DarkMessageBox.ShowError($"Error loading properties list: {ex.Message}", TitleError);
+                DarkMessageBox.ShowError($"Error loading properties list: {ex.Message}", Resources.Title_Error);
             }
         }
 
@@ -1727,7 +1724,7 @@ namespace CrashEdit.CE
         {
             if (e.ColumnIndex == 0)
             {
-                DarkMessageBox.ShowError("This cell cannot be edited.", TitleError);
+                DarkMessageBox.ShowError("This cell cannot be edited.", Resources.Title_Error);
                 e.Cancel = true;
             }
         }

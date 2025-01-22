@@ -59,9 +59,6 @@ namespace CrashEdit.CE
         private int ColUV;
         private int ColSegment;
 
-        private readonly string titleInputError = "Input Error";
-        private readonly string titleValidationError = "Validation Error";
-
         public GOOLFrameGroupBox(GOOLEntryController controller, GOOLEntry goolentry)
         {
             this.goolentry = goolentry;
@@ -344,7 +341,7 @@ namespace CrashEdit.CE
 
             if (e.ColumnIndex >= ColIndex && e.ColumnIndex <= ColIndexAlt)
             {
-                DarkMessageBox.ShowError("This cell cannot be edited.", titleInputError);
+                DarkMessageBox.ShowError("This cell cannot be edited.", Resources.Title_InputError);
                 e.Cancel = true;
             }
 
@@ -354,7 +351,7 @@ namespace CrashEdit.CE
                 if ((e.ColumnIndex == ColFrameCount && !(selectedGroup is VertexGroup2) && !(selectedGroup is VertexGroup3to2)) ||
                     (dgvFrameGroup.SelectedCells[0].Value.ToString() == "-")) // if interpolated is not set
                 {
-                    DarkMessageBox.ShowError("This cell cannot be edited.", titleInputError);
+                    DarkMessageBox.ShowError("This cell cannot be edited.", Resources.Title_InputError);
                     e.Cancel = true;
                 }
             }
@@ -376,24 +373,24 @@ namespace CrashEdit.CE
                         int maxValue = 255, minValue = 0;
                         if (newValue > maxValue)
                         {
-                            DarkMessageBox.ShowError($"The value must be less than or equal to {maxValue}.", titleInputError);
+                            DarkMessageBox.ShowError($"The value must be less than or equal to {maxValue}.", Resources.Title_InputError);
                             e.Cancel = true;
                         }
                         else if (newValue < minValue)
                         {
-                            DarkMessageBox.ShowError($"The value must be greater than or equal to {minValue}.", titleInputError);
+                            DarkMessageBox.ShowError($"The value must be greater than or equal to {minValue}.", Resources.Title_InputError);
                             e.Cancel = true;
                         }
                     }
                     catch (Exception ex)
                     {
-                        DarkMessageBox.ShowError($"Invalid value: {inputValue}\nError: {ex.Message}", titleValidationError);
+                        DarkMessageBox.ShowError($"Invalid value: {inputValue}\nError: {ex.Message}", Resources.Title_ValidationError);
                         e.Cancel = true;
                     }
                 }
                 else
                 {
-                    DarkMessageBox.ShowError($"Invalid input. Please enter an integer.", titleInputError);
+                    DarkMessageBox.ShowError($"Invalid input. Please enter an integer.", Resources.Title_InputError);
                     e.Cancel = true;
                 }
             }
@@ -402,7 +399,7 @@ namespace CrashEdit.CE
                 string input = Entry.CheckEIDErrors(inputValue, true);
                 if (input != string.Empty)
                 {
-                    DarkMessageBox.ShowError($"Invalid EID string: {inputValue}", titleInputError);
+                    DarkMessageBox.ShowError($"Invalid EID string: {inputValue}", Resources.Title_InputError);
                     e.Cancel = true;
                 }
             }
@@ -412,7 +409,7 @@ namespace CrashEdit.CE
 
                 if (!(inputValue == "True" || inputValue == "False" || inputValue == "true" || inputValue == "false"))
                 {
-                    DarkMessageBox.ShowError($"Invalid string: {inputValue}", titleInputError);
+                    DarkMessageBox.ShowError($"Invalid string: {inputValue}", Resources.Title_InputError);
                     e.Cancel = true;
                 }
             }
@@ -535,7 +532,7 @@ namespace CrashEdit.CE
         {
             if (e.ColumnIndex >= ColX1 && e.ColumnIndex <= ColY4 && !(goolentry.Version == GOOLVersion.Version1))
             {
-                DarkMessageBox.ShowError("This cell cannot be edited.", titleInputError);
+                DarkMessageBox.ShowError("This cell cannot be edited.", Resources.Title_InputError);
                 e.Cancel = true;
             }
         }
@@ -555,26 +552,26 @@ namespace CrashEdit.CE
                     if (newValue > maxValue)
                     {
                         if (e.ColumnIndex >= ColLeft && e.ColumnIndex <= ColHeight && !(goolentry.Version == GOOLVersion.Version1))
-                            DarkMessageBox.ShowError($"The UV does not fit within the segment. The value must be less than or equal to {maxValue}.", titleInputError);
+                            DarkMessageBox.ShowError($"The UV does not fit within the segment. The value must be less than or equal to {maxValue}.", Resources.Title_InputError);
                         else
-                            DarkMessageBox.ShowError($"The value must be less than or equal to {maxValue}.", titleInputError);
+                            DarkMessageBox.ShowError($"The value must be less than or equal to {maxValue}.", Resources.Title_InputError);
                         e.Cancel = true;
                     }
                     else if (newValue < minValue)
                     {
-                        DarkMessageBox.ShowError($"The value must be greater than or equal to {minValue}.", titleInputError);
+                        DarkMessageBox.ShowError($"The value must be greater than or equal to {minValue}.", Resources.Title_InputError);
                         e.Cancel = true;
                     }
                 }
                 catch (Exception ex)
                 {
-                    DarkMessageBox.ShowError($"Invalid value: {inputValue}\nError: {ex.Message}", titleValidationError);
+                    DarkMessageBox.ShowError($"Invalid value: {inputValue}\nError: {ex.Message}", Resources.Title_ValidationError);
                     e.Cancel = true;
                 }
             }
             else
             {
-                DarkMessageBox.ShowError($"Invalid input. Please enter an integer.", titleInputError);
+                DarkMessageBox.ShowError($"Invalid input. Please enter an integer.", Resources.Title_InputError);
                 e.Cancel = true;
             }
         }

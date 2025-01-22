@@ -24,9 +24,6 @@ namespace CrashEdit.CE
         internal Stack<bool> dirty = new Stack<bool>();
         internal bool Dirty => dirty.Count > 0 && dirty.Peek();
 
-        private const string TitleError = "Error";
-        private const string TitleInputError = "Input Error";
-
         public ZoneHeaderBox(ZoneHeaderController controller)
         {
             this.controller = controller;
@@ -211,12 +208,12 @@ namespace CrashEdit.CE
         {
             if (currentDataGridView == null)
             {
-                DarkMessageBox.ShowError("No row is selected.", TitleError);
+                DarkMessageBox.ShowError("No row is selected.", Resources.Title_Error);
                 return;
             }
             if (currentDataGridView.Rows.Count >= 8)
             {
-                DarkMessageBox.ShowError("You cannot add more than 8 rows.", TitleError);
+                DarkMessageBox.ShowError("You cannot add more than 8 rows.", Resources.Title_Error);
                 return;
             }
 
@@ -258,7 +255,7 @@ namespace CrashEdit.CE
         {
             if (currentDataGridView == null)
             {
-                DarkMessageBox.ShowError("No row is selected.", TitleError);
+                DarkMessageBox.ShowError("No row is selected.", Resources.Title_Error);
                 return;
             }
             if (currentDataGridView.Rows.Count == 0) return;
@@ -284,7 +281,7 @@ namespace CrashEdit.CE
         {
             if (e.ColumnIndex == 0)
             {
-                DarkMessageBox.ShowError("This cell cannot be edited.", TitleError);
+                DarkMessageBox.ShowError("This cell cannot be edited.", Resources.Title_Error);
                 e.Cancel = true;
             }
         }
@@ -298,7 +295,7 @@ namespace CrashEdit.CE
                 string eid = Entry.CheckEIDErrors(inputValue, true);
                 if (eid != string.Empty)
                 {
-                    DarkMessageBox.ShowError("Please enter a valid EID.", TitleInputError);
+                    DarkMessageBox.ShowError("Please enter a valid EID.", Resources.Title_InputError);
                     dgvZones.CancelEdit();
                     e.Cancel = true;
                 }
@@ -307,7 +304,7 @@ namespace CrashEdit.CE
             {
                 if (!Regex.IsMatch(inputValue, @"\A\b[0-9a-fA-F]+\b\Z"))
                 {
-                    DarkMessageBox.ShowError("Please enter a valid hexadecimal value.", TitleInputError);
+                    DarkMessageBox.ShowError("Please enter a valid hexadecimal value.", Resources.Title_InputError);
                     dgvZones.CancelEdit();
                     e.Cancel = true;
                 }

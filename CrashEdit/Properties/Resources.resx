@@ -878,4 +878,16 @@ as Meters: {3:F3}m</value>
   <data name="Config_chkIgnoreDuplicatedEntryError" xml:space="preserve">
     <value>Ignore errors when processing duplicated entries</value>
   </data>
+  <data name="Title_Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Title_InputError" xml:space="preserve">
+    <value>Input Error</value>
+  </data>
+  <data name="Title_ValidationError" xml:space="preserve">
+    <value>Validation Error</value>
+  </data>
+  <data name="Title_TextureReplacement" xml:space="preserve">
+    <value>Texture Replacement</value>
+  </data>
 </root>

@@ -20,10 +20,6 @@ namespace CrashEdit.CE.Controls
             ForeColor = Color.Gainsboro
         };
 
-        //private ModelEntryController modelcontroller;
-        //private ModelEntry model;
-        //private SceneryEntryController scenerycontroller;
-        //private SceneryEntry scenery;
         private dynamic controller;
         private dynamic model;
         private TextureChunk chunk { get; set; }
@@ -86,9 +82,6 @@ namespace CrashEdit.CE.Controls
         private Color clrAltBackground = Color.FromArgb(34, 34, 34);
         private Color clrSelectionBackground = Color.FromArgb(70, 70, 70);
         private Color clrText = Color.Gainsboro;
-
-        private readonly string titleInputError = "Input Error";
-        private readonly string titleTextureReplacement = "Texture Replacement";
 
         public ModelBox(ModelEntryController controller)
         {
@@ -572,7 +565,7 @@ namespace CrashEdit.CE.Controls
         {
             if (selectedRegionX < 32 && selectedRegionY == 0)
             {
-                DarkMessageBox.ShowError("Textures cannot be replaced on the header.", titleTextureReplacement);
+                DarkMessageBox.ShowError("Textures cannot be replaced on the header.", Resources.Title_TextureReplacement);
                 return;
             }
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
@@ -704,20 +697,20 @@ namespace CrashEdit.CE.Controls
                 if (newValue > maxValue)
                 {
                     if (e.ColumnIndex >= ColLeft && e.ColumnIndex <= ColHeight)
-                        DarkMessageBox.ShowError($"The UV does not fit within the segment. The value must be less than or equal to {maxValue}.", titleInputError);
+                        DarkMessageBox.ShowError($"The UV does not fit within the segment. The value must be less than or equal to {maxValue}.", Resources.Title_InputError);
                     else
-                        DarkMessageBox.ShowError($"The value must be less than or equal to {maxValue}.", titleInputError);
+                        DarkMessageBox.ShowError($"The value must be less than or equal to {maxValue}.", Resources.Title_InputError);
                     e.Cancel = true;
                 }
                 else if (newValue < minValue)
                 {
-                    DarkMessageBox.ShowError($"The value must be greater than or equal to {minValue}.", titleInputError);
+                    DarkMessageBox.ShowError($"The value must be greater than or equal to {minValue}.", Resources.Title_InputError);
                     e.Cancel = true;
                 }
             }
             else
             {
-                DarkMessageBox.ShowError($"Invalid input. Please enter an integer.", titleInputError);
+                DarkMessageBox.ShowError($"Invalid input. Please enter an integer.", Resources.Title_InputError);
                 e.Cancel = true;
             }
         }
@@ -736,9 +729,9 @@ namespace CrashEdit.CE.Controls
                 if (newValue > maxValue)
                 {
                     if (columnIndex >= ColLeft && columnIndex <= ColHeight)
-                        DarkMessageBox.ShowError($"The UV does not fit within the segment. The value must be less than or equal to {maxValue}.", titleInputError);
+                        DarkMessageBox.ShowError($"The UV does not fit within the segment. The value must be less than or equal to {maxValue}.", Resources.Title_InputError);
                     else
-                        DarkMessageBox.ShowError($"The value must be less than or equal to {maxValue}.", titleInputError);
+                        DarkMessageBox.ShowError($"The value must be less than or equal to {maxValue}.", Resources.Title_InputError);
                     return;
                 }
 
@@ -750,7 +743,7 @@ namespace CrashEdit.CE.Controls
                         newValue -= (int)row.Cells[ColWidth].Value;
                     if (newValue < 0)
                     {
-                        DarkMessageBox.ShowError($"The value must be greater than or equal to {row.Cells[ColWidth].Value}.", titleInputError);
+                        DarkMessageBox.ShowError($"The value must be greater than or equal to {row.Cells[ColWidth].Value}.", Resources.Title_InputError);
                         return;
                     }
                     await UpdateRowsXYAsync(rowIndex, newValue, newValue + (int)row.Cells[ColWidth].Value, true, editedCellTag);
@@ -761,7 +754,7 @@ namespace CrashEdit.CE.Controls
                         newValue -= (int)row.Cells[ColHeight].Value;
                     if (newValue < 0)
                     {
-                        DarkMessageBox.ShowError($"The value must be greater than or equal to {row.Cells[ColHeight].Value}.", titleInputError);
+                        DarkMessageBox.ShowError($"The value must be greater than or equal to {row.Cells[ColHeight].Value}.", Resources.Title_InputError);
                         return;
                     }
                     await UpdateRowsXYAsync(rowIndex, newValue, newValue + (int)row.Cells[ColHeight].Value, false, editedCellTag);
@@ -1245,7 +1238,7 @@ namespace CrashEdit.CE.Controls
             if (!(dgvExtendedTextures.SelectedCells.Count > 0)) return;
 
             if (dgvExtendedTextures.SelectedCells[0].Value.ToString() == "-") {
-                DarkMessageBox.ShowError("This cell cannot be edited.", titleInputError);
+                DarkMessageBox.ShowError("This cell cannot be edited.", Resources.Title_InputError);
                 e.Cancel = true;
             }
         }
@@ -1299,7 +1292,7 @@ namespace CrashEdit.CE.Controls
 
                 if (!(inputValue == "True" || inputValue == "False" || inputValue == "true" || inputValue == "false"))
                 {
-                    DarkMessageBox.ShowError($"Invalid string: {inputValue}", titleInputError);
+                    DarkMessageBox.ShowError($"Invalid string: {inputValue}", Resources.Title_InputError);
                     e.Cancel = true;
                 }
             }
@@ -1310,18 +1303,18 @@ namespace CrashEdit.CE.Controls
                     dgvExtendedTexturesGetMaxValue(e.ColumnIndex, out int minValue, out int maxValue);
                     if (newValue > maxValue)
                     {
-                        DarkMessageBox.ShowError($"The value must be less than or equal to {maxValue}.", titleInputError);
+                        DarkMessageBox.ShowError($"The value must be less than or equal to {maxValue}.", Resources.Title_InputError);
                         e.Cancel = true;
                     }
                     else if (newValue < minValue)
                     {
-                        DarkMessageBox.ShowError($"The value must be greater than or equal to {minValue}.", titleInputError);
+                        DarkMessageBox.ShowError($"The value must be greater than or equal to {minValue}.", Resources.Title_InputError);
                         e.Cancel = true;
                     }
                 }
                 else
                 {
-                    DarkMessageBox.ShowError($"Invalid input. Please enter an integer.", titleInputError);
+                    DarkMessageBox.ShowError($"Invalid input. Please enter an integer.", Resources.Title_InputError);
                     e.Cancel = true;
                 }
             }

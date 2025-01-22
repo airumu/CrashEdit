@@ -13,8 +13,8 @@ namespace CrashEdit.Crash
         const int VRAMHeight = 128;
         private static byte[] vram = new byte[VRAMWidth * VRAMHeight];
 
-        private static string titleTextureReplacement = "Texture Replacement";
-        private static string titleCLUTReplacement = "CLUT Replacement";
+        private const string TitleTextureReplacement = "Texture Replacement";
+        private const string TitleCLUTReplacement = "CLUT Replacement";
 
         public static byte[] ReplaceTextureFromFile(string filePath, string extension, bool isBGRA, byte[] currentData, int destX, int destY, bool replaceCLUT, int oldBpp, int clutX, int clutY)
         {
@@ -66,7 +66,7 @@ namespace CrashEdit.Crash
 
             if (bpp != oldBpp)
             {
-                DarkMessageBox.ShowError("The color depth of the selected image differs from the current one.", titleTextureReplacement);
+                DarkMessageBox.ShowError("The color depth of the selected image differs from the current one.", TitleTextureReplacement);
                 return currentData;
             }
 
@@ -100,13 +100,13 @@ namespace CrashEdit.Crash
             bool doProcess = true;
             if (bpp != oldBpp)
             {
-                if (DarkMessageBox.ShowWarning("The color depth of the selected image differs from the current one. Do you want to process anyway?", titleCLUTReplacement, DarkDialogButton.YesNo) != DialogResult.Yes)
+                if (DarkMessageBox.ShowWarning("The color depth of the selected image differs from the current one. Do you want to process anyway?", TitleCLUTReplacement, DarkDialogButton.YesNo) != DialogResult.Yes)
                     doProcess = false;
             }
 
             if ((clutX == 0 || bpp == 8) && clutY == 0)
             {
-                DarkMessageBox.ShowError("CLUT cannot be replaced on the header.", titleCLUTReplacement);
+                DarkMessageBox.ShowError("CLUT cannot be replaced on the header.", TitleCLUTReplacement);
                 doProcess = false;
             }
 

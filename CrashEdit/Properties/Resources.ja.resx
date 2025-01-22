@@ -655,7 +655,7 @@
     <value>他のセッティング</value>
   </data>
   <data name="Misc" xml:space="preserve">
-    <value>雑</value>
+    <value>その他</value>
   </data>
   <data name="Config_chkViewerShowHelp" xml:space="preserve">
     <value>ヘルプ文字をデフォルトで表示する</value>
@@ -871,5 +871,17 @@
   </data>
   <data name="Config_chkIgnoreDuplicatedEntryError" xml:space="preserve">
     <value>重複したエントリを処理する際のエラーを無視する</value>
+  </data>
+  <data name="Title_Error" xml:space="preserve">
+    <value>エラー</value>
+  </data>
+  <data name="Title_InputError" xml:space="preserve">
+    <value>入力エラー</value>
+  </data>
+  <data name="Title_ValidationError" xml:space="preserve">
+    <value>検証エラー</value>
+  </data>
+  <data name="Title_TextureReplacement" xml:space="preserve">
+    <value>テクスチャの置き換え</value>
   </data>
 </root>

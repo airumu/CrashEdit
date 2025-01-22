@@ -1896,6 +1896,42 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
+        ///   Error に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Title_Error {
+            get {
+                return ResourceManager.GetString("Title_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Input Error に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Title_InputError {
+            get {
+                return ResourceManager.GetString("Title_InputError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Texture Replacement に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Title_TextureReplacement {
+            get {
+                return ResourceManager.GetString("Title_TextureReplacement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Validation Error に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Title_ValidationError {
+            get {
+                return ResourceManager.GetString("Title_ValidationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Make BIN に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Toolbar_BIN {
