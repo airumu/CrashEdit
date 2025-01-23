@@ -893,4 +893,10 @@ as Meters: {3:F3}m</value>
   <data name="OldMainForm_tbxShowGOOLMap" xml:space="preserve">
     <value>Show GOOL Map</value>
   </data>
+  <data name="OldMainForm_tbxGenerateSpawnPoint" xml:space="preserve">
+    <value>Generate Spawn Point</value>
+  </data>
+  <data name="GenerateSpawnPoint_Title" xml:space="preserve">
+    <value>Generate Spawn Point</value>
+  </data>
 </root>

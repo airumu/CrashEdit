@@ -1,3 +1,4 @@
+using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.CE.Forms;
 using CrashEdit.CE.Properties;
@@ -22,6 +23,7 @@ namespace CrashEdit.CE
         private ToolStripMenuItem tbxConvertVHVB;
         private ToolStripMenuItem tbxConvertVAB;
         private ToolStripMenuItem tbxShowGOOLMap;
+        private ToolStripMenuItem tbxGenerateSpawnPoint;
         private ToolStripMenuItem tbbExtra;
         private ToolStripButton tbbPlay;
         private ToolStripButton tbbBIN;
@@ -107,6 +109,10 @@ namespace CrashEdit.CE
             tbxShowGOOLMap.Text = Resources.OldMainForm_tbxShowGOOLMap;
             tbxShowGOOLMap.Click += new EventHandler(tbxShowGOOLMap_Click);
 
+            tbxGenerateSpawnPoint = new ToolStripMenuItem();
+            tbxGenerateSpawnPoint.Text = Resources.OldMainForm_tbxGenerateSpawnPoint;
+            tbxGenerateSpawnPoint.Click += new EventHandler(tbxGenerateSpawnPoint_Click);
+
             tbbExtra = new ToolStripMenuItem();
             tbbExtra.Text = Resources.OldMainForm_tbbExtra;
             tbbExtra.DropDown.Items.Add(tlbDefaultVersion);
@@ -116,7 +122,9 @@ namespace CrashEdit.CE
             tbbExtra.DropDown.Items.Add("-");
             tbbExtra.DropDown.Items.Add(tbxConvertVHVB);
             tbbExtra.DropDown.Items.Add(tbxConvertVAB);
+            tbbExtra.DropDown.Items.Add("-");
             tbbExtra.DropDown.Items.Add(tbxShowGOOLMap);
+            tbbExtra.DropDown.Items.Add(tbxGenerateSpawnPoint);
 
             tbbPAL = new ToolStripButton
             {
@@ -236,7 +244,8 @@ namespace CrashEdit.CE
             tbbPatchNSD.Enabled =
             tbbClose.Enabled =
             tbbPlay.Enabled =
-            tbxShowGOOLMap.Enabled = tab != null && tab.Tag is NSFBox;
+            tbxShowGOOLMap.Enabled =
+            tbxGenerateSpawnPoint.Enabled = tab != null && tab.Tag is NSFBox;
         }
 
         void tbbPAL_Click(object sender, EventArgs e)
@@ -1008,6 +1017,68 @@ namespace CrashEdit.CE
             ShowGOOLMapForm.Show();
         }
 
+        void tbxGenerateSpawnPoint_Click(object sender, EventArgs e)
+        {
+            string input = Prompt.ShowDialog("Enter entity ID:", Resources.GenerateSpawnPoint_Title, string.Empty);
+            if (string.IsNullOrEmpty(input)) return;
+            if (int.TryParse(input, out int targetID))
+            {
+                NSFBox nsfbox = (NSFBox)tbcTabs.SelectedTab.Tag;
+                NSF nsf = nsfbox.NSF;
+                foreach (ZoneEntry entry in nsf.GetEntries<ZoneEntry>())
+                {
+                    foreach (Entity entity in entry.Entities)
+                    {
+                        if (entity.ID == targetID)
+                        {
+                            int zone = entry.EID;
+                            int cameraIdx = 0;
+                            if (entry.CameraCount > 3)
+                            {
+                                int cameraMaxIdx = (entry.CameraCount - 1) / 3;
+                                input = Prompt.ShowDialog($"Enter camera index [0-{cameraMaxIdx}]:", Resources.GenerateSpawnPoint_Title, string.Empty);
+                                if (int.TryParse(input, out cameraIdx))
+                                {
+                                    if (cameraIdx < 0 || cameraIdx > cameraMaxIdx)
+                                    {
+                                        DarkMessageBox.ShowError("Invalid camera index.", Resources.GenerateSpawnPoint_Title);
+                                        return;
+                                    }
+                                }
+                                else
+                                {
+                                    DarkMessageBox.ShowError("Invalid camera index.", Resources.GenerateSpawnPoint_Title);
+                                    return;
+                                }
+                            }
+                            int x = (entry.X + 4 * entity.Positions[0].X) << 8;
+                            int y = (entry.Y + 4 * entity.Positions[0].Y) << 8;
+                            int z = (entry.Z + 4 * entity.Positions[0].Z) << 8;
+                            byte[] data = new byte[24];
+                            BitConv.ToInt32(data, 0, zone);
+                            BitConv.ToInt32(data, 4, cameraIdx);
+                            BitConv.ToInt32(data, 8, 0);
+                            BitConv.ToInt32(data, 12, x);
+                            BitConv.ToInt32(data, 16, y);
+                            BitConv.ToInt32(data, 20, z);
+                            string result = BitConverter.ToString(data).Replace("-", "");
+                            Clipboard.SetText(result);
+                            Console.WriteLine(result);
+                            DarkMessageBox.ShowInformation("Spawn point generated and copied to clipboard.", Resources.GenerateSpawnPoint_Title);
+                            return;
+                        }
+                    }
+                }
+                DarkMessageBox.ShowError("Entity not found.", Resources.GenerateSpawnPoint_Title);
+                return;
+            }
+            else
+            {
+                DarkMessageBox.ShowError("Invalid entity ID.", Resources.GenerateSpawnPoint_Title);
+                return;
+            }
+        }
+
         public void ResetConfig()
         {
             TabPage configtab = tbcTabs.TabPages[0];
@@ -1042,6 +1113,36 @@ namespace CrashEdit.CE
         public static void NotifyListUpdated()
         {
             ListUpdated?.Invoke(null, EventArgs.Empty);
+        }
+    }
+
+    public static class Prompt
+    {
+        public static string ShowDialog(string text, string caption, string curText)
+        {
+            DarkForm prompt = new DarkForm()
+            {
+                Width = 300,
+                Height = 150,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                Text = caption,
+                StartPosition = FormStartPosition.CenterScreen
+            };
+
+            DarkLabel textLabel = new DarkLabel() { Left = 10, Top = 20, Text = text, Width = 260 };
+            DarkTextBox textBox = new DarkTextBox() { Left = 10, Top = 50, Text = curText, Width = 260 };
+
+            DarkButton confirmation = new DarkButton() { Text = "OK", Left = 200, Width = 70, Top = 80, DialogResult = DialogResult.OK };
+            confirmation.Click += (sender, e) => { prompt.Close(); };
+
+            prompt.Controls.Add(textBox);
+            prompt.Controls.Add(confirmation);
+            prompt.Controls.Add(textLabel);
+            prompt.AcceptButton = confirmation;
+            prompt.MinimizeBox = false;
+            prompt.MaximizeBox = false;
+
+            return prompt.ShowDialog() == DialogResult.OK ? textBox.Text : string.Empty;
         }
     }
 }

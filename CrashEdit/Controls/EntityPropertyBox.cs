@@ -1764,36 +1764,6 @@ namespace CrashEdit.CE
         }
     }
 
-    public static class Prompt
-    {
-        public static string ShowDialog(string text, string caption, string curText)
-        {
-            DarkForm prompt = new DarkForm()
-            {
-                Width = 300,
-                Height = 150,
-                FormBorderStyle = FormBorderStyle.FixedDialog,
-                Text = caption,
-                StartPosition = FormStartPosition.CenterScreen
-            };
-
-            DarkLabel textLabel = new DarkLabel() { Left = 10, Top = 20, Text = text, Width = 260 };
-            DarkTextBox textBox = new DarkTextBox() { Left = 10, Top = 50, Text = curText, Width = 260 };
-
-            DarkButton confirmation = new DarkButton() { Text = "OK", Left = 200, Width = 70, Top = 80, DialogResult = DialogResult.OK };
-            confirmation.Click += (sender, e) => { prompt.Close(); };
-
-            prompt.Controls.Add(textBox);
-            prompt.Controls.Add(confirmation);
-            prompt.Controls.Add(textLabel);
-            prompt.AcceptButton = confirmation;
-            prompt.MinimizeBox = false;
-            prompt.MaximizeBox = false;
-
-            return prompt.ShowDialog() == DialogResult.OK ? textBox.Text : string.Empty;
-        }
-    }
-
     public sealed class DoubleBufferedDataGridView
     {
         public static void Initialize(DataGridView dataGridView)

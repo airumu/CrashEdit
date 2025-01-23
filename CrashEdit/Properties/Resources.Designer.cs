@@ -1091,6 +1091,15 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
+        ///   Generate Spawn Point に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string GenerateSpawnPoint_Title {
+            get {
+                return ResourceManager.GetString("GenerateSpawnPoint_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cancel に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string InputWindow_cmdCancel {
@@ -1573,6 +1582,15 @@ namespace CrashEdit.CE.Properties {
         internal static string OldMainForm_tbxConvertVHVB {
             get {
                 return ResourceManager.GetString("OldMainForm_tbxConvertVHVB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Generate Spawn Point に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string OldMainForm_tbxGenerateSpawnPoint {
+            get {
+                return ResourceManager.GetString("OldMainForm_tbxGenerateSpawnPoint", resourceCulture);
             }
         }
         
