@@ -899,4 +899,7 @@ as Meters: {3:F3}m</value>
   <data name="GenerateSpawnPoint_Title" xml:space="preserve">
     <value>Generate Spawn Point</value>
   </data>
+  <data name="Title_Success" xml:space="preserve">
+    <value>Success</value>
+  </data>
 </root>

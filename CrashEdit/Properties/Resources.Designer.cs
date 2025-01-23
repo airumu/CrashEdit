@@ -1941,6 +1941,15 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
+        ///   Success に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Title_Success {
+            get {
+                return ResourceManager.GetString("Title_Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Texture Replacement に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Title_TextureReplacement {

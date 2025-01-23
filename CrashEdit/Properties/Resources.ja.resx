@@ -893,4 +893,7 @@
   <data name="GenerateSpawnPoint_Title" xml:space="preserve">
     <value>スポーンポイントの生成</value>
   </data>
+  <data name="Title_Success" xml:space="preserve">
+    <value>成功</value>
+  </data>
 </root>

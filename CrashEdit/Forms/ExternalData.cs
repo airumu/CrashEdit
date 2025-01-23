@@ -13,9 +13,6 @@ namespace CrashEdit.CE
         private readonly string externalFileName = "CrashEdit.exe.externaldata.json";
         private readonly string defaultName = "None";
 
-        private readonly string titleError = "Error";
-        private readonly string titleSuccess = "Success";
-
         public List<KeyValuePair<int, int>> Group
         {
             get
@@ -80,7 +77,7 @@ namespace CrashEdit.CE
             }
             catch (Exception ex)
             {
-                DarkMessageBox.ShowError($"Failed to load groups: {ex.Message}", titleError);
+                DarkMessageBox.ShowError($"Failed to load groups: {ex.Message}", Resources.Title_Error);
                 groups = CreateDefaultGroups();
             }
         }
@@ -130,7 +127,7 @@ namespace CrashEdit.CE
             }
             catch (Exception ex)
             {
-                DarkMessageBox.ShowError($"Failed to save groups: {ex.Message}", titleError);
+                DarkMessageBox.ShowError($"Failed to save groups: {ex.Message}", Resources.Title_Error);
             }
         }
 
@@ -163,12 +160,12 @@ namespace CrashEdit.CE
                 cmbGroups.DataSource = groups[groupIndex].Keys.ToList();
                 cmbGroups.SelectedItem = newGroupName;
 
-                DarkMessageBox.ShowInformation("Group added successfully.", titleSuccess);
+                DarkMessageBox.ShowInformation("Group added successfully.", Resources.Title_Success);
                 SaveGroups();
             }
             else
             {
-                DarkMessageBox.ShowError("Invalid or duplicate group name.", titleError);
+                DarkMessageBox.ShowError("Invalid or duplicate group name.", Resources.Title_Error);
             }
         }
 
@@ -189,7 +186,7 @@ namespace CrashEdit.CE
             }
             else
             {
-                DarkMessageBox.ShowError("Please select a group to remove.", titleError);
+                DarkMessageBox.ShowError("Please select a group to remove.", Resources.Title_Error);
             }
         }
 
@@ -212,12 +209,12 @@ namespace CrashEdit.CE
                 }
                 else
                 {
-                    DarkMessageBox.ShowError("Invalid or duplicate group name.", titleError);
+                    DarkMessageBox.ShowError("Invalid or duplicate group name.", Resources.Title_Error);
                 }
             }
             else
             {
-                DarkMessageBox.ShowError("Please select a group to rename.", titleError);
+                DarkMessageBox.ShowError("Please select a group to rename.", Resources.Title_Error);
             }
         }
 
@@ -240,7 +237,7 @@ namespace CrashEdit.CE
         {
             if (cmbGroups.SelectedItem?.ToString() == defaultName)
             {
-                DarkMessageBox.ShowError("This group cannot be edited.", titleError);
+                DarkMessageBox.ShowError("This group cannot be edited.", Resources.Title_Error);
                 e.Cancel = true;
             }
         }
