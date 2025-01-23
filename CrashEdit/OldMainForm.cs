@@ -1076,8 +1076,8 @@ namespace CrashEdit.CE
                                     BitConv.ToInt32(data, 20, z);
                                     string result = BitConverter.ToString(data).Replace("-", "");
                                     Clipboard.SetText(result);
-                                    Console.WriteLine(result);
-                                    DarkMessageBox.ShowInformation("Spawn point generated and copied to clipboard.", Resources.GenerateSpawnPoint_Title);
+                                    Console.WriteLine($"[{Entry.EIDToEName(zone)}] [ID:{entity.ID}]\n{result}\nCopied to clipboard.");
+                                    DarkMessageBox.ShowInformation("Spawn point generated.", Resources.GenerateSpawnPoint_Title);
                                     return;
                                 }
                             }
