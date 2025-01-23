@@ -13,7 +13,7 @@ namespace CrashEdit.CE
 
         protected void AddMenuSeparator()
         {
-            // FIXME
+            LegacyVerbs.Add(new LegacyVerb("-", () => { }));
         }
 
         public GameVersion GameVersion =>

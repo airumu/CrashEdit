@@ -133,7 +133,14 @@ namespace CrashEdit
                         {
                             Executor.ExecuteVerb(legacyVerb);
                         };
-                        Items.Add(item);
+                        if (item.Text == "-")
+                        {
+                            Items.Add(new ToolStripSeparator());
+                        }
+                        else
+                        {
+                            Items.Add(item);
+                        }
                     }
                 }
 
