@@ -1664,18 +1664,25 @@ namespace CrashEdit.CE
             var selectedItem = savedItems.FirstOrDefault(item => string.Equals(item.Name, selectedItemName, StringComparison.Ordinal));
             if (selectedItem != null)
             {
-                string newName = Prompt.ShowDialog("Enter new name:", "Rename", selectedItemName);
-                if (!string.IsNullOrWhiteSpace(newName) &&
-                    !string.Equals(newName, selectedItemName, StringComparison.Ordinal))
+                using (InputWindow inputWindows = new InputWindow("Enter new name:", "Rename", selectedItemName))
                 {
-                    string uniqueName = GetUniqueName(newName);
+                    if (inputWindows.ShowDialog() == DialogResult.OK)
+                    {
+                        string newName = inputWindows.Input;
+                        if (!string.IsNullOrWhiteSpace(newName) &&
+                            !string.Equals(newName, selectedItemName, StringComparison.Ordinal))
+                        {
+                            string uniqueName = GetUniqueName(newName);
 
-                    selectedItem.Name = uniqueName;
-                    SaveItemsToFile();
-                    int selectedIndex = lbSavedProperties.SelectedIndex;
-                    lbSavedProperties.Items[selectedIndex] = string.Empty;
-                    lbSavedProperties.Items[selectedIndex] = uniqueName;
+                            selectedItem.Name = uniqueName;
+                            SaveItemsToFile();
+                            int selectedIndex = lbSavedProperties.SelectedIndex;
+                            lbSavedProperties.Items[selectedIndex] = string.Empty;
+                            lbSavedProperties.Items[selectedIndex] = uniqueName;
+                        }
+                    }
                 }
+               
             }
         }
 

@@ -1019,63 +1019,78 @@ namespace CrashEdit.CE
 
         void tbxGenerateSpawnPoint_Click(object sender, EventArgs e)
         {
-            string input = Prompt.ShowDialog("Enter entity ID:", Resources.GenerateSpawnPoint_Title, string.Empty);
-            if (string.IsNullOrEmpty(input)) return;
-            if (int.TryParse(input, out int targetID))
+            using (InputWindow inputWindow = new InputWindow("Enter entity ID:", Resources.GenerateSpawnPoint_Title, string.Empty))
             {
-                NSFBox nsfbox = (NSFBox)tbcTabs.SelectedTab.Tag;
-                NSF nsf = nsfbox.NSF;
-                foreach (ZoneEntry entry in nsf.GetEntries<ZoneEntry>())
+                if (inputWindow.ShowDialog() == DialogResult.OK)
                 {
-                    foreach (Entity entity in entry.Entities)
+                    string input = inputWindow.Input;
+                    if (string.IsNullOrEmpty(input)) return;
+
+                    if (int.TryParse(input, out int targetID))
                     {
-                        if (entity.ID == targetID)
+                        NSFBox nsfbox = (NSFBox)tbcTabs.SelectedTab.Tag;
+                        NSF nsf = nsfbox.NSF;
+                        foreach (ZoneEntry entry in nsf.GetEntries<ZoneEntry>())
                         {
-                            int zone = entry.EID;
-                            int cameraIdx = 0;
-                            if (entry.CameraCount > 3)
+                            foreach (Entity entity in entry.Entities)
                             {
-                                int cameraMaxIdx = (entry.CameraCount - 1) / 3;
-                                input = Prompt.ShowDialog($"Enter camera index [0-{cameraMaxIdx}]:", Resources.GenerateSpawnPoint_Title, string.Empty);
-                                if (int.TryParse(input, out cameraIdx))
+                                if (entity.ID == targetID)
                                 {
-                                    if (cameraIdx < 0 || cameraIdx > cameraMaxIdx)
+                                    int zone = entry.EID;
+                                    int cameraIdx = 0;
+                                    if (entry.CameraCount > 3)
                                     {
-                                        DarkMessageBox.ShowError("Invalid camera index.", Resources.GenerateSpawnPoint_Title);
-                                        return;
+                                        int cameraMaxIdx = (entry.CameraCount - 1) / 3;
+                                        using (InputWindow inputWindows = new InputWindow($"Enter camera index [0-{cameraMaxIdx}]:", Resources.GenerateSpawnPoint_Title, "0"))
+                                        {
+                                            if (inputWindows.ShowDialog() == DialogResult.OK)
+                                            {
+                                                input = inputWindows.Input;
+                                                bool valid = true;
+                                                if (int.TryParse(input, out cameraIdx))
+                                                {
+                                                    if (cameraIdx < 0 || cameraIdx > cameraMaxIdx)
+                                                        valid = false;
+                                                }
+                                                else
+                                                    valid = false;
+
+                                                if (!valid)
+                                                {
+                                                    DarkMessageBox.ShowError("Invalid camera index.", Resources.GenerateSpawnPoint_Title);
+                                                    return;
+                                                }
+                                            }
+                                            else return;
+                                        }
                                     }
-                                }
-                                else
-                                {
-                                    DarkMessageBox.ShowError("Invalid camera index.", Resources.GenerateSpawnPoint_Title);
+                                    int x = (entry.X + 4 * entity.Positions[0].X) << 8;
+                                    int y = (entry.Y + 4 * entity.Positions[0].Y) << 8;
+                                    int z = (entry.Z + 4 * entity.Positions[0].Z) << 8;
+                                    byte[] data = new byte[24];
+                                    BitConv.ToInt32(data, 0, zone);
+                                    BitConv.ToInt32(data, 4, cameraIdx);
+                                    BitConv.ToInt32(data, 8, 0);
+                                    BitConv.ToInt32(data, 12, x);
+                                    BitConv.ToInt32(data, 16, y);
+                                    BitConv.ToInt32(data, 20, z);
+                                    string result = BitConverter.ToString(data).Replace("-", "");
+                                    Clipboard.SetText(result);
+                                    Console.WriteLine(result);
+                                    DarkMessageBox.ShowInformation("Spawn point generated and copied to clipboard.", Resources.GenerateSpawnPoint_Title);
                                     return;
                                 }
                             }
-                            int x = (entry.X + 4 * entity.Positions[0].X) << 8;
-                            int y = (entry.Y + 4 * entity.Positions[0].Y) << 8;
-                            int z = (entry.Z + 4 * entity.Positions[0].Z) << 8;
-                            byte[] data = new byte[24];
-                            BitConv.ToInt32(data, 0, zone);
-                            BitConv.ToInt32(data, 4, cameraIdx);
-                            BitConv.ToInt32(data, 8, 0);
-                            BitConv.ToInt32(data, 12, x);
-                            BitConv.ToInt32(data, 16, y);
-                            BitConv.ToInt32(data, 20, z);
-                            string result = BitConverter.ToString(data).Replace("-", "");
-                            Clipboard.SetText(result);
-                            Console.WriteLine(result);
-                            DarkMessageBox.ShowInformation("Spawn point generated and copied to clipboard.", Resources.GenerateSpawnPoint_Title);
-                            return;
                         }
+                        DarkMessageBox.ShowError("Entity not found.", Resources.GenerateSpawnPoint_Title);
+                        return;
+                    }
+                    else
+                    {
+                        DarkMessageBox.ShowError("Invalid entity ID.", Resources.GenerateSpawnPoint_Title);
+                        return;
                     }
                 }
-                DarkMessageBox.ShowError("Entity not found.", Resources.GenerateSpawnPoint_Title);
-                return;
-            }
-            else
-            {
-                DarkMessageBox.ShowError("Invalid entity ID.", Resources.GenerateSpawnPoint_Title);
-                return;
             }
         }
 
@@ -1116,33 +1131,4 @@ namespace CrashEdit.CE
         }
     }
 
-    public static class Prompt
-    {
-        public static string ShowDialog(string text, string caption, string curText)
-        {
-            DarkForm prompt = new DarkForm()
-            {
-                Width = 300,
-                Height = 150,
-                FormBorderStyle = FormBorderStyle.FixedDialog,
-                Text = caption,
-                StartPosition = FormStartPosition.CenterScreen
-            };
-
-            DarkLabel textLabel = new DarkLabel() { Left = 10, Top = 20, Text = text, Width = 260 };
-            DarkTextBox textBox = new DarkTextBox() { Left = 10, Top = 50, Text = curText, Width = 260 };
-
-            DarkButton confirmation = new DarkButton() { Text = "OK", Left = 200, Width = 70, Top = 80, DialogResult = DialogResult.OK };
-            confirmation.Click += (sender, e) => { prompt.Close(); };
-
-            prompt.Controls.Add(textBox);
-            prompt.Controls.Add(confirmation);
-            prompt.Controls.Add(textLabel);
-            prompt.AcceptButton = confirmation;
-            prompt.MinimizeBox = false;
-            prompt.MaximizeBox = false;
-
-            return prompt.ShowDialog() == DialogResult.OK ? textBox.Text : string.Empty;
-        }
-    }
 }
