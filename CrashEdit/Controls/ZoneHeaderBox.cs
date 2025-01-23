@@ -21,6 +21,8 @@ namespace CrashEdit.CE
         private int spLoadListsCount;
         private BindingList<string> spLoadLists;
 
+        private int maxZoneCount;
+
         internal Stack<bool> dirty = new Stack<bool>();
         internal bool Dirty => dirty.Count > 0 && dirty.Peek();
 
@@ -47,6 +49,7 @@ namespace CrashEdit.CE
             dgvWorlds.CellMouseDown += DataGridView_CellMouseDown;
 
             HeaderInit();
+            maxZoneCount = header.IsNew ? 16 : 8;
         }
 
         private void CreateTabs()
@@ -211,9 +214,9 @@ namespace CrashEdit.CE
                 DarkMessageBox.ShowError("No row is selected.", Resources.Title_Error);
                 return;
             }
-            if (currentDataGridView.Rows.Count >= 8)
+            if (currentDataGridView.Rows.Count >= maxZoneCount)
             {
-                DarkMessageBox.ShowError("You cannot add more than 8 rows.", Resources.Title_Error);
+                DarkMessageBox.ShowError($"You cannot add more than {maxZoneCount} rows.", Resources.Title_Error);
                 return;
             }
 
@@ -619,7 +622,7 @@ namespace CrashEdit.CE
                 throw new ArgumentException();
 
             Array.Copy(source, 0, data, destOffset, destLength);
-            header = ZoneHeader.Load(header.Data);
+            header = header.IsNew ? ZoneHeader.LoadNew(header.Data) : ZoneHeader.Load(header.Data);
             return true;
         }
 
