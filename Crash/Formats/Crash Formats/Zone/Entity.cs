@@ -143,7 +143,7 @@ namespace CrashEdit.Crash
         [EntityPropertyField(0x1AA)]
         private EntityVictimProperty field0x1AA = null;
         [EntityPropertyField(0x27F)]
-        private EntityUInt8Property field0x27F = null;
+        private EntityUInt8Property sceneryupdates = null;
         // Camera 2
         [EntityPropertyField(0x119)]
         private EntityVictimProperty panning = null;
@@ -439,10 +439,10 @@ namespace CrashEdit.Crash
             get => field0x1AA;
             set => field0x1AA = value;
         }
-        public EntityUInt8Property Field0x27F
+        public EntityUInt8Property SceneryUpdates
         {
-            get => field0x27F;
-            set => field0x27F = value;
+            get => sceneryupdates;
+            set => sceneryupdates = value;
         }
         // Camera 2
         public EntityVictimProperty Panning
