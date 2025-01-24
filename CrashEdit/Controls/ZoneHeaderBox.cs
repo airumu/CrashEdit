@@ -22,6 +22,7 @@ namespace CrashEdit.CE
         private BindingList<string> spLoadLists;
 
         private int maxZoneCount;
+        private bool firstInit = true;
 
         internal Stack<bool> dirty = new Stack<bool>();
         internal bool Dirty => dirty.Count > 0 && dirty.Peek();
@@ -50,6 +51,7 @@ namespace CrashEdit.CE
 
             HeaderInit();
             maxZoneCount = header.IsNew ? 16 : 8;
+            firstInit = false;
         }
 
         private void CreateTabs()
@@ -110,6 +112,11 @@ namespace CrashEdit.CE
             tbpHex.Controls.Add(hex);
         }
 
+        private void ZoneHeaderBox_Leave(object sender, EventArgs e)
+        {
+            tbcTabs.SelectedIndex = 1;
+        }
+
         private void tbpHeader_Enter(object sender, EventArgs e)
         {
             HeaderInit();
@@ -122,7 +129,7 @@ namespace CrashEdit.CE
 
         private void UpdateZones()
         {
-            if (dgvZones.Columns.Count == 0)
+            if (firstInit)
             {
                 dgvZones.Columns.Add("Index", "Index");
                 dgvZones.Columns.Add("EID", "EID");
@@ -144,7 +151,7 @@ namespace CrashEdit.CE
 
         private void UpdateWorlds()
         {
-            if (dgvWorlds.Columns.Count == 0)
+            if (firstInit)
             {
                 dgvWorlds.Columns.Add("Index", "Index");
                 dgvWorlds.Columns.Add("EID", "EID");
@@ -225,15 +232,19 @@ namespace CrashEdit.CE
                 if (header.ZoneCount == 0)
                 {
                     dgvZones.Rows.Add(0, "00000", "00");
-                    header.Zones.Add(0);
-                    header.ZoneLinkTypes.Add(0);
+                    //header.Zones.Add(0);
+                    //header.ZoneLinkTypes.Add(0);
+                    header.Zones[0] = 0;
+                    header.ZoneLinkTypes[0] = 0;
                 }
                 else
                 {
                     int idx = header.ZoneCount - 1;
                     dgvZones.Rows.Add(header.ZoneCount, Entry.EIDToEName(header.Zones[idx]), header.ZoneLinkTypes[idx].ToString("X2"));
-                    header.Zones.Add(header.Zones[idx]);
-                    header.ZoneLinkTypes.Add(header.ZoneLinkTypes[idx]);
+                    //header.Zones.Add(header.Zones[idx]);
+                    //header.ZoneLinkTypes.Add(header.ZoneLinkTypes[idx]);
+                    header.Zones[header.ZoneCount] = header.Zones[idx];
+                    header.ZoneLinkTypes[header.ZoneCount] = header.ZoneLinkTypes[idx];
                 }
                 ++header.ZoneCount;
             }
@@ -242,13 +253,15 @@ namespace CrashEdit.CE
                 if (header.WorldCount == 0)
                 {
                     dgvWorlds.Rows.Add(0, "00000");
-                    header.Worlds.Add(0);
+                    //header.Worlds.Add(0);
+                    header.Worlds[0] = 0;
                 }
                 else
                 {
                     int idx = header.WorldCount - 1;
                     dgvWorlds.Rows.Add(header.WorldCount, Entry.EIDToEName(header.Worlds[idx]));
-                    header.Worlds.Add(header.Worlds[idx]);
+                    //header.Worlds.Add(header.Worlds[idx]);
+                    header.Worlds[header.WorldCount] = header.Worlds[idx];
                 }
                 ++header.WorldCount;
             }
@@ -267,15 +280,18 @@ namespace CrashEdit.CE
             {
                 int idx = header.ZoneCount - 1;
                 dgvZones.Rows.RemoveAt(dgvZones.RowCount - 1);
-                header.Zones.RemoveAt(idx);
-                header.ZoneLinkTypes.RemoveAt(idx);
+                //header.Zones.RemoveAt(idx);
+                //header.ZoneLinkTypes.RemoveAt(idx);
+                header.Zones[idx] = 0;
+                header.ZoneLinkTypes[idx] = 0;
                 --header.ZoneCount;
             }
             else if (currentDataGridView == dgvWorlds)
             {
                 int idx = header.WorldCount - 1;
                 dgvWorlds.Rows.RemoveAt(dgvWorlds.RowCount - 1);
-                header.Worlds.RemoveAt(idx);
+                //header.Worlds.RemoveAt(idx);
+                header.Worlds[idx] = 0;
                 --header.WorldCount;
             }
         }

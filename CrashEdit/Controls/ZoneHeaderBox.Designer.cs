@@ -275,6 +275,7 @@ namespace CrashEdit.CE
             Controls.Add(pnHeader);
             Name = "ZoneHeaderBox";
             Size = new Size(573, 652);
+            Leave += ZoneHeaderBox_Leave;
             ((System.ComponentModel.ISupportInitialize)dgvZones).EndInit();
             fraZones.ResumeLayout(false);
             fraWorlds.ResumeLayout(false);
