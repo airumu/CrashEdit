@@ -83,6 +83,9 @@ namespace CrashEdit.CE.Controls
         private Color clrSelectionBackground = Color.FromArgb(70, 70, 70);
         private Color clrText = Color.Gainsboro;
 
+        internal Stack<bool> dirty = new Stack<bool>();
+        internal bool Dirty => dirty.Count > 0 && dirty.Peek();
+
         public ModelBox(ModelEntryController controller)
         {
             MainInit(controller, false);
@@ -97,10 +100,10 @@ namespace CrashEdit.CE.Controls
         {
             InitializeComponent();
             DoubleBuffered = true;
-
             this.controller = controller;
             this.isScenery = isScenery;
 
+            dirty.Push(true);
             if (isScenery)
             {
                 model = this.controller.SceneryEntry;
@@ -108,9 +111,9 @@ namespace CrashEdit.CE.Controls
                 fraScales.Visible = false;
                 lblModelInfo.Visible = false;
 
-                numOffsetX.Value = model.XOffset;
-                numOffsetY.Value = model.YOffset;
-                numOffsetZ.Value = model.ZOffset;
+                SetCVal(numOffsetX, model.XOffset);
+                SetCVal(numOffsetY, model.YOffset);
+                SetCVal(numOffsetZ, model.ZOffset);
             }
             else
             {
@@ -118,9 +121,9 @@ namespace CrashEdit.CE.Controls
 
                 fraOffsets.Visible = false;
 
-                numScaleX.Value = model.ScaleX;
-                numScaleY.Value = model.ScaleY;
-                numScaleZ.Value = model.ScaleZ;
+                SetCVal(numScaleX, model.ScaleX);
+                SetCVal(numScaleY, model.ScaleY);
+                SetCVal(numScaleZ, model.ScaleZ);
                 UpdateInfo();
             }
 
@@ -135,6 +138,27 @@ namespace CrashEdit.CE.Controls
                 tabModel.Controls.Remove(tbpExtendedTextures);
                 tbpExtendedTextures.Dispose();
             }
+            dirty.Pop();
+        }
+
+        internal void SetCVal(DarkNumericUpDown num, long val)
+        {
+            dirty.Push(true);
+            // this is fucking stupid
+            if (num.Hexadecimal)
+            {
+                if (val > 0xFFFFFFFF) val = 0xFFFFFFFF;
+                else if (val < 0) val &= 0xFFFFFFFF;
+                num.Value = unchecked((uint)val);
+            }
+            else
+            {
+                if (val > 0xFFFFFFFF) val = 0x7FFFFFFF;
+                else if (val > 0x7FFFFFFF) val = -0x100000000 + val;
+                else if (val < -0x80000000) val = -0x80000000;
+                num.Value = unchecked((int)val);
+            }
+            dirty.Pop();
         }
 
         private void UpdateInfo()
@@ -1892,17 +1916,29 @@ namespace CrashEdit.CE.Controls
 
         private void numScaleX_ValueChanged(object sender, EventArgs e)
         {
-            model.ScaleX = (int)numScaleX.Value;
+            if (!Dirty)
+            {
+                SetCVal(numScaleX, (long)numScaleX.Value);
+                model.ScaleX = ((long)numScaleX.Value).UInt32ToInt32();
+            }
         }
 
         private void numScaleY_ValueChanged(object sender, EventArgs e)
         {
-            model.ScaleY = (int)numScaleY.Value;
+            if (!Dirty)
+            {
+                SetCVal(numScaleY, (long)numScaleY.Value);
+                model.ScaleY = ((long)numScaleY.Value).UInt32ToInt32();
+            }
         }
 
         private void numScaleZ_ValueChanged(object sender, EventArgs e)
         {
-            model.ScaleZ = (int)numScaleZ.Value;
+            if (!Dirty)
+            {
+                SetCVal(numScaleZ, (long)numScaleZ.Value);
+                model.ScaleZ = ((long)numScaleZ.Value).UInt32ToInt32();
+            }
         }
 
         private void chkScalesAsHex_CheckedChanged(object sender, EventArgs e)
@@ -1910,21 +1946,36 @@ namespace CrashEdit.CE.Controls
             numScaleX.Hexadecimal =
             numScaleY.Hexadecimal =
             numScaleZ.Hexadecimal = chkScalesShowAsHex.Checked;
+            SetCVal(numScaleX, (long)numScaleX.Value);
+            SetCVal(numScaleY, (long)numScaleY.Value);
+            SetCVal(numScaleZ, (long)numScaleZ.Value);
         }
 
         private void numOffsetX_ValueChanged(object sender, EventArgs e)
         {
-            model.XOffset = (int)numOffsetX.Value;
+            if (!Dirty)
+            {
+                SetCVal(numOffsetX, (long)numOffsetX.Value);
+                model.XOffset = ((long)numOffsetX.Value).UInt32ToInt32();
+            }
         }
 
         private void numOffsetY_ValueChanged(object sender, EventArgs e)
         {
-            model.YOffset = (int)numOffsetY.Value;
+            if (!Dirty)
+            {
+                SetCVal(numOffsetY, (long)numOffsetY.Value);
+                model.YOffset = ((long)numOffsetY.Value).UInt32ToInt32();
+            }
         }
 
         private void numOffsetZ_ValueChanged(object sender, EventArgs e)
         {
-            model.ZOffset = (int)numOffsetZ.Value;
+            if (!Dirty)
+            {
+                SetCVal(numOffsetZ, (long)numOffsetZ.Value);
+                model.ZOffset = ((long)numOffsetZ.Value).UInt32ToInt32();
+            }
         }
 
         private void chkOffsetsAsHex_CheckedChanged(object sender, EventArgs e)
@@ -1932,6 +1983,9 @@ namespace CrashEdit.CE.Controls
             numOffsetX.Hexadecimal =
             numOffsetY.Hexadecimal =
             numOffsetZ.Hexadecimal = chkOffsetsShowAsHex.Checked;
+            SetCVal(numOffsetX, (long)numOffsetX.Value);
+            SetCVal(numOffsetY, (long)numOffsetY.Value);
+            SetCVal(numOffsetZ, (long)numOffsetZ.Value);
         }
 
         private void numReplaceTo_Click(object sender, EventArgs e)

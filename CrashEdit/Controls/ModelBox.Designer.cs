@@ -217,8 +217,8 @@ namespace CrashEdit.CE.Controls
             // 
             numScaleZ.Hexadecimal = true;
             numScaleZ.Location = new Point(56, 75);
-            numScaleZ.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
-            numScaleZ.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numScaleZ.Maximum = new decimal(new int[] { -1, int.MaxValue, 0, 0 });
+            numScaleZ.Minimum = new decimal(new int[] { 0, int.MinValue, 0, int.MinValue });
             numScaleZ.Name = "numScaleZ";
             numScaleZ.Size = new Size(122, 23);
             numScaleZ.TabIndex = 1;
@@ -238,8 +238,8 @@ namespace CrashEdit.CE.Controls
             // 
             numScaleY.Hexadecimal = true;
             numScaleY.Location = new Point(56, 46);
-            numScaleY.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
-            numScaleY.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numScaleY.Maximum = new decimal(new int[] { -1, int.MaxValue, 0, 0 });
+            numScaleY.Minimum = new decimal(new int[] { 0, int.MinValue, 0, int.MinValue });
             numScaleY.Name = "numScaleY";
             numScaleY.Size = new Size(122, 23);
             numScaleY.TabIndex = 1;
@@ -259,8 +259,8 @@ namespace CrashEdit.CE.Controls
             // 
             numScaleX.Hexadecimal = true;
             numScaleX.Location = new Point(56, 17);
-            numScaleX.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
-            numScaleX.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numScaleX.Maximum = new decimal(new int[] { -1, int.MaxValue, 0, 0 });
+            numScaleX.Minimum = new decimal(new int[] { 0, int.MinValue, 0, int.MinValue });
             numScaleX.Name = "numScaleX";
             numScaleX.Size = new Size(122, 23);
             numScaleX.TabIndex = 1;
@@ -311,8 +311,8 @@ namespace CrashEdit.CE.Controls
             // 
             numOffsetZ.Hexadecimal = true;
             numOffsetZ.Location = new Point(56, 75);
-            numOffsetZ.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
-            numOffsetZ.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numOffsetZ.Maximum = new decimal(new int[] { -1, int.MaxValue, 0, 0 });
+            numOffsetZ.Minimum = new decimal(new int[] { 0, int.MinValue, 0, int.MinValue });
             numOffsetZ.Name = "numOffsetZ";
             numOffsetZ.Size = new Size(122, 23);
             numOffsetZ.TabIndex = 1;
@@ -332,8 +332,8 @@ namespace CrashEdit.CE.Controls
             // 
             numOffsetY.Hexadecimal = true;
             numOffsetY.Location = new Point(56, 46);
-            numOffsetY.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
-            numOffsetY.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numOffsetY.Maximum = new decimal(new int[] { -1, int.MaxValue, 0, 0 });
+            numOffsetY.Minimum = new decimal(new int[] { 0, int.MinValue, 0, int.MinValue });
             numOffsetY.Name = "numOffsetY";
             numOffsetY.Size = new Size(122, 23);
             numOffsetY.TabIndex = 1;
@@ -353,8 +353,8 @@ namespace CrashEdit.CE.Controls
             // 
             numOffsetX.Hexadecimal = true;
             numOffsetX.Location = new Point(56, 17);
-            numOffsetX.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
-            numOffsetX.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numOffsetX.Maximum = new decimal(new int[] { -1, int.MaxValue, 0, 0 });
+            numOffsetX.Minimum = new decimal(new int[] { 0, int.MinValue, 0, int.MinValue });
             numOffsetX.Name = "numOffsetX";
             numOffsetX.Size = new Size(122, 23);
             numOffsetX.TabIndex = 1;
