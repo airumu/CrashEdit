@@ -22,6 +22,7 @@ namespace CrashEdit.CE
         private ToolStripMenuItem tbxMakeBIN;
         private ToolStripMenuItem tbxConvertVHVB;
         private ToolStripMenuItem tbxConvertVAB;
+        private ToolStripMenuItem tbxConvertAnimations;
         private ToolStripMenuItem tbxShowGOOLMap;
         private ToolStripMenuItem tbxGenerateSpawnPoint;
         private ToolStripMenuItem tbbExtra;
@@ -29,6 +30,7 @@ namespace CrashEdit.CE
         private ToolStripButton tbbBIN;
         private TabControl tbcTabs;
         private GameVersionForm dlgGameVersion;
+        private ConvertAnimationsForm dlgConvertAnimations;
         private ToolStripButton tbbPAL;
 
         private FolderBrowserDialog dlgMakeBINDir = new FolderBrowserDialog();
@@ -105,6 +107,10 @@ namespace CrashEdit.CE
             tbxConvertVAB.Text = Resources.OldMainForm_tbxConvertVAB;
             tbxConvertVAB.Click += new EventHandler(tbxConvertVAB_Click);
 
+            tbxConvertAnimations = new ToolStripMenuItem();
+            tbxConvertAnimations.Text = Resources.OldMainForm_tbxConvertAnimations;
+            tbxConvertAnimations.Click += new EventHandler(tbxConvertAnimations_Click);
+
             tbxShowGOOLMap = new ToolStripMenuItem();
             tbxShowGOOLMap.Text = Resources.OldMainForm_tbxShowGOOLMap;
             tbxShowGOOLMap.Click += new EventHandler(tbxShowGOOLMap_Click);
@@ -122,6 +128,8 @@ namespace CrashEdit.CE
             tbbExtra.DropDown.Items.Add("-");
             tbbExtra.DropDown.Items.Add(tbxConvertVHVB);
             tbbExtra.DropDown.Items.Add(tbxConvertVAB);
+            tbbExtra.DropDown.Items.Add("-");
+            tbbExtra.DropDown.Items.Add(tbxConvertAnimations);
             tbbExtra.DropDown.Items.Add("-");
             tbbExtra.DropDown.Items.Add(tbxShowGOOLMap);
             tbbExtra.DropDown.Items.Add(tbxGenerateSpawnPoint);
@@ -921,6 +929,21 @@ namespace CrashEdit.CE
             catch (LoadAbortedException)
             {
             }
+        }
+
+        void tbxConvertAnimations_Click(object sender, EventArgs e)
+        {
+            if (dlgConvertAnimations != null)
+            {
+                dlgConvertAnimations.Focus();
+                return;
+            }
+            dlgConvertAnimations = new ConvertAnimationsForm();
+            dlgConvertAnimations.FormClosing += (object sender, FormClosingEventArgs e) =>
+            {
+                dlgConvertAnimations = null;
+            };
+            dlgConvertAnimations.Show();
         }
 
         dynamic GetNSD()

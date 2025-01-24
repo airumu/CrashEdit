@@ -896,4 +896,7 @@
   <data name="Title_Success" xml:space="preserve">
     <value>成功</value>
   </data>
+  <data name="OldMainForm_tbxConvertAnimations" xml:space="preserve">
+    <value>アニメーション エントリの変換</value>
+  </data>
 </root>

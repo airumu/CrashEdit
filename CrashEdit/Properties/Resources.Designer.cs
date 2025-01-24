@@ -1568,6 +1568,15 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
+        ///   Convert Animation Entries に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string OldMainForm_tbxConvertAnimations {
+            get {
+                return ResourceManager.GetString("OldMainForm_tbxConvertAnimations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Convert VAB to DLS に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string OldMainForm_tbxConvertVAB {
