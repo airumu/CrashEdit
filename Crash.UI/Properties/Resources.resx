@@ -360,4 +360,7 @@
   <data name="NSFController_AcAddTextureChunk" xml:space="preserve">
     <value>Add Texture Chunk</value>
   </data>
+  <data name="ZoneEntryController_AcChangeCollisionType" xml:space="preserve">
+    <value>Change Collision Type</value>
+  </data>
 </root>

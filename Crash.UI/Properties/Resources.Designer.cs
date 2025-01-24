@@ -781,7 +781,18 @@ namespace CrashEdit.CrashUI.Properties {
                 return ResourceManager.GetString("ZoneEntryController_AcAddEntity", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Add Entity.
+        /// </summary>
+        public static string ZoneEntryController_AcChangeCollisionType
+        {
+            get
+            {
+                return ResourceManager.GetString("ZoneEntryController_AcChangeCollisionType", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Zone ({0}).
         /// </summary>

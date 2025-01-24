@@ -360,4 +360,7 @@
   <data name="NSFController_AcAddTextureChunk" xml:space="preserve">
     <value>テクスチャチャンクの追加</value>
   </data>
+  <data name="ZoneEntryController_AcChangeCollisionType" xml:space="preserve">
+    <value>コリジョン タイプの置き換え</value>
+  </data>
 </root>
