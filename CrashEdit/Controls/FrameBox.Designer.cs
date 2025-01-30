@@ -1022,7 +1022,7 @@ namespace CrashEdit.CE
             chkShowVertices.Name = "chkShowVertices";
             chkShowVertices.Size = new Size(155, 19);
             chkShowVertices.TabIndex = 18;
-            chkShowVertices.Text = "Show Vertices (readonly)";
+            chkShowVertices.Text = "Show Vertices (read-only)";
             chkShowVertices.UseVisualStyleBackColor = false;
             chkShowVertices.CheckedChanged += chkShowVertices_CheckedChanged;
             // 
