@@ -24,6 +24,8 @@ namespace CrashEdit.CE.Controls
         private dynamic model;
         private TextureChunk chunk { get; set; }
 
+        private List<dynamic> structs = new List<dynamic>();
+
         private Rectangle selectedregion;
 
         private DarkToolTip tipReloadTPage;
@@ -178,6 +180,75 @@ namespace CrashEdit.CE.Controls
                     bits += 1 + pos.ZBits;
                 }
                 lblModelInfo.Text = string.Format("Polygon count: {0}\nVertex count: {1}\nCompression ratio: {2:P1} ({3}/{4})", model.PolyCount, model.VertexCount, (float)bits / totalbits, bits, totalbits);
+            }
+        }
+
+        private void UpdateStructs()
+        {
+            dgvStructs.ColumnHeadersHeight = 36;
+            dgvStructs.Columns.Add("TextureIndex", "Texture /\nColor1");
+            dgvStructs.Columns.Add("ColorIndex", "Color /\nColor2");
+            dgvStructs.Columns.Add("Animated", "Animated");
+            dgvStructs.Columns.Add("PositionKey", "Key");
+            dgvStructs.Columns.Add("TriangleType", "TriType");
+            dgvStructs.Columns.Add("TriangleType", "TriSubtype");
+            dgvStructs.Columns.Add("Unknown", "Unknown");
+            dgvStructs.Columns.Add("Flag", "Flag");
+            dgvStructs.Columns.Add("Type", "Type");
+            for (int i = 0; i < model.PolyData.Length; i++)
+            {
+                ModelStruct s = ModelEntry.ConvertPolyItem(model.PolyData[i]);
+                DataGridViewRow row = new DataGridViewRow();
+                if (s == null) // footer
+                {
+                    structs.Add(null!);
+                    row.CreateCells(dgvStructs, "NULL");
+                }
+                else if (s is ModelColor c) // color
+                {
+                    structs.Add(c);
+                    //lastcolor = i;
+                    row.DefaultCellStyle.ForeColor = Color.Turquoise;
+                    row.CreateCells(dgvStructs, c.Color1, c.Color2);
+                }
+                else if (s is ModelTriangle t) // index
+                {
+                    structs.Add(t);
+                    row.CreateCells(dgvStructs, t.TextureIndex, t.ColorIndex, t.Animated, t.PositionKey, t.TriangleType, t.TriangleSubtype, t.Unknown, t.Flag, t.Type);
+                }
+                dgvStructs.Rows.Add(row);
+            }
+            foreach (DataGridViewColumn column in dgvStructs.Columns)
+            {
+                column.SortMode = DataGridViewColumnSortMode.NotSortable;
+                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                column.Width = 60;
+                column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            }
+        }
+
+        private void UpdatePolygons()
+        {
+            dgvPolygons.Columns.Add("VertexA", "Vertex A");
+            dgvPolygons.Columns.Add("VertexB", "Vertex B");
+            dgvPolygons.Columns.Add("VertexC", "Vertex C");
+            dgvPolygons.Columns.Add("ColorA", "Color A");
+            dgvPolygons.Columns.Add("ColorB", "Color B");
+            dgvPolygons.Columns.Add("ColorC", "Color C");
+            dgvPolygons.Columns.Add("Texture", "Texture");
+            dgvPolygons.Columns.Add("Type", "Type");
+            dgvPolygons.Columns.Add("Subtype", "Subtype");
+            dgvPolygons.Columns.Add("Animated", "Animated");
+            foreach (var tri in model.Triangles)
+            {
+                dgvPolygons.Rows.Add(tri.Vertex[0], tri.Vertex[1], tri.Vertex[2], tri.Color[0], tri.Color[1], tri.Color[2], tri.Texture, tri.Type, tri.Subtype, tri.Animated);
+            }
+            foreach (DataGridViewColumn column in dgvPolygons.Columns)
+            {
+                column.SortMode = DataGridViewColumnSortMode.NotSortable;
+                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                column.Width = 60;
+                column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft;
             }
         }
 
@@ -1143,6 +1214,15 @@ namespace CrashEdit.CE.Controls
             Console.WriteLine($"Processing time: {stopwatch.Elapsed.TotalSeconds:F3} seconds");
         }
 
+        private void tbpPolygons_Enter(object sender, EventArgs e)
+        {
+            DoubleBufferedDataGridView.Initialize(dgvStructs);
+            DoubleBufferedDataGridView.Initialize(dgvPolygons);
+            UpdateStructs();
+            UpdatePolygons();
+            tbpPolygons.Enter -= tbpPolygons_Enter;
+        }
+
         private async void tbpColors_Enter(object sender, EventArgs e)
         {
             ResetColorSliders();
@@ -1154,8 +1234,7 @@ namespace CrashEdit.CE.Controls
         {
             tipReloadTPage = new DarkToolTip();
             tipReloadTPage.SetToolTip(rbtReloadTPage, "Reload");
-            SetDarkTheme(grdTextures);
-            EnableDoubleBuffering(grdTextures);
+            DoubleBufferedDataGridView.Initialize(grdTextures);
             if (isScenery)
             {
                 grdTextures.Width = 612;
@@ -1184,8 +1263,7 @@ namespace CrashEdit.CE.Controls
 
         private async void tbpExtendedTextures_Enter(object sender, EventArgs e)
         {
-            SetDarkTheme(dgvExtendedTextures);
-            EnableDoubleBuffering(dgvExtendedTextures);
+            DoubleBufferedDataGridView.Initialize(dgvExtendedTextures);
 
             CreateExtendedTextureListColumns();
             await UpdateExtendedTextureListAsync();
@@ -1261,7 +1339,8 @@ namespace CrashEdit.CE.Controls
         {
             if (!(dgvExtendedTextures.SelectedCells.Count > 0)) return;
 
-            if (dgvExtendedTextures.SelectedCells[0].Value.ToString() == "-") {
+            if (dgvExtendedTextures.SelectedCells[0].Value.ToString() == "-")
+            {
                 DarkMessageBox.ShowError("This cell cannot be edited.", Resources.Title_InputError);
                 e.Cancel = true;
             }
@@ -2012,57 +2091,132 @@ namespace CrashEdit.CE.Controls
             }
         }
 
-        private void EnableDoubleBuffering(DataGridView dataGridView)
+        private void dgvStructs_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            typeof(DataGridView).InvokeMember("DoubleBuffered",
-                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance |
-                System.Reflection.BindingFlags.SetProperty,
-                null, dataGridView, new object[] { true });
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+
+            Console.WriteLine($"Old: {model.PolyData[e.RowIndex]:X}");
+            var cell = dgvStructs.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+
+            if (dgvStructs.Rows[e.RowIndex].Cells[8].Value == null)
+            {
+                ModelColor str = structs[e.RowIndex];
+
+                switch (e.ColumnIndex)
+                {
+                    case 0: // Color1
+                        str.Color1 = Convert.ToByte(cell);
+                        break;
+                    case 1: // Color2
+                        str.Color2 = Convert.ToByte(cell);
+                        break;
+                }
+                model.PolyData[e.RowIndex] = str.Save();
+                Console.WriteLine($"New: {str.Save():X}");
+            }
+            else
+            {
+                ModelTriangle str = structs[e.RowIndex];
+
+                switch (e.ColumnIndex)
+                {
+                    case 0: // TextureIndex
+                        str.TextureIndex = Convert.ToByte(cell);
+                        break;
+                    case 1: // ColorIndex
+                        str.ColorIndex = Convert.ToByte(cell);
+                        break;
+                    case 2: // Animated
+                        str.Animated = Convert.ToBoolean(cell);
+                        break;
+                    case 3: // PositionKey
+                        str.PositionKey = Convert.ToByte(cell);
+                        break;
+                    case 4: // TriangleType
+                        str.TriangleType = Convert.ToByte(cell);
+                        break;
+                    case 5: // TriangleSubtype
+                        str.TriangleSubtype = Convert.ToByte(cell);
+                        break;
+                    case 6: // Unknown
+                        str.Unknown = Convert.ToByte(cell);
+                        break;
+                    case 7: // Flag
+                        str.Flag = Convert.ToBoolean(cell);
+                        break;
+                    case 8: // Type
+                        str.Type = (ModelTriangle.IndexType)Enum.Parse(typeof(ModelTriangle.IndexType), cell.ToString());
+                        break;
+                }
+                model.PolyData[e.RowIndex] = str.Save();
+                Console.WriteLine($"New: {str.Save():X}");
+            }
         }
 
-        private void SetDarkTheme(DataGridView dataGridView)
+        private void dgvPolygons_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            // Background color of the entire grid
-            dataGridView.BackgroundColor = Color.FromArgb(31, 31, 32);
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
 
-            // Color of the grid lines
-            dataGridView.GridColor = Color.FromArgb(50, 50, 50);
+            var tri = model.Triangles[e.RowIndex];
+            var row = dgvPolygons.Rows[e.RowIndex];
 
-            // Default style for cells
-            dataGridView.DefaultCellStyle.BackColor = clrBackground;
-            dataGridView.DefaultCellStyle.ForeColor = clrText;
-            dataGridView.DefaultCellStyle.SelectionBackColor = clrSelectionBackground;
-            dataGridView.DefaultCellStyle.SelectionForeColor = clrText;
+            switch (e.ColumnIndex)
+            {
+                case 0: // Vertex A
+                    tri.Vertex[0] = Convert.ToInt32(row.Cells[e.ColumnIndex].Value);
+                    break;
+                case 1: // Vertex B
+                    tri.Vertex[1] = Convert.ToInt32(row.Cells[e.ColumnIndex].Value);
+                    break;
+                case 2: // Vertex C
+                    tri.Vertex[2] = Convert.ToInt32(row.Cells[e.ColumnIndex].Value);
+                    break;
+                case 3: // Color A
+                    tri.Color[0] = Convert.ToInt32(row.Cells[e.ColumnIndex].Value);
+                    break;
+                case 4: // Color B
+                    tri.Color[1] = Convert.ToInt32(row.Cells[e.ColumnIndex].Value);
+                    break;
+                case 5: // Color C
+                    tri.Color[2] = Convert.ToInt32(row.Cells[e.ColumnIndex].Value);
+                    break;
+                case 6: // Texture
+                    tri.Texture = Convert.ToInt32(row.Cells[e.ColumnIndex].Value);
+                    break;
+                case 7: // Type
+                    tri.Type = Convert.ToInt32(row.Cells[e.ColumnIndex].Value);
+                    break;
+                case 8: // Subtype
+                    tri.Subtype = Convert.ToInt32(row.Cells[e.ColumnIndex].Value);
+                    break;
+                case 9: // Animated
+                    tri.Animated = Convert.ToBoolean(row.Cells[e.ColumnIndex].Value);
+                    break;
 
-            // Style for column headers
-            dataGridView.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(50, 50, 50);
-            dataGridView.ColumnHeadersDefaultCellStyle.ForeColor = clrText;
-            dataGridView.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(60, 60, 60);
-            dataGridView.ColumnHeadersDefaultCellStyle.SelectionForeColor = clrText;
-            dataGridView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-
-            // Style for row headers
-            dataGridView.RowHeadersDefaultCellStyle.BackColor = Color.FromArgb(50, 50, 50);
-            dataGridView.RowHeadersDefaultCellStyle.ForeColor = clrText;
-            dataGridView.RowHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(60, 60, 60);
-            dataGridView.RowHeadersDefaultCellStyle.SelectionForeColor = clrText;
-
-            // Background color for odd and even rows
-            dataGridView.RowsDefaultCellStyle.BackColor = clrBackground;
-            dataGridView.AlternatingRowsDefaultCellStyle.BackColor = clrAltBackground;
-
-            // Row border style
-            dataGridView.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-
-            // Header and gridline styles
-            dataGridView.EnableHeadersVisualStyles = false;
-
-            // Additional settings
-            dataGridView.BorderStyle = BorderStyle.None;
-            dataGridView.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
-            dataGridView.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+            }
         }
 
+        private void dgvPolygons_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
+            {
+                if (dgvPolygons.SelectedCells.Count == 0) return;
+
+                int selectedColumnIndex = dgvPolygons.SelectedCells[0].ColumnIndex;
+                string clipboardData = Clipboard.GetText();
+                string[] rows = clipboardData.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+
+                for (int i = 0; i < rows.Length && i < dgvPolygons.Rows.Count; i++)
+                {
+                    dgvPolygons.Rows[i].Cells[selectedColumnIndex].Value = rows[i];
+                }
+            }
+        }
+
+        private void btnConvert_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 
     public class ListViewEditInfo

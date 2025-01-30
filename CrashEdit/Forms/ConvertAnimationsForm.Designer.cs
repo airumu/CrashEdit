@@ -36,6 +36,7 @@ namespace CrashEdit.CE
             chkShowFilePath = new CheckBox();
             chkSetModelEID = new CheckBox();
             cmdClear = new AltUI.Controls.DarkButton();
+            cmbType = new AltUI.Controls.DarkComboBox();
             ((System.ComponentModel.ISupportInitialize)dgvAnim).BeginInit();
             SuspendLayout();
             // 
@@ -60,7 +61,7 @@ namespace CrashEdit.CE
             // 
             cmbMode.DrawMode = DrawMode.OwnerDrawVariable;
             cmbMode.FormattingEnabled = true;
-            cmbMode.Location = new Point(12, 12);
+            cmbMode.Location = new Point(12, 40);
             cmbMode.Name = "cmbMode";
             cmbMode.Size = new Size(121, 24);
             cmbMode.TabIndex = 1;
@@ -98,18 +99,19 @@ namespace CrashEdit.CE
             // chkShowFilePath
             // 
             chkShowFilePath.AutoSize = true;
-            chkShowFilePath.Location = new Point(220, 12);
+            chkShowFilePath.Location = new Point(220, 15);
             chkShowFilePath.Name = "chkShowFilePath";
             chkShowFilePath.Size = new Size(103, 19);
             chkShowFilePath.TabIndex = 4;
             chkShowFilePath.Text = "Show File Path";
             chkShowFilePath.UseVisualStyleBackColor = true;
+            chkShowFilePath.Visible = false;
             chkShowFilePath.CheckedChanged += chkShowFilePath_CheckedChanged;
             // 
             // chkSetModelEID
             // 
             chkSetModelEID.AutoSize = true;
-            chkSetModelEID.Location = new Point(220, 37);
+            chkSetModelEID.Location = new Point(220, 44);
             chkSetModelEID.Name = "chkSetModelEID";
             chkSetModelEID.Size = new Size(174, 19);
             chkSetModelEID.TabIndex = 4;
@@ -131,6 +133,16 @@ namespace CrashEdit.CE
             cmdClear.Text = "Clear";
             cmdClear.Click += cmdClear_Click;
             // 
+            // cmbType
+            // 
+            cmbType.DrawMode = DrawMode.OwnerDrawVariable;
+            cmbType.FormattingEnabled = true;
+            cmbType.Location = new Point(12, 11);
+            cmbType.Name = "cmbType";
+            cmbType.Size = new Size(121, 24);
+            cmbType.TabIndex = 1;
+            cmbType.SelectedIndexChanged += cmbType_SelectedIndexChanged;
+            // 
             // ConvertAnimationsForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -141,6 +153,7 @@ namespace CrashEdit.CE
             Controls.Add(chkShowFilePath);
             Controls.Add(cmdProcess);
             Controls.Add(cmdLoad);
+            Controls.Add(cmbType);
             Controls.Add(cmbMode);
             Controls.Add(dgvAnim);
             CornerStyle = CornerPreference.Default;
@@ -165,5 +178,6 @@ namespace CrashEdit.CE
         private CheckBox chkShowFilePath;
         private CheckBox chkSetModelEID;
         private AltUI.Controls.DarkButton cmdClear;
+        private AltUI.Controls.DarkComboBox cmbType;
     }
 }

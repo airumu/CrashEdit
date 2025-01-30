@@ -4,7 +4,7 @@
     {
     }
 
-    public struct ModelTriangle : ModelStruct
+    public class ModelTriangle : ModelStruct
     {
         public const byte NullPtr = 0x57;
 
@@ -42,15 +42,30 @@
             TriangleType = (byte)(tritype >> 2 & 0x3);
         }
 
-        public byte TextureIndex { get; }
-        public byte ColorIndex { get; }
-        public bool Animated { get; }
-        public byte PositionKey { get; }
-        public byte TriangleType { get; }
-        public byte TriangleSubtype { get; }
-        public byte Unknown { get; }
-        public bool Flag { get; }
-        public IndexType Type { get; }
+        public byte TextureIndex { get; set; }
+        public byte ColorIndex { get; set; }
+        public bool Animated { get; set; }
+        public byte PositionKey { get; set; }
+        public byte TriangleType { get; set; }
+        public byte TriangleSubtype { get; set; }
+        public byte Unknown { get; set; }
+        public bool Flag { get; set; }
+        public IndexType Type { get; set; }
+
+        public uint Save()
+        {
+            uint structure = 0;
+            structure |= (uint)TextureIndex; // X
+            structure |= (uint)(Animated ? 1 : 0) << 8; // A
+            structure |= (uint)(ColorIndex & 0x7F) << 9; // C
+            structure |= (uint)PositionKey << 16; // P
+            structure |= (uint)(Unknown & 0x3) << 24; // L
+            structure |= (uint)((byte)Type & 0x01) << 26; // T
+            structure |= (uint)(Flag ? 1 : 0) << 27; // F
+            structure |= (uint)(TriangleSubtype & 0x3) << 28; // S
+            structure |= (uint)(TriangleType & 0x3) << 30; // Y
+            return structure;
+        }
     }
 
     public struct ModelColor : ModelStruct
@@ -68,7 +83,15 @@
             Color2 = color2;
         }
 
-        public byte Color1 { get; }
-        public byte Color2 { get; }
+        public byte Color1 { get; set; }
+        public byte Color2 { get; set; }
+
+        public uint Save()
+        {
+            uint structure = 0;
+            structure |= (uint)(Color1 & 0x7F) << 2;
+            structure |= (uint)(Color2 & 0x7F) << 9;
+            return structure;
+        }
     }
 }

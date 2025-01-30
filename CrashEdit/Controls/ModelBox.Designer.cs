@@ -57,6 +57,12 @@ namespace CrashEdit.CE.Controls
             numOffsetX = new DarkNumericUpDown();
             lblOffsetX = new Label();
             lblModelInfo = new Label();
+            tbpPolygons = new TabPage();
+            label3 = new Label();
+            label2 = new Label();
+            btnConvert = new DarkButton();
+            dgvStructs = new DataGridView();
+            dgvPolygons = new DataGridView();
             tbpColors = new TabPage();
             fraGlobalControl = new DarkGroupBox();
             cmdCancel = new DarkButton();
@@ -110,6 +116,9 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)numOffsetZ).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numOffsetY).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numOffsetX).BeginInit();
+            tbpPolygons.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvStructs).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvPolygons).BeginInit();
             tbpColors.SuspendLayout();
             fraGlobalControl.SuspendLayout();
             pnGlobalControl.SuspendLayout();
@@ -139,6 +148,7 @@ namespace CrashEdit.CE.Controls
             tabModel.AnimateTime = 200;
             tabModel.BackgroundColor = Color.FromArgb(31, 31, 32);
             tabModel.Controls.Add(tbpGeneral);
+            tabModel.Controls.Add(tbpPolygons);
             tabModel.Controls.Add(tbpColors);
             tabModel.Controls.Add(tbpTextures);
             tabModel.Controls.Add(tbpExtendedTextures);
@@ -148,7 +158,7 @@ namespace CrashEdit.CE.Controls
             tabModel.Location = new Point(0, 0);
             tabModel.Multiline = true;
             tabModel.Name = "tabModel";
-            tabModel.SelectedIndex = 0;
+            tabModel.SelectedIndex = 3;
             tabModel.SelectedTextColor = Color.White;
             tabModel.Size = new Size(1040, 800);
             tabModel.SizeMode = TabSizeMode.Fixed;
@@ -380,6 +390,85 @@ namespace CrashEdit.CE.Controls
             lblModelInfo.TabIndex = 0;
             lblModelInfo.Text = "Polygon count: {0}\r\nVertex count: {1}\r\nCompression ratio: {2:P1} ({3}/{4})";
             lblModelInfo.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // tbpPolygons
+            // 
+            tbpPolygons.BackColor = Color.FromArgb(31, 31, 32);
+            tbpPolygons.Controls.Add(label3);
+            tbpPolygons.Controls.Add(label2);
+            tbpPolygons.Controls.Add(btnConvert);
+            tbpPolygons.Controls.Add(dgvStructs);
+            tbpPolygons.Controls.Add(dgvPolygons);
+            tbpPolygons.Location = new Point(4, 32);
+            tbpPolygons.Name = "tbpPolygons";
+            tbpPolygons.Size = new Size(1032, 764);
+            tbpPolygons.TabIndex = 1;
+            tbpPolygons.Text = "Polygons";
+            tbpPolygons.Enter += tbpPolygons_Enter;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(3, 387);
+            label3.Name = "label3";
+            label3.Size = new Size(148, 15);
+            label3.TabIndex = 2;
+            label3.Text = "ModelTransformedTriangle (read-only)";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(3, 3);
+            label2.Name = "label2";
+            label2.Size = new Size(72, 15);
+            label2.TabIndex = 2;
+            label2.Text = "ModelStruct";
+            // 
+            // btnConvert
+            // 
+            btnConvert.BorderColour = Color.Empty;
+            btnConvert.CustomColour = false;
+            btnConvert.FlatBottom = false;
+            btnConvert.FlatTop = false;
+            btnConvert.Location = new Point(664, 3);
+            btnConvert.Name = "btnConvert";
+            btnConvert.Padding = new Padding(5);
+            btnConvert.Size = new Size(122, 23);
+            btnConvert.TabIndex = 1;
+            btnConvert.Text = "Convert";
+            btnConvert.Click += btnConvert_Click;
+            // 
+            // dgvStructs
+            // 
+            dgvStructs.AllowUserToAddRows = false;
+            dgvStructs.AllowUserToResizeColumns = false;
+            dgvStructs.AllowUserToResizeRows = false;
+            dgvStructs.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dgvStructs.ColumnHeadersHeight = 24;
+            dgvStructs.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvStructs.Location = new Point(3, 21);
+            dgvStructs.Name = "dgvStructs";
+            dgvStructs.RowHeadersWidth = 24;
+            dgvStructs.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dgvStructs.Size = new Size(655, 347);
+            dgvStructs.TabIndex = 0;
+            dgvStructs.CellValueChanged += dgvStructs_CellValueChanged;
+            // 
+            // dgvPolygons
+            // 
+            dgvPolygons.AllowUserToAddRows = false;
+            dgvPolygons.AllowUserToResizeColumns = false;
+            dgvPolygons.AllowUserToResizeRows = false;
+            dgvPolygons.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dgvPolygons.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvPolygons.Location = new Point(3, 405);
+            dgvPolygons.Name = "dgvPolygons";
+            dgvPolygons.RowHeadersWidth = 24;
+            dgvPolygons.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dgvPolygons.Size = new Size(655, 347);
+            dgvPolygons.TabIndex = 0;
+            dgvPolygons.CellValueChanged += dgvPolygons_CellValueChanged;
+            dgvPolygons.KeyDown += dgvPolygons_KeyDown;
             // 
             // tbpColors
             // 
@@ -992,6 +1081,10 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)numOffsetZ).EndInit();
             ((System.ComponentModel.ISupportInitialize)numOffsetY).EndInit();
             ((System.ComponentModel.ISupportInitialize)numOffsetX).EndInit();
+            tbpPolygons.ResumeLayout(false);
+            tbpPolygons.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvStructs).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvPolygons).EndInit();
             tbpColors.ResumeLayout(false);
             fraGlobalControl.ResumeLayout(false);
             pnGlobalControl.ResumeLayout(false);
@@ -1026,6 +1119,7 @@ namespace CrashEdit.CE.Controls
 
         private MetroSet_UI.Controls.MetroSetTabControl tabModel;
         private TabPage tbpGeneral;
+        private TabPage tbpPolygons;
         private TabPage tbpColors;
         private TabPage tbpTextures;
         private TabPage tbpExtendedTextures;
@@ -1086,6 +1180,11 @@ namespace CrashEdit.CE.Controls
         private CheckBox chkMaxValueFlag;
         private DataGridView dgvExtendedTextures;
         private Panel panel3;
+        private DataGridView dgvPolygons;
+        private DataGridView dgvStructs;
+        private DarkButton btnConvert;
+        private Label label2;
+        private Label label3;
     }
 
     public class DoubleBufferedListView : ListView
