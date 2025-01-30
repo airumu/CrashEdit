@@ -582,7 +582,7 @@ namespace CrashEdit.CE
             cmdHelp.Padding = new Padding(5);
             cmdHelp.Size = new Size(98, 25);
             cmdHelp.TabIndex = 3;
-            cmdHelp.Text = "Show Help";
+            cmdHelp.Text = "Help";
             cmdHelp.Click += cmdHelp_Click;
             // 
             // fraLang

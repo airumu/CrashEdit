@@ -31,61 +31,32 @@ namespace CrashEdit.CE
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HelpWindow));
-            label5 = new Label();
-            label6 = new Label();
-            label3 = new Label();
-            label4 = new Label();
+            fraHexViewer = new DarkGroupBox();
+            lblHexViewer = new Label();
+            fraHexViewer.SuspendLayout();
             SuspendLayout();
             // 
-            // label5
+            // fraHexViewer
             // 
-            label5.AutoSize = true;
-            label5.Font = new Font("Segoe UI", 12F);
-            label5.ForeColor = Color.MediumSpringGreen;
-            label5.Location = new Point(4, 246);
-            label5.Margin = new Padding(4, 0, 4, 0);
-            label5.Name = "label5";
-            label5.Size = new Size(105, 42);
-            label5.TabIndex = 9;
-            label5.Text = "\r\nShortcut Keys";
-            label5.Visible = false;
+            fraHexViewer.AutoSize = true;
+            fraHexViewer.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraHexViewer.Controls.Add(lblHexViewer);
+            fraHexViewer.Location = new Point(4, 3);
+            fraHexViewer.Name = "fraHexViewer";
+            fraHexViewer.Size = new Size(258, 233);
+            fraHexViewer.TabIndex = 15;
+            fraHexViewer.TabStop = false;
+            fraHexViewer.Text = "Hex Viewer";
             // 
-            // label6
+            // lblHexViewer
             // 
-            label6.AutoSize = true;
-            label6.Font = new Font("Segoe UI", 9.75F);
-            label6.ForeColor = SystemColors.ControlText;
-            label6.Location = new Point(14, 288);
-            label6.Margin = new Padding(4, 0, 4, 0);
-            label6.Name = "label6";
-            label6.Size = new Size(187, 102);
-            label6.TabIndex = 10;
-            label6.Text = "Save NSF (Ctrl + S)\r\nPatch NSD (Ctrl + Shift + S)\r\nFind (Ctrl + F)\r\nFind next node (F3)\r\nFind previous node (Shift + F3)\r\nPlay (F1)";
-            label6.Visible = false;
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI", 12F);
-            label3.ForeColor = Color.DarkTurquoise;
-            label3.Location = new Point(4, 4);
-            label3.Margin = new Padding(4, 0, 4, 0);
-            label3.Name = "label3";
-            label3.Size = new Size(88, 21);
-            label3.TabIndex = 14;
-            label3.Text = "Hex Viewer";
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Font = new Font("Segoe UI", 9.75F);
-            label4.ForeColor = SystemColors.ControlText;
-            label4.Location = new Point(14, 25);
-            label4.Margin = new Padding(4, 0, 4, 0);
-            label4.Name = "label4";
-            label4.Size = new Size(267, 221);
-            label4.TabIndex = 13;
-            label4.Text = resources.GetString("label4.Text");
+            lblHexViewer.AutoSize = true;
+            lblHexViewer.ForeColor = SystemColors.ControlText;
+            lblHexViewer.Location = new Point(6, 19);
+            lblHexViewer.Name = "lblHexViewer";
+            lblHexViewer.Size = new Size(246, 195);
+            lblHexViewer.TabIndex = 0;
+            lblHexViewer.Text = resources.GetString("lblHexViewer.Text");
             // 
             // HelpWindow
             // 
@@ -93,11 +64,8 @@ namespace CrashEdit.CE
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(333, 469);
-            Controls.Add(label3);
-            Controls.Add(label4);
-            Controls.Add(label6);
-            Controls.Add(label5);
+            ClientSize = new Size(274, 250);
+            Controls.Add(fraHexViewer);
             CornerStyle = CornerPreference.Default;
             ForeColor = Color.Gainsboro;
             Margin = new Padding(4, 5, 4, 5);
@@ -108,14 +76,14 @@ namespace CrashEdit.CE
             ShowIcon = false;
             Text = "Help";
             TransparencyKey = Color.FromArgb(31, 31, 32);
+            fraHexViewer.ResumeLayout(false);
+            fraHexViewer.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-        private Label label5;
-        private Label label6;
-        private Label label3;
-        private Label label4;
+        private DarkGroupBox fraHexViewer;
+        private Label lblHexViewer;
     }
 }
