@@ -40,7 +40,15 @@ namespace CrashEdit.CE
             };
             OldModelEntry modelentry = controller.GetEntry<OldModelEntry>(frame.ModelEID);
 
-            var entry = controller.OldAnimationEntryController.OldAnimationEntry;
+            dynamic entry = null!;
+            if (controller.IsColored)
+            {
+                entry = controller.ColoredAnimationEntryController.ColoredAnimationEntry;
+            }
+            else
+            {
+                entry = controller.OldAnimationEntryController.OldAnimationEntry;
+            }
             var viewerbox = new OldAnimationEntryViewer(controller.GetNSF(), entry.EID, entry.Frames.IndexOf(frame))
             {
                 Dock = DockStyle.Fill
@@ -50,6 +58,7 @@ namespace CrashEdit.CE
             viewertab.Controls.Add(viewerbox);
             TabPage edittab = new TabPage("Editor");
             edittab.Controls.Add(pnOldFrameBox);
+            edittab.BackColor = Color.FromArgb(31, 31, 32);
 
             tbcTabs.TabPages.Add(viewertab);
             tbcTabs.TabPages.Add(edittab);
