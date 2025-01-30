@@ -1100,6 +1100,15 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
+        ///   Go to Line に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string GOOLBox_Goto {
+            get {
+                return ResourceManager.GetString("GOOLBox_Goto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cancel に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string InputWindow_cmdCancel {

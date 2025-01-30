@@ -899,4 +899,7 @@
   <data name="OldMainForm_tbxConvertAnimations" xml:space="preserve">
     <value>アニメーション エントリの変換</value>
   </data>
+  <data name="GOOLBox_Goto" xml:space="preserve">
+    <value>行へ移動</value>
+  </data>
 </root>

@@ -501,7 +501,10 @@ namespace CrashEdit.CE
 
                                 if (Regex.IsMatch(targetCellText, pattern))
                                 {
-                                    dgvCode.CurrentCell = row.Cells[0];
+                                    int targetRowIndex = row.Index;
+                                    dgvCode.FirstDisplayedScrollingRowIndex = targetRowIndex;
+                                    dgvCode.ClearSelection();
+                                    dgvCode.Rows[targetRowIndex].Selected = true;
                                 }
                             }
                         }
@@ -545,33 +548,65 @@ namespace CrashEdit.CE
         {
             if (e.KeyCode == Keys.G && e.Modifiers == Keys.Control)
             {
-                using (InputWindow inputWindow = new InputWindow("Enter a line number:", "Go to Line", string.Empty))
+                using (InputWindow inputWindow = new InputWindow("Enter a line address:", Resources.GOOLBox_Goto, string.Empty))
                 {
                     if (inputWindow.ShowDialog() == DialogResult.OK)
                     {
-                        if (int.TryParse(inputWindow.Input, out int targetIndex))
+                        string input = inputWindow.Input;
+
+                        if (input.Contains("state"))
                         {
-                            for (int i = headerCount; i < dgvCode.Rows.Count; i++)
+                            string target = "state";
+                            string numberPattern = $@"(?<={Regex.Escape(target)}\s*)[-+]?\d+";
+                            var match = Regex.Match(input, numberPattern);
+
+                            if (match.Success)
                             {
-                                if (dgvCode.Rows[i].Tag != null)
+                                int number = int.Parse(match.Value);
+                                string pattern = $@"State_{number}_code:";
+
+                                foreach (DataGridViewRow row in dgvCode.Rows)
                                 {
-                                    int targetTagValue = (int)dgvCode.Rows[i].Tag;
-                                    if (targetIndex == targetTagValue)
+                                    string targetCellText = row.Cells[0].Value?.ToString() ?? "";
+
+                                    if (Regex.IsMatch(targetCellText, pattern))
                                     {
-                                        int targetRowIndex = dgvCode.Rows[i].Index;
+                                        int targetRowIndex = row.Index;
                                         dgvCode.FirstDisplayedScrollingRowIndex = targetRowIndex;
                                         dgvCode.ClearSelection();
                                         dgvCode.Rows[targetRowIndex].Selected = true;
                                         return;
                                     }
                                 }
+                                DarkMessageBox.ShowError("State not found.", Resources.GOOLBox_Goto);
+                                return;
                             }
-                            DarkMessageBox.ShowError("Line address out of range.", Resources.Title_Error);
                         }
                         else
                         {
-                            DarkMessageBox.ShowError("Invalid line address.", Resources.Title_Error);
+                            if (int.TryParse(input, out int targetIndex))
+                            {
+                                for (int i = headerCount; i < dgvCode.Rows.Count; i++)
+                                {
+                                    if (dgvCode.Rows[i].Tag != null)
+                                    {
+                                        int targetTagValue = (int)dgvCode.Rows[i].Tag;
+                                        if (targetIndex == targetTagValue)
+                                        {
+                                            int targetRowIndex = dgvCode.Rows[i].Index;
+                                            dgvCode.FirstDisplayedScrollingRowIndex = targetRowIndex;
+                                            dgvCode.ClearSelection();
+                                            dgvCode.Rows[targetRowIndex].Selected = true;
+                                            return;
+                                        }
+                                    }
+                                }
+                                DarkMessageBox.ShowError("Line address out of range.", Resources.GOOLBox_Goto);
+                                return;
+                            }
                         }
+
+                        DarkMessageBox.ShowError("Invalid input.", Resources.GOOLBox_Goto);
                     }
                 }
             }
