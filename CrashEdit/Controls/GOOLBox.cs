@@ -1,5 +1,6 @@
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
+using AltUI.Forms;
+using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 using MetroSet_UI.Controls;
 
@@ -65,6 +66,7 @@ namespace CrashEdit.CE
             dgvCode.CellPainting += dgvCode_CellPainting;
             dgvCode.MouseDown += dgvCode_MouseDown;
             dgvCode.CellDoubleClick += dgvCode_CellDoubleClick;
+            dgvCode.KeyDown += dgvCode_KeyDown;
 
             headerCount = 0;
             addressIndex = 0;
@@ -533,6 +535,42 @@ namespace CrashEdit.CE
                                 }
 
                             }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void dgvCode_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.G && e.Modifiers == Keys.Control)
+            {
+                using (InputWindow inputWindow = new InputWindow("Enter a line number:", "Go to Line", string.Empty))
+                {
+                    if (inputWindow.ShowDialog() == DialogResult.OK)
+                    {
+                        if (int.TryParse(inputWindow.Input, out int targetIndex))
+                        {
+                            for (int i = headerCount; i < dgvCode.Rows.Count; i++)
+                            {
+                                if (dgvCode.Rows[i].Tag != null)
+                                {
+                                    int targetTagValue = (int)dgvCode.Rows[i].Tag;
+                                    if (targetIndex == targetTagValue)
+                                    {
+                                        int targetRowIndex = dgvCode.Rows[i].Index;
+                                        dgvCode.FirstDisplayedScrollingRowIndex = targetRowIndex;
+                                        dgvCode.ClearSelection();
+                                        dgvCode.Rows[targetRowIndex].Selected = true;
+                                        return;
+                                    }
+                                }
+                            }
+                            DarkMessageBox.ShowError("Line address out of range.", Resources.Title_Error);
+                        }
+                        else
+                        {
+                            DarkMessageBox.ShowError("Invalid line address.", Resources.Title_Error);
                         }
                     }
                 }
