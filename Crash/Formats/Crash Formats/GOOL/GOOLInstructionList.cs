@@ -922,7 +922,7 @@ namespace CrashEdit.Crash.GOOLIns
             return "CFL";
         }
 
-        public static string GetFormat() => "IIIIIIIIII VVVV (RRRRRR) CC TT";
+        public static string GetFormat() => "<IIIIIIIIII> VVVV (RRRRRR) CC TT";
         public static string GetComment(GOOLInstruction ins)
         {
             int v = ins.Args['V'].Value;
