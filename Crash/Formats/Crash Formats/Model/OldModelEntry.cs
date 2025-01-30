@@ -17,13 +17,30 @@ namespace CrashEdit.Crash
         public override string ImageKey => "ThingCrimson";
 
         public override int Type => 2;
-        public byte[] Info { get; }
+        public byte[] Info { get; set; }
         public IList<OldModelPolygon> Polygons => polygons;
         public IList<OldModelStruct> Structs => structs;
 
-        public int ScaleX => BitConv.FromInt32(Info, 4);
-        public int ScaleY => BitConv.FromInt32(Info, 8);
-        public int ScaleZ => BitConv.FromInt32(Info, 12);
+        public int PolygonsCount
+        {
+            get => BitConv.FromInt32(Info, 0);
+            set => BitConv.ToInt32(Info, 0, value);
+        }
+        public int ScaleX
+        {
+            get => BitConv.FromInt32(Info, 4);
+            set => BitConv.ToInt32(Info, 4, value);
+        }
+        public int ScaleY
+        {
+            get => BitConv.FromInt32(Info, 8);
+            set => BitConv.ToInt32(Info, 8, value);
+        }
+        public int ScaleZ
+        {
+            get => BitConv.FromInt32(Info, 12);
+            set => BitConv.ToInt32(Info, 12, value);
+        }
 
         public override UnprocessedEntry Unprocess()
         {

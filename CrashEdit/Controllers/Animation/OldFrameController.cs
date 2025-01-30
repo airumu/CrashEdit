@@ -22,6 +22,7 @@ namespace CrashEdit.CE
         public OldAnimationEntryController OldAnimationEntryController => Modern.Parent.Legacy as OldAnimationEntryController;
         public ColoredAnimationEntryController ColoredAnimationEntryController => Modern.Parent.Legacy as ColoredAnimationEntryController;
         public OldFrame OldFrame { get; }
+        public bool IsColored => Modern.Parent.Text.Contains("Colored Animation");
 
         private void Menu_Export_OBJ()
         {

@@ -24,11 +24,11 @@ namespace CrashEdit.Crash
             NoLight = nolight;
         }
 
-        public short VertexA { get; }
-        public short VertexB { get; }
-        public short VertexC { get; }
-        public short TexInfo { get; }
-        public bool NoLight { get; }
+        public short VertexA { get; set; }
+        public short VertexB { get; set; }
+        public short VertexC { get; set; }
+        public short TexInfo { get; set; }
+        public bool NoLight { get; set; }
 
         public byte[] Save()
         {
