@@ -6,6 +6,11 @@ namespace CrashEdit.Crash
     {
         public static ZoneHeader Load(byte[] data)
         {
+            if (data.Length != 0x318)
+            {
+                ErrorManager.SignalError("Zone header must be 0x318 bytes long.");
+            }
+
             int worldCount = BitConv.FromInt32(data, 0);
             List<int> worlds = new List<int>();
             for (int i = 0; i < 8; i++)
@@ -37,6 +42,11 @@ namespace CrashEdit.Crash
 
         public static ZoneHeader LoadNew(byte[] data)
         {
+            if (data.Length != 0x358)
+            {
+                ErrorManager.SignalError("Zone header must be 0x358 bytes long.");
+            }
+
             int worldCount = BitConv.FromInt32(data, 0);
             List<int> worlds = new List<int>();
             for (int i = 0; i < 8; i++)
