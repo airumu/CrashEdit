@@ -240,9 +240,9 @@ namespace CrashEdit.Crash
         public IList<FrameCollision> Collision => collision;
         public IList<FrameVertex> Vertices => vertices;
         public IList<Position> Positions => positions;
-        public int SpecialVertexCount { get; }
-        public bool[] Temporals { get; }
-        public short Unknown { get; }
+        public int SpecialVertexCount { get; set; }
+        public bool[] Temporals { get; set; }
+        public short Unknown { get; set; }
 
         public bool IsNew { get; }
 

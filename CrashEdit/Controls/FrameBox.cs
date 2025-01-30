@@ -17,8 +17,13 @@ namespace CrashEdit.CE
         private bool vertexdirty;
         private bool collisiondirty;
         private bool syncedit;
+        private bool isCompresed;
         private int vertexindex = 0;
         private int collisionindex = 0;
+
+        private const int XOffset = 0;
+        private const int YOffset = 1;
+        private const int ZOffset = 2;
 
         public FrameBox(FrameController controller)
         {
@@ -26,6 +31,7 @@ namespace CrashEdit.CE
             animationEntry = controller.AnimationEntryController.AnimationEntry;
             frame = controller.Frame;
             model = controller.GetEntry<ModelEntry>(frame.ModelEID);
+            isCompresed = model != null && model.Positions != null;
 
             InitializeComponent();
             CreateTabs();
@@ -52,7 +58,7 @@ namespace CrashEdit.CE
                 pnSplit = new SplitContainer
                 {
                     Orientation = Orientation.Horizontal,
-                    SplitterDistance = 35,
+                    SplitterDistance = 55,
                     IsSplitterFixed = true,
                     Dock = DockStyle.Fill
                 };
@@ -96,6 +102,8 @@ namespace CrashEdit.CE
             UpdateHeaderSize();
             UpdateSPVertex();
             UpdateModel();
+
+            fraVertice.Text = isCompresed ? "Vertice(s) (read-only)" : "Vertice(s)";
         }
 
         private void UpdateVertice()
@@ -195,26 +203,40 @@ namespace CrashEdit.CE
 
         private void cmdInsertVertice_Click(object sender, EventArgs e)
         {
-            frame.Vertices.Insert(vertexindex, frame.Vertices[vertexindex]);
-            UpdateVertice();
+            //frame.Vertices.Insert(vertexindex, frame.Vertices[vertexindex]);
+            //UpdateVertice();
         }
 
         private void cmdRemoveVertice_Click(object sender, EventArgs e)
         {
-            frame.Vertices.RemoveAt(vertexindex);
+            foreach (Frame frame in animationEntry.Frames)
+            {
+                vertexindex = frame.Vertices.Count;
+                RemoveTemporals(frame);
+                frame.Vertices.RemoveAt(vertexindex - 1);
+                frame.Positions.RemoveAt(vertexindex - 1);
+            }
             UpdateVertice();
         }
 
         private void cmdAppendVertice_Click(object sender, EventArgs e)
         {
-            vertexindex = frame.Vertices.Count;
-            if (frame.Vertices.Count > 0)
+            foreach (Frame frame in animationEntry.Frames)
             {
-                frame.Vertices.Add(frame.Vertices[vertexindex - 1]);
-            }
-            else
-            {
-                frame.Vertices[vertexindex] = new FrameVertex(0, 0, 0);
+                vertexindex = frame.Vertices.Count;
+                if (frame.Vertices.Count > 0)
+                {
+                    var vert = frame.Vertices[vertexindex - 1];
+                    var pos = frame.Positions[vertexindex - 1];
+                    AppendTemporals(frame, pos.X, pos.Y, pos.Z);
+                    frame.Vertices.Add(vert);
+                    frame.Positions.Add(pos);
+                }
+                else
+                {
+                    frame.Vertices[vertexindex] = new FrameVertex(0, 0, 0);
+                    frame.Positions[vertexindex] = new Position(0, 0, 0);
+                }
             }
             UpdateVertice();
         }
@@ -376,6 +398,137 @@ namespace CrashEdit.CE
             txtModel.Text = Entry.EIDToEName(frame.ModelEID);
         }
 
+        public void AppendTemporals(Frame frame, float newX, float newY, float newZ)
+        {
+            byte[] convertTemporals = BoolArrayToByteArray(frame.Temporals);
+            byte[] reversedTemporals = ReverseBytesIn4ByteBlocks(convertTemporals);
+
+            int padding = frame.Vertices.Count % 4;
+            if (padding == 0)
+            {
+                reversedTemporals = reversedTemporals.Concat(new byte[] { ReverseBits(Convert.ToByte(newX)), ReverseBits(Convert.ToByte(newY)), ReverseBits(Convert.ToByte(newZ)) }).ToArray();
+                reversedTemporals = reversedTemporals.Concat(new byte[1]).ToArray();
+            }
+            else if (padding == 1)
+            {
+                reversedTemporals[reversedTemporals.Length - 1] = ReverseBits(Convert.ToByte(newX));
+                reversedTemporals = reversedTemporals.Concat(new byte[] { ReverseBits(Convert.ToByte(newY)), ReverseBits(Convert.ToByte(newZ)) }).ToArray();
+                reversedTemporals = reversedTemporals.Concat(new byte[2]).ToArray();
+            }
+            else if (padding == 2)
+            {
+                reversedTemporals[reversedTemporals.Length - 2] = ReverseBits(Convert.ToByte(newX));
+                reversedTemporals[reversedTemporals.Length - 1] = ReverseBits(Convert.ToByte(newY));
+                reversedTemporals = reversedTemporals.Concat(new byte[] { ReverseBits(Convert.ToByte(newZ)) }).ToArray();
+                reversedTemporals = reversedTemporals.Concat(new byte[3]).ToArray();
+            }
+            else if (padding == 3)
+            {
+                reversedTemporals[reversedTemporals.Length - 3] = ReverseBits(Convert.ToByte(newX));
+                reversedTemporals[reversedTemporals.Length - 2] = ReverseBits(Convert.ToByte(newY));
+                reversedTemporals[reversedTemporals.Length - 1] = ReverseBits(Convert.ToByte(newZ));
+            }
+
+            byte[] convertBackTemporals = ReverseBytesIn4ByteBlocks(reversedTemporals);
+            frame.Temporals = ByteArrayToBoolArray(convertBackTemporals);
+        }
+
+        public void RemoveTemporals(Frame frame)
+        {
+            byte[] convertTemporals = BoolArrayToByteArray(frame.Temporals);
+            byte[] reversedTemporals = ReverseBytesIn4ByteBlocks(convertTemporals);
+
+            int padding = frame.Vertices.Count % 4;
+            if (padding == 0)
+            {
+                reversedTemporals = reversedTemporals.Take(reversedTemporals.Length - 3).ToArray();
+                reversedTemporals = reversedTemporals.Concat(new byte[3]).ToArray();
+            }
+            else if (padding == 3)
+            {
+                reversedTemporals = reversedTemporals.Take(reversedTemporals.Length - 6).ToArray();
+                reversedTemporals = reversedTemporals.Concat(new byte[2]).ToArray();
+            }
+            else if (padding == 2)
+            {
+                reversedTemporals = reversedTemporals.Take(reversedTemporals.Length - 5).ToArray();
+                reversedTemporals = reversedTemporals.Concat(new byte[1]).ToArray();
+            }
+            else if (padding == 1)
+            {
+                reversedTemporals = reversedTemporals.Take(reversedTemporals.Length - 4).ToArray();
+            }
+
+            byte[] convertBackTemporals = ReverseBytesIn4ByteBlocks(reversedTemporals);
+            frame.Temporals = ByteArrayToBoolArray(convertBackTemporals);
+        }
+
+        public void UpdateTemporals(Frame frame, int offset, float newV)
+        {
+            if (isCompresed) return;
+
+            byte[] convertTemporals = BoolArrayToByteArray(frame.Temporals);
+            byte[] reversedTemporals = ReverseBytesIn4ByteBlocks(convertTemporals);
+
+            int byteIndex = vertexindex * 3 + offset;
+            reversedTemporals[byteIndex] = ReverseBits(Convert.ToByte(newV));
+
+            byte[] convertBackTemporals = ReverseBytesIn4ByteBlocks(reversedTemporals);
+            frame.Temporals = ByteArrayToBoolArray(convertBackTemporals);
+        }
+
+        private byte ReverseBits(byte value)
+        {
+            byte reversed = 0;
+            for (int i = 0; i < 8; i++)
+            {
+                reversed = (byte)((reversed << 1) | ((value >> i) & 0x1));
+            }
+            return reversed;
+        }
+
+        private byte[] BoolArrayToByteArray(bool[] boolArray)
+        {
+            int byteArrayLength = (boolArray.Length + 7) / 8;
+            byte[] byteArray = new byte[byteArrayLength];
+            for (int i = 0; i < boolArray.Length; i++)
+            {
+                if (boolArray[i])
+                {
+                    byteArray[i / 8] |= (byte)(1 << (i % 8));
+                }
+            }
+            return byteArray;
+        }
+
+        private bool[] ByteArrayToBoolArray(byte[] byteArray)
+        {
+            int boolArrayLength = byteArray.Length * 8;
+            bool[] boolArray = new bool[boolArrayLength];
+            for (int i = 0; i < boolArrayLength; i++)
+            {
+                boolArray[i] = (byteArray[i / 8] & (1 << (i % 8))) != 0;
+            }
+            return boolArray;
+        }
+
+        private byte[] ReverseBytesIn4ByteBlocks(byte[] data)
+        {
+            int blockSize = 4;
+            int numBlocks = data.Length / blockSize;
+            byte[] reversedData = new byte[data.Length];
+
+            for (int i = 0; i < numBlocks; i++)
+            {
+                byte[] block = new byte[blockSize];
+                Array.Copy(data, i * blockSize, block, 0, blockSize);
+
+                Array.Reverse(block);
+                Array.Copy(block, 0, reversedData, i * blockSize, blockSize);
+            }
+            return reversedData;
+        }
+
         private T ValidateValue<T>(T value, T dif) where T : struct, IComparable<T>
         {
             T result;
@@ -427,12 +580,14 @@ namespace CrashEdit.CE
                         var f = frame.Positions[vertexindex];
                         float result = ValidateVertexValue(f.X, dif);
                         frame.Positions[vertexindex] = new Position(result, f.Y, f.Z);
+                        UpdateTemporals(frame, XOffset, result);
                     }
                 }
                 else
                 {
                     Position pos = frame.Positions[vertexindex];
                     frame.Positions[vertexindex] = new Position(newV, pos.Y, pos.Z);
+                    UpdateTemporals(frame, XOffset, newV);
                 }
             }
         }
@@ -454,12 +609,14 @@ namespace CrashEdit.CE
                         var f = frame.Positions[vertexindex];
                         float result = ValidateVertexValue(f.Y, dif);
                         frame.Positions[vertexindex] = new Position(f.X, result, f.Z);
+                        UpdateTemporals(frame, YOffset, result);
                     }
                 }
                 else
                 {
                     Position pos = frame.Positions[vertexindex];
                     frame.Positions[vertexindex] = new Position(pos.X, newV, pos.Z);
+                    UpdateTemporals(frame, YOffset, newV);
                 }
             }
         }
@@ -481,12 +638,14 @@ namespace CrashEdit.CE
                         var f = frame.Positions[vertexindex];
                         float result = ValidateVertexValue(f.Z, dif);
                         frame.Positions[vertexindex] = new Position(f.X, f.Y, result);
+                        UpdateTemporals(frame, ZOffset, result);
                     }
                 }
                 else
                 {
                     Position pos = frame.Positions[vertexindex];
                     frame.Positions[vertexindex] = new Position(pos.X, pos.Y, newV);
+                    UpdateTemporals(frame, ZOffset, newV);
                 }
             }
         }
@@ -769,15 +928,6 @@ namespace CrashEdit.CE
         private void chkSyncFrames_CheckedChanged(object sender, EventArgs e)
         {
             syncedit = chkSyncFrames.Checked;
-        }
-
-        private void chkShowVertices_CheckedChanged(object sender, EventArgs e)
-        {
-            fraVertice.Visible = chkShowVertices.Checked;
-            if (Settings.Default.SplitAnimViewerPanels && pnSplit != null)
-            {
-                pnSplit.SplitterDistance = chkShowVertices.Checked ? 480 : 300;
-            }
         }
 
         private void cmdCopyCollision_Click(object sender, EventArgs e)
