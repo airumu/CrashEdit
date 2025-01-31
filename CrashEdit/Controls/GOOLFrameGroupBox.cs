@@ -477,13 +477,13 @@ namespace CrashEdit.CE
             {
                 // X
                 if (columnIndex == ColX)
-                    maxValue = 24;
+                    maxValue = 31;
                 // Y
                 else if (columnIndex == ColY)
-                    maxValue = 24;
+                    maxValue = 31;
                 // UV Index
                 else if (columnIndex == ColUV)
-                    maxValue = 255;
+                    maxValue = 1023;
                 // Segment
                 else if (columnIndex == ColSegment)
                     maxValue = 3;
@@ -617,13 +617,13 @@ namespace CrashEdit.CE
                     og.Segment = Convert.ToByte(item.Cells[ColSegment].Value);
                 // UV
                 else if (e.ColumnIndex == ColUV)
-                    og.UV = Convert.ToByte(item.Cells[ColUV].Value);
+                    og.UV = Convert.ToInt32(item.Cells[ColUV].Value);
                 // Blend Mode
                 else if (e.ColumnIndex == ColBlendMode)
                     og.BlendMode = Convert.ToByte(item.Cells[ColBlendMode].Value);
                 // Color Mode
                 else if (e.ColumnIndex == ColColorMode)
-                    og.ColorMode = Convert.ToByte(item.Cells[ColColorMode].Value); ;
+                    og.ColorMode = Convert.ToByte(item.Cells[ColColorMode].Value);
             }
             else
             {

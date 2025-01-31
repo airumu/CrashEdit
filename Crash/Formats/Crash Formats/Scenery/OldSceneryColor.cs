@@ -1,11 +1,11 @@
 ﻿namespace CrashEdit.Crash
 {
-    public struct OldSceneryColor : OldModelStruct
+    public class OldSceneryColor : OldModelStruct
     {
-        public byte R { get; }
-        public byte G { get; }
-        public byte B { get; }
-        public bool N { get; }
+        public byte R { get; set; }
+        public byte G { get; set; }
+        public byte B { get; set; }
+        public bool N { get; set; }
 
         public static OldSceneryColor Load(byte[] data)
         {
@@ -22,6 +22,16 @@
             G = g;
             B = b;
             N = n;
+        }
+
+        public byte[] Save()
+        {
+            byte[] result = new byte[4];
+            result[0] = R;
+            result[1] = G;
+            result[2] = B;
+            result[3] = (byte)(0x60 | (Convert.ToByte(N) << 4));
+            return result;
         }
     }
 }

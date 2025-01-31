@@ -66,11 +66,8 @@ namespace CrashEdit.CE
             fraTPage = new DarkGroupBox();
             rbtReloadTPage = new MetroSet_UI.Controls.MetroSetRadioButton();
             dpdTPage = new DarkComboBox();
-            cmdRemoveTPage = new DarkButton();
-            cmdAppendTPage = new DarkButton();
-            lstTPages = new Controls.DoubleBufferedListView();
             trkPictureSize = new MetroSet_UI.Controls.MetroSetTrackBar();
-            grdTextures = new DataGridView();
+            dgvTextures = new DataGridView();
             tabOldModel.SuspendLayout();
             tbpGeneral.SuspendLayout();
             panel1.SuspendLayout();
@@ -92,7 +89,7 @@ namespace CrashEdit.CE
             ((System.ComponentModel.ISupportInitialize)numReplaceTo).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numReplace).BeginInit();
             fraTPage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)grdTextures).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvTextures).BeginInit();
             SuspendLayout();
             // 
             // tabOldModel
@@ -111,7 +108,7 @@ namespace CrashEdit.CE
             tabOldModel.Name = "tabOldModel";
             tabOldModel.SelectedIndex = 2;
             tabOldModel.SelectedTextColor = Color.White;
-            tabOldModel.Size = new Size(611, 603);
+            tabOldModel.Size = new Size(1024, 800);
             tabOldModel.SizeMode = TabSizeMode.Fixed;
             tabOldModel.Speed = 100;
             tabOldModel.Style = MetroSet_UI.Enums.Style.Dark;
@@ -130,7 +127,7 @@ namespace CrashEdit.CE
             tbpGeneral.Controls.Add(lblModelInfo);
             tbpGeneral.Location = new Point(4, 32);
             tbpGeneral.Name = "tbpGeneral";
-            tbpGeneral.Size = new Size(603, 567);
+            tbpGeneral.Size = new Size(1016, 764);
             tbpGeneral.TabIndex = 0;
             tbpGeneral.Text = "General";
             // 
@@ -254,7 +251,7 @@ namespace CrashEdit.CE
             tbpPolygons.Controls.Add(dgvPolygons);
             tbpPolygons.Location = new Point(4, 32);
             tbpPolygons.Name = "tbpPolygons";
-            tbpPolygons.Size = new Size(603, 567);
+            tbpPolygons.Size = new Size(1016, 764);
             tbpPolygons.TabIndex = 1;
             tbpPolygons.Text = "Polygons";
             tbpPolygons.Enter += tbpPolygons_Enter;
@@ -282,7 +279,7 @@ namespace CrashEdit.CE
             tbpTextures.Controls.Add(panel2);
             tbpTextures.Location = new Point(4, 32);
             tbpTextures.Name = "tbpTextures";
-            tbpTextures.Size = new Size(603, 567);
+            tbpTextures.Size = new Size(1016, 764);
             tbpTextures.TabIndex = 3;
             tbpTextures.Text = "Textures";
             tbpTextures.Enter += tbpTextures_Enter;
@@ -293,7 +290,7 @@ namespace CrashEdit.CE
             pnPicture.Dock = DockStyle.Top;
             pnPicture.Location = new Point(0, 378);
             pnPicture.Name = "pnPicture";
-            pnPicture.Size = new Size(603, 152);
+            pnPicture.Size = new Size(1016, 152);
             pnPicture.TabIndex = 14;
             // 
             // pictureBox1
@@ -311,11 +308,11 @@ namespace CrashEdit.CE
             panel2.Controls.Add(pnTextureControls);
             panel2.Controls.Add(fraTPage);
             panel2.Controls.Add(trkPictureSize);
-            panel2.Controls.Add(grdTextures);
+            panel2.Controls.Add(dgvTextures);
             panel2.Dock = DockStyle.Top;
             panel2.Location = new Point(0, 0);
             panel2.Name = "panel2";
-            panel2.Size = new Size(603, 378);
+            panel2.Size = new Size(1016, 378);
             panel2.TabIndex = 13;
             // 
             // pnTextureControls
@@ -326,10 +323,11 @@ namespace CrashEdit.CE
             pnTextureControls.Controls.Add(numRowIndex);
             pnTextureControls.Controls.Add(cmdLoadTexture);
             pnTextureControls.Controls.Add(fraReplace);
-            pnTextureControls.Location = new Point(671, 0);
+            pnTextureControls.Location = new Point(703, 0);
             pnTextureControls.Name = "pnTextureControls";
             pnTextureControls.Size = new Size(214, 372);
             pnTextureControls.TabIndex = 13;
+            pnTextureControls.Visible = false;
             // 
             // chkMaxValueFlag
             // 
@@ -515,12 +513,10 @@ namespace CrashEdit.CE
             // 
             fraTPage.Controls.Add(rbtReloadTPage);
             fraTPage.Controls.Add(dpdTPage);
-            fraTPage.Controls.Add(cmdRemoveTPage);
-            fraTPage.Controls.Add(cmdAppendTPage);
-            fraTPage.Controls.Add(lstTPages);
+            fraTPage.Enabled = false;
             fraTPage.Location = new Point(3, 3);
             fraTPage.Name = "fraTPage";
-            fraTPage.Size = new Size(132, 301);
+            fraTPage.Size = new Size(132, 77);
             fraTPage.TabIndex = 0;
             fraTPage.TabStop = false;
             fraTPage.Text = "Texture Pages";
@@ -537,7 +533,7 @@ namespace CrashEdit.CE
             rbtReloadTPage.Font = new Font("Microsoft Sans Serif", 10F);
             rbtReloadTPage.Group = 0;
             rbtReloadTPage.IsDerivedStyle = true;
-            rbtReloadTPage.Location = new Point(107, 278);
+            rbtReloadTPage.Location = new Point(107, 52);
             rbtReloadTPage.Name = "rbtReloadTPage";
             rbtReloadTPage.Size = new Size(19, 17);
             rbtReloadTPage.Style = MetroSet_UI.Enums.Style.Dark;
@@ -545,55 +541,18 @@ namespace CrashEdit.CE
             rbtReloadTPage.TabIndex = 10;
             rbtReloadTPage.ThemeAuthor = "Narwin";
             rbtReloadTPage.ThemeName = "MetroDark";
+            rbtReloadTPage.Click += rbtReloadTPage_Click;
             // 
             // dpdTPage
             // 
             dpdTPage.DrawMode = DrawMode.OwnerDrawVariable;
             dpdTPage.Enabled = false;
-            dpdTPage.Location = new Point(6, 208);
+            dpdTPage.Location = new Point(6, 22);
             dpdTPage.MaxLength = 5;
             dpdTPage.Name = "dpdTPage";
             dpdTPage.Size = new Size(120, 24);
             dpdTPage.TabIndex = 2;
-            // 
-            // cmdRemoveTPage
-            // 
-            cmdRemoveTPage.BorderColour = Color.Empty;
-            cmdRemoveTPage.CustomColour = false;
-            cmdRemoveTPage.Enabled = false;
-            cmdRemoveTPage.FlatBottom = false;
-            cmdRemoveTPage.FlatTop = false;
-            cmdRemoveTPage.Location = new Point(28, 266);
-            cmdRemoveTPage.Name = "cmdRemoveTPage";
-            cmdRemoveTPage.Padding = new Padding(5);
-            cmdRemoveTPage.Size = new Size(75, 23);
-            cmdRemoveTPage.TabIndex = 1;
-            cmdRemoveTPage.Text = "Remove";
-            // 
-            // cmdAppendTPage
-            // 
-            cmdAppendTPage.BorderColour = Color.Empty;
-            cmdAppendTPage.CustomColour = false;
-            cmdAppendTPage.Enabled = false;
-            cmdAppendTPage.FlatBottom = false;
-            cmdAppendTPage.FlatTop = false;
-            cmdAppendTPage.Location = new Point(28, 237);
-            cmdAppendTPage.Name = "cmdAppendTPage";
-            cmdAppendTPage.Padding = new Padding(5);
-            cmdAppendTPage.Size = new Size(75, 23);
-            cmdAppendTPage.TabIndex = 1;
-            cmdAppendTPage.Text = "Append";
-            // 
-            // lstTPages
-            // 
-            lstTPages.BorderStyle = BorderStyle.FixedSingle;
-            lstTPages.FullRowSelect = true;
-            lstTPages.Location = new Point(6, 22);
-            lstTPages.Name = "lstTPages";
-            lstTPages.Size = new Size(120, 180);
-            lstTPages.TabIndex = 0;
-            lstTPages.UseCompatibleStateImageBehavior = false;
-            lstTPages.View = View.Details;
+            dpdTPage.SelectedIndexChanged += dpdTPage_SelectedIndexChanged;
             // 
             // trkPictureSize
             // 
@@ -619,22 +578,28 @@ namespace CrashEdit.CE
             trkPictureSize.Value = 100;
             trkPictureSize.ValueColor = Color.FromArgb(65, 177, 225);
             trkPictureSize.Visible = false;
+            trkPictureSize.ValueChanged += trkPictureSize_ValueChanged;
             // 
-            // grdTextures
+            // dgvTextures
             // 
-            grdTextures.AllowUserToAddRows = false;
-            grdTextures.AllowUserToResizeColumns = false;
-            grdTextures.AllowUserToResizeRows = false;
-            grdTextures.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-            grdTextures.ColumnHeadersHeight = 24;
-            grdTextures.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            grdTextures.Location = new Point(141, 3);
-            grdTextures.Name = "grdTextures";
-            grdTextures.RowHeadersWidth = 24;
-            grdTextures.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            grdTextures.ScrollBars = ScrollBars.Vertical;
-            grdTextures.Size = new Size(524, 372);
-            grdTextures.TabIndex = 0;
+            dgvTextures.AllowUserToAddRows = false;
+            dgvTextures.AllowUserToResizeColumns = false;
+            dgvTextures.AllowUserToResizeRows = false;
+            dgvTextures.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dgvTextures.ColumnHeadersHeight = 24;
+            dgvTextures.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvTextures.Location = new Point(141, 3);
+            dgvTextures.Name = "dgvTextures";
+            dgvTextures.RowHeadersWidth = 24;
+            dgvTextures.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dgvTextures.ScrollBars = ScrollBars.Vertical;
+            dgvTextures.Size = new Size(556, 372);
+            dgvTextures.TabIndex = 0;
+            dgvTextures.CellBeginEdit += dgvTextures_CellBeginEdit;
+            dgvTextures.CellValidating += dgvTextures_CellValidating;
+            dgvTextures.CellValueChanged += dgvTextures_CellValueChanged;
+            dgvTextures.EditingControlShowing += dgvTextures_EditingControlShowing;
+            dgvTextures.SelectionChanged += dgvTextures_SelectionChanged;
             // 
             // OldModelBox
             // 
@@ -671,7 +636,7 @@ namespace CrashEdit.CE
             ((System.ComponentModel.ISupportInitialize)numReplaceTo).EndInit();
             ((System.ComponentModel.ISupportInitialize)numReplace).EndInit();
             fraTPage.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)grdTextures).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvTextures).EndInit();
             ResumeLayout(false);
         }
 
@@ -711,12 +676,9 @@ namespace CrashEdit.CE
         private DarkNumericUpDown numReplace;
         private DarkButton cmdReplace;
         private DarkGroupBox fraTPage;
-        private MetroSet_UI.Controls.MetroSetRadioButton rbtReloadTPage;
         private DarkComboBox dpdTPage;
-        private DarkButton cmdRemoveTPage;
-        private DarkButton cmdAppendTPage;
-        private Controls.DoubleBufferedListView lstTPages;
         private MetroSet_UI.Controls.MetroSetTrackBar trkPictureSize;
-        private DataGridView grdTextures;
+        private DataGridView dgvTextures;
+        private MetroSet_UI.Controls.MetroSetRadioButton rbtReloadTPage;
     }
 }

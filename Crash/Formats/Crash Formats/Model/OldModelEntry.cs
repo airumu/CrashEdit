@@ -41,11 +41,36 @@ namespace CrashEdit.Crash
             get => BitConv.FromInt32(Info, 12);
             set => BitConv.ToInt32(Info, 12, value);
         }
+        public int StructCount
+        {
+            get => BitConv.FromInt32(Info, 16);
+            set => BitConv.ToInt32(Info, 16, value);
+        }
 
         public override UnprocessedEntry Unprocess()
         {
             byte[][] items = new byte[2][];
-            items[0] = Info;
+            items[0] = new byte[20 + structs.Count * 4];
+            BitConv.ToInt32(items[0], 0, PolygonsCount);
+            BitConv.ToInt32(items[0], 4, ScaleX);
+            BitConv.ToInt32(items[0], 8, ScaleY);
+            BitConv.ToInt32(items[0], 12, ScaleZ);
+            BitConv.ToInt32(items[0], 16, StructCount);
+            int texcount = 0;
+            int colcount = 0;
+            for (int i = 0; i < structs.Count; i++)
+            {
+                if (structs[i] is OldModelTexture tex)
+                {
+                    tex.Save().CopyTo(items[0], 20 + texcount * 12 + colcount * 4);
+                    texcount++;
+                }
+                else if (structs[i] is OldSceneryColor col)
+                {
+                    col.Save().CopyTo(items[0], 20 + texcount * 12 + colcount * 4);
+                    colcount++;
+                }
+            }
             items[1] = new byte[polygons.Count * 8];
             for (int i = 0; i < polygons.Count; i++)
             {
