@@ -15,7 +15,8 @@ namespace CrashEdit.CE.Controls
         DataGridViewCellStyle maxValueStyle = new DataGridViewCellStyle
         {
             ForeColor = Color.Turquoise
-        }; DataGridViewCellStyle defaultValueStyle = new DataGridViewCellStyle
+        };
+        DataGridViewCellStyle defaultValueStyle = new DataGridViewCellStyle
         {
             ForeColor = Color.Gainsboro
         };
@@ -401,9 +402,9 @@ namespace CrashEdit.CE.Controls
 
         private void chkMaxValueFlag_Click(object sender, EventArgs e)
         {
-            if (!(grdTextures.SelectedCells.Count > 0)) return;
+            if (!(dgvTextures.SelectedCells.Count > 0)) return;
 
-            foreach (DataGridViewCell cell in grdTextures.SelectedCells)
+            foreach (DataGridViewCell cell in dgvTextures.SelectedCells)
             {
                 if ((cell.ColumnIndex >= ColX1 && cell.ColumnIndex <= ColY4))
                 {
@@ -417,9 +418,9 @@ namespace CrashEdit.CE.Controls
             int startColumnIndex = start;
             int endColumnIndex = end;
 
-            Parallel.For(0, grdTextures.Rows.Count, rowIndex =>
+            Parallel.For(0, dgvTextures.Rows.Count, rowIndex =>
             {
-                var row = grdTextures.Rows[rowIndex];
+                var row = dgvTextures.Rows[rowIndex];
                 double maxValue = double.MinValue;
 
                 for (int col = startColumnIndex; col <= endColumnIndex; col++)
@@ -453,35 +454,35 @@ namespace CrashEdit.CE.Controls
 
         private void CreateTextureListColumns()
         {
-            grdTextures.Columns.Add("Page", "Page");
-            grdTextures.Columns.Add("ClutX", "Clut X");
-            grdTextures.Columns.Add("ClutY", "Clut Y");
-            grdTextures.Columns.Add("Left", "X  ");
-            grdTextures.Columns.Add("Top", "Y  ");
-            grdTextures.Columns.Add("Width", "Width");
-            grdTextures.Columns.Add("Height", "Height");
-            grdTextures.Columns.Add("X1", "X1");
-            grdTextures.Columns.Add("X2", "X2");
-            grdTextures.Columns.Add("X3", "X3");
-            grdTextures.Columns.Add("X4", "X4");
-            grdTextures.Columns.Add("Y1", "Y1");
-            grdTextures.Columns.Add("Y2", "Y2");
-            grdTextures.Columns.Add("Y3", "Y3");
-            grdTextures.Columns.Add("Y4", "Y4");
-            grdTextures.Columns.Add("BlendMode", "Blend");
-            grdTextures.Columns.Add("ColorMode", "Color");
+            dgvTextures.Columns.Add("Page", "Page");
+            dgvTextures.Columns.Add("ClutX", "Clut X");
+            dgvTextures.Columns.Add("ClutY", "Clut Y");
+            dgvTextures.Columns.Add("Left", "X  ");
+            dgvTextures.Columns.Add("Top", "Y  ");
+            dgvTextures.Columns.Add("Width", "Width");
+            dgvTextures.Columns.Add("Height", "Height");
+            dgvTextures.Columns.Add("X1", "X1");
+            dgvTextures.Columns.Add("X2", "X2");
+            dgvTextures.Columns.Add("X3", "X3");
+            dgvTextures.Columns.Add("X4", "X4");
+            dgvTextures.Columns.Add("Y1", "Y1");
+            dgvTextures.Columns.Add("Y2", "Y2");
+            dgvTextures.Columns.Add("Y3", "Y3");
+            dgvTextures.Columns.Add("Y4", "Y4");
+            dgvTextures.Columns.Add("BlendMode", "Blend");
+            dgvTextures.Columns.Add("ColorMode", "Color");
 
             for (int i = ColLeft; i <= ColHeight; i++)
             {
-                grdTextures.Columns[i].Visible = false;
+                dgvTextures.Columns[i].Visible = false;
             }
             if (!isScenery)
             {
-                grdTextures.Columns[ColX4].Visible = false;
-                grdTextures.Columns[ColY4].Visible = false;
+                dgvTextures.Columns[ColX4].Visible = false;
+                dgvTextures.Columns[ColY4].Visible = false;
             }
 
-            foreach (DataGridViewColumn column in grdTextures.Columns)
+            foreach (DataGridViewColumn column in dgvTextures.Columns)
             {
                 column.SortMode = DataGridViewColumnSortMode.NotSortable;
                 column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
@@ -492,8 +493,8 @@ namespace CrashEdit.CE.Controls
 
         private async Task UpdateTextureListAsync(bool setMaxTags)
         {
-            grdTextures.SuspendLayout();
-            grdTextures.ScrollBars = ScrollBars.None;
+            dgvTextures.SuspendLayout();
+            dgvTextures.ScrollBars = ScrollBars.None;
             Stopwatch stopwatch = Stopwatch.StartNew();
             var seenTags = new ConcurrentDictionary<string, bool>();
 
@@ -505,7 +506,7 @@ namespace CrashEdit.CE.Controls
                 {
                     var item = model.Textures[i];
                     DataGridViewRow row = new DataGridViewRow();
-                    row.CreateCells(grdTextures, item.Page, item.ClutX, item.ClutY, item.Left, item.Top, item.Width, item.Height, item.X1, item.X2, item.X3, item.X4, item.Y1, item.Y2, item.Y3, item.Y4, item.BlendMode, item.ColorMode);
+                    row.CreateCells(dgvTextures, item.Page, item.ClutX, item.ClutY, item.Left, item.Top, item.Width, item.Height, item.X1, item.X2, item.X3, item.X4, item.Y1, item.Y2, item.Y3, item.Y4, item.BlendMode, item.ColorMode);
 
                     var tagValue = $"{item.ClutX}, {item.ClutY}, {item.Left}, {item.Top}";
                     foreach (DataGridViewCell cell in row.Cells)
@@ -518,12 +519,12 @@ namespace CrashEdit.CE.Controls
                 return rowsToAdd.OrderBy(pair => pair.Index).Select(pair => pair.Row).ToList();
             });
 
-            grdTextures.Rows.Clear();
+            dgvTextures.Rows.Clear();
 
             int visibleRowIndex = 0;
             foreach (var row in rows)
             {
-                grdTextures.Rows.Add(row);
+                dgvTextures.Rows.Add(row);
                 if (simpleMode)
                 {
                     string tagValue = row.Cells[0].Tag as string;
@@ -555,17 +556,17 @@ namespace CrashEdit.CE.Controls
             int count = simpleMode ? seenTags.Count : rows.Count;
             Console.WriteLine($"Row count: {count}");
             Console.WriteLine($"Processing time: {stopwatch.Elapsed.TotalSeconds:F3} seconds");
-            grdTextures.ScrollBars = ScrollBars.Vertical;
-            grdTextures.ResumeLayout();
+            dgvTextures.ScrollBars = ScrollBars.Vertical;
+            dgvTextures.ResumeLayout();
         }
 
-        private void grdTextures_SelectionChanged(object sender, EventArgs e)
+        private void dgvTextures_SelectionChanged(object sender, EventArgs e)
         {
-            if (grdTextures.SelectedCells.Count > 0)
+            if (dgvTextures.SelectedCells.Count > 0)
             {
-                int rowIndex = grdTextures.SelectedCells[0].RowIndex;
-                var row = grdTextures.Rows[rowIndex];
-                var cell = grdTextures.SelectedCells[0];
+                int rowIndex = dgvTextures.SelectedCells[0].RowIndex;
+                var row = dgvTextures.Rows[rowIndex];
+                var cell = dgvTextures.SelectedCells[0];
 
                 chkMaxValueFlag.Enabled = (cell.ColumnIndex >= ColX1 && cell.ColumnIndex <= ColY4) ? true : false;
                 chkMaxValueFlag.Checked = cell.Style == maxValueStyle ? true : false;
@@ -575,21 +576,21 @@ namespace CrashEdit.CE.Controls
 
                 UpdatePicture();
 
-                numReplace.Value = Convert.ToInt32(grdTextures.CurrentCell.Value);
+                numReplace.Value = Convert.ToInt32(dgvTextures.CurrentCell.Value);
                 numReplaceTo.Value = numReplace.Value;
-                numRowIndex.Value = grdTextures.CurrentCell.RowIndex;
+                numRowIndex.Value = dgvTextures.CurrentCell.RowIndex;
                 lstTPages.SelectedItems.Clear();
                 lstTPages.Items[pageIndex].Selected = true;
                 //lstPages.EnsureVisible(pageIndex);
 
-                if (Settings.Default.OutputModelTextureInfo && grdTextures.CurrentCell.Tag is string tags)
+                if (Settings.Default.OutputModelTextureInfo && dgvTextures.CurrentCell.Tag is string tags)
                 {
-                    Console.WriteLine($"Row {grdTextures.CurrentCell.RowIndex} Tags: {string.Join(", ", tags)}");
+                    Console.WriteLine($"Row {dgvTextures.CurrentCell.RowIndex} Tags: {string.Join(", ", tags)}");
                 }
             }
         }
 
-        private void grdTextures_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        private void dgvTextures_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
             if (e.Control is TextBox textbox)
             {
@@ -610,7 +611,7 @@ namespace CrashEdit.CE.Controls
         {
             await UpdateTextureListAsync(true);
 
-            if (grdTextures.Rows.Count > 0)
+            if (dgvTextures.Rows.Count > 0)
             {
                 UpdateTPageButtons();
                 fraSwitches.Enabled = true;
@@ -621,10 +622,10 @@ namespace CrashEdit.CE.Controls
 
         private async void ToggleSimpleMode()
         {
-            if (grdTextures.IsCurrentCellInEditMode)
-                grdTextures.CancelEdit();
-            grdTextures.SuspendLayout();
-            grdTextures.ScrollBars = ScrollBars.None;
+            if (dgvTextures.IsCurrentCellInEditMode)
+                dgvTextures.CancelEdit();
+            dgvTextures.SuspendLayout();
+            dgvTextures.ScrollBars = ScrollBars.None;
 
             await UpdateTextureListAsync(false);
 
@@ -633,27 +634,27 @@ namespace CrashEdit.CE.Controls
             if (simpleMode)
             {
                 for (int i = ColLeft; i <= ColHeight; i++)
-                    grdTextures.Columns[i].Visible = true;
+                    dgvTextures.Columns[i].Visible = true;
 
                 for (int i = ColX1; i <= endColX; i++)
-                    grdTextures.Columns[i].Visible = false;
+                    dgvTextures.Columns[i].Visible = false;
                 for (int i = ColY1; i <= endColY; i++)
-                    grdTextures.Columns[i].Visible = false;
+                    dgvTextures.Columns[i].Visible = false;
             }
             else
             {
                 for (int i = ColLeft; i <= ColHeight; i++)
-                    grdTextures.Columns[i].Visible = false;
+                    dgvTextures.Columns[i].Visible = false;
 
                 for (int i = ColX1; i <= endColX; i++)
-                    grdTextures.Columns[i].Visible = true;
+                    dgvTextures.Columns[i].Visible = true;
                 for (int i = ColY1; i <= endColY; i++)
-                    grdTextures.Columns[i].Visible = true;
+                    dgvTextures.Columns[i].Visible = true;
             }
 
             fraReplace.Enabled = !simpleMode;
-            grdTextures.ScrollBars = ScrollBars.Vertical;
-            grdTextures.ResumeLayout();
+            dgvTextures.ScrollBars = ScrollBars.Vertical;
+            dgvTextures.ResumeLayout();
         }
 
         private void cmdReplaceTexture_Click(object sender, EventArgs e)
@@ -673,9 +674,9 @@ namespace CrashEdit.CE.Controls
 
                     int destX = selectedRegionX;
                     int destY = selectedRegionY;
-                    if (grdTextures.SelectedCells.Count > 0)
+                    if (dgvTextures.SelectedCells.Count > 0)
                     {
-                        var row = grdTextures.Rows[grdTextures.SelectedCells[0].RowIndex];
+                        var row = dgvTextures.Rows[dgvTextures.SelectedCells[0].RowIndex];
                         int clutX = Convert.ToInt32(row.Cells[ColClutX].Value);
                         int clutY = Convert.ToInt32(row.Cells[ColClutY].Value);
 
@@ -694,9 +695,9 @@ namespace CrashEdit.CE.Controls
             }
         }
 
-        private void grdTexturesGetMaxValue(int rowIndex, int columnIndex, int newValue, out int minValue, out int maxValue, out bool isMaxCell)
+        private void dgvTexturesGetMaxValue(int rowIndex, int columnIndex, int newValue, out int minValue, out int maxValue, out bool isMaxCell)
         {
-            isMaxCell = grdTextures.Rows[rowIndex].Cells[columnIndex].Style == maxValueStyle;
+            isMaxCell = dgvTextures.Rows[rowIndex].Cells[columnIndex].Style == maxValueStyle;
             maxValue = 0; minValue = 0;
             // Page
             if (columnIndex == ColPage)
@@ -710,7 +711,7 @@ namespace CrashEdit.CE.Controls
             // X (Left)
             else if (columnIndex == ColLeft)
             {
-                int width = (int)grdTextures.Rows[rowIndex].Cells[ColWidth].Value;
+                int width = (int)dgvTextures.Rows[rowIndex].Cells[ColWidth].Value;
                 GetXOff(currentColorMode, newValue, out int xoffUnit, out int segment, out int xoff);
 
                 int pw = 256 << (2 - currentColorMode);
@@ -727,11 +728,11 @@ namespace CrashEdit.CE.Controls
             }
             // Y (Top)
             else if (columnIndex == ColTop)
-                maxValue = 128 - (int)grdTextures.Rows[rowIndex].Cells[ColHeight].Value;
+                maxValue = 128 - (int)dgvTextures.Rows[rowIndex].Cells[ColHeight].Value;
             // Width
             else if (columnIndex == ColWidth)
             {
-                int value = (int)grdTextures.Rows[rowIndex].Cells[ColLeft].Value;
+                int value = (int)dgvTextures.Rows[rowIndex].Cells[ColLeft].Value;
                 GetXOff(currentColorMode, value, out int xoffUnit, out int segment, out int xoff);
 
                 maxValue = xoffUnit - (value - xoff);
@@ -742,7 +743,7 @@ namespace CrashEdit.CE.Controls
             // Height
             else if (columnIndex == ColHeight)
             {
-                maxValue = 128 - (int)grdTextures.Rows[rowIndex].Cells[ColTop].Value;
+                maxValue = 128 - (int)dgvTextures.Rows[rowIndex].Cells[ColTop].Value;
                 minValue = 4;
             }
             // Blend Mode
@@ -754,7 +755,7 @@ namespace CrashEdit.CE.Controls
             // X1-X4
             else if (columnIndex >= ColX1 && columnIndex <= ColX4)
             {
-                int width = (int)grdTextures.Rows[rowIndex].Cells[ColWidth].Value;
+                int width = (int)dgvTextures.Rows[rowIndex].Cells[ColWidth].Value;
                 GetXOff(currentColorMode, isMaxCell ? newValue - width : newValue, out int xoffUnit, out int segment, out int xoff);
                 int xoffEnd = xoff + xoffUnit;
 
@@ -780,15 +781,15 @@ namespace CrashEdit.CE.Controls
             }
             // Y1-Y4
             else if (columnIndex >= ColY1 && columnIndex <= ColY4)
-                maxValue = 128 - (int)(isMaxCell ? 0 : grdTextures.Rows[rowIndex].Cells[ColHeight].Value);
+                maxValue = 128 - (int)(isMaxCell ? 0 : dgvTextures.Rows[rowIndex].Cells[ColHeight].Value);
 
         }
 
-        private void grdTextures_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        private void dgvTextures_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
             if (int.TryParse(e.FormattedValue.ToString(), out int newValue))
             {
-                grdTexturesGetMaxValue(e.RowIndex, e.ColumnIndex, newValue, out int minValue, out int maxValue, out bool isMaxCell);
+                dgvTexturesGetMaxValue(e.RowIndex, e.ColumnIndex, newValue, out int minValue, out int maxValue, out bool isMaxCell);
                 if (newValue > maxValue)
                 {
                     if (e.ColumnIndex >= ColLeft && e.ColumnIndex <= ColHeight)
@@ -812,15 +813,15 @@ namespace CrashEdit.CE.Controls
 
         private async void cmdReplace_Click(object sender, EventArgs e)
         {
-            if (grdTextures.SelectedCells.Count > 0)
+            if (dgvTextures.SelectedCells.Count > 0)
             {
                 int rowIndex = (int)numRowIndex.Value;
-                int columnIndex = grdTextures.CurrentCell.ColumnIndex;
-                var row = grdTextures.Rows[rowIndex];
-                string? editedCellTag = grdTextures.SelectedCells[0].Tag?.ToString();
+                int columnIndex = dgvTextures.CurrentCell.ColumnIndex;
+                var row = dgvTextures.Rows[rowIndex];
+                string? editedCellTag = dgvTextures.SelectedCells[0].Tag?.ToString();
 
                 int newValue = (int)numReplaceTo.Value;
-                grdTexturesGetMaxValue(rowIndex, columnIndex, newValue, out int minValue, out int maxValue, out bool isMaxCell);
+                dgvTexturesGetMaxValue(rowIndex, columnIndex, newValue, out int minValue, out int maxValue, out bool isMaxCell);
                 if (newValue > maxValue)
                 {
                     if (columnIndex >= ColLeft && columnIndex <= ColHeight)
@@ -866,11 +867,11 @@ namespace CrashEdit.CE.Controls
             }
         }
 
-        private async void grdTextures_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        private async void dgvTextures_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            if (grdTextures.SelectedCells.Count > 0 && simpleMode)
+            if (dgvTextures.SelectedCells.Count > 0 && simpleMode)
             {
-                var editedRow = grdTextures.Rows[e.RowIndex];
+                var editedRow = dgvTextures.Rows[e.RowIndex];
                 int newValue = Convert.ToInt32(editedRow.Cells[e.ColumnIndex].Value);
                 string? editedCellTag = editedRow.Cells[e.ColumnIndex].Tag?.ToString();
 
@@ -909,7 +910,7 @@ namespace CrashEdit.CE.Controls
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
 
-            var filteredRows = grdTextures.Rows.Cast<DataGridViewRow>()
+            var filteredRows = dgvTextures.Rows.Cast<DataGridViewRow>()
                   .Where(row =>
                   {
                       var cell = row.Cells[0];
@@ -942,13 +943,13 @@ namespace CrashEdit.CE.Controls
             xoff = xoffUnit * segment;
         }
 
-        private void grdTextures_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        private void dgvTextures_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0)
                 return;
 
             var og = model.Textures[e.RowIndex];
-            var item = grdTextures.Rows[e.RowIndex];
+            var item = dgvTextures.Rows[e.RowIndex];
             int colorMode = Convert.ToInt32(item.Cells[ColColorMode].Value);
 
             // Page
@@ -1058,14 +1059,14 @@ namespace CrashEdit.CE.Controls
                 ColLength = ColHeight;
             }
 
-            var targetRow = grdTextures.Rows[rowIndex];
+            var targetRow = dgvTextures.Rows[rowIndex];
 
             Stopwatch stopwatch = Stopwatch.StartNew();
             var updatedRows = new ConcurrentBag<(int RowIndex, int UV1, int UV2, int UV3, int UV4)>();
 
             await Task.Run(() =>
             {
-                var filteredRows = grdTextures.Rows.Cast<DataGridViewRow>()
+                var filteredRows = dgvTextures.Rows.Cast<DataGridViewRow>()
                      .Where(row =>
                     {
                         var cell = row.Cells[0];
@@ -1094,11 +1095,11 @@ namespace CrashEdit.CE.Controls
                 });
             });
 
-            grdTextures.Invoke(() =>
+            dgvTextures.Invoke(() =>
             {
                 foreach (var (rowIndex, UV1, UV2, UV3, UV4) in updatedRows)
                 {
-                    var row = grdTextures.Rows[rowIndex];
+                    var row = dgvTextures.Rows[rowIndex];
                     row.Cells[Col1].Value = UV1;
                     row.Cells[Col2].Value = UV2;
                     row.Cells[Col3].Value = UV3;
@@ -1137,7 +1138,7 @@ namespace CrashEdit.CE.Controls
             if (rowIndex < 0 || rowIndex >= model.Textures.Count)
                 return;
 
-            var targetRow = grdTextures.Rows[rowIndex];
+            var targetRow = dgvTextures.Rows[rowIndex];
             int oldColorMode = Convert.ToInt32(targetRow.Cells[ColColorMode].Value);
 
             Stopwatch stopwatch = Stopwatch.StartNew();
@@ -1146,7 +1147,7 @@ namespace CrashEdit.CE.Controls
             {
                 var result = new ConcurrentBag<(DataGridViewRow Row, int[] UpdatedValues, int newLeft)>();
 
-                var filteredRows = grdTextures.Rows.Cast<DataGridViewRow>()
+                var filteredRows = dgvTextures.Rows.Cast<DataGridViewRow>()
                     .Where(row =>
                     {
                         var cell = row.Cells[0];
@@ -1188,7 +1189,7 @@ namespace CrashEdit.CE.Controls
                 return result;
             });
 
-            grdTextures.Invoke(() =>
+            dgvTextures.Invoke(() =>
             {
                 foreach (var (row, updatedValues, newLeft) in updatedRows)
                 {
@@ -1234,16 +1235,16 @@ namespace CrashEdit.CE.Controls
         {
             tipReloadTPage = new DarkToolTip();
             tipReloadTPage.SetToolTip(rbtReloadTPage, "Reload");
-            DoubleBufferedDataGridView.Initialize(grdTextures);
+            DoubleBufferedDataGridView.Initialize(dgvTextures);
             if (isScenery)
             {
-                grdTextures.Width = 612;
+                dgvTextures.Width = 612;
                 pnTextureControls.Location = new Point(759, 0);
             }
             CreateTextureListColumns();
             UpdateTPageList();
             await UpdateTextureListAsync(true);
-            if (grdTextures.Rows.Count > 0)
+            if (dgvTextures.Rows.Count > 0)
             {
                 UpdateTPageButtons();
                 fraSwitches.Enabled =
@@ -1533,7 +1534,7 @@ namespace CrashEdit.CE.Controls
 
         private void UpdateTPageButtons()
         {
-            if (grdTextures.Rows.Count > 0)
+            if (dgvTextures.Rows.Count > 0)
             {
                 if (model.TPAGCount > 7 || model.TPAGCount == 0)
                     cmdAppendTPage.Enabled = false;
@@ -1546,7 +1547,7 @@ namespace CrashEdit.CE.Controls
                     cmdRemoveTPage.Enabled = true;
 
                 int maxIndex = 0;
-                foreach (DataGridViewRow row in grdTextures.Rows)
+                foreach (DataGridViewRow row in dgvTextures.Rows)
                 {
                     int curIndex = Convert.ToInt32(row.Cells[ColPage].Value.ToString());
                     if (curIndex > maxIndex)
@@ -1796,9 +1797,9 @@ namespace CrashEdit.CE.Controls
 
         private void UpdatePicture()
         {
-            if (!(grdTextures.SelectedCells.Count > 0)) return;
+            if (!(dgvTextures.SelectedCells.Count > 0)) return;
 
-            var cell = grdTextures.Rows[grdTextures.SelectedCells[0].RowIndex];
+            var cell = dgvTextures.Rows[dgvTextures.SelectedCells[0].RowIndex];
             var pageIndex = Convert.ToInt32(cell.Cells[ColPage].Value);
             string cid = lstTPages.Items[pageIndex].SubItems[1].Text;
 

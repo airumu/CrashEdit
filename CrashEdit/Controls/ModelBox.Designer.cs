@@ -101,7 +101,7 @@ namespace CrashEdit.CE.Controls
             cmdAppendTPage = new DarkButton();
             lstTPages = new DoubleBufferedListView();
             trkPictureSize = new MetroSetTrackBar();
-            grdTextures = new DataGridView();
+            dgvTextures = new DataGridView();
             tbpExtendedTextures = new TabPage();
             panel3 = new Panel();
             dgvExtendedTextures = new DataGridView();
@@ -136,7 +136,7 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)numReplaceTo).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numReplace).BeginInit();
             fraTPage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)grdTextures).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvTextures).BeginInit();
             tbpExtendedTextures.SuspendLayout();
             panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvExtendedTextures).BeginInit();
@@ -411,7 +411,7 @@ namespace CrashEdit.CE.Controls
             label3.AutoSize = true;
             label3.Location = new Point(3, 387);
             label3.Name = "label3";
-            label3.Size = new Size(148, 15);
+            label3.Size = new Size(210, 15);
             label3.TabIndex = 2;
             label3.Text = "ModelTransformedTriangle (read-only)";
             // 
@@ -674,7 +674,7 @@ namespace CrashEdit.CE.Controls
             panel2.Controls.Add(pnTextureControls);
             panel2.Controls.Add(fraTPage);
             panel2.Controls.Add(trkPictureSize);
-            panel2.Controls.Add(grdTextures);
+            panel2.Controls.Add(dgvTextures);
             panel2.Dock = DockStyle.Top;
             panel2.Location = new Point(0, 0);
             panel2.Name = "panel2";
@@ -998,26 +998,26 @@ namespace CrashEdit.CE.Controls
             trkPictureSize.Visible = false;
             trkPictureSize.ValueChanged += trkPictureSize_ValueChanged;
             // 
-            // grdTextures
+            // dgvTextures
             // 
-            grdTextures.AllowUserToAddRows = false;
-            grdTextures.AllowUserToResizeColumns = false;
-            grdTextures.AllowUserToResizeRows = false;
-            grdTextures.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-            grdTextures.ColumnHeadersHeight = 24;
-            grdTextures.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            grdTextures.Location = new Point(141, 3);
-            grdTextures.Name = "grdTextures";
-            grdTextures.RowHeadersWidth = 24;
-            grdTextures.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            grdTextures.ScrollBars = ScrollBars.Vertical;
-            grdTextures.Size = new Size(524, 372);
-            grdTextures.TabIndex = 0;
-            grdTextures.CellEndEdit += grdTextures_CellEndEdit;
-            grdTextures.CellValidating += grdTextures_CellValidating;
-            grdTextures.CellValueChanged += grdTextures_CellValueChanged;
-            grdTextures.EditingControlShowing += grdTextures_EditingControlShowing;
-            grdTextures.SelectionChanged += grdTextures_SelectionChanged;
+            dgvTextures.AllowUserToAddRows = false;
+            dgvTextures.AllowUserToResizeColumns = false;
+            dgvTextures.AllowUserToResizeRows = false;
+            dgvTextures.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dgvTextures.ColumnHeadersHeight = 24;
+            dgvTextures.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvTextures.Location = new Point(141, 3);
+            dgvTextures.Name = "dgvTextures";
+            dgvTextures.RowHeadersWidth = 24;
+            dgvTextures.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dgvTextures.ScrollBars = ScrollBars.Vertical;
+            dgvTextures.Size = new Size(524, 372);
+            dgvTextures.TabIndex = 0;
+            dgvTextures.CellEndEdit += dgvTextures_CellEndEdit;
+            dgvTextures.CellValidating += dgvTextures_CellValidating;
+            dgvTextures.CellValueChanged += dgvTextures_CellValueChanged;
+            dgvTextures.EditingControlShowing += dgvTextures_EditingControlShowing;
+            dgvTextures.SelectionChanged += dgvTextures_SelectionChanged;
             // 
             // tbpExtendedTextures
             // 
@@ -1107,7 +1107,7 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)numReplaceTo).EndInit();
             ((System.ComponentModel.ISupportInitialize)numReplace).EndInit();
             fraTPage.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)grdTextures).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvTextures).EndInit();
             tbpExtendedTextures.ResumeLayout(false);
             tbpExtendedTextures.PerformLayout();
             panel3.ResumeLayout(false);
@@ -1134,7 +1134,7 @@ namespace CrashEdit.CE.Controls
         private AltUI.Controls.DarkButton cmdApply;
         private AltUI.Controls.DarkGroupBox fraGlobalControl;
         private AltUI.Controls.DarkButton cmdCancel;
-        private DataGridView grdTextures;
+        private DataGridView dgvTextures;
         private PictureBox pictureBox1;
         private MetroSetSwitch tglSimpleMode;
         private AltUI.Controls.DarkButton cmdReplace;
