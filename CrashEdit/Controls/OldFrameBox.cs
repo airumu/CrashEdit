@@ -1,3 +1,4 @@
+using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 using MetroSet_UI.Controls;
 
@@ -8,6 +9,8 @@ namespace CrashEdit.CE
         private OldFrameController controller;
         private OldFrame frame;
 
+        SplitContainer pnSplit;
+
         private bool vertexdirty;
         private int vertexindex;
 
@@ -16,14 +19,6 @@ namespace CrashEdit.CE
             this.controller = controller;
             frame = controller.OldFrame;
             InitializeComponent();
-            UpdateVertice();
-            UpdateUnknown();
-            UpdateFactor1();
-            UpdateFactor2();
-            UpdateFactorG();
-            UpdateOffset();
-            vertexindex = 0;
-
             CreateTabs();
         }
 
@@ -38,8 +33,6 @@ namespace CrashEdit.CE
                 Style = MetroSet_UI.Enums.Style.Dark,
                 TabStyle = MetroSet_UI.Enums.TabStyle.Style1
             };
-            OldModelEntry modelentry = controller.GetEntry<OldModelEntry>(frame.ModelEID);
-
             dynamic entry = null!;
             if (controller.IsColored)
             {
@@ -54,17 +47,56 @@ namespace CrashEdit.CE
                 Dock = DockStyle.Fill
             };
 
-            TabPage viewertab = new TabPage("Viewer");
-            viewertab.Controls.Add(viewerbox);
-            TabPage edittab = new TabPage("Editor");
-            edittab.Controls.Add(pnOldFrameBox);
-            edittab.BackColor = Color.FromArgb(31, 31, 32);
+            if (Settings.Default.SplitAnimViewerPanels)
+            {
+                pnSplit = new SplitContainer
+                {
+                    Orientation = Orientation.Horizontal,
+                    SplitterDistance = 55,
+                    IsSplitterFixed = true,
+                    Dock = DockStyle.Fill
+                };
+                pnSplit.Panel1.Controls.Add(pnOldFrameBox);
+                pnSplit.Panel2.Controls.Add(viewerbox);
+                Controls.Add(pnSplit);
+                MainInit();
+            }
+            else
+            {
+                TabPage viewertab = new TabPage("Viewer");
+                viewertab.Controls.Add(viewerbox);
+                TabPage edittab = new TabPage("Editor");
+                edittab.Controls.Add(pnOldFrameBox);
+                edittab.BackColor = Color.FromArgb(31, 31, 32);
 
-            tbcTabs.TabPages.Add(viewertab);
-            tbcTabs.TabPages.Add(edittab);
-            tbcTabs.SelectedTab = viewertab;
+                tbcTabs.TabPages.Add(viewertab);
+                tbcTabs.TabPages.Add(edittab);
 
-            Controls.Add(tbcTabs);
+                EventHandler tabChangedHandler = null;
+                tabChangedHandler = (sender, e) =>
+                {
+                    if (tbcTabs.SelectedTab == edittab)
+                    {
+                        MainInit();
+                        tbcTabs.SelectedIndexChanged -= tabChangedHandler;
+                    }
+                };
+                tbcTabs.SelectedIndexChanged += tabChangedHandler;
+
+                tbcTabs.SelectedTab = viewertab;
+                Controls.Add(tbcTabs);
+            }
+        }
+
+        private void MainInit()
+        {
+            UpdateVertice();
+            UpdateUnknown();
+            UpdateFactor1();
+            UpdateFactor2();
+            UpdateFactorG();
+            UpdateOffset();
+            vertexindex = 0;
         }
 
         private void UpdateVertice()
