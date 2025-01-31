@@ -158,7 +158,7 @@ namespace CrashEdit.CE.Controls
             tabModel.Location = new Point(0, 0);
             tabModel.Multiline = true;
             tabModel.Name = "tabModel";
-            tabModel.SelectedIndex = 3;
+            tabModel.SelectedIndex = 0;
             tabModel.SelectedTextColor = Color.White;
             tabModel.Size = new Size(1040, 800);
             tabModel.SizeMode = TabSizeMode.Fixed;
