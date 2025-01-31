@@ -31,7 +31,7 @@ namespace CrashEdit.CE.Controls
         /// </summary>
         private void InitializeComponent()
         {
-            grdCLUT = new DataGridView();
+            dgvCLUT = new DataGridView();
             cmdLoadCLUT = new DarkButton();
             numLoadClut = new DarkNumericUpDown();
             colorEditor = new Cyotek.Windows.Forms.ColorEditor();
@@ -62,7 +62,7 @@ namespace CrashEdit.CE.Controls
             chkSTPbit = new CheckBox();
             fraCount = new DarkGroupBox();
             chkHighlightSTPbit = new CheckBox();
-            ((System.ComponentModel.ISupportInitialize)grdCLUT).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvCLUT).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numLoadClut).BeginInit();
             fraGlobalControl.SuspendLayout();
             pnGlobalControl.SuspendLayout();
@@ -77,25 +77,25 @@ namespace CrashEdit.CE.Controls
             fraCount.SuspendLayout();
             SuspendLayout();
             // 
-            // grdCLUT
+            // dgvCLUT
             // 
-            grdCLUT.AllowUserToAddRows = false;
-            grdCLUT.AllowUserToDeleteRows = false;
-            grdCLUT.AllowUserToResizeColumns = false;
-            grdCLUT.AllowUserToResizeRows = false;
-            grdCLUT.ColumnHeadersHeight = 24;
-            grdCLUT.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            grdCLUT.Location = new Point(0, 0);
-            grdCLUT.Name = "grdCLUT";
-            grdCLUT.ReadOnly = true;
-            grdCLUT.RowHeadersWidth = 24;
-            grdCLUT.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            grdCLUT.ScrollBars = ScrollBars.Vertical;
-            grdCLUT.Size = new Size(516, 624);
-            grdCLUT.TabIndex = 0;
-            grdCLUT.CellPainting += grdCLUT_CellPainting;
-            grdCLUT.SelectionChanged += grdCLUT_SelectionChanged;
-            grdCLUT.KeyDown += grdCLUT_KeyDown;
+            dgvCLUT.AllowUserToAddRows = false;
+            dgvCLUT.AllowUserToDeleteRows = false;
+            dgvCLUT.AllowUserToResizeColumns = false;
+            dgvCLUT.AllowUserToResizeRows = false;
+            dgvCLUT.ColumnHeadersHeight = 24;
+            dgvCLUT.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvCLUT.Location = new Point(0, 0);
+            dgvCLUT.Name = "dgvCLUT";
+            dgvCLUT.ReadOnly = true;
+            dgvCLUT.RowHeadersWidth = 24;
+            dgvCLUT.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dgvCLUT.ScrollBars = ScrollBars.Vertical;
+            dgvCLUT.Size = new Size(516, 624);
+            dgvCLUT.TabIndex = 0;
+            dgvCLUT.CellPainting += dgvCLUT_CellPainting;
+            dgvCLUT.SelectionChanged += dgvCLUT_SelectionChanged;
+            dgvCLUT.KeyDown += dgvCLUT_KeyDown;
             // 
             // cmdLoadCLUT
             // 
@@ -489,11 +489,11 @@ namespace CrashEdit.CE.Controls
             Controls.Add(fraCount);
             Controls.Add(fraSlider);
             Controls.Add(fraGlobalControl);
-            Controls.Add(grdCLUT);
+            Controls.Add(dgvCLUT);
             Name = "CLUTBox";
             Size = new Size(1000, 1000);
             Leave += CLUTBox_Leave;
-            ((System.ComponentModel.ISupportInitialize)grdCLUT).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvCLUT).EndInit();
             ((System.ComponentModel.ISupportInitialize)numLoadClut).EndInit();
             fraGlobalControl.ResumeLayout(false);
             pnGlobalControl.ResumeLayout(false);
@@ -515,7 +515,7 @@ namespace CrashEdit.CE.Controls
 
         #endregion
 
-        private DataGridView grdCLUT;
+        private DataGridView dgvCLUT;
         private AltUI.Controls.DarkButton cmdLoadCLUT;
         private AltUI.Controls.DarkNumericUpDown numLoadClut;
         private Cyotek.Windows.Forms.ColorEditor colorEditor;

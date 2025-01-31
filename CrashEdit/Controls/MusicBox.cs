@@ -190,12 +190,4 @@ namespace CrashEdit.CE
             base.Dispose(disposing);
         }
     }
-    public class DoubleBufferedListView : ListView
-    {
-        public DoubleBufferedListView()
-        {
-            this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
-            this.UpdateStyles();
-        }
-    }
 }

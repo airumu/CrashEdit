@@ -419,7 +419,7 @@ namespace CrashEdit.CE
 
                 UpdatePicture();
 
-                //numReplace.Value = Convert.ToInt32(grdTextures.CurrentCell.Value);
+                //numReplace.Value = Convert.ToInt32(dgvTextures.CurrentCell.Value);
                 //numReplaceTo.Value = numReplace.Value;
                 numRowIndex.Value = dgvTextures.CurrentCell.RowIndex;
                 dpdTPage.Text = Convert.ToString(row.Cells[ColPage].Value);

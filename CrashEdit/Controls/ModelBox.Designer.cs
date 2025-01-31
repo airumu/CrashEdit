@@ -1186,13 +1186,4 @@ namespace CrashEdit.CE.Controls
         private Label label2;
         private Label label3;
     }
-
-    public class DoubleBufferedListView : ListView
-    {
-        public DoubleBufferedListView()
-        {
-            this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
-            this.UpdateStyles();
-        }
-    }
 }

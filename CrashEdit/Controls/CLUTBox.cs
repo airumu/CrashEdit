@@ -41,8 +41,7 @@ namespace CrashEdit.CE.Controls
             InitializeComponent();
             DoubleBuffered = true;
 
-            SetDarkTheme(grdCLUT);
-            EnableDoubleBuffering();
+            DoubleBufferedDataGridView.Initialize(dgvCLUT);
             ResetColorSliders();
 
             globalControlMode = false;
@@ -78,11 +77,11 @@ namespace CrashEdit.CE.Controls
             }
         }
 
-        private void grdCLUT_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        private void dgvCLUT_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
             if (e.RowIndex >= 0 && e.ColumnIndex >= 1)
             {
-                var cell = grdCLUT[e.ColumnIndex, e.RowIndex];
+                var cell = dgvCLUT[e.ColumnIndex, e.RowIndex];
                 var tags = cell.Tag as List<object>;
                 if (cell.Selected)
                 {
@@ -103,26 +102,26 @@ namespace CrashEdit.CE.Controls
 
         private async Task UpdateCLUTList()
         {
-            grdCLUT.SuspendLayout();
+            dgvCLUT.SuspendLayout();
 
-            grdCLUT.ClearSelection();
+            dgvCLUT.ClearSelection();
             numClutX1.Value =
             numClutX2.Value =
             numClutY1.Value =
             numClutY2.Value = 0;
 
-            grdCLUT.Columns.Clear();
-            grdCLUT.Columns.Add($"CLUT", $"CLUT");
+            dgvCLUT.Columns.Clear();
+            dgvCLUT.Columns.Add($"CLUT", $"CLUT");
             for (int i = 0; i < 16; i++)
             {
-                grdCLUT.Columns.Add($"Color{i + 1}", $"{i + 1}");
+                dgvCLUT.Columns.Add($"Color{i + 1}", $"{i + 1}");
             }
-            foreach (DataGridViewColumn column in grdCLUT.Columns)
+            foreach (DataGridViewColumn column in dgvCLUT.Columns)
             {
                 column.Width = 25;
                 column.SortMode = DataGridViewColumnSortMode.NotSortable;
             }
-            grdCLUT.Columns[0].Width = 75;
+            dgvCLUT.Columns[0].Width = 75;
 
             byte[] data = chunk.Data;
             List<byte[]> cluts = GetCLUT(data, 0x20, (int)numLoadClut.Value);
@@ -168,8 +167,8 @@ namespace CrashEdit.CE.Controls
                 return rowsToAdd.OrderBy(pair => pair.Index).Select(pair => pair.Row).ToList();
             });
 
-            grdCLUT.Rows.AddRange(rows.ToArray());
-            grdCLUT.ResumeLayout();
+            dgvCLUT.Rows.AddRange(rows.ToArray());
+            dgvCLUT.ResumeLayout();
 
             fraSlider.Enabled =
             fraGlobalControl.Enabled = true;
@@ -180,11 +179,11 @@ namespace CrashEdit.CE.Controls
             await UpdateCLUTList();
         }
 
-        private void grdCLUT_KeyDown(object sender, KeyEventArgs e)
+        private void dgvCLUT_KeyDown(object sender, KeyEventArgs e)
         {
             //if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control)
             //{
-            //    var tagValue = grdCLUT.SelectedCells[0].Tag?.ToString();
+            //    var tagValue = dgvCLUT.SelectedCells[0].Tag?.ToString();
             //    if (!string.IsNullOrEmpty(tagValue))
             //    {
             //        Clipboard.SetText(tagValue);
@@ -226,7 +225,7 @@ namespace CrashEdit.CE.Controls
         {
             if (!globalControlMode) return;
 
-            grdCLUT.SuspendLayout();
+            dgvCLUT.SuspendLayout();
 
             if (editMode == modeCLUT)
             {
@@ -244,14 +243,14 @@ namespace CrashEdit.CE.Controls
                 {
                     for (int col = 1; col <= 16; col++)
                     {
-                        var cell = grdCLUT.Rows[row].Cells[col];
+                        var cell = dgvCLUT.Rows[row].Cells[col];
                         UpdateColor(cell, STPbit);
                     }
                 }
             }
             else
             {
-                foreach (DataGridViewCell cell in grdCLUT.SelectedCells)
+                foreach (DataGridViewCell cell in dgvCLUT.SelectedCells)
                 {
                     if (cell.RowIndex > 0 && cell.ColumnIndex > 0)
                     {
@@ -264,8 +263,8 @@ namespace CrashEdit.CE.Controls
                     }
                 }
             }
-            grdCLUT.ResumeLayout();
-            grdCLUT.Refresh();
+            dgvCLUT.ResumeLayout();
+            dgvCLUT.Refresh();
         }
 
         private void UpdateColor(DataGridViewCell cell, int STPbit)
@@ -293,7 +292,7 @@ namespace CrashEdit.CE.Controls
 
         private void UpdateSelectedColor(Color color)
         {
-            var cell = grdCLUT.SelectedCells;
+            var cell = dgvCLUT.SelectedCells;
             if (cell.Count > 0 && cell[0].ColumnIndex > 0 && cell[0].RowIndex > 0)
             {
                 colorEditor.Enabled = true;
@@ -330,20 +329,20 @@ namespace CrashEdit.CE.Controls
 
         private void ApplyChanges()
         {
-            if (editStartRow == grdCLUT.RowCount - 1 && editEndRow == 0) return;
+            if (editStartRow == dgvCLUT.RowCount - 1 && editEndRow == 0) return;
 
-            grdCLUT.SuspendLayout();
+            dgvCLUT.SuspendLayout();
             for (int row = editStartRow; row <= editEndRow; row++)
             {
                 for (int col = 1; col <= 16; col++)
                 {
-                    var cell = grdCLUT.Rows[row].Cells[col];
+                    var cell = dgvCLUT.Rows[row].Cells[col];
 
                     Color color = cell.Style.BackColor;
                     cell.Value = ColorTranslator.ToHtml(color);
                 }
             }
-            grdCLUT.ResumeLayout();
+            dgvCLUT.ResumeLayout();
             if (Settings.Default.OutputCLUTInfo)
             {
                 int startX = editStartRow % 16;
@@ -381,11 +380,11 @@ namespace CrashEdit.CE.Controls
             //}
         }
 
-        private void grdCLUT_SelectionChanged(object sender, EventArgs e)
+        private void dgvCLUT_SelectionChanged(object sender, EventArgs e)
         {
-            if (grdCLUT.SelectedCells.Count > 0)
+            if (dgvCLUT.SelectedCells.Count > 0)
             {
-                var cell = grdCLUT.SelectedCells[0];
+                var cell = dgvCLUT.SelectedCells[0];
                 if (cell.RowIndex > 0 && cell.ColumnIndex > 0)
                 {
                     var tags = cell.Tag as List<object>;
@@ -402,7 +401,7 @@ namespace CrashEdit.CE.Controls
                     chkSTPbit.Checked = false;
                 }
 
-                colorEditor.Color = grdCLUT.SelectedCells[0].Style.BackColor;
+                colorEditor.Color = dgvCLUT.SelectedCells[0].Style.BackColor;
                 UpdateNumricValues();
                 ResetColorSliders();
             }
@@ -410,9 +409,9 @@ namespace CrashEdit.CE.Controls
 
         private void chkSTPbit_Click(object sender, EventArgs e)
         {
-            if (grdCLUT.SelectedCells.Count > 0)
+            if (dgvCLUT.SelectedCells.Count > 0)
             {
-                var tags = grdCLUT.SelectedCells[0].Tag as List<object>;
+                var tags = dgvCLUT.SelectedCells[0].Tag as List<object>;
                 tags[1] = chkSTPbit.Checked ? 1 : 0;
             }
         }
@@ -429,9 +428,9 @@ namespace CrashEdit.CE.Controls
 
         private void UpdateNumricValues()
         {
-            if (grdCLUT.SelectedCells.Count > 0 && editMode == modeCLUT)
+            if (dgvCLUT.SelectedCells.Count > 0 && editMode == modeCLUT)
             {
-                var rowIndices = grdCLUT.SelectedCells
+                var rowIndices = dgvCLUT.SelectedCells
                                           .Cast<DataGridViewCell>()
                                           .Select(cell => cell.RowIndex);
 
@@ -472,7 +471,7 @@ namespace CrashEdit.CE.Controls
 
         private void ResetEditRows()
         {
-            editStartRow = grdCLUT.RowCount - 1;
+            editStartRow = dgvCLUT.RowCount - 1;
             editEndRow = 0;
         }
 
@@ -489,14 +488,14 @@ namespace CrashEdit.CE.Controls
 
         private void ResetColorList()
         {
-            grdCLUT.SuspendLayout();
+            dgvCLUT.SuspendLayout();
             int startRow = 1;
-            int endRow = grdCLUT.RowCount;
+            int endRow = dgvCLUT.RowCount;
             for (int row = startRow; row < endRow; row++)
             {
                 for (int col = 1; col <= 16; col++)
                 {
-                    var cell = grdCLUT.Rows[row].Cells[col];
+                    var cell = dgvCLUT.Rows[row].Cells[col];
                     var tags = cell.Tag as List<object>;
 
                     Color oldColor = LoadColorFromValue(cell);
@@ -510,7 +509,7 @@ namespace CrashEdit.CE.Controls
                     cell.Style.BackColor = oldColor;
                 }
             }
-            grdCLUT.ResumeLayout();
+            dgvCLUT.ResumeLayout();
         }
 
         private Color LoadColorFromValue(DataGridViewCell cell)
@@ -542,16 +541,16 @@ namespace CrashEdit.CE.Controls
             //    numClutY2.Value = numClutY1.Value;
             //if (numClutY1.Value == 0 && numClutX1.Value == 0)
             //    numClutX1.Value = 1;
-            if (numClutY1.Value > grdCLUT.RowCount / 16 - 1)
-                numClutY1.Value = grdCLUT.RowCount / 16 - 1;
+            if (numClutY1.Value > dgvCLUT.RowCount / 16 - 1)
+                numClutY1.Value = dgvCLUT.RowCount / 16 - 1;
         }
 
         private void numClutY2_ValueChanged(object sender, EventArgs e)
         {
             //if (numClutY2.Value < numClutY1.Value)
             //    numClutY1.Value = numClutY2.Value;
-            if (numClutY2.Value > grdCLUT.RowCount / 16 - 1)
-                numClutY2.Value = grdCLUT.RowCount / 16 - 1;
+            if (numClutY2.Value > dgvCLUT.RowCount / 16 - 1)
+                numClutY2.Value = dgvCLUT.RowCount / 16 - 1;
         }
 
         private void rdiModeCLUT_Click(object sender, EventArgs e)
@@ -581,7 +580,7 @@ namespace CrashEdit.CE.Controls
 
         private void chkHighlightSTPbit_CheckedChanged(object sender, EventArgs e)
         {
-            grdCLUT.Refresh();
+            dgvCLUT.Refresh();
         }
 
         internal static HslColor ChangeHue(HslColor color, double increment)
@@ -604,62 +603,5 @@ namespace CrashEdit.CE.Controls
             copy.H = value;
             return copy;
         }
-
-        private void EnableDoubleBuffering()
-        {
-            typeof(DataGridView).InvokeMember("DoubleBuffered",
-                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance |
-                System.Reflection.BindingFlags.SetProperty,
-                null, grdCLUT, new object[] { true });
-        }
-
-        private void SetDarkTheme(DataGridView dataGridView)
-        {
-            Color clrBackground = Color.FromArgb(40, 40, 40);
-            Color clrAltBackground = Color.FromArgb(34, 34, 34);
-            Color clrSelectionBackground = Color.FromArgb(70, 70, 70);
-            Color clrText = Color.Gainsboro;
-
-            // Background color of the entire grid
-            dataGridView.BackgroundColor = Color.FromArgb(31, 31, 32);
-
-            // Color of the grid lines
-            dataGridView.GridColor = Color.FromArgb(50, 50, 50);
-
-            // Default style for cells
-            dataGridView.DefaultCellStyle.BackColor = clrBackground;
-            dataGridView.DefaultCellStyle.ForeColor = clrText;
-            dataGridView.DefaultCellStyle.SelectionBackColor = clrSelectionBackground;
-            dataGridView.DefaultCellStyle.SelectionForeColor = clrText;
-
-            // Style for column headers
-            dataGridView.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(50, 50, 50);
-            dataGridView.ColumnHeadersDefaultCellStyle.ForeColor = clrText;
-            dataGridView.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(60, 60, 60);
-            dataGridView.ColumnHeadersDefaultCellStyle.SelectionForeColor = clrText;
-            dataGridView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-
-            // Style for row headers
-            dataGridView.RowHeadersDefaultCellStyle.BackColor = Color.FromArgb(50, 50, 50);
-            dataGridView.RowHeadersDefaultCellStyle.ForeColor = clrText;
-            dataGridView.RowHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(60, 60, 60);
-            dataGridView.RowHeadersDefaultCellStyle.SelectionForeColor = clrText;
-
-            // Background color for odd and even rows
-            dataGridView.RowsDefaultCellStyle.BackColor = clrBackground;
-            dataGridView.AlternatingRowsDefaultCellStyle.BackColor = clrAltBackground;
-
-            // Row border style
-            dataGridView.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-
-            // Header and gridline styles
-            dataGridView.EnableHeadersVisualStyles = false;
-
-            // Additional settings
-            dataGridView.BorderStyle = BorderStyle.None;
-            dataGridView.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
-            dataGridView.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
-        }
-
     }
 }
