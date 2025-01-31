@@ -173,7 +173,7 @@ namespace CrashEdit.CE
 
         private void cmdProcess_Click(object sender, EventArgs e)
         {
-            try
+            //try
             {
                 OldModelEntry? oldModelEntry = null;
                 OldAnimationEntry? oldAnimationEntry = null;
@@ -486,10 +486,10 @@ namespace CrashEdit.CE
                         DarkMessageBox.ShowInformation($"Processed {successCount} entries with {errorCount} errors.", Text);
                 }
             }
-            catch (Exception ex)
-            {
-                DarkMessageBox.ShowError($"{ex.Message}", Resources.Title_Error);
-            }
+            //catch (Exception ex)
+            //{
+            //    DarkMessageBox.ShowError($"{ex.Message}", Resources.Title_Error);
+            //}
         }
 
         private void ClearRows()
@@ -635,21 +635,19 @@ namespace CrashEdit.CE
 
             Console.WriteLine($"Start converting entry: {oldEntry.EName}");
 
-            // Convert polygons to triangles
-            Console.WriteLine($"Converting {oldEntry.Polygons.Count} OldModelPolygon to ModelTransformedTriangle...");
-            List<ModelTransformedTriangle> triangles = ConvertPolygonToTriangle(oldEntry.Polygons, oldEntry.Structs);
-
-            // Reverse calculation for ModelStructs using ModelTriangle.Load logic
-            Console.WriteLine($"Converting {triangles.Count} ModelTransformedTriangle to ModelStruct...");
-            List<ModelStruct> modelStructs = ConvertTriangleToModelStruct(triangles);
-
-            // Convert ModelStructs to PolyData
-            Console.WriteLine($"Converting {modelStructs.Count + 1} ModelStruct to PolyData...");
-            uint[] polyData = ConvertModelStructToPolyData(modelStructs);
-
             // Load texture and color information from OldModelStruct
             Console.WriteLine($"Converting {oldEntry.Structs.Count} OldModelStructs to ModelEntry data...");
             ConvertOldModelStructs(oldEntry, isColored, coloredAnimationEntries, out List <SceneryColor> colors, out List<ModelTexture> textures);
+            bool noTexture = textures.Count == 0;
+
+            //// Convert polygons to triangles
+            Console.WriteLine($"Converting {oldEntry.Polygons.Count} OldModelPolygon to ModelTransformedTriangle...");
+            List<ModelTransformedTriangle> triangles = GenerateTransformedTriangles(oldEntry.Polygons, oldEntry.Structs, isColored);
+
+            // Convert ModelTransformedTriangle to PolyData
+            Console.WriteLine($"Converting {triangles.Count} ModelTransformedTriangle to PolyData...");
+
+            uint[] polyData = GeneratePolyData(triangles, noTexture);
 
             // AnimatedTextures not handled
             List<ModelExtendedTexture> animatedTextures = new List<ModelExtendedTexture>();
@@ -695,156 +693,157 @@ namespace CrashEdit.CE
             );
         }
 
-        private static List<ModelStruct> ConvertTriangleToModelStruct(List<ModelTransformedTriangle> triangles)
+        private static List<ModelTransformedTriangle> GenerateTransformedTriangles(IList<OldModelPolygon> polygons, IList<OldModelStruct> structs, bool isColored)
         {
-            List<ModelStruct> modelStructs = new List<ModelStruct>();
-            Dictionary<byte, int> pos = new Dictionary<byte, int>();
-            List<int> vtx = new List<int>();
-            int lastValidCC = -3; // dirty hack
-            int lastCCpos = -1;
-            int lastAApos = -1;
-            int lastcolor = -1;
-            int lastNonBB = -1;
-
-            for (int i = 0; i < triangles.Count; i++)
-            {
-                var triangle = triangles[i];
-                //for (int j = 0; j < 3; j++)
-                //{
-                //    if (!vertexMap.ContainsKey((byte)triangle.Vertex[j]))
-                //    {
-                //        vertexMap[(byte)triangle.Vertex[i]] = vertexCounter++;
-                //    }
-                //}
-
-                if (i == 0)
-                {
-                    modelStructs.Add(new ModelColor(0, 0)); // Placeholder for color data (adjust as needed)
-                }
-
-                var modelTriangle = new ModelTriangle(
-                    (byte)(triangle.Texture / 3), // TODO: Implement logic for calculating TextureIndex
-                    triangle.Animated,
-                    (byte)i, // TODO: Implement logic for calculating ColorIndex
-                    ModelTriangle.NullPtr, // Key TODO: Implement logic for calculating Key
-                    unknown: 0,
-                    (byte)ModelTriangle.IndexType.Original, // Type TODO: Implement logic for calculating Type
-                    flag: true,
-                    tritype: (byte)((triangle.Type << 2) | triangle.Subtype) // tritype TODO: Implement logic for calculating tritype
-                );
-                modelStructs.Add(modelTriangle);
-            }
-
-            return modelStructs;
-        }
-
-        private static List<int[]> modelVertices = new List<int[]>();
-
-        private static List<ModelTransformedTriangle> ConvertPolygonToTriangle(IList<OldModelPolygon> polygons, IList<OldModelStruct> structs)
-        {
-            List<ModelTransformedTriangle> triangles = new List<ModelTransformedTriangle>();
-            List<ModelTransformedTriangle> existingTriangles = new List<ModelTransformedTriangle>();
-
-            foreach (var polygon in polygons)
-            {
-                modelVertices.Add(new int[] { polygon.VertexA, polygon.VertexB, polygon.VertexC });
-            }
-
+            List<ModelTransformedTriangle> transformedTriangles = new();
+            Dictionary<int, int> positionMap = new(); // PositionKey の管理
+            List<int[]> triangleList = new List<int[]>(); // 既存の三角形リスト
             for (int i = 0; i < polygons.Count; i++)
             {
                 var polygon = polygons[i];
 
-                // Decode Type and Subtype based on additional vertex information
-                byte type = CalculateTriType(polygon.VertexA, polygon.VertexB, polygon.VertexC, existingTriangles, polygons.Count, i);
-                byte subtype = CalculateTriSubtype(polygon.VertexA, polygon.VertexB, polygon.VertexC);
+                int v0 = polygon.VertexA / 6;
+                int v1 = polygon.VertexB / 6;
+                int v2 = polygon.VertexC / 6;
 
-                // Convert OldModelPolygon to ModelTransformedTriangle
-                var triangle = new ModelTransformedTriangle(
-                    polygon.VertexA / 6, // Vertex 1
-                    polygon.VertexB / 6, // Vertex 2
-                    polygon.VertexC / 6, // Vertex 3
-                    0, 0, 0, // Placeholder for colors (to be calculated if needed)
-                    polygon.TexInfo, // Texture
-                    type, // Type
-                    subtype, // Subtype
-                    false // Animated flag
+                // **TriangleType の決定**
+                int triangleType = DetermineTriangleType(triangleList, v0, v1, v2);
+
+                // **Subtype の決定 (面の向き)**
+                int subtype = DetermineTriangleSubtype(v0, v1, v2);
+
+                // **PositionKey の処理**
+                int positionKey = v0;
+                bool isDuplicate = positionMap.ContainsKey(positionKey);
+
+                if (!isDuplicate)
+                {
+                    positionMap[positionKey] = transformedTriangles.Count;
+                }
+
+                int textureIndex = polygon.TexInfo / 3;
+
+                int color1, color2, color3;
+                if (isColored)
+                {
+                    color1 = v0;
+                    color2 = v1;
+                    color3 = v2;
+                }
+                else
+                {
+                    int texIndex = textureIndex;
+                    color1 = texIndex;
+                    color2 = texIndex;
+                    color3 = texIndex;
+                }
+
+                ModelTransformedTriangle triangle = new(
+                    v0, v1, v2,
+                    color1, color2, color3,
+                    textureIndex,
+                    triangleType,
+                    subtype,
+                    false // Animated
                 );
 
-                triangles.Add(triangle);
-                existingTriangles.Add(triangle);
-                Console.WriteLine($"[{i}] {polygon.VertexA / 6}, {polygon.VertexB / 6}, {polygon.VertexC / 6}, Type: {type}, Subtype: {subtype}");
+                transformedTriangles.Add(triangle);
+                triangleList.Add(new int[] { v0, v1, v2 });
+                Console.WriteLine($"[{i + 1}] {v0}, {v1}, {v2}, Type: {triangleType}, Subtype: {subtype}");
             }
 
-            return triangles;
+            return transformedTriangles;
         }
 
-
-        private static byte CalculateTriType(int vertexA, int vertexB, int vertexC, List<ModelTransformedTriangle> existingTriangles, int polygonCount, int idx)
+        private static int DetermineTriangleType(List<int[]> triangleList, int v0, int v1, int v2)
         {
-            // First triangle always starts with CC
-            if (existingTriangles.Count <= 2)
+            if (triangleList.Count == 0)
             {
-                return 2; // CC
-            }
-            // TODO
-            if (idx >= polygonCount - 3)
-            {
-                return 0; // AA
+                return 2; // 最初の三角形は CC
             }
 
-            // Check if the triangle follows AA rules
-            if (vertexA > vertexB && vertexB > vertexC)
+            foreach (var t in triangleList)
             {
-                return 0; // AA
-            }
-
-            // Check if the triangle follows BB rules
-            if (vertexB > vertexA && vertexC < vertexB)
-            {
-                return 1; // BB
-            }
-
-            // Default to CC if no other rules match
-            return 2; // CC
-        }
-
-
-        private static byte CalculateTriSubtype(int vertexA, int vertexB, int vertexC)
-        {
-            // Determine subtype dynamically based on forward face and vertex indices
-            //if (vertexA > vertexB || vertexB > vertexC)
-            //{
-            //    return 1; // Counter-clockwise
-            //}
-            //if (vertexA < vertexB || vertexB < vertexC)
-            //{
-            //    return 3; // Clockwise
-            //}
-
-            return 2; // Double-sided
-        }
-
-        private static uint[] ConvertModelStructToPolyData(List<ModelStruct> modelStructs)
-        {
-            uint[] polyData = new uint[modelStructs.Count + 1];
-            for (int i = 0; i < modelStructs.Count; i++)
-            {
-                if (modelStructs[i] is ModelTriangle modelTriangle)
+                if (t.Contains(v0) && t.Contains(v1) && t.Contains(v2))
                 {
-                    polyData[i] = modelTriangle.Save();
+                    return 2; // CC 型
                 }
-                else if (modelStructs[i] is ModelColor modelColor)
+                if ((t[1] == v1 && t[2] == v2) || (t[1] == v2 && t[2] == v1))
                 {
-                    polyData[i] = modelColor.Save();
+                    return 0; // AA 型
+                }
+                if (t[2] == v0)
+                {
+                    return 1; // BB 型
                 }
             }
-            polyData[^1] = 0xFFFFFFFF; // End marker
 
-            return polyData;
+            return 2; // CC 型（デフォルト）
         }
+
+
+        private static int DetermineTriangleSubtype(int v0, int v1, int v2)
+        {
+            // 頂点の順序で Clockwise / Counterclockwise を決定
+            if ((v1 - v0) * (v2 - v1) > 0)
+            {
+                return 3; // Clockwise
+            }
+            return 1; // Counterclockwise
+        }
+
+        private static uint[] GeneratePolyData(List<ModelTransformedTriangle> triangles, bool noTexture)
+        {
+            List<uint> polydata = new List<uint>();
+            Dictionary<int, int> positionMap = new Dictionary<int, int>(); // PositionKeyの出現状況
+            int lastColor = -1;
+
+            foreach (var triangle in triangles)
+            {
+                //// 色が変わっていたら ModelColor を追加
+                //if (triangle.Color[0] != lastColor || triangle.Color[1] != lastColor || triangle.Color[2] != lastColor)
+                //{
+                //    ModelColor color = new((byte)((triangle.Color[0] & 0x7F) << 2), (byte)((triangle.Color[1] & 0x7F) << 1));
+                //    polydata.Add(color.Save());
+                //    lastColor = triangle.Color[0]; // 更新
+                //}
+
+                // PositionKey（ここではVertex[0]を利用）
+                int positionKey = triangle.Vertex[0];
+                byte type = 0; // 初期値はOriginal
+
+                if (positionMap.ContainsKey(positionKey))
+                {
+                    type = 1; // Duplicate
+                }
+                else
+                {
+                    positionMap[positionKey] = polydata.Count; // このPositionKeyをOriginalとして記録
+                }
+
+                // ModelTriangle を uint に変換
+                ModelTriangle tri = new(
+                    (byte)(noTexture ? 0 : (triangle.Texture + 1)),
+                    triangle.Animated,
+                    (byte)triangle.Color[0],
+                    (byte)positionKey,
+                    0, // Unknown
+                    type, // 計算した Type（Original or Duplicate）
+                    true, // Flag
+                    (byte)((triangle.Type << 2) | (triangle.Subtype & 0x3))
+                );
+                polydata.Add(tri.Save());
+            }
+
+            polydata.Add(0xFFFFFFFF); // フッター追加
+            return polydata.ToArray();
+        }
+
 
         private static void ConvertOldModelStructs(OldModelEntry oldEntry, bool isColored, ColoredAnimationEntry coloredAnimationEntries, out List<SceneryColor> colors, out List<ModelTexture> textures)
         {
+            int colorCount = 0;
+            int textureCount = 0;
             colors = new List<SceneryColor>();
             textures = new List<ModelTexture>();
             foreach (OldModelStruct oldStruct in oldEntry.Structs)
@@ -854,6 +853,7 @@ namespace CrashEdit.CE
                     if (!isColored)
                     {
                         colors.Add(new SceneryColor(oldColor.R, oldColor.G, oldColor.B, 0));
+                        colorCount++;
                     }
                 }
                 else if (oldStruct is OldModelTexture oldTexture)
@@ -890,7 +890,7 @@ namespace CrashEdit.CE
                     byte u4 = 0;
                     byte v4 = 0;
                     textures.Add(new ModelTexture(u1, v1, cluty1, clutx, cluty2, u2, v2, colormode, blendmode, segment, textureoffset, u3, v3, u4, v4));
-                    //Console.WriteLine($"{u1}, {v1}, {u2}, {v2}, {u3}, {v3}");
+                    textureCount++;
                 }
             }
             if (isColored)
@@ -910,6 +910,7 @@ namespace CrashEdit.CE
                     colors.Add(new SceneryColor(vert.R, vert.G, vert.B, 0));
                 }
             }
+            Console.WriteLine($"OldSceneryColor: {colorCount}\r\nOldModelTexture: {textureCount}");
         }
     }
 }
