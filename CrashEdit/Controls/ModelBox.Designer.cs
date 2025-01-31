@@ -413,7 +413,7 @@ namespace CrashEdit.CE.Controls
             label3.Name = "label3";
             label3.Size = new Size(210, 15);
             label3.TabIndex = 2;
-            label3.Text = "ModelTransformedTriangle (read-only)";
+            label3.Text = "Transformed Triangles (read-only)";
             // 
             // label2
             // 
@@ -422,7 +422,7 @@ namespace CrashEdit.CE.Controls
             label2.Name = "label2";
             label2.Size = new Size(72, 15);
             label2.TabIndex = 2;
-            label2.Text = "ModelStruct";
+            label2.Text = "Model Structs";
             // 
             // btnConvert
             // 
