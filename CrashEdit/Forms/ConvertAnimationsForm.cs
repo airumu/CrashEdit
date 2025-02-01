@@ -548,6 +548,7 @@ namespace CrashEdit.CE
             if (cmbMode.SelectedIndex < 0) return;
 
             ClearRows();
+            lblWarning.Visible = false;
 
             if (cmbType.SelectedIndex == TypeModel)
             {
@@ -557,6 +558,8 @@ namespace CrashEdit.CE
                     dgvAnim.Columns[ColType].Visible = false;
                     dgvAnim.Columns[ColModelEID].Visible = true;
                     dgvAnim.Columns[ColAnimEID].Visible = true;
+
+                    lblWarning.Visible = true;
                 }
                 else
                 {

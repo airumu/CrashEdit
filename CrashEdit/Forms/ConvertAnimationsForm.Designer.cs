@@ -37,6 +37,7 @@ namespace CrashEdit.CE
             chkSetModelEID = new CheckBox();
             cmdClear = new AltUI.Controls.DarkButton();
             cmbType = new AltUI.Controls.DarkComboBox();
+            lblWarning = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvAnim).BeginInit();
             SuspendLayout();
             // 
@@ -99,7 +100,7 @@ namespace CrashEdit.CE
             // chkShowFilePath
             // 
             chkShowFilePath.AutoSize = true;
-            chkShowFilePath.Location = new Point(220, 15);
+            chkShowFilePath.Location = new Point(400, 44);
             chkShowFilePath.Name = "chkShowFilePath";
             chkShowFilePath.Size = new Size(103, 19);
             chkShowFilePath.TabIndex = 4;
@@ -143,11 +144,23 @@ namespace CrashEdit.CE
             cmbType.TabIndex = 1;
             cmbType.SelectedIndexChanged += cmbType_SelectedIndexChanged;
             // 
+            // lblWarning
+            // 
+            lblWarning.AutoSize = true;
+            lblWarning.BackColor = Color.Transparent;
+            lblWarning.ForeColor = Color.Red;
+            lblWarning.Location = new Point(220, 9);
+            lblWarning.Name = "lblWarning";
+            lblWarning.Size = new Size(126, 30);
+            lblWarning.TabIndex = 6;
+            lblWarning.Text = "Model conversions are\r\nexperimental!";
+            // 
             // ConvertAnimationsForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(492, 503);
+            Controls.Add(lblWarning);
             Controls.Add(cmdClear);
             Controls.Add(chkSetModelEID);
             Controls.Add(chkShowFilePath);
@@ -179,5 +192,6 @@ namespace CrashEdit.CE
         private CheckBox chkSetModelEID;
         private AltUI.Controls.DarkButton cmdClear;
         private AltUI.Controls.DarkComboBox cmbType;
+        private Label lblWarning;
     }
 }
