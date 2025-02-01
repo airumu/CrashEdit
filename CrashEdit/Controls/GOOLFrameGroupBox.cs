@@ -75,7 +75,7 @@ namespace CrashEdit.CE
             InitializeComponent();
 
             DoubleBufferedDataGridView.Initialize(dgvFrameGroup);
-            DoubleBufferedDataGridView.Initialize(dgvFrameGroup);
+            DoubleBufferedDataGridView.Initialize(dgvTexture);
 
             dgvFrameGroup.Visible = false;
             dgvFrameGroupCreateColumns();
