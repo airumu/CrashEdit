@@ -1061,6 +1061,7 @@ namespace CrashEdit.CE
                                 {
                                     int zone = entry.EID;
                                     int cameraIdx = 0;
+                                    string cameraIndex = string.Empty;
                                     if (entry.CameraCount > 3)
                                     {
                                         int cameraMaxIdx = (entry.CameraCount - 1) / 3;
@@ -1083,6 +1084,7 @@ namespace CrashEdit.CE
                                                     DarkMessageBox.ShowError("Invalid camera index.", Resources.GenerateSpawnPoint_Title);
                                                     return;
                                                 }
+                                                cameraIndex = $" [Camera: {cameraIdx}]";
                                             }
                                             else return;
                                         }
@@ -1098,8 +1100,9 @@ namespace CrashEdit.CE
                                     BitConv.ToInt32(data, 16, y);
                                     BitConv.ToInt32(data, 20, z);
                                     string result = BitConverter.ToString(data).Replace("-", "");
+                                    Console.WriteLine($"[{Entry.EIDToEName(zone)}]{cameraIndex} [ID: {entity.ID}]\n{result}");
                                     Clipboard.SetText(result);
-                                    Console.WriteLine($"[{Entry.EIDToEName(zone)}] [ID:{entity.ID}]\n{result}\nCopied to clipboard.");
+                                    Console.WriteLine("Copied to the clipboard.");
                                     DarkMessageBox.ShowInformation("Spawn point generated and output to the console.", Resources.GenerateSpawnPoint_Title);
                                     return;
                                 }
