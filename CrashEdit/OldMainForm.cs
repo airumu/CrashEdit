@@ -1020,7 +1020,7 @@ namespace CrashEdit.CE
                 Dock = DockStyle.Fill,
                 BackColor = Color.FromArgb(31, 31, 32)
             };
-            List<string> BaseGOOL = new List<string> { "WillC", "WarpC", "FruiC", "DispC", "DoctC", "PartC", "ShadC", "BoxsC" };
+            List<string> BaseGOOL = new List<string> { "WillC", "WarpC", "FruiC", "DispC", "DoctC", "PartC", "ShadC", "BoxsC", "WEfOC", "EntNC" };
             int i = 0;
             foreach (int gool in nsd.GOOLMap)
             {
