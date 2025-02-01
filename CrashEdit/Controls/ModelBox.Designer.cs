@@ -64,6 +64,7 @@ namespace CrashEdit.CE.Controls
             dgvStructs = new DataGridView();
             dgvPolygons = new DataGridView();
             tbpColors = new TabPage();
+            lblColorIndex = new Label();
             fraGlobalControl = new DarkGroupBox();
             cmdCancel = new DarkButton();
             cmdApply = new DarkButton();
@@ -457,8 +458,8 @@ namespace CrashEdit.CE.Controls
             dgvStructs.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dgvStructs.Size = new Size(642, 347);
             dgvStructs.TabIndex = 0;
-            dgvStructs.CellValueChanged += dgvStructs_CellValueChanged;
             dgvStructs.CellParsing += dgv_CellParsing;
+            dgvStructs.CellValueChanged += dgvStructs_CellValueChanged;
             // 
             // dgvPolygons
             // 
@@ -473,13 +474,14 @@ namespace CrashEdit.CE.Controls
             dgvPolygons.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dgvPolygons.Size = new Size(642, 347);
             dgvPolygons.TabIndex = 0;
+            dgvPolygons.CellParsing += dgv_CellParsing;
             dgvPolygons.CellValueChanged += dgvPolygons_CellValueChanged;
             dgvPolygons.KeyDown += dgvPolygons_KeyDown;
-            dgvPolygons.CellParsing += dgv_CellParsing;
             // 
             // tbpColors
             // 
             tbpColors.BackColor = Color.FromArgb(31, 31, 32);
+            tbpColors.Controls.Add(lblColorIndex);
             tbpColors.Controls.Add(fraGlobalControl);
             tbpColors.Controls.Add(pnSliders);
             tbpColors.Controls.Add(lstColor);
@@ -490,6 +492,16 @@ namespace CrashEdit.CE.Controls
             tbpColors.Text = "Colors";
             tbpColors.Enter += tbpColors_Enter;
             tbpColors.Leave += tbpColors_Leave;
+            // 
+            // lblColorIndex
+            // 
+            lblColorIndex.AutoSize = true;
+            lblColorIndex.BackColor = Color.Transparent;
+            lblColorIndex.Location = new Point(304, 375);
+            lblColorIndex.Name = "lblColorIndex";
+            lblColorIndex.Size = new Size(47, 15);
+            lblColorIndex.TabIndex = 8;
+            lblColorIndex.Text = "Index: -";
             // 
             // fraGlobalControl
             // 
@@ -1021,11 +1033,11 @@ namespace CrashEdit.CE.Controls
             dgvTextures.Size = new Size(524, 372);
             dgvTextures.TabIndex = 0;
             dgvTextures.CellEndEdit += dgvTextures_CellEndEdit;
+            dgvTextures.CellParsing += dgv_CellParsing;
             dgvTextures.CellValidating += dgvTextures_CellValidating;
             dgvTextures.CellValueChanged += dgvTextures_CellValueChanged;
             dgvTextures.EditingControlShowing += dgvTextures_EditingControlShowing;
             dgvTextures.SelectionChanged += dgvTextures_SelectionChanged;
-            dgvTextures.CellParsing += dgv_CellParsing;
             // 
             // tbpExtendedTextures
             // 
@@ -1064,10 +1076,10 @@ namespace CrashEdit.CE.Controls
             dgvExtendedTextures.Size = new Size(712, 391);
             dgvExtendedTextures.TabIndex = 0;
             dgvExtendedTextures.CellBeginEdit += dgvExtendedTextures_CellBeginEdit;
+            dgvExtendedTextures.CellParsing += dgv_CellParsing;
             dgvExtendedTextures.CellValidating += dgvExtendedTextures_CellValidating;
             dgvExtendedTextures.CellValueChanged += dgvExtendedTextures_CellValueChanged;
             dgvExtendedTextures.EditingControlShowing += dgvExtendedTextures_EditingControlShowing;
-            dgvExtendedTextures.CellParsing += dgv_CellParsing;
             // 
             // tbpPositions
             // 
@@ -1088,17 +1100,17 @@ namespace CrashEdit.CE.Controls
             dgvPositions.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dgvPositions.ColumnHeadersHeight = 24;
             dgvPositions.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dgvPositions.RowHeadersWidth = 24;
-            dgvPositions.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dgvPositions.Location = new Point(3, 3);
             dgvPositions.Name = "dgvPositions";
+            dgvPositions.RowHeadersWidth = 24;
+            dgvPositions.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dgvPositions.Size = new Size(377, 624);
             dgvPositions.TabIndex = 0;
             dgvPositions.CellBeginEdit += dgvPositions_CellBeginEdit;
+            dgvPositions.CellParsing += dgv_CellParsing;
             dgvPositions.CellValidating += dgvPositions_CellValidating;
             dgvPositions.CellValueChanged += dgvPositions_CellValueChanged;
             dgvPositions.EditingControlShowing += dgvPositions_EditingControlShowing;
-            dgvPositions.CellParsing += dgv_CellParsing;
             // 
             // ModelBox
             // 
@@ -1126,6 +1138,7 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)dgvStructs).EndInit();
             ((System.ComponentModel.ISupportInitialize)dgvPolygons).EndInit();
             tbpColors.ResumeLayout(false);
+            tbpColors.PerformLayout();
             fraGlobalControl.ResumeLayout(false);
             pnGlobalControl.ResumeLayout(false);
             pnGlobalControl.PerformLayout();
@@ -1229,5 +1242,6 @@ namespace CrashEdit.CE.Controls
         private Label label2;
         private Label label3;
         private DataGridView dgvPositions;
+        private Label lblColorIndex;
     }
 }

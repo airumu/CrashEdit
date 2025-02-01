@@ -12,6 +12,10 @@ namespace CrashEdit.CE.Controls
 {
     public partial class ModelBox : UserControl
     {
+        DataGridViewCellStyle indexStyle = new DataGridViewCellStyle
+        {
+            ForeColor = Color.Gray
+        };
         DataGridViewCellStyle maxValueStyle = new DataGridViewCellStyle
         {
             ForeColor = Color.Turquoise
@@ -77,6 +81,7 @@ namespace CrashEdit.CE.Controls
         private const int ColLOD6 = 12;
         private const int ColLOD7 = 13;
 
+        private const int ColIndex = 0;
         private const int ColX = 1;
         private const int ColY = 2;
         private const int ColZ = 3;
@@ -1339,7 +1344,8 @@ namespace CrashEdit.CE.Controls
 
             for (int i = 0; i < rows.Count; i++)
             {
-                rows[i].Cells[0].Value = i + 1;
+                rows[i].Cells[ColIndex].Value = i + 1;
+                rows[i].Cells[ColIndex].Style = indexStyle;
                 dgvPositions.Rows.Add(rows[i]);
             }
 
@@ -1350,14 +1356,14 @@ namespace CrashEdit.CE.Controls
         private void dgvPositions_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
             if (!(dgvPositions.SelectedCells.Count > 0)) return;
-            if (e.ColumnIndex == 0) e.Cancel = true;
+            if (e.ColumnIndex == ColIndex) e.Cancel = true;
         }
 
 
         private void dgvPositions_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
             if (!(dgvPositions.SelectedCells.Count > 0)) return;
-            if (e.ColumnIndex == 0) return;
+            if (e.ColumnIndex == ColIndex) return;
 
             if (int.TryParse(e.FormattedValue.ToString(), out int newValue))
             {
@@ -1883,6 +1889,7 @@ namespace CrashEdit.CE.Controls
                 colorEditor.HslColor = hslColor;
             }
             //colorWheel.Color = color;
+            lblColorIndex.Text = $"Index: {lstColor.SelectedItems[0].Index}";
         }
 
         private void colorWheel_ColorChanged(object sender, EventArgs e)
