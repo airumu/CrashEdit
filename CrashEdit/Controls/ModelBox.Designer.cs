@@ -105,6 +105,8 @@ namespace CrashEdit.CE.Controls
             tbpExtendedTextures = new TabPage();
             panel3 = new Panel();
             dgvExtendedTextures = new DataGridView();
+            tbpPositions = new TabPage();
+            dgvPositions = new DataGridView();
             tabModel.SuspendLayout();
             tbpGeneral.SuspendLayout();
             panel1.SuspendLayout();
@@ -140,6 +142,8 @@ namespace CrashEdit.CE.Controls
             tbpExtendedTextures.SuspendLayout();
             panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvExtendedTextures).BeginInit();
+            tbpPositions.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvPositions).BeginInit();
             SuspendLayout();
             // 
             // tabModel
@@ -152,6 +156,7 @@ namespace CrashEdit.CE.Controls
             tabModel.Controls.Add(tbpColors);
             tabModel.Controls.Add(tbpTextures);
             tabModel.Controls.Add(tbpExtendedTextures);
+            tabModel.Controls.Add(tbpPositions);
             tabModel.Dock = DockStyle.Fill;
             tabModel.IsDerivedStyle = false;
             tabModel.ItemSize = new Size(100, 28);
@@ -411,7 +416,7 @@ namespace CrashEdit.CE.Controls
             label3.AutoSize = true;
             label3.Location = new Point(3, 387);
             label3.Name = "label3";
-            label3.Size = new Size(210, 15);
+            label3.Size = new Size(184, 15);
             label3.TabIndex = 2;
             label3.Text = "Transformed Triangles (read-only)";
             // 
@@ -420,7 +425,7 @@ namespace CrashEdit.CE.Controls
             label2.AutoSize = true;
             label2.Location = new Point(3, 3);
             label2.Name = "label2";
-            label2.Size = new Size(72, 15);
+            label2.Size = new Size(80, 15);
             label2.TabIndex = 2;
             label2.Text = "Model Structs";
             // 
@@ -450,9 +455,10 @@ namespace CrashEdit.CE.Controls
             dgvStructs.Name = "dgvStructs";
             dgvStructs.RowHeadersWidth = 24;
             dgvStructs.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dgvStructs.Size = new Size(655, 347);
+            dgvStructs.Size = new Size(642, 347);
             dgvStructs.TabIndex = 0;
             dgvStructs.CellValueChanged += dgvStructs_CellValueChanged;
+            dgvStructs.CellParsing += dgv_CellParsing;
             // 
             // dgvPolygons
             // 
@@ -465,10 +471,11 @@ namespace CrashEdit.CE.Controls
             dgvPolygons.Name = "dgvPolygons";
             dgvPolygons.RowHeadersWidth = 24;
             dgvPolygons.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dgvPolygons.Size = new Size(655, 347);
+            dgvPolygons.Size = new Size(642, 347);
             dgvPolygons.TabIndex = 0;
             dgvPolygons.CellValueChanged += dgvPolygons_CellValueChanged;
             dgvPolygons.KeyDown += dgvPolygons_KeyDown;
+            dgvPolygons.CellParsing += dgv_CellParsing;
             // 
             // tbpColors
             // 
@@ -1018,6 +1025,7 @@ namespace CrashEdit.CE.Controls
             dgvTextures.CellValueChanged += dgvTextures_CellValueChanged;
             dgvTextures.EditingControlShowing += dgvTextures_EditingControlShowing;
             dgvTextures.SelectionChanged += dgvTextures_SelectionChanged;
+            dgvTextures.CellParsing += dgv_CellParsing;
             // 
             // tbpExtendedTextures
             // 
@@ -1059,6 +1067,38 @@ namespace CrashEdit.CE.Controls
             dgvExtendedTextures.CellValidating += dgvExtendedTextures_CellValidating;
             dgvExtendedTextures.CellValueChanged += dgvExtendedTextures_CellValueChanged;
             dgvExtendedTextures.EditingControlShowing += dgvExtendedTextures_EditingControlShowing;
+            dgvExtendedTextures.CellParsing += dgv_CellParsing;
+            // 
+            // tbpPositions
+            // 
+            tbpPositions.BackColor = Color.FromArgb(31, 31, 32);
+            tbpPositions.Controls.Add(dgvPositions);
+            tbpPositions.Location = new Point(4, 32);
+            tbpPositions.Name = "tbpPositions";
+            tbpPositions.Size = new Size(1032, 764);
+            tbpPositions.TabIndex = 1;
+            tbpPositions.Text = "Positions";
+            tbpPositions.Enter += tbpPositions_Enter;
+            // 
+            // dgvPositions
+            // 
+            dgvPositions.AllowUserToAddRows = false;
+            dgvPositions.AllowUserToResizeColumns = false;
+            dgvPositions.AllowUserToResizeRows = false;
+            dgvPositions.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dgvPositions.ColumnHeadersHeight = 24;
+            dgvPositions.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvPositions.RowHeadersWidth = 24;
+            dgvPositions.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dgvPositions.Location = new Point(3, 3);
+            dgvPositions.Name = "dgvPositions";
+            dgvPositions.Size = new Size(377, 624);
+            dgvPositions.TabIndex = 0;
+            dgvPositions.CellBeginEdit += dgvPositions_CellBeginEdit;
+            dgvPositions.CellValidating += dgvPositions_CellValidating;
+            dgvPositions.CellValueChanged += dgvPositions_CellValueChanged;
+            dgvPositions.EditingControlShowing += dgvPositions_EditingControlShowing;
+            dgvPositions.CellParsing += dgv_CellParsing;
             // 
             // ModelBox
             // 
@@ -1112,6 +1152,8 @@ namespace CrashEdit.CE.Controls
             tbpExtendedTextures.PerformLayout();
             panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvExtendedTextures).EndInit();
+            tbpPositions.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvPositions).EndInit();
             ResumeLayout(false);
         }
 
@@ -1120,6 +1162,7 @@ namespace CrashEdit.CE.Controls
         private MetroSet_UI.Controls.MetroSetTabControl tabModel;
         private TabPage tbpGeneral;
         private TabPage tbpPolygons;
+        private TabPage tbpPositions;
         private TabPage tbpColors;
         private TabPage tbpTextures;
         private TabPage tbpExtendedTextures;
@@ -1185,5 +1228,6 @@ namespace CrashEdit.CE.Controls
         private DarkButton btnConvert;
         private Label label2;
         private Label label3;
+        private DataGridView dgvPositions;
     }
 }

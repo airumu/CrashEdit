@@ -1,6 +1,6 @@
 namespace CrashEdit.Crash
 {
-    public struct ModelPosition
+    public class ModelPosition
     {
         public static ModelPosition Load(byte[] data)
         {
@@ -21,12 +21,12 @@ namespace CrashEdit.Crash
             YBits = (byte)(structure & 0x7);
         }
 
-        public byte X { get; }
-        public byte Z { get; }
-        public byte Y { get; }
-        public byte XBits { get; }
-        public byte ZBits { get; }
-        public byte YBits { get; }
+        public byte X { get; set; }
+        public byte Z { get; set; }
+        public byte Y { get; set; }
+        public byte XBits { get; set; }
+        public byte ZBits { get; set; }
+        public byte YBits { get; set; }
 
         public byte[] Save()
         {
