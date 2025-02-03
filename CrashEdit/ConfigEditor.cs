@@ -146,6 +146,8 @@ namespace CrashEdit.CE
             chkEnableCustomCrates.Text = Resources.Config_chkEnableCustomCrates;
             chkEnableC2TT.Text = Resources.Config_chkEnableC2TT;
             chkPatchGOOLC3toC2.Text = Resources.Config_chkPatchGOOLC3toC2;
+            chkSplitViewerPanels.Text = Resources.Config_chkSplitViewerPanels;
+            chkEnableLegacyEntityBox.Text = Resources.Config_chkEnableLegacyEntityBox;
             chkOutputCopyTextureResult.Text = Resources.Config_chkOutputCopyTextureResult;
             chkOutputModelTextureInfo.Text = Resources.Config_chkOutputModelTextureInfo;
             chkOutputCLUTInfo.Text = Resources.Config_chkOutputCLUTInfo;
@@ -186,8 +188,11 @@ namespace CrashEdit.CE
 
         private void cmdReset_Click(object sender, EventArgs e)
         {
-            Settings.Default.Reset();
-            ((OldMainForm)TopLevelControl).ResetConfig();
+            if (DarkMessageBox.ShowWarning("Are you sure you want to reset the settings?", Resources.Reset_onfirmationPrompt, DarkDialogButton.YesNo) == DialogResult.Yes)
+            {
+                Settings.Default.Reset();
+                ((OldMainForm)TopLevelControl).ResetConfig();
+            }
         }
 
         private void numW_ValueChanged(object sender, EventArgs e)

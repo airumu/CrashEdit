@@ -839,6 +839,7 @@ as Meters: {3:F3}m</value>
   </data>
   <data name="Config_chkOutputModelTextureInfo" xml:space="preserve">
     <value>Output texture information to the console</value>
+    <comment>CE-tweaked</comment>
   </data>
   <data name="TextureChunkBox_TipText" xml:space="preserve">
     <value>[Click] Open the viewer
@@ -846,9 +847,11 @@ as Meters: {3:F3}m</value>
   </data>
   <data name="Config_chkApplyMica" xml:space="preserve">
     <value>Apply Mica</value>
+    <comment>CE-tweaked</comment>
   </data>
   <data name="Config_chkOutputCLUTInfo" xml:space="preserve">
     <value>Output CLUT information to the console</value>
+    <comment>CE-tweaked</comment>
   </data>
   <data name="ViewerControls_ToggleEntityVisual" xml:space="preserve">
     <value>Toggle 3D entity display ({0})</value>
@@ -877,6 +880,7 @@ as Meters: {3:F3}m</value>
   </data>
   <data name="Config_chkIgnoreDuplicatedEntryError" xml:space="preserve">
     <value>Ignore errors when processing duplicated entries</value>
+    <comment>CE-tweaked</comment>
   </data>
   <data name="Title_Error" xml:space="preserve">
     <value>Error</value>
@@ -916,5 +920,16 @@ as Meters: {3:F3}m</value>
   </data>
   <data name="Toolbar_Patch" xml:space="preserve">
     <value>Patch</value>
+  </data>
+  <data name="Config_chkSplitViewerPanels" xml:space="preserve">
+    <value>Split animation viewer panels</value>
+    <comment>CE-tweaked</comment>
+  </data>
+  <data name="Config_chkEnableLegacyEntityBox" xml:space="preserve">
+    <value>Enable legacy entity editor</value>
+    <comment>CE-tweaked</comment>
+  </data>
+  <data name="Reset_onfirmationPrompt" xml:space="preserve">
+    <value>Reset Confirmation Prompt</value>
   </data>
 </root>

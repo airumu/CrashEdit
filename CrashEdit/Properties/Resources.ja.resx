@@ -911,4 +911,13 @@
   <data name="Toolbar_Patch" xml:space="preserve">
     <value>パッチ</value>
   </data>
+  <data name="Config_chkSplitViewerPanels" xml:space="preserve">
+    <value>アニメーションビューワのパネルを分割する</value>
+  </data>
+  <data name="Config_chkEnableLegacyEntityBox" xml:space="preserve">
+    <value>レガシーなエンティティ エディタを使用する</value>
+  </data>
+  <data name="Reset_onfirmationPrompt" xml:space="preserve">
+    <value>リセットの確認</value>
+  </data>
 </root>

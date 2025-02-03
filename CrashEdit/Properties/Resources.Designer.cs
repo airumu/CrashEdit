@@ -133,6 +133,15 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
+        ///   Enable legacy entity editor に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Config_chkEnableLegacyEntityBox {
+            get {
+                return ResourceManager.GetString("Config_chkEnableLegacyEntityBox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Enable 3D entity display に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Config_chkEnableVisual {
@@ -246,6 +255,15 @@ namespace CrashEdit.CE.Properties {
         internal static string Config_chkShowEntityParams {
             get {
                 return ResourceManager.GetString("Config_chkShowEntityParams", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Split animation viewer panels に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Config_chkSplitViewerPanels {
+            get {
+                return ResourceManager.GetString("Config_chkSplitViewerPanels", resourceCulture);
             }
         }
         
@@ -1744,6 +1762,15 @@ namespace CrashEdit.CE.Properties {
         internal static string Playtest_Title {
             get {
                 return ResourceManager.GetString("Playtest_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Reset Confirmation Prompt に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Reset_onfirmationPrompt {
+            get {
+                return ResourceManager.GetString("Reset_onfirmationPrompt", resourceCulture);
             }
         }
         
