@@ -212,6 +212,7 @@ namespace CrashEdit.CE
             lbSPLoadList.TabIndex = 0;
             lbSPLoadList.SelectedIndexChanged += lbSPLoadList_SelectedIndexChanged;
             lbSPLoadList.KeyDown += lbSPLoadList_KeyDown;
+            lbSPLoadList.DoubleClick += lbSPLoadList_DoubleClick;
             // 
             // cmdAppendSP
             // 

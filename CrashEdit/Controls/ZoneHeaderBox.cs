@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Text;
 using System.Text.RegularExpressions;
+using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
@@ -18,8 +19,9 @@ namespace CrashEdit.CE
         private TabPage tbpHeader;
         private TabPage tbpHex;
 
-        private int spLoadListsCount;
-        private BindingList<string> spLoadLists;
+        private int spLoadListCount;
+        private BindingList<string> spLoadList;
+        private DarkToolTip tipSPLoadList;
 
         private int maxZoneCount;
         private bool firstInit = true;
@@ -48,6 +50,9 @@ namespace CrashEdit.CE
             dgvWorlds.ContextMenuStrip = contextMenu;
             dgvZones.CellMouseDown += DataGridView_CellMouseDown;
             dgvWorlds.CellMouseDown += DataGridView_CellMouseDown;
+
+            tipSPLoadList = new DarkToolTip();
+            tipSPLoadList.SetToolTip(lbSPLoadList, Resources.EntityBox_tipLists);
 
             HeaderInit();
             maxZoneCount = header.IsNew ? 16 : 8;
@@ -186,18 +191,18 @@ namespace CrashEdit.CE
 
         private void UpdateSPLoadLists()
         {
-            spLoadListsCount = BitConv.FromInt32(header.Chunk1, 0x8);
-            spLoadLists = new BindingList<string>();
-            for (int i = 0; i < spLoadListsCount; ++i)
+            spLoadListCount = BitConv.FromInt32(header.Chunk1, 0x8);
+            spLoadList = new BindingList<string>();
+            for (int i = 0; i < spLoadListCount; ++i)
             {
                 int eid = BitConv.FromInt32(header.Chunk1, 0xC + i * 0x4);
-                spLoadLists.Add(Entry.EIDToEName(eid));
+                spLoadList.Add(Entry.EIDToEName(eid));
             }
-            lbSPLoadList.DataSource = spLoadLists;
+            lbSPLoadList.DataSource = spLoadList;
 
-            if (spLoadListsCount >= 39)
+            if (spLoadListCount >= 39)
                 cmdAppendSP.Enabled = false;
-            if (spLoadListsCount == 0)
+            if (spLoadListCount == 0)
                 cmdRemoveSP.Enabled = false;
         }
 
@@ -415,18 +420,18 @@ namespace CrashEdit.CE
 
         private void UpdateSPLoadListsCount()
         {
-            byte[] bytes = BitConverter.GetBytes(spLoadListsCount);
+            byte[] bytes = BitConverter.GetBytes(spLoadListCount);
             Array.Copy(bytes, 0, header.Chunk1, 0x8, 0x4);
         }
 
         private void UpdateSPLoadListsEID(bool delete)
         {
-            byte[] bytes = new byte[spLoadListsCount * 0x4];
-            for (int i = 0; i < spLoadListsCount; ++i)
+            byte[] bytes = new byte[spLoadListCount * 0x4];
+            for (int i = 0; i < spLoadListCount; ++i)
             {
                 int eid = Entry.NullEID;
-                if (spLoadLists.Count > 0)
-                    eid = Entry.ENameToEID(spLoadLists[i]);
+                if (spLoadList.Count > 0)
+                    eid = Entry.ENameToEID(spLoadList[i]);
                 byte[] eidBytes = BitConverter.GetBytes(eid);
                 Array.Copy(eidBytes, 0, bytes, i * 0x4, 0x4);
             }
@@ -435,14 +440,14 @@ namespace CrashEdit.CE
             if (delete)
             {
                 byte[] nullbytes = new byte[0x4];
-                Array.Copy(nullbytes, 0, header.Chunk1, 0xC + spLoadListsCount * 0x4, 0x4);
+                Array.Copy(nullbytes, 0, header.Chunk1, 0xC + spLoadListCount * 0x4, 0x4);
                 txtSPLoadList.Text = string.Empty;
             }
         }
 
         private void ClearSPLoadListEID()
         {
-            byte[] nullbytes = new byte[spLoadListsCount * 0x4];
+            byte[] nullbytes = new byte[spLoadListCount * 0x4];
             Array.Copy(nullbytes, 0, header.Chunk1, 0xC, nullbytes.Length);
             txtSPLoadList.Text = string.Empty;
         }
@@ -451,18 +456,18 @@ namespace CrashEdit.CE
         {
             dirty.Push(true);
 
-            ++spLoadListsCount;
+            ++spLoadListCount;
             string eid = Entry.NullEName;
-            if (spLoadLists.Count > 0)
-                eid = spLoadLists[spLoadLists.Count - 1];
-            spLoadLists.Add(eid);
+            if (spLoadList.Count > 0)
+                eid = spLoadList[spLoadList.Count - 1];
+            spLoadList.Add(eid);
             UpdateSPLoadListsCount();
             UpdateSPLoadListsEID(false);
 
             lbSPLoadList.SelectedIndex = lbSPLoadList.Items.Count - 1;
             txtSPLoadList.Text = lbSPLoadList.SelectedItem.ToString();
 
-            if (spLoadListsCount >= 39)
+            if (spLoadListCount >= 39)
             {
                 cmdAppendSP.Enabled = false;
             }
@@ -480,8 +485,8 @@ namespace CrashEdit.CE
 
             int selctedIndex = lbSPLoadList.SelectedIndex;
 
-            --spLoadListsCount;
-            spLoadLists.RemoveAt(selctedIndex);
+            --spLoadListCount;
+            spLoadList.RemoveAt(selctedIndex);
             UpdateSPLoadListsCount();
             UpdateSPLoadListsEID(true);
 
@@ -493,7 +498,7 @@ namespace CrashEdit.CE
                 txtSPLoadList.Text = lbSPLoadList.SelectedItem.ToString();
             }
 
-            if (spLoadListsCount == 0)
+            if (spLoadListCount == 0)
             {
                 cmdRemoveSP.Enabled = false;
             }
@@ -518,10 +523,10 @@ namespace CrashEdit.CE
             // copy list
             if ((e.KeyCode == Keys.C || e.KeyCode == Keys.X) && (e.Modifiers & Keys.Control) == Keys.Control && (e.Modifiers & Keys.Shift) == Keys.Shift)
             {
-                if (spLoadLists.Count <= 0) return;
+                if (spLoadList.Count <= 0) return;
 
                 StringBuilder sb = new StringBuilder();
-                foreach (object item in spLoadLists)
+                foreach (object item in spLoadList)
                 {
                     sb.Append(item + Environment.NewLine);
                 }
@@ -530,9 +535,9 @@ namespace CrashEdit.CE
 
                 if (e.KeyCode == Keys.X) // clear
                 {
-                    spLoadLists.Clear();
+                    spLoadList.Clear();
                     ClearSPLoadListEID();
-                    spLoadListsCount = 0;
+                    spLoadListCount = 0;
                     UpdateSPLoadListsCount();
                     cmdAppendSP.Enabled = true;
                     cmdRemoveSP.Enabled = false;
@@ -545,21 +550,21 @@ namespace CrashEdit.CE
                 string line;
                 while ((line = sr.ReadLine()) != null)
                 {
-                    if (spLoadLists.Count >= 39)
+                    if (spLoadList.Count >= 39)
                     {
                         cmdAppendSP.Enabled = false;
                         break;
                     }
                     if (CheckEname(line).Length > 0)
                     {
-                        spLoadLists.Add(line);
-                        ++spLoadListsCount;
+                        spLoadList.Add(line);
+                        ++spLoadListCount;
                         cmdRemoveSP.Enabled = true;
                     }
                 }
                 UpdateSPLoadListsCount();
                 UpdateSPLoadListsEID(false);
-                if (spLoadLists.Count > 0 && lbSPLoadList.SelectedIndex == -1)
+                if (spLoadList.Count > 0 && lbSPLoadList.SelectedIndex == -1)
                 {
                     lbSPLoadList.SelectedIndex = 0;
                     txtSPLoadList.Text = lbSPLoadList.SelectedItem.ToString();
@@ -568,7 +573,7 @@ namespace CrashEdit.CE
             // copy selected item's eid
             else if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control)
             {
-                if (spLoadLists.Count <= 0) return;
+                if (spLoadList.Count <= 0) return;
                 var selectedItem = lbSPLoadList.SelectedItem;
                 if (selectedItem == null) return;
 
@@ -578,7 +583,7 @@ namespace CrashEdit.CE
             // paste eid to selected item
             else if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
             {
-                if (spLoadLists.Count <= 0) return;
+                if (spLoadList.Count <= 0) return;
                 var selectedItem = lbSPLoadList.SelectedItem;
                 if (selectedItem == null) return;
 
@@ -586,12 +591,26 @@ namespace CrashEdit.CE
                 if (CheckEname(s).Length > 0)
                 {
                     int selctedIndex = lbSPLoadList.SelectedIndex;
-                    spLoadLists[selctedIndex] = s;
+                    spLoadList[selctedIndex] = s;
                     UpdateSPLoadListsEID(false);
                 }
             }
+            else if (e.KeyCode == Keys.F2)
+            {
+                if (spLoadList.Count <= 0) return;
+                txtSPLoadList.Focus();
+                txtSPLoadList.SelectAll();
+            }
             dirty.Pop();
         }
+
+        private void lbSPLoadList_DoubleClick(object sender, EventArgs e)
+        {
+            if (spLoadList.Count <= 0) return;
+            txtSPLoadList.Focus();
+            txtSPLoadList.SelectAll();
+        }
+
         public static string CheckEname(string ename)
         {
             if (ename.Length != 5)
@@ -623,7 +642,7 @@ namespace CrashEdit.CE
             Array.Copy(bytes, 0, header.Chunk1, 0xC + lbSPLoadList.SelectedIndex * 0x4, 0x4);
 
             int selectedIndex = lbSPLoadList.SelectedIndex;
-            spLoadLists[selectedIndex] = txtSPLoadList.Text;
+            spLoadList[selectedIndex] = txtSPLoadList.Text;
 
             Console.WriteLine(txtSPLoadList.Text);
         }
