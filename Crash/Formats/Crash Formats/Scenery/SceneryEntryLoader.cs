@@ -5,8 +5,7 @@ namespace CrashEdit.Crash
     {
         public override Entry Load(byte[][] items, int eid)
         {
-            Scenery scenery = Scenery.Load(items);
-            return SceneryEntryLoaderInternal.LoadScenery(scenery, items, eid, false);
+            return SceneryEntryLoaderInternal.LoadScenery(new Scenery(), items, eid, false);
         }
     }
 
@@ -15,8 +14,7 @@ namespace CrashEdit.Crash
     {
         public override Entry Load(byte[][] items, int eid)
         {
-            Scenery scenery = Scenery.Load(items);
-            return SceneryEntryLoaderInternal.LoadScenery(scenery, items, eid, true);
+            return SceneryEntryLoaderInternal.LoadScenery(new Scenery(), items, eid, true);
         }
     }
 

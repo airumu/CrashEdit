@@ -12,7 +12,7 @@ namespace CrashEdit.Crash
         public SceneryEntry(Scenery scenery, byte[] info, IEnumerable<SceneryVertex> vertices, IEnumerable<SceneryTriangle> triangles, IEnumerable<SceneryQuad> quads, IEnumerable<ModelTexture> textures, IEnumerable<SceneryColor> colors, IEnumerable<ModelExtendedTexture> animatedtextures, bool is_c3, int eid)
             : base(eid)
         {
-            Scenery = new List<Scenery> { scenery };
+            Scenery = scenery;
             Info = info;
             this.vertices = new List<SceneryVertex>(vertices);
             this.triangles = new List<SceneryTriangle>(triangles);
@@ -27,8 +27,10 @@ namespace CrashEdit.Crash
         public override string ImageKey => "ThingBlue";
 
         public override int Type => 3;
-        [SubresourceList]
-        public List<Scenery> Scenery { get; } = new List<Scenery>();
+
+        [SubresourceSlot]
+        public Scenery Scenery { get; }
+
         public byte[] Info { get; }
         public IList<SceneryVertex> Vertices => vertices;
         public IList<SceneryTriangle> Triangles => triangles;
