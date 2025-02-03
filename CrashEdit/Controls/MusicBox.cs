@@ -24,6 +24,8 @@ namespace CrashEdit.CE
             this.controller = controller;
             musicentry = controller.MusicEntry;
 
+            BackColor = Color.FromArgb(31, 31, 32);
+
             lstMusic = new DoubleBufferedListView()
             {
                 BorderStyle = BorderStyle.FixedSingle,
@@ -37,41 +39,33 @@ namespace CrashEdit.CE
             lstMusic.Columns.Add("Item");
             lstMusic.Columns.Add("EID");
 
-            ListViewItem newitem = new ListViewItem("VH");
-            newitem.SubItems.Add(Entry.EIDToEName(musicentry.VHEID));
-            lstMusic.Items.Add(newitem);
-            newitem = new ListViewItem("VB [0]");
-            newitem.SubItems.Add(Entry.EIDToEName(musicentry.VB0EID));
-            lstMusic.Items.Add(newitem);
-            newitem = new ListViewItem("VB [1]");
-            newitem.SubItems.Add(Entry.EIDToEName(musicentry.VB1EID));
-            lstMusic.Items.Add(newitem);
-            newitem = new ListViewItem("VB [2]");
-            newitem.SubItems.Add(Entry.EIDToEName(musicentry.VB2EID));
-            lstMusic.Items.Add(newitem);
-            newitem = new ListViewItem("VB [3]");
-            newitem.SubItems.Add(Entry.EIDToEName(musicentry.VB3EID));
-            lstMusic.Items.Add(newitem);
-            newitem = new ListViewItem("VB [4]");
-            newitem.SubItems.Add(Entry.EIDToEName(musicentry.VB4EID));
-            lstMusic.Items.Add(newitem);
-            newitem = new ListViewItem("VB [5]");
-            newitem.SubItems.Add(Entry.EIDToEName(musicentry.VB5EID));
-            lstMusic.Items.Add(newitem);
-            newitem = new ListViewItem("VB [6]");
-            newitem.SubItems.Add(Entry.EIDToEName(musicentry.VB6EID));
-            lstMusic.Items.Add(newitem);
-
-            //foreach (ColumnHeader column in lstMusic.Columns)
-            //{
-            //    column.Width = -2;
-            //}
-            lstMusic.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+            var items = new (string Text, int EID)[]
+            {
+                ("VH", musicentry.VHEID),
+                ("VB [0]", musicentry.VB0EID),
+                ("VB [1]", musicentry.VB1EID),
+                ("VB [2]", musicentry.VB2EID),
+                ("VB [3]", musicentry.VB3EID),
+                ("VB [4]", musicentry.VB4EID),
+                ("VB [5]", musicentry.VB5EID),
+                ("VB [6]", musicentry.VB6EID),
+            };
+            foreach (var (text, eid) in items)
+            {
+                var newItem = new ListViewItem(text);
+                newItem.SubItems.Add(Entry.EIDToEName(eid));
+                lstMusic.Items.Add(newItem);
+            }
+            foreach (ColumnHeader column in lstMusic.Columns)
+            {
+                column.Width = 60;
+            }
 
             txtMusic = new DarkTextBox()
             {
                 Enabled = false,
-                MaxLength = 5
+                MaxLength = 5,
+                Width = 120
             };
             txtMusic.TextChanged += txtMusic_TextChanged;
             txtMusic.KeyDown += txtMusic_KeyDown;
@@ -148,19 +142,25 @@ namespace CrashEdit.CE
             pnMain.Controls.Add(pnSub2);
             Controls.Add(pnMain);
         }
+
         private void UpdateEID()
         {
             if (lblEIDError.Text != string.Empty) return;
-            var idx = lstMusic.SelectedIndices[0];
-            lstMusic.SelectedItems[0].SubItems[1].Text = txtMusic.Text;
-            if (idx == 0) musicentry.VHEID = Entry.ENameToEID(txtMusic.Text);
-            else if (idx == 1) musicentry.VB0EID = Entry.ENameToEID(txtMusic.Text);
-            else if (idx == 2) musicentry.VB1EID = Entry.ENameToEID(txtMusic.Text);
-            else if (idx == 3) musicentry.VB2EID = Entry.ENameToEID(txtMusic.Text);
-            else if (idx == 4) musicentry.VB3EID = Entry.ENameToEID(txtMusic.Text);
-            else if (idx == 5) musicentry.VB4EID = Entry.ENameToEID(txtMusic.Text);
-            else if (idx == 6) musicentry.VB5EID = Entry.ENameToEID(txtMusic.Text);
-            else if (idx == 7) musicentry.VB6EID = Entry.ENameToEID(txtMusic.Text);
+
+            string text = txtMusic.Text;
+            lstMusic.SelectedItems[0].SubItems[1].Text = text;
+            int idx = lstMusic.SelectedIndices[0];
+            switch (idx) 
+            {
+                case 0: musicentry.VHEID = Entry.ENameToEID(text); break;
+                case 1: musicentry.VB0EID = Entry.ENameToEID(text); break;
+                case 2: musicentry.VB1EID = Entry.ENameToEID(text); break;
+                case 3: musicentry.VB2EID = Entry.ENameToEID(text); break;
+                case 4: musicentry.VB3EID = Entry.ENameToEID(text); break;
+                case 5: musicentry.VB4EID = Entry.ENameToEID(text); break;
+                case 6: musicentry.VB5EID = Entry.ENameToEID(text); break;
+                case 7: musicentry.VB6EID = Entry.ENameToEID(text); break;
+            }
         }
 
         private void lstMusic_Click(object? sender, EventArgs e)
