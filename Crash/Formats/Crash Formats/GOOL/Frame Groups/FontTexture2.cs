@@ -8,7 +8,7 @@
         public FontTexture2(int packed1, int packed2, int packed3, int packed4, short width, short height)
             : base(packed1, packed2, packed3, packed4)
         {
-            Width = width; 
+            Width = width;
             Height = height;
         }
     }

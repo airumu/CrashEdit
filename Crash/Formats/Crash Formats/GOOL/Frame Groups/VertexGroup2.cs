@@ -12,7 +12,7 @@
             }
             int idx = index;
             index += 2;
-            
+
             short frames = BitConv.FromInt16(data, index);
             index += 2;
 

@@ -95,7 +95,7 @@ namespace CrashEdit.Crash
             IsNew = isNew;
         }
 
-        public  string Title => "Header";
+        public string Title => "Header";
         public string ImageKey => "Arrow";
 
         public int WorldCount { get; set; }

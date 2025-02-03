@@ -458,7 +458,7 @@ namespace CrashEdit
                         break;
                 }
             }
-         
+
         }
 
         private static Brush brush_borderBrush = new SolidBrush(Color.FromArgb(36, 36, 40));
@@ -543,7 +543,7 @@ namespace CrashEdit
         {
             using (var g = CreateGraphics())
             {
-                CharSize = TextRenderer.MeasureText(g, "A", _font, Size.Empty, TextFormatFlags.NoPadding); 
+                CharSize = TextRenderer.MeasureText(g, "A", _font, Size.Empty, TextFormatFlags.NoPadding);
             }
             AddressCharCount = 5; // sensible minimum
             AddressCharCount = Math.Max(AddressCharCount, FirstByteAddress.ToString("x").Length);

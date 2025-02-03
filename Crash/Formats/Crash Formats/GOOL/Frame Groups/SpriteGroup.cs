@@ -12,7 +12,7 @@
             }
             int idx = index;
             index += 2;
-            
+
             short framecount = BitConv.FromInt16(data, index);
             index += 2;
 
@@ -26,7 +26,7 @@
             List<SpriteTexture> frames = new();
             for (int i = 0; i < framecount; ++i)
             {
-                frames.Add(new(BitConv.FromInt32(data, index), BitConv.FromInt32(data, index+4)));
+                frames.Add(new(BitConv.FromInt32(data, index), BitConv.FromInt32(data, index + 4)));
                 frames[i] = SpriteTexture.Load(BitConv.FromInt32(data, index), BitConv.FromInt32(data, index + 4));
                 index += 8;
             }

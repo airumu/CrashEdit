@@ -112,7 +112,7 @@ namespace CrashEdit.Crash
 
             if (doProcess)
             {
-                int offset = (bpp == 8)? clutY * 0x200 : clutX * 0x20 + clutY * 0x200;
+                int offset = (bpp == 8) ? clutY * 0x200 : clutX * 0x20 + clutY * 0x200;
                 Array.Copy(rgba5551List, 0, newTPage, offset, rgba5551List.Length);
                 Console.WriteLine("CLUT replacement done.");
             }
@@ -228,7 +228,7 @@ namespace CrashEdit.Crash
                 Console.WriteLine();
                 Console.WriteLine($"srcX: {srcX}, srcY: {srcY}");
             }
-          
+
             Array.Clear(vram, 0, vram.Length);
 
             int bytesPerPixel = is8bpp ? 1 : 2;

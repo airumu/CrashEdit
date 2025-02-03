@@ -4,7 +4,7 @@ namespace CrashEdit.Crash
     {
         public ZoneEntry(ZoneHeader zoneheader, byte[] layout, IEnumerable<Entity> entities, int eid) : base(eid)
         {
-            Zoneheader  = zoneheader;
+            Zoneheader = zoneheader;
             Layout = layout;
             Entities.AddRange(entities);
         }
