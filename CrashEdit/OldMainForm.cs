@@ -1,4 +1,3 @@
-using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.CE.Forms;
 using CrashEdit.CE.Properties;
@@ -32,19 +31,16 @@ namespace CrashEdit.CE
 
         private TabControl tbcTabs;
         private GameVersionForm dlgGameVersion;
-        private ConvertAnimationsForm dlgConvertAnimations;
-
         private BackgroundWorker bgwMakeBIN;
         private ProgressBarForm dlgProgress;
 
-        private DarkForm? ShowGOOLMapForm { get; set; }
-        private Dictionary<string, DarkForm> ShowGOOLMapForms { get; } = new();
+        private ConvertAnimationsForm formConvertAnimations;
+        private MakeBin formMakebin;
+        private Dictionary<string, DarkForm> formShowGOOLMap;
 
         public static bool PAL { get; private set; } = Settings.Default.ModePAL;
         private const int RateNTSC = 30;
         private const int RatePAL = 25;
-
-        private MakeBin frmmakebin = null!;
 
         public OldMainForm()
         {
@@ -138,8 +134,6 @@ namespace CrashEdit.CE
 
             tbcTabs_SelectedIndexChanged(null, null);
 
-            dlgConvertAnimations = null!;
-
             dlgGameVersion = new GameVersionForm();
 
             bgwMakeBIN = new BackgroundWorker()
@@ -151,6 +145,10 @@ namespace CrashEdit.CE
             bgwMakeBIN.ProgressChanged += new ProgressChangedEventHandler(bgwMakeBIN_ProgressChanged);
             bgwMakeBIN.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bgwMakeBIN_RunWorkerCompleted);
             dlgProgress = null!;
+
+            formConvertAnimations = null!;
+            formMakebin = null!;
+            formShowGOOLMap = new();
 
             Icon = OldResources.CBHacksIconAlt;
             // Width = Settings.Default.DefaultFormW;
@@ -792,13 +790,13 @@ namespace CrashEdit.CE
 
         void tbbBIN_Click(object sender, EventArgs e)
         {
-            if (frmmakebin == null || frmmakebin.IsDisposed)
-                frmmakebin = new MakeBin(this, true);
+            if (formMakebin == null || formMakebin.IsDisposed)
+                formMakebin = new MakeBin(this, true);
 
-            if (!frmmakebin.Visible)
-                frmmakebin.Show();
+            if (!formMakebin.Visible)
+                formMakebin.Show();
             else
-                frmmakebin.Activate();
+                formMakebin.Activate();
         }
 
         void tbxDefaultVersion_SelectedIndexChanged(object sender, EventArgs e)
@@ -809,13 +807,13 @@ namespace CrashEdit.CE
 
         void tbxMakeBIN_Click(object sender, EventArgs e)
         {
-            if (frmmakebin == null || frmmakebin.IsDisposed)
-                frmmakebin = new MakeBin(this, false);
+            if (formMakebin == null || formMakebin.IsDisposed)
+                formMakebin = new MakeBin(this, false);
 
-            if (!frmmakebin.Visible)
-                frmmakebin.Show();
+            if (!formMakebin.Visible)
+                formMakebin.Show();
             else
-                frmmakebin.Activate();
+                formMakebin.Activate();
         }
 
         void tbxConvertVHVB_Click(object sender, EventArgs e)
@@ -885,17 +883,17 @@ namespace CrashEdit.CE
 
         void tbxConvertAnimations_Click(object sender, EventArgs e)
         {
-            if (dlgConvertAnimations != null)
+            if (formConvertAnimations != null)
             {
-                dlgConvertAnimations.Focus();
+                formConvertAnimations.Focus();
                 return;
             }
-            dlgConvertAnimations = new ConvertAnimationsForm();
-            dlgConvertAnimations.FormClosing += (object sender, FormClosingEventArgs e) =>
+            formConvertAnimations = new ConvertAnimationsForm();
+            formConvertAnimations.FormClosing += (object sender, FormClosingEventArgs e) =>
             {
-                dlgConvertAnimations = null;
+                formConvertAnimations = null;
             };
-            dlgConvertAnimations.Show();
+            formConvertAnimations.Show();
         }
 
         void GetNSD(out string nsdFilename, out dynamic? nsd)
@@ -962,7 +960,7 @@ namespace CrashEdit.CE
                 return;
             }
 
-            if (ShowGOOLMapForms.TryGetValue(nsdFilename, out DarkForm? value))
+            if (formShowGOOLMap.TryGetValue(nsdFilename, out DarkForm? value))
             {
                 value.Focus();
                 return;
@@ -994,9 +992,9 @@ namespace CrashEdit.CE
             goolmap.Controls.Add(lst);
             goolmap.FormClosing += (object sender, FormClosingEventArgs e) =>
             {
-                ShowGOOLMapForms.Remove(nsdFilename);
+                formShowGOOLMap.Remove(nsdFilename);
             };
-            ShowGOOLMapForms.Add(nsdFilename, goolmap);
+            formShowGOOLMap.Add(nsdFilename, goolmap);
             goolmap.Show();
         }
 
