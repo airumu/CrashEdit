@@ -76,7 +76,7 @@ namespace CrashEdit.CE.Controls
             pictureBox1 = new PictureBox();
             panel2 = new Panel();
             pnTextureControls = new Panel();
-            chkMaxValueFlag = new CheckBox();
+            chkRegionEndFlag = new CheckBox();
             fraSwitches = new DarkGroupBox();
             tglSimpleMode = new MetroSetSwitch();
             fraReplaceTexture = new DarkGroupBox();
@@ -487,7 +487,6 @@ namespace CrashEdit.CE.Controls
             tbpColors.TabIndex = 1;
             tbpColors.Text = "Colors";
             tbpColors.Enter += tbpColors_Enter;
-            tbpColors.Leave += tbpColors_Leave;
             // 
             // lblColorIndex
             // 
@@ -698,7 +697,7 @@ namespace CrashEdit.CE.Controls
             // 
             // pnTextureControls
             // 
-            pnTextureControls.Controls.Add(chkMaxValueFlag);
+            pnTextureControls.Controls.Add(chkRegionEndFlag);
             pnTextureControls.Controls.Add(fraSwitches);
             pnTextureControls.Controls.Add(fraReplaceTexture);
             pnTextureControls.Controls.Add(numRowIndex);
@@ -709,17 +708,17 @@ namespace CrashEdit.CE.Controls
             pnTextureControls.Size = new Size(214, 372);
             pnTextureControls.TabIndex = 13;
             // 
-            // chkMaxValueFlag
+            // chkRegionEndFlag
             // 
-            chkMaxValueFlag.AutoSize = true;
-            chkMaxValueFlag.Enabled = false;
-            chkMaxValueFlag.Location = new Point(3, 61);
-            chkMaxValueFlag.Name = "chkMaxValueFlag";
-            chkMaxValueFlag.Size = new Size(83, 19);
-            chkMaxValueFlag.TabIndex = 11;
-            chkMaxValueFlag.Text = "RegionEnd";
-            chkMaxValueFlag.UseVisualStyleBackColor = true;
-            chkMaxValueFlag.Click += chkMaxValueFlag_Click;
+            chkRegionEndFlag.AutoSize = true;
+            chkRegionEndFlag.Enabled = false;
+            chkRegionEndFlag.Location = new Point(3, 61);
+            chkRegionEndFlag.Name = "chkRegionEndFlag";
+            chkRegionEndFlag.Size = new Size(83, 19);
+            chkRegionEndFlag.TabIndex = 11;
+            chkRegionEndFlag.Text = "RegionEnd";
+            chkRegionEndFlag.UseVisualStyleBackColor = true;
+            chkRegionEndFlag.Click += chkRegionEndFlag_Click;
             // 
             // fraSwitches
             // 
@@ -1229,7 +1228,7 @@ namespace CrashEdit.CE.Controls
         private MetroSetTrackBar trkPictureSize;
         private Panel panel2;
         private Panel pnTextureControls;
-        private CheckBox chkMaxValueFlag;
+        private CheckBox chkRegionEndFlag;
         private DataGridView dgvExtendedTextures;
         private Panel panel3;
         private DataGridView dgvPolygons;

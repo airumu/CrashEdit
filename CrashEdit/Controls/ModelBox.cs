@@ -122,6 +122,8 @@ namespace CrashEdit.CE.Controls
         internal Stack<bool> dirty = new Stack<bool>();
         internal bool Dirty => dirty.Count > 0 && dirty.Peek();
 
+        #region Init
+
         public ModelBox(ModelEntryController controller)
         {
             MainInit(controller, false);
@@ -188,6 +190,74 @@ namespace CrashEdit.CE.Controls
             dirty.Pop();
         }
 
+        private void tbpPolygons_Enter(object sender, EventArgs e)
+        {
+            DoubleBufferedDataGridView.Initialize(dgvStructs);
+            DoubleBufferedDataGridView.Initialize(dgvPolygons);
+            UpdateStructs();
+            UpdatePolygons();
+            tbpPolygons.Enter -= tbpPolygons_Enter;
+        }
+
+        private async void tbpColors_Enter(object sender, EventArgs e)
+        {
+            ResetColorSliders();
+            await UpdateColorListAsync();
+            tbpColors.Enter -= tbpColors_Enter;
+        }
+
+        private async void tbpTextures_Enter(object sender, EventArgs e)
+        {
+            tipReloadTPage = new DarkToolTip();
+            tipReloadTPage.SetToolTip(rbtReloadTPage, "Reload");
+            DoubleBufferedDataGridView.Initialize(dgvTextures);
+            if (isScenery)
+            {
+                dgvTextures.Width = 612;
+                pnTextureControls.Location = new Point(759, 0);
+            }
+            CreateTextureListColumns();
+            UpdateTPageList();
+            await UpdateTextureListAsync(true);
+            if (dgvTextures.Rows.Count > 0)
+            {
+                UpdateTPageButtons();
+                fraSwitches.Enabled =
+                fraReplace.Enabled =
+                fraReplaceTexture.Enabled = true;
+                trkPictureSize.Visible = true;
+                pnPicture.AutoScroll = true;
+            }
+
+            BGRAMode =
+            replaceCLUT = true;
+
+            numReplaceTo.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
+
+            tbpTextures.Enter -= tbpTextures_Enter;
+        }
+
+        private async void tbpExtendedTextures_Enter(object sender, EventArgs e)
+        {
+            DoubleBufferedDataGridView.Initialize(dgvExtendedTextures);
+            CreateExtendedTextureColumns();
+            await UpdateExtendedTextureAsync();
+
+            tbpExtendedTextures.Enter -= tbpExtendedTextures_Enter;
+        }
+
+        private async void tbpPositions_Enter(object sender, EventArgs e)
+        {
+            DoubleBufferedDataGridView.Initialize(dgvPositions);
+            CreatePositionColumns();
+            await UpdatePositionAsync();
+
+            tbpPositions.Enter -= tbpPositions_Enter;
+        }
+        #endregion
+
+        #region General
+
         internal void SetCVal(DarkNumericUpDown num, long val)
         {
             dirty.Push(true);
@@ -227,6 +297,83 @@ namespace CrashEdit.CE.Controls
                 lblModelInfo.Text = string.Format("Polygon count: {0}\nVertex count: {1}\nCompression ratio: {2:P1} ({3}/{4})", model.PolyCount, model.VertexCount, (float)bits / totalbits, bits, totalbits);
             }
         }
+
+        private void numScaleX_ValueChanged(object sender, EventArgs e)
+        {
+            if (!Dirty)
+            {
+                SetCVal(numScaleX, (long)numScaleX.Value);
+                model.ScaleX = ((long)numScaleX.Value).UInt32ToInt32();
+            }
+        }
+
+        private void numScaleY_ValueChanged(object sender, EventArgs e)
+        {
+            if (!Dirty)
+            {
+                SetCVal(numScaleY, (long)numScaleY.Value);
+                model.ScaleY = ((long)numScaleY.Value).UInt32ToInt32();
+            }
+        }
+
+        private void numScaleZ_ValueChanged(object sender, EventArgs e)
+        {
+            if (!Dirty)
+            {
+                SetCVal(numScaleZ, (long)numScaleZ.Value);
+                model.ScaleZ = ((long)numScaleZ.Value).UInt32ToInt32();
+            }
+        }
+
+        private void chkScalesAsHex_CheckedChanged(object sender, EventArgs e)
+        {
+            numScaleX.Hexadecimal =
+            numScaleY.Hexadecimal =
+            numScaleZ.Hexadecimal = chkScalesShowAsHex.Checked;
+            SetCVal(numScaleX, (long)numScaleX.Value);
+            SetCVal(numScaleY, (long)numScaleY.Value);
+            SetCVal(numScaleZ, (long)numScaleZ.Value);
+        }
+
+        private void numOffsetX_ValueChanged(object sender, EventArgs e)
+        {
+            if (!Dirty)
+            {
+                SetCVal(numOffsetX, (long)numOffsetX.Value);
+                model.XOffset = ((long)numOffsetX.Value).UInt32ToInt32();
+            }
+        }
+
+        private void numOffsetY_ValueChanged(object sender, EventArgs e)
+        {
+            if (!Dirty)
+            {
+                SetCVal(numOffsetY, (long)numOffsetY.Value);
+                model.YOffset = ((long)numOffsetY.Value).UInt32ToInt32();
+            }
+        }
+
+        private void numOffsetZ_ValueChanged(object sender, EventArgs e)
+        {
+            if (!Dirty)
+            {
+                SetCVal(numOffsetZ, (long)numOffsetZ.Value);
+                model.ZOffset = ((long)numOffsetZ.Value).UInt32ToInt32();
+            }
+        }
+
+        private void chkOffsetsAsHex_CheckedChanged(object sender, EventArgs e)
+        {
+            numOffsetX.Hexadecimal =
+            numOffsetY.Hexadecimal =
+            numOffsetZ.Hexadecimal = chkOffsetsShowAsHex.Checked;
+            SetCVal(numOffsetX, (long)numOffsetX.Value);
+            SetCVal(numOffsetY, (long)numOffsetY.Value);
+            SetCVal(numOffsetZ, (long)numOffsetZ.Value);
+        }
+        #endregion
+
+        #region Structs
 
         private void UpdateStructs()
         {
@@ -297,6 +444,300 @@ namespace CrashEdit.CE.Controls
                 column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft;
             }
         }
+
+        private void dgvStructs_SelectionChanged(object sender, EventArgs e)
+        {
+            if (!(dgvStructs.SelectedCells.Count > 0)) return;
+
+            var row = dgvStructs.Rows[dgvStructs.SelectedCells[0].RowIndex];
+            if (Convert.ToString(row.Cells[ColTexture].Value) == "FOOTER")
+            {
+                lblStruct.ForeColor = Color.Gray;
+                lblStruct.Text = "[FOOTER]";
+            }
+            else if (string.IsNullOrEmpty(Convert.ToString(row.Cells[ColType].Value)))
+            {
+                lblStruct.ForeColor = Color.Turquoise;
+                lblStruct.Text = "[ModelColor]";
+            }
+            else
+            {
+                lblStruct.ForeColor = SystemColors.ControlText;
+                lblStruct.Text = "[ModelTriangle]";
+            }
+            lblStruct.Visible = true;
+
+
+        }
+
+        private void dgvStructs_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            string? text = Convert.ToString(dgvStructs.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
+            if (string.IsNullOrEmpty(text) || text == "FOOTER")
+            {
+                e.Cancel = true;
+            }
+        }
+
+        private void dgvStructsGetMaxValue(int columnIndex, out int minValue, out int maxValue)
+        {
+            maxValue = 0; minValue = 0;
+            switch (columnIndex)
+            {
+                case 0: // Texture / Color1
+                case 1: // Color / Color2
+                case 3: // PositionKey
+                case 6: // Unknown
+                    maxValue = 255;
+                    break;
+                case 4: // TriangleType
+                    maxValue = 2;
+                    break;
+                case 5: // TriangleSubtype
+                    maxValue = 3;
+                    break;
+            }
+        }
+
+        private void dgvStructs_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            if (!(dgvStructs.SelectedCells.Count > 0)) return;
+            string inputValue = e.FormattedValue.ToString();
+            if (string.IsNullOrEmpty(inputValue) || inputValue == "FOOTER") return;
+
+            if (e.ColumnIndex == ColType)
+            {
+                if (!(inputValue == "0" || inputValue == "1" || inputValue.Equals("Original", StringComparison.InvariantCultureIgnoreCase) || inputValue.Equals("Duplicate", StringComparison.InvariantCultureIgnoreCase)))
+                {
+                    DarkMessageBox.ShowError("The value must be 'Original' or 'Duplicate'.", Resources.Title_InputError);
+                    e.Cancel = true;
+                }
+            }
+            else if (e.ColumnIndex == ColAnimated || e.ColumnIndex == ColFlag)
+            {
+                if (!(inputValue.Equals("True", StringComparison.InvariantCultureIgnoreCase) || inputValue.Equals("False", StringComparison.InvariantCultureIgnoreCase)))
+                {
+                    DarkMessageBox.ShowError("The value must be 'True' or 'False'.", Resources.Title_InputError);
+                    e.Cancel = true;
+                }
+            }
+            else
+            {
+                if (int.TryParse(inputValue, out int newValue))
+                {
+                    dgvStructsGetMaxValue(e.ColumnIndex, out int minValue, out int maxValue);
+                    if (newValue > maxValue)
+                    {
+                        DarkMessageBox.ShowError($"The value must be less than or equal to {maxValue}.", Resources.Title_InputError);
+                        e.Cancel = true;
+                    }
+                    else if (newValue < minValue)
+                    {
+                        DarkMessageBox.ShowError($"The value must be greater than or equal to {minValue}.", Resources.Title_InputError);
+                        e.Cancel = true;
+                    }
+                }
+                else
+                {
+                    DarkMessageBox.ShowError($"Invalid input. Please enter an integer.", Resources.Title_InputError);
+                    e.Cancel = true;
+                }
+            }
+        }
+
+        private void dgvStructs_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+
+            Console.WriteLine($"Old: {model.PolyData[e.RowIndex]:X}");
+            var cell = dgvStructs.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+
+            if (dgvStructs.Rows[e.RowIndex].Cells[8].Value == null)
+            {
+                ModelColor str = structs[e.RowIndex];
+
+                switch (e.ColumnIndex)
+                {
+                    case 0: // Color1
+                        str.Color1 = Convert.ToByte(cell);
+                        break;
+                    case 1: // Color2
+                        str.Color2 = Convert.ToByte(cell);
+                        break;
+                }
+                model.PolyData[e.RowIndex] = str.Save();
+                Console.WriteLine($"New: {str.Save():X}");
+            }
+            else
+            {
+                ModelTriangle str = structs[e.RowIndex];
+
+                switch (e.ColumnIndex)
+                {
+                    case 0: // TextureIndex
+                        str.TextureIndex = Convert.ToByte(cell);
+                        break;
+                    case 1: // ColorIndex
+                        str.ColorIndex = Convert.ToByte(cell);
+                        break;
+                    case 2: // Animated
+                        str.Animated = Convert.ToBoolean(cell);
+                        break;
+                    case 3: // PositionKey
+                        str.PositionKey = Convert.ToByte(cell);
+                        break;
+                    case 4: // TriangleType
+                        str.TriangleType = Convert.ToByte(cell);
+                        break;
+                    case 5: // TriangleSubtype
+                        str.TriangleSubtype = Convert.ToByte(cell);
+                        break;
+                    case 6: // Unknown
+                        str.Unknown = Convert.ToByte(cell);
+                        break;
+                    case 7: // Flag
+                        str.Flag = Convert.ToBoolean(cell);
+                        break;
+                    case 8: // Type
+                        if (cell.ToString() == "0" || cell.ToString().Equals("Original", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            cell = 0;
+                        }
+                        else
+                        {
+                            cell = 1;
+                        }
+                        str.Type = (ModelTriangle.IndexType)Enum.Parse(typeof(ModelTriangle.IndexType), cell.ToString());
+                        break;
+                }
+                model.PolyData[e.RowIndex] = str.Save();
+                Console.WriteLine($"New: {str.Save():X}");
+            }
+        }
+
+        private void dgvPolygonsGetMaxValue(int columnIndex, out int minValue, out int maxValue)
+        {
+            maxValue = 0; minValue = 0;
+            switch (columnIndex)
+            {
+                case 0: // VertexA
+                case 1: // VertexB
+                case 2: // VertexC
+                case 3: // ColorA
+                case 4: // ColorB
+                case 5: // ColorC
+                case 6: // Texture
+                    maxValue = int.MaxValue;
+                    minValue = int.MinValue;
+                    break;
+                case 7: // TriangleType
+                    maxValue = 2;
+                    break;
+                case 8: // TriangleSubtype
+                    maxValue = 3;
+                    break;
+            }
+        }
+
+        private void dgvPolygons_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            if (!(dgvStructs.SelectedCells.Count > 0)) return;
+            string inputValue = e.FormattedValue.ToString();
+
+            if (e.ColumnIndex == ColTriAnimated)
+            {
+                if (!(inputValue.Equals("True", StringComparison.InvariantCultureIgnoreCase) || inputValue.Equals("False", StringComparison.InvariantCultureIgnoreCase)))
+                {
+                    DarkMessageBox.ShowError("The value must be 'True' or 'False'.", Resources.Title_InputError);
+                    e.Cancel = true;
+                }
+            }
+            else
+            {
+                if (int.TryParse(inputValue, out int newValue))
+                {
+                    dgvPolygonsGetMaxValue(e.ColumnIndex, out int minValue, out int maxValue);
+                    if (newValue > maxValue)
+                    {
+                        DarkMessageBox.ShowError($"The value must be less than or equal to {maxValue}.", Resources.Title_InputError);
+                        e.Cancel = true;
+                    }
+                    else if (newValue < minValue)
+                    {
+                        DarkMessageBox.ShowError($"The value must be greater than or equal to {minValue}.", Resources.Title_InputError);
+                        e.Cancel = true;
+                    }
+                }
+                else
+                {
+                    DarkMessageBox.ShowError($"Invalid input. Please enter an integer.", Resources.Title_InputError);
+                    e.Cancel = true;
+                }
+            }
+        }
+
+        private void dgvPolygons_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+
+            var tri = model.Triangles[e.RowIndex];
+            var row = dgvPolygons.Rows[e.RowIndex];
+
+            switch (e.ColumnIndex)
+            {
+                case 0: // Vertex A
+                    tri.Vertex[0] = Convert.ToInt32(row.Cells[e.ColumnIndex].Value);
+                    break;
+                case 1: // Vertex B
+                    tri.Vertex[1] = Convert.ToInt32(row.Cells[e.ColumnIndex].Value);
+                    break;
+                case 2: // Vertex C
+                    tri.Vertex[2] = Convert.ToInt32(row.Cells[e.ColumnIndex].Value);
+                    break;
+                case 3: // Color A
+                    tri.Color[0] = Convert.ToInt32(row.Cells[e.ColumnIndex].Value);
+                    break;
+                case 4: // Color B
+                    tri.Color[1] = Convert.ToInt32(row.Cells[e.ColumnIndex].Value);
+                    break;
+                case 5: // Color C
+                    tri.Color[2] = Convert.ToInt32(row.Cells[e.ColumnIndex].Value);
+                    break;
+                case 6: // Texture
+                    tri.Texture = Convert.ToInt32(row.Cells[e.ColumnIndex].Value);
+                    break;
+                case 7: // Type
+                    tri.Type = Convert.ToInt32(row.Cells[e.ColumnIndex].Value);
+                    break;
+                case 8: // Subtype
+                    tri.Subtype = Convert.ToInt32(row.Cells[e.ColumnIndex].Value);
+                    break;
+                case 9: // Animated
+                    tri.Animated = Convert.ToBoolean(row.Cells[e.ColumnIndex].Value);
+                    break;
+
+            }
+        }
+
+        private void dgvPolygons_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
+            {
+                if (dgvPolygons.SelectedCells.Count == 0) return;
+
+                int selectedColumnIndex = dgvPolygons.SelectedCells[0].ColumnIndex;
+                string clipboardData = Clipboard.GetText();
+                string[] rows = clipboardData.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+
+                for (int i = 0; i < rows.Length && i < dgvPolygons.Rows.Count; i++)
+                {
+                    dgvPolygons.Rows[i].Cells[selectedColumnIndex].Value = rows[i];
+                }
+            }
+        }
+        #endregion
+
+        #region Colors
 
         private async Task UpdateColorListAsync()
         {
@@ -445,54 +886,282 @@ namespace CrashEdit.CE.Controls
             }
         }
 
-        private void chkMaxValueFlag_Click(object sender, EventArgs e)
+        private void SetModelColor(Color color, int i)
         {
-            if (!(dgvTextures.SelectedCells.Count > 0)) return;
+            SceneryColor updatedColor = model.Colors[i];
+            updatedColor.Red = color.R;
+            updatedColor.Green = color.G;
+            updatedColor.Blue = color.B;
+            updatedColor.Extra = 0;
+            model.Colors[i] = updatedColor;
+        }
 
-            foreach (DataGridViewCell cell in dgvTextures.SelectedCells)
+        private void OnValueChanged(bool isAll)
+        {
+            OnValueChanged(isAll, Color.Empty);
+        }
+
+        private void OnValueChanged(bool isAll, Color clr)
+        {
+            _debounceTokenSource?.Cancel();
+
+            _debounceTokenSource = new CancellationTokenSource();
+
+            Task.Delay(DebounceDelay).ContinueWith(t =>
             {
-                if ((cell.ColumnIndex >= ColX1 && cell.ColumnIndex <= ColY4))
+                if (!_debounceTokenSource.Token.IsCancellationRequested)
                 {
-                    cell.Style = chkMaxValueFlag.Checked ? styleRegionEnd : styleDefault;
+                    Invoke(new Action(() =>
+                    {
+                        if (isAll)
+                            UpdateAllColors();
+                        else
+                            UpdateSelectedColor(clr);
+                    }));
+                }
+            }, _debounceTokenSource.Token);
+        }
+
+        private void UpdateSelectedColor(Color clr)
+        {
+            if (lstColor.SelectedItems.Count <= 0)
+            {
+                pnSliders.Enabled = false;
+                return;
+            }
+
+            Color color = clr;
+            var i = (int)lstColor.SelectedItems[0].Tag;
+            SetModelColor(color, i);
+            lstColor.Items[i].SubItems[0].Text = Convert.ToHexString(new byte[] { color.R, color.G, color.B });
+            lstColor.Items[i].SubItems[0].BackColor = color;
+            lstColor.Items[i].SubItems[0].ForeColor = getBrightness(lstColor.Items[i].SubItems[0].BackColor) >= 0.5 ? Color.Black : Color.White;
+            UpdateColorCopy();
+
+            colorEditor.Color = color;
+            //colorWheel.Color = color;
+        }
+
+        private void UpdateAllColors()
+        {
+            if (globalControlMode)
+            {
+                for (int i = 0; i < lstColor.Items.Count; i++)
+                {
+                    byte[] item = StringToByteArray(lstColor.Items[i].SubItems[1].Text);
+                    Color itemColor = (Color.FromArgb(item[0], item[1], item[2]));
+
+                    HslColor hslColor = new HslColor(itemColor);
+
+                    hslColor = ChangeHue(hslColor, hslColor.H + (MasterHue));
+                    hslColor.S += (double)(MasterSaturation - 0.5) / 1.0;
+                    hslColor.L += (double)(MasterLightness - 0.5) / 1.0;
+
+                    Color newColor = hslColor.ToRgbColor();
+
+                    SetModelColor(newColor, i);
+                    lstColor.Items[i].SubItems[0].Text = Convert.ToHexString(new byte[] { newColor.R, newColor.G, newColor.B });
+                    lstColor.Items[i].SubItems[0].BackColor = newColor;
+                    lstColor.Items[i].SubItems[0].ForeColor = getBrightness(lstColor.Items[i].SubItems[0].BackColor) >= 0.5 ? Color.Black : Color.White;
                 }
             }
         }
 
-        private void SetRegionEndTag(int start, int end)
+        public static byte[] StringToByteArray(string hex)
         {
-            int startColumnIndex = start;
-            int endColumnIndex = end;
+            return Enumerable.Range(0, hex.Length)
+                             .Where(x => x % 2 == 0)
+                             .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
+                             .ToArray();
+        }
 
-            Parallel.For(0, dgvTextures.Rows.Count, rowIndex =>
+        // color brightness as perceived:
+        float getBrightness(Color c)
+        { return (c.R * 0.299f + c.G * 0.587f + c.B * 0.114f) / 256f; }
+
+        private async void tglGlobalControl_SwitchedChanged(object sender)
+        {
+            globalControlMode = tglGlobalControl.Switched;
+            if (globalControlMode)
             {
-                var row = dgvTextures.Rows[rowIndex];
-                double maxValue = double.MinValue;
+                pnSliders.Enabled = false;
+                pnGlobalControl.Enabled =
+                cmdApply.Enabled =
+                cmdCancel.Enabled = true;
+            }
+            else
+            {
+                pnGlobalControl.Enabled =
+                cmdApply.Enabled =
+                cmdCancel.Enabled = false;
+                await ResetColorListAsync();
+                ResetColorSliders();
+            }
+        }
 
-                for (int col = startColumnIndex; col <= endColumnIndex; col++)
+        private void ResetColorSliders()
+        {
+            var hslColor = colorEditorGlobal.HslColor;
+            hslColor.H = 180;
+            hslColor.S = 0.5;
+            hslColor.L = 0.5;
+            colorEditorGlobal.HslColor = hslColor;
+        }
+
+        private Color GetSelectedItemColor()
+        {
+            string hexcolor = lstColor.SelectedItems[0].Text;
+            int color = Int32.Parse(hexcolor.Replace("#", ""), NumberStyles.HexNumber);
+            int alpha = 255;
+            Color result = Color.FromArgb(alpha, Color.FromArgb(color));
+            return result;
+        }
+
+        private void lstColor_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lstColor.SelectedItems.Count <= 0 || globalControlMode)
+            {
+                //pnSliders.Enabled = false;
+                return;
+            }
+            pnSliders.Enabled = true;
+            Color color = GetSelectedItemColor();
+            colorEditor.Color = color;
+            var hslColor = colorEditor.HslColor;
+            if (hslColor.S == 0)
+            {
+                hslColor.H = 180F;
+                colorEditor.HslColor = hslColor;
+            }
+            //colorWheel.Color = color;
+            lblColorIndex.Text = $"Index: {lstColor.SelectedItems[0].Index}";
+        }
+
+        private void colorWheel_ColorChanged(object sender, EventArgs e)
+        {
+            if (!globalControlMode)
+                OnValueChanged(false, colorWheel.Color);
+        }
+
+        private void colorEditor_ColorChanged(object sender, EventArgs e)
+        {
+            if (!globalControlMode)
+                OnValueChanged(false, colorEditor.Color);
+        }
+
+        private void colorEditorGlobal_ColorChanged(object sender, EventArgs e)
+        {
+            OnValueChanged(true);
+        }
+
+        internal static HslColor ChangeHue(HslColor color, double increment)
+        {
+            HslColor copy;
+            double value;
+
+            copy = new HslColor(color);
+            value = copy.H + increment;
+
+            if (increment > 0 && value > 359)
+            {
+                value -= 360;
+            }
+            else if (increment < 0 && value < 0)
+            {
+                value += 360;
+            }
+
+            copy.H = value;
+            return copy;
+        }
+
+        private void ApplyChanges()
+        {
+            foreach (ListViewItem item in lstColor.Items)
+            {
+                var i = (int)item.Tag;
+                SetModelColor(item.BackColor, i);
+            }
+            UpdateColorCopy();
+        }
+
+        private void cmdApply_Click(object sender, EventArgs e)
+        {
+            ApplyChanges();
+            tglGlobalControl.Switched = false;
+        }
+
+        private void cmdCancel_Click(object sender, EventArgs e)
+        {
+            tglGlobalControl.Switched = false;
+        }
+        #endregion
+
+        #region Textures
+
+        private void UpdateTPageList()
+        {
+            lstTPages.Columns.Add("Index");
+            lstTPages.Columns.Add("Page");
+            for (int i = 0; i < model.TPAGCount; ++i)
+            {
+                ListViewItem newitem = new ListViewItem(i.ToString());
+                newitem.SubItems.Add(Entry.EIDToEName(model.GetTPAG(i)));
+                lstTPages.Items.Add(newitem);
+            }
+
+            if (lstTPages.Items.Count > 0)
+            {
+                rbtReloadTPage.Enabled = true;
+                dpdTPage.Enabled = true;
+                List<Chunk> chunks = null;
+                chunks = controller.GetNSF().Chunks;
+                foreach (Chunk chunk in chunks)
                 {
-                    var cellValue = row.Cells[col].Value;
-
-                    if (cellValue != null && double.TryParse(cellValue.ToString(), out double value))
+                    if (chunk is TextureChunk t)
                     {
-                        if (value > maxValue)
-                        {
-                            maxValue = value;
-                        }
+                        dpdTPage.Items.Add(Entry.EIDToEName(t.EID));
                     }
                 }
-                for (int col = startColumnIndex; col <= endColumnIndex; col++)
-                {
-                    var cellValue = row.Cells[col].Value;
+            }
+        }
 
-                    if (cellValue != null && double.TryParse(cellValue.ToString(), out double value))
-                    {
-                        if (value == maxValue)
-                        {
-                            row.Cells[col].Style = styleRegionEnd;
-                        }
-                    }
+        private void UpdateTPageButtons()
+        {
+            if (dgvTextures.Rows.Count > 0)
+            {
+                if (model.TPAGCount > 7 || model.TPAGCount == 0)
+                    cmdAppendTPage.Enabled = false;
+                else
+                    cmdAppendTPage.Enabled = true;
+
+                if (model.TPAGCount == 0)
+                    cmdRemoveTPage.Enabled = false;
+                else
+                    cmdRemoveTPage.Enabled = true;
+
+                int maxIndex = 0;
+                foreach (DataGridViewRow row in dgvTextures.Rows)
+                {
+                    int curIndex = Convert.ToInt32(row.Cells[ColPage].Value.ToString());
+                    if (curIndex > maxIndex)
+                        maxIndex = curIndex;
                 }
-            });
+                if (lstTPages.Items.Count <= maxIndex + 1)
+                    cmdRemoveTPage.Enabled = false;
+                else
+                    cmdRemoveTPage.Enabled = true;
+            }
+            else
+            {
+                if (lstTPages.Items.Count > 0)
+                {
+                    lstTPages.Items[0].Selected = true;
+                    dpdTPage.Text = lstTPages.SelectedItems[0].SubItems[1].Text;
+                }
+                cmdAppendTPage.Enabled = false;
+                cmdRemoveTPage.Enabled = false;
+            }
         }
 
         private void CreateTextureListColumns()
@@ -532,6 +1201,56 @@ namespace CrashEdit.CE.Controls
                 column.Width = 44;
                 column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft;
             }
+        }
+
+        private void chkRegionEndFlag_Click(object sender, EventArgs e)
+        {
+            if (!(dgvTextures.SelectedCells.Count > 0)) return;
+
+            foreach (DataGridViewCell cell in dgvTextures.SelectedCells)
+            {
+                if ((cell.ColumnIndex >= ColX1 && cell.ColumnIndex <= ColY4))
+                {
+                    cell.Style = chkRegionEndFlag.Checked ? styleRegionEnd : styleDefault;
+                }
+            }
+        }
+
+        private void SetRegionEndTag(int start, int end)
+        {
+            int startColumnIndex = start;
+            int endColumnIndex = end;
+
+            Parallel.For(0, dgvTextures.Rows.Count, rowIndex =>
+            {
+                var row = dgvTextures.Rows[rowIndex];
+                double maxValue = double.MinValue;
+
+                for (int col = startColumnIndex; col <= endColumnIndex; col++)
+                {
+                    var cellValue = row.Cells[col].Value;
+
+                    if (cellValue != null && double.TryParse(cellValue.ToString(), out double value))
+                    {
+                        if (value > maxValue)
+                        {
+                            maxValue = value;
+                        }
+                    }
+                }
+                for (int col = startColumnIndex; col <= endColumnIndex; col++)
+                {
+                    var cellValue = row.Cells[col].Value;
+
+                    if (cellValue != null && double.TryParse(cellValue.ToString(), out double value))
+                    {
+                        if (value == maxValue)
+                        {
+                            row.Cells[col].Style = styleRegionEnd;
+                        }
+                    }
+                }
+            });
         }
 
         private async Task UpdateTextureListAsync(bool setMaxTags)
@@ -611,8 +1330,8 @@ namespace CrashEdit.CE.Controls
                 var row = dgvTextures.Rows[rowIndex];
                 var cell = dgvTextures.SelectedCells[0];
 
-                chkMaxValueFlag.Enabled = (cell.ColumnIndex >= ColX1 && cell.ColumnIndex <= ColY4) ? true : false;
-                chkMaxValueFlag.Checked = cell.Style == styleRegionEnd ? true : false;
+                chkRegionEndFlag.Enabled = (cell.ColumnIndex >= ColX1 && cell.ColumnIndex <= ColY4) ? true : false;
+                chkRegionEndFlag.Checked = cell.Style == styleRegionEnd ? true : false;
 
                 var pageIndex = Convert.ToInt32(row.Cells[ColPage].Value);
                 string cid = lstTPages.Items[pageIndex].SubItems[1].Text;
@@ -1258,209 +1977,231 @@ namespace CrashEdit.CE.Controls
             Console.WriteLine($"Processing time: {stopwatch.Elapsed.TotalSeconds:F3} seconds");
         }
 
-        private void tbpPolygons_Enter(object sender, EventArgs e)
+        private void trkPictureSize_ValueChanged(object sender, EventArgs e)
         {
-            DoubleBufferedDataGridView.Initialize(dgvStructs);
-            DoubleBufferedDataGridView.Initialize(dgvPolygons);
-            UpdateStructs();
-            UpdatePolygons();
-            tbpPolygons.Enter -= tbpPolygons_Enter;
-        }
-
-        private async void tbpColors_Enter(object sender, EventArgs e)
-        {
-            ResetColorSliders();
-            await UpdateColorListAsync();
-            tbpColors.Enter -= tbpColors_Enter;
-        }
-
-        private async void tbpTextures_Enter(object sender, EventArgs e)
-        {
-            tipReloadTPage = new DarkToolTip();
-            tipReloadTPage.SetToolTip(rbtReloadTPage, "Reload");
-            DoubleBufferedDataGridView.Initialize(dgvTextures);
-            if (isScenery)
+            if (pictureBox1.Image != null)
             {
-                dgvTextures.Width = 612;
-                pnTextureControls.Location = new Point(759, 0);
+                float zoom = trkPictureSize.Value / 100f;
+                pictureBox1.Width = (int)(pictureBox1.Image.Width * zoom);
+                pictureBox1.Height = (int)(pictureBox1.Image.Height * zoom);
+                pictureBox1.Invalidate();
             }
-            CreateTextureListColumns();
-            UpdateTPageList();
-            await UpdateTextureListAsync(true);
-            if (dgvTextures.Rows.Count > 0)
+        }
+
+        private void tglSimpleMode_SwitchedChanged(object sender)
+        {
+            simpleMode = tglSimpleMode.Switched;
+            ToggleSimpleMode();
+        }
+
+        private void lstPages_ColumnWidthChangingHandler(object sender, ColumnWidthChangingEventArgs e)
+        {
+            e.Cancel = true;
+            e.NewWidth = lstTPages.Columns[e.ColumnIndex].Width;
+        }
+
+        private void chkBGRA_CheckedChanged(object sender, EventArgs e)
+        {
+            BGRAMode = chkBGRA.Checked;
+        }
+
+        private void cmdAppendTPage_Click(object sender, EventArgs e)
+        {
+            if (lstTPages.Items.Count < 8)
             {
+                int index = lstTPages.Items.Count;
+                string name = lstTPages.Items[index - 1].SubItems[1].Text;
+                model.SetTPAG(index, Entry.ENameToEID(name));
+                ++model.TPAGCount;
+
+                ListViewItem newitem = new ListViewItem((index).ToString());
+                newitem.SubItems.Add(name);
+                lstTPages.Items.Add(newitem);
                 UpdateTPageButtons();
-                fraSwitches.Enabled =
-                fraReplace.Enabled =
-                fraReplaceTexture.Enabled = true;
-                trkPictureSize.Visible = true;
-                pnPicture.AutoScroll = true;
-            }
-
-            BGRAMode =
-            replaceCLUT = true;
-
-            numReplaceTo.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
-
-            tbpTextures.Enter -= tbpTextures_Enter;
-        }
-
-        private async void tbpExtendedTextures_Enter(object sender, EventArgs e)
-        {
-            DoubleBufferedDataGridView.Initialize(dgvExtendedTextures);
-            CreateExtendedTextureColumns();
-            await UpdateExtendedTextureAsync();
-
-            tbpExtendedTextures.Enter -= tbpExtendedTextures_Enter;
-        }
-
-        private async void tbpPositions_Enter(object sender, EventArgs e)
-        {
-            DoubleBufferedDataGridView.Initialize(dgvPositions);
-            CreatePositionColumns();
-            await UpdatePositionAsync();
-
-            tbpPositions.Enter -= tbpPositions_Enter;
-        }
-
-        private void CreatePositionColumns()
-        {
-            dgvPositions.Columns.Add("Index", "Index");
-            dgvPositions.Columns.Add("X", "X");
-            dgvPositions.Columns.Add("Y", "Y");
-            dgvPositions.Columns.Add("Z", "Z");
-            dgvPositions.Columns.Add("XBits", "X Bits");
-            dgvPositions.Columns.Add("YBits", "Y Bits");
-            dgvPositions.Columns.Add("ZBits", "Z Bits");
-
-            foreach (DataGridViewColumn column in dgvPositions.Columns)
-            {
-                column.SortMode = DataGridViewColumnSortMode.NotSortable;
-                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-                column.Width = 48;
-                column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft;
             }
         }
 
-        private async Task UpdatePositionAsync()
+        private void cmdRemoveTPage_Click(object sender, EventArgs e)
         {
-            dgvPositions.SuspendLayout();
-            dgvPositions.ScrollBars = ScrollBars.None;
-
-            var rows = await Task.Run(() =>
+            if (lstTPages.Items.Count > 0)
             {
-                var rowsToAdd = new ConcurrentBag<(int Index, DataGridViewRow Row)>();
+                int index = lstTPages.Items.Count;
+                int name = 0;
+                model.SetTPAG(index - 1, name);
+                --model.TPAGCount;
 
-                Parallel.ForEach(Enumerable.Range(0, (int)model.Positions.Count), (int i) =>
+                lstTPages.Items.RemoveAt(index - 1);
+                UpdateTPageButtons();
+            }
+        }
+
+        private void lstTPages_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lstTPages.Items.Count > 0 && lstTPages.SelectedItems.Count > 0)
+                dpdTPage.Text = lstTPages.SelectedItems[0].SubItems[1].Text;
+        }
+
+        private void chkReplaceCLUT_CheckedChanged(object sender, EventArgs e)
+        {
+            replaceCLUT = chkReplaceCLUT.Checked;
+        }
+
+        private void dpdTPage_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string text = dpdTPage.Text;
+            if (lstTPages.SelectedItems.Count > 0)
+                lstTPages.SelectedItems[0].SubItems[1].Text = text;
+            model.SetTPAG(lstTPages.SelectedIndices[0], Entry.ENameToEID(text));
+            UpdatePicture();
+        }
+
+        private void rbtReloadTPage_Click(object sender, EventArgs e)
+        {
+            if (lstTPages.Items.Count > 0)
+            {
+                dpdTPage.Items.Clear();
+                List<Chunk> chunks = null;
+                chunks = controller.GetNSF().Chunks;
+                foreach (Chunk chunk in chunks)
                 {
-                    DataGridViewRow row = new DataGridViewRow();
-                    var item = model.Positions[i];
-                    row.CreateCells(dgvPositions, string.Empty, item.X, item.Y, item.Z, item.XBits, item.YBits, item.ZBits);
-
-                    rowsToAdd.Add((i, row));
-                });
-                return rowsToAdd.OrderBy(pair => pair.Index).Select(pair => pair.Row).ToList();
-            });
-
-            for (int i = 0; i < rows.Count; i++)
-            {
-                rows[i].Cells[ColIndex].Value = i + 1;
-                rows[i].Cells[ColIndex].Style = styleIndex;
-                dgvPositions.Rows.Add(rows[i]);
-            }
-
-            dgvPositions.ScrollBars = ScrollBars.Vertical;
-            dgvPositions.ResumeLayout();
-        }
-
-        private void dgvPositions_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
-        {
-            if (!(dgvPositions.SelectedCells.Count > 0)) return;
-            if (e.ColumnIndex == ColIndex) e.Cancel = true;
-        }
-
-
-        private void dgvPositions_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
-        {
-            if (!(dgvPositions.SelectedCells.Count > 0)) return;
-            if (e.ColumnIndex == ColIndex) return;
-
-            if (int.TryParse(e.FormattedValue.ToString(), out int newValue))
-            {
-                int maxValue = 255;
-                int minValue = 0;
-                if (newValue > maxValue)
-                {
-                    DarkMessageBox.ShowError($"The value must be less than or equal to {maxValue}.", Resources.Title_InputError);
-                    e.Cancel = true;
+                    if (chunk is TextureChunk t)
+                    {
+                        dpdTPage.Items.Add(Entry.EIDToEName(t.EID));
+                    }
                 }
-                else if (newValue < minValue)
-                {
-                    DarkMessageBox.ShowError($"The value must be greater than or equal to {minValue}.", Resources.Title_InputError);
-                    e.Cancel = true;
-                }
+                if (lstTPages.Items.Count > 0 && lstTPages.SelectedItems.Count > 0)
+                    dpdTPage.Text = lstTPages.SelectedItems[0].SubItems[1].Text;
             }
-            else
+            rbtReloadTPage.Checked = false;
+        }
+
+        private void numReplaceTo_Click(object sender, EventArgs e)
+        {
+            numReplaceTo.Select(0, numReplaceTo.Text.Length);
+        }
+
+        private void ScrollHandlerFunction(object sender, MouseEventArgs e)
+        {
+            if (sender is NumericUpDown numericUpDown)
             {
-                DarkMessageBox.ShowError($"Invalid input. Please enter an integer.", Resources.Title_InputError);
-                e.Cancel = true;
+                HandledMouseEventArgs handledArgs = e as HandledMouseEventArgs;
+                if (handledArgs != null)
+                    handledArgs.Handled = true;
+
+                decimal newValue = numericUpDown.Value;
+                if (e.Delta > 0 && newValue < numericUpDown.Maximum)
+                    newValue += numericUpDown.Increment;
+
+                else if (e.Delta < 0 && newValue > numericUpDown.Minimum)
+                    newValue -= numericUpDown.Increment;
+
+                numericUpDown.Value = newValue;
             }
         }
 
-        private void dgvPositions_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        private void UpdatePicture()
         {
-            if (e.RowIndex < 0 || e.ColumnIndex < 0)
-                return;
+            if (!(dgvTextures.SelectedCells.Count > 0)) return;
 
-            var og = model.Positions[e.RowIndex];
-            var item = dgvPositions.Rows[e.RowIndex];
+            var cell = dgvTextures.Rows[dgvTextures.SelectedCells[0].RowIndex];
+            var pageIndex = Convert.ToInt32(cell.Cells[ColPage].Value);
+            string cid = lstTPages.Items[pageIndex].SubItems[1].Text;
 
-            switch (e.ColumnIndex)
+            int TexCX = Convert.ToInt32(cell.Cells[ColClutX].Value);
+            int TexCY = Convert.ToInt32(cell.Cells[ColClutY].Value);
+            int TexX = Convert.ToInt32(cell.Cells[ColLeft].Value);
+            int TexY = Convert.ToInt32(cell.Cells[ColTop].Value);
+            int TexW = Convert.ToInt32(cell.Cells[ColWidth].Value);
+            int TexH = Convert.ToInt32(cell.Cells[ColHeight].Value);
+            int colormode = Convert.ToInt32(cell.Cells[ColColorMode].Value);
+            int blendmode = Convert.ToInt32(cell.Cells[ColBlendMode].Value);
+            chunk = controller.GetEntry<TextureChunk>(Entry.ENameToEID(cid));
+            int pw = 256 << (2 - colormode);
+            int ph = 128;
+            Bitmap bitmap = new Bitmap(pw + 2, ph + 2, PixelFormat.Format32bppArgb);
+            Rectangle brect = new Rectangle(Point.Empty, bitmap.Size);
+            BitmapData bdata = bitmap.LockBits(brect, ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+            int[] palette = null;
+            if (colormode == 0)
             {
-                case 1: // X
-                    og.X = Convert.ToByte(item.Cells[ColX].Value);
-                    break;
-                case 2: // Y
-                    og.Y = Convert.ToByte(item.Cells[ColY].Value);
-                    break;
-                case 3: // Z
-                    og.Z = Convert.ToByte(item.Cells[ColZ].Value);
-                    break;
-                case 4: // XBits
-                    og.XBits = Convert.ToByte(item.Cells[ColXBits].Value);
-                    break;
-                case 5: // YBits
-                    og.YBits = Convert.ToByte(item.Cells[ColYBits].Value);
-                    break;
-                case 6: // ZBits
-                    og.ZBits = Convert.ToByte(item.Cells[ColZBits].Value);
-                    break;
-            }
-        }
-
-        private void dgvPositions_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
-        {
-            if (dgvPositions.SelectedCells.Count > 0)
-            {
-                if (e.Control is TextBox textbox)
+                int clutx = TexCX;
+                int cluty = TexCY;
+                palette = new int[16];
+                for (int x = 0; x < 16; ++x)
                 {
-                    textbox.KeyPress -= TextBox_KeyPress;
-                    textbox.KeyPress += TextBox_KeyPress;
+                    palette[x] = PixelConv.Convert5551_8888(BitConv.FromInt16(chunk.Data, cluty * 512 + (clutx * 16 + x) * 2), blendmode);
                 }
             }
-        }
-
-        private void dgv_CellParsing(object sender, DataGridViewCellParsingEventArgs e)
-        {
-            if (e.Value is string strValue)
+            else if (colormode == 1)
             {
-                if (int.TryParse(strValue, out int result))
+                int cluty = TexCY;
+                palette = new int[256];
+                for (int x = 0; x < 256; ++x)
                 {
-                    e.Value = result.ToString();
-                    e.ParsingApplied = true;
+                    palette[x] = PixelConv.Convert5551_8888(BitConv.FromInt16(chunk.Data, cluty * 512 + x * 2), blendmode);
                 }
             }
+            try
+            {
+                for (int y = 0; y < ph; y++)
+                {
+                    for (int x = 0; x < pw; x++)
+                    {
+                        int pixel = colormode == 0 ? palette[chunk.Data[x / 2 + y * 512] >> ((x & 1) == 0 ? 0 : 4) & 0xF] :
+                        colormode == 1 ? palette[chunk.Data[x + y * 512]] :
+                                    colormode == 2 ? PixelConv.Convert5551_8888(BitConv.FromInt16(chunk.Data, x * 2 + y * 512), blendmode)
+                                    : throw new Exception("invalid colormode");
+                        System.Runtime.InteropServices.Marshal.WriteInt32(bdata.Scan0, x * 4 + y * bdata.Stride, pixel);
+                    }
+                }
+            }
+            finally
+            {
+                bitmap.UnlockBits(bdata);
+            }
+            using (Graphics g = Graphics.FromImage(bitmap))
+            {
+                int x = TexX;
+                int y = TexY;
+                int w = TexW;
+                int h = TexH;
+                using (var brush = new SolidBrush(Color.FromArgb(127, 0, 0, 0)))
+                using (var pen = new Pen(Color.Black))
+                {
+                    int minh = Math.Min(h, ph - y);
+                    g.FillRectangles(brush, new Rectangle[4]
+                    {
+                        new Rectangle(0, 0, pw, y),
+                        new Rectangle(0, y, x, minh),
+                        new Rectangle(x+w, y, Math.Max(pw-(x+w),0), minh),
+                        new Rectangle(0, y+h, pw, Math.Max(ph-(y+h),0))
+                    });
+                    g.DrawRectangles(pen, new Rectangle[2]
+                    {
+                        new Rectangle(x-1,y-1,w+1,h+1),
+                        new Rectangle(x-3,y-3,w+5,h+5)
+                    });
+                    pen.Color = Color.White;
+                    g.DrawRectangle(pen, new Rectangle(x - 2, y - 2, w + 3, h + 3));
+                }
+                selectedregion.X = x;
+                selectedregion.Y = y;
+                selectedregion.Width = w;
+                selectedregion.Height = h;
+                selectedRegionX = x;
+                selectedRegionY = y;
+            }
+            pictureBox1.Image = bitmap;
+
+            float zoom = trkPictureSize.Value / 100f;
+            pictureBox1.Width = (int)(pictureBox1.Image.Width * zoom);
+            pictureBox1.Height = (int)(pictureBox1.Image.Height * zoom);
+
+            currentColorMode = colormode;
         }
+        #endregion
+
+        #region ExtendedTextures
 
         private void CreateExtendedTextureColumns()
         {
@@ -1695,884 +2436,147 @@ namespace CrashEdit.CE.Controls
                 }
             }
         }
+        #endregion
 
-        private void UpdateTPageList()
+        #region Positions
+
+        private void CreatePositionColumns()
         {
-            lstTPages.Columns.Add("Index");
-            lstTPages.Columns.Add("Page");
-            for (int i = 0; i < model.TPAGCount; ++i)
-            {
-                ListViewItem newitem = new ListViewItem(i.ToString());
-                newitem.SubItems.Add(Entry.EIDToEName(model.GetTPAG(i)));
-                lstTPages.Items.Add(newitem);
-            }
+            dgvPositions.Columns.Add("Index", "Index");
+            dgvPositions.Columns.Add("X", "X");
+            dgvPositions.Columns.Add("Y", "Y");
+            dgvPositions.Columns.Add("Z", "Z");
+            dgvPositions.Columns.Add("XBits", "X Bits");
+            dgvPositions.Columns.Add("YBits", "Y Bits");
+            dgvPositions.Columns.Add("ZBits", "Z Bits");
 
-            if (lstTPages.Items.Count > 0)
+            foreach (DataGridViewColumn column in dgvPositions.Columns)
             {
-                rbtReloadTPage.Enabled = true;
-                dpdTPage.Enabled = true;
-                List<Chunk> chunks = null;
-                chunks = controller.GetNSF().Chunks;
-                foreach (Chunk chunk in chunks)
-                {
-                    if (chunk is TextureChunk t)
-                    {
-                        dpdTPage.Items.Add(Entry.EIDToEName(t.EID));
-                    }
-                }
+                column.SortMode = DataGridViewColumnSortMode.NotSortable;
+                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                column.Width = 48;
+                column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft;
             }
         }
 
-        private void UpdateTPageButtons()
+        private async Task UpdatePositionAsync()
         {
-            if (dgvTextures.Rows.Count > 0)
+            dgvPositions.SuspendLayout();
+            dgvPositions.ScrollBars = ScrollBars.None;
+
+            var rows = await Task.Run(() =>
             {
-                if (model.TPAGCount > 7 || model.TPAGCount == 0)
-                    cmdAppendTPage.Enabled = false;
-                else
-                    cmdAppendTPage.Enabled = true;
+                var rowsToAdd = new ConcurrentBag<(int Index, DataGridViewRow Row)>();
 
-                if (model.TPAGCount == 0)
-                    cmdRemoveTPage.Enabled = false;
-                else
-                    cmdRemoveTPage.Enabled = true;
-
-                int maxIndex = 0;
-                foreach (DataGridViewRow row in dgvTextures.Rows)
+                Parallel.ForEach(Enumerable.Range(0, (int)model.Positions.Count), (int i) =>
                 {
-                    int curIndex = Convert.ToInt32(row.Cells[ColPage].Value.ToString());
-                    if (curIndex > maxIndex)
-                        maxIndex = curIndex;
+                    DataGridViewRow row = new DataGridViewRow();
+                    var item = model.Positions[i];
+                    row.CreateCells(dgvPositions, string.Empty, item.X, item.Y, item.Z, item.XBits, item.YBits, item.ZBits);
+
+                    rowsToAdd.Add((i, row));
+                });
+                return rowsToAdd.OrderBy(pair => pair.Index).Select(pair => pair.Row).ToList();
+            });
+
+            for (int i = 0; i < rows.Count; i++)
+            {
+                rows[i].Cells[ColIndex].Value = i + 1;
+                rows[i].Cells[ColIndex].Style = styleIndex;
+                dgvPositions.Rows.Add(rows[i]);
+            }
+
+            dgvPositions.ScrollBars = ScrollBars.Vertical;
+            dgvPositions.ResumeLayout();
+        }
+
+        private void dgvPositions_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            if (!(dgvPositions.SelectedCells.Count > 0)) return;
+            if (e.ColumnIndex == ColIndex) e.Cancel = true;
+        }
+
+        private void dgvPositions_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            if (!(dgvPositions.SelectedCells.Count > 0)) return;
+            if (e.ColumnIndex == ColIndex) return;
+
+            if (int.TryParse(e.FormattedValue.ToString(), out int newValue))
+            {
+                int maxValue = 255;
+                int minValue = 0;
+                if (newValue > maxValue)
+                {
+                    DarkMessageBox.ShowError($"The value must be less than or equal to {maxValue}.", Resources.Title_InputError);
+                    e.Cancel = true;
                 }
-                if (lstTPages.Items.Count <= maxIndex + 1)
-                    cmdRemoveTPage.Enabled = false;
-                else
-                    cmdRemoveTPage.Enabled = true;
+                else if (newValue < minValue)
+                {
+                    DarkMessageBox.ShowError($"The value must be greater than or equal to {minValue}.", Resources.Title_InputError);
+                    e.Cancel = true;
+                }
             }
             else
             {
-                if (lstTPages.Items.Count > 0)
-                {
-                    lstTPages.Items[0].Selected = true;
-                    dpdTPage.Text = lstTPages.SelectedItems[0].SubItems[1].Text;
-                }
-                cmdAppendTPage.Enabled = false;
-                cmdRemoveTPage.Enabled = false;
-            }
-        }
-
-        private void SetModelColor(Color color, int i)
-        {
-            SceneryColor updatedColor = model.Colors[i];
-            updatedColor.Red = color.R;
-            updatedColor.Green = color.G;
-            updatedColor.Blue = color.B;
-            updatedColor.Extra = 0;
-            model.Colors[i] = updatedColor;
-        }
-
-        private void OnValueChanged(bool isAll)
-        {
-            OnValueChanged(isAll, Color.Empty);
-        }
-
-        private void OnValueChanged(bool isAll, Color clr)
-        {
-            _debounceTokenSource?.Cancel();
-
-            _debounceTokenSource = new CancellationTokenSource();
-
-            Task.Delay(DebounceDelay).ContinueWith(t =>
-            {
-                if (!_debounceTokenSource.Token.IsCancellationRequested)
-                {
-                    Invoke(new Action(() =>
-                    {
-                        if (isAll)
-                            UpdateAllColors();
-                        else
-                            UpdateSelectedColor(clr);
-                    }));
-                }
-            }, _debounceTokenSource.Token);
-        }
-
-        private void UpdateSelectedColor(Color clr)
-        {
-            if (lstColor.SelectedItems.Count <= 0)
-            {
-                pnSliders.Enabled = false;
-                return;
-            }
-
-            Color color = clr;
-            var i = (int)lstColor.SelectedItems[0].Tag;
-            SetModelColor(color, i);
-            lstColor.Items[i].SubItems[0].Text = Convert.ToHexString(new byte[] { color.R, color.G, color.B });
-            lstColor.Items[i].SubItems[0].BackColor = color;
-            lstColor.Items[i].SubItems[0].ForeColor = getBrightness(lstColor.Items[i].SubItems[0].BackColor) >= 0.5 ? Color.Black : Color.White;
-            UpdateColorCopy();
-
-            colorEditor.Color = color;
-            //colorWheel.Color = color;
-        }
-
-        private void UpdateAllColors()
-        {
-            if (globalControlMode)
-            {
-                for (int i = 0; i < lstColor.Items.Count; i++)
-                {
-                    byte[] item = StringToByteArray(lstColor.Items[i].SubItems[1].Text);
-                    Color itemColor = (Color.FromArgb(item[0], item[1], item[2]));
-
-                    HslColor hslColor = new HslColor(itemColor);
-
-                    hslColor = ChangeHue(hslColor, hslColor.H + (MasterHue));
-                    hslColor.S += (double)(MasterSaturation - 0.5) / 1.0;
-                    hslColor.L += (double)(MasterLightness - 0.5) / 1.0;
-
-                    Color newColor = hslColor.ToRgbColor();
-
-                    SetModelColor(newColor, i);
-                    lstColor.Items[i].SubItems[0].Text = Convert.ToHexString(new byte[] { newColor.R, newColor.G, newColor.B });
-                    lstColor.Items[i].SubItems[0].BackColor = newColor;
-                    lstColor.Items[i].SubItems[0].ForeColor = getBrightness(lstColor.Items[i].SubItems[0].BackColor) >= 0.5 ? Color.Black : Color.White;
-                }
-            }
-        }
-
-        public static byte[] StringToByteArray(string hex)
-        {
-            return Enumerable.Range(0, hex.Length)
-                             .Where(x => x % 2 == 0)
-                             .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
-                             .ToArray();
-        }
-
-        // color brightness as perceived:
-        float getBrightness(Color c)
-        { return (c.R * 0.299f + c.G * 0.587f + c.B * 0.114f) / 256f; }
-
-        private async void tglGlobalControl_SwitchedChanged(object sender)
-        {
-            globalControlMode = tglGlobalControl.Switched;
-            if (globalControlMode)
-            {
-                pnSliders.Enabled = false;
-                pnGlobalControl.Enabled =
-                cmdApply.Enabled =
-                cmdCancel.Enabled = true;
-            }
-            else
-            {
-                pnGlobalControl.Enabled =
-                cmdApply.Enabled =
-                cmdCancel.Enabled = false;
-                await ResetColorListAsync();
-                ResetColorSliders();
-            }
-        }
-
-        private void ResetColorSliders()
-        {
-            var hslColor = colorEditorGlobal.HslColor;
-            hslColor.H = 180;
-            hslColor.S = 0.5;
-            hslColor.L = 0.5;
-            colorEditorGlobal.HslColor = hslColor;
-        }
-
-        private Color GetSelectedItemColor()
-        {
-            string hexcolor = lstColor.SelectedItems[0].Text;
-            int color = Int32.Parse(hexcolor.Replace("#", ""), NumberStyles.HexNumber);
-            int alpha = 255;
-            Color result = Color.FromArgb(alpha, Color.FromArgb(color));
-            return result;
-        }
-
-        private void lstColor_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (lstColor.SelectedItems.Count <= 0 || globalControlMode)
-            {
-                //pnSliders.Enabled = false;
-                return;
-            }
-            pnSliders.Enabled = true;
-            Color color = GetSelectedItemColor();
-            colorEditor.Color = color;
-            var hslColor = colorEditor.HslColor;
-            if (hslColor.S == 0)
-            {
-                hslColor.H = 180F;
-                colorEditor.HslColor = hslColor;
-            }
-            //colorWheel.Color = color;
-            lblColorIndex.Text = $"Index: {lstColor.SelectedItems[0].Index}";
-        }
-
-        private void colorWheel_ColorChanged(object sender, EventArgs e)
-        {
-            if (!globalControlMode)
-                OnValueChanged(false, colorWheel.Color);
-        }
-
-        private void colorEditor_ColorChanged(object sender, EventArgs e)
-        {
-            if (!globalControlMode)
-                OnValueChanged(false, colorEditor.Color);
-        }
-
-        private void colorEditorGlobal_ColorChanged(object sender, EventArgs e)
-        {
-            OnValueChanged(true);
-        }
-
-        internal static HslColor ChangeHue(HslColor color, double increment)
-        {
-            HslColor copy;
-            double value;
-
-            copy = new HslColor(color);
-            value = copy.H + increment;
-
-            if (increment > 0 && value > 359)
-            {
-                value -= 360;
-            }
-            else if (increment < 0 && value < 0)
-            {
-                value += 360;
-            }
-
-            copy.H = value;
-            return copy;
-        }
-
-        private void ApplyChanges()
-        {
-            foreach (ListViewItem item in lstColor.Items)
-            {
-                var i = (int)item.Tag;
-                SetModelColor(item.BackColor, i);
-            }
-            UpdateColorCopy();
-        }
-
-        private void cmdApply_Click(object sender, EventArgs e)
-        {
-            ApplyChanges();
-            tglGlobalControl.Switched = false;
-        }
-
-        private void cmdCancel_Click(object sender, EventArgs e)
-        {
-            tglGlobalControl.Switched = false;
-        }
-
-        private void tbpColors_Leave(object sender, EventArgs e)
-        {
-            //if (globalControlMode)
-            //{
-            //    if (DarkMessageBox.ShowWarning("The changes have not been saved. Do you want to apply them?", "Global Controller", DarkDialogButton.YesNo) == DialogResult.Yes)
-            //    {
-            //        ApplyChanges();
-            //        tglGlobalControl.Switched = false;
-            //    }
-            //    else
-            //    {
-            //        tglGlobalControl.Switched = false;
-            //    }
-            //}
-        }
-
-        private void UpdatePicture()
-        {
-            if (!(dgvTextures.SelectedCells.Count > 0)) return;
-
-            var cell = dgvTextures.Rows[dgvTextures.SelectedCells[0].RowIndex];
-            var pageIndex = Convert.ToInt32(cell.Cells[ColPage].Value);
-            string cid = lstTPages.Items[pageIndex].SubItems[1].Text;
-
-            int TexCX = Convert.ToInt32(cell.Cells[ColClutX].Value);
-            int TexCY = Convert.ToInt32(cell.Cells[ColClutY].Value);
-            int TexX = Convert.ToInt32(cell.Cells[ColLeft].Value);
-            int TexY = Convert.ToInt32(cell.Cells[ColTop].Value);
-            int TexW = Convert.ToInt32(cell.Cells[ColWidth].Value);
-            int TexH = Convert.ToInt32(cell.Cells[ColHeight].Value);
-            int colormode = Convert.ToInt32(cell.Cells[ColColorMode].Value);
-            int blendmode = Convert.ToInt32(cell.Cells[ColBlendMode].Value);
-            chunk = controller.GetEntry<TextureChunk>(Entry.ENameToEID(cid));
-            int pw = 256 << (2 - colormode);
-            int ph = 128;
-            Bitmap bitmap = new Bitmap(pw + 2, ph + 2, PixelFormat.Format32bppArgb);
-            Rectangle brect = new Rectangle(Point.Empty, bitmap.Size);
-            BitmapData bdata = bitmap.LockBits(brect, ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-            int[] palette = null;
-            if (colormode == 0)
-            {
-                int clutx = TexCX;
-                int cluty = TexCY;
-                palette = new int[16];
-                for (int x = 0; x < 16; ++x)
-                {
-                    palette[x] = PixelConv.Convert5551_8888(BitConv.FromInt16(chunk.Data, cluty * 512 + (clutx * 16 + x) * 2), blendmode);
-                }
-            }
-            else if (colormode == 1)
-            {
-                int cluty = TexCY;
-                palette = new int[256];
-                for (int x = 0; x < 256; ++x)
-                {
-                    palette[x] = PixelConv.Convert5551_8888(BitConv.FromInt16(chunk.Data, cluty * 512 + x * 2), blendmode);
-                }
-            }
-            try
-            {
-                for (int y = 0; y < ph; y++)
-                {
-                    for (int x = 0; x < pw; x++)
-                    {
-                        int pixel = colormode == 0 ? palette[chunk.Data[x / 2 + y * 512] >> ((x & 1) == 0 ? 0 : 4) & 0xF] :
-                        colormode == 1 ? palette[chunk.Data[x + y * 512]] :
-                                    colormode == 2 ? PixelConv.Convert5551_8888(BitConv.FromInt16(chunk.Data, x * 2 + y * 512), blendmode)
-                                    : throw new Exception("invalid colormode");
-                        System.Runtime.InteropServices.Marshal.WriteInt32(bdata.Scan0, x * 4 + y * bdata.Stride, pixel);
-                    }
-                }
-            }
-            finally
-            {
-                bitmap.UnlockBits(bdata);
-            }
-            using (Graphics g = Graphics.FromImage(bitmap))
-            {
-                int x = TexX;
-                int y = TexY;
-                int w = TexW;
-                int h = TexH;
-                using (var brush = new SolidBrush(Color.FromArgb(127, 0, 0, 0)))
-                using (var pen = new Pen(Color.Black))
-                {
-                    int minh = Math.Min(h, ph - y);
-                    g.FillRectangles(brush, new Rectangle[4]
-                    {
-                        new Rectangle(0, 0, pw, y),
-                        new Rectangle(0, y, x, minh),
-                        new Rectangle(x+w, y, Math.Max(pw-(x+w),0), minh),
-                        new Rectangle(0, y+h, pw, Math.Max(ph-(y+h),0))
-                    });
-                    g.DrawRectangles(pen, new Rectangle[2]
-                    {
-                        new Rectangle(x-1,y-1,w+1,h+1),
-                        new Rectangle(x-3,y-3,w+5,h+5)
-                    });
-                    pen.Color = Color.White;
-                    g.DrawRectangle(pen, new Rectangle(x - 2, y - 2, w + 3, h + 3));
-                }
-                selectedregion.X = x;
-                selectedregion.Y = y;
-                selectedregion.Width = w;
-                selectedregion.Height = h;
-                selectedRegionX = x;
-                selectedRegionY = y;
-            }
-            pictureBox1.Image = bitmap;
-
-            float zoom = trkPictureSize.Value / 100f;
-            pictureBox1.Width = (int)(pictureBox1.Image.Width * zoom);
-            pictureBox1.Height = (int)(pictureBox1.Image.Height * zoom);
-
-            currentColorMode = colormode;
-        }
-
-        private void trkPictureSize_ValueChanged(object sender, EventArgs e)
-        {
-            if (pictureBox1.Image != null)
-            {
-                float zoom = trkPictureSize.Value / 100f;
-                pictureBox1.Width = (int)(pictureBox1.Image.Width * zoom);
-                pictureBox1.Height = (int)(pictureBox1.Image.Height * zoom);
-                pictureBox1.Invalidate();
-            }
-        }
-
-        private void tglSimpleMode_SwitchedChanged(object sender)
-        {
-            simpleMode = tglSimpleMode.Switched;
-            ToggleSimpleMode();
-        }
-
-        private void lstPages_ColumnWidthChangingHandler(object sender, ColumnWidthChangingEventArgs e)
-        {
-            e.Cancel = true;
-            e.NewWidth = lstTPages.Columns[e.ColumnIndex].Width;
-        }
-
-        private void chkBGRA_CheckedChanged(object sender, EventArgs e)
-        {
-            BGRAMode = chkBGRA.Checked;
-        }
-
-        private void cmdAppendTPage_Click(object sender, EventArgs e)
-        {
-            if (lstTPages.Items.Count < 8)
-            {
-                int index = lstTPages.Items.Count;
-                string name = lstTPages.Items[index - 1].SubItems[1].Text;
-                model.SetTPAG(index, Entry.ENameToEID(name));
-                ++model.TPAGCount;
-
-                ListViewItem newitem = new ListViewItem((index).ToString());
-                newitem.SubItems.Add(name);
-                lstTPages.Items.Add(newitem);
-                UpdateTPageButtons();
-            }
-        }
-
-        private void cmdRemoveTPage_Click(object sender, EventArgs e)
-        {
-            if (lstTPages.Items.Count > 0)
-            {
-                int index = lstTPages.Items.Count;
-                int name = 0;
-                model.SetTPAG(index - 1, name);
-                --model.TPAGCount;
-
-                lstTPages.Items.RemoveAt(index - 1);
-                UpdateTPageButtons();
-            }
-        }
-
-        private void lstTPages_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (lstTPages.Items.Count > 0 && lstTPages.SelectedItems.Count > 0)
-                dpdTPage.Text = lstTPages.SelectedItems[0].SubItems[1].Text;
-        }
-
-        private void chkReplaceCLUT_CheckedChanged(object sender, EventArgs e)
-        {
-            replaceCLUT = chkReplaceCLUT.Checked;
-        }
-
-        private void dpdTPage_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string text = dpdTPage.Text;
-            if (lstTPages.SelectedItems.Count > 0)
-                lstTPages.SelectedItems[0].SubItems[1].Text = text;
-            model.SetTPAG(lstTPages.SelectedIndices[0], Entry.ENameToEID(text));
-            UpdatePicture();
-        }
-
-        private void rbtReloadTPage_Click(object sender, EventArgs e)
-        {
-            if (lstTPages.Items.Count > 0)
-            {
-                dpdTPage.Items.Clear();
-                List<Chunk> chunks = null;
-                chunks = controller.GetNSF().Chunks;
-                foreach (Chunk chunk in chunks)
-                {
-                    if (chunk is TextureChunk t)
-                    {
-                        dpdTPage.Items.Add(Entry.EIDToEName(t.EID));
-                    }
-                }
-                if (lstTPages.Items.Count > 0 && lstTPages.SelectedItems.Count > 0)
-                    dpdTPage.Text = lstTPages.SelectedItems[0].SubItems[1].Text;
-            }
-            rbtReloadTPage.Checked = false;
-        }
-
-        private void numScaleX_ValueChanged(object sender, EventArgs e)
-        {
-            if (!Dirty)
-            {
-                SetCVal(numScaleX, (long)numScaleX.Value);
-                model.ScaleX = ((long)numScaleX.Value).UInt32ToInt32();
-            }
-        }
-
-        private void numScaleY_ValueChanged(object sender, EventArgs e)
-        {
-            if (!Dirty)
-            {
-                SetCVal(numScaleY, (long)numScaleY.Value);
-                model.ScaleY = ((long)numScaleY.Value).UInt32ToInt32();
-            }
-        }
-
-        private void numScaleZ_ValueChanged(object sender, EventArgs e)
-        {
-            if (!Dirty)
-            {
-                SetCVal(numScaleZ, (long)numScaleZ.Value);
-                model.ScaleZ = ((long)numScaleZ.Value).UInt32ToInt32();
-            }
-        }
-
-        private void chkScalesAsHex_CheckedChanged(object sender, EventArgs e)
-        {
-            numScaleX.Hexadecimal =
-            numScaleY.Hexadecimal =
-            numScaleZ.Hexadecimal = chkScalesShowAsHex.Checked;
-            SetCVal(numScaleX, (long)numScaleX.Value);
-            SetCVal(numScaleY, (long)numScaleY.Value);
-            SetCVal(numScaleZ, (long)numScaleZ.Value);
-        }
-
-        private void numOffsetX_ValueChanged(object sender, EventArgs e)
-        {
-            if (!Dirty)
-            {
-                SetCVal(numOffsetX, (long)numOffsetX.Value);
-                model.XOffset = ((long)numOffsetX.Value).UInt32ToInt32();
-            }
-        }
-
-        private void numOffsetY_ValueChanged(object sender, EventArgs e)
-        {
-            if (!Dirty)
-            {
-                SetCVal(numOffsetY, (long)numOffsetY.Value);
-                model.YOffset = ((long)numOffsetY.Value).UInt32ToInt32();
-            }
-        }
-
-        private void numOffsetZ_ValueChanged(object sender, EventArgs e)
-        {
-            if (!Dirty)
-            {
-                SetCVal(numOffsetZ, (long)numOffsetZ.Value);
-                model.ZOffset = ((long)numOffsetZ.Value).UInt32ToInt32();
-            }
-        }
-
-        private void chkOffsetsAsHex_CheckedChanged(object sender, EventArgs e)
-        {
-            numOffsetX.Hexadecimal =
-            numOffsetY.Hexadecimal =
-            numOffsetZ.Hexadecimal = chkOffsetsShowAsHex.Checked;
-            SetCVal(numOffsetX, (long)numOffsetX.Value);
-            SetCVal(numOffsetY, (long)numOffsetY.Value);
-            SetCVal(numOffsetZ, (long)numOffsetZ.Value);
-        }
-
-        private void numReplaceTo_Click(object sender, EventArgs e)
-        {
-            numReplaceTo.Select(0, numReplaceTo.Text.Length);
-        }
-
-        private void ScrollHandlerFunction(object sender, MouseEventArgs e)
-        {
-            if (sender is NumericUpDown numericUpDown)
-            {
-                HandledMouseEventArgs handledArgs = e as HandledMouseEventArgs;
-                if (handledArgs != null)
-                    handledArgs.Handled = true;
-
-                decimal newValue = numericUpDown.Value;
-                if (e.Delta > 0 && newValue < numericUpDown.Maximum)
-                    newValue += numericUpDown.Increment;
-
-                else if (e.Delta < 0 && newValue > numericUpDown.Minimum)
-                    newValue -= numericUpDown.Increment;
-
-                numericUpDown.Value = newValue;
-            }
-        }
-
-        private void dgvStructs_SelectionChanged(object sender, EventArgs e)
-        {
-            if (!(dgvStructs.SelectedCells.Count > 0)) return;
-
-            var row = dgvStructs.Rows[dgvStructs.SelectedCells[0].RowIndex];
-            if (Convert.ToString(row.Cells[ColTexture].Value) == "FOOTER")
-            {
-                lblStruct.ForeColor = Color.Gray;
-                lblStruct.Text = "[FOOTER]";
-            }
-            else if (string.IsNullOrEmpty(Convert.ToString(row.Cells[ColType].Value)))
-            {
-                lblStruct.ForeColor = Color.Turquoise;
-                lblStruct.Text = "[ModelColor]";
-            }
-            else
-            {
-                lblStruct.ForeColor = SystemColors.ControlText;
-                lblStruct.Text = "[ModelTriangle]";
-            }
-            lblStruct.Visible = true;
-
-
-        }
-
-        private void dgvStructs_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
-        {
-            string? text = Convert.ToString(dgvStructs.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
-            if (string.IsNullOrEmpty(text) || text == "FOOTER")
-            {
+                DarkMessageBox.ShowError($"Invalid input. Please enter an integer.", Resources.Title_InputError);
                 e.Cancel = true;
             }
         }
 
-        private void dgvStructsGetMaxValue(int columnIndex, out int minValue, out int maxValue)
+        private void dgvPositions_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            maxValue = 0; minValue = 0;
-            switch (columnIndex)
-            {
-                case 0: // Texture / Color1
-                case 1: // Color / Color2
-                case 3: // PositionKey
-                case 6: // Unknown
-                    maxValue = 255;
-                    break;
-                case 4: // TriangleType
-                    maxValue = 2;
-                    break;
-                case 5: // TriangleSubtype
-                    maxValue = 3;
-                    break;
-            }
-        }
+            if (e.RowIndex < 0 || e.ColumnIndex < 0)
+                return;
 
-        private void dgvStructs_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
-        {
-            if (!(dgvStructs.SelectedCells.Count > 0)) return;
-            string inputValue = e.FormattedValue.ToString();
-            if (string.IsNullOrEmpty(inputValue) || inputValue == "FOOTER") return;
-
-            if (e.ColumnIndex == ColType)
-            {
-                if (!(inputValue == "0" || inputValue == "1" || inputValue.Equals("Original", StringComparison.InvariantCultureIgnoreCase) || inputValue.Equals("Duplicate", StringComparison.InvariantCultureIgnoreCase)))
-                {
-                    DarkMessageBox.ShowError("The value must be 'Original' or 'Duplicate'.", Resources.Title_InputError);
-                    e.Cancel = true;
-                }
-            }
-            else if (e.ColumnIndex == ColAnimated || e.ColumnIndex == ColFlag)
-            {
-                if (!(inputValue.Equals("True", StringComparison.InvariantCultureIgnoreCase) || inputValue.Equals("False", StringComparison.InvariantCultureIgnoreCase)))
-                {
-                    DarkMessageBox.ShowError("The value must be 'True' or 'False'.", Resources.Title_InputError);
-                    e.Cancel = true;
-                }
-            }
-            else
-            {
-                if (int.TryParse(inputValue, out int newValue))
-                {
-                    dgvStructsGetMaxValue(e.ColumnIndex, out int minValue, out int maxValue);
-                    if (newValue > maxValue)
-                    {
-                        DarkMessageBox.ShowError($"The value must be less than or equal to {maxValue}.", Resources.Title_InputError);
-                        e.Cancel = true;
-                    }
-                    else if (newValue < minValue)
-                    {
-                        DarkMessageBox.ShowError($"The value must be greater than or equal to {minValue}.", Resources.Title_InputError);
-                        e.Cancel = true;
-                    }
-                }
-                else
-                {
-                    DarkMessageBox.ShowError($"Invalid input. Please enter an integer.", Resources.Title_InputError);
-                    e.Cancel = true;
-                }
-            }
-        }
-
-        private void dgvStructs_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
-
-            Console.WriteLine($"Old: {model.PolyData[e.RowIndex]:X}");
-            var cell = dgvStructs.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
-
-            if (dgvStructs.Rows[e.RowIndex].Cells[8].Value == null)
-            {
-                ModelColor str = structs[e.RowIndex];
-
-                switch (e.ColumnIndex)
-                {
-                    case 0: // Color1
-                        str.Color1 = Convert.ToByte(cell);
-                        break;
-                    case 1: // Color2
-                        str.Color2 = Convert.ToByte(cell);
-                        break;
-                }
-                model.PolyData[e.RowIndex] = str.Save();
-                Console.WriteLine($"New: {str.Save():X}");
-            }
-            else
-            {
-                ModelTriangle str = structs[e.RowIndex];
-
-                switch (e.ColumnIndex)
-                {
-                    case 0: // TextureIndex
-                        str.TextureIndex = Convert.ToByte(cell);
-                        break;
-                    case 1: // ColorIndex
-                        str.ColorIndex = Convert.ToByte(cell);
-                        break;
-                    case 2: // Animated
-                        str.Animated = Convert.ToBoolean(cell);
-                        break;
-                    case 3: // PositionKey
-                        str.PositionKey = Convert.ToByte(cell);
-                        break;
-                    case 4: // TriangleType
-                        str.TriangleType = Convert.ToByte(cell);
-                        break;
-                    case 5: // TriangleSubtype
-                        str.TriangleSubtype = Convert.ToByte(cell);
-                        break;
-                    case 6: // Unknown
-                        str.Unknown = Convert.ToByte(cell);
-                        break;
-                    case 7: // Flag
-                        str.Flag = Convert.ToBoolean(cell);
-                        break;
-                    case 8: // Type
-                        if (cell.ToString() == "0" || cell.ToString().Equals("Original", StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            cell = 0;
-                        }
-                        else
-                        {
-                            cell = 1;
-                        }
-                        str.Type = (ModelTriangle.IndexType)Enum.Parse(typeof(ModelTriangle.IndexType), cell.ToString());
-                        break;
-                }
-                model.PolyData[e.RowIndex] = str.Save();
-                Console.WriteLine($"New: {str.Save():X}");
-            }
-        }
-
-        private void dgvPolygonsGetMaxValue(int columnIndex, out int minValue, out int maxValue)
-        {
-            maxValue = 0; minValue = 0;
-            switch (columnIndex)
-            {
-                case 0: // VertexA
-                case 1: // VertexB
-                case 2: // VertexC
-                case 3: // ColorA
-                case 4: // ColorB
-                case 5: // ColorC
-                case 6: // Texture
-                    maxValue = int.MaxValue;
-                    minValue = int.MinValue;
-                    break;
-                case 7: // TriangleType
-                    maxValue = 2;
-                    break;
-                case 8: // TriangleSubtype
-                    maxValue = 3;
-                    break;
-            }
-        }
-
-        private void dgvPolygons_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
-        {
-            if (!(dgvStructs.SelectedCells.Count > 0)) return;
-            string inputValue = e.FormattedValue.ToString();
-
-            if (e.ColumnIndex == ColTriAnimated)
-            {
-                if (!(inputValue.Equals("True", StringComparison.InvariantCultureIgnoreCase) || inputValue.Equals("False", StringComparison.InvariantCultureIgnoreCase)))
-                {
-                    DarkMessageBox.ShowError("The value must be 'True' or 'False'.", Resources.Title_InputError);
-                    e.Cancel = true;
-                }
-            }
-            else
-            {
-                if (int.TryParse(inputValue, out int newValue))
-                {
-                    dgvPolygonsGetMaxValue(e.ColumnIndex, out int minValue, out int maxValue);
-                    if (newValue > maxValue)
-                    {
-                        DarkMessageBox.ShowError($"The value must be less than or equal to {maxValue}.", Resources.Title_InputError);
-                        e.Cancel = true;
-                    }
-                    else if (newValue < minValue)
-                    {
-                        DarkMessageBox.ShowError($"The value must be greater than or equal to {minValue}.", Resources.Title_InputError);
-                        e.Cancel = true;
-                    }
-                }
-                else
-                {
-                    DarkMessageBox.ShowError($"Invalid input. Please enter an integer.", Resources.Title_InputError);
-                    e.Cancel = true;
-                }
-            }
-        }
-
-        private void dgvPolygons_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
-
-            var tri = model.Triangles[e.RowIndex];
-            var row = dgvPolygons.Rows[e.RowIndex];
+            var og = model.Positions[e.RowIndex];
+            var item = dgvPositions.Rows[e.RowIndex];
 
             switch (e.ColumnIndex)
             {
-                case 0: // Vertex A
-                    tri.Vertex[0] = Convert.ToInt32(row.Cells[e.ColumnIndex].Value);
+                case 1: // X
+                    og.X = Convert.ToByte(item.Cells[ColX].Value);
                     break;
-                case 1: // Vertex B
-                    tri.Vertex[1] = Convert.ToInt32(row.Cells[e.ColumnIndex].Value);
+                case 2: // Y
+                    og.Y = Convert.ToByte(item.Cells[ColY].Value);
                     break;
-                case 2: // Vertex C
-                    tri.Vertex[2] = Convert.ToInt32(row.Cells[e.ColumnIndex].Value);
+                case 3: // Z
+                    og.Z = Convert.ToByte(item.Cells[ColZ].Value);
                     break;
-                case 3: // Color A
-                    tri.Color[0] = Convert.ToInt32(row.Cells[e.ColumnIndex].Value);
+                case 4: // XBits
+                    og.XBits = Convert.ToByte(item.Cells[ColXBits].Value);
                     break;
-                case 4: // Color B
-                    tri.Color[1] = Convert.ToInt32(row.Cells[e.ColumnIndex].Value);
+                case 5: // YBits
+                    og.YBits = Convert.ToByte(item.Cells[ColYBits].Value);
                     break;
-                case 5: // Color C
-                    tri.Color[2] = Convert.ToInt32(row.Cells[e.ColumnIndex].Value);
+                case 6: // ZBits
+                    og.ZBits = Convert.ToByte(item.Cells[ColZBits].Value);
                     break;
-                case 6: // Texture
-                    tri.Texture = Convert.ToInt32(row.Cells[e.ColumnIndex].Value);
-                    break;
-                case 7: // Type
-                    tri.Type = Convert.ToInt32(row.Cells[e.ColumnIndex].Value);
-                    break;
-                case 8: // Subtype
-                    tri.Subtype = Convert.ToInt32(row.Cells[e.ColumnIndex].Value);
-                    break;
-                case 9: // Animated
-                    tri.Animated = Convert.ToBoolean(row.Cells[e.ColumnIndex].Value);
-                    break;
-
             }
         }
 
-        private void dgvPolygons_KeyDown(object sender, KeyEventArgs e)
+        private void dgvPositions_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
-            if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
+            if (dgvPositions.SelectedCells.Count > 0)
             {
-                if (dgvPolygons.SelectedCells.Count == 0) return;
-
-                int selectedColumnIndex = dgvPolygons.SelectedCells[0].ColumnIndex;
-                string clipboardData = Clipboard.GetText();
-                string[] rows = clipboardData.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-
-                for (int i = 0; i < rows.Length && i < dgvPolygons.Rows.Count; i++)
+                if (e.Control is TextBox textbox)
                 {
-                    dgvPolygons.Rows[i].Cells[selectedColumnIndex].Value = rows[i];
+                    textbox.KeyPress -= TextBox_KeyPress;
+                    textbox.KeyPress += TextBox_KeyPress;
                 }
             }
         }
+
+        private void dgv_CellParsing(object sender, DataGridViewCellParsingEventArgs e)
+        {
+            if (e.Value is string strValue)
+            {
+                if (int.TryParse(strValue, out int result))
+                {
+                    e.Value = result.ToString();
+                    e.ParsingApplied = true;
+                }
+            }
+        }
+        #endregion
     }
 }
