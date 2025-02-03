@@ -6,7 +6,7 @@ namespace CrashEdit
 
         public UndockCommand(MainForm host) : base(host) { }
 
-        public override string Text => "Undock (Ctrl + D)";
+        public override string Text => "Undock";
 
         public override string ImageKey => "Anchor";
 

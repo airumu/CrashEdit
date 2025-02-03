@@ -6,7 +6,7 @@ namespace CrashEdit
 
         public override string Text => "Import from file...";
 
-        public override string ImageKey => "FolderOpen";
+        public override string ImageKey => "Imports";
 
         public override bool ApplicableForGroup(SubcontrollerGroup group)
         {

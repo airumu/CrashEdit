@@ -8,7 +8,7 @@ namespace CrashEdit
 
         public override string Text => "Find Next";
 
-        public override string ImageKey => "RecordNext";
+        public override string ImageKey => "Next";
 
         public override bool Ready =>
             WsHost?.SearchPredicate != null &&

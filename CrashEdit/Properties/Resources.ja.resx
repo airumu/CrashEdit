@@ -902,4 +902,13 @@
   <data name="GOOLBox_Goto" xml:space="preserve">
     <value>行へ移動</value>
   </data>
+  <data name="Toolbar_Undock" xml:space="preserve">
+    <value>アンドック</value>
+  </data>
+  <data name="Toolbar_PAL" xml:space="preserve">
+    <value>PAL</value>
+  </data>
+  <data name="Toolbar_Patch" xml:space="preserve">
+    <value>パッチ</value>
+  </data>
 </root>

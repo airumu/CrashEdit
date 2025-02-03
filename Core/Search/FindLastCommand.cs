@@ -8,7 +8,7 @@ namespace CrashEdit
 
         public override string Text => "Find Last";
 
-        public override string ImageKey => "RecordLast";
+        public override string ImageKey => "Last";
 
         public override bool Ready =>
             WsHost?.SearchPredicate != null;

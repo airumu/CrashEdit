@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Drawing;
+using System.Resources;
 using System.Windows.Forms;
 using AltUI.Forms;
 
@@ -39,7 +40,9 @@ namespace CrashEdit
             // Toolbar -> Undock
             ToolStrip.Items.Add(new ToolStripCommandButton
             {
-                DisplayStyle = ToolStripItemDisplayStyle.Image,
+                ToolTipText = "Undock (Ctrl + D)",
+                DisplayStyle = ToolStripItemDisplayStyle.ImageAndText,
+                TextImageRelation = TextImageRelation.ImageAboveText,
                 Command = new UndockCommand(this)
             });
 
@@ -131,13 +134,14 @@ namespace CrashEdit
                 Alignment = ToolStripItemAlignment.Right,
                 DisplayStyle = ToolStripItemDisplayStyle.Image,
                 Text = "Find",
-                ImageKey = "MagnifyingGlass"
+                ImageKey = "Find"
             });
 
             // Menubar
             MenuStrip = new MenuStrip
             {
-                ImageList = Embeds.ImageList
+                ImageList = Embeds.ImageList,
+                Visible = false
             };
             Controls.Add(MenuStrip);
 
@@ -172,7 +176,7 @@ namespace CrashEdit
             var findMenuItem = new ToolStripMenuItem
             {
                 Text = "&Find",
-                ImageKey = "MagnifyingGlass",
+                ImageKey = "Find",
                 ShortcutKeys = Keys.Control | Keys.F
             };
             findMenuItem.Click += (sender, e) =>

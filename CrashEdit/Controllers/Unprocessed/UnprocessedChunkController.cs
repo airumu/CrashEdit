@@ -8,7 +8,7 @@ namespace CrashEdit.CE
         public UnprocessedChunkController(UnprocessedChunk unprocessedchunk, SubcontrollerGroup parentGroup) : base(unprocessedchunk, parentGroup)
         {
             UnprocessedChunk = unprocessedchunk;
-            AddMenu(CrashUI.Properties.Resources.UnprocessedChunkController_AcProcess, Menu_Process_Chunk);
+            AddMenu(CrashUI.Properties.Resources.UnprocessedChunkController_AcProcess, "Processor", Menu_Process_Chunk);
         }
 
         public UnprocessedChunk UnprocessedChunk { get; }

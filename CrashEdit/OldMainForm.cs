@@ -13,114 +13,93 @@ namespace CrashEdit.CE
 {
     public sealed class OldMainForm : MainForm
     {
-        private ToolStripButton tbbOpen;
-        private ToolStripButton tbbSave;
-        private ToolStripButton tbbPatchNSD;
-        private ToolStripButton tbbClose;
-        private ToolStripLabel tlbDefaultVersion;
-        private ToolStripComboBox tbxDefaultVersion;
-        private ToolStripMenuItem tbxMakeBIN;
-        private ToolStripMenuItem tbxConvertVHVB;
-        private ToolStripMenuItem tbxConvertVAB;
-        private ToolStripMenuItem tbxConvertAnimations;
-        private ToolStripMenuItem tbxShowGOOLMap;
-        private ToolStripMenuItem tbxGenerateSpawnPoint;
-        private ToolStripMenuItem tbbExtra;
-        private ToolStripButton tbbPlay;
-        private ToolStripButton tbbBIN;
+        private ToolStripButton tbbOpen = new();
+        private ToolStripButton tbbSave = new();
+        private ToolStripButton tbbPatchNSD = new();
+        private ToolStripButton tbbClose = new();
+        private ToolStripButton tbbPlay = new();
+        private ToolStripButton tbbBIN = new();
+        private ToolStripButton tbbPAL = new();
+        private ToolStripLabel tlbDefaultVersion = new();
+        private ToolStripComboBox tbxDefaultVersion = new();
+        private ToolStripMenuItem tbxMakeBIN = new();
+        private ToolStripMenuItem tbxConvertVHVB = new();
+        private ToolStripMenuItem tbxConvertVAB = new();
+        private ToolStripMenuItem tbxConvertAnimations = new();
+        private ToolStripMenuItem tbxShowGOOLMap = new();
+        private ToolStripMenuItem tbxGenerateSpawnPoint = new();
+        private ToolStripMenuItem tbbExtra = new();
+
         private TabControl tbcTabs;
         private GameVersionForm dlgGameVersion;
         private ConvertAnimationsForm dlgConvertAnimations;
-        private ToolStripButton tbbPAL;
-
-        private FolderBrowserDialog dlgMakeBINDir = new FolderBrowserDialog();
-        private SaveFileDialog dlgMakeBINFile = new SaveFileDialog();
 
         private BackgroundWorker bgwMakeBIN;
         private ProgressBarForm dlgProgress;
 
         private DarkForm? ShowGOOLMapForm { get; set; }
+        private Dictionary<string, DarkForm> ShowGOOLMapForms { get; } = new();
 
         public static bool PAL { get; private set; } = Settings.Default.ModePAL;
         private const int RateNTSC = 30;
         private const int RatePAL = 25;
 
-        private MakeBin frmmakebin = null;
+        private MakeBin frmmakebin = null!;
 
         public OldMainForm()
         {
-            tbbOpen = new ToolStripButton
-            {
-                Text = Resources.Toolbar_Open,
-                ImageKey = "FolderOpen",
-                DisplayStyle = ToolStripItemDisplayStyle.Image,
-                TextImageRelation = TextImageRelation.ImageAboveText
-            };
+            ToolStripButtonInit(tbbOpen, "FolderOpen", Resources.Toolbar_Open, $"{Resources.Toolbar_Open} (Ctrl + O)");
             tbbOpen.Click += new EventHandler(tbbOpen_Click);
 
-            tbbSave = new ToolStripButton
-            {
-                Text = Resources.Toolbar_Save,
-                ImageKey = "Floppy",
-                DisplayStyle = ToolStripItemDisplayStyle.Image,
-                TextImageRelation = TextImageRelation.ImageAboveText
-            };
+            ToolStripButtonInit(tbbSave, "Floppy", Resources.Toolbar_Save, $"{Resources.Toolbar_Save} (Ctrl + S)");
             tbbSave.Click += new EventHandler(tbbSave_Click);
 
-            tbbPatchNSD = new ToolStripButton
-            {
-                Text = Resources.Toolbar_PatchNSD,
-                ImageKey = "FloppyGreen",
-                ToolTipText = Resources.Toolbar_PatchNSD,
-                DisplayStyle = ToolStripItemDisplayStyle.Image,
-                TextImageRelation = TextImageRelation.ImageAboveText
-            };
+            ToolStripButtonInit(tbbPatchNSD, "Floppy2", Resources.Toolbar_Patch, $"{Resources.Toolbar_PatchNSD} (Ctrl + Shift + S)");
             tbbPatchNSD.Click += new EventHandler(tbbPatchNSD_Click);
 
-            tbbClose = new ToolStripButton
-            {
-                Text = Resources.Toolbar_Close,
-                ImageKey = "Folder",
-                DisplayStyle = ToolStripItemDisplayStyle.Image,
-                TextImageRelation = TextImageRelation.ImageAboveText
-            };
+            ToolStripButtonInit(tbbClose, "Folder", Resources.Toolbar_Close, $"{Resources.Toolbar_Close} (Ctrl + W)");
             tbbClose.Click += new EventHandler(tbbClose_Click);
 
-            tlbDefaultVersion = new ToolStripLabel();
-            tlbDefaultVersion.Text = "Set default game version";
+            ToolStripButtonInit(tbbPAL, "Earth", Resources.Toolbar_PAL, Resources.Toolbar_PAL);
+            tbbPAL.CheckOnClick = true;
+            tbbPAL.Checked = Settings.Default.ModePAL;
+            tbbPAL.Click += new EventHandler(tbbPAL_Click);
 
-            tbxDefaultVersion = new ToolStripComboBox();
+            ToolStripButtonInit(tbbPlay, "Controller", Resources.Toolbar_Play, $"{Resources.Toolbar_Play} (F1)");
+            tbbPlay.Click += new EventHandler(tbbPlay_Click);
+
+            ToolStripButtonInit(tbbBIN, "CD", Resources.Toolbar_BIN, "Make Bin");
+            tbbBIN.Click += new EventHandler(tbbBIN_Click);
+
+            tlbDefaultVersion.Text = "Set default game version:";
+
             tbxDefaultVersion.DropDownStyle = ComboBoxStyle.DropDownList;
             tbxDefaultVersion.ComboBox.Items.AddRange(new string[] { "Default", "Crash1", "Crash2", "Crash3" });
             tbxDefaultVersion.SelectedIndex = Settings.Default.DefaultGameVersion;
             tbxDefaultVersion.SelectedIndexChanged += new EventHandler(tbxDefaultVersion_SelectedIndexChanged);
 
-            tbxMakeBIN = new ToolStripMenuItem();
             tbxMakeBIN.Text = Resources.OldMainForm_tbxMakeBIN;
             tbxMakeBIN.Click += new EventHandler(tbxMakeBIN_Click);
 
-            tbxConvertVHVB = new ToolStripMenuItem();
             tbxConvertVHVB.Text = Resources.OldMainForm_tbxConvertVHVB;
             tbxConvertVHVB.Click += new EventHandler(tbxConvertVHVB_Click);
 
-            tbxConvertVAB = new ToolStripMenuItem();
             tbxConvertVAB.Text = Resources.OldMainForm_tbxConvertVAB;
             tbxConvertVAB.Click += new EventHandler(tbxConvertVAB_Click);
 
-            tbxConvertAnimations = new ToolStripMenuItem();
             tbxConvertAnimations.Text = Resources.OldMainForm_tbxConvertAnimations;
             tbxConvertAnimations.Click += new EventHandler(tbxConvertAnimations_Click);
 
-            tbxShowGOOLMap = new ToolStripMenuItem();
             tbxShowGOOLMap.Text = Resources.OldMainForm_tbxShowGOOLMap;
             tbxShowGOOLMap.Click += new EventHandler(tbxShowGOOLMap_Click);
 
-            tbxGenerateSpawnPoint = new ToolStripMenuItem();
             tbxGenerateSpawnPoint.Text = Resources.OldMainForm_tbxGenerateSpawnPoint;
             tbxGenerateSpawnPoint.Click += new EventHandler(tbxGenerateSpawnPoint_Click);
 
-            tbbExtra = new ToolStripMenuItem();
             tbbExtra.Text = Resources.OldMainForm_tbbExtra;
+            tbbExtra.ImageKey = "Dropdown";
+            tbbExtra.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText;
+            tbbExtra.TextImageRelation = TextImageRelation.TextBeforeImage;
             tbbExtra.DropDown.Items.Add(tlbDefaultVersion);
             tbbExtra.DropDown.Items.Add(tbxDefaultVersion);
             tbbExtra.DropDown.Items.Add("-");
@@ -134,43 +113,17 @@ namespace CrashEdit.CE
             tbbExtra.DropDown.Items.Add(tbxShowGOOLMap);
             tbbExtra.DropDown.Items.Add(tbxGenerateSpawnPoint);
 
-            tbbPAL = new ToolStripButton
-            {
-                Text = "PAL",
-                TextImageRelation = TextImageRelation.ImageAboveText,
-                Checked = Settings.Default.ModePAL,
-                CheckOnClick = true
-            };
-            tbbPAL.Click += new EventHandler(tbbPAL_Click);
-
-            tbbPlay = new ToolStripButton
-            {
-                Text = "Play",
-                ToolTipText = Resources.Toolbar_Play,
-                TextImageRelation = TextImageRelation.ImageAboveText
-            };
-            tbbPlay.Click += new EventHandler(tbbPlay_Click);
-
-            tbbBIN = new ToolStripButton
-            {
-                Text = "BIN",
-                ToolTipText = Resources.Toolbar_BIN,
-                TextImageRelation = TextImageRelation.ImageAboveText
-            };
-            tbbBIN.Click += new EventHandler(tbbBIN_Click);
-
             ToolStrip.Items.Insert(0, tbbOpen);
             ToolStrip.Items.Insert(1, tbbSave);
-            ToolStrip.Items.Insert(2, new ToolStripSeparator());
-            ToolStrip.Items.Insert(3, tbbPatchNSD);
+            ToolStrip.Items.Insert(2, tbbPatchNSD);
+            ToolStrip.Items.Insert(3, tbbClose);
             ToolStrip.Items.Insert(4, new ToolStripSeparator());
-            ToolStrip.Items.Insert(5, tbbClose);
-            ToolStrip.Items.Insert(6, new ToolStripSeparator());
-            ToolStrip.Items.Insert(7, tbbPAL);
-            ToolStrip.Items.Insert(8, tbbPlay);
-            ToolStrip.Items.Insert(9, tbbBIN);
-            ToolStrip.Items.Insert(10, new ToolStripSeparator());
-            MenuStrip.Items.Add(tbbExtra);
+            ToolStrip.Items.Insert(5, tbbPAL);
+            ToolStrip.Items.Insert(6, tbbPlay);
+            ToolStrip.Items.Insert(7, new ToolStripSeparator());
+            ToolStrip.Items.Insert(8, tbbBIN);
+            ToolStrip.Items.Insert(9, new ToolStripSeparator());
+            ToolStrip.Items.Add(tbbExtra);
 
             tbcTabs = TabControl;
             tbcTabs.SelectedIndexChanged += tbcTabs_SelectedIndexChanged;
@@ -185,6 +138,8 @@ namespace CrashEdit.CE
 
             tbcTabs_SelectedIndexChanged(null, null);
 
+            dlgConvertAnimations = null!;
+
             dlgGameVersion = new GameVersionForm();
 
             bgwMakeBIN = new BackgroundWorker()
@@ -195,7 +150,7 @@ namespace CrashEdit.CE
             bgwMakeBIN.DoWork += new DoWorkEventHandler(bgwMakeBIN_DoWork);
             bgwMakeBIN.ProgressChanged += new ProgressChangedEventHandler(bgwMakeBIN_ProgressChanged);
             bgwMakeBIN.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bgwMakeBIN_RunWorkerCompleted);
-            dlgProgress = null;
+            dlgProgress = null!;
 
             Icon = OldResources.CBHacksIconAlt;
             // Width = Settings.Default.DefaultFormW;
@@ -210,10 +165,18 @@ namespace CrashEdit.CE
             }
             else
             {
+                // This must be a color that never used in the other controls
                 BackColor = Color.FromArgb(29, 30, 31);
             }
+        }
 
-            dlgMakeBINFile.Filter = "Playstation Disc Images (*.bin)|*.bin";
+        public void ToolStripButtonInit(ToolStripButton tbb, string imageKey, string text, string tooltip)
+        {
+            tbb.Text = text;
+            tbb.ImageKey = imageKey;
+            tbb.ToolTipText = tooltip;
+            tbb.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText;
+            tbb.TextImageRelation = TextImageRelation.ImageAboveText;
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -221,24 +184,24 @@ namespace CrashEdit.CE
             switch (keyData)
             {
                 // Open NSF
-                //case (Keys.Control |  Keys.O):
-                //    ToolStrip.Items[0].PerformClick();
-                //    break;
+                case (Keys.Control | Keys.O):
+                    ToolStrip.Items[0].PerformClick();
+                    break;
                 // Save NSF
                 case (Keys.Control | Keys.S):
                     ToolStrip.Items[1].PerformClick();
                     break;
                 // Patch NSD
                 case (Keys.Control | Keys.Shift | Keys.S):
-                    ToolStrip.Items[3].PerformClick();
+                    ToolStrip.Items[2].PerformClick();
                     break;
                 // Close NSF
-                //case (Keys.Control | Keys.C):
-                //    ToolStrip.Items[5].PerformClick();
-                //    break;
+                case (Keys.Control | Keys.W):
+                    ToolStrip.Items[3].PerformClick();
+                    break;
                 // Play
                 case (Keys.F1):
-                    ToolStrip.Items[8].PerformClick();
+                    ToolStrip.Items[6].PerformClick();
                     break;
             }
 
@@ -282,23 +245,12 @@ namespace CrashEdit.CE
             }
             var levelID = int.Parse(nsfFilenameBase.Substring(6, 2), System.Globalization.NumberStyles.HexNumber);
 
-            string nsdFilename;
-            if (nsfFilename.EndsWith("F"))
-            {
-                nsdFilename = nsfFilename.Remove(nsfFilename.Length - 1);
-                nsdFilename += "D";
-            }
-            else if (nsfFilename.EndsWith("f"))
-            {
-                nsdFilename = nsfFilename.Remove(nsfFilename.Length - 1);
-                nsdFilename += "d";
-            }
-            else
+            string nsdFilename = GetNSDFileName(nsfFilename);
+            if (string.IsNullOrEmpty(nsdFilename))
             {
                 DarkMessageBox.ShowError(string.Format(Resources.Playtest_Error2, nsfFilename), Resources.Playtest_Title);
                 return;
             }
-
             if (!File.Exists(nsdFilename))
             {
                 DarkMessageBox.ShowError(string.Format(Resources.Playtest_Error3, nsdFilename), Resources.Playtest_Title);
@@ -946,38 +898,20 @@ namespace CrashEdit.CE
             dlgConvertAnimations.Show();
         }
 
-        dynamic GetNSD()
+        void GetNSD(out string nsdFilename, out dynamic? nsd)
         {
-            string filename = string.Empty;
-            NSFBox nsfbox = (NSFBox)tbcTabs.SelectedTab.Tag;
-            bool exists = true;
-            if (tbcTabs.SelectedTab != null)
-            {
-                filename = tbcTabs.SelectedTab.Text;
-                if (filename.EndsWith("F"))
-                {
-                    filename = filename.Remove(filename.Length - 1);
-                    filename += "D";
-                }
-                else if (filename.EndsWith("f"))
-                {
-                    filename = filename.Remove(filename.Length - 1);
-                    filename += "d";
-                }
-                else
-                {
-                    DarkMessageBox.ShowError(string.Format(Resources.PatchNSD_Error1, filename), Resources.Title_Error);
-                    return null;
-                }
-                if (!File.Exists(filename))
-                {
-                    return null;
-                }
-            }
-            byte[] data = exists ? File.ReadAllBytes(filename) : null;
+            nsd = null;
+            nsdFilename = string.Empty;
+            if (tbcTabs.SelectedTab == null || !(tbcTabs.SelectedTab.Tag is NSFBox)) return;
 
+            string nsfFilename = tbcTabs.SelectedTab.Text;
+            nsdFilename = GetNSDFileName(nsfFilename);
+            if (string.IsNullOrEmpty(nsdFilename)) return;
+
+            byte[] data = File.ReadAllBytes(nsdFilename);
+
+            NSFBox nsfbox = (NSFBox)tbcTabs.SelectedTab.Tag;
             NSFController nsfc = nsfbox.NSFController;
-            dynamic nsd = null;
             switch (nsfc.GameVersion)
             {
                 case GameVersion.Crash1BetaMAR08:
@@ -992,26 +926,53 @@ namespace CrashEdit.CE
                 case GameVersion.Crash3:
                     nsd = data != null ? NSD.LoadC3(data) : new NSD(new int[256], 0, new int[4], 0, 0, new int[64], new NSDLink[0], 0, 0x3F, 0, new int[128], new byte[0xFC], new NSDSpawnPoint[1] { new NSDSpawnPoint(Entry.NullEID, 0, 0, 0, 0, 0) }, new byte[0]);
                     break;
-                default:
-                    return null;
             }
-            return nsd;
+        }
+
+        string GetNSDFileName(string nsfFilename)
+        {
+            string nsdFilename = string.Empty;
+            if (nsfFilename.EndsWith("F"))
+            {
+                nsdFilename = nsfFilename.Remove(nsfFilename.Length - 1);
+                nsdFilename += "D";
+            }
+            else if (nsfFilename.EndsWith("f"))
+            {
+                nsdFilename = nsfFilename.Remove(nsfFilename.Length - 1);
+                nsdFilename += "d";
+            }
+            return nsdFilename;
         }
 
         void tbxShowGOOLMap_Click(object sender, EventArgs e)
         {
-            var nsd = GetNSD();
-            if (nsd == null) return;
+            if (tbcTabs.SelectedTab == null) return;
 
-            if (ShowGOOLMapForm != null)
+            string nsfFilename = tbcTabs.SelectedTab.Text;
+            GetNSD(out string nsdFilename, out dynamic? nsd);
+            if (string.IsNullOrEmpty(nsdFilename))
             {
-                ShowGOOLMapForm.Focus();
+                DarkMessageBox.ShowError(string.Format(Resources.Playtest_Error2, nsfFilename), Resources.OldMainForm_tbxShowGOOLMap);
                 return;
             }
-            ShowGOOLMapForm = new()
+            if (!File.Exists(nsdFilename) || nsd == null)
             {
-                Text = "GOOL Map",
+                DarkMessageBox.ShowError(string.Format(Resources.Playtest_Error3, nsdFilename), Resources.OldMainForm_tbxShowGOOLMap);
+                return;
+            }
+
+            if (ShowGOOLMapForms.TryGetValue(nsdFilename, out DarkForm? value))
+            {
+                value.Focus();
+                return;
+            }
+            DarkForm goolmap = new()
+            {
+                Text = $"GOOL Map ({nsdFilename})",
                 BackColor = Color.FromArgb(31, 31, 32),
+                MaximizeBox = false,
+                MinimizeBox = false,
                 Width = 584,
                 Height = 380
             };
@@ -1020,24 +981,23 @@ namespace CrashEdit.CE
                 Dock = DockStyle.Fill,
                 BackColor = Color.FromArgb(31, 31, 32)
             };
-            List<string> BaseGOOL = new List<string> { "WillC", "WarpC", "FruiC", "DispC", "DoctC", "PartC", "ShadC", "BoxsC", "WEfOC", "EntNC" };
-            int i = 0;
-            foreach (int gool in nsd.GOOLMap)
+            List<string> BaseGOOL = new() { "WillC", "WarpC", "FruiC", "DispC", "DoctC", "PartC", "ShadC", "BoxsC", "WEfOC", "EntNC" };
+            for (int i = 0; i < nsd.GOOLMap.Length; ++i)
             {
                 ListViewItem lsi = new();
-                lsi.Text = $"{i:D2}: {Entry.EIDToEName(gool)}";
-                lsi.ForeColor = lsi.Text.Contains(Entry.NullEName) ? SystemColors.ControlDarkDark:
+                lsi.Text = $"{i:D2}: {Entry.EIDToEName(nsd.GOOLMap[i])}";
+                lsi.ForeColor = lsi.Text.Contains(Entry.NullEName) ? SystemColors.ControlDarkDark :
                                 BaseGOOL.Any(item => lsi.Text.Contains(item)) ? Color.Turquoise :
                                 Color.Gainsboro;
                 lst.Items.Add(lsi);
-                ++i;
             }
-            ShowGOOLMapForm.Controls.Add(lst);
-            ShowGOOLMapForm.FormClosing += (object sender, FormClosingEventArgs e) =>
+            goolmap.Controls.Add(lst);
+            goolmap.FormClosing += (object sender, FormClosingEventArgs e) =>
             {
-                ShowGOOLMapForm = null;
+                ShowGOOLMapForms.Remove(nsdFilename);
             };
-            ShowGOOLMapForm.Show();
+            ShowGOOLMapForms.Add(nsdFilename, goolmap);
+            goolmap.Show();
         }
 
         void tbxGenerateSpawnPoint_Click(object sender, EventArgs e)
@@ -1069,22 +1029,21 @@ namespace CrashEdit.CE
                                         {
                                             if (inputWindows.ShowDialog() == DialogResult.OK)
                                             {
-                                                input = inputWindows.Input;
-                                                bool valid = true;
-                                                if (int.TryParse(input, out cameraIdx))
+                                                bool valid = false;
+                                                if (int.TryParse(inputWindows.Input, out cameraIdx))
                                                 {
-                                                    if (cameraIdx < 0 || cameraIdx > cameraMaxIdx)
-                                                        valid = false;
+                                                    if (cameraIdx >= 0 && cameraIdx <= cameraMaxIdx)
+                                                    {
+                                                        valid = true;
+                                                        cameraIndex = $" [Camera: {cameraIdx}]";
+                                                    }
                                                 }
-                                                else
-                                                    valid = false;
 
                                                 if (!valid)
                                                 {
                                                     DarkMessageBox.ShowError("Invalid camera index.", Resources.GenerateSpawnPoint_Title);
                                                     return;
                                                 }
-                                                cameraIndex = $" [Camera: {cameraIdx}]";
                                             }
                                             else return;
                                         }

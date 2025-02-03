@@ -129,6 +129,10 @@ namespace CrashEdit
 
                         var item = new ToolStripMenuItem();
                         item.Text = legacyVerb.Text;
+                        if (legacyVerb.ImageKey != null)
+                        {
+                            item.ImageKey = legacyVerb.ImageKey;
+                        }
                         item.Click += (sender, e) =>
                         {
                             Executor.ExecuteVerb(legacyVerb);

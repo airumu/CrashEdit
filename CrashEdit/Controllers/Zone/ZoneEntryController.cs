@@ -10,7 +10,7 @@ namespace CrashEdit.CE
         public ZoneEntryController(ZoneEntry zoneentry, SubcontrollerGroup parentGroup) : base(zoneentry, parentGroup)
         {
             ZoneEntry = zoneentry;
-            AddMenu(CrashUI.Properties.Resources.ZoneEntryController_AcAddEntity, Menu_AddEntity);
+            AddMenu(CrashUI.Properties.Resources.ZoneEntryController_AcAddEntity, "Add", Menu_AddEntity);
             AddMenu(CrashUI.Properties.Resources.ZoneEntryController_AcChangeCollisionType, Menu_ChangeCollisionType);
         }
 

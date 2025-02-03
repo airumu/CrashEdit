@@ -1986,7 +1986,7 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
-        ///   Make BIN に類似しているローカライズされた文字列を検索します。
+        ///   BIN に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Toolbar_BIN {
             get {
@@ -2040,7 +2040,25 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
-        ///   Patch NSD (Ctrl + Shift + S) に類似しているローカライズされた文字列を検索します。
+        ///   PAL に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Toolbar_PAL {
+            get {
+                return ResourceManager.GetString("Toolbar_PAL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Patch に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Toolbar_Patch {
+            get {
+                return ResourceManager.GetString("Toolbar_Patch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Patch NSD に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Toolbar_PatchNSD {
             get {
@@ -2049,7 +2067,7 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
-        ///   Play (F1) に類似しているローカライズされた文字列を検索します。
+        ///   Play に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Toolbar_Play {
             get {
@@ -2076,7 +2094,7 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
-        ///   Save (Ctrl + S) に類似しているローカライズされた文字列を検索します。
+        ///   Save に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Toolbar_Save {
             get {
@@ -2090,6 +2108,15 @@ namespace CrashEdit.CE.Properties {
         internal static string Toolbar_UndoAction {
             get {
                 return ResourceManager.GetString("Toolbar_UndoAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Undock に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Toolbar_Undock {
+            get {
+                return ResourceManager.GetString("Toolbar_Undock", resourceCulture);
             }
         }
         

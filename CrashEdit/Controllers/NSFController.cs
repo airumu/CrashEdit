@@ -10,14 +10,14 @@ namespace CrashEdit.CE
         public NSFController(NSF nsf, SubcontrollerGroup parentGroup) : base(parentGroup, nsf)
         {
             NSF = nsf;
-            AddMenu(CrashUI.Properties.Resources.NSFController_AcAddNormalChunk, Menu_Add_NormalChunk);
+            AddMenu(CrashUI.Properties.Resources.NSFController_AcAddNormalChunk, "JournalOrange", Menu_Add_NormalChunk);
             if (GameVersion != GameVersion.Crash2 && GameVersion != GameVersion.Crash3 && GameVersion != GameVersion.Crash1)
-                AddMenu(CrashUI.Properties.Resources.NSFController_AcAddOldSoundChunk, Menu_Add_OldSoundChunk);
-            AddMenu(CrashUI.Properties.Resources.NSFController_AcAddSoundChunk, Menu_Add_SoundChunk);
-            AddMenu(CrashUI.Properties.Resources.NSFController_AcAddWavebankChunk, Menu_Add_WavebankChunk);
-            AddMenu(CrashUI.Properties.Resources.NSFController_AcAddSpeechChunk, Menu_Add_SpeechChunk);
-            AddMenu(CrashUI.Properties.Resources.NSFController_AcAddTextureChunk, Menu_Add_TextureChunk);
-            AddMenu(CrashUI.Properties.Resources.NSFController_AcImportChunk, Menu_Import_Chunk);
+                AddMenu(CrashUI.Properties.Resources.NSFController_AcAddOldSoundChunk, "JournalBlue", Menu_Add_OldSoundChunk);
+            AddMenu(CrashUI.Properties.Resources.NSFController_AcAddSoundChunk, "JournalBlue", Menu_Add_SoundChunk);
+            AddMenu(CrashUI.Properties.Resources.NSFController_AcAddWavebankChunk, "JournalRed",Menu_Add_WavebankChunk);
+            AddMenu(CrashUI.Properties.Resources.NSFController_AcAddSpeechChunk, "JournalWhite", Menu_Add_SpeechChunk);
+            AddMenu(CrashUI.Properties.Resources.NSFController_AcAddTextureChunk, "Painting", Menu_Add_TextureChunk);
+            AddMenu(CrashUI.Properties.Resources.NSFController_AcImportChunk, "Imports", Menu_Import_Chunk);
             if (GameVersion == GameVersion.Crash2 || GameVersion == GameVersion.Crash3)
             {
                 AddMenuSeparator();

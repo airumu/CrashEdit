@@ -1664,7 +1664,7 @@ namespace CrashEdit.CE
             var selectedItem = savedItems.FirstOrDefault(item => string.Equals(item.Name, selectedItemName, StringComparison.Ordinal));
             if (selectedItem != null)
             {
-                using (InputWindow inputWindows = new InputWindow("Enter new name:", "Rename", selectedItemName))
+                using (InputWindow inputWindows = new InputWindow("Enter new name:", "Modify", selectedItemName))
                 {
                     if (inputWindows.ShowDialog() == DialogResult.OK)
                     {

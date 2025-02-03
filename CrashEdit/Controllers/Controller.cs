@@ -11,6 +11,11 @@ namespace CrashEdit.CE
             LegacyVerbs.Add(new LegacyVerb(text, new Action(proc)));
         }
 
+        protected void AddMenu(string text, string imageKey, ControllerMenuDelegate proc)
+        {
+            LegacyVerbs.Add(new LegacyVerb(text, imageKey, new Action(proc)));
+        }
+
         protected void AddMenuSeparator()
         {
             LegacyVerbs.Add(new LegacyVerb("-", () => { }));

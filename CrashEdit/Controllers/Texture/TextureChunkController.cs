@@ -10,8 +10,8 @@ namespace CrashEdit.CE
         public TextureChunkController(TextureChunk texturechunk, SubcontrollerGroup parentGroup) : base(texturechunk, parentGroup)
         {
             TextureChunk = texturechunk;
-            AddMenu(CrashUI.Properties.Resources.TextureChunkController_AcRecalcChecksum, Menu_Recalculate_Checksum);
-            AddMenu(CrashUI.Properties.Resources.TextureChunkController_AcRename, Menu_Rename_Entry);
+            AddMenu(CrashUI.Properties.Resources.TextureChunkController_AcRename, "Modify", Menu_Rename_Entry);
+            AddMenu(CrashUI.Properties.Resources.TextureChunkController_AcRecalcChecksum, "Calculator", Menu_Recalculate_Checksum);
             AddMenu(CrashUI.Properties.Resources.TextureChunkController_AcOpenViewer, Menu_Open_Viewer);
         }
 

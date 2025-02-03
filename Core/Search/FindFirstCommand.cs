@@ -8,7 +8,7 @@ namespace CrashEdit
 
         public override string Text => "Find First";
 
-        public override string ImageKey => "RecordFirst";
+        public override string ImageKey => "First";
 
         public override bool Ready =>
             WsHost?.SearchPredicate != null;

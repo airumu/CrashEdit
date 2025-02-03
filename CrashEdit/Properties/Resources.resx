@@ -193,7 +193,7 @@
     <value>Open</value>
   </data>
   <data name="Toolbar_PatchNSD" xml:space="preserve">
-    <value>Patch NSD (Ctrl + Shift + S)</value>
+    <value>Patch NSD</value>
   </data>
   <data name="Toolbar_RedoAction" xml:space="preserve">
     <value>Redo {0}</value>
@@ -202,7 +202,7 @@
     <value>Redo</value>
   </data>
   <data name="Toolbar_Save" xml:space="preserve">
-    <value>Save (Ctrl + S)</value>
+    <value>Save</value>
   </data>
   <data name="Toolbar_UndoAction" xml:space="preserve">
     <value>Undo {0}</value>
@@ -819,10 +819,10 @@ as Meters: {3:F3}m</value>
     <value>Enable 3D entity display</value>
   </data>
   <data name="Toolbar_Play" xml:space="preserve">
-    <value>Play (F1)</value>
+    <value>Play</value>
   </data>
   <data name="Toolbar_BIN" xml:space="preserve">
-    <value>Make BIN</value>
+    <value>BIN</value>
   </data>
   <data name="Playtest_Error5" xml:space="preserve">
     <value>Could not find pcsx-hdbg exe. Please place this in the same directory as CrashEdit.</value>
@@ -907,5 +907,14 @@ as Meters: {3:F3}m</value>
   </data>
   <data name="GOOLBox_Goto" xml:space="preserve">
     <value>Go to Line</value>
+  </data>
+  <data name="Toolbar_Undock" xml:space="preserve">
+    <value>Undock</value>
+  </data>
+  <data name="Toolbar_PAL" xml:space="preserve">
+    <value>PAL</value>
+  </data>
+  <data name="Toolbar_Patch" xml:space="preserve">
+    <value>Patch</value>
   </data>
 </root>
