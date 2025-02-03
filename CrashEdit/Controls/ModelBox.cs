@@ -984,6 +984,7 @@ namespace CrashEdit.CE.Controls
             globalControlMode = tglGlobalControl.Switched;
             if (globalControlMode)
             {
+                lblColorIndex.Text = "Index: -";
                 pnSliders.Enabled = false;
                 pnGlobalControl.Enabled =
                 cmdApply.Enabled =
@@ -1022,6 +1023,7 @@ namespace CrashEdit.CE.Controls
             if (lstColor.SelectedItems.Count <= 0 || globalControlMode)
             {
                 //pnSliders.Enabled = false;
+                lblColorIndex.Text = "Index: -";
                 return;
             }
             pnSliders.Enabled = true;
