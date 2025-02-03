@@ -12,31 +12,31 @@ namespace CrashEdit.CE.Controls
 {
     public partial class ModelBox : UserControl
     {
-        DataGridViewCellStyle indexStyle = new DataGridViewCellStyle
+        private readonly DataGridViewCellStyle styleDefault = new DataGridViewCellStyle
         {
-            ForeColor = Color.Gray
+            ForeColor = Color.Gainsboro
         };
-        DataGridViewCellStyle maxValueStyle = new DataGridViewCellStyle
+        private readonly DataGridViewCellStyle styleRegionEnd = new DataGridViewCellStyle
         {
             ForeColor = Color.Turquoise
         };
-        DataGridViewCellStyle defaultValueStyle = new DataGridViewCellStyle
+        private readonly DataGridViewCellStyle styleIndex = new DataGridViewCellStyle
         {
-            ForeColor = Color.Gainsboro
+            ForeColor = Color.Gray
         };
 
         private dynamic controller;
         private dynamic model;
         private TextureChunk chunk { get; set; }
 
-        private List<dynamic> structs = new List<dynamic>();
+        private readonly List<dynamic> structs = new List<dynamic>();
 
         private Rectangle selectedregion;
 
         private DarkToolTip tipReloadTPage;
 
         private CancellationTokenSource _debounceTokenSource;
-        private const int DebounceDelay = 50;
+        private readonly int DebounceDelay = 50;
 
         private bool isScenery;
         private bool globalControlMode;
@@ -48,55 +48,76 @@ namespace CrashEdit.CE.Controls
         private int selectedRegionY;
         private int currentColorMode;
 
-        private int ColPage = 0;
-        private int ColClutX = 1;
-        private int ColClutY = 2;
-        private int ColLeft = 3;
-        private int ColTop = 4;
-        private int ColWidth = 5;
-        private int ColHeight = 6;
-        private int ColX1 = 7;
-        private int ColX2 = 8;
-        private int ColX3 = 9;
-        private int ColX4 = 10;
-        private int ColY1 = 11;
-        private int ColY2 = 12;
-        private int ColY3 = 13;
-        private int ColY4 = 14;
-        private int ColBlendMode = 15;
-        private int ColColorMode = 16;
+        private readonly int ColTexture = 0;
+        private readonly int ColColor = 1;
+        private readonly int ColAnimated = 2;
+        private readonly int ColPositionKey = 3;
+        private readonly int ColTriangleType = 4;
+        private readonly int ColTriangleSubtype = 5;
+        private readonly int ColUnknown = 6;
+        private readonly int ColFlag = 7;
+        private readonly int ColType = 8;
 
-        private const int ColOffset = 0;
-        private const int ColIsLOD = 1;
-        private const int ColMask = 2;
-        private const int ColDelay = 3;
-        private const int ColLatency = 4;
-        private const int ColLeap = 5;
-        private const int ColLOD0 = 6;
-        private const int ColLOD1 = 7;
-        private const int ColLOD2 = 8;
-        private const int ColLOD3 = 9;
-        private const int ColLOD4 = 10;
-        private const int ColLOD5 = 11;
-        private const int ColLOD6 = 12;
-        private const int ColLOD7 = 13;
+        private readonly int ColVertexA = 0;
+        private readonly int ColVertexB = 1;
+        private readonly int ColVertexC = 2;
+        private readonly int ColColorA = 3;
+        private readonly int ColColorB = 4;
+        private readonly int ColColorC = 5;
+        private readonly int ColTriTexture = 6;
+        private readonly int ColTriType = 7;
+        private readonly int ColTriSubtype = 8;
+        private readonly int ColTriAnimated = 9;
 
-        private const int ColIndex = 0;
-        private const int ColX = 1;
-        private const int ColY = 2;
-        private const int ColZ = 3;
-        private const int ColXBits = 4;
-        private const int ColYBits = 5;
-        private const int ColZBits = 6;
+        private readonly int ColPage = 0;
+        private readonly int ColClutX = 1;
+        private readonly int ColClutY = 2;
+        private readonly int ColLeft = 3;
+        private readonly int ColTop = 4;
+        private readonly int ColWidth = 5;
+        private readonly int ColHeight = 6;
+        private readonly int ColX1 = 7;
+        private readonly int ColX2 = 8;
+        private readonly int ColX3 = 9;
+        private readonly int ColX4 = 10;
+        private readonly int ColY1 = 11;
+        private readonly int ColY2 = 12;
+        private readonly int ColY3 = 13;
+        private readonly int ColY4 = 14;
+        private readonly int ColBlendMode = 15;
+        private readonly int ColColorMode = 16;
+
+        private readonly int ColOffset = 0;
+        private readonly int ColIsLOD = 1;
+        private readonly int ColMask = 2;
+        private readonly int ColDelay = 3;
+        private readonly int ColLatency = 4;
+        private readonly int ColLeap = 5;
+        private readonly int ColLOD0 = 6;
+        private readonly int ColLOD1 = 7;
+        private readonly int ColLOD2 = 8;
+        private readonly int ColLOD3 = 9;
+        private readonly int ColLOD4 = 10;
+        private readonly int ColLOD5 = 11;
+        private readonly int ColLOD6 = 12;
+        private readonly int ColLOD7 = 13;
+
+        private readonly int ColIndex = 0;
+        private readonly int ColX = 1;
+        private readonly int ColY = 2;
+        private readonly int ColZ = 3;
+        private readonly int ColXBits = 4;
+        private readonly int ColYBits = 5;
+        private readonly int ColZBits = 6;
 
         private double MasterHue => colorEditorGlobal.HslColor.H;
         private double MasterSaturation => colorEditorGlobal.HslColor.S;
         private double MasterLightness => colorEditorGlobal.HslColor.L;
 
-        private Color clrBackground = Color.FromArgb(40, 40, 40);
-        private Color clrAltBackground = Color.FromArgb(34, 34, 34);
-        private Color clrSelectionBackground = Color.FromArgb(70, 70, 70);
-        private Color clrText = Color.Gainsboro;
+        private readonly Color clrBackground = Color.FromArgb(40, 40, 40);
+        private readonly Color clrAltBackground = Color.FromArgb(34, 34, 34);
+        private readonly Color clrSelectionBackground = Color.FromArgb(70, 70, 70);
+        private readonly Color clrText = Color.Gainsboro;
 
         internal Stack<bool> dirty = new Stack<bool>();
         internal bool Dirty => dirty.Count > 0 && dirty.Peek();
@@ -226,7 +247,8 @@ namespace CrashEdit.CE.Controls
                 if (s == null) // footer
                 {
                     structs.Add(null!);
-                    row.CreateCells(dgvStructs, "NULL");
+                    row.DefaultCellStyle.ForeColor = Color.Gray;
+                    row.CreateCells(dgvStructs, "FOOTER");
                 }
                 else if (s is ModelColor c) // color
                 {
@@ -431,12 +453,12 @@ namespace CrashEdit.CE.Controls
             {
                 if ((cell.ColumnIndex >= ColX1 && cell.ColumnIndex <= ColY4))
                 {
-                    cell.Style = chkMaxValueFlag.Checked ? maxValueStyle : defaultValueStyle;
+                    cell.Style = chkMaxValueFlag.Checked ? styleRegionEnd : styleDefault;
                 }
             }
         }
 
-        private void SetMaxValueTag(int start, int end)
+        private void SetRegionEndTag(int start, int end)
         {
             int startColumnIndex = start;
             int endColumnIndex = end;
@@ -466,9 +488,7 @@ namespace CrashEdit.CE.Controls
                     {
                         if (value == maxValue)
                         {
-                            //if (row.Cells[col].Tag is HashSet<string> tags)
-                            //    tags.Add("MaxValue");
-                            row.Cells[col].Style = maxValueStyle;
+                            row.Cells[col].Style = styleRegionEnd;
                         }
                     }
                 }
@@ -566,13 +586,13 @@ namespace CrashEdit.CE.Controls
 
             if (isScenery)
             {
-                SetMaxValueTag(ColX1, ColX4);
-                SetMaxValueTag(ColY1, ColY4);
+                SetRegionEndTag(ColX1, ColX4);
+                SetRegionEndTag(ColY1, ColY4);
             }
             else
             {
-                SetMaxValueTag(ColX1, ColX3);
-                SetMaxValueTag(ColY1, ColY3);
+                SetRegionEndTag(ColX1, ColX3);
+                SetRegionEndTag(ColY1, ColY3);
             }
 
             stopwatch.Stop();
@@ -592,7 +612,7 @@ namespace CrashEdit.CE.Controls
                 var cell = dgvTextures.SelectedCells[0];
 
                 chkMaxValueFlag.Enabled = (cell.ColumnIndex >= ColX1 && cell.ColumnIndex <= ColY4) ? true : false;
-                chkMaxValueFlag.Checked = cell.Style == maxValueStyle ? true : false;
+                chkMaxValueFlag.Checked = cell.Style == styleRegionEnd ? true : false;
 
                 var pageIndex = Convert.ToInt32(row.Cells[ColPage].Value);
                 string cid = lstTPages.Items[pageIndex].SubItems[1].Text;
@@ -720,7 +740,7 @@ namespace CrashEdit.CE.Controls
 
         private void dgvTexturesGetMaxValue(int rowIndex, int columnIndex, int newValue, out int minValue, out int maxValue, out bool isMaxCell)
         {
-            isMaxCell = dgvTextures.Rows[rowIndex].Cells[columnIndex].Style == maxValueStyle;
+            isMaxCell = dgvTextures.Rows[rowIndex].Cells[columnIndex].Style == styleRegionEnd;
             maxValue = 0; minValue = 0;
             // Page
             if (columnIndex == ColPage)
@@ -1022,7 +1042,7 @@ namespace CrashEdit.CE.Controls
                 GetXOff(colorMode, value - 1, out int xoffUnit, out int segment, out int xoff);
                 int newU = value - xoff;
 
-                if (item.Cells[e.ColumnIndex].Style == maxValueStyle)
+                if (item.Cells[e.ColumnIndex].Style == styleRegionEnd)
                 {
                     newU--;
                     og.Segment = (byte)segment;
@@ -1045,7 +1065,7 @@ namespace CrashEdit.CE.Controls
 
                 int newV = value;
 
-                if (item.Cells[e.ColumnIndex].Style == maxValueStyle)
+                if (item.Cells[e.ColumnIndex].Style == styleRegionEnd)
                 {
                     newV--;
                 }
@@ -1198,7 +1218,7 @@ namespace CrashEdit.CE.Controls
                         if (trimed)
                         {
                             value = newLeft;
-                            if (row.Cells[i].Style == maxValueStyle)
+                            if (row.Cells[i].Style == styleRegionEnd)
                             {
                                 value += (int)row.Cells[ColWidth].Value;
                             }
@@ -1345,7 +1365,7 @@ namespace CrashEdit.CE.Controls
             for (int i = 0; i < rows.Count; i++)
             {
                 rows[i].Cells[ColIndex].Value = i + 1;
-                rows[i].Cells[ColIndex].Style = indexStyle;
+                rows[i].Cells[ColIndex].Style = styleIndex;
                 dgvPositions.Rows.Add(rows[i]);
             }
 
@@ -2264,6 +2284,106 @@ namespace CrashEdit.CE.Controls
             }
         }
 
+        private void dgvStructs_SelectionChanged(object sender, EventArgs e)
+        {
+            if (!(dgvStructs.SelectedCells.Count > 0)) return;
+
+            var row = dgvStructs.Rows[dgvStructs.SelectedCells[0].RowIndex];
+            if (Convert.ToString(row.Cells[ColTexture].Value) == "FOOTER")
+            {
+                lblStruct.ForeColor = Color.Gray;
+                lblStruct.Text = "[FOOTER]";
+            }
+            else if (string.IsNullOrEmpty(Convert.ToString(row.Cells[ColType].Value)))
+            {
+                lblStruct.ForeColor = Color.Turquoise;
+                lblStruct.Text = "[ModelColor]";
+            }
+            else
+            {
+                lblStruct.ForeColor = SystemColors.ControlText;
+                lblStruct.Text = "[ModelTriangle]";
+            }
+            lblStruct.Visible = true;
+
+
+        }
+
+        private void dgvStructs_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            string? text = Convert.ToString(dgvStructs.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
+            if (string.IsNullOrEmpty(text) || text == "FOOTER")
+            {
+                e.Cancel = true;
+            }
+        }
+
+        private void dgvStructsGetMaxValue(int columnIndex, out int minValue, out int maxValue)
+        {
+            maxValue = 0; minValue = 0;
+            switch (columnIndex)
+            {
+                case 0: // Texture / Color1
+                case 1: // Color / Color2
+                case 3: // PositionKey
+                case 6: // Unknown
+                    maxValue = 255;
+                    break;
+                case 4: // TriangleType
+                    maxValue = 2;
+                    break;
+                case 5: // TriangleSubtype
+                    maxValue = 3;
+                    break;
+            }
+        }
+
+        private void dgvStructs_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            if (!(dgvStructs.SelectedCells.Count > 0)) return;
+            string inputValue = e.FormattedValue.ToString();
+            if (string.IsNullOrEmpty(inputValue) || inputValue == "FOOTER") return;
+
+            if (e.ColumnIndex == ColType)
+            {
+                if (!(inputValue == "0" || inputValue == "1" || inputValue.Equals("Original", StringComparison.InvariantCultureIgnoreCase) || inputValue.Equals("Duplicate", StringComparison.InvariantCultureIgnoreCase)))
+                {
+                    DarkMessageBox.ShowError("The value must be 'Original' or 'Duplicate'.", Resources.Title_InputError);
+                    e.Cancel = true;
+                }
+            }
+            else if (e.ColumnIndex == ColAnimated || e.ColumnIndex == ColFlag)
+            {
+                if (!(inputValue.Equals("True", StringComparison.InvariantCultureIgnoreCase) || inputValue.Equals("False", StringComparison.InvariantCultureIgnoreCase)))
+                {
+                    DarkMessageBox.ShowError("The value must be 'True' or 'False'.", Resources.Title_InputError);
+                    e.Cancel = true;
+                }
+            }
+            else
+            {
+                if (int.TryParse(inputValue, out int newValue))
+                {
+                    dgvStructsGetMaxValue(e.ColumnIndex, out int minValue, out int maxValue);
+                    if (newValue > maxValue)
+                    {
+                        DarkMessageBox.ShowError($"The value must be less than or equal to {maxValue}.", Resources.Title_InputError);
+                        e.Cancel = true;
+                    }
+                    else if (newValue < minValue)
+                    {
+                        DarkMessageBox.ShowError($"The value must be greater than or equal to {minValue}.", Resources.Title_InputError);
+                        e.Cancel = true;
+                    }
+                }
+                else
+                {
+                    DarkMessageBox.ShowError($"Invalid input. Please enter an integer.", Resources.Title_InputError);
+                    e.Cancel = true;
+                }
+            }
+        }
+
         private void dgvStructs_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
@@ -2318,11 +2438,80 @@ namespace CrashEdit.CE.Controls
                         str.Flag = Convert.ToBoolean(cell);
                         break;
                     case 8: // Type
+                        if (cell.ToString() == "0" || cell.ToString().Equals("Original", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            cell = 0;
+                        }
+                        else
+                        {
+                            cell = 1;
+                        }
                         str.Type = (ModelTriangle.IndexType)Enum.Parse(typeof(ModelTriangle.IndexType), cell.ToString());
                         break;
                 }
                 model.PolyData[e.RowIndex] = str.Save();
                 Console.WriteLine($"New: {str.Save():X}");
+            }
+        }
+
+        private void dgvPolygonsGetMaxValue(int columnIndex, out int minValue, out int maxValue)
+        {
+            maxValue = 0; minValue = 0;
+            switch (columnIndex)
+            {
+                case 0: // VertexA
+                case 1: // VertexB
+                case 2: // VertexC
+                case 3: // ColorA
+                case 4: // ColorB
+                case 5: // ColorC
+                case 6: // Texture
+                    maxValue = int.MaxValue;
+                    minValue = int.MinValue;
+                    break;
+                case 7: // TriangleType
+                    maxValue = 2;
+                    break;
+                case 8: // TriangleSubtype
+                    maxValue = 3;
+                    break;
+            }
+        }
+
+        private void dgvPolygons_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            if (!(dgvStructs.SelectedCells.Count > 0)) return;
+            string inputValue = e.FormattedValue.ToString();
+
+            if (e.ColumnIndex == ColTriAnimated)
+            {
+                if (!(inputValue.Equals("True", StringComparison.InvariantCultureIgnoreCase) || inputValue.Equals("False", StringComparison.InvariantCultureIgnoreCase)))
+                {
+                    DarkMessageBox.ShowError("The value must be 'True' or 'False'.", Resources.Title_InputError);
+                    e.Cancel = true;
+                }
+            }
+            else
+            {
+                if (int.TryParse(inputValue, out int newValue))
+                {
+                    dgvPolygonsGetMaxValue(e.ColumnIndex, out int minValue, out int maxValue);
+                    if (newValue > maxValue)
+                    {
+                        DarkMessageBox.ShowError($"The value must be less than or equal to {maxValue}.", Resources.Title_InputError);
+                        e.Cancel = true;
+                    }
+                    else if (newValue < minValue)
+                    {
+                        DarkMessageBox.ShowError($"The value must be greater than or equal to {minValue}.", Resources.Title_InputError);
+                        e.Cancel = true;
+                    }
+                }
+                else
+                {
+                    DarkMessageBox.ShowError($"Invalid input. Please enter an integer.", Resources.Title_InputError);
+                    e.Cancel = true;
+                }
             }
         }
 
@@ -2385,24 +2574,5 @@ namespace CrashEdit.CE.Controls
                 }
             }
         }
-
-        private void btnConvert_Click(object sender, EventArgs e)
-        {
-
-        }
     }
-
-    public class ListViewEditInfo
-    {
-        public ListViewItem Item { get; set; }
-        public int SubItemIndex { get; set; }
-
-        public ListViewEditInfo(ListViewItem item, int subItemIndex)
-        {
-            Item = item;
-            SubItemIndex = subItemIndex;
-        }
-    }
-
-
 }

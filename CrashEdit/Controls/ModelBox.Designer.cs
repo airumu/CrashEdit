@@ -1,9 +1,4 @@
-﻿using System.Data.Common;
-using System.Drawing.Design;
-using System.Windows.Forms;
-using AltUI.ColorPicker;
-using AltUI.Controls;
-using Cyotek.Windows.Forms;
+﻿using AltUI.Controls;
 using MetroSet_UI.Controls;
 
 namespace CrashEdit.CE.Controls
@@ -58,9 +53,9 @@ namespace CrashEdit.CE.Controls
             lblOffsetX = new Label();
             lblModelInfo = new Label();
             tbpPolygons = new TabPage();
+            lblStruct = new Label();
             label3 = new Label();
             label2 = new Label();
-            btnConvert = new DarkButton();
             dgvStructs = new DataGridView();
             dgvPolygons = new DataGridView();
             tbpColors = new TabPage();
@@ -400,9 +395,9 @@ namespace CrashEdit.CE.Controls
             // tbpPolygons
             // 
             tbpPolygons.BackColor = Color.FromArgb(31, 31, 32);
+            tbpPolygons.Controls.Add(lblStruct);
             tbpPolygons.Controls.Add(label3);
             tbpPolygons.Controls.Add(label2);
-            tbpPolygons.Controls.Add(btnConvert);
             tbpPolygons.Controls.Add(dgvStructs);
             tbpPolygons.Controls.Add(dgvPolygons);
             tbpPolygons.Location = new Point(4, 32);
@@ -411,6 +406,17 @@ namespace CrashEdit.CE.Controls
             tbpPolygons.TabIndex = 1;
             tbpPolygons.Text = "Polygons";
             tbpPolygons.Enter += tbpPolygons_Enter;
+            // 
+            // lblStruct
+            // 
+            lblStruct.AutoSize = true;
+            lblStruct.BackColor = Color.Transparent;
+            lblStruct.Location = new Point(89, 3);
+            lblStruct.Name = "lblStruct";
+            lblStruct.Size = new Size(46, 15);
+            lblStruct.TabIndex = 3;
+            lblStruct.Text = "{Struct}";
+            lblStruct.Visible = false;
             // 
             // label3
             // 
@@ -430,20 +436,6 @@ namespace CrashEdit.CE.Controls
             label2.TabIndex = 2;
             label2.Text = "Model Structs";
             // 
-            // btnConvert
-            // 
-            btnConvert.BorderColour = Color.Empty;
-            btnConvert.CustomColour = false;
-            btnConvert.FlatBottom = false;
-            btnConvert.FlatTop = false;
-            btnConvert.Location = new Point(664, 3);
-            btnConvert.Name = "btnConvert";
-            btnConvert.Padding = new Padding(5);
-            btnConvert.Size = new Size(122, 23);
-            btnConvert.TabIndex = 1;
-            btnConvert.Text = "Convert";
-            btnConvert.Click += btnConvert_Click;
-            // 
             // dgvStructs
             // 
             dgvStructs.AllowUserToAddRows = false;
@@ -458,8 +450,11 @@ namespace CrashEdit.CE.Controls
             dgvStructs.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dgvStructs.Size = new Size(642, 347);
             dgvStructs.TabIndex = 0;
+            dgvStructs.CellBeginEdit += dgvStructs_CellBeginEdit;
             dgvStructs.CellParsing += dgv_CellParsing;
+            dgvStructs.CellValidating += dgvStructs_CellValidating;
             dgvStructs.CellValueChanged += dgvStructs_CellValueChanged;
+            dgvStructs.SelectionChanged += dgvStructs_SelectionChanged;
             // 
             // dgvPolygons
             // 
@@ -475,6 +470,7 @@ namespace CrashEdit.CE.Controls
             dgvPolygons.Size = new Size(642, 347);
             dgvPolygons.TabIndex = 0;
             dgvPolygons.CellParsing += dgv_CellParsing;
+            dgvPolygons.CellValidating += dgvPolygons_CellValidating;
             dgvPolygons.CellValueChanged += dgvPolygons_CellValueChanged;
             dgvPolygons.KeyDown += dgvPolygons_KeyDown;
             // 
@@ -1238,10 +1234,10 @@ namespace CrashEdit.CE.Controls
         private Panel panel3;
         private DataGridView dgvPolygons;
         private DataGridView dgvStructs;
-        private DarkButton btnConvert;
         private Label label2;
         private Label label3;
         private DataGridView dgvPositions;
         private Label lblColorIndex;
+        private Label lblStruct;
     }
 }
