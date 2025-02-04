@@ -107,14 +107,8 @@ namespace CrashEdit.CE
         private void HexInit()
         {
             header.Data = header.Save();
-            HexView hex = new HexView
-            {
-                Data = header.Data,
-                DataChangeHandler = HexView_DataChangeHandler,
-                Dock = DockStyle.Fill,
-            };
             tbpHex.Controls.Clear();
-            tbpHex.Controls.Add(hex);
+            tbpHex.Controls.Add(new HexView(header.Data, HexView_DataChangeHandler) { Dock = DockStyle.Fill });
         }
 
         private void ZoneHeaderBox_Leave(object sender, EventArgs e)

@@ -14,11 +14,7 @@ namespace CrashEdit.CE
 
         public override Control CreateEditor()
         {
-            return  new HexView
-            {
-                Data = MysteryEntry.Data,
-                DataChangeHandler = HexView_DataChangeHandler
-            };
+            return new HexView(MysteryEntry.Data, HexView_DataChangeHandler);
         }
 
         private bool HexView_DataChangeHandler(int destOffset, int destLength, byte[] source)

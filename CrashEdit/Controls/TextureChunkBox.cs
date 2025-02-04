@@ -37,14 +37,8 @@ namespace CrashEdit.CE
                 }
             };
             {
-                HexView hex = new HexView
-                {
-                    Data = chunk.Data,
-                    DataChangeHandler = HexView_DataChangeHandler,
-                    Dock = DockStyle.Fill,
-                };
                 TabPage page = new TabPage("Hex");
-                page.Controls.Add(hex);
+                page.Controls.Add(new HexView(chunk.Data, HexView_DataChangeHandler) { Dock = DockStyle.Fill });
                 tbcTabs.TabPages.Add(page);
             }
             {

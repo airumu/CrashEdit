@@ -17,11 +17,7 @@ namespace CrashEdit
 
         protected override Control MakeControl()
         {
-            return new HexView
-            {
-                Data = (byte[])Subject.Resource,
-                DataChangeHandler = HexView_DataChangeHandler,
-            };
+            return new HexView((byte[])Subject.Resource, HexView_DataChangeHandler);
         }
 
         private bool HexView_DataChangeHandler(int destOffset, int destLength, byte[] source)

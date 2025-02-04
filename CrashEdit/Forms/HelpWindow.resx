@@ -119,9 +119,10 @@
   </resheader>
   <data name="lblHexViewer.Text" xml:space="preserve">
     <value>N: Input the EID for "NONE!"
-Z: Toggle chunk name view mode
 Space: Clear selected cell
 Ctrl + Space: Clear selected chunk
+Z: Toggle chunk name view mode
+Ctrl + G: Goto
 + / - : Change line width
 
 Right-click: Set anchor to select multiple cells
