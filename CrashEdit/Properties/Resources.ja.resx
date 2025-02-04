@@ -920,4 +920,7 @@
   <data name="Reset_onfirmationPrompt" xml:space="preserve">
     <value>リセットの確認</value>
   </data>
+  <data name="PatchNSD_Error3" xml:space="preserve">
+    <value>NSD ファイル '{0}' が存在しません！</value>
+  </data>
 </root>

@@ -932,4 +932,7 @@ as Meters: {3:F3}m</value>
   <data name="Reset_onfirmationPrompt" xml:space="preserve">
     <value>Reset Confirmation Prompt</value>
   </data>
+  <data name="PatchNSD_Error3" xml:space="preserve">
+    <value>NSD file '{0}' does not exist!</value>
+  </data>
 </root>

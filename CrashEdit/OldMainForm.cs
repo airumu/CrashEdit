@@ -236,12 +236,11 @@ namespace CrashEdit.CE
             var nsfFilename = tbcTabs.SelectedTab.Text;
 
             var nsfFilenameBase = Path.GetFileName(nsfFilename);
-            if (nsfFilenameBase.Length != 12)
+            if (nsfFilenameBase.Length != 12 || !int.TryParse(nsfFilenameBase.Substring(6, 2), System.Globalization.NumberStyles.HexNumber, null, out var levelID))
             {
                 DarkMessageBox.ShowError(string.Format(Resources.Playtest_Error1, nsfFilename), Resources.Playtest_Title);
                 return;
             }
-            var levelID = int.Parse(nsfFilenameBase.Substring(6, 2), System.Globalization.NumberStyles.HexNumber);
 
             string nsdFilename = GetNSDFileName(nsfFilename);
             if (string.IsNullOrEmpty(nsdFilename))
@@ -535,6 +534,7 @@ namespace CrashEdit.CE
                 bool exists = true;
                 if (!File.Exists(filename))
                 {
+                    DarkMessageBox.ShowError(string.Format(Resources.PatchNSD_Error3, filename), Resources.PatchNSD_Title1);
                     return;
                 }
                 PatchNSD(filename, exists, nsfbox.NSFController, false);
@@ -904,7 +904,16 @@ namespace CrashEdit.CE
 
             string nsfFilename = tbcTabs.SelectedTab.Text;
             nsdFilename = GetNSDFileName(nsfFilename);
-            if (string.IsNullOrEmpty(nsdFilename)) return;
+            if (string.IsNullOrEmpty(nsdFilename))
+            {
+                DarkMessageBox.ShowError(string.Format(Resources.Playtest_Error2, nsfFilename), Resources.OldMainForm_tbxShowGOOLMap);
+                return;
+            }
+            if (!File.Exists(nsdFilename))
+            {
+                DarkMessageBox.ShowError(string.Format(Resources.Playtest_Error3, nsdFilename), Resources.OldMainForm_tbxShowGOOLMap);
+                return;
+            }
 
             byte[] data = File.ReadAllBytes(nsdFilename);
 
@@ -949,16 +958,7 @@ namespace CrashEdit.CE
 
             string nsfFilename = tbcTabs.SelectedTab.Text;
             GetNSD(out string nsdFilename, out dynamic? nsd);
-            if (string.IsNullOrEmpty(nsdFilename))
-            {
-                DarkMessageBox.ShowError(string.Format(Resources.Playtest_Error2, nsfFilename), Resources.OldMainForm_tbxShowGOOLMap);
-                return;
-            }
-            if (!File.Exists(nsdFilename) || nsd == null)
-            {
-                DarkMessageBox.ShowError(string.Format(Resources.Playtest_Error3, nsdFilename), Resources.OldMainForm_tbxShowGOOLMap);
-                return;
-            }
+            if (nsd == null) return;
 
             if (formShowGOOLMap.TryGetValue(nsdFilename, out DarkForm? value))
             {

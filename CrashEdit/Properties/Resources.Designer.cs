@@ -1667,6 +1667,15 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
+        ///   NSD file &apos;{0}&apos; does not exist! に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string PatchNSD_Error3 {
+            get {
+                return ResourceManager.GetString("PatchNSD_Error3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Patch NSD に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string PatchNSD_Title1 {
