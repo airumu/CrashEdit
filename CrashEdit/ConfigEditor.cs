@@ -80,6 +80,10 @@ namespace CrashEdit.CE
             else
                 dpdFont.SelectedIndex = 0;
 
+            dpdHexView.Items.AddRange(new object[] { "Small", "Medium", "Large" });
+            dpdHexView.SelectedItem = Settings.Default.HexViewCellSize;
+            dpdHexView.SelectedIndexChanged += new EventHandler(dpdHexView_SelectedIndexChanged);
+
             numFontSize.Value = (decimal)Settings.Default.FontSize;
             numW.Value = Settings.Default.DefaultFormW;
             numH.Value = Settings.Default.DefaultFormH;
@@ -184,6 +188,13 @@ namespace CrashEdit.CE
         {
             Settings.Default.FontName = FontFileNames[dpdFont.SelectedIndex];
             Settings.Default.Save();
+        }
+
+        private void dpdHexView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Settings.Default.HexViewCellSize = Convert.ToString(dpdHexView.SelectedItem);
+            Settings.Default.Save();
+            RestartProgram();
         }
 
         private void cmdReset_Click(object sender, EventArgs e)

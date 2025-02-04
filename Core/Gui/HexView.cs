@@ -1,3 +1,4 @@
+using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 using System.Drawing;
 using System.Text;
@@ -463,9 +464,9 @@ namespace CrashEdit
 
         private static Brush brush_borderBrush = new SolidBrush(Color.FromArgb(36, 36, 40));
         private static Brush brush_borderWordBrush = new SolidBrush(Color.FromArgb(40, 40, 44));
-        private static Brush brush_bgNormalBrush = new SolidBrush(Color.FromArgb(30, 30, 31));
+        private static Brush brush_bgNormalBrush = new SolidBrush(Color.FromArgb(32, 32, 34));
         private static Brush brush_bgAlternateBrush = new SolidBrush(Color.FromArgb(27, 27, 28));
-        private static Brush brush_bgSelectedBrush = new SolidBrush(Color.FromArgb(35, 35, 38));
+        private static Brush brush_bgSelectedBrush = new SolidBrush(Color.FromArgb(37, 37, 40));
         private static Brush brush_bgChunkBrush = new SolidBrush(Color.FromArgb(38, 75, 104));
         private static Brush brush_bgSelectedChunkBrush = new SolidBrush(Color.FromArgb(41, 91, 132));
         private static Brush brush_bgSelectedrowBrush = new SolidBrush(Color.FromArgb(28, 43, 56));
@@ -512,7 +513,7 @@ namespace CrashEdit
         private static int _borderSize = 2;
 
         // Size of padding around the text, in pixels.
-        private static int _padding = 4;
+        private static int _padding = Settings.Default.HexViewCellSize == "Small" ? 4 : Settings.Default.HexViewCellSize == "Medium" ? 6 : 8;
 
         // Font used for displaying numbers.
         private static Font _font = new Font(FontFamily.GenericMonospace, 10);

@@ -538,5 +538,17 @@ namespace CrashEdit.CE.Properties {
                 this["IgnoreDuplicatedEntryError"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Small")]
+        public string HexViewCellSize {
+            get {
+                return ((string)(this["HexViewCellSize"]));
+            }
+            set {
+                this["HexViewCellSize"] = value;
+            }
+        }
     }
 }

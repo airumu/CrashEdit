@@ -62,6 +62,8 @@ namespace CrashEdit.CE
             sldNodeShadeAmt = new MetroSetTrackBar();
             tbcSettings = new MetroSetTabControl();
             tbpGeneral = new TabPage();
+            fraHexView = new DarkGroupBox();
+            dpdHexView = new DarkComboBox();
             chkApplyMica = new CheckBox();
             cmdHelp = new DarkButton();
             fraLang = new DarkGroupBox();
@@ -104,6 +106,7 @@ namespace CrashEdit.CE
             fraNodeShadeAmt.SuspendLayout();
             tbcSettings.SuspendLayout();
             tbpGeneral.SuspendLayout();
+            fraHexView.SuspendLayout();
             fraLang.SuspendLayout();
             tbp3D.SuspendLayout();
             tbpDebugDisplay.SuspendLayout();
@@ -545,6 +548,7 @@ namespace CrashEdit.CE
             // tbpGeneral
             // 
             tbpGeneral.BackColor = Color.FromArgb(31, 31, 32);
+            tbpGeneral.Controls.Add(fraHexView);
             tbpGeneral.Controls.Add(chkApplyMica);
             tbpGeneral.Controls.Add(cmdHelp);
             tbpGeneral.Controls.Add(fraLang);
@@ -556,6 +560,25 @@ namespace CrashEdit.CE
             tbpGeneral.Size = new Size(417, 381);
             tbpGeneral.TabIndex = 0;
             tbpGeneral.Text = "General";
+            // 
+            // fraHexView
+            // 
+            fraHexView.Controls.Add(dpdHexView);
+            fraHexView.Location = new Point(185, 6);
+            fraHexView.Name = "fraHexView";
+            fraHexView.Size = new Size(134, 64);
+            fraHexView.TabIndex = 5;
+            fraHexView.TabStop = false;
+            fraHexView.Text = "HexView Cell Size";
+            // 
+            // dpdHexView
+            // 
+            dpdHexView.DrawMode = DrawMode.OwnerDrawVariable;
+            dpdHexView.FormattingEnabled = true;
+            dpdHexView.Location = new Point(6, 22);
+            dpdHexView.Name = "dpdHexView";
+            dpdHexView.Size = new Size(121, 24);
+            dpdHexView.TabIndex = 6;
             // 
             // chkApplyMica
             // 
@@ -943,6 +966,7 @@ namespace CrashEdit.CE
             tbcSettings.ResumeLayout(false);
             tbpGeneral.ResumeLayout(false);
             tbpGeneral.PerformLayout();
+            fraHexView.ResumeLayout(false);
             fraLang.ResumeLayout(false);
             tbp3D.ResumeLayout(false);
             tbp3D.PerformLayout();
@@ -1024,5 +1048,7 @@ namespace CrashEdit.CE
         private CheckBox chkApplyMica;
         private CheckBox chkOutputCLUTInfo;
         private CheckBox chkIgnoreDuplicatedEntryError;
+        private DarkComboBox dpdHexView;
+        private DarkGroupBox fraHexView;
     }
 }
