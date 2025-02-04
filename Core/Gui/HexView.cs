@@ -116,7 +116,7 @@ namespace CrashEdit
 
                 if (int.TryParse(txtGoto.Text, System.Globalization.NumberStyles.HexNumber, null, out int pos))
                 {
-                    hexBox.MoveTo(pos);
+                    hexBox.MoveTo(pos, false);
                     hexBox.ResetAnchor();
                     hexBox.Invalidate();
                     hexBox.Focus();
@@ -394,7 +394,7 @@ namespace CrashEdit
         public int MoveBy(int delta)
         {
             int oldCursor = ByteCursor;
-            MoveTo(ByteCursor + delta);
+            MoveTo(ByteCursor + delta, false);
             return ByteCursor - oldCursor;
         }
 
@@ -403,25 +403,49 @@ namespace CrashEdit
         // valid range and false is returned.
         //
         // This also scrolls the view in the control to fully display the new target.
-        public bool MoveTo(int target)
+        public bool MoveTo(int target, bool isAnchor)
         {
-            int oldCursor = ByteCursor;
-
+            int oldCursor;
             bool inRange;
-            if (target < 0)
+            if (isAnchor)
             {
-                ByteCursor = 0;
-                inRange = false;
-            }
-            else if (target > Data.Length)
-            {
-                ByteCursor = Data.Length;
-                inRange = false;
+                oldCursor = ByteAnchor;
+
+                if (target < 0)
+                {
+                    ByteAnchor = 0;
+                    inRange = false;
+                }
+                else if (target > Data.Length)
+                {
+                    ByteAnchor = Data.Length;
+                    inRange = false;
+                }
+                else
+                {
+                    ByteAnchor = target;
+                    inRange = true;
+                }
             }
             else
             {
-                ByteCursor = target;
-                inRange = true;
+                oldCursor = ByteCursor;
+
+                if (target < 0)
+                {
+                    ByteCursor = 0;
+                    inRange = false;
+                }
+                else if (target > Data.Length)
+                {
+                    ByteCursor = Data.Length;
+                    inRange = false;
+                }
+                else
+                {
+                    ByteCursor = target;
+                    inRange = true;
+                }
             }
 
             ClearInput();
@@ -430,8 +454,19 @@ namespace CrashEdit
             int oldRow = (oldCursor + FirstByteColumn) / ColumnCount;
             InvalidateCell(oldCol, oldRow);
 
-            int newCol = (ByteCursor + FirstByteColumn) % ColumnCount;
-            int newRow = (ByteCursor + FirstByteColumn) / ColumnCount;
+            int newCol;
+            int newRow;
+            if (isAnchor)
+            {
+                newCol = (ByteAnchor + FirstByteColumn) % ColumnCount;
+                newRow = (ByteAnchor + FirstByteColumn) / ColumnCount;
+            }
+            else
+            {
+                newCol = (ByteCursor + FirstByteColumn) % ColumnCount;
+                newRow = (ByteCursor + FirstByteColumn) / ColumnCount;
+            }
+
             var newRect = new Rectangle();
             newRect.X = XStart + XStep * newCol + AutoScrollPosition.X;
             newRect.Y = YStart + YStep * newRow + AutoScrollPosition.Y;
@@ -464,8 +499,15 @@ namespace CrashEdit
                     -newScrollPos.X,
                     -newScrollPos.Y);
             }
-
-            ResetAnchor();
+            if (isAnchor)
+            {
+                SetAnchor(target);
+            }
+            else
+            {
+                ResetAnchor();
+            }
+             
             Invalidate();
             return inRange;
         }
@@ -574,7 +616,7 @@ namespace CrashEdit
                         if (e.Control)
                         {
                             // ... of the entire data.
-                            MoveTo(0);
+                            MoveTo(0, false);
                         }
                         else
                         {
@@ -588,7 +630,7 @@ namespace CrashEdit
                         if (e.Control)
                         {
                             // ... of the entire data.
-                            MoveTo(Data.Length);
+                            MoveTo(Data.Length, false);
                         }
                         else
                         {
@@ -780,22 +822,60 @@ namespace CrashEdit
             return pos;
         }
 
-        protected override void OnMouseClick(MouseEventArgs e)
+        // Dragging flag  
+        private bool _isDragging = false;
+
+        // Drag start position 
+        private Point _dragStartPoint;
+
+        protected override void OnMouseDown(MouseEventArgs e)
         {
-            base.OnMouseClick(e);
-            int? pos = CheckPosition(e);
-            if (!pos.HasValue) return;
+            base.OnMouseDown(e);
 
             if (e.Button == MouseButtons.Left)
             {
-                MoveTo(pos.Value);
+                int? pos = CheckPosition(e);
+                if (!pos.HasValue) return;
+
+                _dragStartPoint = e.Location;
+                _isDragging = false;
+                MoveTo(pos.Value, false);
                 ResetAnchor();
+                Invalidate();
             }
-            else if (e.Button == MouseButtons.Right)
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+
+            if (e.Button == MouseButtons.Left)
             {
-                SetAnchor(pos.Value);
+                if (!_isDragging)
+                {
+                    if (Math.Abs(e.X - _dragStartPoint.X) > 5 || Math.Abs(e.Y - _dragStartPoint.Y) > 5)
+                    {
+                        _isDragging = true;
+                    }
+                }
+                if (_isDragging)
+                {
+                    int? pos = CheckPosition(e);
+                    if (!pos.HasValue) return;
+
+                    MoveTo(pos.Value, true);
+                }
             }
-            Invalidate();
+        }
+
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+            base.OnMouseUp(e);
+
+            if (_isDragging)
+            {
+                _isDragging = false;
+            }
         }
 
         protected override void OnGotFocus(EventArgs e)
