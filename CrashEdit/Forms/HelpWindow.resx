@@ -125,7 +125,7 @@ Z: Toggle chunk name view mode
 Ctrl + G: Goto
 + / - : Change line width
 
-Right-click: Set anchor to select multiple cells
+Mouse drag: Select multiple cells
 Ctrl + C: Copy selected chunks as bytes
 Ctrl + X: Cut selected chunks as bytes
 Ctrl + V: Paste to chunks as bytes

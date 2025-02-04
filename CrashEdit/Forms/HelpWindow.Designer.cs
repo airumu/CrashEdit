@@ -43,7 +43,7 @@ namespace CrashEdit.CE
             fraHexViewer.Controls.Add(lblHexViewer);
             fraHexViewer.Location = new Point(4, 3);
             fraHexViewer.Name = "fraHexViewer";
-            fraHexViewer.Size = new Size(258, 248);
+            fraHexViewer.Size = new Size(253, 248);
             fraHexViewer.TabIndex = 15;
             fraHexViewer.TabStop = false;
             fraHexViewer.Text = "Hex Viewer";
@@ -54,7 +54,7 @@ namespace CrashEdit.CE
             lblHexViewer.ForeColor = SystemColors.ControlText;
             lblHexViewer.Location = new Point(6, 19);
             lblHexViewer.Name = "lblHexViewer";
-            lblHexViewer.Size = new Size(246, 210);
+            lblHexViewer.Size = new Size(241, 210);
             lblHexViewer.TabIndex = 0;
             lblHexViewer.Text = resources.GetString("lblHexViewer.Text");
             // 
