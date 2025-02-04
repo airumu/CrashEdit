@@ -214,7 +214,7 @@
     <value>ファイル "{0}" は保存されていません。続行しますか？</value>
   </data>
   <data name="Config_lblLang" xml:space="preserve">
-    <value>言語　＊再起動が必要です</value>
+    <value>言語</value>
   </data>
   <data name="EntityBox_ChkBonusBoxCount" xml:space="preserve">
     <value>有効化 (ボーナス)</value>

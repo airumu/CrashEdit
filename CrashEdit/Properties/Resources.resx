@@ -214,7 +214,7 @@
     <value>The file "{0}" has not been saved since it was last modified. Continue anyway?</value>
   </data>
   <data name="Config_lblLang" xml:space="preserve">
-    <value>Language (requires restart)</value>
+    <value>Language</value>
   </data>
   <data name="EntityBox_ChkBonusBoxCount" xml:space="preserve">
     <value>Enabled (Bonus)</value>

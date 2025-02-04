@@ -403,7 +403,7 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
-        ///   Language (requires restart) に類似しているローカライズされた文字列を検索します。
+        ///   Language に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Config_lblLang {
             get {
