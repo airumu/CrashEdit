@@ -40,6 +40,7 @@ namespace CrashEdit.CE
             dgvSpawns = new DataGridView();
             fraEntityCount = new DarkGroupBox();
             lblEntityCount = new Label();
+            rbtReload = new MetroSet_UI.Controls.MetroSetRadioButton();
             fraID.SuspendLayout();
             fraSpawns.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSpawns).BeginInit();
@@ -176,11 +177,33 @@ namespace CrashEdit.CE
             lblEntityCount.TabIndex = 2;
             lblEntityCount.Text = "{Count}";
             // 
+            // rbtReload
+            // 
+            rbtReload.BackgroundColor = Color.FromArgb(30, 30, 30);
+            rbtReload.BorderColor = Color.FromArgb(155, 155, 155);
+            rbtReload.Checked = true;
+            rbtReload.CheckSignColor = Color.FromArgb(65, 177, 225);
+            rbtReload.CheckState = MetroSet_UI.Enums.CheckState.Checked;
+            rbtReload.DisabledBorderColor = Color.FromArgb(85, 85, 85);
+            rbtReload.Font = new Font("Microsoft Sans Serif", 10F);
+            rbtReload.Group = 0;
+            rbtReload.IsDerivedStyle = true;
+            rbtReload.Location = new Point(507, 3);
+            rbtReload.Name = "rbtReload";
+            rbtReload.Size = new Size(19, 17);
+            rbtReload.Style = MetroSet_UI.Enums.Style.Dark;
+            rbtReload.StyleManager = null;
+            rbtReload.TabIndex = 2;
+            rbtReload.ThemeAuthor = "Narwin";
+            rbtReload.ThemeName = "MetroDark";
+            rbtReload.Click += rbtReload_Click;
+            // 
             // NSDBox
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(31, 31, 32);
+            Controls.Add(rbtReload);
             Controls.Add(fraSpawns);
             Controls.Add(fraEntityCount);
             Controls.Add(fraID);
@@ -210,5 +233,6 @@ namespace CrashEdit.CE
         private DarkButton cmdPaste;
         private DarkGroupBox fraEntityCount;
         private Label lblEntityCount;
+        private MetroSet_UI.Controls.MetroSetRadioButton rbtReload;
     }
 }

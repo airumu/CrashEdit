@@ -13,6 +13,8 @@ namespace CrashEdit.CE
         public NSD NSD { get; }
         public NSDController NSDController { get; }
 
+        private DarkToolTip tipReload;
+
         private int rowIndexFromMouseDown = -1;
         private int rowIndexToDrop = -1;
         private Point mouseDownPoint = Point.Empty;
@@ -41,9 +43,14 @@ namespace CrashEdit.CE
         {
             dirty.Push(true);
 
+            DoubleBufferedDataGridView.Initialize(dgvSpawns);
+            CreateSpawnsColumns();
             UpdateSpawnPoint();
             txtID.Text = NSD.ID.ToString("X2");
             lblEntityCount.Text = NSD.EntityCount.ToString();
+
+            tipReload = new DarkToolTip();
+            tipReload.SetToolTip(rbtReload, "Reload");
 
             ContextMenuStrip contextMenu = new ContextMenuStrip();
             ToolStripMenuItem appendRowItem = new ToolStripMenuItem("Append Row");
@@ -57,7 +64,7 @@ namespace CrashEdit.CE
 
             dirty.Pop();
         }
-        
+
         private void dgvSpawns_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
@@ -97,22 +104,14 @@ namespace CrashEdit.CE
             NSD.Spawns.RemoveAt(idx);
         }
 
-        private void UpdateSpawnPoint()
+        private void CreateSpawnsColumns()
         {
-            DoubleBufferedDataGridView.Initialize(dgvSpawns);
             dgvSpawns.Columns.Add("EID", "EID");
             dgvSpawns.Columns.Add("Camera", "Camera");
             dgvSpawns.Columns.Add("Unknown", "Unknown");
             dgvSpawns.Columns.Add("X", "X");
             dgvSpawns.Columns.Add("Y", "Y");
             dgvSpawns.Columns.Add("Z", "Z");
-
-            foreach (var spawn in NSD.Spawns)
-            {
-                DataGridViewRow row = new();
-                row.CreateCells(dgvSpawns, Entry.EIDToEName(spawn.ZoneEID), spawn.Camera.ToString("X"), spawn.Unknown.ToString("X"), spawn.SpawnX.ToString("X"), spawn.SpawnY.ToString("X"), spawn.SpawnZ.ToString("X"));
-                dgvSpawns.Rows.Add(row);
-            }
 
             foreach (DataGridViewColumn column in dgvSpawns.Columns)
             {
@@ -126,6 +125,17 @@ namespace CrashEdit.CE
             dgvSpawns.Columns[ColSpawnX].Width = 72;
             dgvSpawns.Columns[ColSpawnY].Width = 72;
             dgvSpawns.Columns[ColSpawnZ].Width = 72;
+        }
+
+        private void UpdateSpawnPoint()
+        {
+            dgvSpawns.Rows.Clear();
+            foreach (var spawn in NSD.Spawns)
+            {
+                DataGridViewRow row = new();
+                row.CreateCells(dgvSpawns, Entry.EIDToEName(spawn.ZoneEID), spawn.Camera.ToString("X"), spawn.Unknown.ToString("X"), spawn.SpawnX.ToString("X"), spawn.SpawnY.ToString("X"), spawn.SpawnZ.ToString("X"));
+                dgvSpawns.Rows.Add(row);
+            }
         }
 
         private void dgvSpawns_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
@@ -438,5 +448,13 @@ namespace CrashEdit.CE
             UpdateID();
         }
 
+        private void rbtReload_Click(object sender, EventArgs e)
+        {
+            UpdateSpawnPoint();
+            txtID.Text = NSD.ID.ToString("X2");
+            lblEntityCount.Text = NSD.EntityCount.ToString();
+
+            rbtReload.Checked = false;
+        }
     }
 }
