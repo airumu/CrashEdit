@@ -884,9 +884,6 @@
   <data name="Title_TextureReplacement" xml:space="preserve">
     <value>テクスチャの置き換え</value>
   </data>
-  <data name="OldMainForm_tbxShowGOOLMap" xml:space="preserve">
-    <value>GOOLマップを表示</value>
-  </data>
   <data name="OldMainForm_tbxGenerateSpawnPoint" xml:space="preserve">
     <value>スポーンポイントの生成</value>
   </data>
@@ -922,5 +919,8 @@
   </data>
   <data name="PatchNSD_Error3" xml:space="preserve">
     <value>NSD ファイル '{0}' が存在しません！</value>
+  </data>
+  <data name="ShowGOOLMap_Title" xml:space="preserve">
+    <value>GOOLマップを表示</value>
   </data>
 </root>

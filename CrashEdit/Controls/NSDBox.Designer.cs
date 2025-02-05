@@ -1,4 +1,5 @@
-﻿using AltUI.Controls;
+﻿using System.Windows.Forms;
+using AltUI.Controls;
 
 namespace CrashEdit.CE
 {
@@ -33,11 +34,16 @@ namespace CrashEdit.CE
             fraID = new DarkGroupBox();
             txtID = new DarkTextBox();
             fraSpawns = new DarkGroupBox();
+            cmdPaste = new DarkButton();
+            cmdCopy = new DarkButton();
             cmdGetSpawn = new DarkButton();
             dgvSpawns = new DataGridView();
+            fraEntityCount = new DarkGroupBox();
+            lblEntityCount = new Label();
             fraID.SuspendLayout();
             fraSpawns.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSpawns).BeginInit();
+            fraEntityCount.SuspendLayout();
             SuspendLayout();
             // 
             // fraID
@@ -48,10 +54,10 @@ namespace CrashEdit.CE
             fraID.Controls.Add(txtID);
             fraID.Location = new Point(3, 3);
             fraID.Name = "fraID";
-            fraID.Size = new Size(112, 67);
+            fraID.Size = new Size(76, 67);
             fraID.TabIndex = 0;
             fraID.TabStop = false;
-            fraID.Text = "ID";
+            fraID.Text = "Level ID";
             // 
             // txtID
             // 
@@ -61,20 +67,53 @@ namespace CrashEdit.CE
             txtID.Location = new Point(6, 22);
             txtID.MaxLength = 2;
             txtID.Name = "txtID";
-            txtID.Size = new Size(100, 23);
+            txtID.Size = new Size(64, 23);
             txtID.TabIndex = 2;
+            txtID.TextChanged += txtID_TextChanged;
+            txtID.KeyDown += txtID_KeyDown;
+            txtID.LostFocus += txtID_LostFocus;
             // 
             // fraSpawns
             // 
             fraSpawns.BackColor = Color.Transparent;
+            fraSpawns.Controls.Add(cmdPaste);
+            fraSpawns.Controls.Add(cmdCopy);
             fraSpawns.Controls.Add(cmdGetSpawn);
             fraSpawns.Controls.Add(dgvSpawns);
             fraSpawns.Location = new Point(3, 76);
             fraSpawns.Name = "fraSpawns";
-            fraSpawns.Size = new Size(648, 345);
+            fraSpawns.Size = new Size(523, 341);
             fraSpawns.TabIndex = 1;
             fraSpawns.TabStop = false;
             fraSpawns.Text = "Spawn Point(s)";
+            // 
+            // cmdPaste
+            // 
+            cmdPaste.BorderColour = Color.Empty;
+            cmdPaste.CustomColour = false;
+            cmdPaste.FlatBottom = false;
+            cmdPaste.FlatTop = false;
+            cmdPaste.Location = new Point(440, 80);
+            cmdPaste.Name = "cmdPaste";
+            cmdPaste.Padding = new Padding(5);
+            cmdPaste.Size = new Size(75, 23);
+            cmdPaste.TabIndex = 3;
+            cmdPaste.Text = "Paste";
+            cmdPaste.Click += cmdPaste_Click;
+            // 
+            // cmdCopy
+            // 
+            cmdCopy.BorderColour = Color.Empty;
+            cmdCopy.CustomColour = false;
+            cmdCopy.FlatBottom = false;
+            cmdCopy.FlatTop = false;
+            cmdCopy.Location = new Point(440, 51);
+            cmdCopy.Name = "cmdCopy";
+            cmdCopy.Padding = new Padding(5);
+            cmdCopy.Size = new Size(75, 23);
+            cmdCopy.TabIndex = 2;
+            cmdCopy.Text = "Copy";
+            cmdCopy.Click += cmdCopy_Click;
             // 
             // cmdGetSpawn
             // 
@@ -82,7 +121,7 @@ namespace CrashEdit.CE
             cmdGetSpawn.CustomColour = false;
             cmdGetSpawn.FlatBottom = false;
             cmdGetSpawn.FlatTop = false;
-            cmdGetSpawn.Location = new Point(357, 22);
+            cmdGetSpawn.Location = new Point(440, 22);
             cmdGetSpawn.Name = "cmdGetSpawn";
             cmdGetSpawn.Padding = new Padding(5);
             cmdGetSpawn.Size = new Size(75, 23);
@@ -92,6 +131,7 @@ namespace CrashEdit.CE
             // 
             // dgvSpawns
             // 
+            dgvSpawns.AllowDrop = true;
             dgvSpawns.AllowUserToAddRows = false;
             dgvSpawns.AllowUserToResizeColumns = false;
             dgvSpawns.AllowUserToResizeRows = false;
@@ -99,14 +139,42 @@ namespace CrashEdit.CE
             dgvSpawns.ColumnHeadersHeight = 24;
             dgvSpawns.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgvSpawns.Location = new Point(6, 22);
+            dgvSpawns.MultiSelect = false;
             dgvSpawns.Name = "dgvSpawns";
             dgvSpawns.RowHeadersWidth = 24;
             dgvSpawns.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dgvSpawns.ScrollBars = ScrollBars.Vertical;
-            dgvSpawns.Size = new Size(345, 317);
+            dgvSpawns.Size = new Size(428, 312);
             dgvSpawns.TabIndex = 0;
             dgvSpawns.CellValidating += dgvSpawns_CellValidating;
             dgvSpawns.CellValueChanged += dgvSpawns_CellValueChanged;
+            dgvSpawns.DragDrop += dgvSpawns_DragDrop;
+            dgvSpawns.DragOver += dgvSpawns_DragOver;
+            dgvSpawns.Paint += dgvSpawns_Paint;
+            dgvSpawns.KeyDown += dgvSpawns_KeyDown;
+            dgvSpawns.MouseDown += dgvSpawns_MouseDown;
+            dgvSpawns.MouseMove += dgvSpawns_MouseMove;
+            // 
+            // fraEntityCount
+            // 
+            fraEntityCount.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraEntityCount.BackColor = Color.Transparent;
+            fraEntityCount.Controls.Add(lblEntityCount);
+            fraEntityCount.Location = new Point(85, 3);
+            fraEntityCount.Name = "fraEntityCount";
+            fraEntityCount.Size = new Size(88, 67);
+            fraEntityCount.TabIndex = 0;
+            fraEntityCount.TabStop = false;
+            fraEntityCount.Text = "EntityCount";
+            // 
+            // lblEntityCount
+            // 
+            lblEntityCount.AutoSize = true;
+            lblEntityCount.Location = new Point(6, 24);
+            lblEntityCount.Name = "lblEntityCount";
+            lblEntityCount.Size = new Size(48, 15);
+            lblEntityCount.TabIndex = 2;
+            lblEntityCount.Text = "{Count}";
             // 
             // NSDBox
             // 
@@ -114,6 +182,7 @@ namespace CrashEdit.CE
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(31, 31, 32);
             Controls.Add(fraSpawns);
+            Controls.Add(fraEntityCount);
             Controls.Add(fraID);
             Name = "NSDBox";
             Size = new Size(686, 664);
@@ -121,9 +190,14 @@ namespace CrashEdit.CE
             fraID.PerformLayout();
             fraSpawns.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvSpawns).EndInit();
+            fraEntityCount.ResumeLayout(false);
+            fraEntityCount.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
+
+
+
 
         #endregion
 
@@ -132,5 +206,9 @@ namespace CrashEdit.CE
         private DarkGroupBox fraSpawns;
         private DataGridView dgvSpawns;
         private DarkButton cmdGetSpawn;
+        private DarkButton cmdCopy;
+        private DarkButton cmdPaste;
+        private DarkGroupBox fraEntityCount;
+        private Label lblEntityCount;
     }
 }

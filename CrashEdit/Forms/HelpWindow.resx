@@ -118,19 +118,19 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="lblHexViewer.Text" xml:space="preserve">
-    <value>N: Input the EID for "NONE!"
-Space: Clear selected cell
-Ctrl + Space: Clear selected chunk
-Z: Toggle chunk name view mode
-Ctrl + G: Goto
-+ / - : Change line width
+    <value>[N] Input the EID for "NONE!"
+[Space] Clear selected cell
+[Ctrl + Space] Clear selected chunk
+[Z] Toggle chunk name view mode
+[Ctrl + G] Goto
+[+ / - ] Change line width
 
-Mouse drag: Select multiple cells
-Ctrl + C: Copy selected chunks as bytes
-Ctrl + X: Cut selected chunks as bytes
-Ctrl + V: Paste to chunks as bytes
-Ctrl + Shift + C: Copy selected chunks as EID
-Ctrl + Shift + X: Cut selected chunks as EID
-Ctrl + Shift + V: Paste to chunks as EID</value>
+[Mouse drag] Select multiple cells
+[Ctrl + C] Copy selected chunks as bytes
+[Ctrl + X] Cut selected chunks as bytes
+[Ctrl + V] Paste to chunks as bytes
+[Ctrl + Shift + C] Copy selected chunks as EID
+[Ctrl + Shift + X] Cut selected chunks as EID
+[Ctrl + Shift + V] Paste to chunks as EID</value>
   </data>
 </root>

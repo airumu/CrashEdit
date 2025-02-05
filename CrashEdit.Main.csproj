@@ -71,6 +71,8 @@
       <None Remove="Embeds\Images\MusicNoteRed.png" />
       <None Remove="Embeds\Images\MusicNoteYellow.png" />
       <None Remove="Embeds\Images\Next.png" />
+      <None Remove="Embeds\Images\NSD.png" />
+      <None Remove="Embeds\Images\NSF.png" />
       <None Remove="Embeds\Images\Painting.gif" />
       <None Remove="Embeds\Images\Previous.png" />
       <None Remove="Embeds\Images\Processor.png" />
@@ -133,6 +135,8 @@
       <EmbeddedResource Include="Embeds\Images\MusicNoteRed.png" />
       <EmbeddedResource Include="Embeds\Images\MusicNoteYellow.png" />
       <EmbeddedResource Include="Embeds\Images\Next.png" />
+      <EmbeddedResource Include="Embeds\Images\NSD.png" />
+      <EmbeddedResource Include="Embeds\Images\NSF.png" />
       <EmbeddedResource Include="Embeds\Images\Painting.gif" />
       <EmbeddedResource Include="Embeds\Images\Previous.png" />
       <EmbeddedResource Include="Embeds\Images\Processor.png" />

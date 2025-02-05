@@ -34,11 +34,11 @@ namespace CrashEdit.CE
 
             // this (should be) the NSF node. not very robust.
             ResourceTree.Nodes[1].Expand();
-            if (NSDController != null)
-            {
-                // this (should be) the NSD node. not very robust.
-                ResourceTree.Nodes[2].Expand();
-            }
+            //if (NSDController != null)
+            //{
+            //    // this (should be) the NSD node. not very robust.
+            //    ResourceTree.Nodes[2].Expand();
+            //}
         }
 
         public LevelWorkspace Workspace { get; }

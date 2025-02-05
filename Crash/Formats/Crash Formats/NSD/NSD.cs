@@ -211,7 +211,7 @@ namespace CrashEdit.Crash
         }
 
         public string Title => "NSD";
-        public string ImageKey => "File";
+        public string ImageKey => "NSD";
 
         //[SubresourceList]
         //public List<object> Items => new List<object>

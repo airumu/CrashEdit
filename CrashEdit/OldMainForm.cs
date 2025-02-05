@@ -25,8 +25,6 @@ namespace CrashEdit.CE
         private ToolStripMenuItem tbxConvertVHVB = new();
         private ToolStripMenuItem tbxConvertVAB = new();
         private ToolStripMenuItem tbxConvertAnimations = new();
-        private ToolStripMenuItem tbxShowGOOLMap = new();
-        private ToolStripMenuItem tbxGenerateSpawnPoint = new();
         private ToolStripMenuItem tbbExtra = new();
 
         private TabControl tbcTabs;
@@ -86,12 +84,6 @@ namespace CrashEdit.CE
             tbxConvertAnimations.Text = Resources.OldMainForm_tbxConvertAnimations;
             tbxConvertAnimations.Click += new EventHandler(tbxConvertAnimations_Click);
 
-            tbxShowGOOLMap.Text = Resources.OldMainForm_tbxShowGOOLMap;
-            tbxShowGOOLMap.Click += new EventHandler(tbxShowGOOLMap_Click);
-
-            tbxGenerateSpawnPoint.Text = Resources.OldMainForm_tbxGenerateSpawnPoint;
-            tbxGenerateSpawnPoint.Click += new EventHandler(tbxGenerateSpawnPoint_Click);
-
             tbbExtra.Text = Resources.OldMainForm_tbbExtra;
             tbbExtra.ImageKey = "Dropdown";
             tbbExtra.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText;
@@ -105,9 +97,6 @@ namespace CrashEdit.CE
             tbbExtra.DropDown.Items.Add(tbxConvertVAB);
             tbbExtra.DropDown.Items.Add("-");
             tbbExtra.DropDown.Items.Add(tbxConvertAnimations);
-            tbbExtra.DropDown.Items.Add("-");
-            tbbExtra.DropDown.Items.Add(tbxShowGOOLMap);
-            tbbExtra.DropDown.Items.Add(tbxGenerateSpawnPoint);
 
             ToolStrip.Items.Insert(0, tbbOpen);
             ToolStrip.Items.Insert(1, tbbSave);
@@ -212,9 +201,7 @@ namespace CrashEdit.CE
             tbbSave.Enabled =
             tbbPatchNSD.Enabled =
             tbbClose.Enabled =
-            tbbPlay.Enabled =
-            tbxShowGOOLMap.Enabled =
-            tbxGenerateSpawnPoint.Enabled = tab != null && tab.Tag is NSFBox;
+            tbbPlay.Enabled = tab != null && tab.Tag is NSFBox;
         }
 
         void tbbPAL_Click(object sender, EventArgs e)
@@ -429,18 +416,18 @@ namespace CrashEdit.CE
             };
             nsfbox.ActiveControllerChanged += MainControl_ActiveControllerChanged;
 
-            NSDBox nsdbox = new NSDBox(this, ws)
-            {
-                Dock = DockStyle.Fill
-            };
-            nsfbox.ActiveControllerChanged += MainControl_ActiveControllerChanged;
+            //NSDBox nsdbox = new NSDBox(this, ws)
+            //{
+            //    Dock = DockStyle.Fill
+            //};
+            //nsfbox.ActiveControllerChanged += MainControl_ActiveControllerChanged;
 
             TabPage nsftab = new TabPage(filename)
             {
                 Tag = nsfbox
             };
             nsftab.Controls.Add(nsfbox);
-            nsftab.Controls.Add(nsdbox);
+            //nsftab.Controls.Add(nsdbox);
 
             tbcTabs.TabPages.Add(nsftab);
             tbcTabs.SelectedTab = nsftab;
@@ -928,12 +915,12 @@ namespace CrashEdit.CE
             nsdFilename = GetNSDFileName(filename);
             if (string.IsNullOrEmpty(nsdFilename))
             {
-                DarkMessageBox.ShowError(string.Format(Resources.Playtest_Error2, filename), Resources.OldMainForm_tbxShowGOOLMap);
+                DarkMessageBox.ShowError(string.Format(Resources.Playtest_Error2, filename), "NSD");
                 return;
             }
             if (!File.Exists(nsdFilename))
             {
-                DarkMessageBox.ShowError(string.Format(Resources.Playtest_Error3, nsdFilename), Resources.OldMainForm_tbxShowGOOLMap);
+                DarkMessageBox.ShowError(string.Format(Resources.Playtest_Error3, nsdFilename), "NSD");
                 return;
             }
 
@@ -970,133 +957,6 @@ namespace CrashEdit.CE
                 nsdFilename += "d";
             }
             return nsdFilename;
-        }
-
-        void tbxShowGOOLMap_Click(object sender, EventArgs e)
-        {
-            if (tbcTabs.SelectedTab == null || !(tbcTabs.SelectedTab.Tag is NSFBox)) return;
-
-            string nsfFilename = tbcTabs.SelectedTab.Text;
-            NSFBox nsfbox = (NSFBox)tbcTabs.SelectedTab.Tag;
-            NSFController nsfc = nsfbox.NSFController;
-            GetNSD(nsfFilename, nsfc.GameVersion, out string nsdFilename, out dynamic? nsd);
-            if (nsd == null) return;
-
-            if (formShowGOOLMap.TryGetValue(nsdFilename, out DarkForm? value))
-            {
-                value.Focus();
-                return;
-            }
-            DarkForm goolmap = new()
-            {
-                Text = $"GOOL Map ({nsdFilename})",
-                BackColor = Color.FromArgb(31, 31, 32),
-                MaximizeBox = false,
-                MinimizeBox = false,
-                Width = 584,
-                Height = 380
-            };
-            ListView lst = new()
-            {
-                Dock = DockStyle.Fill,
-                BackColor = Color.FromArgb(31, 31, 32)
-            };
-            List<string> BaseGOOL = new() { "WillC", "WarpC", "FruiC", "DispC", "DoctC", "PartC", "ShadC", "BoxsC", "WEfOC", "EntNC" };
-            for (int i = 0; i < nsd.GOOLMap.Length; ++i)
-            {
-                ListViewItem lsi = new();
-                lsi.Text = $"{i:D2}: {Entry.EIDToEName(nsd.GOOLMap[i])}";
-                lsi.ForeColor = lsi.Text.Contains(Entry.NullEName) ? SystemColors.ControlDarkDark :
-                                BaseGOOL.Any(item => lsi.Text.Contains(item)) ? Color.Turquoise :
-                                Color.Gainsboro;
-                lst.Items.Add(lsi);
-            }
-            goolmap.Controls.Add(lst);
-            goolmap.FormClosing += (object sender, FormClosingEventArgs e) =>
-            {
-                formShowGOOLMap.Remove(nsdFilename);
-            };
-            formShowGOOLMap.Add(nsdFilename, goolmap);
-            goolmap.Show();
-        }
-
-        void tbxGenerateSpawnPoint_Click(object sender, EventArgs e)
-        {
-            using (InputWindow inputWindow = new InputWindow("Enter entity ID:", Resources.GenerateSpawnPoint_Title, string.Empty))
-            {
-                if (inputWindow.ShowDialog() == DialogResult.OK)
-                {
-                    string input = inputWindow.Input;
-                    if (string.IsNullOrEmpty(input)) return;
-
-                    if (int.TryParse(input, out int targetID))
-                    {
-                        NSFBox nsfbox = (NSFBox)tbcTabs.SelectedTab.Tag;
-                        NSF nsf = nsfbox.NSF;
-                        foreach (ZoneEntry entry in nsf.GetEntries<ZoneEntry>())
-                        {
-                            foreach (Entity entity in entry.Entities)
-                            {
-                                if (entity.ID == targetID)
-                                {
-                                    int zone = entry.EID;
-                                    int cameraIdx = 0;
-                                    string cameraIndex = string.Empty;
-                                    if (entry.CameraCount > 3)
-                                    {
-                                        int cameraMaxIdx = (entry.CameraCount - 1) / 3;
-                                        using (InputWindow inputWindows = new InputWindow($"Enter camera index [0-{cameraMaxIdx}]:", Resources.GenerateSpawnPoint_Title, "0"))
-                                        {
-                                            if (inputWindows.ShowDialog() == DialogResult.OK)
-                                            {
-                                                bool valid = false;
-                                                if (int.TryParse(inputWindows.Input, out cameraIdx))
-                                                {
-                                                    if (cameraIdx >= 0 && cameraIdx <= cameraMaxIdx)
-                                                    {
-                                                        valid = true;
-                                                        cameraIndex = $" [Camera: {cameraIdx}]";
-                                                    }
-                                                }
-
-                                                if (!valid)
-                                                {
-                                                    DarkMessageBox.ShowError("Invalid camera index.", Resources.GenerateSpawnPoint_Title);
-                                                    return;
-                                                }
-                                            }
-                                            else return;
-                                        }
-                                    }
-                                    int x = (entry.X + 4 * entity.Positions[0].X) << 8;
-                                    int y = (entry.Y + 4 * entity.Positions[0].Y) << 8;
-                                    int z = (entry.Z + 4 * entity.Positions[0].Z) << 8;
-                                    byte[] data = new byte[24];
-                                    BitConv.ToInt32(data, 0, zone);
-                                    BitConv.ToInt32(data, 4, cameraIdx);
-                                    BitConv.ToInt32(data, 8, 0);
-                                    BitConv.ToInt32(data, 12, x);
-                                    BitConv.ToInt32(data, 16, y);
-                                    BitConv.ToInt32(data, 20, z);
-                                    string result = BitConverter.ToString(data).Replace("-", "");
-                                    Console.WriteLine($"[{Entry.EIDToEName(zone)}]{cameraIndex} [ID: {entity.ID}]\n{result}");
-                                    Clipboard.SetText(result);
-                                    Console.WriteLine("Copied to the clipboard.");
-                                    DarkMessageBox.ShowInformation("Spawn point generated and output to the console.", Resources.GenerateSpawnPoint_Title);
-                                    return;
-                                }
-                            }
-                        }
-                        DarkMessageBox.ShowError("Entity not found.", Resources.GenerateSpawnPoint_Title);
-                        return;
-                    }
-                    else
-                    {
-                        DarkMessageBox.ShowError("Invalid entity ID.", Resources.GenerateSpawnPoint_Title);
-                        return;
-                    }
-                }
-            }
         }
 
         public void ResetConfig()

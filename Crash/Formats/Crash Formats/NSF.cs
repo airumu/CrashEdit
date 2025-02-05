@@ -213,7 +213,7 @@ namespace CrashEdit.Crash
         public GameVersion Version { get; private set; }
 
         public string Title => "NSF";
-        public string ImageKey => "File";
+        public string ImageKey => "NSF";
 
         [SubresourceList]
         public List<Chunk> Chunks { get; }

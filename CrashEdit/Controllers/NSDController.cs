@@ -1,4 +1,5 @@
 ﻿using AltUI.Forms;
+using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 
 namespace CrashEdit.CE
@@ -9,7 +10,8 @@ namespace CrashEdit.CE
         public NSDController(NSD nsd, SubcontrollerGroup parentGroup) : base(parentGroup, nsd)
         {
             NSD = nsd;
-            AddMenu("Show GOOL Map", "ThingCode", Menu_ShowGOOLMap);
+            AddMenu(Resources.ShowGOOLMap_Title, "ThingCode", Menu_ShowGOOLMap);
+            AddMenu(Resources.GenerateSpawnPoint_Title, "Calculator", Menu_GenerateSpawnPoint);
         }
 
         public override bool EditorAvailable => true;
@@ -39,7 +41,7 @@ namespace CrashEdit.CE
             }
             showGOOLMapForm = new DarkForm()
             {
-                Text = $"GOOL Map ({NSD.ID.ToString("X2")})",
+                Text = $"GOOL Map (S00000{NSD.ID.ToString("X2")}.NSD)",
                 BackColor = Color.FromArgb(31, 31, 32),
                 MaximizeBox = false,
                 MinimizeBox = false,
@@ -67,6 +69,84 @@ namespace CrashEdit.CE
                 showGOOLMapForm = null;
             };
             showGOOLMapForm.Show();
+        }
+
+        private void Menu_GenerateSpawnPoint()
+        {
+            using (InputWindow inputWindow = new InputWindow("Enter entity ID:", Resources.GenerateSpawnPoint_Title, string.Empty))
+            {
+                if (inputWindow.ShowDialog() == DialogResult.OK)
+                {
+                    string input = inputWindow.Input;
+                    if (string.IsNullOrEmpty(input)) return;
+
+                    if (int.TryParse(input, out int targetID))
+                    {
+                        NSF nsf = GetNSF();
+                        foreach (ZoneEntry entry in nsf.GetEntries<ZoneEntry>())
+                        {
+                            foreach (Entity entity in entry.Entities)
+                            {
+                                if (entity.ID == targetID)
+                                {
+                                    int zone = entry.EID;
+                                    int cameraIdx = 0;
+                                    string cameraIndex = string.Empty;
+                                    if (entry.CameraCount > 3)
+                                    {
+                                        int cameraMaxIdx = (entry.CameraCount - 1) / 3;
+                                        using (InputWindow inputWindows = new InputWindow($"Enter camera index [0-{cameraMaxIdx}]:", Resources.GenerateSpawnPoint_Title, "0"))
+                                        {
+                                            if (inputWindows.ShowDialog() == DialogResult.OK)
+                                            {
+                                                bool valid = false;
+                                                if (int.TryParse(inputWindows.Input, out cameraIdx))
+                                                {
+                                                    if (cameraIdx >= 0 && cameraIdx <= cameraMaxIdx)
+                                                    {
+                                                        valid = true;
+                                                        cameraIndex = $" [Camera: {cameraIdx}]";
+                                                    }
+                                                }
+
+                                                if (!valid)
+                                                {
+                                                    DarkMessageBox.ShowError("Invalid camera index.", Resources.GenerateSpawnPoint_Title);
+                                                    return;
+                                                }
+                                            }
+                                            else return;
+                                        }
+                                    }
+                                    int x = (entry.X + 4 * entity.Positions[0].X) << 8;
+                                    int y = (entry.Y + 4 * entity.Positions[0].Y) << 8;
+                                    int z = (entry.Z + 4 * entity.Positions[0].Z) << 8;
+                                    byte[] data = new byte[24];
+                                    BitConv.ToInt32(data, 0, zone);
+                                    BitConv.ToInt32(data, 4, cameraIdx);
+                                    BitConv.ToInt32(data, 8, 0);
+                                    BitConv.ToInt32(data, 12, x);
+                                    BitConv.ToInt32(data, 16, y);
+                                    BitConv.ToInt32(data, 20, z);
+                                    string result = BitConverter.ToString(data).Replace("-", "");
+                                    Console.WriteLine($"[{Entry.EIDToEName(zone)}]{cameraIndex} [ID: {entity.ID}]\n{result}");
+                                    Clipboard.SetText(result);
+                                    Console.WriteLine("Copied to the clipboard.");
+                                    DarkMessageBox.ShowInformation("Spawn point generated and output to the console.", Resources.GenerateSpawnPoint_Title);
+                                    return;
+                                }
+                            }
+                        }
+                        DarkMessageBox.ShowError("Entity not found.", Resources.GenerateSpawnPoint_Title);
+                        return;
+                    }
+                    else
+                    {
+                        DarkMessageBox.ShowError("Invalid entity ID.", Resources.GenerateSpawnPoint_Title);
+                        return;
+                    }
+                }
+            }
         }
     }
 }
