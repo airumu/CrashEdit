@@ -209,6 +209,7 @@ namespace CrashEdit.CE
                 {
                     currentDataGridView.ClearSelection();
                     currentDataGridView.Rows[e.RowIndex].Selected = true;
+                    currentDataGridView.CurrentCell = currentDataGridView.Rows[e.RowIndex].Cells[0];
                 }
             }
         }
