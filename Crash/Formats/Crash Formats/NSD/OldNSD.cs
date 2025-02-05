@@ -1,6 +1,6 @@
 namespace CrashEdit.Crash
 {
-    public sealed class OldNSD
+    public sealed class OldNSD : IResource
     {
         public static OldNSD Load(byte[] data)
         {
@@ -98,6 +98,9 @@ namespace CrashEdit.Crash
             GOOLMap = goolmap;
             ExtraData = extradata ?? throw new ArgumentNullException(nameof(extradata));
         }
+
+        public string Title => "OldNSD";
+        public string ImageKey => "NSD";
 
         public int[] HashKeyMap { get; set; }
         public int ChunkCount { get; set; }
