@@ -77,11 +77,11 @@ namespace CrashEdit.Crash
             {
                 int zone = BitConv.FromInt32(data, 0x6FC + 8 * entrycount + 24 * i);
                 int camera = BitConv.FromInt32(data, 0x6FC + 8 * entrycount + 24 * i + 4);
-                int unknown = BitConv.FromInt32(data, 0x6FC + 8 * entrycount + 24 * i + 8);
+                int point = BitConv.FromInt32(data, 0x6FC + 8 * entrycount + 24 * i + 8);
                 int x = BitConv.FromInt32(data, 0x6FC + 8 * entrycount + 24 * i + 12);
                 int y = BitConv.FromInt32(data, 0x6FC + 8 * entrycount + 24 * i + 16);
                 int z = BitConv.FromInt32(data, 0x6FC + 8 * entrycount + 24 * i + 20);
-                spawns[i] = new NSDSpawnPoint(zone, camera, unknown, x, y, z);
+                spawns[i] = new NSDSpawnPoint(zone, camera, point, x, y, z);
             }
             extralength = data.Length - (0x6FC + 8 * entrycount + 24 * spawncount);
             byte[] imagedata = new byte[extralength];
@@ -164,11 +164,11 @@ namespace CrashEdit.Crash
             {
                 int zone = BitConv.FromInt32(data, 0x7FC + 8 * entrycount + 24 * i);
                 int camera = BitConv.FromInt32(data, 0x7FC + 8 * entrycount + 24 * i + 4);
-                int unknown = BitConv.FromInt32(data, 0x7FC + 8 * entrycount + 24 * i + 8);
+                int point = BitConv.FromInt32(data, 0x7FC + 8 * entrycount + 24 * i + 8);
                 int x = BitConv.FromInt32(data, 0x7FC + 8 * entrycount + 24 * i + 12);
                 int y = BitConv.FromInt32(data, 0x7FC + 8 * entrycount + 24 * i + 16);
                 int z = BitConv.FromInt32(data, 0x7FC + 8 * entrycount + 24 * i + 20);
-                spawns[i] = new NSDSpawnPoint(zone, camera, unknown, x, y, z);
+                spawns[i] = new NSDSpawnPoint(zone, camera, point, x, y, z);
             }
             extralength = data.Length - (0x7FC + 8 * entrycount + 24 * spawncount);
             byte[] imagedata = new byte[extralength];
@@ -276,7 +276,7 @@ namespace CrashEdit.Crash
             {
                 BitConv.ToInt32(result, 0x530 + ofs + 8 * entrycount + ExtraData.Length + i * 24 + 0, Spawns[i].ZoneEID);
                 BitConv.ToInt32(result, 0x530 + ofs + 8 * entrycount + ExtraData.Length + i * 24 + 4, Spawns[i].Camera);
-                BitConv.ToInt32(result, 0x530 + ofs + 8 * entrycount + ExtraData.Length + i * 24 + 8, Spawns[i].Unknown);
+                BitConv.ToInt32(result, 0x530 + ofs + 8 * entrycount + ExtraData.Length + i * 24 + 8, Spawns[i].Point);
                 BitConv.ToInt32(result, 0x530 + ofs + 8 * entrycount + ExtraData.Length + i * 24 + 12, Spawns[i].SpawnX);
                 BitConv.ToInt32(result, 0x530 + ofs + 8 * entrycount + ExtraData.Length + i * 24 + 16, Spawns[i].SpawnY);
                 BitConv.ToInt32(result, 0x530 + ofs + 8 * entrycount + ExtraData.Length + i * 24 + 20, Spawns[i].SpawnZ);

@@ -1,5 +1,4 @@
 ﻿using System.Text.RegularExpressions;
-using System.Windows.Forms;
 using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
@@ -22,7 +21,7 @@ namespace CrashEdit.CE
 
         private readonly int ColZoneEID = 0;
         private readonly int ColCamera = 1;
-        private readonly int ColUnknown = 2;
+        private readonly int ColPoint = 2;
         private readonly int ColSpawnX = 3;
         private readonly int ColSpawnY = 4;
         private readonly int ColSpawnZ = 5;
@@ -73,6 +72,7 @@ namespace CrashEdit.CE
                 {
                     dgvSpawns.ClearSelection();
                     dgvSpawns.Rows[e.RowIndex].Selected = true;
+                    dgvSpawns.CurrentCell = dgvSpawns.Rows[e.RowIndex].Cells[0];
                 }
             }
         }
@@ -95,7 +95,7 @@ namespace CrashEdit.CE
 
             if (dgvSpawns.Rows.Count == 1)
             {
-                DarkMessageBox.ShowError("There must be at least one spawn point.", Resources.Title_Error);
+                DarkMessageBox.ShowError("There must be at least one row.", Resources.Title_Error);
                 return;
             }
 
@@ -108,7 +108,7 @@ namespace CrashEdit.CE
         {
             dgvSpawns.Columns.Add("EID", "EID");
             dgvSpawns.Columns.Add("Camera", "Camera");
-            dgvSpawns.Columns.Add("Unknown", "Unknown");
+            dgvSpawns.Columns.Add("Point", "Point");
             dgvSpawns.Columns.Add("X", "X");
             dgvSpawns.Columns.Add("Y", "Y");
             dgvSpawns.Columns.Add("Z", "Z");
@@ -121,7 +121,7 @@ namespace CrashEdit.CE
             }
             dgvSpawns.Columns[ColZoneEID].Width = 60;
             dgvSpawns.Columns[ColCamera].Width = 60;
-            dgvSpawns.Columns[ColUnknown].Width = 60;
+            dgvSpawns.Columns[ColPoint].Width = 60;
             dgvSpawns.Columns[ColSpawnX].Width = 72;
             dgvSpawns.Columns[ColSpawnY].Width = 72;
             dgvSpawns.Columns[ColSpawnZ].Width = 72;
@@ -133,7 +133,7 @@ namespace CrashEdit.CE
             foreach (var spawn in NSD.Spawns)
             {
                 DataGridViewRow row = new();
-                row.CreateCells(dgvSpawns, Entry.EIDToEName(spawn.ZoneEID), spawn.Camera.ToString("X"), spawn.Unknown.ToString("X"), spawn.SpawnX.ToString("X"), spawn.SpawnY.ToString("X"), spawn.SpawnZ.ToString("X"));
+                row.CreateCells(dgvSpawns, Entry.EIDToEName(spawn.ZoneEID), spawn.Camera.ToString(), spawn.Point.ToString(), spawn.SpawnX.ToString("X"), spawn.SpawnY.ToString("X"), spawn.SpawnZ.ToString("X"));
                 dgvSpawns.Rows.Add(row);
             }
         }
@@ -148,32 +148,27 @@ namespace CrashEdit.CE
                 string checkEID = Entry.CheckEIDErrors(inputValue, true);
                 if (checkEID != string.Empty)
                 {
-                    DarkMessageBox.ShowError($"Invalid EID '{inputValue}'. {checkEID}", Resources.Title_InputError);
+                    DarkMessageBox.ShowError($"Invalid EID; {checkEID}", Resources.Title_InputError);
                     e.Cancel = true;
                 }
+            }
+            else if (e.ColumnIndex == ColCamera || e.ColumnIndex == ColPoint)
+            {
+                if (int.TryParse(inputValue, out int newValue))
+                {
+                    return;
+                }
+                DarkMessageBox.ShowError($"Invalid input value.", Resources.Title_InputError);
+                e.Cancel = true;
             }
             else
             {
                 if (int.TryParse(inputValue, System.Globalization.NumberStyles.HexNumber, null, out int newValue))
                 {
-                    int maxValue = int.MaxValue;
-                    int minValue = int.MinValue;
-                    if (newValue > maxValue)
-                    {
-                        DarkMessageBox.ShowError($"The value must be less than or equal to {maxValue}.", Resources.Title_InputError);
-                        e.Cancel = true;
-                    }
-                    else if (newValue < minValue)
-                    {
-                        DarkMessageBox.ShowError($"The value must be greater than or equal to {minValue}.", Resources.Title_InputError);
-                        e.Cancel = true;
-                    }
+                    return;
                 }
-                else
-                {
-                    DarkMessageBox.ShowError($"Invalid input.", Resources.Title_InputError);
-                    e.Cancel = true;
-                }
+                DarkMessageBox.ShowError($"Invalid input value.", Resources.Title_InputError);
+                e.Cancel = true;
             }
         }
 
@@ -191,10 +186,10 @@ namespace CrashEdit.CE
                     og.ZoneEID = Entry.ENameToEID(cell.ToString());
                     break;
                 case 1: // Camera
-                    og.Camera = Convert.ToInt32(cell.ToString(), 16);
+                    og.Camera = Convert.ToInt32(cell.ToString());
                     break;
-                case 2: // Unknown
-                    og.Unknown = Convert.ToInt32(cell.ToString(), 16);
+                case 2: // Point
+                    og.Point = Convert.ToInt32(cell.ToString());
                     break;
                 case 3: // SpawnX
                     og.SpawnX = Convert.ToInt32(cell.ToString(), 16);
@@ -290,7 +285,7 @@ namespace CrashEdit.CE
             byte[] data = new byte[24];
             BitConv.ToInt32(data, 0, Entry.ENameToEID(row.Cells[ColZoneEID].Value.ToString()));
             BitConv.ToInt32(data, 4, Convert.ToInt32(row.Cells[ColCamera].Value.ToString(), 16));
-            BitConv.ToInt32(data, 8, Convert.ToInt32(row.Cells[ColUnknown].Value.ToString(), 16));
+            BitConv.ToInt32(data, 8, Convert.ToInt32(row.Cells[ColPoint].Value.ToString(), 16));
             BitConv.ToInt32(data, 12, Convert.ToInt32(row.Cells[ColSpawnX].Value.ToString(), 16));
             BitConv.ToInt32(data, 16, Convert.ToInt32(row.Cells[ColSpawnY].Value.ToString(), 16));
             BitConv.ToInt32(data, 20, Convert.ToInt32(row.Cells[ColSpawnZ].Value.ToString(), 16));
@@ -317,7 +312,7 @@ namespace CrashEdit.CE
 
             row.Cells[ColZoneEID].Value = Entry.EIDToEName(Convert.ToInt32(BitConv.FromInt32(bytes, 0)));
             row.Cells[ColCamera].Value = BitConv.FromInt32(bytes, 4).ToString("X");
-            row.Cells[ColUnknown].Value = BitConv.FromInt32(bytes, 8).ToString("X");
+            row.Cells[ColPoint].Value = BitConv.FromInt32(bytes, 8).ToString("X");
             row.Cells[ColSpawnX].Value = BitConv.FromInt32(bytes, 12).ToString("X");
             row.Cells[ColSpawnY].Value = BitConv.FromInt32(bytes, 16).ToString("X");
             row.Cells[ColSpawnZ].Value = BitConv.FromInt32(bytes, 20).ToString("X");

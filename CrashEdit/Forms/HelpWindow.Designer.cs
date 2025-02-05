@@ -75,7 +75,7 @@ namespace CrashEdit.CE
             fraNSDBox.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             fraNSDBox.Location = new Point(4, 257);
             fraNSDBox.Name = "fraNSDBox";
-            fraNSDBox.Size = new Size(205, 112);
+            fraNSDBox.Size = new Size(205, 142);
             fraNSDBox.TabIndex = 15;
             fraNSDBox.TabStop = false;
             fraNSDBox.Text = "NSDBox";
@@ -89,7 +89,7 @@ namespace CrashEdit.CE
             fraSpawns.Font = new Font("Segoe UI", 9F);
             fraSpawns.Location = new Point(6, 22);
             fraSpawns.Name = "fraSpawns";
-            fraSpawns.Size = new Size(193, 68);
+            fraSpawns.Size = new Size(193, 98);
             fraSpawns.TabIndex = 16;
             fraSpawns.TabStop = false;
             fraSpawns.Text = "Spawn Point(s)";
@@ -100,9 +100,9 @@ namespace CrashEdit.CE
             lblNSDBox.ForeColor = SystemColors.ControlText;
             lblNSDBox.Location = new Point(6, 19);
             lblNSDBox.Name = "lblNSDBox";
-            lblNSDBox.Size = new Size(181, 30);
+            lblNSDBox.Size = new Size(181, 60);
             lblNSDBox.TabIndex = 0;
-            lblNSDBox.Text = "[Mouse drag] Move row\r\n[Right-click] Show context menu";
+            lblNSDBox.Text = "[Mouse drag] Move row\r\n[Right-click] Show context menu\r\n[Ctrl + C] Copy spawn point\r\n[Ctrl + V] Paste spawn point";
             // 
             // HelpWindow
             // 

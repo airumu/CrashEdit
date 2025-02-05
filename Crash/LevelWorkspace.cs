@@ -10,13 +10,12 @@ namespace CrashEdit.Crash
 
         [SubresourceSlot]
         public NSF? NSF { get; set; }
-
         [SubresourceSlot]
-        public ProtoNSD? ProtoNSD { get; set; }
+        public NSD? NSD { get; set; }
         [SubresourceSlot]
         public OldNSD? OldNSD { get; set; }
         [SubresourceSlot]
-        public NSD? NSD { get; set; }
+        public ProtoNSD? ProtoNSD { get; set; }
 
         public Dictionary<int, IEntry> AllEntriesByEid { get; } = [];
 
