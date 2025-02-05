@@ -311,7 +311,7 @@ namespace CrashEdit.CE
             nsdFilename = Path.Combine(basePath, Path.GetFileName(nsdFilename));
             bool temp_nsf_autosave_setting = Settings.Default.PatchNSDSavesNSF;
             Settings.Default.PatchNSDSavesNSF = false;
-            PatchNSD(nsdFilename, true, nsfBox.NSFController, true, true);
+            PatchNSD(nsdFilename, true, nsfBox, nsfBox.NSFController, true, true);
             SaveNSF(nsfFilename, nsf, true);
             Settings.Default.PatchNSDSavesNSF = temp_nsf_autosave_setting;
             var fs = new CDBuilder();
@@ -409,8 +409,27 @@ namespace CrashEdit.CE
         {
             var ws = new LevelWorkspace();
             ws.NSF = nsf;
+            GetNSD(filename, gameversion, out string nsdFilename, out dynamic? nsd);
+            if (nsd is ProtoNSD)
+            {
+                ws.ProtoNSD = nsd;
+            }
+            else if (nsd is OldNSD)
+            {
+                ws.OldNSD = nsd;
+            }
+            else
+            {
+                ws.NSD = nsd;
+            }
             ws.GameVersion = gameversion;
             NSFBox nsfbox = new NSFBox(this, ws)
+            {
+                Dock = DockStyle.Fill
+            };
+            nsfbox.ActiveControllerChanged += MainControl_ActiveControllerChanged;
+
+            NSDBox nsdbox = new NSDBox(this, ws)
             {
                 Dock = DockStyle.Fill
             };
@@ -421,6 +440,7 @@ namespace CrashEdit.CE
                 Tag = nsfbox
             };
             nsftab.Controls.Add(nsfbox);
+            nsftab.Controls.Add(nsdbox);
 
             tbcTabs.TabPages.Add(nsftab);
             tbcTabs.SelectedTab = nsftab;
@@ -530,20 +550,20 @@ namespace CrashEdit.CE
                     DarkMessageBox.ShowError(string.Format(Resources.PatchNSD_Error1, filename), Resources.PatchNSD_Title1);
                     return;
                 }
-                NSFBox nsfbox = (NSFBox)tbcTabs.SelectedTab.Tag;
                 bool exists = true;
                 if (!File.Exists(filename))
                 {
                     DarkMessageBox.ShowError(string.Format(Resources.PatchNSD_Error3, filename), Resources.PatchNSD_Title1);
                     return;
                 }
-                PatchNSD(filename, exists, nsfbox.NSFController, false);
+                NSFBox nsfbox = (NSFBox)tbcTabs.SelectedTab.Tag;
+                PatchNSD(filename, exists, nsfbox, nsfbox.NSFController, false);
                 nsfbox.Sync();
                 OnResyncSuggested(EventArgs.Empty);
             }
         }
 
-        public void PatchNSD(string filename, bool exists, NSFController nsfc, bool ignore_warnings, bool no_nsf_overwrite = false)
+        public void PatchNSD(string filename, bool exists, NSFBox nsfbox, NSFController nsfc, bool ignore_warnings, bool no_nsf_overwrite = false)
         {
             if (ignore_warnings ? true : DarkMessageBox.ShowMessage(Resources.PatchNSD1, Resources.Save_ConfirmationPrompt, DarkDialogButton.YesNo) == DialogResult.Yes)
             {
@@ -555,25 +575,29 @@ namespace CrashEdit.CE
                     {
                         case GameVersion.Crash1BetaMAR08:
                             {
-                                ProtoNSD nsd = data != null ? ProtoNSD.Load(data) : new ProtoNSD(new int[256], 0, new NSDLink[0]);
+                                //ProtoNSD nsd = data != null ? ProtoNSD.Load(data) : new ProtoNSD(new int[256], 0, new NSDLink[0]);
+                                ProtoNSD nsd = nsfbox.ProtoNSD ?? new ProtoNSD(new int[256], 0, new NSDLink[0]);
                                 PatchNSD(nsd, nsf, filename, ignore_warnings);
                             }
                             break;
                         case GameVersion.Crash1:
                             {
-                                OldNSD nsd = data != null ? OldNSD.Load(data) : new OldNSD(new int[256], 0, new int[4], 0, 0, new int[64], new NSDLink[0], 1, 0x3F, Entry.NullEID, 0, 0, new int[64], new byte[0xFC]);
+                                //OldNSD nsd = data != null ? OldNSD.Load(data) : new OldNSD(new int[256], 0, new int[4], 0, 0, new int[64], new NSDLink[0], 1, 0x3F, Entry.NullEID, 0, 0, new int[64], new byte[0xFC]);
+                                OldNSD nsd = nsfbox.OldNSD ?? new OldNSD(new int[256], 0, new int[4], 0, 0, new int[64], new NSDLink[0], 1, 0x3F, Entry.NullEID, 0, 0, new int[64], new byte[0xFC]);
                                 PatchNSD(nsd, nsf, filename, ignore_warnings);
                             }
                             break;
                         case GameVersion.Crash2:
                             {
-                                NSD nsd = data != null ? NSD.Load(data) : new NSD(new int[256], 0, new int[4], 0, 0, new int[64], new NSDLink[0], 0, 0x3F, 0, new int[64], new byte[0xFC], new NSDSpawnPoint[1] { new NSDSpawnPoint(Entry.NullEID, 0, 0, 0, 0, 0) }, new byte[0]);
+                                //NSD nsd = data != null ? NSD.Load(data) : new NSD(new int[256], 0, new int[4], 0, 0, new int[64], new NSDLink[0], 0, 0x3F, 0, new int[64], new byte[0xFC], new NSDSpawnPoint[1] { new NSDSpawnPoint(Entry.NullEID, 0, 0, 0, 0, 0) }, new byte[0]);
+                                NSD nsd = nsfbox.NSD ?? new NSD(new int[256], 0, new int[4], 0, 0, new int[64], new NSDLink[0], 0, 0x3F, 0, new int[64], new byte[0xFC], new NSDSpawnPoint[1] { new NSDSpawnPoint(Entry.NullEID, 0, 0, 0, 0, 0) }, new byte[0]);
                                 PatchNSD(nsd, nsf, filename, ignore_warnings);
                             }
                             break;
                         case GameVersion.Crash3:
                             {
-                                NSD nsd = data != null ? NSD.LoadC3(data) : new NSD(new int[256], 0, new int[4], 0, 0, new int[64], new NSDLink[0], 0, 0x3F, 0, new int[128], new byte[0xFC], new NSDSpawnPoint[1] { new NSDSpawnPoint(Entry.NullEID, 0, 0, 0, 0, 0) }, new byte[0]);
+                                //NSD nsd = data != null ? NSD.LoadC3(data) : new NSD(new int[256], 0, new int[4], 0, 0, new int[64], new NSDLink[0], 0, 0x3F, 0, new int[128], new byte[0xFC], new NSDSpawnPoint[1] { new NSDSpawnPoint(Entry.NullEID, 0, 0, 0, 0, 0) }, new byte[0]);
+                                NSD nsd = nsfbox.NSD ?? new NSD(new int[256], 0, new int[4], 0, 0, new int[64], new NSDLink[0], 0, 0x3F, 0, new int[128], new byte[0xFC], new NSDSpawnPoint[1] { new NSDSpawnPoint(Entry.NullEID, 0, 0, 0, 0, 0) }, new byte[0]);
                                 PatchNSD(nsd, nsf, filename, ignore_warnings);
                             }
                             break;
@@ -896,17 +920,15 @@ namespace CrashEdit.CE
             formConvertAnimations.Show();
         }
 
-        void GetNSD(out string nsdFilename, out dynamic? nsd)
+        void GetNSD(string filename, GameVersion gameversion, out string nsdFilename, out dynamic? nsd)
         {
             nsd = null;
             nsdFilename = string.Empty;
-            if (tbcTabs.SelectedTab == null || !(tbcTabs.SelectedTab.Tag is NSFBox)) return;
 
-            string nsfFilename = tbcTabs.SelectedTab.Text;
-            nsdFilename = GetNSDFileName(nsfFilename);
+            nsdFilename = GetNSDFileName(filename);
             if (string.IsNullOrEmpty(nsdFilename))
             {
-                DarkMessageBox.ShowError(string.Format(Resources.Playtest_Error2, nsfFilename), Resources.OldMainForm_tbxShowGOOLMap);
+                DarkMessageBox.ShowError(string.Format(Resources.Playtest_Error2, filename), Resources.OldMainForm_tbxShowGOOLMap);
                 return;
             }
             if (!File.Exists(nsdFilename))
@@ -917,9 +939,7 @@ namespace CrashEdit.CE
 
             byte[] data = File.ReadAllBytes(nsdFilename);
 
-            NSFBox nsfbox = (NSFBox)tbcTabs.SelectedTab.Tag;
-            NSFController nsfc = nsfbox.NSFController;
-            switch (nsfc.GameVersion)
+            switch (gameversion)
             {
                 case GameVersion.Crash1BetaMAR08:
                     nsd = data != null ? ProtoNSD.Load(data) : new ProtoNSD(new int[256], 0, new NSDLink[0]);
@@ -954,10 +974,12 @@ namespace CrashEdit.CE
 
         void tbxShowGOOLMap_Click(object sender, EventArgs e)
         {
-            if (tbcTabs.SelectedTab == null) return;
+            if (tbcTabs.SelectedTab == null || !(tbcTabs.SelectedTab.Tag is NSFBox)) return;
 
             string nsfFilename = tbcTabs.SelectedTab.Text;
-            GetNSD(out string nsdFilename, out dynamic? nsd);
+            NSFBox nsfbox = (NSFBox)tbcTabs.SelectedTab.Tag;
+            NSFController nsfc = nsfbox.NSFController;
+            GetNSD(nsfFilename, nsfc.GameVersion, out string nsdFilename, out dynamic? nsd);
             if (nsd == null) return;
 
             if (formShowGOOLMap.TryGetValue(nsdFilename, out DarkForm? value))

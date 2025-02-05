@@ -1,0 +1,136 @@
+﻿using AltUI.Controls;
+
+namespace CrashEdit.CE
+{
+    partial class NSDBox
+    {
+        /// <summary> 
+        /// 必要なデザイナー変数です。
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary> 
+        /// 使用中のリソースをすべてクリーンアップします。
+        /// </summary>
+        /// <param name="disposing">マネージド リソースを破棄する場合は true を指定し、その他の場合は false を指定します。</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region コンポーネント デザイナーで生成されたコード
+
+        /// <summary> 
+        /// デザイナー サポートに必要なメソッドです。このメソッドの内容を 
+        /// コード エディターで変更しないでください。
+        /// </summary>
+        private void InitializeComponent()
+        {
+            fraID = new DarkGroupBox();
+            txtID = new DarkTextBox();
+            fraSpawns = new DarkGroupBox();
+            cmdGetSpawn = new DarkButton();
+            dgvSpawns = new DataGridView();
+            fraID.SuspendLayout();
+            fraSpawns.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvSpawns).BeginInit();
+            SuspendLayout();
+            // 
+            // fraID
+            // 
+            fraID.AutoSize = true;
+            fraID.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraID.BackColor = Color.Transparent;
+            fraID.Controls.Add(txtID);
+            fraID.Location = new Point(3, 3);
+            fraID.Name = "fraID";
+            fraID.Size = new Size(112, 67);
+            fraID.TabIndex = 0;
+            fraID.TabStop = false;
+            fraID.Text = "ID";
+            // 
+            // txtID
+            // 
+            txtID.BackColor = Color.FromArgb(26, 26, 28);
+            txtID.BorderStyle = BorderStyle.FixedSingle;
+            txtID.ForeColor = Color.FromArgb(213, 213, 213);
+            txtID.Location = new Point(6, 22);
+            txtID.MaxLength = 2;
+            txtID.Name = "txtID";
+            txtID.Size = new Size(100, 23);
+            txtID.TabIndex = 2;
+            // 
+            // fraSpawns
+            // 
+            fraSpawns.BackColor = Color.Transparent;
+            fraSpawns.Controls.Add(cmdGetSpawn);
+            fraSpawns.Controls.Add(dgvSpawns);
+            fraSpawns.Location = new Point(3, 76);
+            fraSpawns.Name = "fraSpawns";
+            fraSpawns.Size = new Size(648, 345);
+            fraSpawns.TabIndex = 1;
+            fraSpawns.TabStop = false;
+            fraSpawns.Text = "Spawn Point(s)";
+            // 
+            // cmdGetSpawn
+            // 
+            cmdGetSpawn.BorderColour = Color.Empty;
+            cmdGetSpawn.CustomColour = false;
+            cmdGetSpawn.FlatBottom = false;
+            cmdGetSpawn.FlatTop = false;
+            cmdGetSpawn.Location = new Point(357, 22);
+            cmdGetSpawn.Name = "cmdGetSpawn";
+            cmdGetSpawn.Padding = new Padding(5);
+            cmdGetSpawn.Size = new Size(75, 23);
+            cmdGetSpawn.TabIndex = 1;
+            cmdGetSpawn.Text = "Get Spawn";
+            cmdGetSpawn.Click += cmdGetSpawn_Click;
+            // 
+            // dgvSpawns
+            // 
+            dgvSpawns.AllowUserToAddRows = false;
+            dgvSpawns.AllowUserToResizeColumns = false;
+            dgvSpawns.AllowUserToResizeRows = false;
+            dgvSpawns.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dgvSpawns.ColumnHeadersHeight = 24;
+            dgvSpawns.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvSpawns.Location = new Point(6, 22);
+            dgvSpawns.Name = "dgvSpawns";
+            dgvSpawns.RowHeadersWidth = 24;
+            dgvSpawns.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dgvSpawns.ScrollBars = ScrollBars.Vertical;
+            dgvSpawns.Size = new Size(345, 317);
+            dgvSpawns.TabIndex = 0;
+            dgvSpawns.CellValidating += dgvSpawns_CellValidating;
+            dgvSpawns.CellValueChanged += dgvSpawns_CellValueChanged;
+            // 
+            // NSDBox
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(31, 31, 32);
+            Controls.Add(fraSpawns);
+            Controls.Add(fraID);
+            Name = "NSDBox";
+            Size = new Size(686, 664);
+            fraID.ResumeLayout(false);
+            fraID.PerformLayout();
+            fraSpawns.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvSpawns).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
+        }
+
+        #endregion
+
+        private AltUI.Controls.DarkGroupBox fraID;
+        private DarkTextBox txtID;
+        private DarkGroupBox fraSpawns;
+        private DataGridView dgvSpawns;
+        private DarkButton cmdGetSpawn;
+    }
+}

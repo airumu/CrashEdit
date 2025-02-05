@@ -10,15 +10,44 @@ namespace CrashEdit.CE
             NSF = ws.NSF;
             NSFController = (NSFController)RootController.SubcontrollerGroups[0].Members[0].Legacy;
 
+            if (ws.ProtoNSD != null)
+            {
+                ProtoNSD = ws.ProtoNSD;
+                NSDController = (NSDController)RootController.SubcontrollerGroups[1].Members[0].Legacy;
+            }
+            else if (ws.OldNSD != null)
+            {
+                OldNSD = ws.OldNSD;
+                NSDController = (NSDController)RootController.SubcontrollerGroups[2].Members[0].Legacy;
+            }
+            else if(ws.NSD != null)
+            {
+                NSD = ws.NSD;
+                NSDController = (NSDController)RootController.SubcontrollerGroups[3].Members[0].Legacy;
+            }
+            else
+            {
+                NSDController = null;
+            }
+
             Sync();
 
             // this (should be) the NSF node. not very robust.
             ResourceTree.Nodes[1].Expand();
+            if (NSDController != null)
+            {
+                // this (should be) the NSD node. not very robust.
+                ResourceTree.Nodes[2].Expand();
+            }
         }
 
         public LevelWorkspace Workspace { get; }
         public NSF NSF { get; }
         public NSFController NSFController { get; }
+        public ProtoNSD? ProtoNSD { get; }
+        public OldNSD? OldNSD { get; }
+        public NSD? NSD { get; }
+        public NSDController? NSDController { get; }
 
         public override void Sync()
         {
@@ -29,6 +58,10 @@ namespace CrashEdit.CE
         {
             base.Kill();
             NSFController.Kill();
+            if (NSDController != null)
+            {
+                NSDController.Kill();
+            }
         }
     }
 }
