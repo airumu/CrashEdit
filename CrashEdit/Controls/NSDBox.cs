@@ -376,15 +376,21 @@ namespace CrashEdit.CE
             if (rowIndexFromMouseDown >= 0 && dropIndex >= 0 && rowIndexFromMouseDown != dropIndex)
             {
                 DataGridViewRow row = dgvSpawns.Rows[rowIndexFromMouseDown];
+                NSDSpawnPoint spawn = NSD.Spawns[rowIndexFromMouseDown];
                 dgvSpawns.Rows.RemoveAt(rowIndexFromMouseDown);
                 dgvSpawns.Rows.Insert(dropIndex, row);
+
+                NSD.Spawns.RemoveAt(rowIndexFromMouseDown);
+                NSD.Spawns.Insert(dropIndex, spawn);
+
+                BeginInvoke(new Action(() =>
+                {
+                    dgvSpawns.ClearSelection();
+                    dgvSpawns.Rows[dropIndex].Selected = true;
+                    dgvSpawns.CurrentCell = dgvSpawns.Rows[dropIndex].Cells[0];
+                }));
             }
-            BeginInvoke(new Action(() =>
-            {
-                dgvSpawns.ClearSelection();
-                dgvSpawns.Rows[dropIndex].Selected = true;
-                dgvSpawns.CurrentCell = dgvSpawns.Rows[dropIndex].Cells[0];
-            }));
+
             rowIndexFromMouseDown = -1;
             rowIndexToDrop = -1;
             dgvSpawns.Invalidate();
