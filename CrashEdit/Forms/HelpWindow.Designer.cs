@@ -120,7 +120,7 @@ namespace CrashEdit.CE
             MinimizeBox = false;
             Name = "HelpWindow";
             Padding = new Padding(0, 0, 5, 5);
-            ShowIcon = false;
+            ShowIcon = true;
             Text = "Help";
             TransparencyKey = Color.FromArgb(31, 31, 32);
             fraHexViewer.ResumeLayout(false);

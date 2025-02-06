@@ -4,6 +4,7 @@
     {
         public HelpWindow()
         {
+            Icon = Embeds.GetIcon("HelpSymbol");
             InitializeComponent();
         }
     }
