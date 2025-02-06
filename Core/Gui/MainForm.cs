@@ -1,7 +1,8 @@
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing;
-using System.Resources;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using AltUI.Config;
 using AltUI.Forms;
 
 namespace CrashEdit
@@ -364,7 +365,7 @@ namespace CrashEdit
         #region Public Properties
 
         [Description("Color for a decorative line"), Category("Appearance")]
-        public Color LineColor { get; set; } = SystemColors.Highlight;
+        public Color LineColor { get; set; } = Color.DodgerBlue;
 
         [Description("Color for all Borders"), Category("Appearance")]
         public Color BorderColor { get; set; } = SystemColors.ControlDark;
@@ -611,7 +612,7 @@ namespace CrashEdit
                 {
                     g.DrawLine(new Pen(BackColor),
                         new Point(tabRect.Left, tabRect.Top), new Point(tabRect.Left + 3, tabRect.Top));
-                    g.DrawLine(new Pen(Color.DodgerBlue),
+                    g.DrawLine(new Pen(LineColor),
                         new Point(tabRect.Left + 3, tabRect.Bottom), new Point(tabRect.Left + tabRect.Width, tabRect.Bottom));
                 }
             }
@@ -641,5 +642,244 @@ namespace CrashEdit
             rectangleF.Y += 2; // Horizontally Centered
             TextRenderer.DrawText(g, customTabPage.Text, Font, rectangleF, isSelected ? SelectedForeColor : ForeColor);
         }
+
+        private SubClass scUpDown;
+        private bool bUpDown;
+        private bool hasFocus;
+
+        protected override void OnCreateControl()
+        {
+            base.OnCreateControl();
+
+            FindUpDown();
+        }
+
+        protected override void OnControlAdded(ControlEventArgs e)
+        {
+            FindUpDown();
+            UpdateUpDown();
+
+            base.OnControlAdded(e);
+        }
+
+        protected override void OnControlRemoved(ControlEventArgs e)
+        {
+            FindUpDown();
+            UpdateUpDown();
+
+            base.OnControlRemoved(e);
+        }
+
+        private void FindUpDown()
+        {
+            var bFound = false;
+            var pWnd = Win32.GetWindow(Handle, Win32.GW_CHILD);
+
+            while (pWnd != IntPtr.Zero)
+            {
+                var className = new char[33];
+                var length = Win32.GetClassName(pWnd, className, 32);
+                var s = new string(className, 0, length);
+
+                if (s == "msctls_updown32")
+                {
+                    bFound = true;
+
+                    if (!bUpDown)
+                    {
+                        scUpDown = new SubClass(pWnd, true);
+                        scUpDown.SubClassedWndProc += new SubClass.SubClassWndProcEventHandler(scUpDown_SubClassedWndProc);
+
+                        bUpDown = true;
+                    }
+                    break;
+                }
+
+                pWnd = Win32.GetWindow(pWnd, Win32.GW_HWNDNEXT);
+            }
+
+            if ((!bFound) && (bUpDown))
+            {
+                bUpDown = false;
+            }
+        }
+
+        private void UpdateUpDown()
+        {
+            if (!bUpDown) return;
+            if (!Win32.IsWindowVisible(scUpDown.Handle)) return;
+            var rect = new Rectangle();
+
+            Win32.GetClientRect(scUpDown.Handle, ref rect);
+            Win32.InvalidateRect(scUpDown.Handle, ref rect, true);
+        }
+
+        private int scUpDown_SubClassedWndProc(ref Message m)
+        {
+            switch (m.Msg)
+            {
+                case Win32.WM_PAINT:
+                    {
+                        var hDC = Win32.GetWindowDC(scUpDown.Handle);
+                        var g = Graphics.FromHdc(hDC);
+
+                        DrawIcons(g);
+
+                        g.Dispose();
+                        Win32.ReleaseDC(scUpDown.Handle, hDC);
+                        m.Result = IntPtr.Zero;
+
+                        var rect = new Rectangle();
+
+                        Win32.GetClientRect(scUpDown.Handle, ref rect);
+                        Win32.ValidateRect(scUpDown.Handle, ref rect);
+                    }
+                    return 1;
+            }
+
+            return 0;
+        }
+
+        internal void DrawIcons(Graphics g)
+        {
+            var TabControlArea = ClientRectangle;
+            var r0 = new Rectangle();
+            Win32.GetClientRect(scUpDown.Handle, ref r0);
+
+            Brush br = new SolidBrush(ThemeProvider.Theme.Colors.LighterBackground);
+            g.FillRectangle(br, r0);
+            br.Dispose();
+
+            g.DrawString("◀", new Font(Font.FontFamily, 12f),
+                new SolidBrush(ThemeProvider.Theme.Colors.DisabledText), r0);
+
+            g.DrawString("▶", new Font(Font.FontFamily, 12f),
+                new SolidBrush(ThemeProvider.Theme.Colors.DisabledText),
+                new Rectangle(r0.X + 20, r0.Y, r0.Width, r0.Height));
+        }
     }
+
+    internal static class Win32
+    {
+        public const int GW_HWNDFIRST = 0;
+        public const int GW_HWNDLAST = 1;
+        public const int GW_HWNDNEXT = 2;
+        public const int GW_HWNDPREV = 3;
+        public const int GW_OWNER = 4;
+        public const int GW_CHILD = 5;
+
+        public const int WM_NCCALCSIZE = 0x83;
+        public const int WM_WINDOWPOSCHANGING = 0x46;
+        public const int WM_PAINT = 0xF;
+        public const int WM_CREATE = 0x1;
+        public const int WM_NCCREATE = 0x81;
+        public const int WM_NCPAINT = 0x85;
+        public const int WM_PRINT = 0x317;
+        public const int WM_DESTROY = 0x2;
+        public const int WM_SHOWWINDOW = 0x18;
+        public const int WM_SHARED_MENU = 0x1E2;
+        public const int HC_ACTION = 0;
+        public const int WH_CALLWNDPROC = 4;
+        public const int GWL_WNDPROC = -4;
+
+        [DllImport("User32.dll", CharSet = CharSet.Auto)]
+        public static extern IntPtr GetWindowDC(IntPtr handle);
+
+        [DllImport("User32.dll", CharSet = CharSet.Auto)]
+        public static extern IntPtr ReleaseDC(IntPtr handle, IntPtr hDC);
+
+        [DllImport("Gdi32.dll", CharSet = CharSet.Auto)]
+        public static extern IntPtr CreateCompatibleDC(IntPtr hdc);
+
+        [DllImport("User32.dll", CharSet = CharSet.Auto)]
+        public static extern int GetClassName(IntPtr hwnd, char[] className, int maxCount);
+
+        [DllImport("User32.dll", CharSet = CharSet.Auto)]
+        public static extern IntPtr GetWindow(IntPtr hwnd, int uCmd);
+
+        [DllImport("User32.dll", CharSet = CharSet.Auto)]
+        public static extern bool IsWindowVisible(IntPtr hwnd);
+
+        [DllImport("user32", CharSet = CharSet.Auto)]
+        public static extern int GetClientRect(IntPtr hwnd, ref RECT lpRect);
+
+        [DllImport("user32", CharSet = CharSet.Auto)]
+        public static extern int GetClientRect(IntPtr hwnd, [In, Out] ref Rectangle rect);
+
+        [DllImport("user32", CharSet = CharSet.Auto)]
+        public static extern bool MoveWindow(IntPtr hwnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
+
+        [DllImport("user32", CharSet = CharSet.Auto)]
+        public static extern bool UpdateWindow(IntPtr hwnd);
+
+        [DllImport("user32", CharSet = CharSet.Auto)]
+        public static extern bool InvalidateRect(IntPtr hwnd, ref Rectangle rect, bool bErase);
+
+        [DllImport("user32", CharSet = CharSet.Auto)]
+        public static extern bool ValidateRect(IntPtr hwnd, ref Rectangle rect);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        internal static extern bool GetWindowRect(IntPtr hWnd, [In, Out] ref Rectangle rect);
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct RECT
+        {
+            public int Left;
+            public int Top;
+            public int Right;
+            public int Bottom;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct WINDOWPOS
+        {
+            public IntPtr hwnd;
+            public IntPtr hwndAfter;
+            public int x;
+            public int y;
+            public int cx;
+            public int cy;
+            public uint flags;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct NCCALCSIZE_PARAMS
+        {
+            public RECT rgc;
+            public WINDOWPOS wndpos;
+        }
+    }
+
+    internal class SubClass : NativeWindow
+    {
+        public delegate int SubClassWndProcEventHandler(ref Message m);
+
+        public event SubClassWndProcEventHandler SubClassedWndProc;
+
+        public SubClass(IntPtr Handle, bool _SubClass)
+        {
+            AssignHandle(Handle);
+            SubClassed = _SubClass;
+        }
+
+        public bool SubClassed { get; set; }
+
+        protected override void WndProc(ref Message m)
+        {
+            if (SubClassed)
+            {
+                if (OnSubClassedWndProc(ref m) != 0)
+                {
+                    return;
+                }
+            }
+            base.WndProc(ref m);
+        }
+
+        private int OnSubClassedWndProc(ref Message m)
+        {
+            return SubClassedWndProc?.Invoke(ref m) ?? 0;
+        }
+    }
+
 }
