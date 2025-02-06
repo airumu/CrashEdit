@@ -5,7 +5,7 @@ using Frame = CrashEdit.Crash.Frame;
 
 namespace CrashEdit.CE
 {
-    public partial class ConvertAnimationsForm : DarkForm
+    public partial class EntryConverterForm : DarkForm
     {
         private List<UnprocessedEntry> loadedEntries = new List<UnprocessedEntry>();
 
@@ -30,7 +30,7 @@ namespace CrashEdit.CE
         private const int ModelEIDIndex = 16;
         private const int ModelEIDLength = 4;
 
-        public ConvertAnimationsForm()
+        public EntryConverterForm()
         {
             InitializeComponent();
             DoubleBufferedDataGridView.Initialize(dgvAnim);

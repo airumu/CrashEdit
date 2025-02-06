@@ -893,9 +893,6 @@
   <data name="Title_Success" xml:space="preserve">
     <value>成功</value>
   </data>
-  <data name="OldMainForm_tbxConvertAnimations" xml:space="preserve">
-    <value>アニメーション エントリの変換</value>
-  </data>
   <data name="GOOLBox_Goto" xml:space="preserve">
     <value>行へ移動</value>
   </data>
@@ -922,5 +919,8 @@
   </data>
   <data name="ShowGOOLMap_Title" xml:space="preserve">
     <value>GOOLマップを表示</value>
+  </data>
+  <data name="OldMainForm_tbxEntryConverter" xml:space="preserve">
+    <value>エントリの変換</value>
   </data>
 </root>

@@ -903,9 +903,6 @@ as Meters: {3:F3}m</value>
   <data name="Title_Success" xml:space="preserve">
     <value>Success</value>
   </data>
-  <data name="OldMainForm_tbxConvertAnimations" xml:space="preserve">
-    <value>Convert Animation Entries</value>
-  </data>
   <data name="GOOLBox_Goto" xml:space="preserve">
     <value>Go to Line</value>
   </data>
@@ -934,5 +931,8 @@ as Meters: {3:F3}m</value>
   </data>
   <data name="ShowGOOLMap_Title" xml:space="preserve">
     <value>Show GOOL Map</value>
+  </data>
+  <data name="OldMainForm_tbxEntryConverter" xml:space="preserve">
+    <value>Entry Converter</value>
   </data>
 </root>

@@ -1,7 +1,7 @@
 ﻿
 namespace CrashEdit.CE
 {
-    partial class ConvertAnimationsForm
+    partial class EntryConverterForm
     {
         /// <summary>
         /// Required designer variable.
@@ -155,7 +155,7 @@ namespace CrashEdit.CE
             lblWarning.TabIndex = 6;
             lblWarning.Text = "Model conversions are\r\nexperimental!";
             // 
-            // ConvertAnimationsForm
+            // EntryConverterForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -173,8 +173,8 @@ namespace CrashEdit.CE
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             MinimizeBox = false;
-            Name = "ConvertAnimationsForm";
-            Text = "Convert Animation Entries";
+            Name = "EntryConverterForm";
+            Text = "Entry Converter";
             TransparencyKey = Color.FromArgb(31, 31, 32);
             ((System.ComponentModel.ISupportInitialize)dgvAnim).EndInit();
             ResumeLayout(false);

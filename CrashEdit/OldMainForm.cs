@@ -24,7 +24,7 @@ namespace CrashEdit.CE
         private ToolStripMenuItem tbxMakeBIN = new();
         private ToolStripMenuItem tbxConvertVHVB = new();
         private ToolStripMenuItem tbxConvertVAB = new();
-        private ToolStripMenuItem tbxConvertAnimations = new();
+        private ToolStripMenuItem tbxEntryConverter = new();
         private ToolStripMenuItem tbbExtra = new();
 
         private TabControl tbcTabs;
@@ -32,9 +32,8 @@ namespace CrashEdit.CE
         private BackgroundWorker bgwMakeBIN;
         private ProgressBarForm dlgProgress;
 
-        private ConvertAnimationsForm formConvertAnimations;
-        private MakeBin formMakebin;
-        private Dictionary<string, DarkForm> formShowGOOLMap;
+        private EntryConverterForm frmEntryConverter;
+        private MakeBin frmMakebin;
 
         public static bool PAL { get; private set; } = Settings.Default.ModePAL;
         private const int RateNTSC = 30;
@@ -81,8 +80,8 @@ namespace CrashEdit.CE
             tbxConvertVAB.Text = Resources.OldMainForm_tbxConvertVAB;
             tbxConvertVAB.Click += new EventHandler(tbxConvertVAB_Click);
 
-            tbxConvertAnimations.Text = Resources.OldMainForm_tbxConvertAnimations;
-            tbxConvertAnimations.Click += new EventHandler(tbxConvertAnimations_Click);
+            tbxEntryConverter.Text = Resources.OldMainForm_tbxEntryConverter;
+            tbxEntryConverter.Click += new EventHandler(tbxEntryConverter_Click);
 
             tbbExtra.Text = Resources.OldMainForm_tbbExtra;
             tbbExtra.ImageKey = "Dropdown";
@@ -96,7 +95,7 @@ namespace CrashEdit.CE
             tbbExtra.DropDown.Items.Add(tbxConvertVHVB);
             tbbExtra.DropDown.Items.Add(tbxConvertVAB);
             tbbExtra.DropDown.Items.Add("-");
-            tbbExtra.DropDown.Items.Add(tbxConvertAnimations);
+            tbbExtra.DropDown.Items.Add(tbxEntryConverter);
 
             ToolStrip.Items.Insert(0, tbbOpen);
             ToolStrip.Items.Insert(1, tbbSave);
@@ -135,9 +134,8 @@ namespace CrashEdit.CE
             bgwMakeBIN.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bgwMakeBIN_RunWorkerCompleted);
             dlgProgress = null!;
 
-            formConvertAnimations = null!;
-            formMakebin = null!;
-            formShowGOOLMap = new();
+            frmEntryConverter = null!;
+            frmMakebin = null!;
 
             Icon = OldResources.CBHacksIconAlt;
             // Width = Settings.Default.DefaultFormW;
@@ -795,13 +793,13 @@ namespace CrashEdit.CE
 
         void tbbBIN_Click(object sender, EventArgs e)
         {
-            if (formMakebin == null || formMakebin.IsDisposed)
-                formMakebin = new MakeBin(this, true);
+            if (frmMakebin == null || frmMakebin.IsDisposed)
+                frmMakebin = new MakeBin(this, true);
 
-            if (!formMakebin.Visible)
-                formMakebin.Show();
+            if (!frmMakebin.Visible)
+                frmMakebin.Show();
             else
-                formMakebin.Activate();
+                frmMakebin.Activate();
         }
 
         void tbxDefaultVersion_SelectedIndexChanged(object sender, EventArgs e)
@@ -812,13 +810,13 @@ namespace CrashEdit.CE
 
         void tbxMakeBIN_Click(object sender, EventArgs e)
         {
-            if (formMakebin == null || formMakebin.IsDisposed)
-                formMakebin = new MakeBin(this, false);
+            if (frmMakebin == null || frmMakebin.IsDisposed)
+                frmMakebin = new MakeBin(this, false);
 
-            if (!formMakebin.Visible)
-                formMakebin.Show();
+            if (!frmMakebin.Visible)
+                frmMakebin.Show();
             else
-                formMakebin.Activate();
+                frmMakebin.Activate();
         }
 
         void tbxConvertVHVB_Click(object sender, EventArgs e)
@@ -886,19 +884,19 @@ namespace CrashEdit.CE
             }
         }
 
-        void tbxConvertAnimations_Click(object sender, EventArgs e)
+        void tbxEntryConverter_Click(object sender, EventArgs e)
         {
-            if (formConvertAnimations != null)
+            if (frmEntryConverter != null)
             {
-                formConvertAnimations.Focus();
+                frmEntryConverter.Focus();
                 return;
             }
-            formConvertAnimations = new ConvertAnimationsForm();
-            formConvertAnimations.FormClosing += (object sender, FormClosingEventArgs e) =>
+            frmEntryConverter = new EntryConverterForm();
+            frmEntryConverter.FormClosing += (object sender, FormClosingEventArgs e) =>
             {
-                formConvertAnimations = null;
+                frmEntryConverter = null;
             };
-            formConvertAnimations.Show();
+            frmEntryConverter.Show();
         }
 
         void GetNSD(string filename, GameVersion gameversion, out string nsdFilename, out dynamic? nsd)
