@@ -51,14 +51,12 @@ namespace CrashEdit.CE
 
         void Menu_ChangeCollisionType()
         {
-            byte[] layout = ZoneEntry.Layout;
-
-            byte[] searchPattern = null!;
-            using (InputWindow inputWindows = new InputWindow("Enter collision type to replace:", "Change Collision Type", string.Empty))
+            try
             {
-                if (inputWindows.ShowDialog() == DialogResult.OK)
+                byte[] searchPattern = null!;
+                using (InputWindow inputWindows = new InputWindow("Enter the collision type (as a literal) to replace:", CrashUI.Properties.Resources.ZoneEntryController_AcChangeCollisionType, string.Empty))
                 {
-                    try
+                    if (inputWindows.ShowDialog() == DialogResult.OK)
                     {
                         string input = inputWindows.Input;
                         if (input.Length % 4 != 0)
@@ -69,21 +67,13 @@ namespace CrashEdit.CE
                         ushort value = Convert.ToUInt16(input, 16);
                         searchPattern = BitConverter.GetBytes(value);
                     }
-                    catch (Exception ex)
-                    {
-                        DarkMessageBox.ShowError($"Error: {ex.Message}", Resources.Title_Error);
-                        return;
-                    }
+                    else return;
                 }
-                else return;
-            }
 
-            byte[] replacementPattern = null!;
-            using (InputWindow inputWindows = new InputWindow("Enter new collision type:", "Change Collision Type", string.Empty))
-            {
-                if (inputWindows.ShowDialog() == DialogResult.OK)
+                byte[] replacementPattern = null!;
+                using (InputWindow inputWindows = new InputWindow("Enter the new collision type (as a literal):", CrashUI.Properties.Resources.ZoneEntryController_AcChangeCollisionType, string.Empty))
                 {
-                    try
+                    if (inputWindows.ShowDialog() == DialogResult.OK)
                     {
                         string input = inputWindows.Input;
                         if (input.Length % 4 != 0)
@@ -94,37 +84,38 @@ namespace CrashEdit.CE
                         ushort value = Convert.ToUInt16(input, 16);
                         replacementPattern = BitConverter.GetBytes(value);
                     }
-                    catch (Exception ex)
+                    else return;
+                }
+
+                byte[] layout = ZoneEntry.Layout;
+                for (int i = 0x24; i <= layout.Length - searchPattern.Length; i += 2)
+                {
+                    bool isMatch = true;
+
+                    for (int j = 0; j < searchPattern.Length; j++)
                     {
-                        DarkMessageBox.ShowError($"Error: {ex.Message}", Resources.Title_Error);
-                        return;
+                        if (layout[i + j] != searchPattern[j])
+                        {
+                            isMatch = false;
+                            break;
+                        }
+                    }
+                    if (isMatch)
+                    {
+                        for (int j = 0; j < replacementPattern.Length; j++)
+                        {
+                            layout[i + j] = replacementPattern[j];
+                        }
                     }
                 }
-                else return;
-            }
 
-            for (int i = 0x24; i <= layout.Length - searchPattern.Length; i += 2)
+                ZoneEntry.Layout = layout;
+            }
+            catch (Exception ex)
             {
-                bool isMatch = true;
-
-                for (int j = 0; j < searchPattern.Length; j++)
-                {
-                    if (layout[i + j] != searchPattern[j])
-                    {
-                        isMatch = false;
-                        break;
-                    }
-                }
-                if (isMatch)
-                {
-                    for (int j = 0; j < replacementPattern.Length; j++)
-                    {
-                        layout[i + j] = replacementPattern[j];
-                    }
-                }
+                DarkMessageBox.ShowError($"{ex.Message}", CrashUI.Properties.Resources.ZoneEntryController_AcChangeCollisionType);
+                return;
             }
-
-            ZoneEntry.Layout = layout;
         }
     }
 }
