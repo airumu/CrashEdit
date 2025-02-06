@@ -39,9 +39,22 @@ namespace CrashEdit.CE
                 showGOOLMapForm.Focus();
                 return;
             }
+
+            string nsfFilename = GetFileName();
+            string nsdFilename = string.Empty;
+            if (nsfFilename.EndsWith("F"))
+            {
+                nsdFilename = nsfFilename.Remove(nsfFilename.Length - 1);
+                nsdFilename += "D";
+            }
+            else if (nsfFilename.EndsWith("f"))
+            {
+                nsdFilename = nsfFilename.Remove(nsfFilename.Length - 1);
+                nsdFilename += "d";
+            }
             showGOOLMapForm = new DarkForm()
             {
-                Text = $"GOOL Map (S00000{NSD.ID.ToString("X2")}.NSD)",
+                Text = $"GOOL Map ({nsdFilename})",
                 BackColor = Color.FromArgb(31, 31, 32),
                 MaximizeBox = false,
                 MinimizeBox = false,

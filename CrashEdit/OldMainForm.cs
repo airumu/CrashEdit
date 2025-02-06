@@ -395,6 +395,7 @@ namespace CrashEdit.CE
         public void OpenNSF(string filename, NSF nsf, GameVersion gameversion)
         {
             var ws = new LevelWorkspace();
+            ws.FileName = filename;
             ws.NSF = nsf;
             GetNSD(filename, gameversion, out string nsdFilename, out dynamic? nsd);
             if (nsd is ProtoNSD)
@@ -416,18 +417,11 @@ namespace CrashEdit.CE
             };
             nsfbox.ActiveControllerChanged += MainControl_ActiveControllerChanged;
 
-            //NSDBox nsdbox = new NSDBox(this, ws)
-            //{
-            //    Dock = DockStyle.Fill
-            //};
-            //nsfbox.ActiveControllerChanged += MainControl_ActiveControllerChanged;
-
             TabPage nsftab = new TabPage(filename)
             {
                 Tag = nsfbox
             };
             nsftab.Controls.Add(nsfbox);
-            //nsftab.Controls.Add(nsdbox);
 
             tbcTabs.TabPages.Add(nsftab);
             tbcTabs.SelectedTab = nsftab;

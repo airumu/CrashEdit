@@ -38,5 +38,10 @@ namespace CrashEdit.CE
         {
             return (Modern.Root.Resource as LevelWorkspace)?.NSF?.GetEntries<T>();
         }
+
+        public string GetFileName()
+        {
+            return (Modern.Root.Resource as LevelWorkspace)?.FileName;
+        }
     }
 }

@@ -17,6 +17,8 @@ namespace CrashEdit.Crash
         [SubresourceSlot]
         public ProtoNSD? ProtoNSD { get; set; }
 
+        public string? FileName { get; set; }
+
         public Dictionary<int, IEntry> AllEntriesByEid { get; } = [];
 
         public T? GetEntry<T>(int eid) where T : class

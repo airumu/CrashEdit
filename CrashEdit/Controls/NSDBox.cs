@@ -8,9 +8,10 @@ namespace CrashEdit.CE
 {
     public partial class NSDBox : UserControl
     {
-        public NSF NSF { get; }
-        public NSD NSD { get; }
-        public NSDController NSDController { get; }
+        private NSF NSF { get; }
+        private NSD NSD { get; }
+        private NSDController NSDController { get; }
+        private string FileName { get; }
 
         private DarkToolTip tipReload;
 
@@ -34,6 +35,7 @@ namespace CrashEdit.CE
             NSDController = nsdController;
             NSD = NSDController.NSD;
             NSF = nsdController.GetNSF();
+            FileName = nsdController.GetFileName();
             InitializeComponent();
             MainInit();
         }
