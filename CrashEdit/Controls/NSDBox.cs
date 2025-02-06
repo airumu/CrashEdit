@@ -77,7 +77,7 @@ namespace CrashEdit.CE
             }
         }
 
-        private void AppendRowItem_Click(object sender, EventArgs e)
+        private void AppendRowItem_Click(object? sender, EventArgs e)
         {
             if (dgvSpawns.Rows.Count >= int.MaxValue)
             {
@@ -89,7 +89,7 @@ namespace CrashEdit.CE
             NSD.Spawns.Add(new NSDSpawnPoint(Entry.NullEID, 0, 0, 0, 0, 0));
         }
 
-        private void DeleteRowItem_Click(object sender, EventArgs e)
+        private void DeleteRowItem_Click(object? sender, EventArgs e)
         {
             if (!(dgvSpawns.SelectedCells.Count > 0)) return;
 
@@ -129,6 +129,7 @@ namespace CrashEdit.CE
 
         private void UpdateSpawnPoint()
         {
+            dgvSpawns.ClearSelection();
             dgvSpawns.Rows.Clear();
             foreach (var spawn in NSD.Spawns)
             {
@@ -141,7 +142,7 @@ namespace CrashEdit.CE
         private void dgvSpawns_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
             if (!(dgvSpawns.SelectedCells.Count > 0)) return;
-            string inputValue = e.FormattedValue.ToString();
+            string? inputValue = e.FormattedValue?.ToString();
 
             if (e.ColumnIndex == ColZoneEID)
             {
@@ -176,29 +177,33 @@ namespace CrashEdit.CE
         {
             if (Dirty || e.RowIndex < 0 || e.ColumnIndex < 0) return;
 
-            var row = dgvSpawns.Rows[e.RowIndex];
-            var cell = row.Cells[e.ColumnIndex].Value;
-            var og = NSD.Spawns[e.RowIndex];
+            var cell = dgvSpawns.Rows[e.RowIndex].Cells[e.ColumnIndex].Value?.ToString();
+            if (cell == null)
+            {
+                DarkMessageBox.ShowError("Cell value cannot be null.", Resources.Title_InputError);
+                return;
+            }
 
+            var og = NSD.Spawns[e.RowIndex];
             switch (e.ColumnIndex)
             {
                 case 0: // ZoneEID
-                    og.ZoneEID = Entry.ENameToEID(cell.ToString());
+                    og.ZoneEID = Entry.ENameToEID(cell);
                     break;
                 case 1: // Camera
-                    og.Camera = Convert.ToInt32(cell.ToString());
+                    og.Camera = Convert.ToInt32(cell);
                     break;
                 case 2: // Point
-                    og.Point = Convert.ToInt32(cell.ToString());
+                    og.Point = Convert.ToInt32(cell);
                     break;
                 case 3: // SpawnX
-                    og.SpawnX = Convert.ToInt32(cell.ToString(), 16);
+                    og.SpawnX = Convert.ToInt32(cell, 16);
                     break;
                 case 4: // SpawnY
-                    og.SpawnY = Convert.ToInt32(cell.ToString(), 16);
+                    og.SpawnY = Convert.ToInt32(cell, 16);
                     break;
                 case 5: // SpawnZ
-                    og.SpawnZ = Convert.ToInt32(cell.ToString(), 16);
+                    og.SpawnZ = Convert.ToInt32(cell, 16);
                     break;
             }
         }
@@ -284,8 +289,8 @@ namespace CrashEdit.CE
 
             byte[] data = new byte[24];
             BitConv.ToInt32(data, 0, Entry.ENameToEID(row.Cells[ColZoneEID].Value.ToString()));
-            BitConv.ToInt32(data, 4, Convert.ToInt32(row.Cells[ColCamera].Value.ToString(), 16));
-            BitConv.ToInt32(data, 8, Convert.ToInt32(row.Cells[ColPoint].Value.ToString(), 16));
+            BitConv.ToInt32(data, 4, Convert.ToInt32(row.Cells[ColCamera].Value.ToString()));
+            BitConv.ToInt32(data, 8, Convert.ToInt32(row.Cells[ColPoint].Value.ToString()));
             BitConv.ToInt32(data, 12, Convert.ToInt32(row.Cells[ColSpawnX].Value.ToString(), 16));
             BitConv.ToInt32(data, 16, Convert.ToInt32(row.Cells[ColSpawnY].Value.ToString(), 16));
             BitConv.ToInt32(data, 20, Convert.ToInt32(row.Cells[ColSpawnZ].Value.ToString(), 16));
@@ -303,7 +308,7 @@ namespace CrashEdit.CE
             bool isHex = Regex.IsMatch(str, @"\A\b[0-9A-Fa-f]+\b\Z");
             if (str.Length != 48 || !isHex)
             {
-                DarkMessageBox.ShowError("Invalid spawn point.", Resources.Title_Error);
+                DarkMessageBox.ShowError("Invalid spawn point structure.", Resources.Title_Error);
                 return;
             }
             byte[] bytes = Enumerable.Range(0, str.Length / 2)
@@ -311,8 +316,8 @@ namespace CrashEdit.CE
                                      .ToArray();
 
             row.Cells[ColZoneEID].Value = Entry.EIDToEName(Convert.ToInt32(BitConv.FromInt32(bytes, 0)));
-            row.Cells[ColCamera].Value = BitConv.FromInt32(bytes, 4).ToString("X");
-            row.Cells[ColPoint].Value = BitConv.FromInt32(bytes, 8).ToString("X");
+            row.Cells[ColCamera].Value = BitConv.FromInt32(bytes, 4).ToString();
+            row.Cells[ColPoint].Value = BitConv.FromInt32(bytes, 8).ToString();
             row.Cells[ColSpawnX].Value = BitConv.FromInt32(bytes, 12).ToString("X");
             row.Cells[ColSpawnY].Value = BitConv.FromInt32(bytes, 16).ToString("X");
             row.Cells[ColSpawnZ].Value = BitConv.FromInt32(bytes, 20).ToString("X");
@@ -396,7 +401,7 @@ namespace CrashEdit.CE
             if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control)
             {
                 cmdCopy.PerformClick();
-                e.Handled = true;
+                e.Handled = true; // To prevent copying the cell value.
             }
             else if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
             {
