@@ -9,13 +9,14 @@ namespace CrashEdit.Crash
         public GameVersion GameVersion { get; set; }
 
         [SubresourceSlot]
-        public NSF? NSF { get; set; }
-        [SubresourceSlot]
         public NSD? NSD { get; set; }
         [SubresourceSlot]
         public OldNSD? OldNSD { get; set; }
         [SubresourceSlot]
         public ProtoNSD? ProtoNSD { get; set; }
+
+        [SubresourceSlot]
+        public NSF? NSF { get; set; }
 
         public string? FileName { get; set; }
 
