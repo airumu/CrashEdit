@@ -92,6 +92,7 @@ namespace CrashEdit.CE
             chkSplitViewerPanels = new CheckBox();
             chkLiteralCollisionTypes = new CheckBox();
             chkPatchGOOLC3toC2 = new CheckBox();
+            chkShowRenderingErrors = new CheckBox();
             tableLayoutPanel4 = new TableLayoutPanel();
             tableLayoutPanel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numFontSize).BeginInit();
@@ -636,6 +637,7 @@ namespace CrashEdit.CE
             // tbpDebugDisplay
             // 
             tbpDebugDisplay.BackColor = Color.FromArgb(31, 31, 32);
+            tbpDebugDisplay.Controls.Add(chkShowRenderingErrors);
             tbpDebugDisplay.Controls.Add(darkGroupBox3);
             tbpDebugDisplay.Controls.Add(darkGroupBox2);
             tbpDebugDisplay.Controls.Add(darkGroupBox1);
@@ -655,7 +657,7 @@ namespace CrashEdit.CE
             darkGroupBox3.BackColor = Color.Transparent;
             darkGroupBox3.Controls.Add(chkViewCamera);
             darkGroupBox3.Controls.Add(chkViewCameraAngle);
-            darkGroupBox3.Location = new Point(3, 262);
+            darkGroupBox3.Location = new Point(3, 287);
             darkGroupBox3.Name = "darkGroupBox3";
             darkGroupBox3.Size = new Size(200, 72);
             darkGroupBox3.TabIndex = 16;
@@ -693,7 +695,7 @@ namespace CrashEdit.CE
             darkGroupBox2.BackColor = Color.Transparent;
             darkGroupBox2.Controls.Add(chkViewZoneBox);
             darkGroupBox2.Controls.Add(chkViewZoneName);
-            darkGroupBox2.Location = new Point(3, 184);
+            darkGroupBox2.Location = new Point(3, 209);
             darkGroupBox2.Name = "darkGroupBox2";
             darkGroupBox2.Size = new Size(200, 72);
             darkGroupBox2.TabIndex = 15;
@@ -731,7 +733,7 @@ namespace CrashEdit.CE
             darkGroupBox1.BackColor = Color.Transparent;
             darkGroupBox1.Controls.Add(chkFont3DEnable);
             darkGroupBox1.Controls.Add(chkShowEntityParams);
-            darkGroupBox1.Location = new Point(3, 106);
+            darkGroupBox1.Location = new Point(3, 131);
             darkGroupBox1.Name = "darkGroupBox1";
             darkGroupBox1.Size = new Size(200, 72);
             darkGroupBox1.TabIndex = 14;
@@ -936,6 +938,19 @@ namespace CrashEdit.CE
             chkPatchGOOLC3toC2.CheckedChanged += chkPatchGOOLC3toC2_CheckedChanged;
             chkPatchGOOLC3toC2.Click += chkPatchGOOLC3toC2_Click;
             // 
+            // chkShowRenderingErrors
+            // 
+            chkShowRenderingErrors.AutoSize = true;
+            chkShowRenderingErrors.Checked = true;
+            chkShowRenderingErrors.CheckState = CheckState.Checked;
+            chkShowRenderingErrors.Location = new Point(7, 106);
+            chkShowRenderingErrors.Name = "chkShowRenderingErrors";
+            chkShowRenderingErrors.Size = new Size(142, 19);
+            chkShowRenderingErrors.TabIndex = 17;
+            chkShowRenderingErrors.Text = "Show rendering errors";
+            chkShowRenderingErrors.UseVisualStyleBackColor = true;
+            chkShowRenderingErrors.CheckedChanged += chkShowRenderingErrors_CheckedChanged;
+            // 
             // ConfigEditor
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -1050,5 +1065,6 @@ namespace CrashEdit.CE
         private CheckBox chkIgnoreDuplicatedEntryError;
         private DarkComboBox dpdHexView;
         private DarkGroupBox fraHexView;
+        private CheckBox chkShowRenderingErrors;
     }
 }

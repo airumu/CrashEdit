@@ -550,5 +550,17 @@ namespace CrashEdit.CE.Properties {
                 this["HexViewCellSize"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ShowRenderingErrors {
+            get {
+                return ((bool)(this["ShowRenderingErrors"]));
+            }
+            set {
+                this["ShowRenderingErrors"] = value;
+            }
+        }
     }
 }

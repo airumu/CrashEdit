@@ -118,6 +118,7 @@ namespace CrashEdit.CE
             chkOutputCLUTInfo.Checked = Settings.Default.OutputCLUTInfo;
             chkApplyMica.Checked = Settings.Default.ApplyMica;
             chkIgnoreDuplicatedEntryError.Checked = Settings.Default.IgnoreDuplicatedEntryError;
+            chkShowRenderingErrors.Checked = Settings.Default.ShowRenderingErrors;
 
             fraSize.Text = Resources.Config_fraSize;
             fraClearCol.Text = Resources.Config_fraClearCol;
@@ -157,6 +158,7 @@ namespace CrashEdit.CE
             chkOutputCLUTInfo.Text = Resources.Config_chkOutputCLUTInfo;
             chkApplyMica.Text = Resources.Config_chkApplyMica;
             chkIgnoreDuplicatedEntryError.Text = Resources.Config_chkIgnoreDuplicatedEntryError;
+            chkShowRenderingErrors.Text = Resources.Config_chkShowRenderingErrors;
 
             chkViewCameraAngle.Enabled = chkViewCamera.Checked;
         }
@@ -415,6 +417,12 @@ namespace CrashEdit.CE
         private void chkIgnoreDuplicatedEntryError_CheckedChanged(object sender, EventArgs e)
         {
             Settings.Default.IgnoreDuplicatedEntryError = chkIgnoreDuplicatedEntryError.Checked;
+            Settings.Default.Save();
+        }
+
+        private void chkShowRenderingErrors_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.ShowRenderingErrors = chkShowRenderingErrors.Checked;
             Settings.Default.Save();
         }
     }

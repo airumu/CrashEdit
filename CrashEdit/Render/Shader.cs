@@ -1,4 +1,5 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿using CrashEdit.CE.Properties;
+using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
 namespace CrashEdit.CE
@@ -156,9 +157,12 @@ namespace CrashEdit.CE
         public void Render(RenderInfo ri, VAO vao)
         {
             GL.ValidateProgram(ID);
-            string log = GL.GetProgramInfoLog(ID);
-            if (!string.IsNullOrEmpty(log))
-                Console.WriteLine($"When validating {Name}:\n {log}");
+            if (Settings.Default.ShowRenderingErrors)
+            {
+                string log = GL.GetProgramInfoLog(ID);
+                if (!string.IsNullOrEmpty(log))
+                    Console.WriteLine($"When validating {Name}:\n {log}");
+            }
             GL.UseProgram(ID);
             Info.PreRenderFunc(this, ri, vao);
             Info.RenderFunc(this, ri, vao);

@@ -134,5 +134,8 @@
     <Setting Name="HexViewCellSize" Type="System.String" Scope="User">
       <Value Profile="(Default)">Small</Value>
     </Setting>
+    <Setting Name="ShowRenderingErrors" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

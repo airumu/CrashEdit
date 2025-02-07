@@ -259,6 +259,15 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
+        ///   Show rendering errors に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Config_chkShowRenderingErrors {
+            get {
+                return ResourceManager.GetString("Config_chkShowRenderingErrors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Split animation viewer panels に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Config_chkSplitViewerPanels {
