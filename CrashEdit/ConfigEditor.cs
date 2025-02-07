@@ -11,7 +11,7 @@ namespace CrashEdit.CE
         private static readonly List<string> FontFileNames = new();
         private static readonly List<string> FontExtensions = new() { ".ttf", ".otf" };
 
-        public HelpWindow frmhelp = null;
+        public HelpWindow? frmhelp = null;
 
         private void MakeFontsList()
         {
@@ -49,15 +49,6 @@ namespace CrashEdit.CE
             }
         }
 
-        private void RestartProgram()
-        {
-            if (DarkMessageBox.ShowInformation(Resources.Restart, Resources.Restart_ConfirmationPrompt, DarkDialogButton.YesNo) == DialogResult.Yes)
-            {
-                Application.Restart();
-                Environment.Exit(0);
-            }
-        }
-
         public ConfigEditor()
         {
             InitializeComponent();
@@ -92,6 +83,7 @@ namespace CrashEdit.CE
             cdlClearCol.Color = picClearCol.BackColor = Color.FromArgb(Settings.Default.ClearColorRGB);
             cdlClearCol.Color = picClearCol.BackColor = Color.FromArgb(Settings.Default.ClearColorRGB);
 
+            // chk.Checked
             chkNormalDisplay.Checked = Settings.Default.DisplayNormals;
             chkCollisionDisplay.Checked = Settings.Default.DisplayFrameCollision;
             chkDeleteInvalidEntries.Checked = Settings.Default.DeleteInvalidEntries;
@@ -105,7 +97,7 @@ namespace CrashEdit.CE
             chkViewCameraAngle.Checked = Settings.Default.ViewCameraAngle;
             chkShowEntityParams.Checked = Settings.Default.ShowEntityParams;
             chkPatchNSDSavesNSF.Checked = Settings.Default.PatchNSDSavesNSF;
-            // added
+
             chkLagacyPatchNSD.Checked = Settings.Default.UseOldPatchNSD;
             chkLiteralCollisionTypes.Checked = Settings.Default.ShowliteralCollisionTypes;
             chkEnableCustomCrates.Checked = Settings.Default.EnableCustomCrates;
@@ -120,6 +112,10 @@ namespace CrashEdit.CE
             chkIgnoreDuplicatedEntryError.Checked = Settings.Default.IgnoreDuplicatedEntryError;
             chkShowRenderingErrors.Checked = Settings.Default.ShowRenderingErrors;
 
+            // chk.Enabled
+            chkViewCameraAngle.Enabled = chkViewCamera.Checked;
+
+            // chk.Text
             fraSize.Text = Resources.Config_fraSize;
             fraClearCol.Text = Resources.Config_fraClearCol;
             fraFont.Text = Resources.Config_fraFont;
@@ -145,7 +141,7 @@ namespace CrashEdit.CE
             chkShowEntityParams.Text = Resources.Config_chkShowEntityParams;
             lblNodeShadeAmt.Text = string.Format("{0:F0}%", sldNodeShadeAmt.Value);
             cmdReset.Text = Resources.Config_cmdReset;
-            // added
+
             chkLagacyPatchNSD.Text = Resources.Config_chkLegacyPatchNSD;
             chkLiteralCollisionTypes.Text = Resources.Config_chkLiteralCollisionTypes;
             chkEnableCustomCrates.Text = Resources.Config_chkEnableCustomCrates;
@@ -159,8 +155,15 @@ namespace CrashEdit.CE
             chkApplyMica.Text = Resources.Config_chkApplyMica;
             chkIgnoreDuplicatedEntryError.Text = Resources.Config_chkIgnoreDuplicatedEntryError;
             chkShowRenderingErrors.Text = Resources.Config_chkShowRenderingErrors;
+        }
 
-            chkViewCameraAngle.Enabled = chkViewCamera.Checked;
+        private void AskRestartProgram()
+        {
+            if (DarkMessageBox.ShowInformation(Resources.Restart, Resources.Restart_ConfirmationPrompt, DarkDialogButton.YesNo) == DialogResult.Yes)
+            {
+                Application.Restart();
+                Environment.Exit(0);
+            }
         }
 
         private void cmdHelp_Click(object sender, EventArgs e)
@@ -168,6 +171,10 @@ namespace CrashEdit.CE
             if (frmhelp == null || frmhelp.IsDisposed)
             {
                 frmhelp = new HelpWindow();
+                frmhelp.FormClosing += (object? sender, FormClosingEventArgs e) =>
+                {
+                    frmhelp = null;
+                };
             }
             if (!frmhelp.Visible)
             {
@@ -183,7 +190,7 @@ namespace CrashEdit.CE
         {
             Settings.Default.Language = Languages[dpdLang.SelectedIndex];
             Settings.Default.Save();
-            RestartProgram();
+            AskRestartProgram();
         }
 
         private void dpdFont_SelectedIndexChanged(object sender, EventArgs e)
@@ -196,7 +203,7 @@ namespace CrashEdit.CE
         {
             Settings.Default.HexViewCellSize = Convert.ToString(dpdHexView.SelectedItem);
             Settings.Default.Save();
-            RestartProgram();
+            AskRestartProgram();
         }
 
         private void cmdReset_Click(object sender, EventArgs e)
@@ -405,7 +412,7 @@ namespace CrashEdit.CE
         {
             Settings.Default.ApplyMica = chkApplyMica.Checked;
             Settings.Default.Save();
-            RestartProgram();
+            AskRestartProgram();
         }
 
         private void chkOutputCLUTInfo_CheckedChanged(object sender, EventArgs e)

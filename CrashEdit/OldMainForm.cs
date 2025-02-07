@@ -32,8 +32,8 @@ namespace CrashEdit.CE
         private BackgroundWorker bgwMakeBIN;
         private ProgressBarForm dlgProgress;
 
-        private EntryConverterForm frmEntryConverter;
-        private MakeBin frmMakebin;
+        private EntryConverterForm? frmEntryConverter;
+        private MakeBin? frmMakebin;
 
         public static bool PAL { get; private set; } = Settings.Default.ModePAL;
         private const int RateNTSC = 30;
@@ -134,8 +134,8 @@ namespace CrashEdit.CE
             bgwMakeBIN.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bgwMakeBIN_RunWorkerCompleted);
             dlgProgress = null!;
 
-            frmEntryConverter = null!;
-            frmMakebin = null!;
+            frmEntryConverter = null;
+            frmMakebin = null;
 
             Icon = OldResources.CBHacksIconAlt;
             // Width = Settings.Default.DefaultFormW;
@@ -791,32 +791,31 @@ namespace CrashEdit.CE
             }
         }
 
-        void tbbBIN_Click(object sender, EventArgs e)
-        {
-            if (frmMakebin == null || frmMakebin.IsDisposed)
-                frmMakebin = new MakeBin(this, true);
-
-            if (!frmMakebin.Visible)
-                frmMakebin.Show();
-            else
-                frmMakebin.Activate();
-        }
-
         void tbxDefaultVersion_SelectedIndexChanged(object sender, EventArgs e)
         {
             Settings.Default.DefaultGameVersion = tbxDefaultVersion.SelectedIndex;
             Settings.Default.Save();
         }
 
-        void tbxMakeBIN_Click(object sender, EventArgs e)
+        void ShowMakeBinForm(bool autoMake)
         {
             if (frmMakebin == null || frmMakebin.IsDisposed)
-                frmMakebin = new MakeBin(this, false);
+                frmMakebin = new MakeBin(this, autoMake);
 
             if (!frmMakebin.Visible)
                 frmMakebin.Show();
             else
                 frmMakebin.Activate();
+        }
+
+        void tbbBIN_Click(object sender, EventArgs e)
+        {
+            ShowMakeBinForm(true);
+        }
+
+        void tbxMakeBIN_Click(object sender, EventArgs e)
+        {
+            ShowMakeBinForm(false);
         }
 
         void tbxConvertVHVB_Click(object sender, EventArgs e)
@@ -892,7 +891,7 @@ namespace CrashEdit.CE
                 return;
             }
             frmEntryConverter = new EntryConverterForm();
-            frmEntryConverter.FormClosing += (object sender, FormClosingEventArgs e) =>
+            frmEntryConverter.FormClosing += (object? sender, FormClosingEventArgs e) =>
             {
                 frmEntryConverter = null;
             };
