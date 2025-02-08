@@ -247,42 +247,45 @@ namespace CrashEdit.CE
                     Console.WriteLine("GL debug enabled.");
                     debugInitPrinted = true;
                 }
-                // Enable debug callbacks.
-                GL.Enable(EnableCap.DebugOutput);
-                GL.DebugMessageCallback((source, type, id, severity, length, message, userParam) =>
+                if (Settings.Default.ShowRenderingErrors)
                 {
-                    string msg = Marshal.PtrToStringAnsi(message);
-                    string level = "OTHER";
-                    switch (severity)
+                    // Enable debug callbacks.
+                    GL.Enable(EnableCap.DebugOutput);
+                    GL.DebugMessageCallback((source, type, id, severity, length, message, userParam) =>
                     {
-                        case DebugSeverity.DebugSeverityHigh:
-                            level = "ERROR";
-                            break;
-                        case DebugSeverity.DebugSeverityMedium:
-                            level = "WARN";
-                            break;
-                        case DebugSeverity.DebugSeverityLow:
-                            level = "INFO";
-                            break;
-                    }
-                    string context = null;
-                    if (dbgContextDir.Count > 0)
-                    {
-                        foreach (var c in dbgContextDir)
+                        string msg = Marshal.PtrToStringAnsi(message);
+                        string level = "OTHER";
+                        switch (severity)
                         {
-                            if (!string.IsNullOrEmpty(context))
-                            {
-                                context += "/";
-                            }
-                            context += c;
+                            case DebugSeverity.DebugSeverityHigh:
+                                level = "ERROR";
+                                break;
+                            case DebugSeverity.DebugSeverityMedium:
+                                level = "WARN";
+                                break;
+                            case DebugSeverity.DebugSeverityLow:
+                                level = "INFO";
+                                break;
                         }
-                    }
-                    else
-                    {
-                        context = "*unknown*";
-                    }
-                    Console.WriteLine($"[{context}] OpenGL {level}: {msg}");
-                }, IntPtr.Zero);
+                        string context = null;
+                        if (dbgContextDir.Count > 0)
+                        {
+                            foreach (var c in dbgContextDir)
+                            {
+                                if (!string.IsNullOrEmpty(context))
+                                {
+                                    context += "/";
+                                }
+                                context += c;
+                            }
+                        }
+                        else
+                        {
+                            context = "*unknown*";
+                        }
+                        Console.WriteLine($"[{context}] OpenGL {level}: {msg}");
+                    }, IntPtr.Zero);
+                }
             }
         }
 
