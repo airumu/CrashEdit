@@ -39,7 +39,7 @@ namespace CrashEdit
             }
 
             // No match.
-            Host.ShowError("No results after the current selection.");
+            Host.ShowInformation("No results after the current selection.", "Find");
             return false;
         }
 

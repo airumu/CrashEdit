@@ -1,4 +1,5 @@
 using System.Drawing;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace CrashEdit
@@ -67,7 +68,17 @@ namespace CrashEdit
 
         public event EventHandler? ActiveControllerChanged;
 
-        private string _searchQuery = "";
+      
+
+        public string? Filter { get; set; }
+
+        public bool IgnoreFilter { get; set; }
+
+        public bool UseRegex { get; set; }
+
+        public bool IsCaseSensitive { get; set; }
+
+        private string _searchQuery = string.Empty;
 
         public string SearchQuery
         {
@@ -79,15 +90,66 @@ namespace CrashEdit
 
                 _searchQuery = value;
 
-                var queryLowerCase = value.ToLower();
-                if (value == "")
+                string query = value;
+
+                // Apply filter.
+                if (!string.IsNullOrEmpty(Filter) && !IgnoreFilter)
+                {
+                    if (Filter == "Entity")
+                    {
+                        query = $@"{Regex.Escape(value)}.*\[ID|.*\[ID {Regex.Escape(value)}";
+                    }
+                    else if (Filter == "GOOL")
+                    {
+                        query = $@"GOOLv?\d* \({Regex.Escape(value)}";
+                    }
+                    else if (Filter == "Texture")
+                    {
+                        query = $@"Texture Chunk \d* \({Regex.Escape(value)}";
+                    }
+                    else
+                    {
+                        query = $@"{Filter} \({Regex.Escape(value)}";
+                    }
+                    UseRegex = true;
+                }
+                else
+                {
+                    UseRegex = false;
+                }
+
+                if (string.IsNullOrEmpty(query))
                 {
                     SearchPredicate = null;
                 }
                 else
                 {
-                    SearchPredicate = (x =>
-                        x.Text.ToLower().Contains(queryLowerCase));
+                    if (UseRegex)
+                    {
+                        if (IsCaseSensitive)
+                        {
+                            SearchPredicate = (x =>
+                                Regex.IsMatch(x.Text, query));
+                        }
+                        else
+                        {
+                            SearchPredicate = (x =>
+                                Regex.IsMatch(x.Text, query, RegexOptions.IgnoreCase));
+                        }
+                    }
+                    else
+                    {
+                        if (IsCaseSensitive)
+                        {
+                            SearchPredicate = (x =>
+                                x.Text.Contains(query));
+                        }
+                        else
+                        {
+                            SearchPredicate = (x =>
+                                x.Text.Contains(query, StringComparison.InvariantCultureIgnoreCase));
+                        }
+                    }
                 }
             }
         }

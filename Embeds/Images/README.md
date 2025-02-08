@@ -15,6 +15,7 @@ Images and their sources are listed below. Some have been modified or adapted.
 |Earth          |![img](Earth.png)          |Aha-Soft      |
 |Erase          |![img](Erase.png)          |Aha-Soft      |
 |File           |![img](File.png)           |Aha-Soft      |
+|Filter         |![img](Filter.png)         |Aha-Soft      |
 |Find           |![img](Find.png)           |Aha-Soft      |
 |First          |![img](First.png)          |Aha-Soft      |
 |Floppy         |![img](Floppy.png)         |Aha-Soft      |
@@ -31,6 +32,7 @@ Images and their sources are listed below. Some have been modified or adapted.
 |JournalWhite   |![img](JournalWhite.gif)   |Free Icons Web|
 |Last           |![img](Last.png)           |Aha-Soft      |
 |Lightning      |![img](Lightning.png)      |Aha-Soft      |
+|List           |![img](List.png)           |Aha-Soft      |
 |Modify         |![img](Modify.png)         |Aha-Soft      |
 |MusicNoteBlue  |![img](MusicNoteBlue.png)  |Aha-Soft      |
 |MusicNoteRed   |![img](MusicNoteRed.png)   |Aha-Soft      |

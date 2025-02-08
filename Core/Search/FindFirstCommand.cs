@@ -30,7 +30,7 @@ namespace CrashEdit
                 if (!w.MoveToNextDFS())
                 {
                     // Nothing in the entire tree matches.
-                    Host.ShowError("No results found.");
+                    Host.ShowInformation("No results found.", "Find");
                     return false;
                 }
             }

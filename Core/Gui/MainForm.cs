@@ -138,6 +138,98 @@ namespace CrashEdit
                 ImageKey = "Find"
             });
 
+            // Toolbar -> Search Filter
+            var filterList = new Dictionary<string, string>
+            {
+                { "Default",   "Filter" },
+                { "Entity",    "Arrow" },
+                { "Zone",      "ThingViolet" },
+                { "Scenery",   "ThingBlue" },
+                { "Sort List", "ThingGray" },
+                { "Model",     "ThingCrimson" },
+                { "Animation", "ThingLime" },
+                { "GOOL",      "ThingCode" },
+                { "Music",     "MusicNoteBlue" },
+                { "Sound",     "SpeakerBlue" },
+                { "Texture",   "Painting" }
+            };
+            SearchFilter = new ToolStripDropDownButton
+            {
+                Alignment = ToolStripItemAlignment.Right,
+                DisplayStyle = ToolStripItemDisplayStyle.Image,
+                ImageKey = "Filter",
+                Padding = new Padding(4, 0, 0, 0),
+                Margin = new Padding(0, 0, 2, 0),
+            };
+            foreach (var (name, iconKey) in filterList)
+            {
+                var item = new ToolStripMenuItem(name, Embeds.GetIcon(iconKey)?.ToBitmap())
+                {
+                    CheckOnClick = true,
+                    Checked = name == "Default"
+                };
+
+                item.Click += (sender, e) =>
+                {
+                    var clickedItem = sender as ToolStripMenuItem;
+                    if (clickedItem != null)
+                    {
+                        foreach (ToolStripMenuItem menuItem in clickedItem.GetCurrentParent().Items)
+                        {
+                            if (menuItem is ToolStripMenuItem item)
+                            {
+                                // Uncheck all items.
+                                item.Checked = false;
+                                item.Font = new Font(SearchFilter.Font, FontStyle.Regular);
+                            }
+                        }
+                        // Check selected item.
+                        clickedItem.Checked = true;
+                        clickedItem.Font = new Font(SearchFilter.Font, FontStyle.Bold);
+                    }
+                };
+                SearchFilter.DropDownItems.Add(item);
+            }
+            SearchFilter.DropDownItemClicked += (sender, e) =>
+            {
+                if (ActiveWorkspaceHost is MainControl mainCtl)
+                {
+                    string type = e.ClickedItem?.Text ?? "Default";
+                    mainCtl.Filter = type == "Default" ? string.Empty : type;
+                    SearchFilter.ImageKey = filterList.ContainsKey(type) ? filterList[type] : "Filter";
+
+                    // Update SearchQuery.
+                    mainCtl.SearchQuery = "\u00A0";
+                    mainCtl.SearchQuery = SearchBox.Text;
+                }
+            };
+            ToolStrip.Items.Add(SearchFilter);
+
+            // EntryList
+            EntryList = new ToolStripButton
+            {
+                Alignment = ToolStripItemAlignment.Right,
+                DisplayStyle = ToolStripItemDisplayStyle.Image,
+                Text = "Entry List",
+                ImageKey = "List"
+            };
+            EntryList.Click += (sender, e) =>
+            {
+                if (frmEntryList == null || frmEntryList.IsDisposed)
+                {
+                    frmEntryList = new EntryListForm(this);
+                    frmEntryList.FormClosing += (object? sender, FormClosingEventArgs e) =>
+                    {
+                        frmEntryList = null;
+                    };
+                }
+                if (!frmEntryList.Visible)
+                    frmEntryList.Show();
+                else
+                    frmEntryList.Activate();
+            };
+            ToolStrip.Items.Add(EntryList);
+
             // Menubar
             MenuStrip = new MenuStrip
             {
@@ -218,7 +310,12 @@ namespace CrashEdit
 
             ImportDialog = new OpenFileDialog();
             ExportDialog = new SaveFileDialog();
+
+            SearchFilter.Enabled = false;
+            EntryList.Enabled = false;
         }
+       
+        private EntryListForm? frmEntryList;
 
         public FlatTabControl TabControl { get; }
 
@@ -234,6 +331,10 @@ namespace CrashEdit
 
         public ToolStripTextBox SearchBox { get; }
 
+        public ToolStripDropDownButton SearchFilter { get; }
+
+        public ToolStripButton EntryList { get; }
+
         public IWorkspaceHost? ActiveWorkspaceHost =>
             TabControl.SelectedTab?.Tag as MainControl;
 
@@ -241,11 +342,14 @@ namespace CrashEdit
 
         public SaveFileDialog ExportDialog { get; }
 
+        public void ShowInformation(string msg, string title)
+        {
+            DarkMessageBox.ShowInformation(msg, title);
+        }
+
         public void ShowError(string msg)
         {
-            DarkMessageBox.ShowError(
-                msg,
-                "CrashEdit Error");
+            DarkMessageBox.ShowError(msg, "CrashEdit Error");
         }
 
         public bool ShowImportDialog(out string? filename, string[] fileFilters)
@@ -327,11 +431,15 @@ namespace CrashEdit
             {
                 SearchBox.Enabled = true;
                 SearchBox.Text = mainCtl.SearchQuery;
+                SearchFilter.Enabled = true;
+                EntryList.Enabled = true;
             }
             else
             {
                 //SearchBox.Enabled = false;
-                SearchBox.Text = "";
+                SearchBox.Text = string.Empty;
+                SearchFilter.Enabled = false;
+                EntryList.Enabled = false;
             }
             ResyncSuggested?.Invoke(this, e);
         }

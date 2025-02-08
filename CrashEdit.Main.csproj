@@ -49,6 +49,7 @@
       <None Remove="Embeds\Images\Earth.png" />
       <None Remove="Embeds\Images\Erase.png" />
       <None Remove="Embeds\Images\File.png" />
+      <None Remove="Embeds\Images\Filter.png" />
       <None Remove="Embeds\Images\Find.png" />
       <None Remove="Embeds\Images\First.png" />
       <None Remove="Embeds\Images\Floppy.png" />
@@ -67,6 +68,7 @@
       <None Remove="Embeds\Images\JournalGray.gif" />
       <None Remove="Embeds\Images\Last.png" />
       <None Remove="Embeds\Images\Lightning.png" />
+      <None Remove="Embeds\Images\List.png" />
       <None Remove="Embeds\Images\Modify.png" />
       <None Remove="Embeds\Images\MusicNoteBlue.png" />
       <None Remove="Embeds\Images\MusicNoteRed.png" />
@@ -114,6 +116,7 @@
       <EmbeddedResource Include="Embeds\Images\Earth.png" />
       <EmbeddedResource Include="Embeds\Images\Erase.png" />
       <EmbeddedResource Include="Embeds\Images\File.png" />
+      <EmbeddedResource Include="Embeds\Images\Filter.png" />
       <EmbeddedResource Include="Embeds\Images\Find.png" />
       <EmbeddedResource Include="Embeds\Images\First.png" />
       <EmbeddedResource Include="Embeds\Images\Floppy.png" />
@@ -132,6 +135,7 @@
       <EmbeddedResource Include="Embeds\Images\JournalGray.gif" />
       <EmbeddedResource Include="Embeds\Images\Last.png" />
       <EmbeddedResource Include="Embeds\Images\Lightning.png" />
+      <EmbeddedResource Include="Embeds\Images\List.png" />
       <EmbeddedResource Include="Embeds\Images\Modify.png" />
       <EmbeddedResource Include="Embeds\Images\MusicNoteBlue.png" />
       <EmbeddedResource Include="Embeds\Images\MusicNoteRed.png" />
