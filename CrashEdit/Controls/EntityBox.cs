@@ -2443,7 +2443,7 @@ namespace CrashEdit.CE
                         {
                             if (!loadedentries.Remove(eid))
                             {
-                                eidlist += "[position " + i + "] " + Entry.EIDToEName(eid) + Environment.NewLine;
+                                eidlist += $"\n\t[position {i}] {Entry.EIDToEName(eid)}";
                             }
                         }
                     }
@@ -2452,7 +2452,7 @@ namespace CrashEdit.CE
             if (eidlist != string.Empty)
             {
                 lblVerifyLoadLists.Visible = false;
-                DarkMessageBox.ShowWarning($"Load lists are incorrect. The following entries were already deloaded:\n{eidlist}", "Load list verification exception");
+                DarkMessageBox.ShowWarning($"Load lists are incorrect. The following entries were already deloaded:{eidlist}", "Load list verification exception");
                 haserror = true;
             }
             if (loadedentries.Count == 0 && !haserror)
@@ -2471,14 +2471,14 @@ namespace CrashEdit.CE
                             {
                                 if (loadedentries.Remove(eid))
                                 {
-                                    eidlist2 += "[position " + i + "] " + Entry.EIDToEName(eid) + Environment.NewLine;
+                                    eidlist2 += $"\n\t[position {i}] {Entry.EIDToEName(eid)}";
                                 }
                             }
                         }
                     }
                 }
                 lblVerifyLoadLists.Visible = false;
-                DarkMessageBox.ShowWarning($"Load lists are incorrect. The following entries are never deloaded:\n{eidlist2}", "Load list verification exception");
+                DarkMessageBox.ShowWarning($"Load lists are incorrect. The following entries are never deloaded:{eidlist2}", "Load list verification exception");
             }
         }
 
@@ -2610,68 +2610,66 @@ namespace CrashEdit.CE
 
         private void cmdVerifyDrawList_Click(object sender, EventArgs e)
         {
+            bool haserror = false;
+            List<int> drawnids = new List<int>();
+            string idlist = string.Empty;
+            for (int i = 0; i < entity.Positions.Count; ++i)
             {
-                bool haserror = false;
-                List<int> drawnids = new List<int>();
-                string idlist = string.Empty;
+                foreach (var row in entity.DrawListB.Rows)
+                {
+                    if (row.MetaValue == i)
+                    {
+                        // draw
+                        foreach (int id in row.Values)
+                        {
+                            drawnids.Add(id);
+                        }
+                    }
+                }
+                foreach (var row in entity.DrawListA.Rows)
+                {
+                    if (row.MetaValue == i)
+                    {
+                        // undraw
+                        foreach (int id in row.Values)
+                        {
+                            if (!drawnids.Remove(id))
+                            {
+                                idlist += $"\n[position {i}] {id >> 8 & 0xFFFF}";
+                            }
+                        }
+                    }
+                }
+            }
+            if (idlist != string.Empty)
+            {
+                lblVerifyDrawLists.Visible = false;
+                DarkMessageBox.ShowWarning($"Draw lists are incorrect. The following entities were already undrawn:{idlist}", "Draw list verification exception");
+                haserror = true;
+            }
+            if (drawnids.Count == 0 && !haserror)
+                lblVerifyDrawLists.Visible = true;
+            else if (drawnids.Count != 0)
+            {
+                string idlist2 = string.Empty;
                 for (int i = 0; i < entity.Positions.Count; ++i)
                 {
                     foreach (var row in entity.DrawListB.Rows)
                     {
                         if (row.MetaValue == i)
                         {
-                            // draw
                             foreach (int id in row.Values)
                             {
-                                drawnids.Add(id);
-                            }
-                        }
-                    }
-                    foreach (var row in entity.DrawListA.Rows)
-                    {
-                        if (row.MetaValue == i)
-                        {
-                            // undraw
-                            foreach (int id in row.Values)
-                            {
-                                if (!drawnids.Remove(id))
+                                if (drawnids.Remove(id))
                                 {
-                                    idlist += "[position " + i + "] " + (id >> 8 & 0xFFFF) + Environment.NewLine;
+                                    idlist2 += $"\n[position {i}] {id >> 8 & 0xFFFF}";
                                 }
                             }
                         }
                     }
                 }
-                if (idlist != string.Empty)
-                {
-                    lblVerifyDrawLists.Visible = false;
-                    DarkMessageBox.ShowWarning($"Draw lists are incorrect. The following entries were already undrawn:\n{idlist}", "Draw list verification exception");
-                    haserror = true;
-                }
-                if (drawnids.Count == 0 && !haserror)
-                    lblVerifyDrawLists.Visible = true;
-                else if (drawnids.Count != 0)
-                {
-                    string idlist2 = string.Empty;
-                    for (int i = 0; i < entity.Positions.Count; ++i)
-                    {
-                        foreach (var row in entity.DrawListB.Rows)
-                        {
-                            if (row.MetaValue == i)
-                            {
-                                foreach (int id in row.Values)
-                                {
-                                    if (drawnids.Remove(id))
-                                    {
-                                        idlist2 += "[position " + i + "] " + (id >> 8 & 0xFFFF) + Environment.NewLine;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    lblVerifyDrawLists.Visible = false;
-                    DarkMessageBox.ShowWarning($"Draw lists are incorrect. The following entries are never undrawn:\n{idlist2}", "Draw list verification exception");
-                }
+                lblVerifyDrawLists.Visible = false;
+                DarkMessageBox.ShowWarning($"Draw lists are incorrect. The following entities are never undrawn:{idlist2}", "Draw list verification exception");
             }
         }
 
