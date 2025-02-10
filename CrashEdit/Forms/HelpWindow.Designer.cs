@@ -75,7 +75,7 @@ namespace CrashEdit.CE
             fraNSDBox.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             fraNSDBox.Location = new Point(4, 257);
             fraNSDBox.Name = "fraNSDBox";
-            fraNSDBox.Size = new Size(205, 142);
+            fraNSDBox.Size = new Size(225, 142);
             fraNSDBox.TabIndex = 15;
             fraNSDBox.TabStop = false;
             fraNSDBox.Text = "NSDBox";
@@ -89,7 +89,7 @@ namespace CrashEdit.CE
             fraSpawns.Font = new Font("Segoe UI", 9F);
             fraSpawns.Location = new Point(6, 22);
             fraSpawns.Name = "fraSpawns";
-            fraSpawns.Size = new Size(193, 98);
+            fraSpawns.Size = new Size(213, 98);
             fraSpawns.TabIndex = 16;
             fraSpawns.TabStop = false;
             fraSpawns.Text = "Spawn Point(s)";
@@ -100,9 +100,9 @@ namespace CrashEdit.CE
             lblNSDBox.ForeColor = SystemColors.ControlText;
             lblNSDBox.Location = new Point(6, 19);
             lblNSDBox.Name = "lblNSDBox";
-            lblNSDBox.Size = new Size(181, 60);
+            lblNSDBox.Size = new Size(201, 60);
             lblNSDBox.TabIndex = 0;
-            lblNSDBox.Text = "[Mouse drag] Move row\r\n[Right-click] Show context menu\r\n[Ctrl + C] Copy spawn point\r\n[Ctrl + V] Paste spawn point";
+            lblNSDBox.Text = "[Mouse drag] Move row\r\n[Right-click] Show context menu\r\n[Ctrl + C] Copy selected spawn point\r\n[Ctrl + V] Paste selected spawn point";
             // 
             // HelpWindow
             // 
@@ -110,7 +110,7 @@ namespace CrashEdit.CE
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(487, 571);
+            ClientSize = new Size(275, 414);
             Controls.Add(fraNSDBox);
             Controls.Add(fraHexViewer);
             CornerStyle = CornerPreference.Default;
@@ -120,7 +120,6 @@ namespace CrashEdit.CE
             MinimizeBox = false;
             Name = "HelpWindow";
             Padding = new Padding(0, 0, 5, 5);
-            ShowIcon = true;
             Text = "Help";
             TransparencyKey = Color.FromArgb(31, 31, 32);
             fraHexViewer.ResumeLayout(false);
