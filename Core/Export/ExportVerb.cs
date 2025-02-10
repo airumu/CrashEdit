@@ -6,7 +6,7 @@ namespace CrashEdit
 
         public override string Text => "Export to file...";
 
-        public override string ImageKey => "Download";
+        public override string ImageKey => "Export";
 
         public override bool ApplicableForSubject(Controller subj)
         {

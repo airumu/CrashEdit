@@ -11,7 +11,7 @@ namespace CrashEdit.CE
         {
             ZoneEntry = zoneentry;
             AddMenu(CrashUI.Properties.Resources.ZoneEntryController_AcAddEntity, "Add", Menu_AddEntity);
-            AddMenu(CrashUI.Properties.Resources.ZoneEntryController_AcChangeCollisionType, Menu_ChangeCollisionType);
+            AddMenu(CrashUI.Properties.Resources.ZoneEntryController_AcChangeCollisionType, "Wrench", Menu_ChangeCollisionType);
         }
 
         public override bool EditorAvailable => true;

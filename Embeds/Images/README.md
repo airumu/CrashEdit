@@ -2,7 +2,7 @@ Images and their sources are listed below. Some have been modified or adapted.
 
 | Name          | Image                     | Source       |
 | ------------- | ------------------------- | ------------ |
-|Add            |![img](Add.png)            |FatCow        |
+|Add            |![img](Add.png)            |Aha-Soft      |
 |Anchor         |![img](Anchor.png)         |Aha-Soft      |
 |Application    |![img](Application.png)    |Aha-Soft      |
 |Arrow          |![img](Arrow.png)          |Aha-Soft      |
@@ -11,9 +11,9 @@ Images and their sources are listed below. Some have been modified or adapted.
 |CD             |![img](CD.png)             |Aha-Soft      |
 |Controller     |![img](Controller.png)     |FatCow        |
 |Copy           |![img](Copy.png)           |Aha-Soft      |
-|Download       |![img](Download.png)       |FatCow        |
 |Earth          |![img](Earth.png)          |Aha-Soft      |
 |Erase          |![img](Erase.png)          |Aha-Soft      |
+|Export         |![img](Export.png)         |Aha-Soft      |
 |File           |![img](File.png)           |Aha-Soft      |
 |Filter         |![img](Filter.png)         |Aha-Soft      |
 |Find           |![img](Find.png)           |Aha-Soft      |
@@ -23,7 +23,7 @@ Images and their sources are listed below. Some have been modified or adapted.
 |Folder         |![img](Folder.png)         |Aha-Soft      |
 |FolderOpen     |![img](FolderOpen.png)     |Aha-Soft      |
 |HardDisk       |![img](HardDisk.png)       |Aha-Soft      |
-|Imports        |![img](Imports.png)        |Aha-Soft      |
+|Import         |![img](Import.png)         |Aha-Soft      |
 |JournalBlue    |![img](JournalBlue.gif)    |Free Icons Web|
 |JournalCode    |![img](JournalCode.gif)    |Free Icons Web|
 |JournalCyan    |![img](JournalCyan.gif)    |Free Icons Web|
@@ -39,8 +39,8 @@ Images and their sources are listed below. Some have been modified or adapted.
 |MusicNoteYellow|![img](MusicNoteYellow.png)|Aha-Soft      |
 |Next           |![img](Next.png)           |Aha-Soft      |
 |Painting       |![img](Painting.gif)       |Free Icons Web|
+|Pinion         |![img](Pinion  .png)       |Aha-Soft      |
 |Previous       |![img](Previous.png)       |Aha-Soft      |
-|Processor      |![img](Processor.png)      |FatCow        |
 |Sitemap        |![img](Sitemap.png)        |FatCow        |
 |SpeakerBlue    |![img](SpeakerBlue.png)    |Free Icons Web|
 |SpeakerWhite   |![img](SpeakerWhite.png)   |Free Icons Web|

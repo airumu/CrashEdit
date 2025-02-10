@@ -11,7 +11,7 @@ namespace CrashEdit.CE
             AddMenu(string.Format(CrashUI.Properties.Resources.EntryController_AcRename, entry.EName), "Modify", Menu_Rename_Entry);
             if (this is not UnprocessedEntryController)
             {
-                AddMenu(string.Format(CrashUI.Properties.Resources.EntryController_AcDeprocess, entry.EName), "Processor", Menu_Unprocess_Entry);
+                AddMenu(string.Format(CrashUI.Properties.Resources.EntryController_AcDeprocess, entry.EName), "Pinion", Menu_Unprocess_Entry);
             }
         }
 

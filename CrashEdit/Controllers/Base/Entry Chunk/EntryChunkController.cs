@@ -9,7 +9,7 @@ namespace CrashEdit.CE
         public EntryChunkController(EntryChunk entrychunk, SubcontrollerGroup parentGroup) : base(entrychunk, parentGroup)
         {
             EntryChunk = entrychunk;
-            AddMenu(CrashUI.Properties.Resources.EntryChunkController_AcImport, "Imports", Menu_Import_Entry);
+            AddMenu(CrashUI.Properties.Resources.EntryChunkController_AcImport, "Import", Menu_Import_Entry);
             AddMenu(CrashUI.Properties.Resources.EntryChunkController_AcAddNew, "Add", Menu_Add_Entry);
         }
 

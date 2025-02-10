@@ -44,10 +44,10 @@
       <None Remove="Embeds\Images\CD.png" />
       <None Remove="Embeds\Images\Controller.png" />
       <None Remove="Embeds\Images\Copy.png" />
-      <None Remove="Embeds\Images\Download.png" />
       <None Remove="Embeds\Images\Dropdown.png" />
       <None Remove="Embeds\Images\Earth.png" />
       <None Remove="Embeds\Images\Erase.png" />
+      <None Remove="Embeds\Images\Export.png" />
       <None Remove="Embeds\Images\File.png" />
       <None Remove="Embeds\Images\Filter.png" />
       <None Remove="Embeds\Images\Find.png" />
@@ -58,7 +58,7 @@
       <None Remove="Embeds\Images\FolderOpen.png" />
       <None Remove="Embeds\Images\HardDisk.png" />
       <None Remove="Embeds\Images\HelpSymbol.png" />
-      <None Remove="Embeds\Images\Imports.png" />
+      <None Remove="Embeds\Images\Import.png" />
       <None Remove="Embeds\Images\JournalBlue.gif" />
       <None Remove="Embeds\Images\JournalCode.gif" />
       <None Remove="Embeds\Images\JournalCyan.gif" />
@@ -77,8 +77,8 @@
       <None Remove="Embeds\Images\NSD.png" />
       <None Remove="Embeds\Images\NSF.png" />
       <None Remove="Embeds\Images\Painting.gif" />
+      <None Remove="Embeds\Images\Pinion.png" />
       <None Remove="Embeds\Images\Previous.png" />
-      <None Remove="Embeds\Images\Processor.png" />
       <None Remove="Embeds\Images\README.md" />
       <None Remove="Embeds\Images\Sitemap.png" />
       <None Remove="Embeds\Images\SpeakerBlue.png" />
@@ -92,6 +92,7 @@
       <None Remove="Embeds\Images\ThingRed.gif" />
       <None Remove="Embeds\Images\ThingViolet.gif" />
       <None Remove="Embeds\Images\ThingYellow.gif" />
+      <None Remove="Embeds\Images\Wrench.png" />
       <None Remove="LICENSE.md" />
       <None Remove="packages.config" />
       <None Remove="README.md" />
@@ -111,10 +112,10 @@
       <EmbeddedResource Include="Embeds\Images\CD.png" />
       <EmbeddedResource Include="Embeds\Images\Controller.png" />
       <EmbeddedResource Include="Embeds\Images\Copy.png" />
-      <EmbeddedResource Include="Embeds\Images\Download.png" />
       <EmbeddedResource Include="Embeds\Images\Dropdown.png" />
       <EmbeddedResource Include="Embeds\Images\Earth.png" />
       <EmbeddedResource Include="Embeds\Images\Erase.png" />
+      <EmbeddedResource Include="Embeds\Images\Export.png" />
       <EmbeddedResource Include="Embeds\Images\File.png" />
       <EmbeddedResource Include="Embeds\Images\Filter.png" />
       <EmbeddedResource Include="Embeds\Images\Find.png" />
@@ -125,7 +126,7 @@
       <EmbeddedResource Include="Embeds\Images\FolderOpen.png" />
       <EmbeddedResource Include="Embeds\Images\HardDisk.png" />
       <EmbeddedResource Include="Embeds\Images\HelpSymbol.png" />
-      <EmbeddedResource Include="Embeds\Images\Imports.png" />
+      <EmbeddedResource Include="Embeds\Images\Import.png" />
       <EmbeddedResource Include="Embeds\Images\JournalBlue.gif" />
       <EmbeddedResource Include="Embeds\Images\JournalCode.gif" />
       <EmbeddedResource Include="Embeds\Images\JournalCyan.gif" />
@@ -144,8 +145,8 @@
       <EmbeddedResource Include="Embeds\Images\NSD.png" />
       <EmbeddedResource Include="Embeds\Images\NSF.png" />
       <EmbeddedResource Include="Embeds\Images\Painting.gif" />
+      <EmbeddedResource Include="Embeds\Images\Pinion.png" />
       <EmbeddedResource Include="Embeds\Images\Previous.png" />
-      <EmbeddedResource Include="Embeds\Images\Processor.png" />
       <EmbeddedResource Include="Embeds\Images\Sitemap.png" />
       <EmbeddedResource Include="Embeds\Images\SpeakerBlue.png" />
       <EmbeddedResource Include="Embeds\Images\SpeakerWhite.png" />
@@ -158,6 +159,7 @@
       <EmbeddedResource Include="Embeds\Images\ThingRed.gif" />
       <EmbeddedResource Include="Embeds\Images\ThingViolet.gif" />
       <EmbeddedResource Include="Embeds\Images\ThingYellow.gif" />
+      <EmbeddedResource Include="Embeds\Images\Wrench.png" />
     </ItemGroup>
 
     <ItemGroup>

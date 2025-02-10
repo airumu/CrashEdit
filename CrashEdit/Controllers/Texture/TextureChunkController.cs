@@ -1,5 +1,4 @@
 using System.Media;
-using AltUI.Forms;
 using CrashEdit.Crash;
 
 namespace CrashEdit.CE
@@ -12,7 +11,7 @@ namespace CrashEdit.CE
             TextureChunk = texturechunk;
             AddMenu(CrashUI.Properties.Resources.TextureChunkController_AcRename, "Modify", Menu_Rename_Entry);
             AddMenu(CrashUI.Properties.Resources.TextureChunkController_AcRecalcChecksum, "Calculator", Menu_Recalculate_Checksum);
-            AddMenu(CrashUI.Properties.Resources.TextureChunkController_AcOpenViewer, Menu_Open_Viewer);
+            AddMenu(CrashUI.Properties.Resources.TextureChunkController_AcOpenViewer, "Painting", Menu_Open_Viewer);
         }
 
         public override bool EditorAvailable => Type.GetType("Mono.Runtime") == null;
@@ -31,16 +30,16 @@ namespace CrashEdit.CE
         {
             //int correct_checksum = Chunk.CalculateChecksum(TextureChunk.Data);
             //BitConv.ToInt32(TextureChunk.Data, 12, correct_checksum);
-            //SystemSounds.Asterisk.Play();
+            SystemSounds.Asterisk.Play();
             int current_checksum = BitConv.FromInt32(TextureChunk.Data, 12);
             int correct_checksum = Chunk.CalculateChecksum(TextureChunk.Data);
             if (current_checksum == correct_checksum)
             {
-                DarkMessageBox.ShowInformation("Checksum was already correct.", "Recalculate Checksum");
+                Console.WriteLine("Checksum was already correct.");
                 return;
             }
             BitConv.ToInt32(TextureChunk.Data, 12, correct_checksum);
-            DarkMessageBox.ShowInformation("Checksum was incorrect and has been corrected.", "Recalculate Checksum");
+            Console.WriteLine("Checksum was incorrect and has been corrected.");
         }
 
         private void Menu_Rename_Entry()
