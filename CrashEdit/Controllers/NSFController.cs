@@ -17,28 +17,31 @@ namespace CrashEdit.CE
             AddMenu(CrashUI.Properties.Resources.NSFController_AcAddWavebankChunk, "JournalRed",Menu_Add_WavebankChunk);
             AddMenu(CrashUI.Properties.Resources.NSFController_AcAddSpeechChunk, "JournalWhite", Menu_Add_SpeechChunk);
             AddMenu(CrashUI.Properties.Resources.NSFController_AcAddTextureChunk, "Painting", Menu_Add_TextureChunk);
-            AddMenu(CrashUI.Properties.Resources.NSFController_AcImportChunk, "Imports", Menu_Import_Chunk);
+            AddMenu(CrashUI.Properties.Resources.NSFController_AcImportChunk, "Import", Menu_Import_Chunk);
             if (GameVersion == GameVersion.Crash2 || GameVersion == GameVersion.Crash3)
             {
                 AddMenuSeparator();
-                AddMenu(CrashUI.Properties.Resources.NSFController_AcFixDetonator, Menu_Fix_Detonator);
-                AddMenu(CrashUI.Properties.Resources.NSFController_AcFixBoxCount, Menu_Fix_BoxCount);
+                AddMenu(CrashUI.Properties.Resources.NSFController_AcAnalyzeLevel, "HardDisk", Menu_AnalyzeLevel);
+                AddMenu(CrashUI.Properties.Resources.NSFController_AcFindEntities, "Find", Menu_FindEntities);
+                AddMenuSeparator();
+                AddMenu(CrashUI.Properties.Resources.NSFController_AcFixDetonator, "Calculator", Menu_Fix_Detonator);
+                AddMenu(CrashUI.Properties.Resources.NSFController_AcFixBoxCount, "Calculator", Menu_Fix_BoxCount);
                 AddMenuSeparator();
             }
             if (GameVersion == GameVersion.Crash1 || GameVersion == GameVersion.Crash1BetaMAR08 || GameVersion == GameVersion.Crash1BetaMAY11)
             {
-                AddMenu(CrashUI.Properties.Resources.NSFController_AcShowLevel, Menu_ShowLevelC1);
-                AddMenu(CrashUI.Properties.Resources.NSFController_AcShowLevelZones, Menu_ShowLevelZonesC1);
+                AddMenu(CrashUI.Properties.Resources.NSFController_AcShowLevel, "ThingBlue", Menu_ShowLevelC1);
+                AddMenu(CrashUI.Properties.Resources.NSFController_AcShowLevelZones, "ThingViolet", Menu_ShowLevelZonesC1);
             }
             else if (GameVersion == GameVersion.Crash1Beta1995)
             {
-                AddMenu(CrashUI.Properties.Resources.NSFController_AcShowLevel, Menu_ShowLevelC1Proto);
-                AddMenu(CrashUI.Properties.Resources.NSFController_AcShowLevelZones, Menu_ShowLevelZonesC1Proto);
+                AddMenu(CrashUI.Properties.Resources.NSFController_AcShowLevel, "ThingBlue", Menu_ShowLevelC1Proto);
+                AddMenu(CrashUI.Properties.Resources.NSFController_AcShowLevelZones, "ThingViolet", Menu_ShowLevelZonesC1Proto);
             }
             else if (GameVersion == GameVersion.Crash2 || GameVersion == GameVersion.Crash3)
             {
-                AddMenu(CrashUI.Properties.Resources.NSFController_AcShowLevel, Menu_ShowLevelC2);
-                AddMenu(CrashUI.Properties.Resources.NSFController_AcShowLevelZones, Menu_ShowLevelZonesC2);
+                AddMenu(CrashUI.Properties.Resources.NSFController_AcShowLevel, "ThingBlue", Menu_ShowLevelC2);
+                AddMenu(CrashUI.Properties.Resources.NSFController_AcShowLevelZones, "ThingViolet", Menu_ShowLevelZonesC2);
             }
         }
 
@@ -94,6 +97,209 @@ namespace CrashEdit.CE
             Array.Copy(header, 0, newchunk, 0, header.Length);
             TextureChunk chunk = new TextureChunk(newchunk);
             NSF.Chunks.Add(chunk);
+        }
+
+        public void Menu_AnalyzeLevel()
+        {
+            List<string> loadlistLines = new List<string>();
+            List<string> drawlistLines = new List<string>();
+            Console.WriteLine("================================================================================");
+            foreach (ZoneEntry zone in NSF.GetEntries<ZoneEntry>())
+            {
+                foreach (Entity entity in zone.Entities)
+                {
+                    // Load lists
+                    if (entity.LoadListA != null && entity.LoadListB != null)
+                    {
+                        List<int> loadedentries = new List<int>();
+                        string eidlist = string.Empty;
+                        for (int i = 0; i < entity.Positions.Count; ++i)
+                        {
+                            foreach (var row in entity.LoadListA.Rows)
+                            {
+                                if (row.MetaValue == i)
+                                {
+                                    // load
+                                    foreach (int eid in row.Values)
+                                    {
+                                        loadedentries.Add(eid);
+                                    }
+                                }
+                            }
+                            foreach (var row in entity.LoadListB.Rows)
+                            {
+                                if (row.MetaValue == i)
+                                {
+                                    // unload
+                                    foreach (int eid in row.Values)
+                                    {
+                                        if (!loadedentries.Remove(eid))
+                                        {
+                                            eidlist += $"\n\t\t  [position {i}] {Entry.EIDToEName(eid)}";
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (eidlist != string.Empty)
+                        {
+                            // Load List B
+                            loadlistLines.Add($"[{zone.EName}, camera {entity.CameraIndex}] The following entries were already deloaded (Load List B):{eidlist}");
+                        }
+                        if (loadedentries.Count != 0)
+                        {
+                            string eidlist2 = string.Empty;
+                            for (int i = 0; i < entity.Positions.Count; ++i)
+                            {
+                                foreach (var row in entity.LoadListA.Rows)
+                                {
+                                    if (row.MetaValue == i)
+                                    {
+                                        foreach (int eid in row.Values)
+                                        {
+                                            if (loadedentries.Remove(eid))
+                                            {
+                                                eidlist2 += $"\n\t\t  [position {i}] {Entry.EIDToEName(eid)}";
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            // Load List A
+                            loadlistLines.Add($"[{zone.EName}, camera {entity.CameraIndex}] The following entries are never deloaded (Load List A):{eidlist2}");
+                        }
+                    }
+
+                    // Draw Lists
+                    if (entity.DrawListA != null && entity.DrawListB != null)
+                    {
+                        List<int> drawnids = new List<int>();
+                        string idlist = string.Empty;
+                        for (int i = 0; i < entity.Positions.Count; ++i)
+                        {
+                            foreach (var row in entity.DrawListB.Rows)
+                            {
+                                if (row.MetaValue == i)
+                                {
+                                    // draw
+                                    foreach (int id in row.Values)
+                                    {
+                                        drawnids.Add(id);
+                                    }
+                                }
+                            }
+                            foreach (var row in entity.DrawListA.Rows)
+                            {
+                                if (row.MetaValue == i)
+                                {
+                                    // undraw
+                                    foreach (int id in row.Values)
+                                    {
+                                        if (!drawnids.Remove(id))
+                                        {
+                                            idlist += $"\n\t\t  [position {i}] {id >> 8 & 0xFFFF}";
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (idlist != string.Empty)
+                        {
+                            // Draw List A
+                            drawlistLines.Add($"[{zone.EName}, camera {entity.CameraIndex}] The following entities were already undrawn (Draw List A):{idlist}");
+                        }
+                        if (drawnids.Count != 0)
+                        {
+                            string idlist2 = string.Empty;
+                            for (int i = 0; i < entity.Positions.Count; ++i)
+                            {
+                                foreach (var row in entity.DrawListB.Rows)
+                                {
+                                    if (row.MetaValue == i)
+                                    {
+                                        foreach (int id in row.Values)
+                                        {
+                                            if (drawnids.Remove(id))
+                                            {
+                                                idlist2 += $"\n\t\t  [position {i}] {id >> 8 & 0xFFFF}";
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            // Draw List B
+                            drawlistLines.Add($"[{zone.EName}, camera {entity.CameraIndex}] The following entities are never undrawn (Draw List B):{idlist2}");
+                        }
+                    }
+                }
+            }
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("Load list integrity check:");
+            Console.ResetColor();
+            if (loadlistLines.Count > 0)
+                Console.WriteLine(string.Join(Environment.NewLine, loadlistLines.ToArray()));
+            else
+                Console.WriteLine("No load list issues were found.");
+
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("Draw list integrity check:");
+            Console.ResetColor();
+            if (drawlistLines.Count > 0)
+                Console.WriteLine(string.Join(Environment.NewLine, drawlistLines.ToArray()));
+            else
+                Console.WriteLine("No draw list issues were found.");
+        }
+
+        public void Menu_FindEntities()
+        {
+            int type = -1;
+            int subtype = -1;
+            using (InputWindow inputWindow = new InputWindow("Enter entity type:", CrashUI.Properties.Resources.NSFController_AcFindEntities, string.Empty))
+            {
+                if (inputWindow.ShowDialog() == DialogResult.OK)
+                {
+                    if (int.TryParse(inputWindow.Input, out type) && type >= 0) { }
+                    else
+                    {
+                        DarkMessageBox.ShowError("Invalid input.", Resources.Title_InputError);
+                        return;
+                    }
+                }
+                else return;
+            }
+            using (InputWindow inputWindow = new InputWindow("Enter entity subtype (leave empty to search all):", CrashUI.Properties.Resources.NSFController_AcFindEntities, string.Empty))
+            {
+                if (inputWindow.ShowDialog() == DialogResult.OK)
+                {
+                    if (!string.IsNullOrEmpty(inputWindow.Input))
+                    {
+                        if (int.TryParse(inputWindow.Input, out subtype) && subtype >= 0) { }
+                        else
+                        {
+                            DarkMessageBox.ShowError("Invalid input.", Resources.Title_InputError);
+                            return;
+                        }
+                    }
+                }
+                else return;
+            }
+
+            List<string> list = new List<string>();
+            Console.WriteLine("================================================================================");
+            foreach (ZoneEntry zone in NSF.GetEntries<ZoneEntry>())
+            {
+                foreach (Entity entity in zone.Entities)
+                {
+                    if (entity.Type == type && (subtype == -1 || entity.Subtype == subtype))
+                    {
+                        list.Add($"Type {entity.Type:D2}, subtype {entity.Subtype:D2}: {entity.Name} [ID {entity.ID}]");
+                    }
+                }
+            }
+            list.Sort();
+            Console.WriteLine(string.Join(Environment.NewLine, list.ToArray()));
+            Console.WriteLine($"Total count: {list.Count}");
         }
 
         private void Menu_Fix_Detonator()

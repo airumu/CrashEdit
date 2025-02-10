@@ -8,7 +8,7 @@ using AltUI.Forms;
 namespace CrashEdit
 {
 
-    public sealed class EntryListForm : DarkForm
+    public sealed class NodeListForm : DarkForm
     {
         private ICommandHost Host { get; }
 
@@ -27,13 +27,13 @@ namespace CrashEdit
         internal Stack<bool> dirty = new Stack<bool>();
         internal bool Dirty => dirty.Count > 0 && dirty.Peek();
 
-        public EntryListForm(ICommandHost host)
+        public NodeListForm(ICommandHost host)
         {
             Host = host;
             mainForm = (MainForm?)host;
 
             //Text = mainForm?.TabControl.SelectedTab?.Text;
-            Text = "Entry List";
+            Text = "Node List";
             Icon = Embeds.GetIcon("List");
             MinimumSize = new Size(140, 600);
             FormBorderStyle = FormBorderStyle.Sizable;

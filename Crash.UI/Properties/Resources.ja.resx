@@ -363,4 +363,10 @@
   <data name="ZoneEntryController_AcChangeCollisionType" xml:space="preserve">
     <value>コリジョン タイプの置き換え</value>
   </data>
+  <data name="NSFController_AcFindEntities" xml:space="preserve">
+    <value>エンティティの検索</value>
+  </data>
+  <data name="NSFController_AcAnalyzeLevel" xml:space="preserve">
+    <value>レベルの分析</value>
+  </data>
 </root>

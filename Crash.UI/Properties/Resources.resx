@@ -363,4 +363,10 @@
   <data name="ZoneEntryController_AcChangeCollisionType" xml:space="preserve">
     <value>Change Collision Type</value>
   </data>
+  <data name="NSFController_AcFindEntities" xml:space="preserve">
+    <value>Find Entities</value>
+  </data>
+  <data name="NSFController_AcAnalyzeLevel" xml:space="preserve">
+    <value>Analyze level</value>
+  </data>
 </root>

@@ -210,14 +210,14 @@ namespace CrashEdit
             {
                 Alignment = ToolStripItemAlignment.Right,
                 DisplayStyle = ToolStripItemDisplayStyle.Image,
-                Text = "Entry List",
+                Text = "Node List",
                 ImageKey = "List"
             };
             EntryList.Click += (sender, e) =>
             {
                 if (frmEntryList == null || frmEntryList.IsDisposed)
                 {
-                    frmEntryList = new EntryListForm(this);
+                    frmEntryList = new NodeListForm(this);
                     frmEntryList.FormClosing += (object? sender, FormClosingEventArgs e) =>
                     {
                         frmEntryList = null;
@@ -315,7 +315,7 @@ namespace CrashEdit
             EntryList.Enabled = false;
         }
        
-        private EntryListForm? frmEntryList;
+        private NodeListForm? frmEntryList;
 
         public FlatTabControl TabControl { get; }
 
