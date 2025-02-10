@@ -3,6 +3,7 @@ using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 using System.Drawing;
+using System.Resources;
 using System.Text;
 using System.Windows.Forms;
 
@@ -202,6 +203,35 @@ namespace CrashEdit
             hexView = hexview;
             DoubleBuffered = true;
             BackColor = Color.FromArgb(31, 31, 32);
+
+            ContextMenuStrip contextMenu = new ContextMenuStrip();
+            ToolStripMenuItem copyBytes = new ToolStripMenuItem("Copy as Bytes");
+            ToolStripMenuItem cutBytes = new ToolStripMenuItem("Cut as Bytes");
+            ToolStripMenuItem pasteBytes = new ToolStripMenuItem("Paste as Bytes");
+            ToolStripMenuItem copyEID = new ToolStripMenuItem("Copy as EID");
+            ToolStripMenuItem cutEID = new ToolStripMenuItem("Cut as EID");
+            ToolStripMenuItem pasteEID = new ToolStripMenuItem("Paste as EID");
+            //copyBytes.Image = Embeds.GetIcon("Copy")?.ToBitmap();
+            //cutBytes.Image = Embeds.GetIcon("Cut")?.ToBitmap();
+            //pasteBytes.Image = Embeds.GetIcon("Paste")?.ToBitmap();
+            //copyEID.Image = Embeds.GetIcon("Copy")?.ToBitmap();
+            //cutEID.Image = Embeds.GetIcon("Cut")?.ToBitmap();
+            //pasteEID.Image = Embeds.GetIcon("Paste")?.ToBitmap();
+            copyBytes.Click += CopyBytes_Click;
+            cutBytes.Click += CutBytes_Click;
+            pasteBytes.Click += PasteBytes_Click;
+            copyEID.Click += CopyEID_Click;
+            cutEID.Click += CutEID_Click;
+            pasteEID.Click += PasteEID_Click;
+            contextMenu.Items.Add(copyBytes);
+            contextMenu.Items.Add(cutBytes);
+            contextMenu.Items.Add(pasteBytes);
+            contextMenu.Items.Add("-");
+            contextMenu.Items.Add(copyEID);
+            contextMenu.Items.Add(cutEID);
+            contextMenu.Items.Add(pasteEID);
+            ContextMenuStrip = contextMenu;
+
             ResetLayout();
         }
 
@@ -1345,6 +1375,7 @@ namespace CrashEdit
                 ByteCursor = ByteAnchor;
             }
 
+            // If cursor is not word-aligned
             while (ByteCursor % 4 != 0)
                 MoveBy(-1);
 
@@ -1371,15 +1402,23 @@ namespace CrashEdit
                     byte[] chunk = [data[offset], data[offset + 1], data[offset + 2], data[offset + 3]];
                     str = Convert.ToHexString(chunk);
                 }
-                sb.Append(str + Environment.NewLine);
+                sb.Append(str).Append("\n");
                 if (cut)
+                {
                     InputZero(4);
+                }
                 col += 4;
             }
             if (sb.Length > 0)
+            {
+                sb.Length--; // Remove the last "\n".
                 Clipboard.SetText(sb.ToString());
+            }
 
-            ByteCursor = start;
+            if (!cut)
+            {
+                ByteCursor = start;
+            }
             ResetAnchor();
             Invalidate();
             return true;
@@ -1396,7 +1435,6 @@ namespace CrashEdit
             if (_pendingInput != null)
                 _pendingInput = null;
 
-            // Check if the pasted name is valid
             StringReader sr = new StringReader(Clipboard.GetText());
             string line;
             while ((line = sr.ReadLine()) != null)
@@ -1470,6 +1508,36 @@ namespace CrashEdit
                     return false;
             }
             return true;
+        }
+
+        private void CopyBytes_Click(object? sender, EventArgs e)
+        {
+            CopyBytes(false, false);
+        }
+
+        private void CutBytes_Click(object? sender, EventArgs e)
+        {
+            CopyBytes(true, false);
+        }
+
+        private void PasteBytes_Click(object? sender, EventArgs e)
+        {
+            PasteBytes(false);
+        }
+
+        private void CopyEID_Click(object? sender, EventArgs e)
+        {
+            CopyBytes(false, true);
+        }
+
+        private void CutEID_Click(object? sender, EventArgs e)
+        {
+            CopyBytes(true, true);
+        }
+
+        private void PasteEID_Click(object? sender, EventArgs e)
+        {
+            PasteBytes(true);
         }
     }
 }

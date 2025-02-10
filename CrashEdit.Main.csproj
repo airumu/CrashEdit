@@ -44,6 +44,7 @@
       <None Remove="Embeds\Images\CD.png" />
       <None Remove="Embeds\Images\Controller.png" />
       <None Remove="Embeds\Images\Copy.png" />
+      <None Remove="Embeds\Images\Cut.png" />
       <None Remove="Embeds\Images\Dropdown.png" />
       <None Remove="Embeds\Images\Earth.png" />
       <None Remove="Embeds\Images\Erase.png" />
@@ -77,6 +78,7 @@
       <None Remove="Embeds\Images\NSD.png" />
       <None Remove="Embeds\Images\NSF.png" />
       <None Remove="Embeds\Images\Painting.gif" />
+      <None Remove="Embeds\Images\Paste.png" />
       <None Remove="Embeds\Images\Pinion.png" />
       <None Remove="Embeds\Images\Previous.png" />
       <None Remove="Embeds\Images\README.md" />
@@ -112,6 +114,7 @@
       <EmbeddedResource Include="Embeds\Images\CD.png" />
       <EmbeddedResource Include="Embeds\Images\Controller.png" />
       <EmbeddedResource Include="Embeds\Images\Copy.png" />
+      <EmbeddedResource Include="Embeds\Images\Cut.png" />
       <EmbeddedResource Include="Embeds\Images\Dropdown.png" />
       <EmbeddedResource Include="Embeds\Images\Earth.png" />
       <EmbeddedResource Include="Embeds\Images\Erase.png" />
@@ -145,6 +148,7 @@
       <EmbeddedResource Include="Embeds\Images\NSD.png" />
       <EmbeddedResource Include="Embeds\Images\NSF.png" />
       <EmbeddedResource Include="Embeds\Images\Painting.gif" />
+      <EmbeddedResource Include="Embeds\Images\Paste.png" />
       <EmbeddedResource Include="Embeds\Images\Pinion.png" />
       <EmbeddedResource Include="Embeds\Images\Previous.png" />
       <EmbeddedResource Include="Embeds\Images\Sitemap.png" />
