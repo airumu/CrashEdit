@@ -15,6 +15,7 @@ namespace CrashEdit
 
             Ui = ui;
             RootController = rootController;
+            BackColor = Color.FromArgb(31, 31, 32);
 
             Split = new SplitContainer
             {
