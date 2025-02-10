@@ -58,6 +58,8 @@ namespace CrashEdit.CE
             chkID = new CheckBox();
             numID = new DarkNumericUpDown();
             fraSettings = new DarkGroupBox();
+            cmdPasteSetting = new DarkButton();
+            cmdCopySetting = new DarkButton();
             lblSettingB = new Label();
             lblSettingA = new Label();
             lblArgAs = new Label();
@@ -675,6 +677,8 @@ namespace CrashEdit.CE
             // fraSettings
             // 
             fraSettings.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraSettings.Controls.Add(cmdPasteSetting);
+            fraSettings.Controls.Add(cmdCopySetting);
             fraSettings.Controls.Add(lblSettingB);
             fraSettings.Controls.Add(lblSettingA);
             fraSettings.Controls.Add(lblArgAs);
@@ -695,6 +699,34 @@ namespace CrashEdit.CE
             fraSettings.TabIndex = 2;
             fraSettings.TabStop = false;
             fraSettings.Text = "Argument(s)";
+            // 
+            // cmdPasteSetting
+            // 
+            cmdPasteSetting.BorderColour = Color.Empty;
+            cmdPasteSetting.CustomColour = false;
+            cmdPasteSetting.FlatBottom = false;
+            cmdPasteSetting.FlatTop = false;
+            cmdPasteSetting.Location = new Point(159, 173);
+            cmdPasteSetting.Name = "cmdPasteSetting";
+            cmdPasteSetting.Padding = new Padding(5);
+            cmdPasteSetting.Size = new Size(67, 27);
+            cmdPasteSetting.TabIndex = 7;
+            cmdPasteSetting.Text = "Paste";
+            cmdPasteSetting.Click += cmdPasteSetting_Click;
+            // 
+            // cmdCopySetting
+            // 
+            cmdCopySetting.BorderColour = Color.Empty;
+            cmdCopySetting.CustomColour = false;
+            cmdCopySetting.FlatBottom = false;
+            cmdCopySetting.FlatTop = false;
+            cmdCopySetting.Location = new Point(159, 144);
+            cmdCopySetting.Name = "cmdCopySetting";
+            cmdCopySetting.Padding = new Padding(5);
+            cmdCopySetting.Size = new Size(67, 27);
+            cmdCopySetting.TabIndex = 7;
+            cmdCopySetting.Text = "Copy";
+            cmdCopySetting.Click += cmdCopySetting_Click;
             // 
             // lblSettingB
             // 
@@ -726,7 +758,7 @@ namespace CrashEdit.CE
             // 
             lblArgAs.AutoSize = true;
             lblArgAs.BackColor = Color.Transparent;
-            lblArgAs.ForeColor = SystemColors.MenuText;
+            lblArgAs.ForeColor = SystemColors.InfoText;
             lblArgAs.Location = new Point(8, 138);
             lblArgAs.Margin = new Padding(4, 0, 4, 0);
             lblArgAs.Name = "lblArgAs";
@@ -740,7 +772,7 @@ namespace CrashEdit.CE
             chkSettingHex.BackColor = Color.Transparent;
             chkSettingHex.Checked = true;
             chkSettingHex.CheckState = CheckState.Checked;
-            chkSettingHex.Location = new Point(120, 110);
+            chkSettingHex.Location = new Point(139, 110);
             chkSettingHex.Margin = new Padding(4, 3, 4, 3);
             chkSettingHex.Name = "chkSettingHex";
             chkSettingHex.Size = new Size(47, 19);
@@ -757,7 +789,7 @@ namespace CrashEdit.CE
             numSettingC.Maximum = new decimal(new int[] { -1, int.MaxValue, 0, 0 });
             numSettingC.Minimum = new decimal(new int[] { 0, int.MinValue, 0, int.MinValue });
             numSettingC.Name = "numSettingC";
-            numSettingC.Size = new Size(105, 23);
+            numSettingC.Size = new Size(123, 23);
             numSettingC.TabIndex = 7;
             numSettingC.ValueChanged += numSettingC_ValueChanged;
             // 
@@ -809,7 +841,7 @@ namespace CrashEdit.CE
             cmdAddSetting.CustomColour = false;
             cmdAddSetting.FlatBottom = false;
             cmdAddSetting.FlatTop = false;
-            cmdAddSetting.Location = new Point(120, 52);
+            cmdAddSetting.Location = new Point(139, 52);
             cmdAddSetting.Margin = new Padding(4, 3, 4, 3);
             cmdAddSetting.Name = "cmdAddSetting";
             cmdAddSetting.Padding = new Padding(5);
@@ -824,7 +856,7 @@ namespace CrashEdit.CE
             cmdRemoveSetting.CustomColour = false;
             cmdRemoveSetting.FlatBottom = false;
             cmdRemoveSetting.FlatTop = false;
-            cmdRemoveSetting.Location = new Point(120, 80);
+            cmdRemoveSetting.Location = new Point(139, 80);
             cmdRemoveSetting.Margin = new Padding(4, 3, 4, 3);
             cmdRemoveSetting.Name = "cmdRemoveSetting";
             cmdRemoveSetting.Padding = new Padding(5);
@@ -840,7 +872,7 @@ namespace CrashEdit.CE
             numSettingB.Maximum = new decimal(new int[] { 8388607, 0, 0, 0 });
             numSettingB.Minimum = new decimal(new int[] { 8388608, 0, 0, int.MinValue });
             numSettingB.Name = "numSettingB";
-            numSettingB.Size = new Size(82, 23);
+            numSettingB.Size = new Size(100, 23);
             numSettingB.TabIndex = 3;
             numSettingB.ValueChanged += numSettingB_ValueChanged;
             // 
@@ -850,7 +882,7 @@ namespace CrashEdit.CE
             numSettingA.Margin = new Padding(4, 3, 4, 3);
             numSettingA.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
             numSettingA.Name = "numSettingA";
-            numSettingA.Size = new Size(82, 23);
+            numSettingA.Size = new Size(100, 23);
             numSettingA.TabIndex = 2;
             numSettingA.ValueChanged += numSettingA_ValueChanged;
             // 
@@ -3657,5 +3689,7 @@ namespace CrashEdit.CE
         private DarkButton cmdVerifyDrawList;
         private DarkListBox lbEntityA;
         private DarkListBox lbEntityB;
+        private DarkButton cmdCopySetting;
+        private DarkButton cmdPasteSetting;
     }
 }

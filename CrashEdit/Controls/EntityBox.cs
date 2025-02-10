@@ -416,7 +416,8 @@ namespace CrashEdit.CE
                 cmdRemoveSetting.Enabled =
                 numSettingA.Enabled =
                 numSettingB.Enabled =
-                numSettingC.Enabled = false;
+                numSettingC.Enabled =
+                cmdCopySetting.Enabled = false;
             }
             else
             {
@@ -428,7 +429,8 @@ namespace CrashEdit.CE
                 lblArgAs.Enabled =
                 numSettingA.Enabled =
                 numSettingB.Enabled =
-                numSettingC.Enabled = true;
+                numSettingC.Enabled =
+                cmdCopySetting.Enabled = true;
                 numSettingA.Value = entity.Settings[settingindex].ValueA;
                 numSettingB.Value = entity.Settings[settingindex].ValueB;
                 SetCVal(entity.Settings[settingindex].Value);
@@ -514,6 +516,27 @@ namespace CrashEdit.CE
                 dirty.Pop();
                 lblArgAs.Text = MakeArgAsText();
             }
+        }
+
+        private void cmdCopySetting_Click(object sender, EventArgs e)
+        {
+            string text = string.Join("\n", entity.Settings.Select(setting => setting.Value));
+            Clipboard.SetText(text);
+        }
+
+        private void cmdPasteSetting_Click(object sender, EventArgs e)
+        {
+            string[] lines = Clipboard.GetText().Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
+            settingindex = 0;
+            entity.Settings.Clear();
+            foreach (string line in lines)
+            {
+                if (int.TryParse(line, out int value))
+                {
+                    entity.Settings.Add(new EntitySetting(value));
+                }
+            }
+            UpdateSettings();
         }
 
         private void UpdateID()
