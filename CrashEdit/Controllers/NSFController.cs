@@ -1,3 +1,4 @@
+using System.Media;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
@@ -249,6 +250,8 @@ namespace CrashEdit.CE
                 Console.WriteLine(string.Join(Environment.NewLine, drawlistLines.ToArray()));
             else
                 Console.WriteLine("No draw list issues were found.");
+
+            SystemSounds.Asterisk.Play();
         }
 
         public void Menu_FindEntities()
