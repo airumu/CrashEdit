@@ -922,7 +922,18 @@ namespace CrashEdit.CE
         {
             lblEIDError.Text = Entry.CheckEIDErrors(txtModel.Text, true);
             if (lblEIDError.Text != string.Empty) return;
-            frame.ModelEID = Entry.ENameToEID(txtModel.Text);
+
+            if (syncedit)
+            {
+                foreach (Frame frame in animationEntry.Frames)
+                {
+                    frame.ModelEID = Entry.ENameToEID(txtModel.Text);
+                }
+            }
+            else
+            {
+                frame.ModelEID = Entry.ENameToEID(txtModel.Text);
+            }
         }
 
         private void chkSyncFrames_CheckedChanged(object sender, EventArgs e)
