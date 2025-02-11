@@ -15,6 +15,8 @@ namespace CrashEdit
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             MinimumSize = new Size(300, 1);
             FormBorderStyle = FormBorderStyle.FixedDialog;
+            MinimizeBox = false;
+            MaximizeBox = false;
 
             OverallTable = new TableLayoutPanel
             {
