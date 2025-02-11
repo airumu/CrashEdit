@@ -72,16 +72,6 @@ namespace CrashEdit.Crash
             {
                 ErrorManager.SignalError("VH: Wave count is invalid");
             }
-            if (volume > 127)
-            {
-                ErrorManager.SignalIgnorableError("VH: Master Volume is invalid");
-                volume = 127;
-            }
-            if (panning > 127)
-            {
-                ErrorManager.SignalIgnorableError("VH: Master Pan is invalid");
-                panning = 127;
-            }
             if (reserved2 != -1)
             {
                 ErrorManager.SignalIgnorableError("VH: Reserved value 2 is wrong");
