@@ -369,4 +369,7 @@
   <data name="NSFController_AcAnalyzeLevel" xml:space="preserve">
     <value>Analyze level</value>
   </data>
+  <data name="NSFController_AcExportScenery" xml:space="preserve">
+    <value>Export all scenery to OBJ</value>
+  </data>
 </root>

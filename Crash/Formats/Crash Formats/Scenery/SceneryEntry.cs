@@ -116,7 +116,7 @@ namespace CrashEdit.Crash
             return new UnprocessedEntry(items, EID, Type);
         }
 
-        public byte[] ToOBJ()
+        /*public byte[] ToOBJ()
         {
             using (MemoryStream stream = new MemoryStream())
             {
@@ -150,9 +150,9 @@ namespace CrashEdit.Crash
                 }
                 return stream.ToArray();
             }
-        }
+        }*/
 
-        public byte[] ToPLY()
+        /*public byte[] ToPLY()
         {
             using (MemoryStream stream = new MemoryStream())
             {
@@ -214,7 +214,7 @@ namespace CrashEdit.Crash
                 }
                 return stream.ToArray();
             }
-        }
+        }*/
 
         /*public byte[] ToCOLLADA()
         {

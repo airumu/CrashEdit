@@ -5,10 +5,10 @@ namespace CrashEdit.CE
     [OrphanLegacyController(typeof(ColoredAnimationEntry))]
     public sealed class ColoredAnimationEntryController : EntryController
     {
-        public ColoredAnimationEntryController(ColoredAnimationEntry coloredanimationentry, SubcontrollerGroup parentGroup)
-            : base(coloredanimationentry, parentGroup)
+        public ColoredAnimationEntryController(ColoredAnimationEntry coloredanimationentry, SubcontrollerGroup parentGroup) : base(coloredanimationentry, parentGroup)
         {
             ColoredAnimationEntry = coloredanimationentry;
+            AddMenu("Export as OBJ", Menu_Export_OBJ);
         }
 
         public override bool EditorAvailable => true;
@@ -19,6 +19,26 @@ namespace CrashEdit.CE
         }
 
         public ColoredAnimationEntry ColoredAnimationEntry { get; }
+
+        private void Menu_Export_OBJ()
+        {
+            if (!FileUtil.SelectSaveFile(out string output, FileFilters.OBJ, FileFilters.Any))
+                return;
+
+            // modify the path to add a number before the extension
+            string ext = Path.GetExtension(output);
+            string filename = Path.GetFileNameWithoutExtension(output);
+            string path = Path.GetDirectoryName(output);
+
+            int id = 0;
+            int count = ColoredAnimationEntry.Frames.Count.ToString().Length;
+
+            foreach (var frame in ColoredAnimationEntry.Frames)
+            {
+                OldFrameController.ToOBJ_Colored(path, filename + id.ToString().PadLeft(count, '0'), GetNSF(), frame);
+                id++;
+            }
+        }
     }
 }
 

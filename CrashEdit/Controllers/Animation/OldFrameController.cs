@@ -1,5 +1,5 @@
-using AltUI.Forms;
 using CrashEdit.Crash;
+using CrashEdit.Exporters;
 
 namespace CrashEdit.CE
 {
@@ -26,16 +26,39 @@ namespace CrashEdit.CE
 
         private void Menu_Export_OBJ()
         {
-            OldModelEntry modelentry = GetEntry<OldModelEntry>(OldFrame.ModelEID);
-            if (modelentry == null)
-            {
-                throw new GUIException("The linked model entry could not be found.");
-            }
-            if (DarkMessageBox.ShowWarning("Texture and color information will not be exported.\n\nContinue anyway?", "Export as OBJ", DarkDialogButton.YesNo) != DialogResult.Yes)
-            {
+            if (!FileUtil.SelectSaveFile(out string filename, FileFilters.OBJ, FileFilters.Any))
                 return;
+
+            if (IsColored)
+            {
+                ToOBJ_Colored(Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename), GetNSF(), OldFrame);
             }
-            FileUtil.SaveFile(OldFrame.ToOBJ(modelentry), FileFilters.OBJ, FileFilters.Any);
+            else
+            {
+                ToOBJ_Old(Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename), GetNSF(), OldFrame);
+            }
+        }
+
+        public static void ToOBJ_Old(string path, string modelname, NSF nsf, OldFrame oldFrame)
+        {
+            Dictionary<int, int> textureEIDs = new Dictionary<int, int>();
+            Dictionary<string, TexInfoUnpacked> objTranslate = new Dictionary<string, TexInfoUnpacked>();
+
+            var exporter = new OBJExporter();
+
+            exporter.AddFrame_Old(nsf, oldFrame, ref textureEIDs, ref objTranslate);
+            exporter.Export(path, modelname);
+        }
+
+        public static void ToOBJ_Colored(string path, string modelname, NSF nsf, OldFrame oldFrame)
+        {
+            Dictionary<int, int> textureEIDs = new Dictionary<int, int>();
+            Dictionary<string, TexInfoUnpacked> objTranslate = new Dictionary<string, TexInfoUnpacked>();
+
+            var exporter = new OBJExporter();
+
+            exporter.AddFrame_Colored(nsf, oldFrame, ref textureEIDs, ref objTranslate);
+            exporter.Export(path, modelname);
         }
     }
 }

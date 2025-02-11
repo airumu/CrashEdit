@@ -418,6 +418,17 @@ namespace CrashEdit.CrashUI.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Fix Box Count.
         /// </summary>
+        public static string NSFController_AcExportScenery
+        {
+            get
+            {
+                return ResourceManager.GetString("NSFController_AcExportScenery", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Fix Box Count.
+        /// </summary>
         public static string NSFController_AcFindEntities
         {
             get

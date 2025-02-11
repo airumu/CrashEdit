@@ -369,4 +369,7 @@
   <data name="NSFController_AcAnalyzeLevel" xml:space="preserve">
     <value>レベルの分析</value>
   </data>
+  <data name="NSFController_AcExportScenery" xml:space="preserve">
+    <value>全ての背景をOBJとして保存</value>
+  </data>
 </root>

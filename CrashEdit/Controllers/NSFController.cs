@@ -2,6 +2,7 @@ using System.Media;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
+using CrashEdit.Exporters;
 
 namespace CrashEdit.CE
 {
@@ -33,6 +34,8 @@ namespace CrashEdit.CE
             {
                 AddMenu(CrashUI.Properties.Resources.NSFController_AcShowLevel, "ThingBlue", Menu_ShowLevelC1);
                 AddMenu(CrashUI.Properties.Resources.NSFController_AcShowLevelZones, "ThingViolet", Menu_ShowLevelZonesC1);
+                AddMenuSeparator();
+                AddMenu(CrashUI.Properties.Resources.NSFController_AcExportScenery, Menu_ExportSceneryC1OBJ);
             }
             else if (GameVersion == GameVersion.Crash1Beta1995)
             {
@@ -43,6 +46,8 @@ namespace CrashEdit.CE
             {
                 AddMenu(CrashUI.Properties.Resources.NSFController_AcShowLevel, "ThingBlue", Menu_ShowLevelC2);
                 AddMenu(CrashUI.Properties.Resources.NSFController_AcShowLevelZones, "ThingViolet", Menu_ShowLevelZonesC2);
+                AddMenuSeparator();
+                AddMenu(CrashUI.Properties.Resources.NSFController_AcExportScenery, Menu_ExportSceneryC2OBJ);
             }
         }
 
@@ -610,6 +615,56 @@ namespace CrashEdit.CE
             {
                 ShowLevelZonesForm = null;
             };
+        }
+
+        private void Menu_ExportSceneryC1OBJ()
+        {
+            if (!FileUtil.SelectSaveFile(out string filename, FileFilters.OBJ, FileFilters.Any))
+                return;
+
+            ExportSceneryC1OBJ(Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename));
+        }
+
+        private void Menu_ExportSceneryC2OBJ()
+        {
+            if (!FileUtil.SelectSaveFile(out string filename, FileFilters.OBJ, FileFilters.Any))
+                return;
+
+            ExportSceneryC2OBJ(Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename));
+        }
+
+        private void ExportSceneryC1OBJ(string path, string modelname)
+        {
+            var exporter = new OBJExporter();
+
+            // detect how many textures are used and their eids to prepare the image
+            Dictionary<int, int> textureEIDs = new();
+            Dictionary<string, TexInfoUnpacked> objTranslate = new Dictionary<string, TexInfoUnpacked>();
+
+            // find all the scenery insde chunks
+            foreach (OldSceneryEntry scenery in NSF.GetEntries<OldSceneryEntry>())
+            {
+                exporter.AddScenery(NSF, scenery, ref textureEIDs, ref objTranslate);
+            }
+
+            exporter.Export(path, modelname);
+        }
+
+        private void ExportSceneryC2OBJ(string path, string modelname)
+        {
+            var exporter = new OBJExporter();
+
+            // detect how many textures are used and their eids to prepare the image
+            Dictionary<int, int> textureEIDs = new();
+            Dictionary<string, TexInfoUnpacked> objTranslate = new Dictionary<string, TexInfoUnpacked>();
+
+            // find all the scenery insde chunks
+            foreach (SceneryEntry scenery in NSF.GetEntries<SceneryEntry>())
+            {
+                exporter.AddScenery(NSF, scenery, ref textureEIDs, ref objTranslate);
+            }
+
+            exporter.Export(path, modelname);
         }
 
         private void Menu_Import_Chunk()

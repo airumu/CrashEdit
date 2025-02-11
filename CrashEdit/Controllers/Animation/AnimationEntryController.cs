@@ -8,6 +8,7 @@ namespace CrashEdit.CE
         public AnimationEntryController(AnimationEntry animationentry, SubcontrollerGroup parentGroup) : base(animationentry, parentGroup)
         {
             AnimationEntry = animationentry;
+            AddMenu("Export as OBJ", Menu_Export_OBJ);
         }
 
         public override bool EditorAvailable => true;
@@ -18,5 +19,25 @@ namespace CrashEdit.CE
         }
 
         public AnimationEntry AnimationEntry { get; }
+
+        private void Menu_Export_OBJ()
+        {
+            if (!FileUtil.SelectSaveFile(out string output, FileFilters.OBJ, FileFilters.Any))
+                return;
+
+            // modify the path to add a number before the extension
+            string ext = Path.GetExtension(output);
+            string filename = Path.GetFileNameWithoutExtension(output);
+            string path = Path.GetDirectoryName(output);
+
+            int id = 0;
+            int count = AnimationEntry.Frames.Count.ToString().Length;
+
+            foreach (var frame in AnimationEntry.Frames)
+            {
+                FrameController.ToOBJ(path, filename + id.ToString().PadLeft(count, '0'), GetNSF(), frame);
+                id++;
+            }
+        }
     }
 }
