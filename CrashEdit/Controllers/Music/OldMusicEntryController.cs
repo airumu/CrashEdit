@@ -57,7 +57,7 @@ namespace CrashEdit.CE
 
         private void Menu_Export_Linked_VAB_DLS()
         {
-            if (DarkMessageBox.ShowWarning("Exporting to DLS is experimental.\n\nContinue anyway?", "Export Linked VAB as DLS", DarkDialogButton.YesNo) != DialogResult.Yes)
+            if (DarkMessageBox.ShowWarning("Exporting to DLS is experimental.\nContinue anyway?", "Export Linked VAB as DLS", DarkDialogButton.YesNo) != DialogResult.Yes)
             {
                 return;
             }
