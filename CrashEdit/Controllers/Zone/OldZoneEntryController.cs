@@ -53,7 +53,7 @@ namespace CrashEdit.CE
             try
             {
                 byte[] searchPattern = null!;
-                using (InputWindow inputWindows = new InputWindow("Enter the collision type (as a literal) to replace:", CrashUI.Properties.Resources.ZoneEntryController_AcChangeCollisionType, string.Empty))
+                using (InputWindow inputWindows = new InputWindow("Enter the collision type (as a literal) to replace:", CrashUI.Properties.Resources.ZoneEntryController_AcChangeCollisionType, string.Empty, 4))
                 {
                     if (inputWindows.ShowDialog() == DialogResult.OK)
                     {
@@ -70,7 +70,7 @@ namespace CrashEdit.CE
                 }
 
                 byte[] replacementPattern = null!;
-                using (InputWindow inputWindows = new InputWindow("Enter the new collision type (as a literal):", CrashUI.Properties.Resources.ZoneEntryController_AcChangeCollisionType, string.Empty))
+                using (InputWindow inputWindows = new InputWindow("Enter the new collision type (as a literal):", CrashUI.Properties.Resources.ZoneEntryController_AcChangeCollisionType, string.Empty, 4))
                 {
                     if (inputWindows.ShowDialog() == DialogResult.OK)
                     {

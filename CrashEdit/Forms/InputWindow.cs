@@ -4,8 +4,6 @@ namespace CrashEdit.CE
 {
     public partial class InputWindow : DarkForm
     {
-        private int v;
-
         public InputWindow(string labelText, string caption, string curText)
         {
             InitializeComponent();
