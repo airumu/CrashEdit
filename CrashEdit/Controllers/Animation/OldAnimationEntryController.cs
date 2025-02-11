@@ -1,3 +1,4 @@
+using System.Media;
 using CrashEdit.Crash;
 
 namespace CrashEdit.CE
@@ -8,7 +9,8 @@ namespace CrashEdit.CE
         public OldAnimationEntryController(OldAnimationEntry oldanimationentry, SubcontrollerGroup parentGroup) : base(oldanimationentry, parentGroup)
         {
             OldAnimationEntry = oldanimationentry;
-            AddMenu("Export as OBJ", Menu_Export_OBJ);
+            AddMenuSeparator();
+            AddMenu(CrashUI.Properties.Resources.AnimationEntryController_AcExportAsOBJ, Menu_Export_OBJ);
         }
 
         public override bool EditorAvailable => true;
@@ -35,9 +37,13 @@ namespace CrashEdit.CE
 
             foreach (var frame in OldAnimationEntry.Frames)
             {
+                Console.WriteLine($"Exporting Frames[{id}]...");
                 OldFrameController.ToOBJ_Old(path, filename + id.ToString().PadLeft(count, '0'), GetNSF(), frame);
                 id++;
             }
+
+            Console.WriteLine("Done.");
+            SystemSounds.Asterisk.Play();
         }
     }
 }

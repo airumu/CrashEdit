@@ -10,11 +10,11 @@ namespace CrashEdit.CE
         {
             SceneryEntry = sceneryentry;
             AddMenuSeparator();
-            AddMenu("Export as Wavefront OBJ", Menu_Export_OBJ);
+            AddMenu(CrashUI.Properties.Resources.AnimationEntryController_AcExportAsOBJ, Menu_Export_OBJ);
             //AddMenu("Export as Stanford PLY", Menu_Export_PLY);
             //AddMenu("Export as COLLADA",Menu_Export_COLLADA);
             AddMenuSeparator();
-            AddMenu("Fix coords imported from Crash 3", "Calculator", Menu_Fix_WGEOv3);
+            AddMenu(CrashUI.Properties.Resources.SceneryEntryController_AcFixWGEOv3, "Calculator", Menu_Fix_WGEOv3);
         }
 
         public override bool EditorAvailable => true;

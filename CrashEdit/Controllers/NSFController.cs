@@ -644,10 +644,13 @@ namespace CrashEdit.CE
             // find all the scenery insde chunks
             foreach (OldSceneryEntry scenery in NSF.GetEntries<OldSceneryEntry>())
             {
+                Console.WriteLine($"Exporting {scenery.EName}...");
                 exporter.AddScenery(NSF, scenery, ref textureEIDs, ref objTranslate);
             }
 
             exporter.Export(path, modelname);
+            Console.WriteLine("Done.");
+            SystemSounds.Asterisk.Play();
         }
 
         private void ExportSceneryC2OBJ(string path, string modelname)
@@ -661,10 +664,13 @@ namespace CrashEdit.CE
             // find all the scenery insde chunks
             foreach (SceneryEntry scenery in NSF.GetEntries<SceneryEntry>())
             {
+                Console.WriteLine($"Exporting {scenery.EName}...");
                 exporter.AddScenery(NSF, scenery, ref textureEIDs, ref objTranslate);
             }
 
             exporter.Export(path, modelname);
+            Console.WriteLine("Done.");
+            SystemSounds.Asterisk.Play();
         }
 
         private void Menu_Import_Chunk()

@@ -310,7 +310,7 @@
     <value>エントリをインポート</value>
   </data>
   <data name="EntryController_AcExport" xml:space="preserve">
-    <value>エントリ 「{0}」 をエクスポート</value>
+    <value>エントリ 「{0}」 を保存</value>
   </data>
   <data name="EntryController_AcRename" xml:space="preserve">
     <value>エントリ 「{0}」 の名前を変更</value>
@@ -371,5 +371,11 @@
   </data>
   <data name="NSFController_AcExportScenery" xml:space="preserve">
     <value>全ての背景をOBJとして保存</value>
+  </data>
+  <data name="AnimationEntryController_AcExportAsOBJ" xml:space="preserve">
+    <value>Wavefront OBJとして保存</value>
+  </data>
+  <data name="SceneryEntryController_AcFixWGEOv3" xml:space="preserve">
+    <value>クラッシュ3からインポートされた座標を修正</value>
   </data>
 </root>

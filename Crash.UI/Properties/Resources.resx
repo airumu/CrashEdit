@@ -370,6 +370,12 @@
     <value>Analyze level</value>
   </data>
   <data name="NSFController_AcExportScenery" xml:space="preserve">
-    <value>Export all scenery to OBJ</value>
+    <value>Export all scenery as OBJ</value>
+  </data>
+  <data name="AnimationEntryController_AcExportAsOBJ" xml:space="preserve">
+    <value>Export as Wavefront OBJ</value>
+  </data>
+  <data name="SceneryEntryController_AcFixWGEOv3" xml:space="preserve">
+    <value>Fix coords imported from Crash 3</value>
   </data>
 </root>

@@ -59,7 +59,18 @@ namespace CrashEdit.CrashUI.Properties {
                 resourceCulture = value;
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Animation ({0}).
+        /// </summary>
+        public static string AnimationEntryController_AcExportAsOBJ
+        {
+            get
+            {
+                return ResourceManager.GetString("AnimationEntryController_AcExportAsOBJ", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Animation ({0}).
         /// </summary>
@@ -607,7 +618,18 @@ namespace CrashEdit.CrashUI.Properties {
                 return ResourceManager.GetString("ProtoZoneEntryController_Text", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Scenery ({0}).
+        /// </summary>
+        public static string SceneryEntryController_AcFixWGEOv3
+        {
+            get
+            {
+                return ResourceManager.GetString("SceneryEntryController_AcFixWGEOv3", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Scenery ({0}).
         /// </summary>

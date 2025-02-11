@@ -9,7 +9,8 @@ namespace CrashEdit.CE
         public FrameController(Frame frame, SubcontrollerGroup parentGroup) : base(parentGroup, frame)
         {
             Frame = frame;
-            AddMenu("Export as OBJ", Menu_Export_OBJ);
+            AddMenuSeparator();
+            AddMenu(CrashUI.Properties.Resources.AnimationEntryController_AcExportAsOBJ, Menu_Export_OBJ);
         }
 
         public override bool EditorAvailable => true;

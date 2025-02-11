@@ -10,7 +10,7 @@ namespace CrashEdit.CE
         {
             OldSceneryEntry = oldsceneryentry;
             AddMenuSeparator();
-            AddMenu("Export as OBJ", Menu_Export_OBJ);
+            AddMenu(CrashUI.Properties.Resources.AnimationEntryController_AcExportAsOBJ, Menu_Export_OBJ);
             //AddMenu("Export as COLLADA", Menu_Export_COLLADA);
         }
 
