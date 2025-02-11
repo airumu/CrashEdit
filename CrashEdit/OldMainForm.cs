@@ -25,6 +25,7 @@ namespace CrashEdit.CE
         private ToolStripMenuItem tbxConvertVHVB = new();
         private ToolStripMenuItem tbxConvertVAB = new();
         private ToolStripMenuItem tbxEntryConverter = new();
+        private ToolStripMenuItem tbxGenerateEID = new();
         private ToolStripMenuItem tbbExtra = new();
 
         private TabControl tbcTabs;
@@ -83,6 +84,9 @@ namespace CrashEdit.CE
             tbxEntryConverter.Text = Resources.OldMainForm_tbxEntryConverter;
             tbxEntryConverter.Click += new EventHandler(tbxEntryConverter_Click);
 
+            tbxGenerateEID.Text = Resources.OldMainForm_tbxGenerateEID;
+            tbxGenerateEID.Click += new EventHandler(tbxGenerateEID_Click);
+
             tbbExtra.Text = Resources.OldMainForm_tbbExtra;
             tbbExtra.ImageKey = "Dropdown";
             tbbExtra.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText;
@@ -96,6 +100,8 @@ namespace CrashEdit.CE
             tbbExtra.DropDown.Items.Add(tbxConvertVAB);
             tbbExtra.DropDown.Items.Add("-");
             tbbExtra.DropDown.Items.Add(tbxEntryConverter);
+            tbbExtra.DropDown.Items.Add("-");
+            tbbExtra.DropDown.Items.Add(tbxGenerateEID);
 
             ToolStrip.Items.Insert(0, tbbOpen);
             ToolStrip.Items.Insert(1, tbbSave);
@@ -896,6 +902,44 @@ namespace CrashEdit.CE
                 frmEntryConverter = null;
             };
             frmEntryConverter.Show();
+        }
+
+        void tbxGenerateEID_Click(object sender, EventArgs e)
+        {
+            using (InputWindow inputWindow = new InputWindow("Enter entry name:", Resources.OldMainForm_tbxGenerateEID, string.Empty, 5))
+            {
+                if (inputWindow.ShowDialog() == DialogResult.OK)
+                {
+                    string input = inputWindow.Input;
+                    if (Entry.CheckEIDErrors(input, true) == string.Empty)
+                    {
+                        int chunk = Entry.ENameToEID(input);
+                        int temp = 0;
+                        List<byte> eid = new List<byte>();
+                        for (int i = 0; i < 8; i++)
+                        {
+                            if (i % 2 == 0)
+                            {
+                                temp = chunk & 0xF;
+                                chunk >>= 4;
+                                eid.Add((byte)(chunk & 0xF));
+                            }
+                            else
+                            {
+                                eid.Add((byte)temp);
+                                chunk >>= 4;
+                            }
+                        }
+                        string result = string.Join("", eid.Select(b => b.ToString("X")));
+                        Console.WriteLine($"{input} -> {result}\nCopied to clipboard.");
+                        Clipboard.SetText(result);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Error: Invalid input.");
+                    }
+                }
+            }
         }
 
         void GetNSD(string filename, GameVersion gameversion, out string nsdFilename, out dynamic? nsd)

@@ -923,4 +923,7 @@
   <data name="OldMainForm_tbxEntryConverter" xml:space="preserve">
     <value>エントリの変換</value>
   </data>
+  <data name="OldMainForm_tbxGenerateEID" xml:space="preserve">
+    <value>EIDの生成</value>
+  </data>
 </root>

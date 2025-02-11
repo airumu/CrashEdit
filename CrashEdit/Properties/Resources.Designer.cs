@@ -1631,6 +1631,15 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
+        ///   Generate EID に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string OldMainForm_tbxGenerateEID {
+            get {
+                return ResourceManager.GetString("OldMainForm_tbxGenerateEID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Generate Spawn Point に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string OldMainForm_tbxGenerateSpawnPoint {
