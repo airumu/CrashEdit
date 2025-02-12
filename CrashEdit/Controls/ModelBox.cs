@@ -114,6 +114,10 @@ namespace CrashEdit.CE.Controls
         private double MasterSaturation => colorEditorGlobal.HslColor.S;
         private double MasterLightness => colorEditorGlobal.HslColor.L;
 
+        private readonly double hueDefault = 0;
+        private readonly double saturationDefault = 0.5;
+        private readonly double lightnessDefault = 0.5;
+
         private readonly Color clrBackground = Color.FromArgb(40, 40, 40);
         private readonly Color clrAltBackground = Color.FromArgb(34, 34, 34);
         private readonly Color clrSelectionBackground = Color.FromArgb(70, 70, 70);
@@ -800,8 +804,8 @@ namespace CrashEdit.CE.Controls
                 {
                     Parallel.For(0, lstColor.Items.Count, i =>
                     {
-                        byte[] item = StringToByteArray(lstColor.Items[i].SubItems[1].Text);
-                        SetModelColor(Color.FromArgb(item[0], item[1], item[2]), i);
+                        byte[] item = GetHexColor(lstColor.Items[i].SubItems[1].Text);
+                        UpdateModelColor(Color.FromArgb(item[0], item[1], item[2]), i);
                     });
                 });
             }
@@ -809,8 +813,8 @@ namespace CrashEdit.CE.Controls
             {
                 for (int i = 0; i < lstColor.Items.Count; i++)
                 {
-                    byte[] item = StringToByteArray(lstColor.Items[i].SubItems[1].Text);
-                    SetModelColor(Color.FromArgb(item[0], item[1], item[2]), i);
+                    byte[] item = GetHexColor(lstColor.Items[i].SubItems[1].Text);
+                    UpdateModelColor(Color.FromArgb(item[0], item[1], item[2]), i);
                 }
             }
             lstColor.Invoke(() => lstColor.Items.Clear());
@@ -886,7 +890,7 @@ namespace CrashEdit.CE.Controls
             }
         }
 
-        private void SetModelColor(Color color, int i)
+        private void UpdateModelColor(Color color, int i)
         {
             SceneryColor updatedColor = model.Colors[i];
             updatedColor.Red = color.R;
@@ -932,7 +936,7 @@ namespace CrashEdit.CE.Controls
 
             Color color = clr;
             var i = (int)lstColor.SelectedItems[0].Tag;
-            SetModelColor(color, i);
+            UpdateModelColor(color, i);
             lstColor.Items[i].SubItems[0].Text = Convert.ToHexString(new byte[] { color.R, color.G, color.B });
             lstColor.Items[i].SubItems[0].BackColor = color;
             lstColor.Items[i].SubItems[0].ForeColor = getBrightness(lstColor.Items[i].SubItems[0].BackColor) >= 0.5 ? Color.Black : Color.White;
@@ -948,26 +952,28 @@ namespace CrashEdit.CE.Controls
             {
                 for (int i = 0; i < lstColor.Items.Count; i++)
                 {
-                    byte[] item = StringToByteArray(lstColor.Items[i].SubItems[1].Text);
-                    Color itemColor = (Color.FromArgb(item[0], item[1], item[2]));
+                    byte[] hexColor = GetHexColor(lstColor.Items[i].SubItems[1].Text);
+                    Color rgbColor = Color.FromArgb(hexColor[0], hexColor[1], hexColor[2]);
+                    HslColor hslColor = new HslColor(rgbColor);
 
-                    HslColor hslColor = new HslColor(itemColor);
-
-                    hslColor = ChangeHue(hslColor, hslColor.H + (MasterHue));
-                    hslColor.S += (double)(MasterSaturation - 0.5) / 1.0;
-                    hslColor.L += (double)(MasterLightness - 0.5) / 1.0;
+                    if (MasterHue != 0)
+                    {
+                        hslColor = ChangeHue(hslColor, MasterHue);
+                    }
+                    hslColor.S = Math.Clamp(hslColor.S + (MasterSaturation - 0.5), 0.0, 1.0);
+                    hslColor.L = Math.Clamp(hslColor.L + (MasterLightness - 0.5), 0.0, 1.0);
 
                     Color newColor = hslColor.ToRgbColor();
 
-                    SetModelColor(newColor, i);
+                    UpdateModelColor(newColor, i);
                     lstColor.Items[i].SubItems[0].Text = Convert.ToHexString(new byte[] { newColor.R, newColor.G, newColor.B });
                     lstColor.Items[i].SubItems[0].BackColor = newColor;
-                    lstColor.Items[i].SubItems[0].ForeColor = getBrightness(lstColor.Items[i].SubItems[0].BackColor) >= 0.5 ? Color.Black : Color.White;
+                    lstColor.Items[i].SubItems[0].ForeColor = getBrightness(newColor) >= 0.5 ? Color.Black : Color.White;
                 }
             }
         }
 
-        public static byte[] StringToByteArray(string hex)
+        public static byte[] GetHexColor(string hex)
         {
             return Enumerable.Range(0, hex.Length)
                              .Where(x => x % 2 == 0)
@@ -976,8 +982,18 @@ namespace CrashEdit.CE.Controls
         }
 
         // color brightness as perceived:
-        float getBrightness(Color c)
-        { return (c.R * 0.299f + c.G * 0.587f + c.B * 0.114f) / 256f; }
+        internal static float getBrightness(Color c)
+        {
+            return (c.R * 0.299f + c.G * 0.587f + c.B * 0.114f) / 256f;
+        }
+
+        internal static HslColor ChangeHue(HslColor color, double increment)
+        {
+            HslColor copy = new HslColor(color);
+            copy.H = (copy.H + increment) % 360;
+            if (copy.H < 0) copy.H += 360;
+            return copy;
+        }
 
         private async void tglGlobalControl_SwitchedChanged(object sender)
         {
@@ -1003,9 +1019,9 @@ namespace CrashEdit.CE.Controls
         private void ResetColorSliders()
         {
             var hslColor = colorEditorGlobal.HslColor;
-            hslColor.H = 180;
-            hslColor.S = 0.5;
-            hslColor.L = 0.5;
+            hslColor.H = hueDefault;
+            hslColor.S = saturationDefault;
+            hslColor.L = lightnessDefault;
             colorEditorGlobal.HslColor = hslColor;
         }
 
@@ -1056,33 +1072,12 @@ namespace CrashEdit.CE.Controls
             OnValueChanged(true);
         }
 
-        internal static HslColor ChangeHue(HslColor color, double increment)
-        {
-            HslColor copy;
-            double value;
-
-            copy = new HslColor(color);
-            value = copy.H + increment;
-
-            if (increment > 0 && value > 359)
-            {
-                value -= 360;
-            }
-            else if (increment < 0 && value < 0)
-            {
-                value += 360;
-            }
-
-            copy.H = value;
-            return copy;
-        }
-
         private void ApplyChanges()
         {
             foreach (ListViewItem item in lstColor.Items)
             {
                 var i = (int)item.Tag;
-                SetModelColor(item.BackColor, i);
+                UpdateModelColor(item.BackColor, i);
             }
             UpdateColorCopy();
         }
