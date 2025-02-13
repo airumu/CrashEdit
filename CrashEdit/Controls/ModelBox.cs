@@ -896,7 +896,6 @@ namespace CrashEdit.CE.Controls
             updatedColor.Red = color.R;
             updatedColor.Green = color.G;
             updatedColor.Blue = color.B;
-            updatedColor.Extra = 0;
             model.Colors[i] = updatedColor;
         }
 
@@ -982,12 +981,12 @@ namespace CrashEdit.CE.Controls
         }
 
         // color brightness as perceived:
-        internal static float getBrightness(Color c)
+        public static float getBrightness(Color c)
         {
             return (c.R * 0.299f + c.G * 0.587f + c.B * 0.114f) / 256f;
         }
 
-        internal static HslColor ChangeHue(HslColor color, double increment)
+        public static HslColor ChangeHue(HslColor color, double increment)
         {
             HslColor copy = new HslColor(color);
             copy.H = (copy.H + increment) % 360;

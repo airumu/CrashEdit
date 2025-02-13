@@ -47,6 +47,8 @@ namespace CrashEdit.CE
                 AddMenu(CrashUI.Properties.Resources.NSFController_AcShowLevel, "ThingBlue", Menu_ShowLevelC2);
                 AddMenu(CrashUI.Properties.Resources.NSFController_AcShowLevelZones, "ThingViolet", Menu_ShowLevelZonesC2);
                 AddMenuSeparator();
+                AddMenu(CrashUI.Properties.Resources.NSFController_AcEditScenery, "Wrench", Menu_EditSceneryC2);
+                AddMenuSeparator();
                 AddMenu(CrashUI.Properties.Resources.NSFController_AcExportScenery, Menu_ExportSceneryC2OBJ);
             }
         }
@@ -55,15 +57,19 @@ namespace CrashEdit.CE
 
         private DarkForm? ShowLevelForm { get; set; }
         private DarkForm? ShowLevelZonesForm { get; set; }
+        private SceneryEditor? SceneryEditorForm { get; set; }
 
         public void Kill()
         {
             ShowLevelForm?.Close();
-            ShowLevelZonesForm?.Close();
             ShowLevelForm?.Dispose();
-            ShowLevelZonesForm?.Dispose();
             ShowLevelForm = null;
+            ShowLevelZonesForm?.Close();
+            ShowLevelZonesForm?.Dispose();
             ShowLevelZonesForm = null;
+            SceneryEditorForm?.Close();
+            SceneryEditorForm?.Dispose();
+            SceneryEditorForm = null;
         }
 
         private void Menu_Add_NormalChunk()
@@ -307,7 +313,7 @@ namespace CrashEdit.CE
             }
             list.Sort();
             Console.WriteLine(string.Join(Environment.NewLine, list.ToArray()));
-            Console.WriteLine($"Total count: {list.Count}");
+            Console.WriteLine($"Total: {list.Count}");
         }
 
         private void Menu_Fix_Detonator()
@@ -615,6 +621,21 @@ namespace CrashEdit.CE
             {
                 ShowLevelZonesForm = null;
             };
+        }
+
+        private void Menu_EditSceneryC2()
+        {
+            if (SceneryEditorForm != null)
+            {
+                SceneryEditorForm.Focus();
+                return;
+            }
+            SceneryEditorForm = new (NSF);
+            SceneryEditorForm.FormClosed += (sender, e) =>
+            {
+                SceneryEditorForm = null;
+            };
+            SceneryEditorForm.Show();
         }
 
         private void Menu_ExportSceneryC1OBJ()

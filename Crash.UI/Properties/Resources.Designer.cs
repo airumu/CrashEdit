@@ -427,6 +427,17 @@ namespace CrashEdit.CrashUI.Properties {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Animation ({0}).
+        /// </summary>
+        public static string NSFController_AcEditScenery
+        {
+            get
+            {
+                return ResourceManager.GetString("NSFController_AcEditScenery", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Fix Box Count.
         /// </summary>
         public static string NSFController_AcExportScenery
