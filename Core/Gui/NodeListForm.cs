@@ -1,6 +1,5 @@
 ﻿using System.Drawing;
 using System.Text.RegularExpressions;
-using System.Windows.Controls;
 using System.Windows.Forms;
 using AltUI.Controls;
 using AltUI.Forms;
@@ -16,7 +15,6 @@ namespace CrashEdit
 
         private MainForm? mainForm;
 
-        private TableLayoutPanel OverallTable { get; }
         private DarkComboBox EntryType { get; }
         private DoubleBufferedListBox EntryList { get; }
         private DarkTextBox SearchBox { get; }
@@ -35,20 +33,29 @@ namespace CrashEdit
             //Text = mainForm?.TabControl.SelectedTab?.Text;
             Text = "Node List";
             Icon = Embeds.GetIcon("List");
-            MinimumSize = new Size(140, 600);
+            MinimumSize = new Size(160, 600);
             FormBorderStyle = FormBorderStyle.Sizable;
             MinimizeBox = false;
             MaximizeBox = false;
 
-            OverallTable = new()
+            TableLayoutPanel OverallTable = new()
             {
                 Dock = DockStyle.Fill,
                 AutoSize = true,
                 AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 ColumnCount = 1,
-                Padding = new Padding(12),
+                Padding = new Padding(8),
             };
-            Controls.Add(OverallTable);
+
+            TableLayoutPanel table1 = new()
+            {
+                Dock = DockStyle.Fill,
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                ColumnCount = 2,
+            };
+            table1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 100));
+            table1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20));
 
             EntryType = new()
             {
@@ -60,7 +67,7 @@ namespace CrashEdit
             EntryType.DropDownClosed += EntryType_DropDownClosed;
             EntryType.SelectedValueChanged += EntryType_SelectedValueChanged;
             EntryType.KeyDown += Event_KeyDown;
-            OverallTable.Controls.Add(EntryType);
+            table1.Controls.Add(EntryType, 0, 0);
 
             SearchBox = new()
             {
@@ -71,7 +78,19 @@ namespace CrashEdit
             SearchBox.TextChanged += SearchBox_TextChanged;
             SearchBox.LostFocus += SearchBox_LostFocus;
             SearchBox.KeyDown += Event_KeyDown;
-            OverallTable.Controls.Add(SearchBox);
+            table1.Controls.Add(SearchBox, 0, 1);
+
+            PictureBox pictureBox = new PictureBox()
+            {
+                Size = new Size(16, 16 + 4),
+                Image = Embeds.GetIcon("Hint")!.ToBitmap(),
+                SizeMode = PictureBoxSizeMode.StretchImage,
+                Padding = new Padding(0, 4, 0, 0)
+            };
+            table1.Controls.Add(pictureBox, 1, 1);
+
+            DarkToolTip tip1 = new();
+            tip1.SetToolTip(pictureBox, "The filter supports regex.");
 
             EntryList = new()
             {
@@ -82,7 +101,10 @@ namespace CrashEdit
             };
             EntryList.SelectedValueChanged += EntryList_SelectedValueChanged;
             EntryList.KeyDown += Event_KeyDown;
+
+            OverallTable.Controls.Add(table1);
             OverallTable.Controls.Add(EntryList);
+            Controls.Add(OverallTable);
         }
 
         private void Event_KeyDown(object? sender, KeyEventArgs e)
