@@ -59,6 +59,7 @@
       <None Remove="Embeds\Images\FolderOpen.png" />
       <None Remove="Embeds\Images\HardDisk.png" />
       <None Remove="Embeds\Images\HelpSymbol.png" />
+      <None Remove="Embeds\Images\Hint.png" />
       <None Remove="Embeds\Images\Import.png" />
       <None Remove="Embeds\Images\JournalBlue.gif" />
       <None Remove="Embeds\Images\JournalCode.gif" />
@@ -129,6 +130,7 @@
       <EmbeddedResource Include="Embeds\Images\FolderOpen.png" />
       <EmbeddedResource Include="Embeds\Images\HardDisk.png" />
       <EmbeddedResource Include="Embeds\Images\HelpSymbol.png" />
+      <EmbeddedResource Include="Embeds\Images\Hint.png" />
       <EmbeddedResource Include="Embeds\Images\Import.png" />
       <EmbeddedResource Include="Embeds\Images\JournalBlue.gif" />
       <EmbeddedResource Include="Embeds\Images\JournalCode.gif" />

@@ -89,8 +89,6 @@ namespace CrashEdit.CE
             {
                 Dock = DockStyle.Fill,
                 AutoSize = false,
-                ColumnCount = 2,
-                RowCount = 8,
                 Padding = new Padding(12)
             };
 
@@ -101,15 +99,51 @@ namespace CrashEdit.CE
 
             Label lblApply = new()
             {
-                ForeColor = SystemColors.MenuText,
-                Text = "Apply List"
+                ForeColor = SystemColors.MenuText
             };
+            lblApply.Paint += (sender, e) =>
+            {
+                string text = "Applied List";
+                Font font = lblApply.Font;
+                Brush textBrush = Brushes.Gainsboro;
+
+                Image icon = Embeds.GetIcon("Hint")!.ToBitmap();
+                int padding = 4; 
+
+                SizeF textSize = e.Graphics.MeasureString(text, font);
+                PointF textPosition = new PointF(0, (lblApply.Height - textSize.Height) / 2);
+                Point iconPosition = new Point((int)(textSize.Width + padding), (lblApply.Height - icon.Height) / 2);
+
+                e.Graphics.DrawString(text, font, textBrush, textPosition);
+                e.Graphics.DrawImage(icon, iconPosition);
+            };
+
+            DarkToolTip tipApply = new();
+            tipApply.SetToolTip(lblApply, "List of scenery entries to apply changes. The filter supports regex.");
 
             Label lblIgnore = new()
             {
-                ForeColor = SystemColors.MenuText,
-                Text = "Ignore List"
+                ForeColor = SystemColors.MenuText
             };
+            lblIgnore.Paint += (sender, e) =>
+            {
+                string text = "Ignored List";
+                Font font = lblApply.Font;
+                Brush textBrush = Brushes.Gainsboro;
+
+                Image icon = Embeds.GetIcon("Hint")!.ToBitmap();
+                int padding = 4;
+
+                SizeF textSize = e.Graphics.MeasureString(text, font);
+                PointF textPosition = new PointF(0, (lblApply.Height - textSize.Height) / 2);
+                Point iconPosition = new Point((int)(textSize.Width + padding), (lblApply.Height - icon.Height) / 2);
+
+                e.Graphics.DrawString(text, font, textBrush, textPosition);
+                e.Graphics.DrawImage(icon, iconPosition);
+            };
+
+            DarkToolTip tipIgnore = new();
+            tipIgnore.SetToolTip(lblIgnore, "List of scenery entries to ignore changes. The filter supports regex.");
 
             DarkListBox lstToApply = new()
             {
@@ -260,7 +294,7 @@ namespace CrashEdit.CE
 
             DarkButton cmdAdd = new()
             {
-                Text = "Add"
+                Text = "->"
             };
             cmdAdd.Click += (sender, e) =>
             {
@@ -309,7 +343,7 @@ namespace CrashEdit.CE
 
             DarkButton cmdRemove = new()
             {
-                Text = "Remove"
+                Text = "<-"
             };
             cmdRemove.Click += (sender, e) =>
             {
@@ -376,7 +410,7 @@ namespace CrashEdit.CE
             DarkGroupBox frabuttons = new()
             {
                 Dock = DockStyle.Bottom,
-                Text = "Actions",
+                Text = "Apply Changes",
                 Size = new Size(280, 80)
             };
 
@@ -403,6 +437,8 @@ namespace CrashEdit.CE
                 Close();
             };
 
+            panel.ColumnCount = 2;
+            panel.RowCount = 8;
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
             panel.Controls.Add(panelFake, 0, 0);
@@ -422,6 +458,9 @@ namespace CrashEdit.CE
             Controls.Add(editor);
             Controls.Add(panel);
             Controls.Add(frabuttons);
+
+            AcceptButton = cmdApply;
+            CancelButton = cmdCancel;
 
             FormClosed += (sender, e) =>
             {
