@@ -126,11 +126,11 @@
 [+ / - ] Change line width
 
 [Mouse drag] Select multiple cells
-[Ctrl + C] Copy selected chunks as bytes
-[Ctrl + X] Cut selected chunks as bytes
-[Ctrl + V] Paste to chunks as bytes
-[Ctrl + Shift + C] Copy selected chunks as EID
-[Ctrl + Shift + X] Cut selected chunks as EID
-[Ctrl + Shift + V] Paste to chunks as EID</value>
+[Ctrl + C] Copy selected words as bytes
+[Ctrl + X] Cut selected words as bytes
+[Ctrl + V] Paste to words as bytes
+[Ctrl + Shift + C] Copy selected words as EID
+[Ctrl + Shift + X] Cut selected words as EID
+[Ctrl + Shift + V] Paste to words as EID</value>
   </data>
 </root>
