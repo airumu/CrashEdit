@@ -91,7 +91,7 @@ namespace CrashEdit.CE
         private static readonly Bitmap actionnitroboxtexture = null;
 
         [Resource("ActionNitroBoxTopTexture")]
-        [ExternalTexture(8, 0)]
+        [ExternalTexture(6, 4)]
         private static readonly Bitmap actionnitroboxtoptexture = null;
 
         [Resource("SlotBoxTexture")]
@@ -183,15 +183,15 @@ namespace CrashEdit.CE
         private static readonly Bitmap powboxtexture = null;
 
         [Resource("POWBoxTopTexture")]
-        [ExternalTexture(10, 5)]
+        [ExternalTexture(9, 5)]
         private static readonly Bitmap powboxtoptexture = null;
 
         [Resource("PurpleBoxTopTexture")]
-        [ExternalTexture(11, 5)]
+        [ExternalTexture(10, 5)]
         private static readonly Bitmap purpleboxtop = null;
 
         [Resource("PurpleBoxTexture")]
-        [ExternalTexture(12, 5)]
+        [ExternalTexture(11, 5)]
         private static readonly Bitmap purplebox = null;
 
         [Resource("SteelPickupBoxTexture")]
