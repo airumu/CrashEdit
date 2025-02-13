@@ -164,7 +164,7 @@ namespace CrashEdit.CE
                         }
                         catch (Exception ex)
                         {
-                            DarkMessageBox.ShowError($"Error reading file {filePath}: {ex.Message}", Resources.Title_Error);
+                            DarkMessageBox.ShowError($"Error reading file {filePath}\n\n{ex.Message}", Resources.Title_Error);
                         }
                     }
                 }
