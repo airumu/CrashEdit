@@ -492,7 +492,7 @@ namespace CrashEdit.CE.Controls
             // 
             lblColorIndex.AutoSize = true;
             lblColorIndex.BackColor = Color.Transparent;
-            lblColorIndex.Location = new Point(304, 375);
+            lblColorIndex.Location = new Point(304, 379);
             lblColorIndex.Name = "lblColorIndex";
             lblColorIndex.Size = new Size(47, 15);
             lblColorIndex.TabIndex = 8;
@@ -642,6 +642,7 @@ namespace CrashEdit.CE.Controls
             lstColor.BorderStyle = BorderStyle.FixedSingle;
             lstColor.ForeColor = Color.FromArgb(213, 213, 213);
             lstColor.Location = new Point(3, 3);
+            lstColor.MultiSelect = false;
             lstColor.Name = "lstColor";
             lstColor.OwnerDraw = true;
             lstColor.Size = new Size(292, 573);

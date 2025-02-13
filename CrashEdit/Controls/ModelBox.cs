@@ -837,57 +837,86 @@ namespace CrashEdit.CE.Controls
             TextFormatFlags flags = TextFormatFlags.HorizontalCenter;
             using (StringFormat sf = new StringFormat())
             {
-                bool isSelected = e.Item.Selected;
-
                 e.DrawBackground();
-
                 sf.Alignment = StringAlignment.Center;
 
+                bool isSelected = e.Item.Selected;
                 if (isSelected)
                 {
-                    //e.Graphics.FillRectangle(Brushes.LightBlue, e.Bounds);
+
+                    // Draw the border.
+                    using (Pen borderPen = new Pen(Color.White, 1))
+                    {
+                        Rectangle borderRect = e.Bounds;
+                        borderRect.Width -= 1;
+                        borderRect.Height -= 1;
+                        e.Graphics.DrawRectangle(borderPen, borderRect);
+                    }
+
+                    // Draw the text.
                     using (Brush brush = new SolidBrush(e.Item.ForeColor))
                     {
                         e.Graphics.DrawString(e.Item.Text, lstColor.Font, brush, e.Bounds, sf);
+                    }
+
+                    // Draw a marker.
+                    using (Brush markerBrush = new SolidBrush(Color.White))
+                    {
+                        string marker = "▲";
+                        Font markerFont = new Font(lstColor.Font.FontFamily, lstColor.Font.Size * 0.8f, FontStyle.Bold);
+
+                        PointF markerPosition = new PointF(
+                            e.Bounds.X + (e.Bounds.Width / 2) - 5, // center
+                            e.Bounds.Bottom - (markerFont.Size - 8)  // below the item
+                        );
+
+                        e.Graphics.DrawString(marker, markerFont, markerBrush, markerPosition);
                     }
                 }
                 else
                 {
                     e.DrawText(flags);
+
                 }
             }
         }
 
         private void lstColor_MouseDown(object sender, MouseEventArgs e)
         {
-            Point mousePosition = e.Location;
-            for (int i = 0; i < lstColor.Items.Count; i++)
+            if (!globalControlMode)
             {
-                ListViewItem item = lstColor.Items[i];
-                Rectangle itemBounds = item.Bounds;
-                if (itemBounds.Contains(mousePosition))
+                Point mousePosition = e.Location;
+                for (int i = 0; i < lstColor.Items.Count; i++)
                 {
-                    lstColor.SelectedItems.Clear();
-                    item.Selected = true;
-                    break;
+                    ListViewItem item = lstColor.Items[i];
+                    Rectangle itemBounds = item.Bounds;
+                    if (itemBounds.Contains(mousePosition))
+                    {
+                        item.Selected = true;
+                        return;
+                    }
                 }
             }
+            lstColor.SelectedItems.Clear();
         }
 
         private void lstColor_MouseUp(object sender, MouseEventArgs e)
         {
-            Point mousePosition = e.Location;
-            for (int i = 0; i < lstColor.Items.Count; i++)
+            if (!globalControlMode)
             {
-                ListViewItem item = lstColor.Items[i];
-                Rectangle itemBounds = item.Bounds;
-                if (itemBounds.Contains(mousePosition))
+                Point mousePosition = e.Location;
+                for (int i = 0; i < lstColor.Items.Count; i++)
                 {
-                    lstColor.SelectedItems.Clear();
-                    item.Selected = true;
-                    break;
+                    ListViewItem item = lstColor.Items[i];
+                    Rectangle itemBounds = item.Bounds;
+                    if (itemBounds.Contains(mousePosition))
+                    {
+                        item.Selected = true;
+                        return;
+                    }
                 }
             }
+            lstColor.SelectedItems.Clear();
         }
 
         private void UpdateModelColor(Color color, int i)
@@ -1010,6 +1039,7 @@ namespace CrashEdit.CE.Controls
                 await ResetColorListAsync();
                 ResetColorSliders();
             }
+            lstColor.SelectedItems.Clear();
         }
 
         private void ResetColorSliders()
@@ -1032,6 +1062,7 @@ namespace CrashEdit.CE.Controls
 
         private void lstColor_SelectedIndexChanged(object sender, EventArgs e)
         {
+            lstColor.Invalidate();
             if (lstColor.SelectedItems.Count <= 0 || globalControlMode)
             {
                 //pnSliders.Enabled = false;
@@ -1041,12 +1072,14 @@ namespace CrashEdit.CE.Controls
             pnSliders.Enabled = true;
             Color color = GetSelectedItemColor();
             colorEditor.Color = color;
-            var hslColor = colorEditor.HslColor;
-            if (hslColor.S == 0)
-            {
-                hslColor.H = 180F;
-                colorEditor.HslColor = hslColor;
-            }
+
+            //var hslColor = colorEditor.HslColor;
+            //if (hslColor.S == 0)
+            //{
+            //    hslColor.H = 180F;
+            //    colorEditor.HslColor = hslColor;
+            //}
+
             //colorWheel.Color = color;
             lblColorIndex.Text = $"Index: {lstColor.SelectedItems[0].Index}";
         }
