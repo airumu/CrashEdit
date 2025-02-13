@@ -904,7 +904,7 @@ as Meters: {3:F3}m</value>
     <value>Success</value>
   </data>
   <data name="GOOLBox_Goto" xml:space="preserve">
-    <value>Go to Line</value>
+    <value>Goto</value>
   </data>
   <data name="Toolbar_Undock" xml:space="preserve">
     <value>Undock</value>

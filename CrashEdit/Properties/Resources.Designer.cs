@@ -1127,7 +1127,7 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
-        ///   Go to Line に類似しているローカライズされた文字列を検索します。
+        ///   Goto に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string GOOLBox_Goto {
             get {

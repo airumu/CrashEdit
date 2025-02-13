@@ -548,7 +548,7 @@ namespace CrashEdit.CE
         {
             if (e.KeyCode == Keys.G && e.Modifiers == Keys.Control)
             {
-                using (InputWindow inputWindow = new InputWindow("Enter a line address:", Resources.GOOLBox_Goto, string.Empty))
+                using (InputWindow inputWindow = new InputWindow(Resources.GOOLBox_Goto, "", "Enter a line address:", string.Empty, -1))
                 {
                     if (inputWindow.ShowDialog() == DialogResult.OK)
                     {

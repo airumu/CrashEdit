@@ -86,7 +86,7 @@ namespace CrashEdit.CE
 
         private void Menu_GenerateSpawnPoint()
         {
-            using (InputWindow inputWindow = new InputWindow("Enter entity ID:", Resources.GenerateSpawnPoint_Title, string.Empty))
+            using (InputWindow inputWindow = new InputWindow(Resources.GenerateSpawnPoint_Title, "Calculator", "Enter entity ID:", string.Empty, -1))
             {
                 if (inputWindow.ShowDialog() == DialogResult.OK)
                 {
@@ -108,7 +108,7 @@ namespace CrashEdit.CE
                                     if (entry.CameraCount > 3)
                                     {
                                         int cameraMaxIdx = (entry.CameraCount - 1) / 3;
-                                        using (InputWindow inputWindows = new InputWindow($"Enter camera index [0-{cameraMaxIdx}]:", Resources.GenerateSpawnPoint_Title, "0"))
+                                        using (InputWindow inputWindows = new InputWindow(Resources.GenerateSpawnPoint_Title, "Calculator", $"Enter camera index [0-{cameraMaxIdx}]:", "0", 2))
                                         {
                                             if (inputWindows.ShowDialog() == DialogResult.OK)
                                             {

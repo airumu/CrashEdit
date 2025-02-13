@@ -269,8 +269,9 @@ namespace CrashEdit.CE
         {
             int type = -1;
             int subtype = -1;
-            using (InputWindow inputWindow = new InputWindow("Enter entity type:", CrashUI.Properties.Resources.NSFController_AcFindEntities, string.Empty,
-                "Enter entity subtype (leave empty to search all):", string.Empty))
+            using (InputWindow inputWindow = new InputWindow(CrashUI.Properties.Resources.NSFController_AcFindEntities, "Find",
+                "Enter entity type:", string.Empty, -1,
+                "Enter entity subtype (leave empty to search all):", string.Empty, -1))
             {
                 if (inputWindow.ShowDialog() == DialogResult.OK)
                 {

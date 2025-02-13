@@ -906,7 +906,7 @@ namespace CrashEdit.CE
 
         void tbxGenerateEID_Click(object sender, EventArgs e)
         {
-            using (InputWindow inputWindow = new InputWindow("Enter entry name:", Resources.OldMainForm_tbxGenerateEID, string.Empty, 5))
+            using (InputWindow inputWindow = new InputWindow(Resources.OldMainForm_tbxGenerateEID, "", "Enter entry name:", string.Empty, 5))
             {
                 if (inputWindow.ShowDialog() == DialogResult.OK)
                 {
