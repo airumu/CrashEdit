@@ -119,7 +119,7 @@ namespace CrashEdit.CE
             };
 
             DarkToolTip tipApply = new();
-            tipApply.SetToolTip(lblApply, "List of scenery entries to apply changes. The filter supports regex.");
+            tipApply.SetToolTip(lblApply, "List of scenery entries to apply changes.\nThe filter supports regex.");
 
             Label lblIgnore = new()
             {
@@ -143,7 +143,7 @@ namespace CrashEdit.CE
             };
 
             DarkToolTip tipIgnore = new();
-            tipIgnore.SetToolTip(lblIgnore, "List of scenery entries to ignore changes. The filter supports regex.");
+            tipIgnore.SetToolTip(lblIgnore, "List of scenery entries to ignore changes.\nThe filter supports regex.");
 
             DarkListBox lstToApply = new()
             {
