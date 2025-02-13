@@ -955,10 +955,7 @@ namespace CrashEdit.CE.Controls
                     Color rgbColor = Color.FromArgb(hexColor[0], hexColor[1], hexColor[2]);
                     HslColor hslColor = new HslColor(rgbColor);
 
-                    if (MasterHue != 0)
-                    {
-                        hslColor = ChangeHue(hslColor, MasterHue);
-                    }
+                    hslColor = ChangeHue(hslColor, MasterHue);
                     hslColor.S = Math.Clamp(hslColor.S + (MasterSaturation - 0.5), 0.0, 1.0);
                     hslColor.L = Math.Clamp(hslColor.L + (MasterLightness - 0.5), 0.0, 1.0);
 
