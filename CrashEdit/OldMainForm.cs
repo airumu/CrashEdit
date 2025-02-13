@@ -932,7 +932,7 @@ namespace CrashEdit.CE
                         }
                         string result = string.Join("", eid.Select(b => b.ToString("X")));
                         Console.WriteLine($"{input} -> {result}\nCopied to clipboard.");
-                        Clipboard.SetText(result);
+                        Clipboard.SetDataObject(result, true, 10, 100);
                     }
                     else
                     {

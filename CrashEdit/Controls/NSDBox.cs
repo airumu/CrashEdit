@@ -297,7 +297,7 @@ namespace CrashEdit.CE
             BitConv.ToInt32(data, 16, Convert.ToInt32(row.Cells[ColSpawnY].Value.ToString(), 16));
             BitConv.ToInt32(data, 20, Convert.ToInt32(row.Cells[ColSpawnZ].Value.ToString(), 16));
             string result = BitConverter.ToString(data).Replace("-", "");
-            Clipboard.SetText(result);
+            Clipboard.SetDataObject(result, true, 10, 100);
             Console.WriteLine("Copied to clipboard.");
         }
 

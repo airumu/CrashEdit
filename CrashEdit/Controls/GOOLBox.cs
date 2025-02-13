@@ -396,7 +396,7 @@ namespace CrashEdit.CE
                 {
                     int number = Convert.ToInt32(match.Value);
                     string offset = (number * 4).ToString("X");
-                    Clipboard.SetText(offset);
+                    Clipboard.SetDataObject(offset, true, 10, 100);
                 }
             }
         }

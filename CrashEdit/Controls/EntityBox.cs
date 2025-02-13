@@ -521,7 +521,7 @@ namespace CrashEdit.CE
         private void cmdCopySetting_Click(object sender, EventArgs e)
         {
             string text = string.Join("\n", entity.Settings.Select(setting => setting.Value));
-            Clipboard.SetText(text);
+            Clipboard.SetDataObject(text, true, 10, 100);
         }
 
         private void cmdPasteSetting_Click(object sender, EventArgs e)
@@ -777,7 +777,7 @@ namespace CrashEdit.CE
                     sb.Append(item + Environment.NewLine);
                 }
                 if (sb.Length > 0)
-                    Clipboard.SetText(sb.ToString());
+                    Clipboard.SetDataObject(sb.ToString(), true, 10, 100);
 
                 if (e.KeyCode == Keys.X) // clear
                 {
@@ -812,7 +812,7 @@ namespace CrashEdit.CE
                 if (lbVictimID.Items.Count <= 0) return;
 
                 string s = lbVictimID.Items[victimlistindex].ToString();
-                Clipboard.SetText(s);
+                Clipboard.SetDataObject(s, true, 10, 100);
             }
             // paste eid to selected item
             else if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
@@ -1058,7 +1058,7 @@ namespace CrashEdit.CE
                     sb.Append(item + Environment.NewLine);
                 }
                 if (sb.Length > 0)
-                    Clipboard.SetText(sb.ToString());
+                    Clipboard.SetDataObject(sb.ToString(), true, 10, 100);
 
                 if (e.KeyCode == Keys.X) // clear
                 {
@@ -1091,7 +1091,7 @@ namespace CrashEdit.CE
                 if (lbEIDA.Items.Count <= 0) return;
 
                 string s = lbEIDA.Items[lbeidalindex].ToString();
-                Clipboard.SetText(s);
+                Clipboard.SetDataObject(s, true, 10, 100);
             }
             // paste eid to selected item
             else if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
@@ -1370,7 +1370,7 @@ namespace CrashEdit.CE
                     sb.Append(item + Environment.NewLine);
                 }
                 if (sb.Length > 0)
-                    Clipboard.SetText(sb.ToString());
+                    Clipboard.SetDataObject(sb.ToString(), true, 10, 100);
 
                 if (e.KeyCode == Keys.X) // clear
                 {
@@ -1403,7 +1403,7 @@ namespace CrashEdit.CE
                 if (lbEIDB.Items.Count <= 0) return;
 
                 string s = lbEIDB.Items[lbeidblindex].ToString();
-                Clipboard.SetText(s);
+                Clipboard.SetDataObject(s, true, 10, 100);
             }
             // paste eid to selected item
             else if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
@@ -1697,7 +1697,7 @@ namespace CrashEdit.CE
                     sb.Append(item + Environment.NewLine);
                 }
                 if (sb.Length > 0)
-                    Clipboard.SetText(sb.ToString());
+                    Clipboard.SetDataObject(sb.ToString(), true, 10, 100);
 
                 if (e.KeyCode == Keys.X) // clear
                 {
@@ -1736,7 +1736,7 @@ namespace CrashEdit.CE
                 if (lbEntityA.Items.Count <= 0) return;
 
                 string s = lbEntityA.Items[lbentityaindex].ToString();
-                Clipboard.SetText(s);
+                Clipboard.SetDataObject(s, true, 10, 100);
             }
             // paste eid to selected item
             else if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
@@ -2007,9 +2007,9 @@ namespace CrashEdit.CE
                     sb.Append(item + Environment.NewLine);
                 }
                 if (sb.Length > 0)
-                    Clipboard.SetText(sb.ToString());
+                    Clipboard.SetDataObject(sb.ToString(), true, 10, 100);
 
-                if (e.KeyCode == Keys.X) // clear 
+                if (e.KeyCode == Keys.X) // clear
                 {
                     entity.DrawListB.Rows[drawlistbrowindex].Values.Clear();
                     lbEntityB.Items.Clear();
@@ -2046,7 +2046,7 @@ namespace CrashEdit.CE
                 if (lbEntityB.Items.Count <= 0) return;
 
                 string s = lbEntityB.Items[lbentitybindex].ToString();
-                Clipboard.SetText(s);
+                Clipboard.SetDataObject(s, true, 10, 100);
             }
             // paste eid to selected item
             else if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)

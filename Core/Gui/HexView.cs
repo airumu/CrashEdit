@@ -1412,7 +1412,7 @@ namespace CrashEdit
             if (sb.Length > 0)
             {
                 sb.Length--; // Remove the last "\n".
-                Clipboard.SetText(sb.ToString());
+                Clipboard.SetDataObject(sb.ToString(), true, 10, 100);
             }
 
             if (!cut)

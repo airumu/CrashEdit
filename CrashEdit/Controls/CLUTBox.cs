@@ -186,7 +186,7 @@ namespace CrashEdit.CE.Controls
             //    var tagValue = dgvCLUT.SelectedCells[0].Tag?.ToString();
             //    if (!string.IsNullOrEmpty(tagValue))
             //    {
-            //        Clipboard.SetText(tagValue);
+            //        Clipboard.SetDataObject(tagValue, true, 10, 100);
             //    }
             //}
         }

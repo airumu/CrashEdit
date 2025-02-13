@@ -526,7 +526,7 @@ namespace CrashEdit.CE
                     sb.Append(item + Environment.NewLine);
                 }
                 if (sb.Length > 0)
-                    Clipboard.SetText(sb.ToString());
+                    Clipboard.SetDataObject(sb.ToString(), true, 10, 100);
 
                 if (e.KeyCode == Keys.X) // clear
                 {
@@ -573,7 +573,7 @@ namespace CrashEdit.CE
                 if (selectedItem == null) return;
 
                 string s = selectedItem.ToString();
-                Clipboard.SetText(s);
+                Clipboard.SetDataObject(s, true, 10, 100);
             }
             // paste eid to selected item
             else if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)

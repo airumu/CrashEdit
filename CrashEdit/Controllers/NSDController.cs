@@ -143,7 +143,7 @@ namespace CrashEdit.CE
                                     BitConv.ToInt32(data, 20, z);
                                     string result = BitConverter.ToString(data).Replace("-", "");
                                     Console.WriteLine($"[{Entry.EIDToEName(zone)}]{cameraIndex} [ID: {entity.ID}]\n{result}");
-                                    Clipboard.SetText(result);
+                                    Clipboard.SetDataObject(result, true, 10, 100);
                                     Console.WriteLine("Copied to clipboard.");
                                     //DarkMessageBox.ShowInformation("Spawn point generated and output to the console.", Resources.GenerateSpawnPoint_Title);
                                     return;
