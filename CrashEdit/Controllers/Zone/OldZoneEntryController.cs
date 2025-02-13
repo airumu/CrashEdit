@@ -53,35 +53,21 @@ namespace CrashEdit.CE
             try
             {
                 byte[] searchPattern = null!;
-                using (InputWindow inputWindows = new InputWindow("Enter the collision type (as a literal) to replace:", CrashUI.Properties.Resources.ZoneEntryController_AcChangeCollisionType, string.Empty, 4))
-                {
-                    if (inputWindows.ShowDialog() == DialogResult.OK)
-                    {
-                        string input = inputWindows.Input;
-                        if (input.Length % 4 != 0)
-                        {
-                            throw new ArgumentException("The input must be specified as a 4-digit hexadecimal number.");
-                        }
-
-                        ushort value = Convert.ToUInt16(input, 16);
-                        searchPattern = BitConverter.GetBytes(value);
-                    }
-                    else return;
-                }
-
                 byte[] replacementPattern = null!;
-                using (InputWindow inputWindows = new InputWindow("Enter the new collision type (as a literal):", CrashUI.Properties.Resources.ZoneEntryController_AcChangeCollisionType, string.Empty, 4))
+                using (InputWindow inputWindows = new InputWindow("Enter collision type to replace (as a literal):", CrashUI.Properties.Resources.ZoneEntryController_AcChangeCollisionType, string.Empty, 4,
+                        "Enter new collision type (as a literal):", string.Empty, 4))
                 {
                     if (inputWindows.ShowDialog() == DialogResult.OK)
                     {
                         string input = inputWindows.Input;
-                        if (input.Length % 4 != 0)
+                        string input2 = inputWindows.Input2;
+                        if (input.Length != 4 || input2.Length != 4)
                         {
                             throw new ArgumentException("The input must be specified as a 4-digit hexadecimal number.");
                         }
 
-                        ushort value = Convert.ToUInt16(input, 16);
-                        replacementPattern = BitConverter.GetBytes(value);
+                        searchPattern = BitConverter.GetBytes(Convert.ToUInt16(input, 16));
+                        replacementPattern = BitConverter.GetBytes(Convert.ToUInt16(input2, 16));
                     }
                     else return;
                 }
@@ -112,7 +98,7 @@ namespace CrashEdit.CE
             }
             catch (Exception ex)
             {
-                DarkMessageBox.ShowError($"{ex.Message}", CrashUI.Properties.Resources.ZoneEntryController_AcChangeCollisionType);
+                DarkMessageBox.ShowError($"Error: {ex.Message}", CrashUI.Properties.Resources.ZoneEntryController_AcChangeCollisionType);
                 return;
             }
         }

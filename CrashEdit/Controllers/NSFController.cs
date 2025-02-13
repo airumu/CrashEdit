@@ -269,7 +269,8 @@ namespace CrashEdit.CE
         {
             int type = -1;
             int subtype = -1;
-            using (InputWindow inputWindow = new InputWindow("Enter entity type:", CrashUI.Properties.Resources.NSFController_AcFindEntities, string.Empty))
+            using (InputWindow inputWindow = new InputWindow("Enter entity type:", CrashUI.Properties.Resources.NSFController_AcFindEntities, string.Empty,
+                "Enter entity subtype (leave empty to search all):", string.Empty))
             {
                 if (inputWindow.ShowDialog() == DialogResult.OK)
                 {
@@ -279,16 +280,10 @@ namespace CrashEdit.CE
                         DarkMessageBox.ShowError("Invalid input.", Resources.Title_InputError);
                         return;
                     }
-                }
-                else return;
-            }
-            using (InputWindow inputWindow = new InputWindow("Enter entity subtype (leave empty to search all):", CrashUI.Properties.Resources.NSFController_AcFindEntities, string.Empty))
-            {
-                if (inputWindow.ShowDialog() == DialogResult.OK)
-                {
-                    if (!string.IsNullOrEmpty(inputWindow.Input))
+
+                    if (!string.IsNullOrEmpty(inputWindow.Input2))
                     {
-                        if (int.TryParse(inputWindow.Input, out subtype) && subtype >= 0) { }
+                        if (int.TryParse(inputWindow.Input2, out subtype) && subtype >= 0) { }
                         else
                         {
                             DarkMessageBox.ShowError("Invalid input.", Resources.Title_InputError);
