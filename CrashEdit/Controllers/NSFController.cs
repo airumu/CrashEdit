@@ -309,7 +309,7 @@ namespace CrashEdit.CE
             }
             list.Sort();
             Console.WriteLine(string.Join(Environment.NewLine, list.ToArray()));
-            Console.WriteLine($"Total: {list.Count}");
+            Console.WriteLine($"Total count: {list.Count}");
         }
 
         private void Menu_Fix_Detonator()
@@ -350,7 +350,7 @@ namespace CrashEdit.CE
                             }
                         }
                     }
-                    Console.WriteLine($"Total: {nitros.Count}");
+                    Console.WriteLine($"Total nitro count: {nitros.Count}");
                     foreach (Entity detonator in detonators)
                     {
                         detonator.Victims.Clear();
@@ -461,7 +461,7 @@ namespace CrashEdit.CE
                             }
                         }
                     }
-                    Console.WriteLine($"Total: {boxcount}");
+                    Console.WriteLine($"Total box count: {boxcount}");
                     foreach (Entity willy in willys)
                     {
                         if (willy.BoxCount.HasValue)

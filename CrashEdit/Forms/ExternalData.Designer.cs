@@ -203,6 +203,7 @@ namespace CrashEdit.CE
             MinimizeBox = false;
             Name = "ExternalData";
             SizeGripStyle = SizeGripStyle.Hide;
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "ExternalData";
             TransparencyKey = Color.FromArgb(31, 31, 32);
             fraEditor.ResumeLayout(false);
