@@ -13,14 +13,12 @@ namespace CrashEdit.CE
 
         private readonly DataGridView dgvCode;
 
-        List<int> indentEndIndexes = new List<int>();
-        List<int> processedRows = new List<int>();
+        List<int> indentEndIndexes;
+        List<int> processedRows;
 
         private int headerCount;
-        private int titleCount;
         private int addressIndex;
         private string indent;
-        private int lockindent;
 
         public GOOLBox(GOOLEntryController controller, GOOLEntry goolentry)
         {
@@ -34,23 +32,21 @@ namespace CrashEdit.CE
                 Dock = DockStyle.Fill,
                 Font = new Font("Cascadia Code SemiLight", 8F, FontStyle.Regular, GraphicsUnit.Point, 0),
                 ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize,
+                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
                 AutoGenerateColumns = false,
                 AllowUserToAddRows = false,
-                ReadOnly = true,
-                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
-                RowHeadersVisible = false,
-                ColumnHeadersVisible = false,
                 AllowUserToDeleteRows = false,
                 AllowUserToResizeRows = false,
                 AllowUserToResizeColumns = false,
                 AllowUserToOrderColumns = false,
-                ShowCellToolTips = false
+                RowHeadersVisible = false,
+                ColumnHeadersVisible = false,
+                ShowCellToolTips = false,
+                ReadOnly = true
             };
-            SetDarkTheme(dgvCode);
-            EnableDoubleBuffering();
-            dgvCode.RowTemplate.Height = 16;
+            DoubleBufferedDataGridView.Initialize_NoAltColor(dgvCode);
             dgvCode.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-
+            dgvCode.RowTemplate.Height = 16;
             dgvCode.Columns.Add(new DataGridViewTextBoxColumn
             {
                 Name = "Description",
@@ -58,25 +54,22 @@ namespace CrashEdit.CE
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
                 SortMode = DataGridViewColumnSortMode.NotSortable
             });
+            dgvCode.CellPainting += dgvCode_CellPainting;
+            dgvCode.CellDoubleClick += dgvCode_CellDoubleClick;
+            dgvCode.MouseDown += dgvCode_MouseDown;
+            dgvCode.KeyDown += dgvCode_KeyDown;
             ContextMenuStrip contextMenuStrip = new ContextMenuStrip();
             contextMenuStrip.Items.Add("Copy Offset as hex", null, CopyOffsetToClipboard);
-            dgvCode.ContextMenuStrip = contextMenuStrip;
             contextMenuStrip.Opening += ContextMenuStrip_Opening;
+            dgvCode.ContextMenuStrip = contextMenuStrip;
 
-            dgvCode.CellPainting += dgvCode_CellPainting;
-            dgvCode.MouseDown += dgvCode_MouseDown;
-            dgvCode.CellDoubleClick += dgvCode_CellDoubleClick;
-            dgvCode.KeyDown += dgvCode_KeyDown;
-
+            indentEndIndexes = new();
+            processedRows = new();
             headerCount = 0;
             addressIndex = 0;
             indent = string.Empty;
-            indentEndIndexes = new List<int>();
-            processedRows = new List<int>();
-            lockindent = 1;
 
             PopulateData(goolentry);
-
             CreateTabs();
         }
 
@@ -259,26 +252,20 @@ namespace CrashEdit.CE
             bool returned = true;
             int mipscount = 0;
             int goolcount = 0;
-            string str;
             // Process instructions
             for (int i = 0; i < goolentry.Instructions.Count; ++i)
             {
-                bool hastitle = false;
                 if (labels.ContainsKey(i))
                 {
                     foreach (string label in labels[i])
                     {
                         rows.Add(label);
-                        ++titleCount;
                     }
                     returned = false;
-                    hastitle = true;
                 }
                 if (returned)
                 {
                     rows.Add($"Sub_{i}:");
-                    ++titleCount;
-                    hastitle = true;
                 }
                 GOOLInstruction ins = goolentry.Instructions[i];
                 if (ins is MIPSInstruction)
@@ -300,13 +287,14 @@ namespace CrashEdit.CE
                 processedRows.Add(instIndex);
                 ++instIndex;
 
+                // Calculate the indent
                 int number = 0;
                 if (!string.IsNullOrWhiteSpace(ins.GetComment()))
                 {
                     string insComment = ins.GetComment();
-                    if (insComment.Contains("move"))
+                    if (insComment.Contains("if") && insComment.Contains("move"))
                     {
-                        string pattern = @"[-+]?\d+";
+                        string pattern = @"-?\d+";
                         Match match = Regex.Match(insComment, pattern);
                         if (match.Success)
                         {
@@ -315,7 +303,7 @@ namespace CrashEdit.CE
                             indentEndIndexes.Add(indentEndIndex);
                             indent += "b ";
 
-                            // if the number is minus
+                            // If it moves negatively, modify the indents of the previous row
                             if (indentEndIndex < instIndex)
                             {
                                 int rowsToModify = Math.Abs(number) - 1;
@@ -365,11 +353,6 @@ namespace CrashEdit.CE
                     invalid = $"{(float)(goolentry.Instructions.Count - mipscount - goolcount) / goolentry.Instructions.Count:P} invalid";
 
                 rows.Add(gool + mips + invalid);
-
-                //foreach (var row in rows)
-                //{
-                //    dgvCode.Rows.Add(row.Index, row.Description);
-                //}
             }
         }
 
@@ -443,7 +426,7 @@ namespace CrashEdit.CE
                     if (cellText.Contains("instructions"))
                     {
                         string target = "move";
-                        string numberPattern = $@"(?<={Regex.Escape(target)}\s*)[-+]?\d+";
+                        string numberPattern = $@"(?<={Regex.Escape(target)}\s*)-?\d+";
                         var match = Regex.Match(cellText, numberPattern);
 
                         if (match.Success)
@@ -461,7 +444,7 @@ namespace CrashEdit.CE
                     else if (cellText.Contains("subroutine"))
                     {
                         string target = "at";
-                        string numberPattern = $@"(?<={Regex.Escape(target)}\s*)[-+]?\d+";
+                        string numberPattern = $@"(?<={Regex.Escape(target)}\s*)\d+";
                         var match = Regex.Match(cellText, numberPattern);
 
                         if (match.Success)
@@ -487,7 +470,7 @@ namespace CrashEdit.CE
                     else if (cellText.Contains("state"))
                     {
                         string target = "state";
-                        string numberPattern = $@"(?<={Regex.Escape(target)}\s*)[-+]?\d+";
+                        string numberPattern = $@"(?<={Regex.Escape(target)}\s*)\d+";
                         var match = Regex.Match(cellText, numberPattern);
 
                         if (match.Success)
@@ -612,36 +595,48 @@ namespace CrashEdit.CE
             }
         }
 
+        private static readonly Color comments = Color.FromArgb(84, 84, 109);   // gray
+        private static readonly Color commands = Color.FromArgb(126, 156, 216); // blue
+        private static readonly Color states = Color.FromArgb(127, 180, 201); // light blue
+        private static readonly Color logicals = Color.FromArgb(228, 104, 118); // red
+        private static readonly Color statements = Color.FromArgb(149, 127, 184); // purple
+        private static readonly Color actions = Color.FromArgb(122, 167, 159); // green
+        private static readonly Color operators = Color.FromArgb(209, 126, 153); // red-orange
+
+        private static readonly Color titles = Color.FromArgb(152, 187, 108); // light green
+        private static readonly Color numbers = Color.FromArgb(230, 194, 132); // orange
+        private static readonly Color globals = Color.FromArgb(220, 215, 186); // light yellow
+
+        private readonly string numberPattern = @"^(-?(?:\(\s*-?\d+(?:\.\d+)?\s*\)|\(\s*-?0x[0-9a-fA-F]+\s*\)|-?\d+(?:\.\d+)?|-?0x[0-9a-fA-F]+))$";
+        private readonly string statePattern = @"^(State_\d+_.*:|Sub_\d+:)$";
+        private readonly string disabledPattern = @"\(no\s*.*\s*hook\)";
+        private readonly string insPattern = @"(ins|ext)\[[^\]]+\]";
+        private readonly string animPattern = @"(&anim\[\(?0x[0-9A-Fa-f]+\)?\]|&\d+)";
+        private readonly string EIDPattern = @"\((?!(0x))[a-zA-Z0-9_!]{4}(G|V|T|A|O|I)\)";
+        private readonly string goolEIDPattern = @"\[[a-zA-Z0-9]{4}C\]";
+        private readonly string globalPattern = @"^(<[A-Z0-9]+>|global\[0x[0-9]+\])$";
+        private readonly string extraPattern = @"(rand|VEL|degdiff)\(.*\)";
+        private readonly string extra2Pattern = @"(seek|degseek|loop)\(.*\)";
+        private readonly string extraNumPattern = @"^(\(?-?[0-9A-F]+\)?)|(\(?-?0x?[0-9A-F]+\)?)";
+
+        private readonly Dictionary<Color, string[]> wordGroups = new()
+        {
+            { comments,   new[] { "#", "b" } },
+            { commands,   new[] { "move", "go", "change", "call", "to", "at" } },
+            { states,     new[] { "state", "instructions","subroutine" } },
+            { logicals,   new[] { "true", "false", "accept", "reject", "invalid" } },
+            { statements, new[] { "if", "else", "return" } },
+            //{ stacks,     new[] { "sp", "[sp]" } },
+            { actions,    new[] { "play", "set", "spawn", "force", "send", "cascade", "push", "pop" } },
+            { operators,  new[] { "=", "==", "!", "!=", "|", "||", "|=", "&", "&&", "&=", "^", ">", ">>", ">=", "<", "<<", "<=", "+", "+=", "-", "-=", "*", "*=", "/", "/=", "%" } }
+        };
+        private Dictionary<string, Color> targetWords = new();
+
         private void dgvCode_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
             if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
             {
                 string cellText = dgvCode.Rows[e.RowIndex].Cells[e.ColumnIndex].Value?.ToString() ?? "";
-
-                var targetWords = new Dictionary<string, Color>();
-
-                Color comments =   Color.FromArgb(84, 84, 109);   // gray
-                Color titles =     Color.FromArgb(152, 187, 108); // light green
-                Color keywords =   Color.FromArgb(126, 156, 216); // blue
-                Color states =     Color.FromArgb(127, 180, 201); // light blue
-                Color logicals =   Color.FromArgb(228, 104, 118); // red
-                Color numbers =    Color.FromArgb(230, 194, 132); // orange
-                Color classes =    Color.FromArgb(149, 127, 184); // purple
-                Color actions =    Color.FromArgb(122, 167, 159); // green
-                Color globals =    Color.FromArgb(220, 215, 186); // light yellow
-                Color operators =  Color.FromArgb(209, 126, 153); // red-orange
-
-                var wordGroups = new Dictionary<Color, string[]>
-                {
-                    { comments,  new[] { "#", "b" } },
-                    { keywords,  new[] { "move", "go", "change", "call", "to", "at" } },
-                    { states,    new[] { "state", "instructions","subroutine" } },
-                    { logicals,  new[] { "true", "false", "accept", "reject", "invalid" } },
-                    { classes,   new[] { "if", "else", "return" } },
-                    //{ stacks,    new[] { "sp", "[sp]" } },
-                    { actions,   new[] { "play", "set", "spawn", "force", "send", "cascade",  "push", "pop" } },
-                    { operators, new[] { "=", "==", "!", "!=", "|", "||", "|=", "&", "&&", "&=", "^", ">", ">>", ">=", "<", "<<", "<=", "+", "+=", "-", "-=", "*", "*=", "/", "/=", "%" } }
-                };
 
                 foreach (var group in wordGroups)
                 {
@@ -656,17 +651,6 @@ namespace CrashEdit.CE
                 float currentX = e.CellBounds.Left;
                 float top = e.CellBounds.Top + (e.CellBounds.Height - e.Graphics.MeasureString(cellText, e.CellStyle.Font).Height) / 2;
 
-                var numberPattern = @"^([-+]?(\(\s*[-+]?\d+(\.\d+)?\s*\)|\(\s*[-+]?(0x[0-9a-fA-F]+)\s*\)|\d+(\.\d+)?|0x[0-9a-fA-F]+))$";
-                var statePattern = @"^(State_\d+_.*:|Sub_\d+:)$";
-                var disablePattern = @"\(no\s*.*\s*hook\)";
-                var insPattern = @"(ins|ext)\[[^\]]+\]";
-                var animPattern = @"(&anim\[\(?0x[0-9A-Fa-f]+\)?\]|&\d+)";
-                var EIDPattern = @"\((?!(0x))[a-zA-Z0-9_!]{4}(G|V|T|A|O|I)\)";
-                var goolEIDPattern = @"\[[a-zA-Z0-9]{4}C\]";
-                var globalPattern = @"^(<[A-Z0-9]+>|global\[0x[0-9]+\])$";
-                var extraPattern = @"(rand|VEL|degdiff|seek|degseek|loop)\(.*\)";
-                var extraNumPattern = @"^(\(?-?[0-9A-F]+\)?)|(\(?-?0x?[0-9A-F]+\)?)";
-               
                 using (Brush defaultBrush = new SolidBrush(e.CellStyle.ForeColor))
                 {
                     string[] words = cellText.Split(' ');
@@ -683,7 +667,7 @@ namespace CrashEdit.CE
                         {
                             currentColor = titles;
                         }
-                        else if (Regex.IsMatch(cleanedWord, disablePattern)) // (no_xxxx_hook)
+                        else if (Regex.IsMatch(cleanedWord, disabledPattern)) // (no_xxxx_hook)
                         {
                             currentColor = comments;
                         }
@@ -707,7 +691,7 @@ namespace CrashEdit.CE
                         {
                             currentColor = globals;
                         }
-                        else if (Regex.IsMatch(cleanedWord, extraPattern)) // arg(x, y) or arg(x, y, z)
+                        else if (Regex.IsMatch(cleanedWord, extraPattern) || Regex.IsMatch(cleanedWord, extra2Pattern)) // arg(x, y) or arg(x, y, z)
                         {
                             exOffset = charWidth / 4;
 
@@ -721,7 +705,7 @@ namespace CrashEdit.CE
 
                             string arg3 = string.Empty;
 
-                            if (word.StartsWith("seek") || word.StartsWith("degseek") || word.StartsWith("loop"))
+                            if (Regex.IsMatch(cleanedWord, extra2Pattern))
                             {
                                 string oldArgs = arg2;
                                 openParenIndex = oldArgs.IndexOf(',');
@@ -791,6 +775,7 @@ namespace CrashEdit.CE
                         {
                             currentColor = targetWords[cleanedWord];
                         }
+
                         using (Brush brush = new SolidBrush(currentColor))
                         {
                             e.Graphics.DrawString(displayWord, e.CellStyle.Font, brush, currentX + exOffset, top);
@@ -806,61 +791,6 @@ namespace CrashEdit.CE
                 e.PaintBackground(e.CellBounds, true);
                 e.PaintContent(e.CellBounds);
             }
-        }
-
-        private void EnableDoubleBuffering()
-        {
-            typeof(DataGridView).InvokeMember("DoubleBuffered",
-                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance |
-                System.Reflection.BindingFlags.SetProperty,
-                null, dgvCode, new object[] { true });
-        }
-
-        private void SetDarkTheme(DataGridView dataGridView)
-        {
-            Color clrText = Color.FromArgb(220, 220, 240);
-            Color clrBackground = Color.FromArgb(31, 31, 40);
-            Color clrSelectionBackground = Color.FromArgb(54, 54, 70);
-
-            // Background color of the entire grid
-            dataGridView.BackgroundColor = clrBackground;
-
-            // Color of the grid lines
-            dataGridView.GridColor = clrBackground;
-
-            // Default style for cells
-            dataGridView.DefaultCellStyle.BackColor = clrBackground;
-            dataGridView.DefaultCellStyle.ForeColor = clrText;
-            dataGridView.DefaultCellStyle.SelectionBackColor = clrSelectionBackground;
-            dataGridView.DefaultCellStyle.SelectionForeColor = clrText;
-
-            // Style for column headers
-            dataGridView.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(50, 50, 50);
-            dataGridView.ColumnHeadersDefaultCellStyle.ForeColor = clrText;
-            dataGridView.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(60, 60, 60);
-            dataGridView.ColumnHeadersDefaultCellStyle.SelectionForeColor = clrText;
-            dataGridView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-
-            // Style for row headers
-            dataGridView.RowHeadersDefaultCellStyle.BackColor = Color.FromArgb(50, 50, 50);
-            dataGridView.RowHeadersDefaultCellStyle.ForeColor = clrText;
-            dataGridView.RowHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(60, 60, 60);
-            dataGridView.RowHeadersDefaultCellStyle.SelectionForeColor = clrText;
-
-            // Background color for odd and even rows
-            dataGridView.RowsDefaultCellStyle.BackColor = clrBackground;
-            dataGridView.AlternatingRowsDefaultCellStyle.BackColor = clrBackground;
-
-            // Row border style
-            dataGridView.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-
-            // Header and gridline styles
-            dataGridView.EnableHeadersVisualStyles = false;
-
-            // Additional settings
-            dataGridView.BorderStyle = BorderStyle.None;
-            dataGridView.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
-            dataGridView.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
         }
     }
 }

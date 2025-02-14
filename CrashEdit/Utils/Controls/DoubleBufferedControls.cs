@@ -1,4 +1,6 @@
-﻿namespace CrashEdit.CE
+﻿using System.Windows.Forms;
+
+namespace CrashEdit.CE
 {
     public sealed class DoubleBufferedControls { }
 
@@ -6,21 +8,45 @@
     {
         public static void Initialize(DataGridView dataGridView)
         {
+            EnableDoubleBuffer(dataGridView);
+
+            Color clrText = Color.Gainsboro;
+            Color clrDefaultBackGround = Color.FromArgb(31, 31, 32);
+            Color clrBackground = Color.FromArgb(40, 40, 40);
+            Color clrAltBackground = Color.FromArgb(34, 34, 34);
+            Color clrSelectionBackground = Color.FromArgb(70, 70, 70);
+            Color clrGrid = Color.FromArgb(50, 50, 50);
+            DrawControl(dataGridView, clrText, clrDefaultBackGround, clrBackground, clrAltBackground, clrSelectionBackground, clrGrid);
+        }
+
+        public static void Initialize_NoAltColor(DataGridView dataGridView)
+        {
+            EnableDoubleBuffer(dataGridView);
+
+            Color clrText = Color.FromArgb(220, 220, 240);
+            Color clrBackground = Color.FromArgb(31, 31, 40);
+            Color clrSelectionBackground = Color.FromArgb(54, 54, 70);
+            Color clrDefaultBackGround = clrBackground;
+            Color clrAltBackground = clrBackground;
+            Color clrGrid = clrBackground;
+            DrawControl(dataGridView, clrText, clrDefaultBackGround, clrBackground, clrAltBackground, clrSelectionBackground, clrGrid);
+        }
+
+        private static void EnableDoubleBuffer(DataGridView dataGridView)
+        {
             typeof(DataGridView).InvokeMember("DoubleBuffered",
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance |
                 System.Reflection.BindingFlags.SetProperty,
                 null, dataGridView, new object[] { true });
+        }
 
-            Color clrBackground = Color.FromArgb(40, 40, 40);
-            Color clrAltBackground = Color.FromArgb(34, 34, 34);
-            Color clrSelectionBackground = Color.FromArgb(70, 70, 70);
-            Color clrText = Color.Gainsboro;
-
+        public static void DrawControl(DataGridView dataGridView, Color clrText, Color clrDefaultBackGround, Color clrBackground, Color clrAltBackground, Color clrSelectionBackground, Color clrGrid)
+        {
             // Background color of the entire grid
-            dataGridView.BackgroundColor = Color.FromArgb(31, 31, 32);
+            dataGridView.BackgroundColor = clrDefaultBackGround;
 
             // Color of the grid lines
-            dataGridView.GridColor = Color.FromArgb(50, 50, 50);
+            dataGridView.GridColor = clrGrid;
 
             // Default style for cells
             dataGridView.DefaultCellStyle.BackColor = clrBackground;
