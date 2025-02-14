@@ -376,11 +376,18 @@ namespace CrashEdit.CE
                     {
                         foreach (Entity entity in zone.Entities)
                         {
-                            if ((entity.Type == 0 && entity.Subtype == 0) || (entity.Type == 4 && entity.Subtype == 17))
+                            if (Settings.Default.EnableCustomCrates)
                             {
-                                willys.Add(entity);
+                                if (entity.Type == 4 && entity.Subtype == 17)
+                                    willys.Add(entity);
                             }
-                            else if (entity.Type == 34 && entity.ID.HasValue)
+                            else
+                            {
+                                if (entity.Type == 0 && entity.Subtype == 0)
+                                    willys.Add(entity);
+                            }
+                                
+                            if (entity.Type == 34 && entity.ID.HasValue)
                             {
                                 if (GameVersion != GameVersion.Crash2 && GameVersion != GameVersion.Crash3)
                                 {
