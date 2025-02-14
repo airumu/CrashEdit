@@ -215,10 +215,6 @@ namespace CrashEdit.CE
 
                 e.DrawBackground();
 
-                // Draw selected items background.
-                Brush backgroundBrush = (e.State & DrawItemState.Selected) != 0 ? new SolidBrush(Color.FromArgb(0, 120, 215)) : Brushes.Transparent;
-                e.Graphics.FillRectangle(backgroundBrush, e.Bounds);
-
                 using (Brush brush = new SolidBrush(textColor))
                 {
                     e.Graphics.DrawString(itemText, font, brush, e.Bounds);
