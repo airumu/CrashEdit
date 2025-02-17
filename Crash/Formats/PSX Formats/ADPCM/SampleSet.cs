@@ -27,6 +27,8 @@ namespace CrashEdit.Crash
         }
 
         public List<SampleLine> SampleLines { get; }
+        public int LoopStart { get; set; }
+        public int LoopEnd { get; set; }
 
         public byte[] Save()
         {
@@ -45,7 +47,7 @@ namespace CrashEdit.Crash
             List<byte> data = new List<byte>();
             foreach (SampleLine line in SampleLines)
             {
-                if ((line.Flags & SampleLineFlags.LoopEnd) != 0)
+                if (line.Flags == SampleLineFlags.StopEnvelope)
                 {
                     break;
                 }

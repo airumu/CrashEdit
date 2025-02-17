@@ -1,5 +1,7 @@
 ﻿using AltUI.Controls;
 using CrashEdit.Crash;
+using MeltySynth;
+using NAudio.Wave;
 
 namespace CrashEdit.CE
 {
@@ -18,6 +20,13 @@ namespace CrashEdit.CE
         private DarkNumericUpDown numMasterVolume;
         private Label lblMasterPan;
         private DarkNumericUpDown numMasterPan;
+        private DarkButton cmdLoad;
+        private DarkButton cmdPlay;
+        private DarkButton cmdStop;
+
+        private WaveOutEvent outputDevice;
+        private AudioFileReader audioFile;
+        private MidiSampleProvider player;
 
         public MusicBox(MusicEntryController controller)
         {
@@ -86,7 +95,7 @@ namespace CrashEdit.CE
                 numMasterVolume = new DarkNumericUpDown()
                 {
                     Minimum = 0,
-                    Maximum = 127,
+                    Maximum = 255,
                     Value = musicentry.VH.Volume
                 };
                 numMasterVolume.ValueChanged += (sender, e) =>
@@ -110,6 +119,91 @@ namespace CrashEdit.CE
                 };
             }
 
+            cmdLoad = new DarkButton()
+            {
+                Text = "Load"
+            };
+            cmdLoad.Click += (sender, e) =>
+            {
+                VAB vab = controller.FindLinkedVAB();
+                string outputPath = "test.sf2";
+                byte[] sf2 = SF2Conv.ToSF2(vab, true);
+                File.WriteAllBytes(outputPath, sf2);
+                return;
+            };
+
+            cmdPlay = new DarkButton()
+            {
+                Text = "Play"
+            };
+            cmdPlay.Click += (sender, e) =>
+            {
+                if (musicentry.Tracks.Count == 0) return;
+
+                SEQ seq = musicentry.Tracks[0];
+                byte[] midiData = seq.ToMIDI();
+                string tempFile = Path.GetTempFileName();
+                string midiPath = Path.ChangeExtension(tempFile, ".mid");
+                File.WriteAllBytes(midiPath, midiData);
+                Console.WriteLine("MIDI File Path: " + midiPath);
+                Console.WriteLine("Now playing: " + musicentry.EName);
+
+                string sfPath = "test.sf2";
+
+                //string sfPath = "";
+                //using (OpenFileDialog dialog = new OpenFileDialog())
+                //{
+                //    dialog.Filter = FileFilters.SF2;
+                //    if (dialog.ShowDialog(this) == DialogResult.OK)
+                //    {
+                //        sfPath = dialog.FileName;
+                //    }
+                //    else return;
+                //}
+
+                //string midipath = "";
+                //using (OpenFileDialog dialog = new OpenFileDialog())
+                //{
+                //    dialog.Filter = FileFilters.MIDI;
+                //    if (dialog.ShowDialog(this) == DialogResult.OK)
+                //    {
+                //        midipath = dialog.FileName;
+                //    }
+                //    else return;
+                //}
+
+                player = new MidiSampleProvider(sfPath);
+
+                using (var waveOut = new WaveOut(WaveCallbackInfo.FunctionCallback()))
+                {
+                    waveOut.Init(player);
+                    waveOut.Play();
+
+                    // Load the MIDI file.
+                    var midiFile = new MidiFile(midiPath);
+
+                    // Play the MIDI file.
+                    player.Play(midiFile, true);
+
+                    // Wait until any key is pressed.
+                    Console.ReadKey();
+                }
+
+            };
+
+            cmdStop = new DarkButton()
+            {
+                Text = "Stop"
+            };
+            cmdStop.Click += (sender, e) =>
+            {
+                if (player != null)
+                {
+                    player.Stop();
+                }
+            };
+
+
             pnMain = new TableLayoutPanel()
             {
                 ColumnCount = 2,
@@ -119,7 +213,7 @@ namespace CrashEdit.CE
             pnSub1 = new TableLayoutPanel()
             {
                 ColumnCount = 1,
-                RowCount = 3,
+                RowCount = 6,
                 Dock = DockStyle.Fill
             };
             pnSub2 = new TableLayoutPanel()
@@ -131,6 +225,9 @@ namespace CrashEdit.CE
             pnSub1.Controls.Add(lstMusic, 0, 0);
             pnSub1.Controls.Add(txtMusic, 0, 1);
             pnSub1.Controls.Add(lblEIDError, 0, 2);
+            pnSub1.Controls.Add(cmdLoad, 0, 3);
+            pnSub1.Controls.Add(cmdPlay, 0, 4);
+            pnSub1.Controls.Add(cmdStop, 0, 5);
             if (musicentry.VH != null)
             {
                 pnSub2.Controls.Add(lblMasterVolume, 0, 0);
@@ -190,4 +287,51 @@ namespace CrashEdit.CE
             base.Dispose(disposing);
         }
     }
+
+    public class MidiSampleProvider : ISampleProvider
+    {
+        private static WaveFormat format = WaveFormat.CreateIeeeFloatWaveFormat(44100, 2);
+
+        private Synthesizer synthesizer;
+        private MidiFileSequencer sequencer;
+
+        private object mutex;
+
+        public MidiSampleProvider(string soundFontPath)
+        {
+            synthesizer = new Synthesizer(soundFontPath, format.SampleRate);
+            sequencer = new MidiFileSequencer(synthesizer);
+
+            mutex = new object();
+        }
+
+        public void Play(MidiFile midiFile, bool loop)
+        {
+            lock (mutex)
+            {
+                sequencer.Play(midiFile, loop);
+            }
+        }
+
+        public void Stop()
+        {
+            lock (mutex)
+            {
+                sequencer.Stop();
+            }
+        }
+
+        public int Read(float[] buffer, int offset, int count)
+        {
+            lock (mutex)
+            {
+                sequencer.RenderInterleaved(buffer.AsSpan(offset, count));
+            }
+
+            return count;
+        }
+
+        public WaveFormat WaveFormat => format;
+    }
+
 }

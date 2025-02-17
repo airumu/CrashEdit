@@ -1,3 +1,6 @@
+using CrashEdit.Crash.GOOLIns;
+using System.Windows.Documents;
+
 namespace CrashEdit.Crash
 {
     public sealed class VHProgram
@@ -102,7 +105,7 @@ namespace CrashEdit.Crash
             return data;
         }
 
-        public RIFF ToDLSInstrument(int programnumber, bool drumkit)
+        public RIFF ToDLSCreateIns(int programnumber, bool drumkit)
         {
             RIFF ins = new RIFF("ins ");
             byte[] insh = new byte[12];
@@ -111,9 +114,14 @@ namespace CrashEdit.Crash
             BitConv.ToInt32(insh, 8, programnumber);
             ins.Items.Add(new RIFFData("insh", insh));
             RIFF lrgn = new RIFF("lrgn");
+            RIFF lar2 = new RIFF("lart");
             foreach (VHTone tone in tones)
             {
-                lrgn.Items.Add(tone.ToDLSRegion());
+                // rgn2
+                lrgn.Items.Add(tone.ToDLSCreatergn2(drumkit));
+
+                // lart
+                //lrgn.Items.Add(tone.ToDLSCreatelar2());
             }
             ins.Items.Add(lrgn);
             return ins;

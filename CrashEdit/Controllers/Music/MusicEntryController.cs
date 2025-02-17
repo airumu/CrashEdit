@@ -13,6 +13,7 @@ namespace CrashEdit.CE
             AddMenu("Export Linked VH", Menu_Export_Linked_VH);
             AddMenu("Export Linked VB", Menu_Export_Linked_VB);
             AddMenu("Export Linked VAB", Menu_Export_Linked_VAB);
+            AddMenu("Export Linked VAB as SF2", Menu_Export_Linked_VAB_SF2);
             AddMenu("Export Linked VAB as DLS", Menu_Export_Linked_VAB_DLS);
             AddMenuSeparator();
             AddMenu("Replace Linked VB", Menu_Replace_Linked_VB);
@@ -28,7 +29,7 @@ namespace CrashEdit.CE
 
         public MusicEntry MusicEntry { get; }
 
-        private VH FindLinkedVH()
+        public VH FindLinkedVH()
         {
             MusicEntry vhentry = FindEID<MusicEntry>(MusicEntry.VHEID);
             if (vhentry == null)
@@ -69,7 +70,7 @@ namespace CrashEdit.CE
             return samples.ToArray();
         }
 
-        private VAB FindLinkedVAB()
+        public VAB FindLinkedVAB()
         {
             VH vh = FindLinkedVH();
             SampleLine[] vb = FindLinkedVB();
@@ -97,12 +98,17 @@ namespace CrashEdit.CE
             FileUtil.SaveFile(data, FileFilters.VAB, FileFilters.Any);
         }
 
+        private void Menu_Export_Linked_VAB_SF2()
+        {
+            VAB vab = FindLinkedVAB();
+            byte[] data = SF2Conv.ToSF2(vab, false);
+            FileUtil.SaveFile(data, FileFilters.SF2, FileFilters.Any);
+        }
+
         private void Menu_Export_Linked_VAB_DLS()
         {
-            if (DarkMessageBox.ShowWarning("Exporting to DLS is experimental.\nContinue anyway?", "Export Linked VAB as DLS", DarkDialogButton.YesNo) != DialogResult.Yes)
-            {
-                return;
-            }
+            if (DarkMessageBox.ShowWarning("Exporting to DLS is experimental.\nContinue anyway?", "Export Linked VAB as DLS", DarkDialogButton.YesNo) != DialogResult.Yes) return;
+
             VAB vab = FindLinkedVAB();
             byte[] data = vab.ToDLS().Save();
             FileUtil.SaveFile(data, FileFilters.DLS, FileFilters.Any);

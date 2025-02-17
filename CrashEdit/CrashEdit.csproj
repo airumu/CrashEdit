@@ -71,7 +71,9 @@
     <PackageReference Include="AltUI" Version="1.0.4" />
     <PackageReference Include="Cyotek.Windows.Forms.ColorPicker" Version="2.0.0-beta.6" />
     <PackageReference Include="DiscUtils.Iso9660" Version="0.16.13" />
+    <PackageReference Include="MeltySynth" Version="2.4.1" />
     <PackageReference Include="MetroSetUI" Version="1.0.11" />
+    <PackageReference Include="NAudio" Version="2.2.1" />
     <PackageReference Include="OpenTK.WinForms" Version="4.0.0-pre.7" />
     <PackageReference Include="SpaceWizards.SharpFont" Version="1.0.2" />
   </ItemGroup>

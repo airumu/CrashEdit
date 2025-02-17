@@ -60,6 +60,7 @@ namespace CrashEdit.Crash
 
         public byte[] ToMIDI()
         {
+            byte[] Data = FixSEQ(this.Data);
             RIFF riff = new RIFF("MIDI");
             byte[] mthd = new byte[6];
             BEBitConv.ToInt16(mthd, 0, 0);
@@ -83,5 +84,60 @@ namespace CrashEdit.Crash
             riff.Items.Add(new RIFFData("MTrk", mtrk));
             return riff.SaveBody(Endianness.BigEndian);
         }
+
+        private byte[] FixSEQ(byte[] data)
+        {
+            // Convert SEQ tempo to midi tempo
+            byte[] pattern = new byte[] { 0xFF, 0x51 };
+            byte byteToInsert = 0x03;
+
+            List<byte> list = new List<byte>(data);
+            int pos = 0;
+            while (pos <= list.Count - pattern.Length)
+            {
+                int index = -1;
+                for (int i = pos; i <= list.Count - pattern.Length; i++)
+                {
+                    bool found = true;
+                    for (int j = 0; j < pattern.Length; j++)
+                    {
+                        if (list[i + j] != pattern[j])
+                        {
+                            found = false;
+                            break;
+                        }
+                    }
+                    if (found)
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+
+                if (index == -1)
+                {
+                    break;
+                }
+                else
+                {
+                    int insertIndex = index + pattern.Length;
+
+                    if (insertIndex < list.Count && list[insertIndex] == byteToInsert)
+                    {
+                        pos = insertIndex + 1;
+                    }
+                    else
+                    {
+                        list.Insert(insertIndex, byteToInsert);
+                        Console.WriteLine($"Fixed Tempo event at 0x{index:X}.");
+
+                        pos = insertIndex + 1;
+                    }
+                }
+            }
+
+            return list.ToArray();
+        }
+
     }
 }

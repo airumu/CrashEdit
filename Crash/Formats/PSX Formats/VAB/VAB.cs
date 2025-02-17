@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace CrashEdit.Crash
 {
     public sealed class VAB
@@ -76,20 +78,28 @@ namespace CrashEdit.Crash
 
         public RIFF ToDLS()
         {
+            // DLS RIFF
             RIFF dls = new RIFF("DLS ");
+
+            // colh chunk
+            int instrumentCount = programs.Count * 2;
             byte[] colh = new byte[4];
-            BitConv.ToInt32(colh, 0, programs.Count * 2);
+            BitConv.ToInt32(colh, 0, instrumentCount);
             dls.Items.Add(new RIFFData("colh", colh));
+
+            // LIST lins chunk: Generates instruments from each program.  
             RIFF lins = new RIFF("lins");
             for (int i = 0; i < 128; i++)
             {
                 if (programs.ContainsKey(i))
                 {
-                    lins.Items.Add(programs[i].ToDLSInstrument(i, false));
-                    lins.Items.Add(programs[i].ToDLSInstrument(i, true));
+                    lins.Items.Add(programs[i].ToDLSCreateIns(i, false));
+                    //lins.Items.Add(programs[i].ToDLSCreateIns(i, true));
                 }
             }
             dls.Items.Add(lins);
+
+            // LIST wvpl chunk: Creates waveform data (Wave Pool).  
             RIFF wvpl = new RIFF("wvpl");
             foreach (SampleSet sampleset in waves)
             {
@@ -101,7 +111,7 @@ namespace CrashEdit.Crash
                 {
                     SampleLine sampleline = sampleset.SampleLines[i];
                     pcm.AddRange(sampleline.ToPCM(ref s0, ref s1));
-                    if ((sampleline.Flags & SampleLineFlags.LoopEnd) != 0)
+                    if (sampleline.Flags == SampleLineFlags.StopEnvelope)
                     {
                         break;
                     }
@@ -123,17 +133,28 @@ namespace CrashEdit.Crash
                 wave.Name = "wave";
                 wvpl.Items.Add(wave);
             }
-            int waveoffset = 0;
-            byte[] ptbl = new byte[8 + 4 * waves.Count];
+
+            // ptbl chunk: Generates offset information for each waveform.  
+            int waveCount = waves.Count;
+            byte[] ptbl = new byte[8 + 4 * waveCount];
             BitConv.ToInt32(ptbl, 0, 8);
-            BitConv.ToInt32(ptbl, 4, waves.Count);
-            for (int i = 0; i < waves.Count; i++)
+            BitConv.ToInt32(ptbl, 4, waveCount);
+            int waveoffset = 0;
+            for (int i = 0; i < waveCount; i++)
             {
                 BitConv.ToInt32(ptbl, 8 + i * 4, waveoffset);
                 waveoffset += wvpl.Items[i].Length;
             }
             dls.Items.Add(new RIFFData("ptbl", ptbl));
             dls.Items.Add(wvpl);
+
+            // LIST INFO chunk: Adds name information to the DLS file.
+            RIFF info = new RIFF("INFO");
+            string dlsName = "VAB Converted DLS";
+            byte[] inamData = Encoding.ASCII.GetBytes(dlsName);
+            info.Items.Add(new RIFFData("INAM", inamData));
+            dls.Items.Add(info);
+
             return dls;
         }
     }
