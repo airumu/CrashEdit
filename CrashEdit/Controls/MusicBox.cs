@@ -126,9 +126,14 @@ namespace CrashEdit.CE
             cmdLoad.Click += (sender, e) =>
             {
                 VAB vab = controller.FindLinkedVAB();
-                string outputPath = "test.sf2";
-                byte[] sf2 = SF2Conv.ToSF2(vab, true);
-                File.WriteAllBytes(outputPath, sf2);
+                string outputPath = "test.dls";
+                byte[] dls = vab.ToDLS().Save();
+                File.WriteAllBytes(outputPath, dls);
+
+                //VAB vab = controller.FindLinkedVAB();
+                //string outputPath = "test.sf2";
+                //byte[] sf2 = SF2Conv.ToSF2(vab, true);
+                //File.WriteAllBytes(outputPath, sf2);
                 return;
             };
 

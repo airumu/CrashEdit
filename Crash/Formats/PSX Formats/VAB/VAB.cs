@@ -40,6 +40,12 @@ namespace CrashEdit.Crash
         private Dictionary<int, VHProgram> programs;
         private List<SampleSet> waves;
 
+        public List<SampleSet> Waves
+        {
+            get => waves;
+            set => waves = value;
+        }
+
         public VAB(bool isoldversion, byte volume, byte panning, byte attribute1, byte attribute2, IDictionary<int, VHProgram> programs, IEnumerable<SampleSet> waves)
         {
             this.isoldversion = isoldversion;
@@ -82,7 +88,7 @@ namespace CrashEdit.Crash
             RIFF dls = new RIFF("DLS ");
 
             // colh chunk
-            int instrumentCount = programs.Count * 2;
+            int instrumentCount = programs.Count;
             byte[] colh = new byte[4];
             BitConv.ToInt32(colh, 0, instrumentCount);
             dls.Items.Add(new RIFFData("colh", colh));
@@ -93,7 +99,7 @@ namespace CrashEdit.Crash
             {
                 if (programs.ContainsKey(i))
                 {
-                    lins.Items.Add(programs[i].ToDLSCreateIns(i, false));
+                    lins.Items.Add(programs[i].ToDLSCreateIns(this, i, false));
                     //lins.Items.Add(programs[i].ToDLSCreateIns(i, true));
                 }
             }
@@ -101,6 +107,7 @@ namespace CrashEdit.Crash
 
             // LIST wvpl chunk: Creates waveform data (Wave Pool).  
             RIFF wvpl = new RIFF("wvpl");
+            int offset = 0;
             foreach (SampleSet sampleset in waves)
             {
                 List<byte> pcm = new List<byte>();
@@ -129,9 +136,10 @@ namespace CrashEdit.Crash
                         break;
                     }
                 }*/
-                RIFF wave = WaveConv.ToWave(pcm.ToArray(), 44100);
+                RIFF wave = WaveConv.ToWave(pcm.ToArray(), 44100, $"Sample {offset}");
                 wave.Name = "wave";
                 wvpl.Items.Add(wave);
+                ++offset;
             }
 
             // ptbl chunk: Generates offset information for each waveform.  

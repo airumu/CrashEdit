@@ -1,8 +1,5 @@
-﻿using System.Linq;
-using System.Reflection;
-using System.Security.Policy;
+﻿using System.Reflection;
 using System.Text;
-using System.Windows.Documents;
 using CrashEdit.Crash;
 
 public static class SF2Conv
@@ -542,7 +539,7 @@ public static class SF2Conv
 
                     // pan
                     bw.Write((ushort)Op.pan);
-                    bw.Write((short)ConvertPanByteToSf2(tone.Panning));
+                    bw.Write((short)ConvertPanByte(tone.Panning));
 
                     // sampleModes
                     SampleSet sampleset = vhWaves[sampleID];
@@ -677,6 +674,14 @@ public static class SF2Conv
         return Math.Log(secs) / Math.Log(2.0) * 1200.0;
     }
 
+    public static double ConvertLogScaleValToAtten(double percent)
+    {
+        if (percent == 0)
+            return 100.0; // assume 0 is -100.0db attenuation
+        double atten = 20 * Math.Log10(percent) * 2;
+        return Math.Min(-atten, 100.0);
+    }
+
     /// <summary>
     /// Calculates the Correction from a PitchShift.
     /// </summary>
@@ -701,7 +706,7 @@ public static class SF2Conv
     /// <summary>
     /// Maps a MIDI pan value (0x00–0x7F) to the SF2/DLS range of -50.0 to 50.0.
     /// </summary>
-    private static short ConvertPanByteToSf2(short pan)
+    public static short ConvertPanByte(short pan)
     {
         // If the value is the center (64), return 0.
         if (pan == 64) return 0;

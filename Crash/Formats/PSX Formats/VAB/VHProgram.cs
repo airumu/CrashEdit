@@ -1,5 +1,4 @@
-using CrashEdit.Crash.GOOLIns;
-using System.Windows.Documents;
+using System.Text;
 
 namespace CrashEdit.Crash
 {
@@ -105,7 +104,7 @@ namespace CrashEdit.Crash
             return data;
         }
 
-        public RIFF ToDLSCreateIns(int programnumber, bool drumkit)
+        public RIFF ToDLSCreateIns(VAB vab, int programnumber, bool drumkit)
         {
             RIFF ins = new RIFF("ins ");
             byte[] insh = new byte[12];
@@ -114,16 +113,17 @@ namespace CrashEdit.Crash
             BitConv.ToInt32(insh, 8, programnumber);
             ins.Items.Add(new RIFFData("insh", insh));
             RIFF lrgn = new RIFF("lrgn");
-            RIFF lar2 = new RIFF("lart");
             foreach (VHTone tone in tones)
             {
                 // rgn2
-                lrgn.Items.Add(tone.ToDLSCreatergn2(drumkit));
-
-                // lart
-                //lrgn.Items.Add(tone.ToDLSCreatelar2());
+                lrgn.Items.Add(tone.ToDLSCreatergn2(vab, drumkit));
             }
             ins.Items.Add(lrgn);
+            RIFF info = new RIFF("INFO");
+            StringBuilder name = new StringBuilder($"Inst {programnumber}");
+            byte[] inamData = Encoding.ASCII.GetBytes(RIFF.AlignName(name).ToString());
+            info.Items.Add(new RIFFData("INAM", inamData));
+            ins.Items.Add(info);
             return ins;
         }
     }
