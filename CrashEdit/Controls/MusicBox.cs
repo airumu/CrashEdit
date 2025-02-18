@@ -1,4 +1,6 @@
-﻿using AltUI.Controls;
+﻿using System.Security.Policy;
+using AltUI.Controls;
+using AltUI.Forms;
 using CrashEdit.Crash;
 using MeltySynth;
 using NAudio.Wave;
@@ -16,10 +18,12 @@ namespace CrashEdit.CE
         private DoubleBufferedListView lstMusic;
         private DarkTextBox txtMusic;
         private Label lblEIDError;
-        private Label lblMasterVolume;
-        private DarkNumericUpDown numMasterVolume;
-        private Label lblMasterPan;
-        private DarkNumericUpDown numMasterPan;
+        private Label? lblMasterVolume;
+        private DarkNumericUpDown? numMasterVolume;
+        private Label? lblMasterPan;
+        private DarkNumericUpDown? numMasterPan;
+        private Label txtSEQ;
+        private DarkNumericUpDown numSEQ;
         private DarkButton cmdLoad;
         private DarkButton cmdPlay;
         private DarkButton cmdStop;
@@ -34,6 +38,27 @@ namespace CrashEdit.CE
             musicentry = controller.MusicEntry;
 
             BackColor = Color.FromArgb(31, 31, 32);
+            bool hasVH = musicentry.VH != null;
+            bool hasSEQ = musicentry.Tracks.Count > 0;
+
+            pnMain = new TableLayoutPanel()
+            {
+                ColumnCount = 2,
+                RowCount = 1,
+                Dock = DockStyle.Fill
+            };
+            pnSub1 = new TableLayoutPanel()
+            {
+                ColumnCount = 1,
+                RowCount = 8,
+                Dock = DockStyle.Fill
+            };
+            pnSub2 = new TableLayoutPanel()
+            {
+                ColumnCount = 1,
+                RowCount = 4,
+                Dock = DockStyle.Fill
+            };
 
             lstMusic = new DoubleBufferedListView()
             {
@@ -47,7 +72,6 @@ namespace CrashEdit.CE
             lstMusic.Click += lstMusic_Click;
             lstMusic.Columns.Add("Item");
             lstMusic.Columns.Add("EID");
-
             var items = new (string Text, int EID)[]
             {
                 ("VH", musicentry.VHEID),
@@ -86,7 +110,7 @@ namespace CrashEdit.CE
                 ForeColor = Color.Red
             };
 
-            if (musicentry.VH != null)
+            if (hasVH)
             {
                 lblMasterVolume = new Label()
                 {
@@ -117,7 +141,25 @@ namespace CrashEdit.CE
                 {
                     musicentry.VH.Panning = (byte)numMasterPan.Value;
                 };
+
+                pnSub2.Controls.Add(lblMasterVolume, 0, 0);
+                pnSub2.Controls.Add(numMasterVolume, 0, 1);
+                pnSub2.Controls.Add(lblMasterPan, 0, 2);
+                pnSub2.Controls.Add(numMasterPan, 0, 3);
             }
+
+            txtSEQ = new Label()
+            {
+                Enabled = hasSEQ,
+                Text = "Tracks"
+            };
+
+            numSEQ = new DarkNumericUpDown()
+            {
+                Enabled = hasSEQ,
+                Minimum = 0,
+                Maximum = hasSEQ ? musicentry.Tracks.Count - 1 : 0
+            };
 
             cmdLoad = new DarkButton()
             {
@@ -126,57 +168,39 @@ namespace CrashEdit.CE
             cmdLoad.Click += (sender, e) =>
             {
                 VAB vab = controller.FindLinkedVAB();
-                string outputPath = "test.dls";
-                byte[] dls = vab.ToDLS().Save();
-                File.WriteAllBytes(outputPath, dls);
 
-                //VAB vab = controller.FindLinkedVAB();
-                //string outputPath = "test.sf2";
-                //byte[] sf2 = SF2Conv.ToSF2(vab, true);
-                //File.WriteAllBytes(outputPath, sf2);
+                string sf2Path = "temp.sf2";
+                byte[] sf2 = SF2Conv.ToSF2(vab, debug: false);
+                File.WriteAllBytes(sf2Path, sf2);
+
+                string dlsPath = "temp.dls";
+                byte[] dls = vab.ToDLS().Save();
+                File.WriteAllBytes(dlsPath, dls);
                 return;
             };
 
             cmdPlay = new DarkButton()
             {
+                Enabled = hasSEQ,
                 Text = "Play"
             };
             cmdPlay.Click += (sender, e) =>
             {
                 if (musicentry.Tracks.Count == 0) return;
 
-                SEQ seq = musicentry.Tracks[0];
+                SEQ seq = musicentry.Tracks[(int)numSEQ.Value];
                 byte[] midiData = seq.ToMIDI();
-                string tempFile = Path.GetTempFileName();
-                string midiPath = Path.ChangeExtension(tempFile, ".mid");
+                //string tempFile = Path.GetTempFileName();
+                //string midiPath = Path.ChangeExtension(tempFile, ".mid");
+                string midiPath = Path.ChangeExtension("temp", ".mid");
                 File.WriteAllBytes(midiPath, midiData);
-                Console.WriteLine("MIDI File Path: " + midiPath);
-                Console.WriteLine("Now playing: " + musicentry.EName);
 
-                string sfPath = "test.sf2";
-
-                //string sfPath = "";
-                //using (OpenFileDialog dialog = new OpenFileDialog())
-                //{
-                //    dialog.Filter = FileFilters.SF2;
-                //    if (dialog.ShowDialog(this) == DialogResult.OK)
-                //    {
-                //        sfPath = dialog.FileName;
-                //    }
-                //    else return;
-                //}
-
-                //string midipath = "";
-                //using (OpenFileDialog dialog = new OpenFileDialog())
-                //{
-                //    dialog.Filter = FileFilters.MIDI;
-                //    if (dialog.ShowDialog(this) == DialogResult.OK)
-                //    {
-                //        midipath = dialog.FileName;
-                //    }
-                //    else return;
-                //}
-
+                string sfPath = Path.ChangeExtension("temp", ".sf2");
+                if (!File.Exists(sfPath))
+                {
+                    DarkMessageBox.ShowError("Failed to load the soundfont file.", "MusicBox");
+                    return;
+                }
                 player = new MidiSampleProvider(sfPath);
 
                 using (var waveOut = new WaveOut(WaveCallbackInfo.FunctionCallback()))
@@ -189,15 +213,15 @@ namespace CrashEdit.CE
 
                     // Play the MIDI file.
                     player.Play(midiFile, true);
-
-                    // Wait until any key is pressed.
-                    Console.ReadKey();
+                    // Wait.
+                    DarkMessageBox.ShowMessage($"Now playing: {musicentry.EName}, Tracks[{(int)numSEQ.Value}]", "MusicBox");
                 }
 
             };
 
             cmdStop = new DarkButton()
             {
+                Enabled = hasSEQ,
                 Text = "Stop"
             };
             cmdStop.Click += (sender, e) =>
@@ -208,38 +232,15 @@ namespace CrashEdit.CE
                 }
             };
 
-
-            pnMain = new TableLayoutPanel()
-            {
-                ColumnCount = 2,
-                RowCount = 1,
-                Dock = DockStyle.Fill
-            };
-            pnSub1 = new TableLayoutPanel()
-            {
-                ColumnCount = 1,
-                RowCount = 6,
-                Dock = DockStyle.Fill
-            };
-            pnSub2 = new TableLayoutPanel()
-            {
-                ColumnCount = 1,
-                RowCount = 4,
-                Dock = DockStyle.Fill
-            };
             pnSub1.Controls.Add(lstMusic, 0, 0);
             pnSub1.Controls.Add(txtMusic, 0, 1);
             pnSub1.Controls.Add(lblEIDError, 0, 2);
-            pnSub1.Controls.Add(cmdLoad, 0, 3);
-            pnSub1.Controls.Add(cmdPlay, 0, 4);
-            pnSub1.Controls.Add(cmdStop, 0, 5);
-            if (musicentry.VH != null)
-            {
-                pnSub2.Controls.Add(lblMasterVolume, 0, 0);
-                pnSub2.Controls.Add(numMasterVolume, 0, 1);
-                pnSub2.Controls.Add(lblMasterPan, 0, 2);
-                pnSub2.Controls.Add(numMasterPan, 0, 3);
-            }
+            pnSub1.Controls.Add(txtSEQ, 0, 3);
+            pnSub1.Controls.Add(numSEQ, 0, 4);
+            pnSub1.Controls.Add(cmdLoad, 0, 5);
+            pnSub1.Controls.Add(cmdPlay, 0, 6);
+            pnSub1.Controls.Add(cmdStop, 0, 7);
+
             pnMain.Controls.Add(pnSub1);
             pnMain.Controls.Add(pnSub2);
             Controls.Add(pnMain);
