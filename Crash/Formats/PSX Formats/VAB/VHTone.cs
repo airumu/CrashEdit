@@ -180,35 +180,6 @@ namespace CrashEdit.Crash
         {
             RIFF rgn = new RIFF("rgn2");
 
-            // Generate PCM from SampleSet.
-            foreach (SampleSet wave in vab.Waves)
-            {
-                List<byte> waveData = new List<byte>();
-                double s0 = 0.0, s1 = 0.0;
-                foreach (SampleLine sample in wave.SampleLines)
-                {
-                    if (sample.Flags == SampleLineFlags.LoopStart || sample.Flags == SampleLineFlags.LoopStartAlt)
-                    {
-                        wave.LoopStart = waveData.Count;
-                    }
-
-                    byte[] pcm = sample.ToPCM(ref s0, ref s1);
-                    waveData.AddRange(pcm);
-
-                    if (sample.Flags == SampleLineFlags.StopEnvelope)
-                    {
-                        wave.LoopStart = 0;
-                        wave.LoopEnd = waveData.Count;
-                        break;
-                    }
-                    if (sample.Flags == SampleLineFlags.LoopEnd)
-                    {
-                        wave.LoopEnd = waveData.Count;
-                        break;
-                    }
-                }
-            }
-
             int sampleID = (Wave > 0) ? Wave - 1 : 0;
 
             SampleSet sampleset = vab.Waves[sampleID];

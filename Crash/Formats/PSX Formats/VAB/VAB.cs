@@ -40,12 +40,6 @@ namespace CrashEdit.Crash
         private Dictionary<int, VHProgram> programs;
         private List<SampleSet> waves;
 
-        public List<SampleSet> Waves
-        {
-            get => waves;
-            set => waves = value;
-        }
-
         public VAB(bool isoldversion, byte volume, byte panning, byte attribute1, byte attribute2, IDictionary<int, VHProgram> programs, IEnumerable<SampleSet> waves)
         {
             this.isoldversion = isoldversion;
@@ -55,6 +49,12 @@ namespace CrashEdit.Crash
             this.attribute2 = attribute2;
             this.programs = new Dictionary<int, VHProgram>(programs);
             this.waves = new List<SampleSet>(waves);
+        }
+
+        public List<SampleSet> Waves
+        {
+            get => waves;
+            set => waves = value;
         }
 
         public void Split(out VH vh, out SampleLine[] vb)
@@ -93,6 +93,41 @@ namespace CrashEdit.Crash
             BitConv.ToInt32(colh, 0, instrumentCount);
             dls.Items.Add(new RIFFData("colh", colh));
 
+            // LIST wvpl chunk: Creates waveform data (Wave Pool).  
+            RIFF wvpl = new RIFF("wvpl");
+            int offset = 0;
+            foreach (SampleSet sampleset in waves)
+            {
+                List<byte> pcm = new List<byte>();
+                double s0 = 0.0;
+                double s1 = 0.0;
+                foreach (SampleLine sampleline in sampleset.SampleLines)
+                {
+                    if (sampleline.Flags == SampleLineFlags.LoopStart || sampleline.Flags == SampleLineFlags.LoopStartAlt)
+                    {
+                        sampleset.LoopStart = pcm.Count;
+                    }
+
+                    pcm.AddRange(sampleline.ToPCM(ref s0, ref s1));
+
+                    if (sampleline.Flags == SampleLineFlags.StopEnvelope)
+                    {
+                        sampleset.LoopStart = 0;
+                        sampleset.LoopEnd = pcm.Count;
+                        break;
+                    }
+                    if (sampleline.Flags == SampleLineFlags.LoopEnd)
+                    {
+                        sampleset.LoopEnd = pcm.Count;
+                        break;
+                    }
+                }
+                RIFF wave = WaveConv.ToDLSWave(pcm.ToArray(), 44100, $"Sample {offset}");
+                wave.Name = "wave";
+                wvpl.Items.Add(wave);
+                ++offset;
+            }
+
             // LIST lins chunk: Generates instruments from each program.  
             RIFF lins = new RIFF("lins");
             for (int i = 0; i < 128; i++)
@@ -104,43 +139,6 @@ namespace CrashEdit.Crash
                 }
             }
             dls.Items.Add(lins);
-
-            // LIST wvpl chunk: Creates waveform data (Wave Pool).  
-            RIFF wvpl = new RIFF("wvpl");
-            int offset = 0;
-            foreach (SampleSet sampleset in waves)
-            {
-                List<byte> pcm = new List<byte>();
-                double s0 = 0.0;
-                double s1 = 0.0;
-                int loopstart = 0;
-                for (int i = 0; i < sampleset.SampleLines.Count; i++)
-                {
-                    SampleLine sampleline = sampleset.SampleLines[i];
-                    pcm.AddRange(sampleline.ToPCM(ref s0, ref s1));
-                    if (sampleline.Flags == SampleLineFlags.StopEnvelope)
-                    {
-                        break;
-                    }
-                    if ((sampleline.Flags & SampleLineFlags.LoopStart) != 0)
-                    {
-                        loopstart = i;
-                    }
-                }
-                /*for (int i = loopstart;i < sampleset.SampleLines.Count;i++)
-                {
-                    SampleLine sampleline = sampleset.SampleLines[i];
-                    pcm.AddRange(sampleline.ToPCM(ref s0,ref s1));
-                    if ((sampleline.Flags & SampleLineFlags.LoopEnd) != 0)
-                    {
-                        break;
-                    }
-                }*/
-                RIFF wave = WaveConv.ToWave(pcm.ToArray(), 44100, $"Sample {offset}");
-                wave.Name = "wave";
-                wvpl.Items.Add(wave);
-                ++offset;
-            }
 
             // ptbl chunk: Generates offset information for each waveform.  
             int waveCount = waves.Count;
