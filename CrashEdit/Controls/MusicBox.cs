@@ -170,7 +170,7 @@ namespace CrashEdit.CE
                 VAB vab = controller.FindLinkedVAB();
 
                 string sf2Path = "temp.sf2";
-                byte[] sf2 = SF2Conv.ToSF2(vab, debug: false);
+                byte[] sf2 = SF2Conv.ToSF2(vab);
                 File.WriteAllBytes(sf2Path, sf2);
 
                 string dlsPath = "temp.dls";

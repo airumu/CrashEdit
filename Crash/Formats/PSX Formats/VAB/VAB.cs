@@ -85,6 +85,8 @@ namespace CrashEdit.Crash
 
         public RIFF ToDLS()
         {
+            Console.WriteLine("Start converting...");
+
             // DLS RIFF
             RIFF dls = new RIFF("DLS ");
 
@@ -161,6 +163,7 @@ namespace CrashEdit.Crash
             info.Items.Add(new RIFFData("INAM", inamData));
             dls.Items.Add(info);
 
+            Console.WriteLine("VAB to DLS onversion completed.");
             return dls;
         }
     }

@@ -101,7 +101,7 @@ namespace CrashEdit.CE
         private void Menu_Export_Linked_VAB_SF2()
         {
             VAB vab = FindLinkedVAB();
-            byte[] data = SF2Conv.ToSF2(vab, false);
+            byte[] data = SF2Conv.ToSF2(vab);
             FileUtil.SaveFile(data, FileFilters.SF2, FileFilters.Any);
         }
 
