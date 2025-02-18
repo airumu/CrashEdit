@@ -90,6 +90,8 @@ public static class SF2Conv
         endOper                     //                                      60
     }
 
+    const int DLS_DECIBEL_UNIT = 65536; // DLS1 spec p25
+
     private static bool debug = false;
     private static void DebugOutput(string str)
     {
@@ -535,7 +537,7 @@ public static class SF2Conv
 
                     // initialAttenuation
                     bw.Write((ushort)Op.initialAttenuation);
-                    bw.Write((short)ConvertVolumeToInitialAttenuation(tone.Volume));
+                    bw.Write((short)ConvertVolumeToInitialAttenuation(prog.Volume, tone.Volume));
 
                     // pan
                     bw.Write((ushort)Op.pan);
@@ -572,8 +574,8 @@ public static class SF2Conv
 
                     // sustainVolEnv
                     bw.Write((ushort)Op.sustainVolEnv);
-                    if (envelope.SustainLevel > 100.0)
-                        envelope.SustainLevel = 100.0;
+                    if (envelope.SustainLevel > 100.0 * 10)
+                        envelope.SustainLevel = 100.0 * 10;
                     bw.Write((short)envelope.SustainLevel);
 
                     // releaseVolEnv
@@ -683,6 +685,28 @@ public static class SF2Conv
     }
 
     /// <summary>
+    /// Calculates the initialAttenuation from a volume value (0–127).
+    /// Returns the result as a short value in 0.01 dB units.
+    /// </summary>
+    public static short ConvertVolumeToInitialAttenuation(byte progVolume, byte toneVolume)
+    {
+        double total = (progVolume / 127.0) * (toneVolume / 127.0);
+        short result = (short)(ConvertLogScaleValToAtten(total) * 10);
+        return result;
+    }
+
+    /// <summary>
+    /// Calculates the initialAttenuation from a volume value (0–127).
+    /// Returns the result as a short value in 0.01 dB units.
+    /// </summary>
+    public static int DLSConvertVolumeToInitialAttenuation(byte progVolume, byte toneVolume)
+    {
+        double total = (progVolume / 127.0) * (toneVolume / 127.0);
+        int result = (int)-(ConvertLogScaleValToAtten(total) * DLS_DECIBEL_UNIT * 10);
+        return result;
+    }
+
+    /// <summary>
     /// Calculates the Correction from a PitchShift.
     /// </summary>
     public static short CalcFineTune(byte fineTune)
@@ -690,17 +714,6 @@ public static class SF2Conv
         if (fineTune == 0) return 0;
         double pitchApprox = 0.7824 * fineTune - 0.6061;
         return (short)Math.Round(pitchApprox);
-    }
-
-    /// <summary>
-    /// Calculates the initialAttenuation from a volume value (0–127).
-    /// Returns the result as a short value in 0.01 dB units.
-    /// </summary>
-    private static short ConvertVolumeToInitialAttenuation(byte volume)
-    {
-        double x = 127 - volume;
-        double dB = 0.008925 * Math.Pow(x, 1.161);
-        return (short)Math.Round(dB * 100);
     }
 
     /// <summary>

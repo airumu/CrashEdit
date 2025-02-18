@@ -1,4 +1,4 @@
-namespace CrashEdit.Crash
+﻿namespace CrashEdit.Crash
 {
     public sealed class VHTone
     {
@@ -187,7 +187,7 @@ namespace CrashEdit.Crash
 
         const int DLS_DECIBEL_UNIT = 65536; // DLS1 spec p25
 
-        public RIFF ToDLSCreatergn2(VAB vab, bool drumkit)
+        public RIFF ToDLSCreatergn2(VAB vab, VHProgram prog, bool drumkit)
         {
             RIFF rgn = new RIFF("rgn2");
 
@@ -228,7 +228,7 @@ namespace CrashEdit.Crash
                                                             // Fine Tune
             BitConv.ToInt16(wsmp, 6, (byte)(SF2Conv.CalcFineTune(PitchShift) % 100));
                                                             // lAttenuation
-            BitConv.ToInt32(wsmp, 8, Convert.ToInt32((long)-(SF2Conv.ConvertLogScaleValToAtten((double)Volume / 127.0) * DLS_DECIBEL_UNIT * 10)));
+            BitConv.ToInt32(wsmp, 8, SF2Conv.DLSConvertVolumeToInitialAttenuation(prog.Volume, Volume));
             BitConv.ToInt32(wsmp, 12, 1);                   // fulOptions
             if (loopStatus)
             {
@@ -340,5 +340,7 @@ namespace CrashEdit.Crash
             lar2.Items.Add(new RIFFData("art2", art2Data));
             return lar2;
         }
+
+
     }
 }

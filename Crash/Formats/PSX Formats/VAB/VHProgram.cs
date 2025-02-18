@@ -116,7 +116,7 @@ namespace CrashEdit.Crash
             foreach (VHTone tone in tones)
             {
                 // rgn2
-                lrgn.Items.Add(tone.ToDLSCreatergn2(vab, drumkit));
+                lrgn.Items.Add(tone.ToDLSCreatergn2(vab, this, drumkit));
             }
             ins.Items.Add(lrgn);
             RIFF info = new RIFF("INFO");

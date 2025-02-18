@@ -186,11 +186,13 @@
                 realSustainLevel = 0x07FFFFFFUL;
             adsr.SustainLevel = realSustainLevel / (double)0x7FFFFFFFUL;
 
+            // If decay is going unused, and there's a sustain rate with sustain level close to max...
+            //  we'll put the sustain_rate in place of the decay rate.
             if ((adsr.DecayTime < 2 || (Dr == 0x0F && Sl >= 0x0C)) && Sr < 0x7E && Sd == 1)
             {
-                adsr.SustainLevel = 0;
+                // adsr.SustainLevel = 0;
+                adsr.SustainLevel = 0x07FFFFFFUL;
                 adsr.DecayTime = adsr.SustainTime;
-                //adsr.decay_time = 0.5;
             }
 
             // Release Time
