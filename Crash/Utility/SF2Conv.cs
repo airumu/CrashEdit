@@ -4,7 +4,7 @@ using CrashEdit.Crash;
 
 public static class SF2Conv
 {
-    // from VGMTrans
+    // values from VGMTrans
     // https://github.com/vgmtrans/vgmtrans/blob/master/src/main/conversion/SF2File.h
     public enum Op : ushort
     {
@@ -526,7 +526,7 @@ public static class SF2Conv
                     bw.Write(keyRange);
 
                     // velocity range
-                    // we'll use the default range.
+                    // We'll use the default range.
                     bw.Write((ushort)Op.velRange);
                     short byLo = 0;
                     short byHi = 127;
@@ -644,17 +644,17 @@ public static class SF2Conv
                 if (tone != null)
                 {
                     byte byOriginalKey = (byte)(tone.CenterNote - (tone.PitchShift / 100));
-                    entry[40] = byOriginalKey; // byOriginalKey
+                    entry[40] = byOriginalKey;                                      // byOriginalKey
                     byte chCorrection = (byte)(CalcFineTune(tone.PitchShift) % 100);
-                    entry[41] = chCorrection; // chCorrection
+                    entry[41] = chCorrection;                                       // chCorrection
                 }
                 else
                 {
-                    entry[40] = 255; // byOriginalKey
-                    entry[41] = 0; // chCorrection
+                    entry[40] = 255;                                                // byOriginalKey
+                    entry[41] = 0;                                                  // chCorrection
                 }
-                entry[42] = 0; // wSampleLink
-                entry[44] = 1; // sfSampleType (monoSample)
+                entry[42] = 0;                                                      // wSampleLink
+                entry[44] = 1;                                                      // sfSampleType (monoSample)
                 bw.Write(entry);
                 sampleOffset += length;
                 sampleIndex++;
@@ -667,7 +667,7 @@ public static class SF2Conv
 
     #endregion
 
-    #region Calculators
+    #region ScaleConversion
 
     public static double SecondsToTimecents(double secs)
     {

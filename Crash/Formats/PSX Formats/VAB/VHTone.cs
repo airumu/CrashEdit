@@ -176,6 +176,17 @@ namespace CrashEdit.Crash
             return data;
         }
 
+        // values from VGMTrans
+        // https://github.com/vgmtrans/vgmtrans/blob/master/src/main/conversion/DLSFile.h
+        const short CONN_DST_PAN = 0x0004;
+        const short CONN_DST_EG1_ATTACKTIME = 0x0206;
+        const short CONN_DST_EG1_HOLDTIME = 0x020c;
+        const short CONN_DST_EG1_DECAYTIME = 0x0207;
+        const short CONN_DST_EG1_SUSTAINLEVEL = 0x020a;
+        const short CONN_DST_EG1_RELEASETIME = 0x0209;
+
+        const int DLS_DECIBEL_UNIT = 65536; // DLS1 spec p25
+
         public RIFF ToDLSCreatergn2(VAB vab, bool drumkit)
         {
             RIFF rgn = new RIFF("rgn2");
@@ -250,23 +261,6 @@ namespace CrashEdit.Crash
             return rgn;
         }
 
-        // from VGMTrans
-        // https://github.com/vgmtrans/vgmtrans/blob/master/src/main/conversion/DLSFile.h
-        const short CONN_DST_PAN = 0x0004;
-        const short CONN_DST_EG1_ATTACKTIME = 0x0206;
-        const short CONN_DST_EG1_HOLDTIME = 0x020c;
-        const short CONN_DST_EG1_DECAYTIME = 0x0207;
-        const short CONN_DST_EG1_SUSTAINLEVEL = 0x020a;
-        const short CONN_DST_EG1_RELEASETIME = 0x0209;
-
-        const int DLS_DECIBEL_UNIT = 65536;        //DLS1 spec p25
-
-        public static int ConvertVolume(byte x)
-        {
-            double y = -0.003653 * x * x + 0.8904 * x - 56.662;
-            return (int)Math.Round(y, MidpointRounding.AwayFromZero);
-        }
-
         public RIFF Createlar2Chunk()
         {
             RIFF lar2 = new RIFF("lar2");
@@ -283,7 +277,7 @@ namespace CrashEdit.Crash
             long convDecay = (long)Math.Round(SF2Conv.SecondsToTimecents(envelope.DecayTime) * 65536);
             long convSustainLev;
             if (envelope.SustainLevel == -1)
-                convSustainLev = 0x03e80000;        // sustain at full if no sustain level provided
+                convSustainLev = 0x03e80000; // sustain at full if no sustain level provided
             else
             {
                 // The DLS envelope is a range from 0 to -96db.
