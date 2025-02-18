@@ -481,7 +481,7 @@ public static class SF2Conv
                     bw.Write((ushort)instGenCounter); // wInstGenNdx: set the cumulative counter
                     bw.Write((ushort)0); // wInstModNdx
                     DebugOutput($"ibag [{i:D2}]: wInstGenNdx {instGenCounter}");
-                    instGenCounter += 12; // C++ では 12 バイトずつ加算
+                    instGenCounter += 12;
                     rgnCounter++;
                 }
             }

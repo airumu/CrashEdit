@@ -61,7 +61,10 @@ namespace CrashEdit.Crash
         public byte[] ToMIDI()
         {
             byte[] Data = FixSEQ(this.Data);
+
             RIFF riff = new RIFF("MIDI");
+
+            // MThd
             byte[] mthd = new byte[6];
             BEBitConv.ToInt16(mthd, 0, 0);
             BEBitConv.ToInt16(mthd, 2, 1);
@@ -81,13 +84,16 @@ namespace CrashEdit.Crash
             mtrk[13] = 0x18;
             mtrk[14] = 0x08;
             Data.CopyTo(mtrk, 15);
+
+            // MTrk
             riff.Items.Add(new RIFFData("MTrk", mtrk));
+
             return riff.SaveBody(Endianness.BigEndian);
         }
 
         private byte[] FixSEQ(byte[] data)
         {
-            // Convert SEQ tempo to midi tempo
+            // Convert SEQ tempo to midi tempo.
             byte[] pattern = new byte[] { 0xFF, 0x51 };
             byte byteToInsert = 0x03;
 
@@ -114,10 +120,7 @@ namespace CrashEdit.Crash
                     }
                 }
 
-                if (index == -1)
-                {
-                    break;
-                }
+                if (index == -1) break;
                 else
                 {
                     int insertIndex = index + pattern.Length;
@@ -130,14 +133,11 @@ namespace CrashEdit.Crash
                     {
                         list.Insert(insertIndex, byteToInsert);
                         Console.WriteLine($"Fixed Tempo event at 0x{index:X}.");
-
                         pos = insertIndex + 1;
                     }
                 }
             }
-
             return list.ToArray();
         }
-
     }
 }

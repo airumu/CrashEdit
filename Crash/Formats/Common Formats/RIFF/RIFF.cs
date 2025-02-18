@@ -65,8 +65,9 @@ namespace CrashEdit.Crash
         public static StringBuilder AlignName(StringBuilder name)
         {
             name.Append('\0');
-            if (name.Length % 2 != 0)  // If the length of the name string is odd
-                name.Append('\0');     // Add another null byte
+            // Add another null byte if the length is odd.
+            if (name.Length % 2 != 0)
+                name.Append('\0');
             return name;
         }
     }

@@ -1,4 +1,5 @@
 using System.Text;
+using System.Xml.Linq;
 
 namespace CrashEdit.Crash
 {
@@ -134,8 +135,7 @@ namespace CrashEdit.Crash
             {
                 if (programs.ContainsKey(i))
                 {
-                    lins.Items.Add(programs[i].ToDLSCreateIns(this, i, false));
-                    //lins.Items.Add(programs[i].ToDLSCreateIns(i, true));
+                    lins.Items.Add(programs[i].ToDLSCreateIns(this, i, drumkit: false));
                 }
             }
             dls.Items.Add(lins);
@@ -156,8 +156,8 @@ namespace CrashEdit.Crash
 
             // LIST INFO chunk: Adds name information to the DLS file.
             RIFF info = new RIFF("INFO");
-            string dlsName = "VAB Converted DLS";
-            byte[] inamData = Encoding.ASCII.GetBytes(dlsName);
+            StringBuilder name = new StringBuilder("VAB Converted DLS");
+            byte[] inamData = Encoding.ASCII.GetBytes(RIFF.AlignName(name).ToString());
             info.Items.Add(new RIFFData("INAM", inamData));
             dls.Items.Add(info);
 
