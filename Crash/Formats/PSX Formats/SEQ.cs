@@ -134,9 +134,9 @@ namespace CrashEdit.Crash
                     }
                     else
                     {
-                        list.Insert(insertIndex, byteToInsert);
                         FakeTempo = MIDIConv.From3BE(list.ToArray(), insertIndex);
-                        Console.WriteLine($"SEQ: Fixed Tempo event at 0x{index:X}, {FakeTempo:X}.");
+                        list.Insert(insertIndex, byteToInsert);
+                        Console.WriteLine($"  SEQ: Fixed Tempo event at 0x{index:X}, {FakeTempo:X}.");
                         pos = insertIndex + 1;
                     }
                 }

@@ -137,6 +137,7 @@ namespace CrashEdit.CE
             numMasterPan.Name = "numMasterPan";
             numMasterPan.Size = new Size(120, 23);
             numMasterPan.TabIndex = 1;
+            numMasterPan.ValueChanged += numMasterPan_ValueChanged;
             // 
             // numMasterVolume
             // 
@@ -145,6 +146,7 @@ namespace CrashEdit.CE
             numMasterVolume.Name = "numMasterVolume";
             numMasterVolume.Size = new Size(120, 23);
             numMasterVolume.TabIndex = 1;
+            numMasterVolume.ValueChanged += numMasterVolume_ValueChanged;
             // 
             // lbMasterPan
             // 
@@ -208,6 +210,7 @@ namespace CrashEdit.CE
             numSeqSpeed.Size = new Size(120, 23);
             numSeqSpeed.TabIndex = 1;
             numSeqSpeed.Value = new decimal(new int[] { 10, 0, 0, 65536 });
+            numSeqSpeed.ValueChanged += numSeqSpeed_ValueChanged;
             // 
             // numSynthVolumee
             // 
@@ -219,6 +222,7 @@ namespace CrashEdit.CE
             numSynthVolumee.Size = new Size(120, 23);
             numSynthVolumee.TabIndex = 1;
             numSynthVolumee.Value = new decimal(new int[] { 10, 0, 0, 65536 });
+            numSynthVolumee.ValueChanged += numSynthVolumee_ValueChanged;
             // 
             // lbSeqSpeed
             // 
@@ -250,6 +254,7 @@ namespace CrashEdit.CE
             cmdStop.Size = new Size(75, 23);
             cmdStop.TabIndex = 3;
             cmdStop.Text = "Stop";
+            cmdStop.Click += cmdStop_Click;
             // 
             // cmdPlay
             // 
@@ -263,6 +268,7 @@ namespace CrashEdit.CE
             cmdPlay.Size = new Size(75, 23);
             cmdPlay.TabIndex = 3;
             cmdPlay.Text = "Play";
+            cmdPlay.Click += cmdPlay_Click;
             // 
             // lbTimeInfo
             // 
@@ -285,6 +291,7 @@ namespace CrashEdit.CE
             cmdLoad.Size = new Size(75, 23);
             cmdLoad.TabIndex = 3;
             cmdLoad.Text = "Load VAB";
+            cmdLoad.Click += cmdLoad_Click;
             // 
             // trkSeekBar
             // 
@@ -309,6 +316,10 @@ namespace CrashEdit.CE
             trkSeekBar.TickFrequency = 64;
             trkSeekBar.Value = 0;
             trkSeekBar.ValueColor = Color.FromArgb(65, 177, 225);
+            trkSeekBar.ValueChanged += trkSeekBar_ValueChanged;
+            trkSeekBar.MouseDown += trkSeekBar_MouseDown;
+            trkSeekBar.MouseUp += trkSeekBar_MouseUp;
+            trkSeekBar.MouseWheel += trkSeekBar_MouseWheel;
             // 
             // numSEQ
             // 
@@ -317,6 +328,7 @@ namespace CrashEdit.CE
             numSEQ.Name = "numSEQ";
             numSEQ.Size = new Size(120, 23);
             numSEQ.TabIndex = 1;
+            numSEQ.ValueChanged += numSEQ_ValueChanged;
             // 
             // lbTracks
             // 
@@ -336,6 +348,7 @@ namespace CrashEdit.CE
             Controls.Add(fraVABLinks);
             Name = "MusicBox";
             Size = new Size(520, 544);
+            Leave += musicBox_Leave;
             fraVABLinks.ResumeLayout(false);
             fraVABLinks.PerformLayout();
             fraVH.ResumeLayout(false);

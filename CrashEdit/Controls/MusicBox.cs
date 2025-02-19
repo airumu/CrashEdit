@@ -19,6 +19,11 @@ namespace CrashEdit.CE
         private readonly double sliderSteps = 4096;
         private double stepIncrement;
         private bool isUserDragging;
+        private int seqTempo;
+
+        private string midiPath;
+        private string sf2Path;
+        private string dlsPath;
 
         private WaveOutEvent outputDevice;
         private AudioFileReader audioFile;
@@ -66,9 +71,9 @@ namespace CrashEdit.CE
         private void MainInit()
         {
             string basePath = "temp";
-            string midiPath = Path.ChangeExtension(basePath, ".mid");
-            string sf2Path = Path.ChangeExtension(basePath, ".sf2");
-            string dlsPath = Path.ChangeExtension(basePath, ".dls");
+            midiPath = Path.ChangeExtension(basePath, ".mid");
+            sf2Path = Path.ChangeExtension(basePath, ".sf2");
+            dlsPath = Path.ChangeExtension(basePath, ".dls");
 
             lbEIDError.Visible = false;
             txtMusic.Enabled =
@@ -91,22 +96,13 @@ namespace CrashEdit.CE
             };
 
             UpdatelstMusic();
+            ResetTimeInfo(false, true);
 
             // Check if the music entry has a VH.
             if (musicentry.VH != null)
             {
                 numMasterVolume.Value = musicentry.VH.Volume;
-                numMasterVolume.ValueChanged += (sender, e) =>
-                {
-                    musicentry.VH.Volume = (byte)numMasterVolume.Value;
-                };
-
                 numMasterPan.Value = musicentry.VH.Panning;
-                numMasterPan.ValueChanged += (sender, e) =>
-                {
-                    musicentry.VH.Panning = (byte)numMasterPan.Value;
-                    lbMasterPan.Text = $"Master Pan ({ConvertPanByte(musicentry.VH.Panning):F1})";
-                };
             }
             else
             {
@@ -123,123 +119,8 @@ namespace CrashEdit.CE
                 fraPlayer.Enabled = false;
             }
 
-            numSEQ.ValueChanged += (sender, e) =>
-            {
-                StopPlayer(true);
-            };
-
-            trkSeekBar.MouseDown += (sender, e) => isUserDragging = true;
-            trkSeekBar.MouseUp += (sender, e) =>
-            {
-                UpdateMessageIndex();
-                SeekAndSyncTimer();
-                isUserDragging = false;
-            };
-            trkSeekBar.MouseWheel += (sender, e) =>
-            {
-                int step = 1;
-                if (e.Delta > 0)
-                {
-                    trkSeekBar.Value = Math.Min(trkSeekBar.Value + step, trkSeekBar.Maximum - step);
-                }
-                else if (e.Delta < 0)
-                {
-                    trkSeekBar.Value = Math.Max(trkSeekBar.Value - step, trkSeekBar.Minimum);
-                }
-                UpdateMessageIndex();
-                SeekAndSyncTimer();
-            };
-            trkSeekBar.ValueChanged += (s, e) =>
-            {
-                UpdateTimeInfo();
-            };
-
-            ResetTimeInfo(false, true);
-
-            cmdLoad.Click += (sender, e) =>
-            {
-                StopPlayer(false);
-                LoadSF2(sf2Path);
-                //LoadDLS(dlsPath);
-                Console.WriteLine("VAB loaded successfully.");
-            };
-
-            cmdPlay.Click += (sender, e) =>
-            {
-                if (musicentry.Tracks.Count == 0) return;
-                StopPlayer(false);
-
-                seq = musicentry.Tracks[(int)numSEQ.Value];
-                byte[] midiData = seq.ToMIDI();
-                File.WriteAllBytes(midiPath, midiData);
-
-                //LoadSF2(sf2Path);
-                if (!File.Exists(sf2Path))
-                {
-                    DarkMessageBox.ShowError("Failed to load the soundfont file.", "MusicBox");
-                    return;
-                }
-
-                player = new MidiSampleProvider(sf2Path);
-                waveOut = new WaveOut(WaveCallbackInfo.FunctionCallback());
-                waveOut.Init(player);
-                waveOut.Play();
-
-                // Load the MIDI file.
-                midiFile = new MidiFile(midiPath, MidiFileLoopType.PSXSEQ);
-                // Play the MIDI file.
-                player.Play(midiFile, true);
-                Console.WriteLine($"# Now playing: {musicentry.EName}, Tracks[{(int)numSEQ.Value}]");
-
-                // Wait for the sequencer to load.
-                player.sequencer.ProcessAllEvents();
-                while (player.sequencer.Position.Ticks == 0) { }
-
-                player.synthesizer.MasterVolume = (float)(numSynthVolumee.Value / 2);
-                player.sequencer.Speed = (float)numSeqSpeed.Value;
-                midiLength = midiFile.Length;
-
-                lbTimeInfo.Enabled =
-                trkSeekBar.Enabled =
-                fraControls.Enabled = true;
-                int tempo = seq.FakeTempo != 0 ? seq.FakeTempo : seq.Tempo;
-                int bpm = (int)Math.Round(60000000.0 / tempo * (double)numSeqSpeed.Value);
-                lbSeqSpeed.Text = $"Speed ({bpm} BPM)";
-                trkSeekBar.Maximum = (int)sliderSteps;
-                stepIncrement = midiFile.Messages.Length / sliderSteps;
-                Console.WriteLine($"Midi messages: {midiFile.Messages.Length}, stepIncrement: {stepIncrement}");
-
-                timer.Start();
-                ResetTimeInfo(true, false);
-            };
-
-            cmdStop.Click += (sender, e) =>
-            {
-                StopPlayer(false);
-            };
-
-            numSynthVolumee.ValueChanged += (sender, e) =>
-            {
-                // The default MasterVolume is 0.5F.
-                player.synthesizer.MasterVolume = (float)(numSynthVolumee.Value / 2);
-            };
             numSynthVolumee.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
-
-            numSeqSpeed.ValueChanged += (sender, e) =>
-            {
-                decimal value = numSeqSpeed.Value;
-                player.sequencer.Speed = (float)value;
-                timerInterval = (int)Math.Round(1000 / value);
-                timer.Interval = timerInterval;
-                int bpm = (int)Math.Round(60000000.0 / seq.Tempo * (double)numSeqSpeed.Value);
-                lbSeqSpeed.Text = $"Speed ({bpm} BPM)";
-            };
             numSeqSpeed.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
-
-            Leave += (sender, e) =>
-            {
-                StopPlayer(false);
-            };
         }
 
         private void UpdateMessageIndex()
@@ -316,6 +197,8 @@ namespace CrashEdit.CE
             File.WriteAllBytes(dlsPath, dls);
         }
 
+        #region Music events
+
         private void UpdateEID()
         {
             if (lbEIDError.Text != string.Empty) return;
@@ -358,6 +241,146 @@ namespace CrashEdit.CE
         {
             UpdateEID();
         }
+
+        #endregion
+
+        #region Player events
+
+        private void numMasterVolume_ValueChanged(object sender, EventArgs e)
+        {
+            musicentry.VH.Volume = (byte)numMasterVolume.Value;
+        }
+
+        private void numMasterPan_ValueChanged(object sender, EventArgs e)
+        {
+            musicentry.VH.Panning = (byte)numMasterPan.Value;
+            lbMasterPan.Text = $"Master Pan ({ConvertPanByte(musicentry.VH.Panning):F1})";
+        }
+
+        private void numSEQ_ValueChanged(object sender, EventArgs e)
+        {
+            StopPlayer(true);
+        }
+
+        private void trkSeekBar_MouseDown(object sender, MouseEventArgs e)
+        {
+            isUserDragging = true;
+        }
+
+        private void trkSeekBar_MouseUp(object sender, MouseEventArgs e)
+        {
+            UpdateMessageIndex();
+            SeekAndSyncTimer();
+            isUserDragging = false;
+        }
+
+        private void trkSeekBar_MouseWheel(object sender, MouseEventArgs e)
+        {
+            int step = 1;
+            if (e.Delta > 0)
+            {
+                trkSeekBar.Value = Math.Min(trkSeekBar.Value + step, trkSeekBar.Maximum - step);
+            }
+            else if (e.Delta < 0)
+            {
+                trkSeekBar.Value = Math.Max(trkSeekBar.Value - step, trkSeekBar.Minimum);
+            }
+            UpdateMessageIndex();
+            SeekAndSyncTimer();
+        }
+
+        private void trkSeekBar_ValueChanged(object sender, EventArgs e)
+        {
+            UpdateTimeInfo();
+        }
+
+        private void cmdLoad_Click(object sender, EventArgs e)
+        {
+            StopPlayer(false);
+            LoadSF2(sf2Path);
+            //LoadDLS(dlsPath);
+            Console.WriteLine("VAB loaded successfully.");
+        }
+
+        private void cmdPlay_Click(object sender, EventArgs e)
+        {
+            if (musicentry.Tracks.Count == 0) return;
+            StopPlayer(false);
+
+            if (!File.Exists(sf2Path))
+            {
+                DarkMessageBox.ShowError("Failed to load the soundfont file.", "MusicBox");
+                return;
+            }
+
+            Console.WriteLine($"# Now playing: {musicentry.EName}, Tracks[{(int)numSEQ.Value}]");
+
+            // Convert the SEQ to a MIDI.
+            seq = musicentry.Tracks[(int)numSEQ.Value];
+            byte[] midiData = seq.ToMIDI();
+            File.WriteAllBytes(midiPath, midiData);
+
+            // Load the SF2 file and create the player.
+            player = new MidiSampleProvider(sf2Path);
+
+            // Create WaveOut.
+            waveOut = new WaveOut(WaveCallbackInfo.FunctionCallback());
+            waveOut.Init(player);
+            waveOut.Play();
+
+            // Load and play the MIDI file.
+            midiFile = new MidiFile(midiPath, MidiFileLoopType.PSXSEQ);
+            player.Play(midiFile, true);
+
+            // Wait for the sequencer to load.
+            player.sequencer.ProcessAllEvents();
+            while (player.sequencer.Position.Ticks == 0) { }
+
+            player.synthesizer.MasterVolume = (float)(numSynthVolumee.Value / 2);
+            player.sequencer.Speed = (float)numSeqSpeed.Value;
+            midiLength = midiFile.Length;
+
+            lbTimeInfo.Enabled =
+            trkSeekBar.Enabled =
+            fraControls.Enabled = true;
+            seqTempo = seq.FakeTempo != 0 ? seq.FakeTempo : seq.Tempo;
+            int bpm = (int)Math.Round(60000000.0 / seqTempo * (double)numSeqSpeed.Value);
+            lbSeqSpeed.Text = $"Speed ({bpm} BPM)";
+            trkSeekBar.Maximum = (int)sliderSteps;
+            stepIncrement = midiFile.Messages.Length / sliderSteps;
+            Console.WriteLine($"  MIDI messages: {midiFile.Messages.Length}, stepIncrement: {stepIncrement}");
+
+            timer.Start();
+            ResetTimeInfo(true, false);
+        }
+
+        private void cmdStop_Click(object sender, EventArgs e)
+        {
+            StopPlayer(false);
+        }
+
+        private void numSynthVolumee_ValueChanged(object sender, EventArgs e)
+        {
+            // The default MasterVolume is 0.5F.
+            player.synthesizer.MasterVolume = (float)(numSynthVolumee.Value / 2);
+        }
+
+        private void numSeqSpeed_ValueChanged(object sender, EventArgs e)
+        {
+            decimal value = numSeqSpeed.Value;
+            player.sequencer.Speed = (float)value;
+            timerInterval = (int)Math.Round(1000 / value);
+            timer.Interval = timerInterval;
+            int bpm = (int)Math.Round(60000000.0 / seqTempo * (double)numSeqSpeed.Value);
+            lbSeqSpeed.Text = $"Speed ({bpm} BPM)";
+        }
+
+        private void musicBox_Leave(object sender, EventArgs e)
+        {
+            StopPlayer(false);
+        }
+
+        #endregion
 
         private void ScrollHandlerFunction(object? sender, MouseEventArgs e)
         {
