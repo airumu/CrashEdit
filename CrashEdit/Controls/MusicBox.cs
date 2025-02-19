@@ -48,6 +48,9 @@ namespace CrashEdit.CE
         private MidiFile? midiFile;
         private TimeSpan midiLength;
 
+        private readonly double sliderSteps = 4096;
+        private double stepIncrement;
+
         private bool isUserDragging;
 
         internal Stack<bool> dirty = new Stack<bool>();
@@ -236,7 +239,7 @@ namespace CrashEdit.CE
             {
                 if (!isUserDragging)
                 {
-                    trkSeekBar.Value = player.sequencer.MessageIndex / 4;
+                    trkSeekBar.Value = (int)Math.Round(player.sequencer.MessageIndex / stepIncrement);
                     timer.Interval = timerInterval;
                 }
             };
@@ -299,9 +302,13 @@ namespace CrashEdit.CE
                 trkSeekBar.Enabled =
                 numSynthVolumee.Enabled =
                 numSeqSpeed.Enabled = true;
-                int bpm = (int)Math.Round(60000000.0 / seq.Tempo * (double)numSeqSpeed.Value);
+                int tempo = seq.FakeTempo != 0 ? seq.FakeTempo : seq.Tempo;
+                int bpm = (int)Math.Round(60000000.0 / tempo * (double)numSeqSpeed.Value);
                 lbSeqSpeed.Text = $"Speed ({bpm} BPM)";
-                trkSeekBar.Maximum = Convert.ToInt32(midiFile.Messages.Length / 4);
+                trkSeekBar.Maximum = (int)sliderSteps;
+                stepIncrement = midiFile.Messages.Length / sliderSteps;
+                Console.WriteLine($"Midi messages: {midiFile.Messages.Length}, stepIncrement: {stepIncrement}");
+
                 timer.Start();
                 ResetTimeInfo(true, false);
             };
@@ -389,7 +396,7 @@ namespace CrashEdit.CE
 
         private void UpdateMessageIndex()
         {
-            player.sequencer.MessageIndex = Math.Min(trkSeekBar.Value * 4, trkSeekBar.Maximum * 4 - 1);
+            player.sequencer.MessageIndex = Math.Min((int)Math.Round(trkSeekBar.Value * stepIncrement), (int)Math.Round(trkSeekBar.Maximum * stepIncrement) - 1);
         }
 
         private void SeekAndSyncTimer()

@@ -46,6 +46,9 @@ namespace CrashEdit.Crash
         public short Rhythm { get; }
         public byte[] Data { get; }
 
+        // A tempo that will be set by the last tempo change event in the SEQ.
+        public int FakeTempo { get; set; }
+
         public byte[] Save()
         {
             byte[] result = new byte[15 + Data.Length];
@@ -132,7 +135,8 @@ namespace CrashEdit.Crash
                     else
                     {
                         list.Insert(insertIndex, byteToInsert);
-                        Console.WriteLine($"SEQ: Fixed Tempo event at 0x{index:X}.");
+                        FakeTempo = MIDIConv.From3BE(list.ToArray(), insertIndex);
+                        Console.WriteLine($"SEQ: Fixed Tempo event at 0x{index:X}, {FakeTempo:X}.");
                         pos = insertIndex + 1;
                     }
                 }
