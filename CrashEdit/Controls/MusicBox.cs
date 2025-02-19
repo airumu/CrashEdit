@@ -1,9 +1,11 @@
-﻿using System.Security.Policy;
+﻿using System.Numerics;
 using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.Crash;
 using MeltySynth;
+using MetroSet_UI.Controls;
 using NAudio.Wave;
+using Timer = System.Windows.Forms.Timer;
 
 namespace CrashEdit.CE
 {
@@ -11,6 +13,8 @@ namespace CrashEdit.CE
     {
         private MusicEntryController controller;
         private MusicEntry musicentry;
+        private VAB vab;
+        private SEQ seq;
 
         private TableLayoutPanel pnMain;
         private TableLayoutPanel pnSub1;
@@ -27,19 +31,42 @@ namespace CrashEdit.CE
         private DarkButton cmdLoad;
         private DarkButton cmdPlay;
         private DarkButton cmdStop;
+        private Label lbTimeInfo;
+        private MetroSetTrackBar trkSeekBar;
+        private Label lbSynthVolume;
+        private DarkNumericUpDown numSynthVolumee;
+        private Label lbSeqSpeed;
+        private DarkNumericUpDown numSeqSpeed;
+
+        private Timer timer;
+        private int timerInterval;
 
         private WaveOutEvent outputDevice;
         private AudioFileReader audioFile;
-        private MidiSampleProvider player;
+        private MidiSampleProvider? player;
+        private WaveOut? waveOut;
+        private MidiFile? midiFile;
+        private TimeSpan midiLength;
+
+        private bool isUserDragging;
+
+        internal Stack<bool> dirty = new Stack<bool>();
+        internal bool Dirty => dirty.Count > 0 && dirty.Peek();
 
         public MusicBox(MusicEntryController controller)
         {
             this.controller = controller;
             musicentry = controller.MusicEntry;
+            vab = controller.FindLinkedVAB();
 
             BackColor = Color.FromArgb(31, 31, 32);
             bool hasVH = musicentry.VH != null;
             bool hasSEQ = musicentry.Tracks.Count > 0;
+
+            string basePath = "temp";
+            string midiPath = Path.ChangeExtension(basePath, ".mid");
+            string sf2Path = Path.ChangeExtension(basePath, ".sf2");
+            string dlsPath = Path.ChangeExtension(basePath, ".dls");
 
             pnMain = new TableLayoutPanel()
             {
@@ -50,7 +77,7 @@ namespace CrashEdit.CE
             pnSub1 = new TableLayoutPanel()
             {
                 ColumnCount = 1,
-                RowCount = 8,
+                RowCount = 14,
                 Dock = DockStyle.Fill
             };
             pnSub2 = new TableLayoutPanel()
@@ -160,23 +187,72 @@ namespace CrashEdit.CE
                 Minimum = 0,
                 Maximum = hasSEQ ? musicentry.Tracks.Count - 1 : 0
             };
+            numSEQ.ValueChanged += (sender, e) =>
+            {
+                StopPlayer(true);
+            };
+
+            trkSeekBar = new MetroSetTrackBar()
+            {
+                Enabled = false,
+                Minimum = 0,
+                Maximum = 0,
+                TickFrequency = 64,
+                Dock = DockStyle.Fill,
+                Style = MetroSet_UI.Enums.Style.Dark
+            };
+            trkSeekBar.MouseDown += (sender, e) => isUserDragging = true;
+            trkSeekBar.MouseUp += (sender, e) =>
+            {
+                UpdateMessageIndex();
+                SeekAndSyncTimer();
+                isUserDragging = false;
+            };
+            trkSeekBar.MouseWheel += (sender, e) =>
+            {
+                int step = 1;
+                if (e.Delta > 0)
+                {
+                    trkSeekBar.Value = Math.Min(trkSeekBar.Value + step, trkSeekBar.Maximum - step);
+                }
+                else if (e.Delta < 0)
+                {
+                    trkSeekBar.Value = Math.Max(trkSeekBar.Value - step, trkSeekBar.Minimum);
+                }
+                UpdateMessageIndex();
+                SeekAndSyncTimer();
+            };
+            trkSeekBar.ValueChanged += (s, e) =>
+            {
+                UpdateTimeInfo();
+            };
+
+            timerInterval = 1000;
+            timer = new Timer()
+            {
+                Interval = timerInterval
+            };
+            timer.Tick += (sender, e) =>
+            {
+                if (!isUserDragging)
+                {
+                    trkSeekBar.Value = player.sequencer.MessageIndex / 4;
+                    timer.Interval = timerInterval;
+                }
+            };
+
+            lbTimeInfo = new Label();
+            ResetTimeInfo(false, true);
 
             cmdLoad = new DarkButton()
             {
-                Text = "Load"
+                Text = "Load VAB"
             };
             cmdLoad.Click += (sender, e) =>
             {
-                VAB vab = controller.FindLinkedVAB();
-
-                string sf2Path = "temp.sf2";
-                byte[] sf2 = SF2Conv.ToSF2(vab);
-                File.WriteAllBytes(sf2Path, sf2);
-
-                string dlsPath = "temp.dls";
-                byte[] dls = vab.ToDLS().Save();
-                File.WriteAllBytes(dlsPath, dls);
-                return;
+                StopPlayer(false);
+                LoadSF2(sf2Path);
+                LoadDLS(dlsPath);
             };
 
             cmdPlay = new DarkButton()
@@ -187,36 +263,47 @@ namespace CrashEdit.CE
             cmdPlay.Click += (sender, e) =>
             {
                 if (musicentry.Tracks.Count == 0) return;
+                StopPlayer(false);
 
-                SEQ seq = musicentry.Tracks[(int)numSEQ.Value];
+                seq = musicentry.Tracks[(int)numSEQ.Value];
                 byte[] midiData = seq.ToMIDI();
-                //string tempFile = Path.GetTempFileName();
-                //string midiPath = Path.ChangeExtension(tempFile, ".mid");
-                string midiPath = Path.ChangeExtension("temp", ".mid");
                 File.WriteAllBytes(midiPath, midiData);
 
-                string sfPath = Path.ChangeExtension("temp", ".sf2");
-                if (!File.Exists(sfPath))
+                //LoadSF2(sf2Path);
+                if (!File.Exists(sf2Path))
                 {
                     DarkMessageBox.ShowError("Failed to load the soundfont file.", "MusicBox");
                     return;
                 }
-                player = new MidiSampleProvider(sfPath);
 
-                using (var waveOut = new WaveOut(WaveCallbackInfo.FunctionCallback()))
-                {
-                    waveOut.Init(player);
-                    waveOut.Play();
+                player = new MidiSampleProvider(sf2Path);
+                waveOut = new WaveOut(WaveCallbackInfo.FunctionCallback());
+                waveOut.Init(player);
+                waveOut.Play();
 
-                    // Load the MIDI file.
-                    var midiFile = new MidiFile(midiPath);
+                // Load the MIDI file.
+                midiFile = new MidiFile(midiPath, MidiFileLoopType.PSXSEQ);
+                // Play the MIDI file.
+                player.Play(midiFile, true);
+                Console.WriteLine($"# Now playing: {musicentry.EName}, Tracks[{(int)numSEQ.Value}]");
 
-                    // Play the MIDI file.
-                    player.Play(midiFile, true);
-                    // Wait.
-                    DarkMessageBox.ShowMessage($"Now playing: {musicentry.EName}, Tracks[{(int)numSEQ.Value}]", "MusicBox");
-                }
+                // Wait for the sequencer to load.
+                player.sequencer.ProcessAllEvents();
+                while (player.sequencer.Position.Ticks == 0) { }
 
+                player.synthesizer.MasterVolume = (float)(numSynthVolumee.Value / 2);
+                player.sequencer.Speed = (float)numSeqSpeed.Value;
+                midiLength = midiFile.Length;
+
+                lbTimeInfo.Enabled =
+                trkSeekBar.Enabled =
+                numSynthVolumee.Enabled =
+                numSeqSpeed.Enabled = true;
+                int bpm = (int)Math.Round(60000000.0 / seq.Tempo * (double)numSeqSpeed.Value);
+                lbSeqSpeed.Text = $"Speed ({bpm} BPM)";
+                trkSeekBar.Maximum = Convert.ToInt32(midiFile.Messages.Length / 4);
+                timer.Start();
+                ResetTimeInfo(true, false);
             };
 
             cmdStop = new DarkButton()
@@ -226,11 +313,54 @@ namespace CrashEdit.CE
             };
             cmdStop.Click += (sender, e) =>
             {
-                if (player != null)
-                {
-                    player.Stop();
-                }
+                StopPlayer(false);
             };
+
+            lbSynthVolume = new Label()
+            {
+                Text = "Volume"
+            };
+
+            numSynthVolumee = new DarkNumericUpDown()
+            {
+                Enabled = false,
+                DecimalPlaces = 1,
+                Minimum = 0.0M,
+                Maximum = 2.0M,
+                Value = 1.0M,
+                Increment = 0.1M
+            };
+            numSynthVolumee.ValueChanged += (sender, e) =>
+            {
+                // The default MasterVolume is 0.5F.
+                player.synthesizer.MasterVolume = (float)(numSynthVolumee.Value / 2);
+            };
+            numSynthVolumee.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
+
+            lbSeqSpeed = new Label()
+            {
+                Text = "Speed"
+            };
+
+            numSeqSpeed = new DarkNumericUpDown()
+            {
+                Enabled = false,
+                DecimalPlaces = 2,
+                Minimum = 0.5M,
+                Maximum = 2.0M,
+                Value = 1.0M,
+                Increment = 0.05M
+            };
+            numSeqSpeed.ValueChanged += (sender, e) =>
+            {
+                decimal value = numSeqSpeed.Value;
+                player.sequencer.Speed = (float)value;
+                timerInterval = (int)Math.Round(1000 / value);
+                timer.Interval = timerInterval;
+                int bpm = (int)Math.Round(60000000.0 / seq.Tempo * (double)numSeqSpeed.Value);
+                lbSeqSpeed.Text = $"Speed ({bpm} BPM)";
+            };
+            numSeqSpeed.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
 
             pnSub1.Controls.Add(lstMusic, 0, 0);
             pnSub1.Controls.Add(txtMusic, 0, 1);
@@ -240,10 +370,95 @@ namespace CrashEdit.CE
             pnSub1.Controls.Add(cmdLoad, 0, 5);
             pnSub1.Controls.Add(cmdPlay, 0, 6);
             pnSub1.Controls.Add(cmdStop, 0, 7);
+            pnSub1.Controls.Add(lbTimeInfo, 0, 8);
+            pnSub1.Controls.Add(trkSeekBar, 0, 9);
+            pnSub1.Controls.Add(lbSynthVolume, 0, 10);
+            pnSub1.Controls.Add(numSynthVolumee, 0, 11);
+            pnSub1.Controls.Add(lbSeqSpeed, 0, 12);
+            pnSub1.Controls.Add(numSeqSpeed, 0, 13);
 
             pnMain.Controls.Add(pnSub1);
             pnMain.Controls.Add(pnSub2);
             Controls.Add(pnMain);
+
+            Leave += (sender, e) =>
+            {
+                StopPlayer(false);
+            };
+        }
+
+        private void UpdateMessageIndex()
+        {
+            player.sequencer.MessageIndex = Math.Min(trkSeekBar.Value * 4, trkSeekBar.Maximum * 4 - 1);
+        }
+
+        private void SeekAndSyncTimer()
+        {
+            timer.Stop();
+            UpdateTimeInfo();
+
+            // Calculate the delay.
+            int currentMs = player.sequencer.Position.Milliseconds;
+            double speedRatio = (double)numSeqSpeed.Value;
+            int delay = (int)Math.Round((1000 - currentMs) / speedRatio);
+            if (delay < 1)
+                delay = 1;
+
+            timer.Interval = delay;
+            timer.Start();
+        }
+
+        private void UpdateTimeInfo()
+        {
+            if (trkSeekBar.Enabled)
+            {
+                // Adjust seconds by rounding milliseconds.
+                TimeSpan original = player.sequencer.Position;
+                double roundedSeconds = Math.Round(original.TotalSeconds, MidpointRounding.AwayFromZero);
+                TimeSpan rounded = TimeSpan.FromSeconds(roundedSeconds);
+                lbTimeInfo.Text = $"{rounded.Minutes:D2}:{rounded.Seconds:D2} / {midiLength.Minutes:D2}:{midiLength.Seconds:D2}";
+            }
+        }
+
+        private void ResetTimeInfo(bool enableLabel, bool resetMidi)
+        {
+            lbTimeInfo.Enabled = enableLabel;
+            if (resetMidi)
+            {
+                lbTimeInfo.Text = "00:00 / 00:00";
+            }
+            else
+            {
+                lbTimeInfo.Text = $"00:00 / {midiLength.Minutes:D2}:{midiLength.Seconds:D2}";
+            }
+        }
+
+        private void StopPlayer(bool resetMidi)
+        {
+            if (player != null)
+            {
+                player.Stop();
+                waveOut.Stop();
+                waveOut.Dispose();
+
+                trkSeekBar.Enabled = false;
+                trkSeekBar.Value = 0;
+
+                timer.Stop();
+                ResetTimeInfo(false, resetMidi);
+            }
+        }
+
+        private void LoadSF2(string sf2Path)
+        {
+            byte[] sf2 = SF2Conv.ToSF2(vab);
+            File.WriteAllBytes(sf2Path, sf2);
+        }
+
+        private void LoadDLS(string dlsPath)
+        {
+            byte[] dls = vab.ToDLS().Save();
+            File.WriteAllBytes(dlsPath, dls);
         }
 
         private void UpdateEID()
@@ -288,6 +503,25 @@ namespace CrashEdit.CE
             UpdateEID();
         }
 
+        private void ScrollHandlerFunction(object? sender, MouseEventArgs e)
+        {
+            if (sender is NumericUpDown numericUpDown)
+            {
+                HandledMouseEventArgs handledArgs = e as HandledMouseEventArgs;
+                if (handledArgs != null)
+                    handledArgs.Handled = true;
+
+                decimal newValue = numericUpDown.Value;
+                if (e.Delta > 0 && newValue < numericUpDown.Maximum)
+                    newValue += numericUpDown.Increment;
+
+                else if (e.Delta < 0 && newValue > numericUpDown.Minimum)
+                    newValue -= numericUpDown.Increment;
+
+                numericUpDown.Value = newValue;
+            }
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
@@ -298,8 +532,8 @@ namespace CrashEdit.CE
     {
         private static WaveFormat format = WaveFormat.CreateIeeeFloatWaveFormat(44100, 2);
 
-        private Synthesizer synthesizer;
-        private MidiFileSequencer sequencer;
+        public Synthesizer synthesizer;
+        public MidiFileSequencer sequencer;
 
         private object mutex;
 

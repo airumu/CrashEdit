@@ -132,7 +132,7 @@ namespace CrashEdit.Crash
                     else
                     {
                         list.Insert(insertIndex, byteToInsert);
-                        Console.WriteLine($"Fixed Tempo event at 0x{index:X}.");
+                        Console.WriteLine($"SEQ: Fixed Tempo event at 0x{index:X}.");
                         pos = insertIndex + 1;
                     }
                 }

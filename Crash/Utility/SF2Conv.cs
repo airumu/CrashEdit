@@ -106,8 +106,6 @@ namespace CrashEdit.Crash
 
         public static byte[] ToSF2(VAB vab)
         {
-            Console.WriteLine("Start converting...");
-
             vab.Split(out VH vh, out SampleLine[] allSampleLines);
 
             // Get all VHProgram and sort the list.
@@ -177,7 +175,6 @@ namespace CrashEdit.Crash
                 ms.Position = 4;
                 bw.Write(fileSize);
 
-                Console.WriteLine("VAB to SF2 onversion completed.");
                 return ms.ToArray();
             }
         }
@@ -705,7 +702,7 @@ namespace CrashEdit.Crash
             // If the value is the center (64), return 0.
             if (pan == 64) return 0;
             // Convert the range 0–127 to 0–1 and shift based on the center (0.5).
-            double normalized = ((double)pan / 127.0) - 0.5;
+            double normalized = (pan / 127.0) - 0.5;
             // Multiply by 1000 to express the result in 0.1% units.
             double result = normalized * 1000;
             return (short)Math.Round(result);
