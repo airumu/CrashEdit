@@ -9,37 +9,19 @@ using Timer = System.Windows.Forms.Timer;
 
 namespace CrashEdit.CE
 {
-    public sealed class MusicBox : UserControl
+    public partial class MusicBox : UserControl
     {
         private MusicEntryController controller;
         private MusicEntry musicentry;
         private VAB vab;
         private SEQ seq;
 
-        private TableLayoutPanel pnMain;
-        private TableLayoutPanel pnSub1;
-        private TableLayoutPanel pnSub2;
-        private DoubleBufferedListView lstMusic;
-        private DarkTextBox txtMusic;
-        private Label lblEIDError;
-        private Label? lblMasterVolume;
-        private DarkNumericUpDown? numMasterVolume;
-        private Label? lblMasterPan;
-        private DarkNumericUpDown? numMasterPan;
-        private Label txtSEQ;
-        private DarkNumericUpDown numSEQ;
-        private DarkButton cmdLoad;
-        private DarkButton cmdPlay;
-        private DarkButton cmdStop;
-        private Label lbTimeInfo;
-        private MetroSetTrackBar trkSeekBar;
-        private Label lbSynthVolume;
-        private DarkNumericUpDown numSynthVolumee;
-        private Label lbSeqSpeed;
-        private DarkNumericUpDown numSeqSpeed;
-
         private Timer timer;
         private int timerInterval;
+
+        private readonly double sliderSteps = 4096;
+        private double stepIncrement;
+        private bool isUserDragging;
 
         private WaveOutEvent outputDevice;
         private AudioFileReader audioFile;
@@ -48,58 +30,17 @@ namespace CrashEdit.CE
         private MidiFile? midiFile;
         private TimeSpan midiLength;
 
-        private readonly double sliderSteps = 4096;
-        private double stepIncrement;
-
-        private bool isUserDragging;
-
-        internal Stack<bool> dirty = new Stack<bool>();
-        internal bool Dirty => dirty.Count > 0 && dirty.Peek();
-
         public MusicBox(MusicEntryController controller)
         {
             this.controller = controller;
             musicentry = controller.MusicEntry;
             vab = controller.FindLinkedVAB();
+            InitializeComponent();
+            MainInit();
+        }
 
-            BackColor = Color.FromArgb(31, 31, 32);
-            bool hasVH = musicentry.VH != null;
-            bool hasSEQ = musicentry.Tracks.Count > 0;
-
-            string basePath = "temp";
-            string midiPath = Path.ChangeExtension(basePath, ".mid");
-            string sf2Path = Path.ChangeExtension(basePath, ".sf2");
-            string dlsPath = Path.ChangeExtension(basePath, ".dls");
-
-            pnMain = new TableLayoutPanel()
-            {
-                ColumnCount = 2,
-                RowCount = 1,
-                Dock = DockStyle.Fill
-            };
-            pnSub1 = new TableLayoutPanel()
-            {
-                ColumnCount = 1,
-                RowCount = 14,
-                Dock = DockStyle.Fill
-            };
-            pnSub2 = new TableLayoutPanel()
-            {
-                ColumnCount = 1,
-                RowCount = 4,
-                Dock = DockStyle.Fill
-            };
-
-            lstMusic = new DoubleBufferedListView()
-            {
-                BorderStyle = BorderStyle.FixedSingle,
-                FullRowSelect = true,
-                UseCompatibleStateImageBehavior = false,
-                View = View.Details,
-                Size = new Size(120, 200),
-               
-            };
-            lstMusic.Click += lstMusic_Click;
+        private void UpdatelstMusic()
+        {
             lstMusic.Columns.Add("Item");
             lstMusic.Columns.Add("EID");
             var items = new (string Text, int EID)[]
@@ -123,87 +64,72 @@ namespace CrashEdit.CE
             {
                 column.Width = 60;
             }
+        }
 
-            txtMusic = new DarkTextBox()
+        private void MainInit()
+        {
+            string basePath = "temp";
+            string midiPath = Path.ChangeExtension(basePath, ".mid");
+            string sf2Path = Path.ChangeExtension(basePath, ".sf2");
+            string dlsPath = Path.ChangeExtension(basePath, ".dls");
+
+            lbEIDError.Visible = false;
+            fraControls.Enabled =
+            lbTimeInfo.Enabled =
+            trkSeekBar.Enabled = false;
+
+            timerInterval = 1000;
+            timer = new Timer()
             {
-                Enabled = false,
-                MaxLength = 5,
-                Width = 120
+                Interval = timerInterval
             };
-            txtMusic.TextChanged += txtMusic_TextChanged;
-            txtMusic.KeyDown += txtMusic_KeyDown;
-            txtMusic.LostFocus += txtMusic_LostFocus;
-
-            lblEIDError = new Label()
+            timer.Tick += (sender, e) =>
             {
-                AutoSize = true,
-                ForeColor = Color.Red
+                if (!isUserDragging)
+                {
+                    trkSeekBar.Value = (int)Math.Round(player.sequencer.MessageIndex / stepIncrement);
+                    timer.Interval = timerInterval;
+                }
             };
 
-            if (hasVH)
+            UpdatelstMusic();
+
+            // Check if the music entry has a VH.
+            if (musicentry.VH != null)
             {
-                lblMasterVolume = new Label()
-                {
-                    Text = "Master Volume"
-                };
-                numMasterVolume = new DarkNumericUpDown()
-                {
-                    Minimum = 0,
-                    Maximum = 255,
-                    Value = musicentry.VH.Volume
-                };
+                numMasterVolume.Value = musicentry.VH.Volume;
                 numMasterVolume.ValueChanged += (sender, e) =>
                 {
                     musicentry.VH.Volume = (byte)numMasterVolume.Value;
                 };
 
-                lblMasterPan = new Label()
-                {
-                    Text = "Master Pan"
-                };
-                numMasterPan = new DarkNumericUpDown()
-                {
-                    Minimum = 0,
-                    Maximum = 127,
-                    Value = musicentry.VH.Panning
-                };
+                numMasterPan.Value = musicentry.VH.Panning;
                 numMasterPan.ValueChanged += (sender, e) =>
                 {
                     musicentry.VH.Panning = (byte)numMasterPan.Value;
+                    lbMasterPan.Text = $"Master Pan ({ConvertPanByte(musicentry.VH.Panning):F1})";
                 };
-
-                pnSub2.Controls.Add(lblMasterVolume, 0, 0);
-                pnSub2.Controls.Add(numMasterVolume, 0, 1);
-                pnSub2.Controls.Add(lblMasterPan, 0, 2);
-                pnSub2.Controls.Add(numMasterPan, 0, 3);
+            }
+            else
+            {
+                fraVH.Visible = false;
             }
 
-            txtSEQ = new Label()
+            // Check if the music entry has any SEQ.
+            if (musicentry.Tracks.Count > 0)
             {
-                Enabled = hasSEQ,
-                Text = "Tracks"
-            };
+                numSEQ.Maximum = musicentry.Tracks.Count - 1;
+            }
+            else
+            {
+                fraPlayer.Enabled = false;
+            }
 
-            numSEQ = new DarkNumericUpDown()
-            {
-                Enabled = hasSEQ,
-                Minimum = 0,
-                Maximum = hasSEQ ? musicentry.Tracks.Count - 1 : 0
-            };
             numSEQ.ValueChanged += (sender, e) =>
             {
                 StopPlayer(true);
             };
 
-            trkSeekBar = new MetroSetTrackBar()
-            {
-                Enabled = false,
-                Minimum = 0,
-                Maximum = 0,
-                TickFrequency = 64,
-                Dock = DockStyle.Fill,
-                Style = MetroSet_UI.Enums.Style.Dark
-            };
             trkSeekBar.MouseDown += (sender, e) => isUserDragging = true;
             trkSeekBar.MouseUp += (sender, e) =>
             {
@@ -230,39 +156,16 @@ namespace CrashEdit.CE
                 UpdateTimeInfo();
             };
 
-            timerInterval = 1000;
-            timer = new Timer()
-            {
-                Interval = timerInterval
-            };
-            timer.Tick += (sender, e) =>
-            {
-                if (!isUserDragging)
-                {
-                    trkSeekBar.Value = (int)Math.Round(player.sequencer.MessageIndex / stepIncrement);
-                    timer.Interval = timerInterval;
-                }
-            };
-
-            lbTimeInfo = new Label();
             ResetTimeInfo(false, true);
 
-            cmdLoad = new DarkButton()
-            {
-                Text = "Load VAB"
-            };
             cmdLoad.Click += (sender, e) =>
             {
                 StopPlayer(false);
                 LoadSF2(sf2Path);
-                LoadDLS(dlsPath);
+                //LoadDLS(dlsPath);
+                Console.WriteLine("VAB loaded successfully.");
             };
 
-            cmdPlay = new DarkButton()
-            {
-                Enabled = hasSEQ,
-                Text = "Play"
-            };
             cmdPlay.Click += (sender, e) =>
             {
                 if (musicentry.Tracks.Count == 0) return;
@@ -300,8 +203,7 @@ namespace CrashEdit.CE
 
                 lbTimeInfo.Enabled =
                 trkSeekBar.Enabled =
-                numSynthVolumee.Enabled =
-                numSeqSpeed.Enabled = true;
+                fraControls.Enabled = true;
                 int tempo = seq.FakeTempo != 0 ? seq.FakeTempo : seq.Tempo;
                 int bpm = (int)Math.Round(60000000.0 / tempo * (double)numSeqSpeed.Value);
                 lbSeqSpeed.Text = $"Speed ({bpm} BPM)";
@@ -313,30 +215,11 @@ namespace CrashEdit.CE
                 ResetTimeInfo(true, false);
             };
 
-            cmdStop = new DarkButton()
-            {
-                Enabled = hasSEQ,
-                Text = "Stop"
-            };
             cmdStop.Click += (sender, e) =>
             {
                 StopPlayer(false);
             };
 
-            lbSynthVolume = new Label()
-            {
-                Text = "Volume"
-            };
-
-            numSynthVolumee = new DarkNumericUpDown()
-            {
-                Enabled = false,
-                DecimalPlaces = 1,
-                Minimum = 0.0M,
-                Maximum = 2.0M,
-                Value = 1.0M,
-                Increment = 0.1M
-            };
             numSynthVolumee.ValueChanged += (sender, e) =>
             {
                 // The default MasterVolume is 0.5F.
@@ -344,20 +227,6 @@ namespace CrashEdit.CE
             };
             numSynthVolumee.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
 
-            lbSeqSpeed = new Label()
-            {
-                Text = "Speed"
-            };
-
-            numSeqSpeed = new DarkNumericUpDown()
-            {
-                Enabled = false,
-                DecimalPlaces = 2,
-                Minimum = 0.5M,
-                Maximum = 2.0M,
-                Value = 1.0M,
-                Increment = 0.05M
-            };
             numSeqSpeed.ValueChanged += (sender, e) =>
             {
                 decimal value = numSeqSpeed.Value;
@@ -368,25 +237,6 @@ namespace CrashEdit.CE
                 lbSeqSpeed.Text = $"Speed ({bpm} BPM)";
             };
             numSeqSpeed.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
-
-            pnSub1.Controls.Add(lstMusic, 0, 0);
-            pnSub1.Controls.Add(txtMusic, 0, 1);
-            pnSub1.Controls.Add(lblEIDError, 0, 2);
-            pnSub1.Controls.Add(txtSEQ, 0, 3);
-            pnSub1.Controls.Add(numSEQ, 0, 4);
-            pnSub1.Controls.Add(cmdLoad, 0, 5);
-            pnSub1.Controls.Add(cmdPlay, 0, 6);
-            pnSub1.Controls.Add(cmdStop, 0, 7);
-            pnSub1.Controls.Add(lbTimeInfo, 0, 8);
-            pnSub1.Controls.Add(trkSeekBar, 0, 9);
-            pnSub1.Controls.Add(lbSynthVolume, 0, 10);
-            pnSub1.Controls.Add(numSynthVolumee, 0, 11);
-            pnSub1.Controls.Add(lbSeqSpeed, 0, 12);
-            pnSub1.Controls.Add(numSeqSpeed, 0, 13);
-
-            pnMain.Controls.Add(pnSub1);
-            pnMain.Controls.Add(pnSub2);
-            Controls.Add(pnMain);
 
             Leave += (sender, e) =>
             {
@@ -470,12 +320,12 @@ namespace CrashEdit.CE
 
         private void UpdateEID()
         {
-            if (lblEIDError.Text != string.Empty) return;
+            if (lbEIDError.Text != string.Empty) return;
 
             string text = txtMusic.Text;
             lstMusic.SelectedItems[0].SubItems[1].Text = text;
             int idx = lstMusic.SelectedIndices[0];
-            switch (idx) 
+            switch (idx)
             {
                 case 0: musicentry.VHEID = Entry.ENameToEID(text); break;
                 case 1: musicentry.VB0EID = Entry.ENameToEID(text); break;
@@ -496,7 +346,8 @@ namespace CrashEdit.CE
 
         private void txtMusic_TextChanged(object? sender, EventArgs e)
         {
-            lblEIDError.Text = Entry.CheckEIDErrors(txtMusic.Text, true);
+            lbEIDError.Visible = true;
+            lbEIDError.Text = Entry.CheckEIDErrors(txtMusic.Text, true);
         }
 
         private void txtMusic_KeyDown(object? sender, KeyEventArgs e)
@@ -529,10 +380,17 @@ namespace CrashEdit.CE
             }
         }
 
-        protected override void Dispose(bool disposing)
+        private double ConvertPanByte(short pan)
         {
-            base.Dispose(disposing);
+            // If the value is the center (64), return 0.
+            if (pan == 64) return 0;
+            // Convert the range 0–127 to 0–1 and shift based on the center (0.5).
+            double normalized = (pan / 127.0) - 0.5;
+            // Multiply by 1000 to express the result in 0.1% units.
+            double result = normalized * 100;
+            return Math.Round(result, 1);
         }
+
     }
 
     public class MidiSampleProvider : ISampleProvider
