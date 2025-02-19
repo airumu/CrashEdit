@@ -1,9 +1,6 @@
-﻿using System.Numerics;
-using AltUI.Controls;
-using AltUI.Forms;
+﻿using AltUI.Forms;
 using CrashEdit.Crash;
 using MeltySynth;
-using MetroSet_UI.Controls;
 using NAudio.Wave;
 using Timer = System.Windows.Forms.Timer;
 
@@ -74,6 +71,7 @@ namespace CrashEdit.CE
             string dlsPath = Path.ChangeExtension(basePath, ".dls");
 
             lbEIDError.Visible = false;
+            txtMusic.Enabled =
             fraControls.Enabled =
             lbTimeInfo.Enabled =
             trkSeekBar.Enabled = false;
@@ -382,15 +380,11 @@ namespace CrashEdit.CE
 
         private double ConvertPanByte(short pan)
         {
-            // If the value is the center (64), return 0.
             if (pan == 64) return 0;
-            // Convert the range 0–127 to 0–1 and shift based on the center (0.5).
             double normalized = (pan / 127.0) - 0.5;
-            // Multiply by 1000 to express the result in 0.1% units.
             double result = normalized * 100;
             return Math.Round(result, 1);
         }
-
     }
 
     public class MidiSampleProvider : ISampleProvider
