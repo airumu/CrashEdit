@@ -1,7 +1,10 @@
-﻿using AltUI.Forms;
+﻿using System.Numerics;
+using System.Windows.Forms;
+using AltUI.Forms;
 using CrashEdit.Crash;
 using MeltySynth;
 using NAudio.Wave;
+using static System.Windows.Forms.DataFormats;
 using Timer = System.Windows.Forms.Timer;
 
 namespace CrashEdit.CE
@@ -90,8 +93,15 @@ namespace CrashEdit.CE
             {
                 if (!isUserDragging)
                 {
+                    int oldValue = trkSeekBar.Value;
                     trkSeekBar.Value = (int)Math.Round(player.sequencer.MessageIndex / stepIncrement);
                     timer.Interval = timerInterval;
+
+                    // loop
+                    if (trkSeekBar.Value < oldValue)
+                    {
+                        SeekAndSyncTimer();
+                    }
                 }
             };
 
@@ -121,80 +131,6 @@ namespace CrashEdit.CE
 
             numSynthVolumee.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
             numSeqSpeed.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
-        }
-
-        private void UpdateMessageIndex()
-        {
-            player.sequencer.MessageIndex = Math.Min((int)Math.Round(trkSeekBar.Value * stepIncrement), (int)Math.Round(trkSeekBar.Maximum * stepIncrement) - 1);
-        }
-
-        private void SeekAndSyncTimer()
-        {
-            timer.Stop();
-            UpdateTimeInfo();
-
-            // Calculate the delay.
-            int currentMs = player.sequencer.Position.Milliseconds;
-            double speedRatio = (double)numSeqSpeed.Value;
-            int delay = (int)Math.Round((1000 - currentMs) / speedRatio);
-            if (delay < 1)
-                delay = 1;
-
-            timer.Interval = delay;
-            timer.Start();
-        }
-
-        private void UpdateTimeInfo()
-        {
-            if (trkSeekBar.Enabled)
-            {
-                // Adjust seconds by rounding milliseconds.
-                TimeSpan original = player.sequencer.Position;
-                double roundedSeconds = Math.Round(original.TotalSeconds, MidpointRounding.AwayFromZero);
-                TimeSpan rounded = TimeSpan.FromSeconds(roundedSeconds);
-                lbTimeInfo.Text = $"{rounded.Minutes:D2}:{rounded.Seconds:D2} / {midiLength.Minutes:D2}:{midiLength.Seconds:D2}";
-            }
-        }
-
-        private void ResetTimeInfo(bool enableLabel, bool resetMidi)
-        {
-            lbTimeInfo.Enabled = enableLabel;
-            if (resetMidi)
-            {
-                lbTimeInfo.Text = "00:00 / 00:00";
-            }
-            else
-            {
-                lbTimeInfo.Text = $"00:00 / {midiLength.Minutes:D2}:{midiLength.Seconds:D2}";
-            }
-        }
-
-        private void StopPlayer(bool resetMidi)
-        {
-            if (player != null)
-            {
-                player.Stop();
-                waveOut.Stop();
-                waveOut.Dispose();
-
-                trkSeekBar.Enabled = false;
-                trkSeekBar.Value = 0;
-
-                timer.Stop();
-                ResetTimeInfo(false, resetMidi);
-            }
-        }
-
-        private void LoadSF2(string sf2Path)
-        {
-            byte[] sf2 = SF2Conv.ToSF2(vab);
-            File.WriteAllBytes(sf2Path, sf2);
-        }
-
-        private void LoadDLS(string dlsPath)
-        {
-            byte[] dls = vab.ToDLS().Save();
-            File.WriteAllBytes(dlsPath, dls);
         }
 
         #region Music events
@@ -382,6 +318,83 @@ namespace CrashEdit.CE
 
         #endregion
 
+        private void UpdateMessageIndex()
+        {
+            player.sequencer.MessageIndex = Math.Min((int)Math.Round(trkSeekBar.Value * stepIncrement), (int)Math.Round(trkSeekBar.Maximum * stepIncrement) - 1);
+        }
+
+        private void SeekAndSyncTimer()
+        {
+            timer.Stop();
+            UpdateTimeInfo();
+
+            // Calculate the delay.
+            int currentMs = player.sequencer.Position.Milliseconds;
+            double speedRatio = (double)numSeqSpeed.Value;
+            int delay = (int)Math.Round((1000 - currentMs) / speedRatio);
+            if (delay < 1)
+                delay = 1;
+
+            timer.Interval = delay;
+            timer.Start();
+        }
+
+        private void UpdateTimeInfo()
+        {
+            if (trkSeekBar.Enabled)
+            {
+                // Adjust seconds by rounding milliseconds.
+                TimeSpan original = player.sequencer.Position;
+                double roundedSeconds = Math.Round(original.TotalSeconds, MidpointRounding.AwayFromZero);
+                TimeSpan rounded = TimeSpan.FromSeconds(roundedSeconds);
+                lbTimeInfo.Text = $"{rounded.Minutes:D2}:{rounded.Seconds:D2} / {midiLength.Minutes:D2}:{midiLength.Seconds:D2}";
+            }
+        }
+
+        private void ResetTimeInfo(bool enableLabel, bool resetMidi)
+        {
+            lbTimeInfo.Enabled = enableLabel;
+            if (resetMidi)
+            {
+                lbTimeInfo.Text = "00:00 / 00:00";
+            }
+            else
+            {
+                lbTimeInfo.Text = $"00:00 / {midiLength.Minutes:D2}:{midiLength.Seconds:D2}";
+            }
+        }
+
+        private void StopPlayer(bool resetMidi)
+        {
+            if (player != null)
+            {
+                player.Stop();
+                player = null;
+                waveOut.Stop();
+                waveOut.Dispose();
+                waveOut = null;
+
+                fraControls.Enabled = false;
+                trkSeekBar.Enabled = false;
+                trkSeekBar.Value = 0;
+
+                timer.Stop();
+                ResetTimeInfo(false, resetMidi);
+            }
+        }
+
+        private void LoadSF2(string sf2Path)
+        {
+            byte[] sf2 = SF2Conv.ToSF2(vab);
+            File.WriteAllBytes(sf2Path, sf2);
+        }
+
+        private void LoadDLS(string dlsPath)
+        {
+            byte[] dls = vab.ToDLS().Save();
+            File.WriteAllBytes(dlsPath, dls);
+        }
+
         private void ScrollHandlerFunction(object? sender, MouseEventArgs e)
         {
             if (sender is NumericUpDown numericUpDown)
@@ -408,6 +421,46 @@ namespace CrashEdit.CE
             double result = normalized * 100;
             return Math.Round(result, 1);
         }
+
+        //private Timer timer2;
+
+        //private void StartWaveformTimer()
+        //{
+        //    timer2 = new Timer { Interval = 50 };  // 20FPS (50ms 更新)
+        //    timer2.Tick += (s, e) =>
+        //    {
+        //        if (player != null)
+        //        {
+        //            float[] buffer = new float[44100];
+        //            int samplesRead = player.Read(buffer, 0, buffer.Length);
+
+        //            DrawWaveform(buffer);
+        //        }
+        //    };
+        //    timer2.Start();
+        //}
+
+        //private void DrawWaveform(float[] buffer)
+        //{
+        //    using (Bitmap bmp = new Bitmap(pictureBox1.Width, pictureBox1.Height))
+        //    using (Graphics g = Graphics.FromImage(bmp))
+        //    {
+        //        g.Clear(Color.Black);
+        //        Pen pen = new Pen(Color.Green, 1);
+
+        //        int mid = pictureBox1.Height / 2;
+        //        for (int i = 0; i < buffer.Length; i++)
+        //        {
+        //            int x = i * pictureBox1.Width / buffer.Length;
+        //            int y = mid + (int)(buffer[i] * mid);
+        //            g.DrawLine(pen, x, mid, x, y);
+        //        }
+
+        //        pictureBox1.Image?.Dispose();
+        //        pictureBox1.Image = (Bitmap)bmp.Clone();
+        //    }
+        //}
+
     }
 
     public class MidiSampleProvider : ISampleProvider
@@ -448,6 +501,10 @@ namespace CrashEdit.CE
             lock (mutex)
             {
                 sequencer.RenderInterleaved(buffer.AsSpan(offset, count));
+
+                //Console.WriteLine($"Read {count} samples");
+                //if (buffer[0] == 0 && buffer[1] == 0)
+                //  Console.WriteLine("Warning: Buffer contains only silence!");
             }
 
             return count;
