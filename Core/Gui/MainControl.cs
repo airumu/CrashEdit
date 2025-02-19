@@ -17,6 +17,8 @@ namespace CrashEdit
             RootController = rootController;
             BackColor = Color.FromArgb(31, 31, 32);
 
+            FilterText = "Default";
+
             Split = new SplitContainer
             {
                 Dock = DockStyle.Fill,
@@ -154,6 +156,8 @@ namespace CrashEdit
                 }
             }
         }
+
+        public string FilterText { get; set; }
 
         public Predicate<Controller>? SearchPredicate { get; private set; }
 

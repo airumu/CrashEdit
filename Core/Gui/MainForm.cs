@@ -139,20 +139,6 @@ namespace CrashEdit
             });
 
             // Toolbar -> Search Filter
-            var filterList = new Dictionary<string, string>
-            {
-                { "Default",   "Filter" },
-                { "Entity",    "Arrow" },
-                { "Zone",      "ThingViolet" },
-                { "Scenery",   "ThingBlue" },
-                { "Sort List", "ThingGray" },
-                { "Model",     "ThingCrimson" },
-                { "Animation", "ThingLime" },
-                { "GOOL",      "ThingCode" },
-                { "Music",     "MusicNoteBlue" },
-                { "Sound",     "SpeakerBlue" },
-                { "Texture",   "Painting" }
-            };
             SearchFilter = new ToolStripDropDownButton
             {
                 Alignment = ToolStripItemAlignment.Right,
@@ -161,7 +147,7 @@ namespace CrashEdit
                 Padding = new Padding(4, 0, 0, 0),
                 Margin = new Padding(0, 0, 2, 0),
             };
-            foreach (var (name, iconKey) in filterList)
+            foreach (var (name, iconKey) in FilterList)
             {
                 var item = new ToolStripMenuItem(name, Embeds.GetIcon(iconKey)?.ToBitmap())
                 {
@@ -192,15 +178,26 @@ namespace CrashEdit
             }
             SearchFilter.DropDownItemClicked += (sender, e) =>
             {
+                string item = e.ClickedItem?.Text ?? "Default";
                 if (ActiveWorkspaceHost is MainControl mainCtl)
                 {
-                    string type = e.ClickedItem?.Text ?? "Default";
-                    mainCtl.Filter = type == "Default" ? string.Empty : type;
-                    SearchFilter.ImageKey = filterList.ContainsKey(type) ? filterList[type] : "Filter";
+                    mainCtl.Filter = item == "Default" ? string.Empty : item;
+                    SearchFilter.ImageKey = FilterList.ContainsKey(item) ? FilterList[item] : "Filter";
 
-                    // Update SearchQuery.
+                    // First update the SearchBox with the fake string, then update the SearchFilter image again.
+                    // This is necessary to enable the Find commands.
+                    if (string.IsNullOrEmpty(SearchBox.Text))
+                    {
+                        SearchBox.Text = "\u00A0";
+                        SearchBox.Text = string.Empty;
+                    }
+                    mainCtl.Filter = item == "Default" ? string.Empty : item;
+                    SearchFilter.ImageKey = FilterList.ContainsKey(item) ? FilterList[item] : "Filter";
+
+                    // Update SearchQuery with the fake string.
                     mainCtl.SearchQuery = "\u00A0";
                     mainCtl.SearchQuery = SearchBox.Text;
+                    mainCtl.FilterText = item;
                 }
             };
             ToolStrip.Items.Add(SearchFilter);
@@ -314,7 +311,22 @@ namespace CrashEdit
             SearchFilter.Enabled = false;
             EntryList.Enabled = false;
         }
-       
+
+        private static Dictionary<string, string> FilterList { get; } = new Dictionary<string, string>
+        {
+            { "Default",   "Filter" },
+            { "Entity",    "Arrow" },
+            { "Zone",      "ThingViolet" },
+            { "Scenery",   "ThingBlue" },
+            { "Sort List", "ThingGray" },
+            { "Model",     "ThingCrimson" },
+            { "Animation", "ThingLime" },
+            { "GOOL",      "ThingCode" },
+            { "Music",     "MusicNoteBlue" },
+            { "Sound",     "SpeakerBlue" },
+            { "Texture",   "Painting" }
+        };
+
         private NodeListForm? frmEntryList;
 
         public FlatTabControl TabControl { get; }
@@ -432,6 +444,21 @@ namespace CrashEdit
                 SearchBox.Enabled = true;
                 SearchBox.Text = mainCtl.SearchQuery;
                 SearchFilter.Enabled = true;
+                SearchFilter.ImageKey = FilterList.ContainsKey(mainCtl.FilterText) ? FilterList[mainCtl.FilterText] : "Filter";
+                foreach (ToolStripMenuItem menuItem in SearchFilter.DropDownItems)
+                {
+                    if (menuItem is ToolStripMenuItem item)
+                    {
+                        item.Checked = false;
+                        item.Font = new Font(SearchFilter.Font, FontStyle.Regular);
+                        if (item.Text == mainCtl.FilterText)
+                        {
+                            item.Checked = true;
+                            item.Font = new Font(SearchFilter.Font, FontStyle.Bold);
+                        }
+                    
+                    }
+                }
                 EntryList.Enabled = true;
             }
             else
