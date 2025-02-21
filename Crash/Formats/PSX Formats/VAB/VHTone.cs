@@ -128,23 +128,23 @@
             Wave = wave;
         }
 
-        public byte Priority { get; }
-        public byte Mode { get; }
-        public byte Volume { get; }
-        public byte Panning { get; }
-        public byte CenterNote { get; }
-        public byte PitchShift { get; }
-        public byte MinimumNote { get; }
-        public byte MaximumNote { get; }
-        public byte VibratoWidth { get; }
-        public byte VibratoTime { get; }
-        public byte PortamentoWidth { get; }
-        public byte PortamentoTime { get; }
-        public byte PitchBendMinimum { get; }
-        public byte PitchBendMaximum { get; }
-        public ushort ADSR1 { get; }
-        public ushort ADSR2 { get; }
-        public short Wave { get; }
+        public byte Priority { get; set; }
+        public byte Mode { get; set; }
+        public byte Volume { get; set; }
+        public byte Panning { get; set; }
+        public byte CenterNote { get; set; }
+        public byte PitchShift { get; set; }
+        public byte MinimumNote { get; set; }
+        public byte MaximumNote { get; set; }
+        public byte VibratoWidth { get; set; }
+        public byte VibratoTime { get; set; }
+        public byte PortamentoWidth { get; set; }
+        public byte PortamentoTime { get; set; }
+        public byte PitchBendMinimum { get; set; }
+        public byte PitchBendMaximum { get; set; }
+        public ushort ADSR1 { get; set; }
+        public ushort ADSR2 { get; set; }
+        public short Wave { get; set; }
 
         public byte[] Save(int program)
         {

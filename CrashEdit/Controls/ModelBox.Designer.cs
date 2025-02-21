@@ -1012,6 +1012,7 @@ namespace CrashEdit.CE.Controls
             trkPictureSize.ValueColor = Color.FromArgb(65, 177, 225);
             trkPictureSize.Visible = false;
             trkPictureSize.ValueChanged += trkPictureSize_ValueChanged;
+            trkPictureSize.ValueChanged += trkPictureSize_ValueChanged;
             // 
             // dgvTextures
             // 

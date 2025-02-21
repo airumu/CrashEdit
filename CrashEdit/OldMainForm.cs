@@ -26,6 +26,7 @@ namespace CrashEdit.CE
         private ToolStripMenuItem tbxConvertVAB = new();
         private ToolStripMenuItem tbxEntryConverter = new();
         private ToolStripMenuItem tbxGenerateEID = new();
+        private ToolStripMenuItem tbxVABTool = new();
         private ToolStripMenuItem tbbExtra = new();
 
         private TabControl tbcTabs;
@@ -35,6 +36,7 @@ namespace CrashEdit.CE
 
         private EntryConverterForm? frmEntryConverter;
         private MakeBin? frmMakebin;
+        private VABTool? frmVABTool;
 
         public static bool PAL { get; private set; } = Settings.Default.ModePAL;
         private const int RateNTSC = 30;
@@ -87,6 +89,9 @@ namespace CrashEdit.CE
             tbxGenerateEID.Text = Resources.OldMainForm_tbxGenerateEID;
             tbxGenerateEID.Click += new EventHandler(tbxGenerateEID_Click);
 
+            tbxVABTool.Text = Resources.OldMainForm_tbxVABTool;
+            tbxVABTool.Click += new EventHandler(tbxVABTool_Click);
+
             tbbExtra.Text = Resources.OldMainForm_tbbExtra;
             tbbExtra.ImageKey = "Dropdown";
             tbbExtra.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText;
@@ -102,6 +107,8 @@ namespace CrashEdit.CE
             tbbExtra.DropDown.Items.Add(tbxEntryConverter);
             tbbExtra.DropDown.Items.Add("-");
             tbbExtra.DropDown.Items.Add(tbxGenerateEID);
+            tbbExtra.DropDown.Items.Add("-");
+            tbbExtra.DropDown.Items.Add(tbxVABTool);
 
             ToolStrip.Items.Insert(0, tbbOpen);
             ToolStrip.Items.Insert(1, tbbSave);
@@ -142,6 +149,7 @@ namespace CrashEdit.CE
 
             frmEntryConverter = null;
             frmMakebin = null;
+            frmVABTool = null;
 
             Icon = OldResources.CBHacksIconAlt;
             // Width = Settings.Default.DefaultFormW;
@@ -940,6 +948,17 @@ namespace CrashEdit.CE
                     }
                 }
             }
+        }
+
+        void tbxVABTool_Click(object sender, EventArgs e)
+        {
+            if (frmVABTool == null || frmVABTool.IsDisposed)
+                frmVABTool = new VABTool();
+
+            if (!frmVABTool.Visible)
+                frmVABTool.Show();
+            else
+                frmVABTool.Activate();
         }
 
         void GetNSD(string filename, GameVersion gameversion, out string nsdFilename, out dynamic? nsd)

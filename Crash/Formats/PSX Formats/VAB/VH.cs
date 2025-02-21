@@ -1,3 +1,5 @@
+using System.Windows.Forms;
+
 namespace CrashEdit.Crash
 {
     public sealed class VH
@@ -81,12 +83,18 @@ namespace CrashEdit.Crash
                 ErrorManager.SignalError("VH: Data is too short");
             }
             Dictionary<int, VHProgram> programs = new Dictionary<int, VHProgram>();
-            for (int i = 0; i < 128; i++)
+            Dictionary<int, VHProgram> nullprograms = new Dictionary<int, VHProgram>();
+            int nullcount = 0;
+            for (int i = 0; i < programcount + nullcount; i++)
             {
                 byte[] programdata = new byte[16];
                 Array.Copy(data, 32 + 16 * i, programdata, 0, 16);
                 if (programdata[0] == 0)
                 {
+                    byte[] nulltonedata = new byte[32 * 16];
+                    Array.Copy(data, 32 + 16 * 128 + 32 * 16 * nullprograms.Count, nulltonedata, 0, 32 * 16);
+                    nullprograms.Add(i, VHProgram.Load(programdata, nulltonedata, isoldversion));
+                    nullcount++;
                     continue;
                 }
                 if (programs.Count == programcount)
@@ -111,33 +119,40 @@ namespace CrashEdit.Crash
                 }
                 waves[i] = wave / 2;
             }
-            return new VH(isoldversion, vbsize, volume, panning, attribute1, attribute2, programs, waves);
+            return new VH(version, isoldversion, size, vbsize, volume, panning, attribute1, attribute2, programs, nullprograms, waves);
         }
 
         private Dictionary<int, VHProgram> programs;
+        private Dictionary<int, VHProgram> nullprograms;
         private List<int> waves;
 
-        public VH(bool isoldversion, int vbsize, byte volume, byte panning, byte attribute1, byte attribute2, IDictionary<int, VHProgram> programs, IEnumerable<int> waves)
+        public VH(int version, bool isoldversion, int size, int vbsize, byte volume, byte panning, byte attribute1, byte attribute2, IDictionary<int, VHProgram> programs, IDictionary<int, VHProgram> nullprograms, IEnumerable<int> waves)
         {
             ArgumentNullException.ThrowIfNull(programs);
             ArgumentNullException.ThrowIfNull(waves);
+            VHVersion = version;
             IsOldVersion = isoldversion;
+            Size = size;
             VBSize = vbsize;
             Volume = volume;
             Panning = panning;
             Attribute1 = attribute1;
             Attribute2 = attribute2;
             this.programs = new Dictionary<int, VHProgram>(programs);
+            this.nullprograms = new Dictionary<int, VHProgram>(nullprograms);
             this.waves = new List<int>(waves);
         }
 
+        public int VHVersion { get; }
         public bool IsOldVersion { get; }
+        public int Size { get; set; }
         public int VBSize { get; set; }
         public byte Volume { get; set; }
         public byte Panning { get; set; }
         public byte Attribute1 { get; }
         public byte Attribute2 { get; }
         public IDictionary<int, VHProgram> Programs => programs;
+        public IDictionary<int, VHProgram> NullPrograms => nullprograms;
         public IList<int> Waves => waves;
 
         public byte[] Save()
@@ -173,21 +188,29 @@ namespace CrashEdit.Crash
                 }
             }
             int ii = 0;
-            foreach (KeyValuePair<int, VHProgram> kvp in programs)
+            int nullCount = 0;
+            for (int i = 0; i < Programs.Count + nullCount; i++)
             {
-                VHProgram program = kvp.Value;
-                for (int j = 0; j < 16; j++)
+                if (Programs.ContainsKey(i))
                 {
-                    if (j < program.Tones.Count)
+                    VHProgram program = Programs[i];
+                    for (int j = 0; j < 16; j++)
                     {
-                        program.Tones[j].Save(kvp.Key).CopyTo(data, 2080 + 32 * 16 * ii + 32 * j);
+                        if (j < program.Tones.Count)
+                        {
+                            program.Tones[j].Save(i).CopyTo(data, 2080 + 32 * 16 * ii + 32 * j);
+                        }
+                        else
+                        {
+                            new VHTone(IsOldVersion).Save(i).CopyTo(data, 2080 + 32 * 16 * ii + 32 * j);
+                        }
                     }
-                    else
-                    {
-                        new VHTone(IsOldVersion).Save(kvp.Key).CopyTo(data, 2080 + 32 * 16 * ii + 32 * j);
-                    }
+                    ii++;
                 }
-                ii++;
+                else if (NullPrograms.ContainsKey(i))
+                {
+                    ++nullCount;
+                }
             }
             for (int i = 0; i < waves.Count; i++)
             {

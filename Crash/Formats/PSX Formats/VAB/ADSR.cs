@@ -215,7 +215,6 @@
             {
                 //if (Rm == 0)
                 //{
-                //    // リニアモードの場合
                 //    int index = RoundToZero((4 * (Rr ^ 0x1F)) - 0x0C) + 32;
                 //    rate = RateTable[index];
                 //    if (rate != 0)
@@ -225,13 +224,12 @@
                 //}
                 //else if (Rm == 1)
                 //{
-                //    // Rm == 1 の場合
                 //    if ((Rr ^ 0x1F) * 4 < 0x18)
                 //        Rr = 0;
                 //    Console.WriteLine($"Rr: {Rr}");
 
                 //    l = 0;
-                //    int maxIterations = 10000; // 無限ループ防止のための上限
+                //    int maxIterations = 10000;
                 //    while (envelope_level > 0 && l < maxIterations)
                 //    {
                 //        int seg = (int)((envelope_level >> 28) & 0x7);

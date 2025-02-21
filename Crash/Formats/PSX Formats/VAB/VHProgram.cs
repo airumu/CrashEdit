@@ -82,11 +82,11 @@ namespace CrashEdit.Crash
         }
 
         public bool IsOldVersion { get; }
-        public byte Volume { get; }
-        public byte Priority { get; }
-        public byte Mode { get; }
-        public byte Panning { get; }
-        public short Attribute { get; }
+        public byte Volume { get; set; }
+        public byte Priority { get; set; }
+        public byte Mode { get; set; }
+        public byte Panning { get; set; }
+        public short Attribute { get; set; }
         public IList<VHTone> Tones => tones;
 
         public byte[] Save()

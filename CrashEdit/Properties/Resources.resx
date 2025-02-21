@@ -941,4 +941,7 @@ as Meters: {3:F3}m</value>
   <data name="OldMainForm_tbxGenerateEID" xml:space="preserve">
     <value>Generate EID</value>
   </data>
+  <data name="OldMainForm_tbxVABTool" xml:space="preserve">
+    <value>VAB Tool</value>
+  </data>
 </root>

@@ -370,8 +370,8 @@ namespace CrashEdit.CE
             {
                 player.Stop();
                 player = null;
-                waveOut.Stop();
-                waveOut.Dispose();
+                waveOut?.Stop();
+                waveOut?.Dispose();
                 waveOut = null;
 
                 fraControls.Enabled = false;

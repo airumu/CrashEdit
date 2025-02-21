@@ -929,4 +929,7 @@
   <data name="OldMainForm_tbxGenerateEID" xml:space="preserve">
     <value>EIDの生成</value>
   </data>
+  <data name="OldMainForm_tbxVABTool" xml:space="preserve">
+    <value>VABツール</value>
+  </data>
 </root>
