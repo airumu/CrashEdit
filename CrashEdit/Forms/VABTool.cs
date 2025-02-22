@@ -100,9 +100,12 @@ namespace CrashEdit.CE
             {
                 this.musicBox = musicBox;
                 vab = musicBox.vab;
-                string temp = "temp.vab";
-                fileName = temp;
-                File.WriteAllBytes(temp, vab.Save());
+
+                string basePath = Path.Combine("tmp", "tmp");
+                Directory.CreateDirectory(Path.GetDirectoryName(basePath) ?? "");
+                fileName = Path.ChangeExtension(basePath, "vab");
+                File.WriteAllBytes(fileName, vab.Save());
+
                 LoadVAB();
             }
         }

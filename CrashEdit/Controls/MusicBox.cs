@@ -75,7 +75,8 @@ namespace CrashEdit.CE
 
         private void MainInit()
         {
-            string basePath = "temp";
+            string basePath = Path.Combine("tmp", "tmp");
+            Directory.CreateDirectory(Path.GetDirectoryName(basePath) ?? "");
             midiPath = Path.ChangeExtension(basePath, ".mid");
             sf2Path = Path.ChangeExtension(basePath, ".sf2");
             dlsPath = Path.ChangeExtension(basePath, ".dls");

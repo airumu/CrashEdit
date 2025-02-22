@@ -15,9 +15,7 @@ namespace CrashEdit.CE
 
         private int octave;
 
-        private string midiPath;
         private string sf2Path;
-        private string dlsPath;
 
         private MidiSampleProvider? player;
         private WaveOut? waveOut;
@@ -31,7 +29,9 @@ namespace CrashEdit.CE
             InitializeComponent();
             Text = "Preview Keyboard";
 
-            sf2Path = "temp.sf2";
+            string basePath = Path.Combine("tmp", "tmp");
+            Directory.CreateDirectory(Path.GetDirectoryName(basePath) ?? "");
+            sf2Path = Path.ChangeExtension(basePath, ".sf2");
             GetVAB();
 
             CreatePlayer();
