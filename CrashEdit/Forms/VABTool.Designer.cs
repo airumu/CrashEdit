@@ -882,7 +882,7 @@ namespace CrashEdit.CE
             Name = "VABTool";
             Text = "VAB Tool";
             TransparencyKey = Color.FromArgb(31, 31, 32);
-            FormClosed += VABTool_FormClosed;
+            FormClosing += VABTool_FormClosing;
             toolStrip.ResumeLayout(false);
             toolStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvHeader).EndInit();

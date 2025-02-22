@@ -13,7 +13,7 @@ namespace CrashEdit.CE
     {
         private MusicEntryController controller;
         private MusicEntry musicentry;
-        private VAB vab;
+        public VAB vab;
         private SEQ seq;
 
         private Timer timer;
@@ -428,7 +428,7 @@ namespace CrashEdit.CE
         private void cmdEditor_Click(object sender, EventArgs e)
         {
             if (frmVABTool == null || frmVABTool.IsDisposed)
-                frmVABTool = new VABTool(vab);
+                frmVABTool = new VABTool(this);
 
             if (!frmVABTool.Visible)
                 frmVABTool.Show();
@@ -436,11 +436,88 @@ namespace CrashEdit.CE
                 frmVABTool.Activate();
         }
 
+        public void UpdateVAB(byte[] data)
+        {
+            try
+            {
+                byte[] vab_data = data;
+                vab = VAB.Load(vab_data);
+
+                VH vh = VH.Load(vab_data);
+
+                int vb_offset = 2592 + 32 * 16 * vh.Programs.Count;
+                if ((vab_data.Length - vb_offset) % 16 != 0)
+                {
+                    ErrorManager.SignalIgnorableError("extra feature: VB size is invalid");
+                }
+                vh.VBSize = (vab_data.Length - vb_offset) / 16;
+                var vb = new List<SampleLine>();
+                byte[] line_data = new byte[16];
+                for (int i = 0; i < vh.VBSize; i++)
+                {
+                    Array.Copy(vab_data, vb_offset + i * 16, line_data, 0, 16);
+                    vb.Add(SampleLine.Load(line_data));
+                }
+
+                musicentry.VH = vh;
+                ReplaceLinkedVB(vb);
+            }
+            catch (LoadAbortedException)
+            {
+            }
+            DarkMessageBox.ShowInformation("VAB updated successfully.", "MusicBox");
+        }
+
+        private void ReplaceLinkedVB(List<SampleLine> samples)
+        {
+            var vbEntries = new List<WavebankEntry>();
+            foreach (WavebankEntry wavebank in controller.GetEntries<WavebankEntry>())
+            {
+                if (wavebank.EID == musicentry.VB0EID)
+                    vbEntries.Add(wavebank);
+                if (wavebank.EID == musicentry.VB1EID)
+                    vbEntries.Add(wavebank);
+                if (wavebank.EID == musicentry.VB2EID)
+                    vbEntries.Add(wavebank);
+                if (wavebank.EID == musicentry.VB3EID)
+                    vbEntries.Add(wavebank);
+                if (wavebank.EID == musicentry.VB4EID)
+                    vbEntries.Add(wavebank);
+                if (wavebank.EID == musicentry.VB5EID)
+                    vbEntries.Add(wavebank);
+                if (wavebank.EID == musicentry.VB6EID)
+                    vbEntries.Add(wavebank);
+            }
+
+            foreach (var vbEntry in vbEntries)
+            {
+                vbEntry.Samples.SampleLines.Clear();
+                if (samples.Count > 0)
+                {
+                    if (samples.Count <= WavebankEntry.MaxSampleLines)
+                    {
+                        vbEntry.Samples.SampleLines.AddRange(samples);
+                        samples.Clear();
+                    }
+                    else
+                    {
+                        vbEntry.Samples.SampleLines.AddRange(samples.GetRange(0, WavebankEntry.MaxSampleLines));
+                        samples.RemoveRange(0, WavebankEntry.MaxSampleLines);
+                    }
+                }
+            }
+
+            if (samples.Count > 0)
+            {
+                throw new GUIException("VB too large for the number of linked wavebank entries.\n\nThe imported data has been truncated.");
+            }
+        }
+
         //private Timer timer2;
 
         //private void StartWaveformTimer()
         //{
-        //    timer2 = new Timer { Interval = 50 };  // 20FPS (50ms 更新)
+        //    timer2 = new Timer { Interval = 50 };
         //    timer2.Tick += (s, e) =>
         //    {
         //        if (player != null)

@@ -19,6 +19,8 @@ namespace CrashEdit.CE
         public VH? vh;
         public SampleLine[]? vb; // this is actually unused
 
+        private MusicBox? musicBox;
+
         private WaveOutEvent waveOut;
         private WaveStream waveStream;
 
@@ -28,6 +30,8 @@ namespace CrashEdit.CE
 
         private int programIndex;
         private int toneIndex;
+
+        private string fileName;
 
         private readonly int ColHeadVersion = 0;
         private readonly int ColHeadTotalSize = 1;
@@ -62,12 +66,7 @@ namespace CrashEdit.CE
         internal Stack<bool> dirty = new Stack<bool>();
         internal bool Dirty => dirty.Count > 0 && dirty.Peek();
 
-        public VABTool(VAB? levelVAB = null)
-        {
-            MainInit(levelVAB);
-        }
-
-        private void MainInit(VAB? levelVAB)
+        public VABTool(MusicBox? musicBox = null)
         {
             InitializeComponent();
             Icon = Embeds.GetIcon("Wrench");
@@ -84,28 +83,28 @@ namespace CrashEdit.CE
             waveOut = new WaveOutEvent { DesiredLatency = 200 };
 
             frmMidiForm = null;
+            fileName = string.Empty;
 
             fraVABHeader.Enabled =
             fraVABPrograms.Enabled =
-            fraTones.Enabled = false;
+            fraTones.Enabled =
+            tbbSave.Enabled =
+            tbbClose.Enabled = false;
 
             numPriority.MouseWheel += ScrollHandlerFunction;
             numMode.MouseWheel += ScrollHandlerFunction;
             numVAG.MouseWheel += ScrollHandlerFunction;
             numNote.MouseWheel += ScrollHandlerFunction;
 
-            if (levelVAB != null)
+            if (musicBox != null)
             {
-                vab = levelVAB;
+                this.musicBox = musicBox;
+                vab = musicBox.vab;
+                string temp = "temp.vab";
+                fileName = temp;
+                File.WriteAllBytes(temp, vab.Save());
                 LoadVAB();
             }
-
-            // debug vab, remove this later
-            //{
-            //    byte[] file = File.ReadAllBytes("test.vab");
-            //    vab = VAB.Load(file);
-            //    LoadVAB();
-            //}
         }
 
         private void ToolStripButtonInit(ToolStripButton tbb, string imageKey, string text, string tooltip)
@@ -253,17 +252,22 @@ namespace CrashEdit.CE
 
             fraVABHeader.Enabled =
             fraVABPrograms.Enabled =
-            fraTones.Enabled = true;
+            fraTones.Enabled =
+            tbbSave.Enabled =
+            tbbClose.Enabled = true;
             UpdateHeader();
         }
 
         private void tbbOpen_Click(object sender, EventArgs e)
         {
+            if (vab != null && !ConfirmCloseVAB()) return;
             using (OpenFileDialog dialog = new OpenFileDialog())
             {
                 dialog.Filter = FileFilters.VAB + "|" + FileFilters.Any;
                 if (dialog.ShowDialog(this) == DialogResult.OK)
                 {
+                    CloseVAB();
+                    fileName = dialog.FileName;
                     byte[] file = File.ReadAllBytes(dialog.FileName);
                     vab = VAB.Load(file);
                     LoadVAB();
@@ -273,34 +277,69 @@ namespace CrashEdit.CE
 
         private void tbbSave_Click(object sender, EventArgs e)
         {
-            using (SaveFileDialog dialog = new SaveFileDialog())
+            if (vab == null) return;
+            if (musicBox != null)
             {
-                dialog.Filter = FileFilters.VAB + "|" + FileFilters.Any;
-                if (dialog.ShowDialog(this) == DialogResult.OK)
+                musicBox.UpdateVAB(vab.Save(vh));
+            }
+            else
+            {
+                using (SaveFileDialog dialog = new SaveFileDialog())
                 {
-                    byte[] file = vab.Save(vh);
-                    File.WriteAllBytes(dialog.FileName, file);
+                    dialog.Filter = FileFilters.VAB + "|" + FileFilters.Any;
+                    if (dialog.ShowDialog(this) == DialogResult.OK)
+                    {
+                        byte[] file = vab.Save(vh);
+                        File.WriteAllBytes(dialog.FileName, file);
+                    }
                 }
             }
         }
 
+        private bool ConfirmCloseVAB()
+        {
+            byte[] data;
+            string filename = fileName;
+            try
+            {
+                data = vab.Save(vh);
+            }
+            catch
+            {
+                data = null;
+            }
+            byte[] olddata = File.Exists(filename) ? File.ReadAllBytes(filename) : null;
+            return (olddata != null && (data == null || (data.Length == olddata.Length && data.SequenceEqual(olddata)))) ||
+                DarkMessageBox.ShowWarning("Unsaved changes detected. Are you sure you want to close the VAB file?", Resources.Close_ConfirmationPrompt, DarkDialogButton.YesNo) == DialogResult.Yes;
+        }
+
+        private void CloseVAB()
+        {
+            waveOut.Stop();
+            waveStream?.Dispose();
+
+            dgvHeader.Rows.Clear();
+            dgvPrograms.Rows.Clear();
+            dgvTones.Rows.Clear();
+            musicBox = null;
+            vab = null;
+            vh = null;
+            vb = null;
+            fraVABHeader.Enabled =
+            fraVABPrograms.Enabled =
+            fraTones.Enabled =
+            tbbSave.Enabled =
+            tbbClose.Enabled = false;
+        }
+
         private void tbbClose_Click(object sender, EventArgs e)
         {
-            if (DarkMessageBox.ShowWarning("Are you sure you want to close the VAB file?", Resources.Close_ConfirmationPrompt, DarkDialogButton.YesNo) == DialogResult.Yes)
+            if (vab == null) return;
+            if (ConfirmCloseVAB())
             {
-                waveOut.Stop();
-                waveStream?.Dispose();
-
-                dgvHeader.Rows.Clear();
-                dgvPrograms.Rows.Clear();
-                dgvTones.Rows.Clear();
-                vab = null;
-                vh = null;
-                vb = null;
-                fraVABHeader.Enabled =
-                fraVABPrograms.Enabled =
-                fraTones.Enabled = false;
+                CloseVAB();
             }
+
         }
 
         private void GetSelectedRow(DataGridView dataGridView, out int rowIdx, out DataGridViewRow? selectedRow)
@@ -485,8 +524,14 @@ namespace CrashEdit.CE
             waveOut.Play();
         }
 
-        private void VABTool_FormClosed(object sender, FormClosedEventArgs e)
+        private void VABTool_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (vab != null && !ConfirmCloseVAB())
+            {
+                e.Cancel = true;
+                return;
+            }
+
             waveOut?.Stop();
             waveOut?.Dispose();
             waveStream?.Dispose();
