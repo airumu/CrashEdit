@@ -4,6 +4,7 @@ using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
+using MetroSet_UI.Controls;
 using NAudio.Wave;
 
 namespace CrashEdit.CE
@@ -294,6 +295,7 @@ namespace CrashEdit.CE
                     {
                         byte[] file = vab.Save(vh);
                         File.WriteAllBytes(dialog.FileName, file);
+                        fileName = dialog.FileName;
                     }
                 }
             }
@@ -565,6 +567,54 @@ namespace CrashEdit.CE
             }
         }
 
+        private void trkScrollHandlerFunction(object sender, MouseEventArgs e)
+        {
+            if (sender is MetroSetTrackBar trackBar)
+            {
+                HandledMouseEventArgs handledArgs = e as HandledMouseEventArgs;
+                if (handledArgs != null)
+                    handledArgs.Handled = true;
+
+                int newValue = trackBar.Value;
+                int increment = 2;
+                if (e.Delta > 0 && newValue + increment <= trackBar.Maximum)
+                    newValue += increment;
+
+                else if (e.Delta < 0 && newValue - increment >= trackBar.Minimum)
+                    newValue -= increment;
+
+                trackBar.Value = newValue;
+            }
+        }
+
+        private void trkScrollHandlerFunction2(object sender, MouseEventArgs e)
+        {
+            if (sender is TrackBar trackBar)
+            {
+                HandledMouseEventArgs handledArgs = e as HandledMouseEventArgs;
+                if (handledArgs != null)
+                    handledArgs.Handled = true;
+
+                int newValue = trackBar.Value;
+                int increment = 4;
+                if (e.Delta > 0)
+                {
+                    if (newValue + increment <= trackBar.Maximum)
+                        newValue += increment;
+                    else
+                        newValue = trackBar.Maximum;
+                }
+                else if (e.Delta < 0)
+                {
+                    if (newValue - increment >= trackBar.Minimum)
+                        newValue -= increment;
+                    else
+                        newValue = trackBar.Minimum;
+                }
+                trackBar.Value = newValue;
+            }
+        }
+
         private void UpdateProgramVolumeText()
         {
             lbProgramVolume.Text = $"Volume (0x{trkProgramVolume.Value.ToString("X")})";
@@ -579,6 +629,7 @@ namespace CrashEdit.CE
         {
             GetSelectedRow(dgvPrograms, out int rowIdx, out DataGridViewRow? selectedRow);
             if (selectedRow == null || Dirty) return;
+            vh.Programs[rowIdx].Volume = (byte)trkProgramVolume.Value;
             selectedRow.Cells[ColProgVolume].Value = trkProgramVolume.Value;
             UpdateProgramVolumeText();
         }
@@ -587,6 +638,7 @@ namespace CrashEdit.CE
         {
             GetSelectedRow(dgvPrograms, out int rowIdx, out DataGridViewRow? selectedRow);
             if (selectedRow == null || Dirty) return;
+            vh.Programs[rowIdx].Panning = (byte)trkProgramPan.Value;
             selectedRow.Cells[ColProgPan].Value = trkProgramPan.Value;
             UpdateProgramPanText();
         }

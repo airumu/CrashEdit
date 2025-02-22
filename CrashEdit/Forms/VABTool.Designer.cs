@@ -316,6 +316,7 @@ namespace CrashEdit.CE
             trkProgramVolume.Value = 0;
             trkProgramVolume.ValueColor = Color.SpringGreen;
             trkProgramVolume.ValueChanged += trkProgramVolume_ValueChanged;
+            trkProgramVolume.MouseWheel += trkScrollHandlerFunction;
             // 
             // lbProgramPan
             // 
@@ -352,6 +353,7 @@ namespace CrashEdit.CE
             trkProgramPan.Value = 0;
             trkProgramPan.ValueColor = Color.FromArgb(65, 177, 225);
             trkProgramPan.ValueChanged += trkProgramPan_ValueChanged;
+            trkProgramPan.MouseWheel += trkScrollHandlerFunction;
             // 
             // lbProgramVolume
             // 
@@ -636,6 +638,7 @@ namespace CrashEdit.CE
             // 
             trkVolume.BackColor = Color.FromArgb(31, 31, 32);
             trkVolume.Dock = DockStyle.Fill;
+            trkVolume.LargeChange = 1;
             trkVolume.Location = new Point(3, 27);
             trkVolume.Maximum = 255;
             trkVolume.Name = "trkVolume";
@@ -645,6 +648,7 @@ namespace CrashEdit.CE
             trkVolume.Tag = "Volume";
             trkVolume.TickFrequency = 8;
             trkVolume.ValueChanged += tonesTrackBar_ValueChanged;
+            trkVolume.MouseWheel += trkScrollHandlerFunction2;
             // 
             // lbPan
             // 
@@ -663,6 +667,7 @@ namespace CrashEdit.CE
             // 
             trkPan.BackColor = Color.FromArgb(31, 31, 32);
             trkPan.Dock = DockStyle.Fill;
+            trkPan.LargeChange = 1;
             trkPan.Location = new Point(55, 27);
             trkPan.Maximum = 127;
             trkPan.Name = "trkPan";
@@ -672,6 +677,7 @@ namespace CrashEdit.CE
             trkPan.Tag = "Pan";
             trkPan.TickFrequency = 31;
             trkPan.ValueChanged += tonesTrackBar_ValueChanged;
+            trkPan.MouseWheel += trkScrollHandlerFunction2;
             // 
             // lbCenter
             // 
@@ -690,6 +696,7 @@ namespace CrashEdit.CE
             // 
             trkCenter.BackColor = Color.FromArgb(31, 31, 32);
             trkCenter.Dock = DockStyle.Fill;
+            trkCenter.LargeChange = 1;
             trkCenter.Location = new Point(107, 27);
             trkCenter.Maximum = 127;
             trkCenter.Name = "trkCenter";
@@ -699,6 +706,7 @@ namespace CrashEdit.CE
             trkCenter.Tag = "Center";
             trkCenter.TickFrequency = 8;
             trkCenter.ValueChanged += tonesTrackBar_ValueChanged;
+            trkCenter.MouseWheel += trkScrollHandlerFunction2;
             // 
             // lbPitch
             // 
@@ -717,6 +725,7 @@ namespace CrashEdit.CE
             // 
             trkPitch.BackColor = Color.FromArgb(31, 31, 32);
             trkPitch.Dock = DockStyle.Fill;
+            trkPitch.LargeChange = 1;
             trkPitch.Location = new Point(159, 27);
             trkPitch.Maximum = 99;
             trkPitch.Name = "trkPitch";
@@ -726,6 +735,7 @@ namespace CrashEdit.CE
             trkPitch.Tag = "Pitch";
             trkPitch.TickFrequency = 10;
             trkPitch.ValueChanged += tonesTrackBar_ValueChanged;
+            trkPitch.MouseWheel += trkScrollHandlerFunction2;
             // 
             // lbMinNote
             // 
@@ -744,6 +754,7 @@ namespace CrashEdit.CE
             // 
             trkMinNote.BackColor = Color.FromArgb(31, 31, 32);
             trkMinNote.Dock = DockStyle.Fill;
+            trkMinNote.LargeChange = 1;
             trkMinNote.Location = new Point(211, 27);
             trkMinNote.Maximum = 127;
             trkMinNote.Name = "trkMinNote";
@@ -753,6 +764,7 @@ namespace CrashEdit.CE
             trkMinNote.Tag = "MinNote";
             trkMinNote.TickFrequency = 8;
             trkMinNote.ValueChanged += tonesTrackBar_ValueChanged;
+            trkMinNote.MouseWheel += trkScrollHandlerFunction2;
             // 
             // lbMaxNote
             // 
@@ -771,6 +783,7 @@ namespace CrashEdit.CE
             // 
             trkMaxNote.BackColor = Color.FromArgb(31, 31, 32);
             trkMaxNote.Dock = DockStyle.Fill;
+            trkMaxNote.LargeChange = 1;
             trkMaxNote.Location = new Point(263, 27);
             trkMaxNote.Maximum = 127;
             trkMaxNote.Name = "trkMaxNote";
@@ -780,6 +793,7 @@ namespace CrashEdit.CE
             trkMaxNote.Tag = "MaxNote";
             trkMaxNote.TickFrequency = 8;
             trkMaxNote.ValueChanged += tonesTrackBar_ValueChanged;
+            trkMaxNote.MouseWheel += trkScrollHandlerFunction2;
             // 
             // lbPBmin
             // 
@@ -798,6 +812,7 @@ namespace CrashEdit.CE
             // 
             trkPBmin.BackColor = Color.FromArgb(31, 31, 32);
             trkPBmin.Dock = DockStyle.Fill;
+            trkPBmin.LargeChange = 1;
             trkPBmin.Location = new Point(315, 27);
             trkPBmin.Maximum = 127;
             trkPBmin.Name = "trkPBmin";
@@ -807,6 +822,7 @@ namespace CrashEdit.CE
             trkPBmin.Tag = "PBmin";
             trkPBmin.TickFrequency = 8;
             trkPBmin.ValueChanged += tonesTrackBar_ValueChanged;
+            trkPBmin.MouseWheel += trkScrollHandlerFunction2;
             // 
             // lbPBmax
             // 
@@ -825,6 +841,7 @@ namespace CrashEdit.CE
             // 
             trkPBmax.BackColor = Color.FromArgb(31, 31, 32);
             trkPBmax.Dock = DockStyle.Fill;
+            trkPBmax.LargeChange = 1;
             trkPBmax.Location = new Point(367, 27);
             trkPBmax.Maximum = 127;
             trkPBmax.Name = "trkPBmax";
@@ -834,6 +851,7 @@ namespace CrashEdit.CE
             trkPBmax.Tag = "PBmax";
             trkPBmax.TickFrequency = 8;
             trkPBmax.ValueChanged += tonesTrackBar_ValueChanged;
+            trkPBmax.MouseWheel += trkScrollHandlerFunction2;
             // 
             // cmdAppendTone
             // 
