@@ -53,6 +53,7 @@ namespace CrashEdit.CE
             trkSeekBar = new MetroSet_UI.Controls.MetroSetTrackBar();
             numSEQ = new DarkNumericUpDown();
             lbTracks = new Label();
+            cmdEditor = new DarkButton();
             fraVABLinks.SuspendLayout();
             fraVH.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numMasterPan).BeginInit();
@@ -339,6 +340,20 @@ namespace CrashEdit.CE
             lbTracks.TabIndex = 0;
             lbTracks.Text = "Tracks";
             // 
+            // cmdEditor
+            // 
+            cmdEditor.BorderColour = Color.Empty;
+            cmdEditor.CustomColour = false;
+            cmdEditor.FlatBottom = false;
+            cmdEditor.FlatTop = false;
+            cmdEditor.Location = new Point(143, 135);
+            cmdEditor.Name = "cmdEditor";
+            cmdEditor.Padding = new Padding(5);
+            cmdEditor.Size = new Size(86, 26);
+            cmdEditor.TabIndex = 3;
+            cmdEditor.Text = "Open Editor";
+            cmdEditor.Click += cmdEditor_Click;
+            // 
             // MusicBox
             // 
             BackColor = Color.FromArgb(31, 31, 32);
@@ -346,6 +361,7 @@ namespace CrashEdit.CE
             Controls.Add(lbEIDError);
             Controls.Add(fraPlayer);
             Controls.Add(fraVABLinks);
+            Controls.Add(cmdEditor);
             Name = "MusicBox";
             Size = new Size(520, 544);
             Leave += musicBox_Leave;
@@ -390,5 +406,6 @@ namespace CrashEdit.CE
         private DarkNumericUpDown numSynthVolumee;
         private Label lbSeqSpeed;
         private Label lbSynthVolume;
+        private DarkButton cmdEditor;
     }
 }

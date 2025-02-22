@@ -62,7 +62,12 @@ namespace CrashEdit.CE
         internal Stack<bool> dirty = new Stack<bool>();
         internal bool Dirty => dirty.Count > 0 && dirty.Peek();
 
-        public VABTool()
+        public VABTool(VAB? levelVAB = null)
+        {
+            MainInit(levelVAB);
+        }
+
+        private void MainInit(VAB? levelVAB)
         {
             InitializeComponent();
             Icon = Embeds.GetIcon("Wrench");
@@ -89,19 +94,18 @@ namespace CrashEdit.CE
             numVAG.MouseWheel += ScrollHandlerFunction;
             numNote.MouseWheel += ScrollHandlerFunction;
 
-            // debug vab, remove this later
+            if (levelVAB != null)
             {
-                byte[] file = File.ReadAllBytes("test.vab");
-                vab = VAB.Load(file);
-                vab.Split(out VH _vh, out SampleLine[] _vb);
-                vh = _vh;
-                vb = _vb;
-
-                fraVABHeader.Enabled =
-                fraVABPrograms.Enabled =
-                fraTones.Enabled = true;
-                UpdateHeader();
+                vab = levelVAB;
+                LoadVAB();
             }
+
+            // debug vab, remove this later
+            //{
+            //    byte[] file = File.ReadAllBytes("test.vab");
+            //    vab = VAB.Load(file);
+            //    LoadVAB();
+            //}
         }
 
         private void ToolStripButtonInit(ToolStripButton tbb, string imageKey, string text, string tooltip)
@@ -241,6 +245,18 @@ namespace CrashEdit.CE
             dirty.Pop();
         }
 
+        private void LoadVAB()
+        {
+            vab.Split(out VH _vh, out SampleLine[] _vb);
+            vh = _vh;
+            vb = _vb;
+
+            fraVABHeader.Enabled =
+            fraVABPrograms.Enabled =
+            fraTones.Enabled = true;
+            UpdateHeader();
+        }
+
         private void tbbOpen_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog dialog = new OpenFileDialog())
@@ -250,14 +266,7 @@ namespace CrashEdit.CE
                 {
                     byte[] file = File.ReadAllBytes(dialog.FileName);
                     vab = VAB.Load(file);
-                    vab.Split(out VH _vh, out SampleLine[] _vb);
-                    vh = _vh;
-                    vb = _vb;
-
-                    fraVABHeader.Enabled =
-                    fraVABPrograms.Enabled =
-                    fraTones.Enabled = true;
-                    UpdateHeader();
+                    LoadVAB();
                 }
             }
         }

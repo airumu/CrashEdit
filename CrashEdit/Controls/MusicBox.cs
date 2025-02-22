@@ -35,6 +35,8 @@ namespace CrashEdit.CE
         private MidiFile? midiFile;
         private TimeSpan midiLength;
 
+        private VABTool? frmVABTool;
+
         public MusicBox(MusicEntryController controller)
         {
             this.controller = controller;
@@ -117,6 +119,7 @@ namespace CrashEdit.CE
             else
             {
                 fraVH.Visible = false;
+                cmdEditor.Visible = false;
             }
 
             // Check if the music entry has any SEQ.
@@ -420,6 +423,17 @@ namespace CrashEdit.CE
             double normalized = (pan / 127.0) - 0.5;
             double result = normalized * 100;
             return Math.Round(result, 1);
+        }
+
+        private void cmdEditor_Click(object sender, EventArgs e)
+        {
+            if (frmVABTool == null || frmVABTool.IsDisposed)
+                frmVABTool = new VABTool(vab);
+
+            if (!frmVABTool.Visible)
+                frmVABTool.Show();
+            else
+                frmVABTool.Activate();
         }
 
         //private Timer timer2;
