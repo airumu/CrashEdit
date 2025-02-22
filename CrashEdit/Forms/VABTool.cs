@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Drawing.Drawing2D;
 using System.Drawing.Printing;
+using System.Globalization;
 using System.Windows.Forms;
 using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
+using CrashEdit.Crash.GOOLIns;
 using NAudio.Wave;
 
 namespace CrashEdit.CE.Forms
@@ -147,27 +149,33 @@ namespace CrashEdit.CE.Forms
             dgvTones.Columns.Add("ADSR1", "ADSR1");
             dgvTones.Columns.Add("ADSR2", "ADSR2");
             dgvTones.Columns.Add("VAG", "VAG");
+            dgvTones.Columns[ColTonePriority].Visible = false;
+            dgvTones.Columns[ColToneMode].Visible = false;
             dgvTones.Columns[ColToneADSR1].Visible = false;
             dgvTones.Columns[ColToneADSR2].Visible = false;
 
             dgvHeader.ColumnHeadersHeight = 36;
+            dgvHeader.ScrollBars = ScrollBars.None;
             foreach (DataGridViewColumn column in dgvHeader.Columns)
             {
                 column.SortMode = DataGridViewColumnSortMode.NotSortable;
                 column.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
             }
+            dgvPrograms.ScrollBars = ScrollBars.Vertical;
             foreach (DataGridViewColumn column in dgvPrograms.Columns)
             {
                 column.SortMode = DataGridViewColumnSortMode.NotSortable;
                 column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                 column.Width = 60;
             }
+            dgvTones.ScrollBars = ScrollBars.Vertical;
             foreach (DataGridViewColumn column in dgvTones.Columns)
             {
                 column.SortMode = DataGridViewColumnSortMode.NotSortable;
                 column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-                column.Width = 48;
+                column.Width = 60;
             }
+            dgvTones.Columns[ColToneIndex].Width = 32;
         }
 
         private void UpdateHeader()
@@ -223,6 +231,12 @@ namespace CrashEdit.CE.Forms
                 int scrollbarWidth = SystemInformation.VerticalScrollBarWidth;
                 totalWidth += scrollbarWidth;
                 dgvPrograms.Width = totalWidth;
+
+                // Change the row height.
+                foreach (DataGridViewRow row in dgvPrograms.Rows)
+                {
+                    row.Height = 24;
+                }
             }
 
             numVAG.Minimum = 1;
@@ -332,11 +346,18 @@ namespace CrashEdit.CE.Forms
                 {
                     totalWidth += column.Width;
                 }
-                int columnWidth = dgvTones.Columns[0].Width;
-                totalWidth -= columnWidth * 2; // subtract the width of the hidden columns
+                int columnWidth = dgvTones.Columns[ColToneVolume].Width;
+                totalWidth -= columnWidth * 4; // subtract the width of the hidden columns
                 int scrollbarWidth = SystemInformation.VerticalScrollBarWidth;
                 totalWidth += scrollbarWidth;
                 dgvTones.Width = totalWidth;
+
+                // Change the row heights and the index ForeColor.
+                foreach (DataGridViewRow row in dgvTones.Rows)
+                {
+                    row.Cells[ColToneIndex].Style.ForeColor = Color.Gray;
+                    row.Height = 24;
+                }
             }
             else
             {
@@ -360,6 +381,9 @@ namespace CrashEdit.CE.Forms
             double sustainTime = Math.Round(envelope.SustainTime, 2);
             double releaseTime = Math.Round(envelope.ReleaseTime, 2);
 
+            frmADSR.ADSR1 = adsr1;
+            frmADSR.ADSR2 = adsr2;
+
             frmADSR.adsrEnvelope.Attack = attackTime;
             frmADSR.adsrEnvelope.Decay = decayTime;
             frmADSR.adsrEnvelope.SustainLevel = sustainLevel;
@@ -369,6 +393,7 @@ namespace CrashEdit.CE.Forms
 
             string sustainTimeStr = sustainTime == -1 ? "Infinite" : $"{sustainTime}s";
             frmADSR.lbADSR.Text = $"AttackTime: {attackTime}s\nDecayTime: {decayTime}s\nSustainLevel: {sustainLevel}\nSustainTime: {sustainTimeStr}\nReleaseTime: {releaseTime}s";
+            frmADSR.lbADSR.ForeColor = SystemColors.MenuText;
         }
 
         private void ResetADSR()
@@ -376,10 +401,12 @@ namespace CrashEdit.CE.Forms
             if (frmADSR == null) return;
 
             frmADSR.adsrEnvelope.Attack = 0;
-            frmADSR.adsrEnvelope.Decay = 1.0;
-            frmADSR.adsrEnvelope.SustainLevel = 1.0;
-            frmADSR.adsrEnvelope.SustainDuration = 0;
+            frmADSR.adsrEnvelope.Decay = 0;
+            frmADSR.adsrEnvelope.SustainLevel = 0;
+            frmADSR.adsrEnvelope.SustainDuration = 1.0;
             frmADSR.adsrEnvelope.Release = 0;
+            frmADSR.lbADSR.Text = "AttackTime: 0.00s\r\nDecayTime: 0.00s\r\nSustainLevel: 0.00s\r\nSustainTime: 0.00s\r\nReleaseTime: 0.00s";
+            frmADSR.lbADSR.ForeColor = SystemColors.GrayText;
             frmADSR.adsrEnvelope.Invalidate();
         }
 
@@ -886,10 +913,15 @@ namespace CrashEdit.CE.Forms
 
         private void cmdADSR_Click(object sender, EventArgs e)
         {
+            GetSelectedRow(dgvTones, out int rowIdx, out DataGridViewRow? selectedRow);
+            if (selectedRow == null) return;
+
             if (frmADSR == null || frmADSR.IsDisposed)
             {
                 frmADSR = new ADSRForm(this);
                 frmADSR.FormClosed += (s, e) => frmADSR = null;
+
+                GetADSR(selectedRow);
             }
 
             if (!frmADSR.Visible)
@@ -926,72 +958,7 @@ namespace CrashEdit.CE.Forms
                 frmMidiForm.Activate();
         }
 
-
     }
-
-    public class ADSRForm : DarkForm
-    {
-        private VABTool vabTool;
-
-        public ADSREnvelope adsrEnvelope;
-        public Label lbADSR;
-
-        public ADSRForm(VABTool vabTool)
-        {
-            this.vabTool = vabTool;
-            MainInit();
-        }
-
-        private void MainInit()
-        {
-            Text = "ADSR Settings";
-            Size = new Size(660, 520);
-            MaximizeBox = false;
-            MinimizeBox = false;
-            FormBorderStyle = FormBorderStyle.FixedSingle;
-            AutoSize = true;
-            AutoSizeMode = AutoSizeMode.GrowAndShrink;
-
-            TableLayoutPanel layout = new TableLayoutPanel
-            {
-                Dock = DockStyle.Fill,
-                ColumnCount = 2,
-                RowCount = 1,
-                AutoSize = true
-            };
-
-            adsrEnvelope = new ADSREnvelope
-            {
-                Location = new Point(0, 0),
-                Size = new Size(300, 150),
-                Margin = new Padding(3),
-            };
-            ResetADSR();
-
-            lbADSR = new Label
-            {
-                Text = "AttackTime: 0.00s\r\nDecayTime: 0.00s\r\nSustainLevel: 0.00s\r\nSustainTime: 0.00s\r\nReleaseTime: 0.00s",
-                AutoSize = true,
-                ForeColor = SystemColors.MenuText
-            };
-
-            layout.Controls.Add(adsrEnvelope, 0, 0);
-            layout.Controls.Add(lbADSR, 1, 0);
-            Controls.Add(layout);
-        }
-
-
-        private void ResetADSR()
-        {
-            adsrEnvelope.Attack = 0;
-            adsrEnvelope.Decay = 1.0;
-            adsrEnvelope.SustainLevel = 1.0;
-            adsrEnvelope.SustainDuration = 0;
-            adsrEnvelope.Release = 0;
-            adsrEnvelope.Invalidate();
-        }
-    }
-
 
     public class VAGListForm : DarkForm
     {
@@ -1019,7 +986,7 @@ namespace CrashEdit.CE.Forms
             MinimizeBox = false;
             FormBorderStyle = FormBorderStyle.FixedSingle;
 
-            TableLayoutPanel layout = new TableLayoutPanel
+            TableLayoutPanel mainLayout = new TableLayoutPanel
             {
                 Dock = DockStyle.Fill,
                 ColumnCount = 2,
@@ -1078,8 +1045,8 @@ namespace CrashEdit.CE.Forms
 
             dgvVAG.SelectionChanged += new EventHandler(dgvVAG_SelectionChanged);
 
-            // main layout for the right side
-            FlowLayoutPanel flowLayout = new FlowLayoutPanel
+            // main mainLayout for the right side
+            FlowLayoutPanel layout3 = new FlowLayoutPanel
             {
                 Dock = DockStyle.Fill,
                 FlowDirection = FlowDirection.TopDown,
@@ -1165,15 +1132,15 @@ namespace CrashEdit.CE.Forms
             flpInfo.Controls.Add(lbVAGCount);
             fraInfo.Controls.Add(flpInfo);
 
-            flowLayout.Controls.Add(fraInfo);
-            flowLayout.Controls.Add(fraVAG);
+            layout3.Controls.Add(fraInfo);
+            layout3.Controls.Add(fraVAG);
 
-            layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60));
-            layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40));
+            mainLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60));
+            mainLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40));
 
-            layout.Controls.Add(dgvVAG, 0, 0);
-            layout.Controls.Add(flowLayout, 1, 0);
-            Controls.Add(layout);
+            mainLayout.Controls.Add(dgvVAG, 0, 0);
+            mainLayout.Controls.Add(layout3, 1, 0);
+            Controls.Add(mainLayout);
         }
 
         private void dgvVAG_SelectionChanged(object sender, EventArgs e)
@@ -1247,6 +1214,435 @@ namespace CrashEdit.CE.Forms
 
     }
 
+    public class ADSRForm : DarkForm
+    {
+        private VABTool vabTool;
+
+        public ADSREnvelope adsrEnvelope;
+        public Label lbADSR;
+
+        private DarkNumericUpDown numAttack;
+        private DarkNumericUpDown numDecay;
+        private DarkNumericUpDown numSustainRate;
+        private DarkNumericUpDown numSustainLevel;
+        private DarkNumericUpDown numRelease;
+
+        private CheckBox chkAttackExponent;
+        private CheckBox chkDecayExponent; // remove this later
+        private CheckBox chkSustainSign;
+        private CheckBox chkSustainExponent;
+        private CheckBox chkReleaseExponent;
+
+        private DarkTextBox txtADSR1;
+        private DarkTextBox txtADSR2;
+
+        public ushort _adsr1;
+        public ushort _adsr2;
+
+        public ushort ADSR1
+        {
+            get => _adsr1;
+            set
+            {
+                if (_adsr1 != value)
+                {
+                    _adsr1 = value;
+
+                    dirty.Push(true);
+                    byte Am = (byte)((_adsr1 & 0x8000) >> 15);
+                    byte Ar = (byte)((_adsr1 & 0x7F00) >> 8);
+                    byte Dr = (byte)((_adsr1 & 0x00F0) >> 4);
+                    byte Sl = (byte)(_adsr1 & 0x000F);
+                
+                    chkAttackExponent.Checked = Am == 1;
+                    numAttack.Value = numAttack.Maximum - Ar;
+                    numDecay.Value = numDecay.Maximum - Dr;    
+                    numSustainLevel.Value = Sl;
+
+                    txtADSR1.Text = _adsr1.ToString("X4");
+                    dirty.Pop();
+                }
+            }
+        }
+        public ushort ADSR2
+        {
+            get => _adsr2;
+            set
+            {
+                if (_adsr2 != value)
+                {
+                    _adsr2 = value;
+
+                    dirty.Push(true);
+                    byte Rm = (byte)((_adsr2 & 0x0020) >> 5);
+                    byte Rr = (byte)(_adsr2 & 0x001F);
+                    byte Sm = (byte)((_adsr2 & 0x8000) >> 15);
+                    byte Sd = (byte)((_adsr2 & 0x4000) >> 14);
+                    byte Sr = (byte)((_adsr2 >> 6) & 0x7F);
+                   
+                    chkSustainSign.Checked = Sd == 1;
+                    chkSustainExponent.Checked = Sm == 1;
+                    bool isSign = chkSustainSign.Checked;
+                    if (isSign)
+                    {
+                        numSustainRate.Minimum = -127;
+                        numSustainRate.Maximum = 0;
+                    }
+                    else
+                    {
+                        numSustainRate.Minimum = 0;
+                        numSustainRate.Maximum = 127;
+                    }
+                    numSustainRate.Value = isSign ? numSustainRate.Minimum + Sr : numSustainRate.Maximum - Sr;
+
+                    chkReleaseExponent.Checked = Rm == 1;
+                    numRelease.Value = numRelease.Maximum - Rr;
+
+                    txtADSR2.Text = _adsr2.ToString("X4");
+                    dirty.Pop();
+                }
+            }
+        }
+
+        internal Stack<bool> dirty = new Stack<bool>();
+        internal bool Dirty => dirty.Count > 0 && dirty.Peek();
+
+        public ADSRForm(VABTool vabTool)
+        {
+            this.vabTool = vabTool;
+            MainInit();
+        }
+
+        private void MainInit()
+        {
+            Text = "ADSR Settings";
+            Size = new Size(660, 520);
+            MaximizeBox = false;
+            MinimizeBox = false;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            AutoSize = true;
+            AutoSizeMode = AutoSizeMode.GrowAndShrink;
+
+            TableLayoutPanel mainLayout = new TableLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                ColumnCount = 2,
+                RowCount = 2,
+                AutoSize = true
+            };
+
+            // Top left layout
+
+            adsrEnvelope = new ADSREnvelope
+            {
+                Location = new Point(0, 0),
+                Size = new Size(300, 150),
+                Margin = new Padding(3),
+            };
+            ResetADSR();
+
+            // Top right layout
+
+            lbADSR = new Label
+            {
+                Text = "AttackTime: 0.00s\r\nDecayTime: 0.00s\r\nSustainLevel: 0.00s\r\nSustainTime: 0.00s\r\nReleaseTime: 0.00s",
+                AutoSize = true,
+                ForeColor = SystemColors.MenuText,
+                Margin = new Padding(3, 6, 3, 3)
+            };
+
+            // Bottom left layout
+
+            TableLayoutPanel layout2 = new TableLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                ColumnCount = 5,
+                RowCount = 5,
+                AutoSize = true
+            };
+
+            Label lbAttack = new Label
+            {
+                Text = "Attack Rate",
+                AutoSize = true,
+                ForeColor = SystemColors.MenuText,
+                Margin = new Padding(3, 5, 3, 3)
+            };
+            numAttack = new DarkNumericUpDown
+            {
+                Minimum = 0,
+                Maximum = 127,
+                Width = 64
+            };
+            numAttack.ValueChanged += (s, e) =>
+            {
+                if (Dirty) return;
+                int value = (int)(numAttack.Maximum - numAttack.Value);
+                ADSR1 = (ushort)((ADSR1 & 0x80FF) | (value << 8));
+                UpdateADSRInfo();
+            };
+            chkAttackExponent = new CheckBox
+            {
+                Text = "Exponent",
+                AutoSize = true,
+                Margin = new Padding(3, 5, 3, 3)
+            };
+            chkAttackExponent.CheckedChanged += (s, e) =>
+            {
+                ADSR1 = (ushort)((ADSR1 & 0x7FFF) | (chkAttackExponent.Checked ? 0x8000 : 0));
+                UpdateADSRInfo();
+            };
+
+            Label lbDecay = new Label
+            {
+                Text = "Decay Rate",
+                AutoSize = true,
+                ForeColor = SystemColors.MenuText,
+                Margin = new Padding(3, 5, 3, 3)
+            };
+            numDecay = new DarkNumericUpDown
+            {
+                Minimum = 0,
+                Maximum = 15,
+                Width = 64
+            };
+            numDecay.ValueChanged += (s, e) =>
+            {
+                if (Dirty) return;
+                int value = (int)(numDecay.Maximum - numDecay.Value);
+                ADSR1 = (ushort)((ADSR1 & 0xFF0F) | (value << 4));
+                UpdateADSRInfo();
+            };
+
+            Label lbSustainLevel = new Label
+            {
+                Text = "Sustain Level",
+                AutoSize = true,
+                ForeColor = SystemColors.MenuText,
+                Margin = new Padding(3, 5, 3, 3)
+            };
+            numSustainLevel = new DarkNumericUpDown
+            {
+                Minimum = 0,
+                Maximum = 15,
+                Width = 64
+            };
+            numSustainLevel.ValueChanged += (s, e) =>
+            {
+                if (Dirty) return;
+                int value = (int)numSustainLevel.Value;
+                ADSR1 = (ushort)((ADSR1 & 0xFFF0) | value);
+                UpdateADSRInfo();
+            };
+
+            Label lbSustainRate = new Label
+            {
+                Text = "Sustain Rate",
+                AutoSize = true,
+                ForeColor = SystemColors.MenuText,
+                Margin = new Padding(3, 5, 3, 3)
+            };
+            numSustainRate = new DarkNumericUpDown
+            {
+                Minimum = 0,
+                Maximum = 127,
+                Width = 64
+            };
+            numSustainRate.ValueChanged += (s, e) =>
+            {
+                if (Dirty) return;
+                int value = (int)(chkSustainSign.Checked ? (int)numSustainRate.Value - numSustainRate.Minimum : numSustainRate.Maximum - (int)numSustainRate.Value);
+                ADSR2 = (ushort)((ADSR2 & 0xC03F) | (value << 6));
+                UpdateADSRInfo();
+            };
+            chkSustainSign = new CheckBox
+            {
+                Text = "Sign",
+                AutoSize = true,
+                Margin = new Padding(3, 5, 3, 3)
+            };
+            chkSustainSign.CheckedChanged += (s, e) =>
+            {
+                ADSR2 = (ushort)((ADSR2 & 0xBFFF) | (chkSustainSign.Checked ? 0x4000 : 0));
+                UpdateADSRInfo();
+            };
+            chkSustainExponent = new CheckBox
+            {
+                Text = "Exponent",
+                AutoSize = true,
+                Margin = new Padding(3, 5, 3, 3)
+            };
+            chkSustainExponent.CheckedChanged += (s, e) => 
+            { 
+                ADSR2 = (ushort)((ADSR2 & 0x7FFF) | (chkSustainExponent.Checked ? 0x8000 : 0));
+                UpdateADSRInfo();
+            };
+
+            Label lbRelease = new Label
+            {
+                Text = "Release Rate",
+                AutoSize = true,
+                ForeColor = SystemColors.MenuText,
+                Margin = new Padding(3, 5, 3, 3)
+            };
+            numRelease = new DarkNumericUpDown
+            {
+                Minimum = 0,
+                Maximum = 31,
+                Width = 64
+            };
+            numRelease.ValueChanged += (s, e) =>
+            {
+                if (Dirty) return;
+                int value = (int)(numRelease.Maximum - numRelease.Value);
+                ADSR2 = (ushort)((ADSR2 & 0xFFE0) | value);
+                UpdateADSRInfo();
+            };
+            chkReleaseExponent = new CheckBox
+            {
+                Text = "Exponent",
+                AutoSize = true,
+                Margin = new Padding(3, 5, 3, 3)
+            };
+            chkReleaseExponent.CheckedChanged += (s, e) =>
+            {
+                ADSR2 = (ushort)((ADSR2 & 0xFFDF) | (chkReleaseExponent.Checked ? 0x0020 : 0));
+                UpdateADSRInfo();
+            };
+
+            // Bottom right layout
+
+            FlowLayoutPanel layout3 = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                FlowDirection = FlowDirection.TopDown,
+                WrapContents = false,
+                Width = 160
+            };
+            Label lbADSR1 = new Label
+            {
+                Text = "ADSR1",
+                AutoSize = true,
+                ForeColor = SystemColors.MenuText
+            };
+            txtADSR1 = new DarkTextBox
+            {
+                Width = 64,
+                Height = 26,
+                MaxLength = 4
+            };
+            txtADSR1.KeyPress += (s, e) =>
+            {
+                if (!Uri.IsHexDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+                {
+                    e.Handled = true;
+                }
+            };
+            txtADSR1.TextChanged += (s, e) =>
+            {
+                if (Dirty || txtADSR1.Text.Length != 4) return;
+
+                int selectionStart = txtADSR1.SelectionStart;
+                if (ushort.TryParse(txtADSR1.Text, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out ushort value))
+                {
+                    ADSR1 = value;
+                }
+                txtADSR1.SelectionStart = Math.Min(selectionStart, txtADSR1.Text.Length);
+            };
+            Label lbADSR2 = new Label
+            {
+                Text = "ADSR2",
+                AutoSize = true,
+                ForeColor = SystemColors.MenuText
+            };
+            txtADSR2 = new DarkTextBox
+            {
+                Width = 64,
+                Height = 26,
+                MaxLength = 4
+            };
+            txtADSR2.KeyPress += (s, e) =>
+            {
+                if (!Uri.IsHexDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+                {
+                    e.Handled = true;
+                }
+            };
+            txtADSR2.TextChanged += (s, e) =>
+            {
+                if (Dirty || txtADSR2.Text.Length != 4) return;
+
+                int selectionStart = txtADSR2.SelectionStart;
+                if (ushort.TryParse(txtADSR2.Text, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out ushort value))
+                {
+                    ADSR2 = value;
+                }
+                txtADSR2.SelectionStart = Math.Min(selectionStart, txtADSR2.Text.Length);
+            };
+
+
+            // Add controls to layouts
+
+            layout2.Controls.Add(lbAttack, 0, 0);
+            layout2.Controls.Add(numAttack, 1, 0);
+            layout2.Controls.Add(chkAttackExponent, 2, 0);
+            layout2.Controls.Add(lbDecay, 0, 1);
+            layout2.Controls.Add(numDecay, 1, 1);
+            layout2.Controls.Add(lbSustainLevel, 0, 2);
+            layout2.Controls.Add(numSustainLevel, 1, 2);
+            layout2.Controls.Add(lbSustainRate, 0, 3);
+            layout2.Controls.Add(numSustainRate, 1, 3);
+            layout2.Controls.Add(chkSustainSign, 2, 3);
+            layout2.Controls.Add(chkSustainExponent, 3, 3);
+            layout2.Controls.Add(lbRelease, 0, 4);
+            layout2.Controls.Add(numRelease, 1, 4);
+            layout2.Controls.Add(chkReleaseExponent, 2, 4);
+
+            layout3.Controls.Add(lbADSR1);
+            layout3.Controls.Add(txtADSR1);
+            layout3.Controls.Add(lbADSR2);
+            layout3.Controls.Add(txtADSR2);
+
+            mainLayout.Controls.Add(adsrEnvelope, 0, 0);
+            mainLayout.Controls.Add(lbADSR, 1, 0);
+            mainLayout.Controls.Add(layout2, 0, 1);
+            mainLayout.Controls.Add(layout3, 1, 1);
+
+            Controls.Add(mainLayout);
+        }
+
+        private void UpdateADSRInfo()
+        {
+            ADSR envelope = PSXADSR.ComputeADSR(ADSR1, ADSR2);
+
+            double attackTime = Math.Round(envelope.AttackTime, 2);
+            double decayTime = Math.Round(envelope.DecayTime, 2);
+            double sustainLevel = Math.Round(envelope.SustainLevel, 2);
+            double sustainTime = Math.Round(envelope.SustainTime, 2);
+            double releaseTime = Math.Round(envelope.ReleaseTime, 2);
+
+            adsrEnvelope.Attack = attackTime;
+            adsrEnvelope.Decay = decayTime;
+            adsrEnvelope.SustainLevel = sustainLevel;
+            adsrEnvelope.SustainDuration = sustainLevel;
+            adsrEnvelope.Release = releaseTime;
+            adsrEnvelope.Invalidate();
+
+            string sustainTimeStr = sustainTime == -1 ? "Infinite" : $"{sustainTime}s";
+            lbADSR.Text = $"AttackTime: {attackTime}s\nDecayTime: {decayTime}s\nSustainLevel: {sustainLevel}\nSustainTime: {sustainTimeStr}\nReleaseTime: {releaseTime}s";
+        }
+
+        private void ResetADSR()
+        {
+            adsrEnvelope.Attack = 0;
+            adsrEnvelope.Decay = 0;
+            adsrEnvelope.SustainLevel = 0;
+            adsrEnvelope.SustainDuration = 1.0;
+            adsrEnvelope.Release = 0;
+            adsrEnvelope.Invalidate();
+        }
+    }
+
     public class ADSREnvelope : Control
     {
         public double Attack { get; set; }
@@ -1256,6 +1652,14 @@ namespace CrashEdit.CE.Forms
 
         // For sustain time visualization
         public double SustainDuration { get; set; }
+
+        public ADSREnvelope()
+        {
+            SetStyle(ControlStyles.OptimizedDoubleBuffer |
+                     ControlStyles.UserPaint |
+                     ControlStyles.AllPaintingInWmPaint, true);
+            UpdateStyles();
+        }
 
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -1321,13 +1725,29 @@ namespace CrashEdit.CE.Forms
         private void DrawEnvelope(Graphics g, Rectangle rect)
         {
             g.SmoothingMode = SmoothingMode.AntiAlias;
+
+            if (rect.Width <= 0 || rect.Height <= 0)
+            {
+                Console.WriteLine("Invalid rectangle size");
+                return;
+            }
+
+            double totalTime = Attack + Decay + SustainDuration + Release;
+
+            if (totalTime <= 0)
+            {
+                Console.WriteLine("Invalid envelope total time");
+                return;
+            }
+
             using (Pen envelopePen = new Pen(SystemColors.Highlight, 2))
             {
-                double totalTime = Attack + Decay + SustainDuration + Release;
                 PointF[] points = new PointF[5];
 
-                Func<double, float> mapX = t => (float)(rect.Left + (t / totalTime) * rect.Width);
-                Func<double, float> mapY = amplitude => (float)(rect.Bottom - amplitude * rect.Height);
+                Func<double, float> mapX = t =>
+                    Math.Clamp((float)(rect.Left + (t / totalTime) * rect.Width), 0, rect.Width);
+                Func<double, float> mapY = amplitude =>
+                    Math.Clamp((float)(rect.Bottom - amplitude * rect.Height), 0, rect.Height);
 
                 points[0] = new PointF(mapX(0), mapY(0));                                           // Start
                 points[1] = new PointF(mapX(Attack), mapY(1.0));                                    // Attack end
@@ -1335,9 +1755,20 @@ namespace CrashEdit.CE.Forms
                 points[3] = new PointF(mapX(Attack + Decay + SustainDuration), mapY(SustainLevel)); // Sustain duration
                 points[4] = new PointF(mapX(totalTime), mapY(0));                                   // Release end
 
+                foreach (var point in points)
+                {
+                    if (float.IsNaN(point.X) || float.IsInfinity(point.X) ||
+                        float.IsNaN(point.Y) || float.IsInfinity(point.Y))
+                    {
+                        Console.WriteLine($"Invalid point detected: {point}");
+                        return;
+                    }
+                }
+
                 g.DrawLines(envelopePen, points);
             }
         }
+
     }
 
 }

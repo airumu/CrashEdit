@@ -219,7 +219,7 @@ namespace CrashEdit.CE.Forms
             fraVABPrograms.Controls.Add(dgvPrograms);
             fraVABPrograms.Location = new Point(12, 160);
             fraVABPrograms.Name = "fraVABPrograms";
-            fraVABPrograms.Size = new Size(482, 404);
+            fraVABPrograms.Size = new Size(482, 488);
             fraVABPrograms.TabIndex = 3;
             fraVABPrograms.TabStop = false;
             fraVABPrograms.Text = "Programs";
@@ -230,7 +230,7 @@ namespace CrashEdit.CE.Forms
             cmdDeleteProgram.CustomColour = false;
             cmdDeleteProgram.FlatBottom = false;
             cmdDeleteProgram.FlatTop = false;
-            cmdDeleteProgram.Location = new Point(350, 357);
+            cmdDeleteProgram.Location = new Point(326, 454);
             cmdDeleteProgram.Name = "cmdDeleteProgram";
             cmdDeleteProgram.Padding = new Padding(5);
             cmdDeleteProgram.Size = new Size(75, 28);
@@ -244,7 +244,7 @@ namespace CrashEdit.CE.Forms
             cmdInsertProgram.CustomColour = false;
             cmdInsertProgram.FlatBottom = false;
             cmdInsertProgram.FlatTop = false;
-            cmdInsertProgram.Location = new Point(350, 323);
+            cmdInsertProgram.Location = new Point(326, 420);
             cmdInsertProgram.Name = "cmdInsertProgram";
             cmdInsertProgram.Padding = new Padding(5);
             cmdInsertProgram.Size = new Size(75, 28);
@@ -258,7 +258,7 @@ namespace CrashEdit.CE.Forms
             cmdAppendProgram.CustomColour = false;
             cmdAppendProgram.FlatBottom = false;
             cmdAppendProgram.FlatTop = false;
-            cmdAppendProgram.Location = new Point(350, 289);
+            cmdAppendProgram.Location = new Point(326, 386);
             cmdAppendProgram.Name = "cmdAppendProgram";
             cmdAppendProgram.Padding = new Padding(5);
             cmdAppendProgram.Size = new Size(75, 28);
@@ -274,7 +274,7 @@ namespace CrashEdit.CE.Forms
             pnProgramControls.Controls.Add(lbProgramPan);
             pnProgramControls.Controls.Add(trkProgramPan);
             pnProgramControls.Controls.Add(lbProgramVolume);
-            pnProgramControls.Location = new Point(350, 22);
+            pnProgramControls.Location = new Point(326, 22);
             pnProgramControls.Name = "pnProgramControls";
             pnProgramControls.Size = new Size(126, 94);
             pnProgramControls.TabIndex = 4;
@@ -364,7 +364,7 @@ namespace CrashEdit.CE.Forms
             dgvPrograms.Name = "dgvPrograms";
             dgvPrograms.RowHeadersWidth = 24;
             dgvPrograms.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dgvPrograms.Size = new Size(314, 374);
+            dgvPrograms.Size = new Size(314, 456);
             dgvPrograms.TabIndex = 1;
             dgvPrograms.SelectionChanged += dgvVABPrograms_SelectionChanged;
             // 
@@ -381,7 +381,7 @@ namespace CrashEdit.CE.Forms
             fraTones.Controls.Add(dgvTones);
             fraTones.Location = new Point(500, 30);
             fraTones.Name = "fraTones";
-            fraTones.Size = new Size(646, 534);
+            fraTones.Size = new Size(646, 618);
             fraTones.TabIndex = 3;
             fraTones.TabStop = false;
             fraTones.Text = "Tone Attributes Table";
@@ -456,7 +456,7 @@ namespace CrashEdit.CE.Forms
             cmdDeleteTone.CustomColour = false;
             cmdDeleteTone.FlatBottom = false;
             cmdDeleteTone.FlatTop = false;
-            cmdDeleteTone.Location = new Point(168, 500);
+            cmdDeleteTone.Location = new Point(168, 584);
             cmdDeleteTone.Name = "cmdDeleteTone";
             cmdDeleteTone.Padding = new Padding(5);
             cmdDeleteTone.Size = new Size(75, 28);
@@ -563,7 +563,7 @@ namespace CrashEdit.CE.Forms
             cmdInsertTone.CustomColour = false;
             cmdInsertTone.FlatBottom = false;
             cmdInsertTone.FlatTop = false;
-            cmdInsertTone.Location = new Point(87, 500);
+            cmdInsertTone.Location = new Point(87, 584);
             cmdInsertTone.Name = "cmdInsertTone";
             cmdInsertTone.Padding = new Padding(5);
             cmdInsertTone.Size = new Size(75, 28);
@@ -828,7 +828,7 @@ namespace CrashEdit.CE.Forms
             cmdAppendTone.CustomColour = false;
             cmdAppendTone.FlatBottom = false;
             cmdAppendTone.FlatTop = false;
-            cmdAppendTone.Location = new Point(6, 500);
+            cmdAppendTone.Location = new Point(6, 584);
             cmdAppendTone.Name = "cmdAppendTone";
             cmdAppendTone.Padding = new Padding(5);
             cmdAppendTone.Size = new Size(75, 28);
@@ -849,7 +849,7 @@ namespace CrashEdit.CE.Forms
             dgvTones.Name = "dgvTones";
             dgvTones.RowHeadersWidth = 24;
             dgvTones.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dgvTones.Size = new Size(591, 324);
+            dgvTones.Size = new Size(591, 408);
             dgvTones.TabIndex = 1;
             dgvTones.SelectionChanged += dgvTones_SelectionChanged;
             // 
@@ -857,12 +857,16 @@ namespace CrashEdit.CE.Forms
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1152, 571);
+            AutoSize = true;
+            AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            ClientSize = new Size(1152, 777);
             Controls.Add(fraVABPrograms);
             Controls.Add(fraTones);
             Controls.Add(fraVABHeader);
             Controls.Add(toolStrip);
             CornerStyle = CornerPreference.Default;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
             Name = "VABTool";
             Text = "VAB Tool";
             TransparencyKey = Color.FromArgb(31, 31, 32);
