@@ -1,16 +1,12 @@
-﻿using System;
-using System.Drawing.Drawing2D;
-using System.Drawing.Printing;
+﻿using System.Drawing.Drawing2D;
 using System.Globalization;
-using System.Windows.Forms;
 using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
-using CrashEdit.Crash.GOOLIns;
 using NAudio.Wave;
 
-namespace CrashEdit.CE.Forms
+namespace CrashEdit.CE
 {
     public partial class VABTool : DarkForm
     {
@@ -482,6 +478,12 @@ namespace CrashEdit.CE.Forms
             waveOut?.Stop();
             waveOut?.Dispose();
             waveStream?.Dispose();
+            if (frmADSR != null && !frmADSR.IsDisposed)
+                frmADSR.Close();
+            if (frmVAGList != null && !frmVAGList.IsDisposed)
+                frmVAGList.Close();
+            if (frmMidiForm != null && !frmMidiForm.IsDisposed)
+                frmMidiForm.Close();
         }
 
         private void ScrollHandlerFunction(object? sender, MouseEventArgs e)
@@ -1228,7 +1230,6 @@ namespace CrashEdit.CE.Forms
         private DarkNumericUpDown numRelease;
 
         private CheckBox chkAttackExponent;
-        private CheckBox chkDecayExponent; // remove this later
         private CheckBox chkSustainSign;
         private CheckBox chkSustainExponent;
         private CheckBox chkReleaseExponent;
@@ -1383,7 +1384,7 @@ namespace CrashEdit.CE.Forms
             };
             chkAttackExponent = new CheckBox
             {
-                Text = "Exponent",
+                Text = "Exponential",
                 AutoSize = true,
                 Margin = new Padding(3, 5, 3, 3)
             };
@@ -1468,7 +1469,7 @@ namespace CrashEdit.CE.Forms
             };
             chkSustainExponent = new CheckBox
             {
-                Text = "Exponent",
+                Text = "Exponential",
                 AutoSize = true,
                 Margin = new Padding(3, 5, 3, 3)
             };
@@ -1500,7 +1501,7 @@ namespace CrashEdit.CE.Forms
             };
             chkReleaseExponent = new CheckBox
             {
-                Text = "Exponent",
+                Text = "Exponential",
                 AutoSize = true,
                 Margin = new Padding(3, 5, 3, 3)
             };

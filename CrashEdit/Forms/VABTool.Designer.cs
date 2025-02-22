@@ -2,7 +2,7 @@
 using AltUI.Controls;
 using MetroSet_UI.Controls;
 
-namespace CrashEdit.CE.Forms
+namespace CrashEdit.CE
 {
     partial class VABTool
     {

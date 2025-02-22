@@ -1,5 +1,3 @@
-using System.Windows.Forms;
-
 namespace CrashEdit.Crash
 {
     public sealed class VH
