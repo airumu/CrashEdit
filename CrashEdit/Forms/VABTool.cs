@@ -729,7 +729,6 @@ namespace CrashEdit.CE
 
             // Add the program to NullPrograms.
             vh.NullPrograms.Add(programindex, VHProgram.Load(programdata, nulltonedata, vh.IsOldVersion));
-            vh.Size += InstrumentSize;
 
             // Create a row.
             dgvPrograms.Rows.Add(programindex, 0, 127, 64);
@@ -757,12 +756,27 @@ namespace CrashEdit.CE
                 if (key >= programIndex)
                     keysToShift.Add(key);
             }
+            foreach (var key in vh.NullPrograms.Keys)
+            {
+                if (key >= programIndex)
+                    keysToShift.Add(key);
+            }
             keysToShift.Sort((a, b) => b.CompareTo(a));
             foreach (var oldKey in keysToShift)
             {
-                var value = vh.Programs[oldKey];
-                vh.Programs.Remove(oldKey);
-                vh.Programs[oldKey + 1] = value;
+                if (vh.Programs.ContainsKey(oldKey))
+                {
+                    var value = vh.Programs[oldKey];
+                    vh.Programs.Remove(oldKey);
+                    vh.Programs[oldKey + 1] = value;
+                }
+                else if (vh.NullPrograms.ContainsKey(oldKey))
+                {
+                    var value = vh.NullPrograms[oldKey];
+                    vh.NullPrograms.Remove(oldKey);
+                    vh.NullPrograms[oldKey + 1] = value;
+                }
+                else throw new Exception("Pograms do not contain the key.");
             }
 
             // Insert the program.
@@ -814,12 +828,28 @@ namespace CrashEdit.CE
                 if (key > progRowIdx)
                     keysToShift.Add(key);
             }
+            foreach (var key in vh.NullPrograms.Keys)
+            {
+                if (key > progRowIdx)
+                    keysToShift.Add(key);
+            }
+            keysToShift.Sort();
 
             foreach (var oldKey in keysToShift)
             {
-                var value = vh.Programs[oldKey];
-                vh.Programs.Remove(oldKey);
-                vh.Programs[oldKey - 1] = value;
+                if (vh.Programs.ContainsKey(oldKey))
+                {
+                    var value = vh.Programs[oldKey];
+                    vh.Programs.Remove(oldKey);
+                    vh.Programs[oldKey - 1] = value;
+                }
+                else if (vh.NullPrograms.ContainsKey(oldKey))
+                {
+                    var value = vh.NullPrograms[oldKey];
+                    vh.NullPrograms.Remove(oldKey);
+                    vh.NullPrograms[oldKey - 1] = value;
+                }
+                else throw new Exception("Pograms do not contain the key.");
             }
 
             // Update the program numbers.
@@ -847,6 +877,7 @@ namespace CrashEdit.CE
             {
                 vh.Programs.Add(progRowIdx, vh.NullPrograms[progRowIdx]);
                 vh.NullPrograms.Remove(progRowIdx);
+                vh.Size += InstrumentSize;
                 // Upddate the program count in the header.
                 selectedHeadRow.Cells[ColHeadPrograms].Value = vh.Programs.Count;
             }
@@ -913,6 +944,7 @@ namespace CrashEdit.CE
             {
                 vh.NullPrograms.Add(progRowIdx, vh.Programs[progRowIdx]);
                 vh.Programs.Remove(progRowIdx);
+                vh.Size -= InstrumentSize;
                 // Update the program count in the header.
                 selectedHeadRow.Cells[ColHeadPrograms].Value = vh.Programs.Count;
             }
@@ -1708,6 +1740,7 @@ namespace CrashEdit.CE
         private void DrawGridAndAxes(Graphics g, Rectangle rect)
         {
             g.SmoothingMode = SmoothingMode.AntiAlias;
+            string fontFamily = "Arial";
 
             // Draw dotted grids
             using (Pen gridPen = new Pen(Color.Gray, 1))
@@ -1724,7 +1757,7 @@ namespace CrashEdit.CE
 
                     // Draw amplitude labels at the left
                     string label = i == 0 ? "0" : amplitude.ToString("0.00");
-                    using (Font labelFont = new Font("Arial", 8))
+                    using (Font labelFont = new Font(fontFamily, 8))
                     {
                         SizeF labelSize = g.MeasureString(label, labelFont);
                         g.DrawString(label, labelFont, Brushes.Gainsboro, rect.Left, y - labelSize.Height);
@@ -1744,7 +1777,7 @@ namespace CrashEdit.CE
 
                     // Draw time labels at the bottom
                     string label = timeValue.ToString("0.00") + "s";
-                    using (Font labelFont = new Font("Arial", 8))
+                    using (Font labelFont = new Font(fontFamily, 8))
                     {
                         SizeF labelSize = g.MeasureString(label, labelFont);
                         g.DrawString(label, labelFont, Brushes.Gainsboro, x - labelSize.Width / 2, rect.Bottom - labelSize.Height);

@@ -42,10 +42,11 @@ namespace CrashEdit.CE
             cmdPreviewVAB = new DarkButton();
             cmdViewVAG = new DarkButton();
             fraVABPrograms = new DarkGroupBox();
+            fraProgramCommands = new DarkGroupBox();
+            cmdAppendProgram = new DarkButton();
             cmdDeleteProgram = new DarkButton();
             cmdInsertProgram = new DarkButton();
-            cmdAppendProgram = new DarkButton();
-            pnProgramControls = new Panel();
+            fraProgramControls = new DarkGroupBox();
             trkProgramVolume = new MetroSetTrackBar();
             lbProgramPan = new Label();
             trkProgramPan = new MetroSetTrackBar();
@@ -91,7 +92,8 @@ namespace CrashEdit.CE
             ((System.ComponentModel.ISupportInitialize)dgvHeader).BeginInit();
             fraVABHeader.SuspendLayout();
             fraVABPrograms.SuspendLayout();
-            pnProgramControls.SuspendLayout();
+            fraProgramCommands.SuspendLayout();
+            fraProgramControls.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvPrograms).BeginInit();
             fraTones.SuspendLayout();
             panel1.SuspendLayout();
@@ -117,7 +119,7 @@ namespace CrashEdit.CE
             toolStrip.Items.AddRange(new ToolStripItem[] { tbbOpen, tbbSave, tbbClose });
             toolStrip.Location = new Point(0, 0);
             toolStrip.Name = "toolStrip";
-            toolStrip.Size = new Size(1156, 25);
+            toolStrip.Size = new Size(1132, 25);
             toolStrip.TabIndex = 0;
             toolStrip.Text = "toolStrip1";
             // 
@@ -162,9 +164,10 @@ namespace CrashEdit.CE
             dgvHeader.Location = new Point(6, 22);
             dgvHeader.MultiSelect = false;
             dgvHeader.Name = "dgvHeader";
+            dgvHeader.RowHeadersVisible = false;
             dgvHeader.RowHeadersWidth = 24;
             dgvHeader.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dgvHeader.Size = new Size(470, 60);
+            dgvHeader.Size = new Size(446, 60);
             dgvHeader.TabIndex = 1;
             // 
             // fraVABHeader
@@ -176,7 +179,7 @@ namespace CrashEdit.CE
             fraVABHeader.Controls.Add(cmdViewVAG);
             fraVABHeader.Location = new Point(12, 30);
             fraVABHeader.Name = "fraVABHeader";
-            fraVABHeader.Size = new Size(480, 124);
+            fraVABHeader.Size = new Size(456, 124);
             fraVABHeader.TabIndex = 3;
             fraVABHeader.TabStop = false;
             fraVABHeader.Text = "VAB File Settings";
@@ -212,17 +215,41 @@ namespace CrashEdit.CE
             // fraVABPrograms
             // 
             fraVABPrograms.BackColor = Color.Transparent;
-            fraVABPrograms.Controls.Add(cmdDeleteProgram);
-            fraVABPrograms.Controls.Add(cmdInsertProgram);
-            fraVABPrograms.Controls.Add(cmdAppendProgram);
-            fraVABPrograms.Controls.Add(pnProgramControls);
+            fraVABPrograms.Controls.Add(fraProgramCommands);
+            fraVABPrograms.Controls.Add(fraProgramControls);
             fraVABPrograms.Controls.Add(dgvPrograms);
             fraVABPrograms.Location = new Point(12, 160);
             fraVABPrograms.Name = "fraVABPrograms";
-            fraVABPrograms.Size = new Size(482, 488);
+            fraVABPrograms.Size = new Size(456, 488);
             fraVABPrograms.TabIndex = 3;
             fraVABPrograms.TabStop = false;
             fraVABPrograms.Text = "Programs";
+            // 
+            // fraProgramCommands
+            // 
+            fraProgramCommands.AutoSize = true;
+            fraProgramCommands.Controls.Add(cmdAppendProgram);
+            fraProgramCommands.Controls.Add(cmdDeleteProgram);
+            fraProgramCommands.Controls.Add(cmdInsertProgram);
+            fraProgramCommands.Location = new Point(302, 157);
+            fraProgramCommands.Name = "fraProgramCommands";
+            fraProgramCommands.Size = new Size(142, 140);
+            fraProgramCommands.TabIndex = 7;
+            fraProgramCommands.TabStop = false;
+            // 
+            // cmdAppendProgram
+            // 
+            cmdAppendProgram.BorderColour = Color.Empty;
+            cmdAppendProgram.CustomColour = false;
+            cmdAppendProgram.FlatBottom = false;
+            cmdAppendProgram.FlatTop = false;
+            cmdAppendProgram.Location = new Point(6, 22);
+            cmdAppendProgram.Name = "cmdAppendProgram";
+            cmdAppendProgram.Padding = new Padding(5);
+            cmdAppendProgram.Size = new Size(75, 28);
+            cmdAppendProgram.TabIndex = 5;
+            cmdAppendProgram.Text = "Append";
+            cmdAppendProgram.Click += cmdAppendProgram_Click;
             // 
             // cmdDeleteProgram
             // 
@@ -230,7 +257,7 @@ namespace CrashEdit.CE
             cmdDeleteProgram.CustomColour = false;
             cmdDeleteProgram.FlatBottom = false;
             cmdDeleteProgram.FlatTop = false;
-            cmdDeleteProgram.Location = new Point(326, 454);
+            cmdDeleteProgram.Location = new Point(6, 90);
             cmdDeleteProgram.Name = "cmdDeleteProgram";
             cmdDeleteProgram.Padding = new Padding(5);
             cmdDeleteProgram.Size = new Size(75, 28);
@@ -244,7 +271,7 @@ namespace CrashEdit.CE
             cmdInsertProgram.CustomColour = false;
             cmdInsertProgram.FlatBottom = false;
             cmdInsertProgram.FlatTop = false;
-            cmdInsertProgram.Location = new Point(326, 420);
+            cmdInsertProgram.Location = new Point(6, 56);
             cmdInsertProgram.Name = "cmdInsertProgram";
             cmdInsertProgram.Padding = new Padding(5);
             cmdInsertProgram.Size = new Size(75, 28);
@@ -252,32 +279,18 @@ namespace CrashEdit.CE
             cmdInsertProgram.Text = "Insert";
             cmdInsertProgram.Click += cmdInsertProgram_Click;
             // 
-            // cmdAppendProgram
+            // fraProgramControls
             // 
-            cmdAppendProgram.BorderColour = Color.Empty;
-            cmdAppendProgram.CustomColour = false;
-            cmdAppendProgram.FlatBottom = false;
-            cmdAppendProgram.FlatTop = false;
-            cmdAppendProgram.Location = new Point(326, 386);
-            cmdAppendProgram.Name = "cmdAppendProgram";
-            cmdAppendProgram.Padding = new Padding(5);
-            cmdAppendProgram.Size = new Size(75, 28);
-            cmdAppendProgram.TabIndex = 5;
-            cmdAppendProgram.Text = "Append";
-            cmdAppendProgram.Click += cmdAppendProgram_Click;
-            // 
-            // pnProgramControls
-            // 
-            pnProgramControls.AutoSize = true;
-            pnProgramControls.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            pnProgramControls.Controls.Add(trkProgramVolume);
-            pnProgramControls.Controls.Add(lbProgramPan);
-            pnProgramControls.Controls.Add(trkProgramPan);
-            pnProgramControls.Controls.Add(lbProgramVolume);
-            pnProgramControls.Location = new Point(326, 22);
-            pnProgramControls.Name = "pnProgramControls";
-            pnProgramControls.Size = new Size(126, 94);
-            pnProgramControls.TabIndex = 4;
+            fraProgramControls.AutoSize = true;
+            fraProgramControls.Controls.Add(trkProgramVolume);
+            fraProgramControls.Controls.Add(lbProgramPan);
+            fraProgramControls.Controls.Add(trkProgramPan);
+            fraProgramControls.Controls.Add(lbProgramVolume);
+            fraProgramControls.Location = new Point(302, 22);
+            fraProgramControls.Name = "fraProgramControls";
+            fraProgramControls.Size = new Size(142, 129);
+            fraProgramControls.TabIndex = 6;
+            fraProgramControls.TabStop = false;
             // 
             // trkProgramVolume
             // 
@@ -288,7 +301,7 @@ namespace CrashEdit.CE
             trkProgramVolume.DisabledValueColor = Color.FromArgb(109, 109, 109);
             trkProgramVolume.HandlerColor = Color.FromArgb(143, 143, 143);
             trkProgramVolume.IsDerivedStyle = true;
-            trkProgramVolume.Location = new Point(3, 22);
+            trkProgramVolume.Location = new Point(6, 38);
             trkProgramVolume.Maximum = 255;
             trkProgramVolume.Minimum = 0;
             trkProgramVolume.Name = "trkProgramVolume";
@@ -308,7 +321,7 @@ namespace CrashEdit.CE
             // 
             lbProgramPan.AutoSize = true;
             lbProgramPan.BackColor = Color.Transparent;
-            lbProgramPan.Location = new Point(3, 57);
+            lbProgramPan.Location = new Point(6, 73);
             lbProgramPan.Margin = new Padding(3);
             lbProgramPan.Name = "lbProgramPan";
             lbProgramPan.Size = new Size(27, 15);
@@ -324,7 +337,7 @@ namespace CrashEdit.CE
             trkProgramPan.DisabledValueColor = Color.FromArgb(109, 109, 109);
             trkProgramPan.HandlerColor = Color.FromArgb(143, 143, 143);
             trkProgramPan.IsDerivedStyle = true;
-            trkProgramPan.Location = new Point(3, 75);
+            trkProgramPan.Location = new Point(6, 91);
             trkProgramPan.Maximum = 127;
             trkProgramPan.Minimum = 0;
             trkProgramPan.Name = "trkProgramPan";
@@ -344,7 +357,7 @@ namespace CrashEdit.CE
             // 
             lbProgramVolume.AutoSize = true;
             lbProgramVolume.BackColor = Color.Transparent;
-            lbProgramVolume.Location = new Point(3, 4);
+            lbProgramVolume.Location = new Point(6, 20);
             lbProgramVolume.Margin = new Padding(3);
             lbProgramVolume.Name = "lbProgramVolume";
             lbProgramVolume.Size = new Size(47, 15);
@@ -364,7 +377,7 @@ namespace CrashEdit.CE
             dgvPrograms.Name = "dgvPrograms";
             dgvPrograms.RowHeadersWidth = 24;
             dgvPrograms.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dgvPrograms.Size = new Size(314, 456);
+            dgvPrograms.Size = new Size(290, 456);
             dgvPrograms.TabIndex = 1;
             dgvPrograms.SelectionChanged += dgvVABPrograms_SelectionChanged;
             // 
@@ -379,7 +392,7 @@ namespace CrashEdit.CE
             fraTones.Controls.Add(tableLayoutPanel1);
             fraTones.Controls.Add(cmdAppendTone);
             fraTones.Controls.Add(dgvTones);
-            fraTones.Location = new Point(500, 30);
+            fraTones.Location = new Point(476, 30);
             fraTones.Name = "fraTones";
             fraTones.Size = new Size(646, 618);
             fraTones.TabIndex = 3;
@@ -435,7 +448,7 @@ namespace CrashEdit.CE
             // numMode
             // 
             numMode.Location = new Point(3, 74);
-            numMode.Maximum = new decimal(new int[] { 4, 0, 0, 0 });
+            numMode.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
             numMode.Name = "numMode";
             numMode.Size = new Size(44, 23);
             numMode.TabIndex = 4;
@@ -444,7 +457,7 @@ namespace CrashEdit.CE
             // numPriority
             // 
             numPriority.Location = new Point(3, 24);
-            numPriority.Maximum = new decimal(new int[] { 24, 0, 0, 0 });
+            numPriority.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
             numPriority.Name = "numPriority";
             numPriority.Size = new Size(44, 23);
             numPriority.TabIndex = 4;
@@ -858,7 +871,7 @@ namespace CrashEdit.CE
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(1156, 659);
+            ClientSize = new Size(1132, 659);
             Controls.Add(fraVABPrograms);
             Controls.Add(fraTones);
             Controls.Add(fraVABHeader);
@@ -876,8 +889,9 @@ namespace CrashEdit.CE
             fraVABHeader.ResumeLayout(false);
             fraVABPrograms.ResumeLayout(false);
             fraVABPrograms.PerformLayout();
-            pnProgramControls.ResumeLayout(false);
-            pnProgramControls.PerformLayout();
+            fraProgramCommands.ResumeLayout(false);
+            fraProgramControls.ResumeLayout(false);
+            fraProgramControls.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvPrograms).EndInit();
             fraTones.ResumeLayout(false);
             panel1.ResumeLayout(false);
@@ -959,5 +973,7 @@ namespace CrashEdit.CE
         private ToolStripButton tbbClose;
         private DarkButton cmdPreviewVAB;
         private DarkButton cmdADSR;
+        private DarkGroupBox fraProgramControls;
+        private DarkGroupBox fraProgramCommands;
     }
 }
