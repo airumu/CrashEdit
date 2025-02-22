@@ -327,7 +327,7 @@ namespace CrashEdit.CE
             numSEQ.Location = new Point(6, 37);
             numSEQ.Maximum = new decimal(new int[] { 0, 0, 0, 0 });
             numSEQ.Name = "numSEQ";
-            numSEQ.Size = new Size(120, 23);
+            numSEQ.Size = new Size(57, 23);
             numSEQ.TabIndex = 1;
             numSEQ.ValueChanged += numSEQ_ValueChanged;
             // 
