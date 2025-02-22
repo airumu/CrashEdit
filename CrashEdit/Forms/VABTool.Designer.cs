@@ -117,7 +117,7 @@ namespace CrashEdit.CE
             toolStrip.Items.AddRange(new ToolStripItem[] { tbbOpen, tbbSave, tbbClose });
             toolStrip.Location = new Point(0, 0);
             toolStrip.Name = "toolStrip";
-            toolStrip.Size = new Size(1152, 25);
+            toolStrip.Size = new Size(1156, 25);
             toolStrip.TabIndex = 0;
             toolStrip.Text = "toolStrip1";
             // 
@@ -857,9 +857,8 @@ namespace CrashEdit.CE
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(1152, 777);
+            ClientSize = new Size(1156, 659);
             Controls.Add(fraVABPrograms);
             Controls.Add(fraTones);
             Controls.Add(fraVABHeader);

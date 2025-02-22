@@ -17,7 +17,7 @@ namespace CrashEdit.CE
 
         public VAB? vab;
         public VH? vh;
-        public SampleLine[]? vb; // this is unused actually
+        public SampleLine[]? vb; // this is actually unused
 
         private WaveOutEvent waveOut;
         private WaveStream waveStream;
@@ -412,6 +412,9 @@ namespace CrashEdit.CE
             if (selectedRow == null) return;
 
             dirty.Push(true);
+
+            numPriority.Value = Convert.ToInt32(selectedRow.Cells[ColTonePriority].Value);
+            numMode.Value = Convert.ToInt32(selectedRow.Cells[ColToneMode].Value);
 
             toneIndex = rowIdx;
             lbTone.Text = $"Tone {toneIndex}";
@@ -1581,8 +1584,13 @@ namespace CrashEdit.CE
                 txtADSR2.SelectionStart = Math.Min(selectionStart, txtADSR2.Text.Length);
             };
 
-
             // Add controls to layouts
+
+            numAttack.MouseWheel += ScrollHandlerFunction;
+            numDecay.MouseWheel += ScrollHandlerFunction;
+            numSustainRate.MouseWheel += ScrollHandlerFunction;
+            numSustainLevel.MouseWheel += ScrollHandlerFunction;
+            numRelease.MouseWheel += ScrollHandlerFunction;
 
             layout2.Controls.Add(lbAttack, 0, 0);
             layout2.Controls.Add(numAttack, 1, 0);
@@ -1641,6 +1649,25 @@ namespace CrashEdit.CE
             adsrEnvelope.SustainDuration = 1.0;
             adsrEnvelope.Release = 0;
             adsrEnvelope.Invalidate();
+        }
+
+        private void ScrollHandlerFunction(object? sender, MouseEventArgs e)
+        {
+            if (sender is NumericUpDown numericUpDown)
+            {
+                HandledMouseEventArgs handledArgs = e as HandledMouseEventArgs;
+                if (handledArgs != null)
+                    handledArgs.Handled = true;
+
+                decimal newValue = numericUpDown.Value;
+                if (e.Delta > 0 && newValue < numericUpDown.Maximum)
+                    newValue += numericUpDown.Increment;
+
+                else if (e.Delta < 0 && newValue > numericUpDown.Minimum)
+                    newValue -= numericUpDown.Increment;
+
+                numericUpDown.Value = newValue;
+            }
         }
     }
 
