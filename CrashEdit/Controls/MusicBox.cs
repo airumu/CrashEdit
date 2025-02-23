@@ -124,7 +124,7 @@ namespace CrashEdit.CE
                 fraPlayer.Enabled = false;
             }
 
-            numSynthVolumee.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
+            numSynthVolume.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
             numSeqSpeed.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
         }
 
@@ -246,6 +246,7 @@ namespace CrashEdit.CE
             // Create WaveOut.
             waveOut = new WaveOut(WaveCallbackInfo.FunctionCallback());
             waveOut.Init(player);
+            waveOut.Volume = 1.0f;
             waveOut.Play();
 
             // Load and play the MIDI file.
@@ -256,7 +257,7 @@ namespace CrashEdit.CE
             player.sequencer.ProcessAllEvents();
             while (player.sequencer.Position.Ticks == 0) { }
 
-            player.synthesizer.MasterVolume = (float)(numSynthVolumee.Value / 2);
+            player.synthesizer.MasterVolume = (float)(numSynthVolume.Value / 2);
             player.sequencer.Speed = (float)numSeqSpeed.Value;
             midiLength = midiFile.Length;
 
@@ -282,7 +283,7 @@ namespace CrashEdit.CE
         private void numSynthVolumee_ValueChanged(object sender, EventArgs e)
         {
             // The default MasterVolume is 0.5F.
-            player.synthesizer.MasterVolume = (float)(numSynthVolumee.Value / 2);
+            player.synthesizer.MasterVolume = (float)(numSynthVolume.Value / 2);
         }
 
         private void numSeqSpeed_ValueChanged(object sender, EventArgs e)

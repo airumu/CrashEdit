@@ -38,7 +38,7 @@ namespace CrashEdit.CE
             fraPlayer = new DarkGroupBox();
             fraControls = new DarkGroupBox();
             numSeqSpeed = new DarkNumericUpDown();
-            numSynthVolumee = new DarkNumericUpDown();
+            numSynthVolume = new DarkNumericUpDown();
             lbSeqSpeed = new Label();
             lbSynthVolume = new Label();
             cmdStop = new DarkButton();
@@ -53,7 +53,7 @@ namespace CrashEdit.CE
             fraPlayer.SuspendLayout();
             fraControls.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numSeqSpeed).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numSynthVolumee).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numSynthVolume).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numSEQ).BeginInit();
             SuspendLayout();
             // 
@@ -131,7 +131,7 @@ namespace CrashEdit.CE
             // 
             fraControls.BackColor = Color.Transparent;
             fraControls.Controls.Add(numSeqSpeed);
-            fraControls.Controls.Add(numSynthVolumee);
+            fraControls.Controls.Add(numSynthVolume);
             fraControls.Controls.Add(lbSeqSpeed);
             fraControls.Controls.Add(lbSynthVolume);
             fraControls.Location = new Point(189, 19);
@@ -156,15 +156,15 @@ namespace CrashEdit.CE
             // 
             // numSynthVolumee
             // 
-            numSynthVolumee.DecimalPlaces = 1;
-            numSynthVolumee.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
-            numSynthVolumee.Location = new Point(6, 37);
-            numSynthVolumee.Maximum = new decimal(new int[] { 20, 0, 0, 65536 });
-            numSynthVolumee.Name = "numSynthVolumee";
-            numSynthVolumee.Size = new Size(120, 23);
-            numSynthVolumee.TabIndex = 1;
-            numSynthVolumee.Value = new decimal(new int[] { 10, 0, 0, 65536 });
-            numSynthVolumee.ValueChanged += numSynthVolumee_ValueChanged;
+            numSynthVolume.DecimalPlaces = 1;
+            numSynthVolume.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
+            numSynthVolume.Location = new Point(6, 37);
+            numSynthVolume.Maximum = new decimal(new int[] { 20, 0, 0, 65536 });
+            numSynthVolume.Name = "numSynthVolumee";
+            numSynthVolume.Size = new Size(120, 23);
+            numSynthVolume.TabIndex = 1;
+            numSynthVolume.Value = new decimal(new int[] { 10, 0, 0, 65536 });
+            numSynthVolume.ValueChanged += numSynthVolumee_ValueChanged;
             // 
             // lbSeqSpeed
             // 
@@ -312,7 +312,7 @@ namespace CrashEdit.CE
             fraControls.ResumeLayout(false);
             fraControls.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numSeqSpeed).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numSynthVolumee).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numSynthVolume).EndInit();
             ((System.ComponentModel.ISupportInitialize)numSEQ).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -334,7 +334,7 @@ namespace CrashEdit.CE
         private Label lbTimeInfo;
         private DarkGroupBox fraControls;
         private DarkNumericUpDown numSeqSpeed;
-        private DarkNumericUpDown numSynthVolumee;
+        private DarkNumericUpDown numSynthVolume;
         private Label lbSeqSpeed;
         private Label lbSynthVolume;
         private DarkButton cmdEditor;
