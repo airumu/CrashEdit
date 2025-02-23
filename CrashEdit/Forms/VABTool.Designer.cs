@@ -39,6 +39,8 @@ namespace CrashEdit.CE
             tbbClose = new ToolStripButton();
             dgvHeader = new DataGridView();
             fraVABHeader = new DarkGroupBox();
+            trkMasterPan = new MetroSetTrackBar();
+            trkMasterVolume = new MetroSetTrackBar();
             cmdPreviewVAB = new DarkButton();
             cmdViewVAG = new DarkButton();
             fraVABPrograms = new DarkGroupBox();
@@ -61,12 +63,13 @@ namespace CrashEdit.CE
             numPriority = new DarkNumericUpDown();
             cmdDeleteTone = new DarkButton();
             pnToneControls2 = new Panel();
+            fraPlay = new DarkGroupBox();
             chkAutoPlay = new CheckBox();
-            cmdADSR = new DarkButton();
-            cmdPlayTone = new DarkButton();
-            numNote = new DarkNumericUpDown();
-            numVAG = new DarkNumericUpDown();
             lbNote = new Label();
+            numNote = new DarkNumericUpDown();
+            cmdPlayTone = new DarkButton();
+            cmdADSR = new DarkButton();
+            numVAG = new DarkNumericUpDown();
             lbVAG = new Label();
             cmdInsertTone = new DarkButton();
             tblToneControls = new TableLayoutPanel();
@@ -88,7 +91,6 @@ namespace CrashEdit.CE
             trkPBmax = new TrackBar();
             cmdAppendTone = new DarkButton();
             dgvTones = new DataGridView();
-            fraPlay = new DarkGroupBox();
             toolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvHeader).BeginInit();
             fraVABHeader.SuspendLayout();
@@ -101,6 +103,7 @@ namespace CrashEdit.CE
             ((System.ComponentModel.ISupportInitialize)numMode).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numPriority).BeginInit();
             pnToneControls2.SuspendLayout();
+            fraPlay.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numNote).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numVAG).BeginInit();
             tblToneControls.SuspendLayout();
@@ -113,7 +116,6 @@ namespace CrashEdit.CE
             ((System.ComponentModel.ISupportInitialize)trkPBmin).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trkPBmax).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvTones).BeginInit();
-            fraPlay.SuspendLayout();
             SuspendLayout();
             // 
             // toolStrip
@@ -166,9 +168,11 @@ namespace CrashEdit.CE
             dgvHeader.Location = new Point(6, 22);
             dgvHeader.MultiSelect = false;
             dgvHeader.Name = "dgvHeader";
+            dgvHeader.ReadOnly = true;
             dgvHeader.RowHeadersVisible = false;
             dgvHeader.RowHeadersWidth = 24;
             dgvHeader.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dgvHeader.SelectionMode = DataGridViewSelectionMode.CellSelect;
             dgvHeader.Size = new Size(446, 60);
             dgvHeader.TabIndex = 1;
             // 
@@ -176,6 +180,8 @@ namespace CrashEdit.CE
             // 
             fraVABHeader.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             fraVABHeader.BackColor = Color.Transparent;
+            fraVABHeader.Controls.Add(trkMasterPan);
+            fraVABHeader.Controls.Add(trkMasterVolume);
             fraVABHeader.Controls.Add(dgvHeader);
             fraVABHeader.Controls.Add(cmdPreviewVAB);
             fraVABHeader.Controls.Add(cmdViewVAG);
@@ -185,6 +191,58 @@ namespace CrashEdit.CE
             fraVABHeader.TabIndex = 3;
             fraVABHeader.TabStop = false;
             fraVABHeader.Text = "VAB File Settings";
+            // 
+            // trkMasterPan
+            // 
+            trkMasterPan.BackgroundColor = Color.FromArgb(90, 90, 90);
+            trkMasterPan.DisabledBackColor = Color.FromArgb(80, 80, 80);
+            trkMasterPan.DisabledBorderColor = Color.Empty;
+            trkMasterPan.DisabledHandlerColor = Color.FromArgb(90, 90, 90);
+            trkMasterPan.DisabledValueColor = Color.FromArgb(109, 109, 109);
+            trkMasterPan.HandlerColor = Color.FromArgb(143, 143, 143);
+            trkMasterPan.IsDerivedStyle = true;
+            trkMasterPan.Location = new Point(388, 88);
+            trkMasterPan.Maximum = 127;
+            trkMasterPan.Minimum = 0;
+            trkMasterPan.Name = "trkMasterPan";
+            trkMasterPan.Size = new Size(59, 16);
+            trkMasterPan.Style = MetroSet_UI.Enums.Style.Dark;
+            trkMasterPan.StyleManager = null;
+            trkMasterPan.TabIndex = 2;
+            trkMasterPan.Text = "ProgramVolume";
+            trkMasterPan.ThemeAuthor = "Narwin";
+            trkMasterPan.ThemeName = "MetroDark";
+            trkMasterPan.TickFrequency = 1;
+            trkMasterPan.Value = 0;
+            trkMasterPan.ValueColor = Color.FromArgb(65, 177, 225);
+            trkMasterPan.ValueChanged += trkMasterPan_ValueChanged;
+            trkMasterPan.MouseWheel += trkScrollHandlerFunction;
+            // 
+            // trkMasterVolume
+            // 
+            trkMasterVolume.BackgroundColor = Color.FromArgb(90, 90, 90);
+            trkMasterVolume.DisabledBackColor = Color.FromArgb(80, 80, 80);
+            trkMasterVolume.DisabledBorderColor = Color.Empty;
+            trkMasterVolume.DisabledHandlerColor = Color.FromArgb(90, 90, 90);
+            trkMasterVolume.DisabledValueColor = Color.FromArgb(109, 109, 109);
+            trkMasterVolume.HandlerColor = Color.FromArgb(143, 143, 143);
+            trkMasterVolume.IsDerivedStyle = true;
+            trkMasterVolume.Location = new Point(334, 88);
+            trkMasterVolume.Maximum = 255;
+            trkMasterVolume.Minimum = 0;
+            trkMasterVolume.Name = "trkMasterVolume";
+            trkMasterVolume.Size = new Size(59, 16);
+            trkMasterVolume.Style = MetroSet_UI.Enums.Style.Dark;
+            trkMasterVolume.StyleManager = null;
+            trkMasterVolume.TabIndex = 2;
+            trkMasterVolume.Text = "ProgramVolume";
+            trkMasterVolume.ThemeAuthor = "Narwin";
+            trkMasterVolume.ThemeName = "MetroDark";
+            trkMasterVolume.TickFrequency = 1;
+            trkMasterVolume.Value = 0;
+            trkMasterVolume.ValueColor = Color.SpringGreen;
+            trkMasterVolume.ValueChanged += trkMasterVolume_ValueChanged;
+            trkMasterVolume.MouseWheel += trkScrollHandlerFunction;
             // 
             // cmdPreviewVAB
             // 
@@ -381,8 +439,12 @@ namespace CrashEdit.CE
             dgvPrograms.Name = "dgvPrograms";
             dgvPrograms.RowHeadersWidth = 24;
             dgvPrograms.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dgvPrograms.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvPrograms.Size = new Size(290, 456);
             dgvPrograms.TabIndex = 1;
+            dgvPrograms.CellBeginEdit += dgvPrograms_CellBeginEdit;
+            dgvPrograms.CellValidating += dgvPrograms_CellValidating;
+            dgvPrograms.CellValueChanged += dgvPrograms_CellValueChanged;
             dgvPrograms.SelectionChanged += dgvVABPrograms_SelectionChanged;
             // 
             // fraTones
@@ -431,7 +493,7 @@ namespace CrashEdit.CE
             lbTone.AutoSize = true;
             lbTone.BackColor = Color.Transparent;
             lbTone.ForeColor = SystemColors.MenuHighlight;
-            lbTone.Location = new Point(3, 117);
+            lbTone.Location = new Point(3, 123);
             lbTone.Margin = new Padding(3);
             lbTone.Name = "lbTone";
             lbTone.Size = new Size(49, 15);
@@ -451,7 +513,7 @@ namespace CrashEdit.CE
             // 
             // numMode
             // 
-            numMode.Location = new Point(3, 74);
+            numMode.Location = new Point(3, 72);
             numMode.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
             numMode.Name = "numMode";
             numMode.Size = new Size(44, 23);
@@ -460,7 +522,7 @@ namespace CrashEdit.CE
             // 
             // numPriority
             // 
-            numPriority.Location = new Point(3, 24);
+            numPriority.Location = new Point(3, 22);
             numPriority.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
             numPriority.Name = "numPriority";
             numPriority.Size = new Size(44, 23);
@@ -492,47 +554,42 @@ namespace CrashEdit.CE
             pnToneControls2.Size = new Size(127, 142);
             pnToneControls2.TabIndex = 7;
             // 
+            // fraPlay
+            // 
+            fraPlay.Controls.Add(chkAutoPlay);
+            fraPlay.Controls.Add(lbNote);
+            fraPlay.Controls.Add(numNote);
+            fraPlay.Controls.Add(cmdPlayTone);
+            fraPlay.Location = new Point(3, 54);
+            fraPlay.Name = "fraPlay";
+            fraPlay.Size = new Size(121, 85);
+            fraPlay.TabIndex = 7;
+            fraPlay.TabStop = false;
+            // 
             // chkAutoPlay
             // 
             chkAutoPlay.AutoSize = true;
-            chkAutoPlay.Location = new Point(66, 58);
+            chkAutoPlay.Location = new Point(68, 58);
             chkAutoPlay.Name = "chkAutoPlay";
             chkAutoPlay.Size = new Size(52, 19);
             chkAutoPlay.TabIndex = 6;
             chkAutoPlay.Text = "Auto";
             chkAutoPlay.UseVisualStyleBackColor = true;
             // 
-            // cmdADSR
+            // lbNote
             // 
-            cmdADSR.BorderColour = Color.Empty;
-            cmdADSR.CustomColour = false;
-            cmdADSR.FlatBottom = false;
-            cmdADSR.FlatTop = false;
-            cmdADSR.Location = new Point(61, 22);
-            cmdADSR.Name = "cmdADSR";
-            cmdADSR.Padding = new Padding(5);
-            cmdADSR.Size = new Size(60, 26);
-            cmdADSR.TabIndex = 5;
-            cmdADSR.Text = "ADSR";
-            cmdADSR.Click += cmdADSR_Click;
-            // 
-            // cmdPlayTone
-            // 
-            cmdPlayTone.BorderColour = Color.Empty;
-            cmdPlayTone.CustomColour = false;
-            cmdPlayTone.FlatBottom = false;
-            cmdPlayTone.FlatTop = false;
-            cmdPlayTone.Location = new Point(3, 54);
-            cmdPlayTone.Name = "cmdPlayTone";
-            cmdPlayTone.Padding = new Padding(5);
-            cmdPlayTone.Size = new Size(60, 26);
-            cmdPlayTone.TabIndex = 5;
-            cmdPlayTone.Text = "Play";
-            cmdPlayTone.Click += cmdPlayTone_Click;
+            lbNote.AutoSize = true;
+            lbNote.BackColor = Color.Transparent;
+            lbNote.Location = new Point(6, 4);
+            lbNote.Margin = new Padding(3);
+            lbNote.Name = "lbNote";
+            lbNote.Size = new Size(33, 15);
+            lbNote.TabIndex = 3;
+            lbNote.Text = "Note";
             // 
             // numNote
             // 
-            numNote.Location = new Point(3, 27);
+            numNote.Location = new Point(5, 25);
             numNote.Maximum = new decimal(new int[] { 127, 0, 0, 0 });
             numNote.Name = "numNote";
             numNote.Size = new Size(44, 23);
@@ -540,31 +597,48 @@ namespace CrashEdit.CE
             numNote.Value = new decimal(new int[] { 60, 0, 0, 0 });
             numNote.ValueChanged += numNote_ValueChanged;
             // 
+            // cmdPlayTone
+            // 
+            cmdPlayTone.BorderColour = Color.Empty;
+            cmdPlayTone.CustomColour = false;
+            cmdPlayTone.FlatBottom = false;
+            cmdPlayTone.FlatTop = false;
+            cmdPlayTone.Location = new Point(5, 54);
+            cmdPlayTone.Name = "cmdPlayTone";
+            cmdPlayTone.Padding = new Padding(5);
+            cmdPlayTone.Size = new Size(60, 26);
+            cmdPlayTone.TabIndex = 5;
+            cmdPlayTone.Text = "Play";
+            cmdPlayTone.Click += cmdPlayTone_Click;
+            // 
+            // cmdADSR
+            // 
+            cmdADSR.BorderColour = Color.Empty;
+            cmdADSR.CustomColour = false;
+            cmdADSR.FlatBottom = false;
+            cmdADSR.FlatTop = false;
+            cmdADSR.Location = new Point(61, 20);
+            cmdADSR.Name = "cmdADSR";
+            cmdADSR.Padding = new Padding(5);
+            cmdADSR.Size = new Size(60, 26);
+            cmdADSR.TabIndex = 5;
+            cmdADSR.Text = "ADSR";
+            cmdADSR.Click += cmdADSR_Click;
+            // 
             // numVAG
             // 
-            numVAG.Location = new Point(3, 24);
+            numVAG.Location = new Point(5, 22);
             numVAG.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
             numVAG.Name = "numVAG";
             numVAG.Size = new Size(44, 23);
             numVAG.TabIndex = 4;
             numVAG.ValueChanged += numVAG_ValueChanged;
             // 
-            // lbNote
-            // 
-            lbNote.AutoSize = true;
-            lbNote.BackColor = Color.Transparent;
-            lbNote.Location = new Point(6, 6);
-            lbNote.Margin = new Padding(3);
-            lbNote.Name = "lbNote";
-            lbNote.Size = new Size(33, 15);
-            lbNote.TabIndex = 3;
-            lbNote.Text = "Note";
-            // 
             // lbVAG
             // 
             lbVAG.AutoSize = true;
             lbVAG.BackColor = Color.Transparent;
-            lbVAG.Location = new Point(3, 3);
+            lbVAG.Location = new Point(5, 3);
             lbVAG.Margin = new Padding(3);
             lbVAG.Name = "lbVAG";
             lbVAG.Size = new Size(29, 15);
@@ -895,21 +969,13 @@ namespace CrashEdit.CE
             dgvTones.Name = "dgvTones";
             dgvTones.RowHeadersWidth = 24;
             dgvTones.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dgvTones.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvTones.Size = new Size(591, 408);
             dgvTones.TabIndex = 1;
+            dgvTones.CellBeginEdit += dgvTones_CellBeginEdit;
+            dgvTones.CellValidating += dgvTones_CellValidating;
+            dgvTones.CellValueChanged += dgvTones_CellValueChanged;
             dgvTones.SelectionChanged += dgvTones_SelectionChanged;
-            // 
-            // fraPlay
-            // 
-            fraPlay.Controls.Add(chkAutoPlay);
-            fraPlay.Controls.Add(lbNote);
-            fraPlay.Controls.Add(numNote);
-            fraPlay.Controls.Add(cmdPlayTone);
-            fraPlay.Location = new Point(3, 56);
-            fraPlay.Name = "fraPlay";
-            fraPlay.Size = new Size(118, 83);
-            fraPlay.TabIndex = 7;
-            fraPlay.TabStop = false;
             // 
             // VABTool
             // 
@@ -945,6 +1011,8 @@ namespace CrashEdit.CE
             ((System.ComponentModel.ISupportInitialize)numPriority).EndInit();
             pnToneControls2.ResumeLayout(false);
             pnToneControls2.PerformLayout();
+            fraPlay.ResumeLayout(false);
+            fraPlay.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numNote).EndInit();
             ((System.ComponentModel.ISupportInitialize)numVAG).EndInit();
             tblToneControls.ResumeLayout(false);
@@ -958,8 +1026,6 @@ namespace CrashEdit.CE
             ((System.ComponentModel.ISupportInitialize)trkPBmin).EndInit();
             ((System.ComponentModel.ISupportInitialize)trkPBmax).EndInit();
             ((System.ComponentModel.ISupportInitialize)dgvTones).EndInit();
-            fraPlay.ResumeLayout(false);
-            fraPlay.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1023,5 +1089,7 @@ namespace CrashEdit.CE
         private DarkGroupBox fraProgramControls;
         private DarkGroupBox fraProgramCommands;
         private DarkGroupBox fraPlay;
+        private MetroSetTrackBar trkMasterVolume;
+        private MetroSetTrackBar trkMasterPan;
     }
 }

@@ -35,11 +35,6 @@ namespace CrashEdit.CE
             txtMusic = new DarkTextBox();
             lbEIDError = new Label();
             fraVABLinks = new DarkGroupBox();
-            fraVH = new DarkGroupBox();
-            numMasterPan = new DarkNumericUpDown();
-            numMasterVolume = new DarkNumericUpDown();
-            lbMasterPan = new Label();
-            lbMasterVolume = new Label();
             fraPlayer = new DarkGroupBox();
             fraControls = new DarkGroupBox();
             numSeqSpeed = new DarkNumericUpDown();
@@ -55,9 +50,6 @@ namespace CrashEdit.CE
             lbTracks = new Label();
             cmdEditor = new DarkButton();
             fraVABLinks.SuspendLayout();
-            fraVH.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numMasterPan).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numMasterVolume).BeginInit();
             fraPlayer.SuspendLayout();
             fraControls.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numSeqSpeed).BeginInit();
@@ -115,57 +107,6 @@ namespace CrashEdit.CE
             fraVABLinks.TabIndex = 3;
             fraVABLinks.TabStop = false;
             fraVABLinks.Text = "VAB Links";
-            // 
-            // fraVH
-            // 
-            fraVH.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            fraVH.BackColor = Color.Transparent;
-            fraVH.Controls.Add(numMasterPan);
-            fraVH.Controls.Add(numMasterVolume);
-            fraVH.Controls.Add(lbMasterPan);
-            fraVH.Controls.Add(lbMasterVolume);
-            fraVH.Location = new Point(143, 3);
-            fraVH.Name = "fraVH";
-            fraVH.Size = new Size(132, 126);
-            fraVH.TabIndex = 4;
-            fraVH.TabStop = false;
-            fraVH.Text = "VH";
-            // 
-            // numMasterPan
-            // 
-            numMasterPan.Location = new Point(6, 89);
-            numMasterPan.Maximum = new decimal(new int[] { 127, 0, 0, 0 });
-            numMasterPan.Name = "numMasterPan";
-            numMasterPan.Size = new Size(120, 23);
-            numMasterPan.TabIndex = 1;
-            numMasterPan.ValueChanged += numMasterPan_ValueChanged;
-            // 
-            // numMasterVolume
-            // 
-            numMasterVolume.Location = new Point(6, 37);
-            numMasterVolume.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
-            numMasterVolume.Name = "numMasterVolume";
-            numMasterVolume.Size = new Size(120, 23);
-            numMasterVolume.TabIndex = 1;
-            numMasterVolume.ValueChanged += numMasterVolume_ValueChanged;
-            // 
-            // lbMasterPan
-            // 
-            lbMasterPan.AutoSize = true;
-            lbMasterPan.Location = new Point(6, 71);
-            lbMasterPan.Name = "lbMasterPan";
-            lbMasterPan.Size = new Size(66, 15);
-            lbMasterPan.TabIndex = 0;
-            lbMasterPan.Text = "Master Pan";
-            // 
-            // lbMasterVolume
-            // 
-            lbMasterVolume.AutoSize = true;
-            lbMasterVolume.Location = new Point(6, 19);
-            lbMasterVolume.Name = "lbMasterVolume";
-            lbMasterVolume.Size = new Size(86, 15);
-            lbMasterVolume.TabIndex = 0;
-            lbMasterVolume.Text = "Master Volume";
             // 
             // fraPlayer
             // 
@@ -346,7 +287,7 @@ namespace CrashEdit.CE
             cmdEditor.CustomColour = false;
             cmdEditor.FlatBottom = false;
             cmdEditor.FlatTop = false;
-            cmdEditor.Location = new Point(143, 135);
+            cmdEditor.Location = new Point(141, 11);
             cmdEditor.Name = "cmdEditor";
             cmdEditor.Padding = new Padding(5);
             cmdEditor.Size = new Size(86, 26);
@@ -357,7 +298,6 @@ namespace CrashEdit.CE
             // MusicBox
             // 
             BackColor = Color.FromArgb(31, 31, 32);
-            Controls.Add(fraVH);
             Controls.Add(lbEIDError);
             Controls.Add(fraPlayer);
             Controls.Add(fraVABLinks);
@@ -367,10 +307,6 @@ namespace CrashEdit.CE
             Leave += musicBox_Leave;
             fraVABLinks.ResumeLayout(false);
             fraVABLinks.PerformLayout();
-            fraVH.ResumeLayout(false);
-            fraVH.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)numMasterPan).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numMasterVolume).EndInit();
             fraPlayer.ResumeLayout(false);
             fraPlayer.PerformLayout();
             fraControls.ResumeLayout(false);
@@ -388,11 +324,6 @@ namespace CrashEdit.CE
         private DarkTextBox txtMusic;
         private Label lbEIDError;
         private DarkGroupBox fraVABLinks;
-        private DarkGroupBox fraVH;
-        private DarkNumericUpDown numMasterVolume;
-        private Label lbMasterVolume;
-        private DarkNumericUpDown numMasterPan;
-        private Label lbMasterPan;
         private DarkGroupBox fraPlayer;
         private DarkNumericUpDown numSEQ;
         private Label lbTracks;

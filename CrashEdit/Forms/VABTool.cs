@@ -211,6 +211,9 @@ namespace CrashEdit.CE
 
                 row.CreateCells(dgvHeader, vh.VHVersion, vh.Size, vh.Size - vbSize, vbSize, vh.Programs.Count, tonecount, vh.Waves.Count, vh.Volume, vh.Panning);
                 dgvHeader.Rows.Add(row);
+
+                trkMasterVolume.Value = vh.Volume;
+                trkMasterPan.Value = vh.Panning;
             }
             // Update the programs.
             {
@@ -521,7 +524,7 @@ namespace CrashEdit.CE
             trkPBmin.Value = Convert.ToInt32(selectedRow.Cells[ColTonePBmin].Value);
             trkPBmax.Value = Convert.ToInt32(selectedRow.Cells[ColTonePBmax].Value);
 
-            foreach(Control control in tblToneControls.Controls)
+            foreach (Control control in tblToneControls.Controls)
             {
                 if (control is TrackBar trackBar && trackBar.Tag is string tag)
                     UpdateToneLabel(tag);
@@ -663,6 +666,28 @@ namespace CrashEdit.CE
             }
         }
 
+        private void trkMasterVolume_ValueChanged(object sender, EventArgs e)
+        {
+            GetSelectedRow(dgvHeader, out int rowIdx, out DataGridViewRow? selectedRow);
+            if (selectedRow == null || Dirty) return;
+
+            dirty.Push(true);
+            vh.Volume = (byte)trkMasterVolume.Value;
+            selectedRow.Cells[ColHeadMasterVolume].Value = trkMasterVolume.Value;
+            dirty.Pop();
+        }
+
+        private void trkMasterPan_ValueChanged(object sender, EventArgs e)
+        {
+            GetSelectedRow(dgvHeader, out int rowIdx, out DataGridViewRow? selectedRow);
+            if (selectedRow == null || Dirty) return;
+
+            dirty.Push(true);
+            vh.Panning = (byte)trkMasterPan.Value;
+            selectedRow.Cells[ColHeadMasterPan].Value = trkMasterPan.Value;
+            dirty.Pop();
+        }
+
         private void UpdateProgramVolumeText()
         {
             double volume = (double)(trkProgramVolume.Value / 127.0 * 100);
@@ -680,18 +705,24 @@ namespace CrashEdit.CE
         {
             GetSelectedRow(dgvPrograms, out int rowIdx, out DataGridViewRow? selectedRow);
             if (selectedRow == null || Dirty) return;
-            vh.Programs[rowIdx].Volume = (byte)trkProgramVolume.Value;
+
+            dirty.Push(true);
+            vh.Programs[programIndex].Volume = (byte)trkProgramVolume.Value;
             selectedRow.Cells[ColProgVolume].Value = trkProgramVolume.Value;
             UpdateProgramVolumeText();
+            dirty.Pop();
         }
 
         private void trkProgramPan_ValueChanged(object sender, EventArgs e)
         {
             GetSelectedRow(dgvPrograms, out int rowIdx, out DataGridViewRow? selectedRow);
             if (selectedRow == null || Dirty) return;
-            vh.Programs[rowIdx].Panning = (byte)trkProgramPan.Value;
+
+            dirty.Push(true);
+            vh.Programs[programIndex].Panning = (byte)trkProgramPan.Value;
             selectedRow.Cells[ColProgPan].Value = trkProgramPan.Value;
             UpdateProgramPanText();
+            dirty.Pop();
         }
 
         private void UpdateToneLabel(string tag)
@@ -735,6 +766,7 @@ namespace CrashEdit.CE
 
             if (sender is TrackBar trackBar && trackBar.Tag is string tag)
             {
+                dirty.Push(true);
                 switch (tag)
                 {
                     case "Volume":
@@ -794,6 +826,7 @@ namespace CrashEdit.CE
                 }
 
                 UpdateToneLabel(tag);
+                dirty.Pop();
             }
         }
 
@@ -1197,6 +1230,182 @@ namespace CrashEdit.CE
             selectedToneRow.Cells[ColToneADSR2].Value = adsr2.ToString("X");
         }
 
+        private void dgvPrograms_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            if (e.ColumnIndex == ColProgProgramNumber || e.ColumnIndex == ColProgToneCount)
+                e.Cancel = true;
+        }
+
+        private void dgvProgramsGetMaxValue(int columnIndex, out int minValue, out int maxValue)
+        {
+            maxValue = 0; minValue = 0;
+            switch (columnIndex)
+            {
+                case 2: // Volume
+                    maxValue = 255;
+                    break;
+                case 3: // Pan
+                    maxValue = 127;
+                    break;
+            }
+        }
+
+        private void dgvPrograms_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            GetSelectedRow(dgvPrograms, out int toneRoeIdx, out DataGridViewRow? selectedToneRow);
+            if (selectedToneRow == null) return;
+            if (e.ColumnIndex == ColProgProgramNumber || e.ColumnIndex == ColProgToneCount) return;
+
+            string inputValue = e.FormattedValue.ToString();
+
+            if (int.TryParse(inputValue, out int newValue))
+            {
+                dgvProgramsGetMaxValue(e.ColumnIndex, out int minValue, out int maxValue);
+                if (newValue > maxValue)
+                {
+                    DarkMessageBox.ShowError($"The value must be less than or equal to {maxValue}.", Resources.Title_InputError);
+                    e.Cancel = true;
+                }
+                else if (newValue < minValue)
+                {
+                    DarkMessageBox.ShowError($"The value must be greater than or equal to {minValue}.", Resources.Title_InputError);
+                    e.Cancel = true;
+                }
+            }
+            else
+            {
+                DarkMessageBox.ShowError($"Invalid input. Please enter an integer.", Resources.Title_InputError);
+                e.Cancel = true;
+            }
+        }
+
+        private void dgvPrograms_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (Dirty) return;
+
+            switch (e.ColumnIndex)
+            {
+                case 2: // Volume
+                    trkProgramVolume.Value = Convert.ToInt32(dgvPrograms.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
+                    vh.Programs[programIndex].Volume = (byte)trkProgramVolume.Value;
+                    break;
+                case 3: // Pan
+                    trkProgramPan.Value = Convert.ToInt32(dgvPrograms.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
+                    vh.Programs[programIndex].Panning = (byte)trkProgramPan.Value;
+                    break;
+            }
+        }
+
+        private void dgvTones_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            if (e.ColumnIndex == ColToneIndex)
+                e.Cancel = true;
+        }
+
+        private void dgvTonesGetMaxValue(int columnIndex, out int minValue, out int maxValue)
+        {
+            maxValue = 0; minValue = 0;
+            switch (columnIndex)
+            {
+                case 3: // Volume
+                    maxValue = 255;
+                    break;
+                case 4: // Pan
+                    maxValue = 127;
+                    break;
+                case 5: // Center
+                    maxValue = 127;
+                    break;
+                case 6: // Pitch
+                    maxValue = 99;
+                    break;
+                case 7: // MinNote
+                    minValue = 0;
+                    maxValue = trkMaxNote.Value;
+                    break;
+                case 8: // MaxNote
+                    minValue = trkMinNote.Value;
+                    maxValue = 127;
+                    break;
+                case 9: // PBmin
+                    minValue = 0;
+                    maxValue = trkPBmax.Value;
+                    break;
+                case 10: // PBmax
+                    minValue = trkPBmin.Value;
+                    maxValue = 127;
+                    break;
+                case 13: // VAG
+                    minValue = 1;
+                    maxValue = vh.Waves.Count;
+                    break;
+            }
+        }
+
+        private void dgvTones_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            GetSelectedRow(dgvTones, out int toneRoeIdx, out DataGridViewRow? selectedToneRow);
+            if (selectedToneRow == null) return;
+            if (e.ColumnIndex == ColToneIndex) return;
+
+            string inputValue = e.FormattedValue.ToString();
+
+            if (int.TryParse(inputValue, out int newValue))
+            {
+                dgvTonesGetMaxValue(e.ColumnIndex, out int minValue, out int maxValue);
+                if (newValue > maxValue)
+                {
+                    DarkMessageBox.ShowError($"The value must be less than or equal to {maxValue}.", Resources.Title_InputError);
+                    e.Cancel = true;
+                }
+                else if (newValue < minValue)
+                {
+                    DarkMessageBox.ShowError($"The value must be greater than or equal to {minValue}.", Resources.Title_InputError);
+                    e.Cancel = true;
+                }
+            }
+            else
+            {
+                DarkMessageBox.ShowError($"Invalid input. Please enter an integer.", Resources.Title_InputError);
+                e.Cancel = true;
+            }
+        }
+
+        private void dgvTones_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (Dirty) return;
+
+            switch (e.ColumnIndex)
+            {
+                case 3: // Volume
+                    trkVolume.Value = Convert.ToInt32(dgvTones.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
+                    break;
+                case 4: // Pan
+                    trkPan.Value = Convert.ToInt32(dgvTones.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
+                    break;
+                case 5: // Center
+                    trkCenter.Value = Convert.ToInt32(dgvTones.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
+                    break;
+                case 6: // Pitch
+                    trkPitch.Value = Convert.ToInt32(dgvTones.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
+                    break;
+                case 7: // MinNote
+                    trkMinNote.Value = Convert.ToInt32(dgvTones.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
+                    break;
+                case 8: // MaxNote
+                    trkMaxNote.Value = Convert.ToInt32(dgvTones.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
+                    break;
+                case 9: // PBmin
+                    trkPBmin.Value = Convert.ToInt32(dgvTones.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
+                    break;
+                case 10: // PBmax
+                    trkPBmax.Value = Convert.ToInt32(dgvTones.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
+                    break;
+                case 13: // VAG
+                    numVAG.Value = Convert.ToInt32(dgvTones.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
+                    break;
+            }
+        }
     }
 
     public class VAGListForm : DarkForm

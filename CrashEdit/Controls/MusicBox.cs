@@ -1,10 +1,7 @@
-﻿using System.Numerics;
-using System.Windows.Forms;
-using AltUI.Forms;
+﻿using AltUI.Forms;
 using CrashEdit.Crash;
 using MeltySynth;
 using NAudio.Wave;
-using static System.Windows.Forms.DataFormats;
 using Timer = System.Windows.Forms.Timer;
 
 namespace CrashEdit.CE
@@ -112,14 +109,8 @@ namespace CrashEdit.CE
             ResetTimeInfo(false, true);
 
             // Check if the music entry has a VH.
-            if (musicentry.VH != null)
+            if (musicentry.VH == null)
             {
-                numMasterVolume.Value = musicentry.VH.Volume;
-                numMasterPan.Value = musicentry.VH.Panning;
-            }
-            else
-            {
-                fraVH.Visible = false;
                 cmdEditor.Visible = false;
             }
 
@@ -185,17 +176,6 @@ namespace CrashEdit.CE
         #endregion
 
         #region Player events
-
-        private void numMasterVolume_ValueChanged(object sender, EventArgs e)
-        {
-            musicentry.VH.Volume = (byte)numMasterVolume.Value;
-        }
-
-        private void numMasterPan_ValueChanged(object sender, EventArgs e)
-        {
-            musicentry.VH.Panning = (byte)numMasterPan.Value;
-            lbMasterPan.Text = $"Master Pan ({ConvertPanByte(musicentry.VH.Panning):F1})";
-        }
 
         private void numSEQ_ValueChanged(object sender, EventArgs e)
         {
