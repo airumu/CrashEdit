@@ -4,6 +4,7 @@ using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
+using CrashEdit.Crash.GOOLIns;
 using MetroSet_UI.Controls;
 using NAudio.Wave;
 
@@ -101,6 +102,7 @@ namespace CrashEdit.CE
             {
                 this.musicBox = musicBox;
                 vab = musicBox.vab;
+                Text = $"VAB Tool [{musicBox.musicentry.EName}]";
 
                 string basePath = Path.Combine("tmp", "tmp");
                 Directory.CreateDirectory(Path.GetDirectoryName(basePath) ?? "");
@@ -275,6 +277,7 @@ namespace CrashEdit.CE
                     byte[] file = File.ReadAllBytes(dialog.FileName);
                     vab = VAB.Load(file);
                     LoadVAB();
+                    Text = $"VAB Tool ({dialog.FileName})";
                 }
             }
         }
@@ -343,6 +346,7 @@ namespace CrashEdit.CE
             if (ConfirmCloseVAB())
             {
                 CloseVAB();
+                Text = "VAB Tool";
             }
 
         }
@@ -481,6 +485,18 @@ namespace CrashEdit.CE
             trkPBmin.Value = Convert.ToInt32(selectedRow.Cells[ColTonePBmin].Value);
             trkPBmax.Value = Convert.ToInt32(selectedRow.Cells[ColTonePBmax].Value);
 
+            double volume = (double)(trkVolume.Value / 127.0 * 100);
+            lbVolume.Text = $"Volume\n({volume.ToString("F0")}%)";
+            double pan = SF2Conv.ConvertPanByteToDouble((short)trkPan.Value);
+            string side = pan == 0 ? "" : pan < 0 ? " [L]" : " [R]";
+            lbPan.Text = $"Pan{side}\n({pan.ToString("F2")})";
+            lbCenter.Text = $"Center\n({MidiForm.GetNoteName(trkCenter.Value)}{trkCenter.Value / 12})";
+            lbPitch.Text = $"Pitch\n({trkPitch.Value})";
+            lbMinNote.Text = $"MinNote\n({trkMinNote.Value})";
+            lbMaxNote.Text = $"MaxNote\n({trkMaxNote.Value})";
+            lbPBmin.Text = $"PBmin\n({trkPBmin.Value})";
+            lbPBmax.Text = $"PBmax\n({trkPBmax.Value})";
+
             numNote.Minimum = Convert.ToInt32(selectedRow.Cells[ColToneMinNote].Value);
             numNote.Maximum = Convert.ToInt32(selectedRow.Cells[ColToneMaxNote].Value);
             if ((int)numNote.Value < trkMinNote.Value)
@@ -617,12 +633,15 @@ namespace CrashEdit.CE
 
         private void UpdateProgramVolumeText()
         {
-            lbProgramVolume.Text = $"Volume (0x{trkProgramVolume.Value.ToString("X")})";
+            double volume = (double)(trkProgramVolume.Value / 127.0 * 100);
+            lbProgramVolume.Text = $"Volume ({volume.ToString("F0")}%)";
         }
 
         private void UpdateProgramPanText()
         {
-            lbProgramPan.Text = $"Pan (0x{trkProgramPan.Value.ToString("X")})";
+            double pan = SF2Conv.ConvertPanByteToDouble((short)trkProgramPan.Value);
+            string side = pan == 0 ? "" : pan < 0 ? " [L]" : " [R]";
+            lbProgramPan.Text = $"Pan{side} ({pan.ToString("F2")})";
         }
 
         private void trkProgramVolume_ValueChanged(object sender, EventArgs e)
@@ -654,21 +673,28 @@ namespace CrashEdit.CE
                 {
                     selectedRow.Cells[ColToneVolume].Value = trkVolume.Value;
                     vh.Programs[programIndex].Tones[toneIndex].Volume = (byte)trkVolume.Value;
+                    double volume = (double)(trkVolume.Value / 127.0 * 100);
+                    lbVolume.Text = $"Volume\n({volume.ToString("F0")}%)";
                 }
                 else if (tag == "Pan")
                 {
                     selectedRow.Cells[ColTonePan].Value = trkPan.Value;
                     vh.Programs[programIndex].Tones[toneIndex].Panning = (byte)trkPan.Value;
+                    double pan = SF2Conv.ConvertPanByteToDouble((short)trkPan.Value);
+                    string side = pan == 0 ? "" : pan < 0 ? " [L]" : " [R]";
+                    lbPan.Text = $"Pan{side}\n({pan.ToString("F2")})";
                 }
                 else if (tag == "Center")
                 {
                     selectedRow.Cells[ColToneCenter].Value = trkCenter.Value;
                     vh.Programs[programIndex].Tones[toneIndex].CenterNote = (byte)trkCenter.Value;
+                    lbCenter.Text = $"Center\n({MidiForm.GetNoteName(trkCenter.Value)}{trkCenter.Value / 12})";
                 }
                 else if (tag == "Pitch")
                 {
                     selectedRow.Cells[ColTonePitch].Value = trkPitch.Value;
                     vh.Programs[programIndex].Tones[toneIndex].PitchShift = (byte)trkPitch.Value;
+                    lbPitch.Text = $"Pitch\n({trkPitch.Value})";
                 }
                 else if (tag == "MinNote")
                 {
@@ -679,6 +705,7 @@ namespace CrashEdit.CE
                     }
                     selectedRow.Cells[ColToneMinNote].Value = trkMinNote.Value;
                     vh.Programs[programIndex].Tones[toneIndex].MinimumNote = (byte)trkMinNote.Value;
+                    lbMinNote.Text = $"MinNote\n({trkMinNote.Value})";
                     numNote.Minimum = trkMinNote.Value;
                 }
                 else if (tag == "MaxNote")
@@ -690,6 +717,7 @@ namespace CrashEdit.CE
                     }
                     selectedRow.Cells[ColToneMaxNote].Value = trkMaxNote.Value;
                     vh.Programs[programIndex].Tones[toneIndex].MaximumNote = (byte)trkMaxNote.Value;
+                    lbMaxNote.Text = $"MaxNote\n({trkMaxNote.Value})";
                     numNote.Maximum = trkMaxNote.Value;
                 }
                 else if (tag == "PBmin")
@@ -701,6 +729,7 @@ namespace CrashEdit.CE
                     }
                     selectedRow.Cells[ColTonePBmin].Value = trkPBmin.Value;
                     vh.Programs[programIndex].Tones[toneIndex].PitchBendMinimum = (byte)trkPBmin.Value;
+                    lbPBmin.Text = $"PBmin\n({trkPBmin.Value})";
                 }
                 else if (tag == "PBmax")
                 {
@@ -711,6 +740,7 @@ namespace CrashEdit.CE
                     }
                     selectedRow.Cells[ColTonePBmax].Value = trkPBmax.Value;
                     vh.Programs[programIndex].Tones[toneIndex].PitchBendMaximum = (byte)trkPBmax.Value;
+                    lbPBmax.Text = $"PBmax\n({trkPBmax.Value})";
                 }
             }
         }

@@ -708,6 +708,17 @@ namespace CrashEdit.Crash
             return (short)Math.Round(result);
         }
 
+        public static double ConvertPanByteToDouble(short pan)
+        {
+            // If the value is the center (64), return 0.
+            if (pan == 64) return 0;
+            // Convert the range 0–127 to 0–1 and shift based on the center (0.5).
+            double normalized = (pan / 127.0) - 0.5;
+            // Multiply by 1000 to express the result in 0.1% units.
+            double result = normalized * 100;
+            return result;
+        }
+
         #endregion
     }
 }

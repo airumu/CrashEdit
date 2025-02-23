@@ -119,7 +119,7 @@ namespace CrashEdit.CE
             toolStrip.Items.AddRange(new ToolStripItem[] { tbbOpen, tbbSave, tbbClose });
             toolStrip.Location = new Point(0, 0);
             toolStrip.Name = "toolStrip";
-            toolStrip.Size = new Size(1132, 25);
+            toolStrip.Size = new Size(1168, 25);
             toolStrip.TabIndex = 0;
             toolStrip.Text = "toolStrip1";
             // 
@@ -396,7 +396,7 @@ namespace CrashEdit.CE
             fraTones.Controls.Add(dgvTones);
             fraTones.Location = new Point(476, 30);
             fraTones.Name = "fraTones";
-            fraTones.Size = new Size(646, 618);
+            fraTones.Size = new Size(682, 618);
             fraTones.TabIndex = 3;
             fraTones.TabStop = false;
             fraTones.Text = "Tone Attributes Table";
@@ -410,7 +410,7 @@ namespace CrashEdit.CE
             panel1.Controls.Add(numPriority);
             panel1.Location = new Point(7, 22);
             panel1.Name = "panel1";
-            panel1.Size = new Size(74, 142);
+            panel1.Size = new Size(57, 142);
             panel1.TabIndex = 8;
             // 
             // lbMode
@@ -488,7 +488,7 @@ namespace CrashEdit.CE
             panel2.Controls.Add(numVAG);
             panel2.Controls.Add(lbNote);
             panel2.Controls.Add(lbVAG);
-            panel2.Location = new Point(513, 22);
+            panel2.Location = new Point(549, 22);
             panel2.Name = "panel2";
             panel2.Size = new Size(127, 142);
             panel2.TabIndex = 7;
@@ -509,7 +509,7 @@ namespace CrashEdit.CE
             cmdADSR.CustomColour = false;
             cmdADSR.FlatBottom = false;
             cmdADSR.FlatTop = false;
-            cmdADSR.Location = new Point(61, 20);
+            cmdADSR.Location = new Point(61, 24);
             cmdADSR.Name = "cmdADSR";
             cmdADSR.Padding = new Padding(5);
             cmdADSR.Size = new Size(60, 26);
@@ -613,12 +613,12 @@ namespace CrashEdit.CE
             tableLayoutPanel1.Controls.Add(trkPBmin, 6, 1);
             tableLayoutPanel1.Controls.Add(lbPBmax, 7, 0);
             tableLayoutPanel1.Controls.Add(trkPBmax, 7, 1);
-            tableLayoutPanel1.Location = new Point(87, 22);
+            tableLayoutPanel1.Location = new Point(67, 22);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 2;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 17.2795429F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 82.72045F));
-            tableLayoutPanel1.Size = new Size(420, 142);
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 22.5352116F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 77.46479F));
+            tableLayoutPanel1.Size = new Size(479, 142);
             tableLayoutPanel1.TabIndex = 6;
             // 
             // lbVolume
@@ -626,24 +626,26 @@ namespace CrashEdit.CE
             lbVolume.AutoSize = true;
             lbVolume.BackColor = Color.Transparent;
             lbVolume.Dock = DockStyle.Fill;
-            lbVolume.Font = new Font("Segoe UI", 8.25F);
-            lbVolume.Location = new Point(3, 3);
-            lbVolume.Margin = new Padding(3);
+            lbVolume.Font = new Font("Arial", 9F);
+            lbVolume.ForeColor = SystemColors.MenuText;
+            lbVolume.Location = new Point(1, 1);
+            lbVolume.Margin = new Padding(1);
             lbVolume.Name = "lbVolume";
-            lbVolume.Size = new Size(46, 18);
+            lbVolume.Size = new Size(57, 30);
             lbVolume.TabIndex = 3;
-            lbVolume.Text = "Volume";
+            lbVolume.Text = "Volume\r\n(100%)";
             // 
             // trkVolume
             // 
             trkVolume.BackColor = Color.FromArgb(31, 31, 32);
             trkVolume.Dock = DockStyle.Fill;
             trkVolume.LargeChange = 1;
-            trkVolume.Location = new Point(3, 27);
+            trkVolume.Location = new Point(1, 33);
+            trkVolume.Margin = new Padding(1);
             trkVolume.Maximum = 255;
             trkVolume.Name = "trkVolume";
             trkVolume.Orientation = Orientation.Vertical;
-            trkVolume.Size = new Size(46, 112);
+            trkVolume.Size = new Size(57, 108);
             trkVolume.TabIndex = 5;
             trkVolume.Tag = "Volume";
             trkVolume.TickFrequency = 8;
@@ -655,24 +657,26 @@ namespace CrashEdit.CE
             lbPan.AutoSize = true;
             lbPan.BackColor = Color.Transparent;
             lbPan.Dock = DockStyle.Fill;
-            lbPan.Font = new Font("Segoe UI", 8.25F);
-            lbPan.Location = new Point(55, 3);
-            lbPan.Margin = new Padding(3);
+            lbPan.Font = new Font("Arial", 9F);
+            lbPan.ForeColor = SystemColors.MenuText;
+            lbPan.Location = new Point(60, 1);
+            lbPan.Margin = new Padding(1);
             lbPan.Name = "lbPan";
-            lbPan.Size = new Size(46, 18);
+            lbPan.Size = new Size(57, 30);
             lbPan.TabIndex = 3;
-            lbPan.Text = "Pan";
+            lbPan.Text = "Pan\r\n(-00.00)";
             // 
             // trkPan
             // 
             trkPan.BackColor = Color.FromArgb(31, 31, 32);
             trkPan.Dock = DockStyle.Fill;
             trkPan.LargeChange = 1;
-            trkPan.Location = new Point(55, 27);
+            trkPan.Location = new Point(60, 33);
+            trkPan.Margin = new Padding(1);
             trkPan.Maximum = 127;
             trkPan.Name = "trkPan";
             trkPan.Orientation = Orientation.Vertical;
-            trkPan.Size = new Size(46, 112);
+            trkPan.Size = new Size(57, 108);
             trkPan.TabIndex = 5;
             trkPan.Tag = "Pan";
             trkPan.TickFrequency = 31;
@@ -684,11 +688,12 @@ namespace CrashEdit.CE
             lbCenter.AutoSize = true;
             lbCenter.BackColor = Color.Transparent;
             lbCenter.Dock = DockStyle.Fill;
-            lbCenter.Font = new Font("Segoe UI", 8.25F);
-            lbCenter.Location = new Point(107, 3);
-            lbCenter.Margin = new Padding(3);
+            lbCenter.Font = new Font("Arial", 9F);
+            lbCenter.ForeColor = SystemColors.MenuText;
+            lbCenter.Location = new Point(119, 1);
+            lbCenter.Margin = new Padding(1);
             lbCenter.Name = "lbCenter";
-            lbCenter.Size = new Size(46, 18);
+            lbCenter.Size = new Size(57, 30);
             lbCenter.TabIndex = 3;
             lbCenter.Text = "Center";
             // 
@@ -697,11 +702,12 @@ namespace CrashEdit.CE
             trkCenter.BackColor = Color.FromArgb(31, 31, 32);
             trkCenter.Dock = DockStyle.Fill;
             trkCenter.LargeChange = 1;
-            trkCenter.Location = new Point(107, 27);
+            trkCenter.Location = new Point(119, 33);
+            trkCenter.Margin = new Padding(1);
             trkCenter.Maximum = 127;
             trkCenter.Name = "trkCenter";
             trkCenter.Orientation = Orientation.Vertical;
-            trkCenter.Size = new Size(46, 112);
+            trkCenter.Size = new Size(57, 108);
             trkCenter.TabIndex = 5;
             trkCenter.Tag = "Center";
             trkCenter.TickFrequency = 8;
@@ -713,11 +719,12 @@ namespace CrashEdit.CE
             lbPitch.AutoSize = true;
             lbPitch.BackColor = Color.Transparent;
             lbPitch.Dock = DockStyle.Fill;
-            lbPitch.Font = new Font("Segoe UI", 8.25F);
-            lbPitch.Location = new Point(159, 3);
-            lbPitch.Margin = new Padding(3);
+            lbPitch.Font = new Font("Arial", 9F);
+            lbPitch.ForeColor = SystemColors.MenuText;
+            lbPitch.Location = new Point(178, 1);
+            lbPitch.Margin = new Padding(1);
             lbPitch.Name = "lbPitch";
-            lbPitch.Size = new Size(46, 18);
+            lbPitch.Size = new Size(57, 30);
             lbPitch.TabIndex = 3;
             lbPitch.Text = "Pitch";
             // 
@@ -726,11 +733,12 @@ namespace CrashEdit.CE
             trkPitch.BackColor = Color.FromArgb(31, 31, 32);
             trkPitch.Dock = DockStyle.Fill;
             trkPitch.LargeChange = 1;
-            trkPitch.Location = new Point(159, 27);
+            trkPitch.Location = new Point(178, 33);
+            trkPitch.Margin = new Padding(1);
             trkPitch.Maximum = 99;
             trkPitch.Name = "trkPitch";
             trkPitch.Orientation = Orientation.Vertical;
-            trkPitch.Size = new Size(46, 112);
+            trkPitch.Size = new Size(57, 108);
             trkPitch.TabIndex = 5;
             trkPitch.Tag = "Pitch";
             trkPitch.TickFrequency = 10;
@@ -742,11 +750,12 @@ namespace CrashEdit.CE
             lbMinNote.AutoSize = true;
             lbMinNote.BackColor = Color.Transparent;
             lbMinNote.Dock = DockStyle.Fill;
-            lbMinNote.Font = new Font("Segoe UI", 8.25F);
-            lbMinNote.Location = new Point(211, 3);
-            lbMinNote.Margin = new Padding(3);
+            lbMinNote.Font = new Font("Arial", 9F);
+            lbMinNote.ForeColor = SystemColors.MenuText;
+            lbMinNote.Location = new Point(237, 1);
+            lbMinNote.Margin = new Padding(1);
             lbMinNote.Name = "lbMinNote";
-            lbMinNote.Size = new Size(46, 18);
+            lbMinNote.Size = new Size(57, 30);
             lbMinNote.TabIndex = 3;
             lbMinNote.Text = "MinNote";
             // 
@@ -755,11 +764,12 @@ namespace CrashEdit.CE
             trkMinNote.BackColor = Color.FromArgb(31, 31, 32);
             trkMinNote.Dock = DockStyle.Fill;
             trkMinNote.LargeChange = 1;
-            trkMinNote.Location = new Point(211, 27);
+            trkMinNote.Location = new Point(237, 33);
+            trkMinNote.Margin = new Padding(1);
             trkMinNote.Maximum = 127;
             trkMinNote.Name = "trkMinNote";
             trkMinNote.Orientation = Orientation.Vertical;
-            trkMinNote.Size = new Size(46, 112);
+            trkMinNote.Size = new Size(57, 108);
             trkMinNote.TabIndex = 5;
             trkMinNote.Tag = "MinNote";
             trkMinNote.TickFrequency = 8;
@@ -771,11 +781,12 @@ namespace CrashEdit.CE
             lbMaxNote.AutoSize = true;
             lbMaxNote.BackColor = Color.Transparent;
             lbMaxNote.Dock = DockStyle.Fill;
-            lbMaxNote.Font = new Font("Segoe UI", 8.25F);
-            lbMaxNote.Location = new Point(263, 3);
-            lbMaxNote.Margin = new Padding(3);
+            lbMaxNote.Font = new Font("Arial", 9F);
+            lbMaxNote.ForeColor = SystemColors.MenuText;
+            lbMaxNote.Location = new Point(296, 1);
+            lbMaxNote.Margin = new Padding(1);
             lbMaxNote.Name = "lbMaxNote";
-            lbMaxNote.Size = new Size(46, 18);
+            lbMaxNote.Size = new Size(57, 30);
             lbMaxNote.TabIndex = 3;
             lbMaxNote.Text = "MaxNote";
             // 
@@ -784,11 +795,12 @@ namespace CrashEdit.CE
             trkMaxNote.BackColor = Color.FromArgb(31, 31, 32);
             trkMaxNote.Dock = DockStyle.Fill;
             trkMaxNote.LargeChange = 1;
-            trkMaxNote.Location = new Point(263, 27);
+            trkMaxNote.Location = new Point(296, 33);
+            trkMaxNote.Margin = new Padding(1);
             trkMaxNote.Maximum = 127;
             trkMaxNote.Name = "trkMaxNote";
             trkMaxNote.Orientation = Orientation.Vertical;
-            trkMaxNote.Size = new Size(46, 112);
+            trkMaxNote.Size = new Size(57, 108);
             trkMaxNote.TabIndex = 5;
             trkMaxNote.Tag = "MaxNote";
             trkMaxNote.TickFrequency = 8;
@@ -800,11 +812,12 @@ namespace CrashEdit.CE
             lbPBmin.AutoSize = true;
             lbPBmin.BackColor = Color.Transparent;
             lbPBmin.Dock = DockStyle.Fill;
-            lbPBmin.Font = new Font("Segoe UI", 8.25F);
-            lbPBmin.Location = new Point(315, 3);
-            lbPBmin.Margin = new Padding(3);
+            lbPBmin.Font = new Font("Arial", 9F);
+            lbPBmin.ForeColor = SystemColors.MenuText;
+            lbPBmin.Location = new Point(355, 1);
+            lbPBmin.Margin = new Padding(1);
             lbPBmin.Name = "lbPBmin";
-            lbPBmin.Size = new Size(46, 18);
+            lbPBmin.Size = new Size(57, 30);
             lbPBmin.TabIndex = 3;
             lbPBmin.Text = "PBmin";
             // 
@@ -813,11 +826,12 @@ namespace CrashEdit.CE
             trkPBmin.BackColor = Color.FromArgb(31, 31, 32);
             trkPBmin.Dock = DockStyle.Fill;
             trkPBmin.LargeChange = 1;
-            trkPBmin.Location = new Point(315, 27);
+            trkPBmin.Location = new Point(355, 33);
+            trkPBmin.Margin = new Padding(1);
             trkPBmin.Maximum = 127;
             trkPBmin.Name = "trkPBmin";
             trkPBmin.Orientation = Orientation.Vertical;
-            trkPBmin.Size = new Size(46, 112);
+            trkPBmin.Size = new Size(57, 108);
             trkPBmin.TabIndex = 5;
             trkPBmin.Tag = "PBmin";
             trkPBmin.TickFrequency = 8;
@@ -829,11 +843,12 @@ namespace CrashEdit.CE
             lbPBmax.AutoSize = true;
             lbPBmax.BackColor = Color.Transparent;
             lbPBmax.Dock = DockStyle.Fill;
-            lbPBmax.Font = new Font("Segoe UI", 8.25F);
-            lbPBmax.Location = new Point(367, 3);
-            lbPBmax.Margin = new Padding(3);
+            lbPBmax.Font = new Font("Arial", 9F);
+            lbPBmax.ForeColor = SystemColors.MenuText;
+            lbPBmax.Location = new Point(414, 1);
+            lbPBmax.Margin = new Padding(1);
             lbPBmax.Name = "lbPBmax";
-            lbPBmax.Size = new Size(50, 18);
+            lbPBmax.Size = new Size(64, 30);
             lbPBmax.TabIndex = 3;
             lbPBmax.Text = "PBmax";
             // 
@@ -842,11 +857,12 @@ namespace CrashEdit.CE
             trkPBmax.BackColor = Color.FromArgb(31, 31, 32);
             trkPBmax.Dock = DockStyle.Fill;
             trkPBmax.LargeChange = 1;
-            trkPBmax.Location = new Point(367, 27);
+            trkPBmax.Location = new Point(414, 33);
+            trkPBmax.Margin = new Padding(1);
             trkPBmax.Maximum = 127;
             trkPBmax.Name = "trkPBmax";
             trkPBmax.Orientation = Orientation.Vertical;
-            trkPBmax.Size = new Size(50, 112);
+            trkPBmax.Size = new Size(64, 108);
             trkPBmax.TabIndex = 5;
             trkPBmax.Tag = "PBmax";
             trkPBmax.TickFrequency = 8;
@@ -889,7 +905,7 @@ namespace CrashEdit.CE
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(1132, 659);
+            ClientSize = new Size(1168, 659);
             Controls.Add(fraVABPrograms);
             Controls.Add(fraTones);
             Controls.Add(fraVABHeader);

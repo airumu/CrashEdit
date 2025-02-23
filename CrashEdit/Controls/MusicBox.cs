@@ -12,7 +12,7 @@ namespace CrashEdit.CE
     public partial class MusicBox : UserControl
     {
         private MusicEntryController controller;
-        private MusicEntry musicentry;
+        public MusicEntry musicentry;
         public VAB vab;
         private SEQ seq;
 

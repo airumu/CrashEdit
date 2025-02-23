@@ -187,7 +187,7 @@ namespace CrashEdit.CE
             piano.HotKeys = combinedKeys;
         }
 
-        private static string GetNoteName(int key)
+        public static string GetNoteName(int key)
         {
             switch (key % 12)
             {
