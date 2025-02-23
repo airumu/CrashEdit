@@ -90,6 +90,10 @@ namespace CrashEdit.CE
             fraVABHeader.Enabled =
             fraVABPrograms.Enabled =
             fraTones.Enabled =
+            pnToneControls1.Enabled =
+            pnToneControls2.Enabled =
+            tblToneControls.Enabled =
+            dgvTones.Enabled =
             tbbSave.Enabled =
             tbbClose.Enabled = false;
 
@@ -336,6 +340,10 @@ namespace CrashEdit.CE
             fraVABHeader.Enabled =
             fraVABPrograms.Enabled =
             fraTones.Enabled =
+            pnToneControls1.Enabled =
+            pnToneControls2.Enabled =
+            tblToneControls.Enabled =
+            dgvTones.Enabled =
             tbbSave.Enabled =
             tbbClose.Enabled = false;
         }
@@ -379,7 +387,7 @@ namespace CrashEdit.CE
 
             // Update the tones.
             dgvTones.Rows.Clear();
-            if (vh.Programs.ContainsKey(rowIdx))
+            if (vh.Programs.ContainsKey(rowIdx)) // if the program exists
             {
                 VHProgram vhProgram = vh.Programs[rowIdx];
                 for (int i = 0; i < vhProgram.Tones.Count; i++)
@@ -411,9 +419,18 @@ namespace CrashEdit.CE
                     row.Cells[ColToneIndex].Style.ForeColor = Color.Gray;
                     row.Height = 24;
                 }
+
+                pnToneControls1.Enabled =
+                pnToneControls2.Enabled =
+                tblToneControls.Enabled =
+                dgvTones.Enabled = true;
             }
-            else
+            else // if the program is null
             {
+                pnToneControls1.Enabled =
+                pnToneControls2.Enabled =
+                tblToneControls.Enabled =
+                dgvTones.Enabled = false;
                 ResetADSR();
             }
 
@@ -485,17 +502,11 @@ namespace CrashEdit.CE
             trkPBmin.Value = Convert.ToInt32(selectedRow.Cells[ColTonePBmin].Value);
             trkPBmax.Value = Convert.ToInt32(selectedRow.Cells[ColTonePBmax].Value);
 
-            double volume = (double)(trkVolume.Value / 127.0 * 100);
-            lbVolume.Text = $"Volume\n({volume.ToString("F0")}%)";
-            double pan = SF2Conv.ConvertPanByteToDouble((short)trkPan.Value);
-            string side = pan == 0 ? "" : pan < 0 ? " [L]" : " [R]";
-            lbPan.Text = $"Pan{side}\n({pan.ToString("F2")})";
-            lbCenter.Text = $"Center\n({MidiForm.GetNoteName(trkCenter.Value)}{trkCenter.Value / 12})";
-            lbPitch.Text = $"Pitch\n({trkPitch.Value})";
-            lbMinNote.Text = $"MinNote\n({trkMinNote.Value})";
-            lbMaxNote.Text = $"MaxNote\n({trkMaxNote.Value})";
-            lbPBmin.Text = $"PBmin\n({trkPBmin.Value})";
-            lbPBmax.Text = $"PBmax\n({trkPBmax.Value})";
+            foreach(Control control in tblToneControls.Controls)
+            {
+                if (control is TrackBar trackBar && trackBar.Tag is string tag)
+                    UpdateToneLabel(tag);
+            }
 
             numNote.Minimum = Convert.ToInt32(selectedRow.Cells[ColToneMinNote].Value);
             numNote.Maximum = Convert.ToInt32(selectedRow.Cells[ColToneMaxNote].Value);
@@ -662,6 +673,40 @@ namespace CrashEdit.CE
             UpdateProgramPanText();
         }
 
+        private void UpdateToneLabel(string tag)
+        {
+            switch (tag)
+            {
+                case "Volume":
+                    double volume = (double)(trkVolume.Value / 127.0 * 100);
+                    lbVolume.Text = $"Volume\n({volume.ToString("F0")}%)";
+                    break;
+                case "Pan":
+                    double pan = SF2Conv.ConvertPanByteToDouble((short)trkPan.Value);
+                    string side = pan == 0 ? "" : pan < 0 ? " [L]" : " [R]";
+                    lbPan.Text = $"Pan{side}\n({pan.ToString("F2")})";
+                    break;
+                case "Center":
+                    lbCenter.Text = $"Center\n({MidiForm.GetNoteName(trkCenter.Value)}{trkCenter.Value / 12})";
+                    break;
+                case "Pitch":
+                    lbPitch.Text = $"Pitch\n({trkPitch.Value})";
+                    break;
+                case "MinNote":
+                    lbMinNote.Text = $"MinNote\n({trkMinNote.Value})";
+                    break;
+                case "MaxNote":
+                    lbMaxNote.Text = $"MaxNote\n({trkMaxNote.Value})";
+                    break;
+                case "PBmin":
+                    lbPBmin.Text = $"PBmin\n({trkPBmin.Value})";
+                    break;
+                case "PBmax":
+                    lbPBmax.Text = $"PBmax\n({trkPBmax.Value})";
+                    break;
+            }
+        }
+
         private void tonesTrackBar_ValueChanged(object sender, EventArgs e)
         {
             GetSelectedRow(dgvTones, out int rowIdx, out DataGridViewRow? selectedRow);
@@ -669,79 +714,65 @@ namespace CrashEdit.CE
 
             if (sender is TrackBar trackBar && trackBar.Tag is string tag)
             {
-                if (tag == "Volume")
+                switch (tag)
                 {
-                    selectedRow.Cells[ColToneVolume].Value = trkVolume.Value;
-                    vh.Programs[programIndex].Tones[toneIndex].Volume = (byte)trkVolume.Value;
-                    double volume = (double)(trkVolume.Value / 127.0 * 100);
-                    lbVolume.Text = $"Volume\n({volume.ToString("F0")}%)";
+                    case "Volume":
+                        selectedRow.Cells[ColToneVolume].Value = trkVolume.Value;
+                        vh.Programs[programIndex].Tones[toneIndex].Volume = (byte)trkVolume.Value;
+                        break;
+                    case "Pan":
+                        selectedRow.Cells[ColTonePan].Value = trkPan.Value;
+                        vh.Programs[programIndex].Tones[toneIndex].Panning = (byte)trkPan.Value;
+                        break;
+                    case "Center":
+                        selectedRow.Cells[ColToneCenter].Value = trkCenter.Value;
+                        vh.Programs[programIndex].Tones[toneIndex].CenterNote = (byte)trkCenter.Value;
+                        break;
+                    case "Pitch":
+                        selectedRow.Cells[ColTonePitch].Value = trkPitch.Value;
+                        vh.Programs[programIndex].Tones[toneIndex].PitchShift = (byte)trkPitch.Value;
+                        break;
+                    case "MinNote":
+                        if (trkMinNote.Value > trkMaxNote.Value)
+                        {
+                            trkMinNote.Value = trkMaxNote.Value;
+                            return;
+                        }
+                        selectedRow.Cells[ColToneMinNote].Value = trkMinNote.Value;
+                        vh.Programs[programIndex].Tones[toneIndex].MinimumNote = (byte)trkMinNote.Value;
+                        numNote.Minimum = trkMinNote.Value;
+                        break;
+                    case "MaxNote":
+                        if (trkMaxNote.Value < trkMinNote.Value)
+                        {
+                            trkMaxNote.Value = trkMinNote.Value;
+                            return;
+                        }
+                        selectedRow.Cells[ColToneMaxNote].Value = trkMaxNote.Value;
+                        vh.Programs[programIndex].Tones[toneIndex].MaximumNote = (byte)trkMaxNote.Value;
+                        numNote.Maximum = trkMaxNote.Value;
+                        break;
+                    case "PBmin":
+                        if (trkPBmin.Value > trkPBmax.Value)
+                        {
+                            trkPBmin.Value = trkPBmax.Value;
+                            return;
+                        }
+                        selectedRow.Cells[ColTonePBmin].Value = trkPBmin.Value;
+                        vh.Programs[programIndex].Tones[toneIndex].PitchBendMinimum = (byte)trkPBmin.Value;
+                        break;
+                    case "PBmax":
+                        if (trkPBmax.Value < trkPBmin.Value)
+                        {
+                            trkPBmax.Value = trkPBmin.Value;
+                            return;
+                        }
+                        selectedRow.Cells[ColTonePBmax].Value = trkPBmax.Value;
+                        vh.Programs[programIndex].Tones[toneIndex].PitchBendMaximum = (byte)trkPBmax.Value;
+                        break;
                 }
-                else if (tag == "Pan")
-                {
-                    selectedRow.Cells[ColTonePan].Value = trkPan.Value;
-                    vh.Programs[programIndex].Tones[toneIndex].Panning = (byte)trkPan.Value;
-                    double pan = SF2Conv.ConvertPanByteToDouble((short)trkPan.Value);
-                    string side = pan == 0 ? "" : pan < 0 ? " [L]" : " [R]";
-                    lbPan.Text = $"Pan{side}\n({pan.ToString("F2")})";
-                }
-                else if (tag == "Center")
-                {
-                    selectedRow.Cells[ColToneCenter].Value = trkCenter.Value;
-                    vh.Programs[programIndex].Tones[toneIndex].CenterNote = (byte)trkCenter.Value;
-                    lbCenter.Text = $"Center\n({MidiForm.GetNoteName(trkCenter.Value)}{trkCenter.Value / 12})";
-                }
-                else if (tag == "Pitch")
-                {
-                    selectedRow.Cells[ColTonePitch].Value = trkPitch.Value;
-                    vh.Programs[programIndex].Tones[toneIndex].PitchShift = (byte)trkPitch.Value;
-                    lbPitch.Text = $"Pitch\n({trkPitch.Value})";
-                }
-                else if (tag == "MinNote")
-                {
-                    if (trkMinNote.Value > trkMaxNote.Value)
-                    {
-                        trkMinNote.Value = trkMaxNote.Value;
-                        return;
-                    }
-                    selectedRow.Cells[ColToneMinNote].Value = trkMinNote.Value;
-                    vh.Programs[programIndex].Tones[toneIndex].MinimumNote = (byte)trkMinNote.Value;
-                    lbMinNote.Text = $"MinNote\n({trkMinNote.Value})";
-                    numNote.Minimum = trkMinNote.Value;
-                }
-                else if (tag == "MaxNote")
-                {
-                    if (trkMaxNote.Value < trkMinNote.Value)
-                    {
-                        trkMaxNote.Value = trkMinNote.Value;
-                        return;
-                    }
-                    selectedRow.Cells[ColToneMaxNote].Value = trkMaxNote.Value;
-                    vh.Programs[programIndex].Tones[toneIndex].MaximumNote = (byte)trkMaxNote.Value;
-                    lbMaxNote.Text = $"MaxNote\n({trkMaxNote.Value})";
-                    numNote.Maximum = trkMaxNote.Value;
-                }
-                else if (tag == "PBmin")
-                {
-                    if (trkPBmin.Value > trkPBmax.Value)
-                    {
-                        trkPBmin.Value = trkPBmax.Value;
-                        return;
-                    }
-                    selectedRow.Cells[ColTonePBmin].Value = trkPBmin.Value;
-                    vh.Programs[programIndex].Tones[toneIndex].PitchBendMinimum = (byte)trkPBmin.Value;
-                    lbPBmin.Text = $"PBmin\n({trkPBmin.Value})";
-                }
-                else if (tag == "PBmax")
-                {
-                    if (trkPBmax.Value < trkPBmin.Value)
-                    {
-                        trkPBmax.Value = trkPBmin.Value;
-                        return;
-                    }
-                    selectedRow.Cells[ColTonePBmax].Value = trkPBmax.Value;
-                    vh.Programs[programIndex].Tones[toneIndex].PitchBendMaximum = (byte)trkPBmax.Value;
-                    lbPBmax.Text = $"PBmax\n({trkPBmax.Value})";
-                }
+
+                UpdateToneLabel(tag);
             }
         }
 
@@ -1134,6 +1165,17 @@ namespace CrashEdit.CE
                 frmMidiForm.Activate();
         }
 
+        public void UpdateADSR(ushort adsr1, ushort adsr2)
+        {
+            GetSelectedRow(dgvTones, out int toneRoeIdx, out DataGridViewRow? selectedToneRow);
+            if (selectedToneRow == null) return;
+
+            vh.Programs[programIndex].Tones[toneIndex].ADSR1 = adsr1;
+            vh.Programs[programIndex].Tones[toneIndex].ADSR2 = adsr2;
+            selectedToneRow.Cells[ColToneADSR1].Value = adsr1.ToString("X");
+            selectedToneRow.Cells[ColToneADSR2].Value = adsr2.ToString("X");
+        }
+
     }
 
     public class VAGListForm : DarkForm
@@ -1386,7 +1428,6 @@ namespace CrashEdit.CE
             dgvVAG.Rows.RemoveAt(lastRow);
             UpdateInfo();
         }
-
 
     }
 
@@ -1810,6 +1851,8 @@ namespace CrashEdit.CE
 
             string sustainTimeStr = sustainTime == -1 ? "Infinite" : $"{sustainTime}s";
             lbADSR.Text = $"AttackTime: {attackTime}s\nDecayTime: {decayTime}s\nSustainLevel: {sustainLevel}\nSustainTime: {sustainTimeStr}\nReleaseTime: {releaseTime}s";
+
+            vabTool.UpdateADSR(ADSR1, ADSR2);
         }
 
         private void ResetADSR()

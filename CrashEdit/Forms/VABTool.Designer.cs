@@ -53,14 +53,14 @@ namespace CrashEdit.CE
             lbProgramVolume = new Label();
             dgvPrograms = new DataGridView();
             fraTones = new DarkGroupBox();
-            panel1 = new Panel();
+            pnToneControls1 = new Panel();
             lbMode = new Label();
             lbTone = new Label();
             lbPriority = new Label();
             numMode = new DarkNumericUpDown();
             numPriority = new DarkNumericUpDown();
             cmdDeleteTone = new DarkButton();
-            panel2 = new Panel();
+            pnToneControls2 = new Panel();
             chkAutoPlay = new CheckBox();
             cmdADSR = new DarkButton();
             cmdPlayTone = new DarkButton();
@@ -69,7 +69,7 @@ namespace CrashEdit.CE
             lbNote = new Label();
             lbVAG = new Label();
             cmdInsertTone = new DarkButton();
-            tableLayoutPanel1 = new TableLayoutPanel();
+            tblToneControls = new TableLayoutPanel();
             lbVolume = new Label();
             trkVolume = new TrackBar();
             lbPan = new Label();
@@ -96,13 +96,13 @@ namespace CrashEdit.CE
             fraProgramControls.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvPrograms).BeginInit();
             fraTones.SuspendLayout();
-            panel1.SuspendLayout();
+            pnToneControls1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numMode).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numPriority).BeginInit();
-            panel2.SuspendLayout();
+            pnToneControls2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numNote).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numVAG).BeginInit();
-            tableLayoutPanel1.SuspendLayout();
+            tblToneControls.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trkVolume).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trkPan).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trkCenter).BeginInit();
@@ -387,11 +387,11 @@ namespace CrashEdit.CE
             // 
             fraTones.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             fraTones.BackColor = Color.Transparent;
-            fraTones.Controls.Add(panel1);
+            fraTones.Controls.Add(pnToneControls1);
             fraTones.Controls.Add(cmdDeleteTone);
-            fraTones.Controls.Add(panel2);
+            fraTones.Controls.Add(pnToneControls2);
             fraTones.Controls.Add(cmdInsertTone);
-            fraTones.Controls.Add(tableLayoutPanel1);
+            fraTones.Controls.Add(tblToneControls);
             fraTones.Controls.Add(cmdAppendTone);
             fraTones.Controls.Add(dgvTones);
             fraTones.Location = new Point(476, 30);
@@ -401,17 +401,17 @@ namespace CrashEdit.CE
             fraTones.TabStop = false;
             fraTones.Text = "Tone Attributes Table";
             // 
-            // panel1
+            // pnToneControls1
             // 
-            panel1.Controls.Add(lbMode);
-            panel1.Controls.Add(lbTone);
-            panel1.Controls.Add(lbPriority);
-            panel1.Controls.Add(numMode);
-            panel1.Controls.Add(numPriority);
-            panel1.Location = new Point(7, 22);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(57, 142);
-            panel1.TabIndex = 8;
+            pnToneControls1.Controls.Add(lbMode);
+            pnToneControls1.Controls.Add(lbTone);
+            pnToneControls1.Controls.Add(lbPriority);
+            pnToneControls1.Controls.Add(numMode);
+            pnToneControls1.Controls.Add(numPriority);
+            pnToneControls1.Location = new Point(7, 22);
+            pnToneControls1.Name = "pnToneControls1";
+            pnToneControls1.Size = new Size(57, 142);
+            pnToneControls1.TabIndex = 8;
             // 
             // lbMode
             // 
@@ -479,19 +479,19 @@ namespace CrashEdit.CE
             cmdDeleteTone.Text = "Delete";
             cmdDeleteTone.Click += cmdDeleteTone_Click;
             // 
-            // panel2
+            // pnToneControls2
             // 
-            panel2.Controls.Add(chkAutoPlay);
-            panel2.Controls.Add(cmdADSR);
-            panel2.Controls.Add(cmdPlayTone);
-            panel2.Controls.Add(numNote);
-            panel2.Controls.Add(numVAG);
-            panel2.Controls.Add(lbNote);
-            panel2.Controls.Add(lbVAG);
-            panel2.Location = new Point(549, 22);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(127, 142);
-            panel2.TabIndex = 7;
+            pnToneControls2.Controls.Add(chkAutoPlay);
+            pnToneControls2.Controls.Add(cmdADSR);
+            pnToneControls2.Controls.Add(cmdPlayTone);
+            pnToneControls2.Controls.Add(numNote);
+            pnToneControls2.Controls.Add(numVAG);
+            pnToneControls2.Controls.Add(lbNote);
+            pnToneControls2.Controls.Add(lbVAG);
+            pnToneControls2.Location = new Point(549, 22);
+            pnToneControls2.Name = "pnToneControls2";
+            pnToneControls2.Size = new Size(127, 142);
+            pnToneControls2.TabIndex = 7;
             // 
             // chkAutoPlay
             // 
@@ -586,40 +586,40 @@ namespace CrashEdit.CE
             cmdInsertTone.Text = "Insert";
             cmdInsertTone.Click += cmdInsertTone_Click;
             // 
-            // tableLayoutPanel1
+            // tblToneControls
             // 
-            tableLayoutPanel1.ColumnCount = 8;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12.49875F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12.4987507F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12.4987507F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12.4987507F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12.4987507F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12.5024967F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12.501874F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12.501874F));
-            tableLayoutPanel1.Controls.Add(lbVolume, 0, 0);
-            tableLayoutPanel1.Controls.Add(trkVolume, 0, 1);
-            tableLayoutPanel1.Controls.Add(lbPan, 1, 0);
-            tableLayoutPanel1.Controls.Add(trkPan, 1, 1);
-            tableLayoutPanel1.Controls.Add(lbCenter, 2, 0);
-            tableLayoutPanel1.Controls.Add(trkCenter, 2, 1);
-            tableLayoutPanel1.Controls.Add(lbPitch, 3, 0);
-            tableLayoutPanel1.Controls.Add(trkPitch, 3, 1);
-            tableLayoutPanel1.Controls.Add(lbMinNote, 4, 0);
-            tableLayoutPanel1.Controls.Add(trkMinNote, 4, 1);
-            tableLayoutPanel1.Controls.Add(lbMaxNote, 5, 0);
-            tableLayoutPanel1.Controls.Add(trkMaxNote, 5, 1);
-            tableLayoutPanel1.Controls.Add(lbPBmin, 6, 0);
-            tableLayoutPanel1.Controls.Add(trkPBmin, 6, 1);
-            tableLayoutPanel1.Controls.Add(lbPBmax, 7, 0);
-            tableLayoutPanel1.Controls.Add(trkPBmax, 7, 1);
-            tableLayoutPanel1.Location = new Point(67, 22);
-            tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 2;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 22.5352116F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 77.46479F));
-            tableLayoutPanel1.Size = new Size(479, 142);
-            tableLayoutPanel1.TabIndex = 6;
+            tblToneControls.ColumnCount = 8;
+            tblToneControls.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12.49875F));
+            tblToneControls.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12.4987507F));
+            tblToneControls.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12.4987507F));
+            tblToneControls.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12.4987507F));
+            tblToneControls.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12.4987507F));
+            tblToneControls.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12.5024967F));
+            tblToneControls.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12.501874F));
+            tblToneControls.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12.501874F));
+            tblToneControls.Controls.Add(lbVolume, 0, 0);
+            tblToneControls.Controls.Add(trkVolume, 0, 1);
+            tblToneControls.Controls.Add(lbPan, 1, 0);
+            tblToneControls.Controls.Add(trkPan, 1, 1);
+            tblToneControls.Controls.Add(lbCenter, 2, 0);
+            tblToneControls.Controls.Add(trkCenter, 2, 1);
+            tblToneControls.Controls.Add(lbPitch, 3, 0);
+            tblToneControls.Controls.Add(trkPitch, 3, 1);
+            tblToneControls.Controls.Add(lbMinNote, 4, 0);
+            tblToneControls.Controls.Add(trkMinNote, 4, 1);
+            tblToneControls.Controls.Add(lbMaxNote, 5, 0);
+            tblToneControls.Controls.Add(trkMaxNote, 5, 1);
+            tblToneControls.Controls.Add(lbPBmin, 6, 0);
+            tblToneControls.Controls.Add(trkPBmin, 6, 1);
+            tblToneControls.Controls.Add(lbPBmax, 7, 0);
+            tblToneControls.Controls.Add(trkPBmax, 7, 1);
+            tblToneControls.Location = new Point(67, 22);
+            tblToneControls.Name = "tblToneControls";
+            tblToneControls.RowCount = 2;
+            tblToneControls.RowStyles.Add(new RowStyle(SizeType.Percent, 22.5352116F));
+            tblToneControls.RowStyles.Add(new RowStyle(SizeType.Percent, 77.46479F));
+            tblToneControls.Size = new Size(479, 142);
+            tblToneControls.TabIndex = 6;
             // 
             // lbVolume
             // 
@@ -664,7 +664,7 @@ namespace CrashEdit.CE
             lbPan.Name = "lbPan";
             lbPan.Size = new Size(57, 30);
             lbPan.TabIndex = 3;
-            lbPan.Text = "Pan\r\n(-00.00)";
+            lbPan.Text = "Pan\r\n(0.00)";
             // 
             // trkPan
             // 
@@ -695,7 +695,7 @@ namespace CrashEdit.CE
             lbCenter.Name = "lbCenter";
             lbCenter.Size = new Size(57, 30);
             lbCenter.TabIndex = 3;
-            lbCenter.Text = "Center";
+            lbCenter.Text = "Center\r\n(C0)";
             // 
             // trkCenter
             // 
@@ -726,7 +726,7 @@ namespace CrashEdit.CE
             lbPitch.Name = "lbPitch";
             lbPitch.Size = new Size(57, 30);
             lbPitch.TabIndex = 3;
-            lbPitch.Text = "Pitch";
+            lbPitch.Text = "Pitch\r\n(0)";
             // 
             // trkPitch
             // 
@@ -757,7 +757,7 @@ namespace CrashEdit.CE
             lbMinNote.Name = "lbMinNote";
             lbMinNote.Size = new Size(57, 30);
             lbMinNote.TabIndex = 3;
-            lbMinNote.Text = "MinNote";
+            lbMinNote.Text = "MinNote\r\n(0)";
             // 
             // trkMinNote
             // 
@@ -788,7 +788,7 @@ namespace CrashEdit.CE
             lbMaxNote.Name = "lbMaxNote";
             lbMaxNote.Size = new Size(57, 30);
             lbMaxNote.TabIndex = 3;
-            lbMaxNote.Text = "MaxNote";
+            lbMaxNote.Text = "MaxNote\r\n(0)";
             // 
             // trkMaxNote
             // 
@@ -819,7 +819,7 @@ namespace CrashEdit.CE
             lbPBmin.Name = "lbPBmin";
             lbPBmin.Size = new Size(57, 30);
             lbPBmin.TabIndex = 3;
-            lbPBmin.Text = "PBmin";
+            lbPBmin.Text = "PBmin\r\n(0)";
             // 
             // trkPBmin
             // 
@@ -850,7 +850,7 @@ namespace CrashEdit.CE
             lbPBmax.Name = "lbPBmax";
             lbPBmax.Size = new Size(64, 30);
             lbPBmax.TabIndex = 3;
-            lbPBmax.Text = "PBmax";
+            lbPBmax.Text = "PBmax\r\n(0)";
             // 
             // trkPBmax
             // 
@@ -928,16 +928,16 @@ namespace CrashEdit.CE
             fraProgramControls.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvPrograms).EndInit();
             fraTones.ResumeLayout(false);
-            panel1.ResumeLayout(false);
-            panel1.PerformLayout();
+            pnToneControls1.ResumeLayout(false);
+            pnToneControls1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numMode).EndInit();
             ((System.ComponentModel.ISupportInitialize)numPriority).EndInit();
-            panel2.ResumeLayout(false);
-            panel2.PerformLayout();
+            pnToneControls2.ResumeLayout(false);
+            pnToneControls2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numNote).EndInit();
             ((System.ComponentModel.ISupportInitialize)numVAG).EndInit();
-            tableLayoutPanel1.ResumeLayout(false);
-            tableLayoutPanel1.PerformLayout();
+            tblToneControls.ResumeLayout(false);
+            tblToneControls.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)trkVolume).EndInit();
             ((System.ComponentModel.ISupportInitialize)trkPan).EndInit();
             ((System.ComponentModel.ISupportInitialize)trkCenter).EndInit();
@@ -969,7 +969,7 @@ namespace CrashEdit.CE
         private DataGridView dgvTones;
         private TrackBar trkVolume;
         private Label lbVolume;
-        private TableLayoutPanel tableLayoutPanel1;
+        private TableLayoutPanel tblToneControls;
         private Label lbPan;
         private TrackBar trkPan;
         private Label lbCenter;
@@ -984,7 +984,7 @@ namespace CrashEdit.CE
         private TrackBar trkPBmin;
         private Label lbPBmax;
         private TrackBar trkPBmax;
-        private Panel panel2;
+        private Panel pnToneControls2;
         private Label lbVAG;
         private DarkNumericUpDown numVAG;
         private DarkNumericUpDown numNote;
@@ -997,7 +997,7 @@ namespace CrashEdit.CE
         private DarkButton cmdDeleteTone;
         private DarkButton cmdInsertTone;
         private DarkButton cmdAppendTone;
-        private Panel panel1;
+        private Panel pnToneControls1;
         private Label lbPriority;
         private DarkNumericUpDown numPriority;
         private Label lbMode;
