@@ -20,7 +20,7 @@ namespace CrashEdit.CE
         public VH? vh;
         public SampleLine[]? vb; // this is actually unused
 
-        private MusicBox? musicBox;
+        public MusicBox? musicBox;
 
         private WaveOutEvent waveOut;
         private WaveStream waveStream;
@@ -115,8 +115,7 @@ namespace CrashEdit.CE
                 File.WriteAllBytes(fileName, vab.Save());
 
                 LoadVAB();
-                tbbOpen.Visible = false;
-                tbbClose.Visible = false;
+                toolStrip.Enabled = false;
             }
         }
 
@@ -265,6 +264,10 @@ namespace CrashEdit.CE
             vab.Split(out VH _vh, out SampleLine[] _vb);
             vh = _vh;
             vb = _vb;
+            if (musicBox != null)
+            {
+                vh = musicBox.musicentry.VH;
+            }
 
             fraVABHeader.Enabled =
             fraVABPrograms.Enabled =
@@ -298,7 +301,7 @@ namespace CrashEdit.CE
             if (vab == null) return;
             if (musicBox != null)
             {
-                musicBox.UpdateVAB(vab.Save(vh));
+                musicBox.UpdateVAB(vab.Save(vh), true);
             }
             else
             {
@@ -582,7 +585,7 @@ namespace CrashEdit.CE
 
         private void VABTool_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (vab != null && !ConfirmCloseVAB())
+            if (musicBox == null && vab != null && !ConfirmCloseVAB())
             {
                 e.Cancel = true;
                 return;
@@ -1095,6 +1098,11 @@ namespace CrashEdit.CE
                 vh.Size += InstrumentSize;
                 // Upddate the program count in the header.
                 selectedHeadRow.Cells[ColHeadPrograms].Value = vh.Programs.Count;
+
+                pnToneControls1.Enabled =
+                pnToneControls2.Enabled =
+                tblToneControls.Enabled =
+                dgvTones.Enabled = true;
             }
 
             // Add a new tone.
@@ -1162,6 +1170,11 @@ namespace CrashEdit.CE
                 vh.Size -= InstrumentSize;
                 // Update the program count in the header.
                 selectedHeadRow.Cells[ColHeadPrograms].Value = vh.Programs.Count;
+
+                pnToneControls1.Enabled =
+                pnToneControls2.Enabled =
+                tblToneControls.Enabled =
+                dgvTones.Enabled = false;
             }
 
             // Remove the row.
@@ -1624,6 +1637,10 @@ namespace CrashEdit.CE
                     List<byte[]> files = new();
                     foreach (string filename in dialog.FileNames)
                     {
+                        if (vabTool.musicBox != null)
+                        {
+                            vabTool.musicBox.UpdateVAB(vabTool.vab.Save(vabTool.vh), false);
+                        }
                         byte[] file = File.ReadAllBytes(filename);
                         SampleSet wave = SampleSet.Load(file);
                         int vagSize = wave.SampleLines.Count * 16;
@@ -1641,7 +1658,6 @@ namespace CrashEdit.CE
                         dgvVAG.Rows.Add(vabTool.vab.Waves.Count, offset, vagSize, Path.GetFileName(filename));
                         UpdateInfo();
                     }
-
                 }
             }
         }

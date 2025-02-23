@@ -417,7 +417,7 @@ namespace CrashEdit.CE
                 frmVABTool.Activate();
         }
 
-        public void UpdateVAB(byte[] data)
+        public void UpdateVAB(byte[] data, bool showdialog)
         {
             try
             {
@@ -446,7 +446,8 @@ namespace CrashEdit.CE
             catch (LoadAbortedException)
             {
             }
-            DarkMessageBox.ShowInformation("VAB updated successfully.", "MusicBox");
+            if (showdialog)
+                DarkMessageBox.ShowInformation("VAB updated successfully.", "MusicBox");
         }
 
         private void ReplaceLinkedVB(List<SampleLine> samples)
