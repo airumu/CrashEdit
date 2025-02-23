@@ -133,4 +133,12 @@
 [Ctrl + Shift + X] Cut selected words as EID
 [Ctrl + Shift + V] Paste to words as EID</value>
   </data>
+  <data name="label6.Text" xml:space="preserve">
+    <value>[Ctrl+C] Copy value of selected item
+[Ctrl+V] Paste copied value to selected item
+[Double-click / F2] Rename selected item
+[Ctrl+Shift+C] Copy entire list
+[Ctrl+Shift+X] Cut entire list
+[Ctrl+Shift+V] Paste copied list</value>
+  </data>
 </root>

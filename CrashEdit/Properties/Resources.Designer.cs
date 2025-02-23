@@ -1027,12 +1027,12 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
-        ///   [Ctrl+C] Copy the value of the selected item
-        ///[Ctrl+V] Paste the copied value to the selected item
-        ///[Double-click / F2] Rename the selected item
-        ///[Ctrl+Shift+C] Copy the entire list
-        ///[Ctrl+Shift+X] Cut the entire list
-        ///[Ctrl+Shift+V] Paste the copied list に類似しているローカライズされた文字列を検索します。
+        ///   [Ctrl+C] Copy value of selected item
+        ///[Ctrl+V] Paste copied value to selected item
+        ///[Double-click / F2] Rename selected item
+        ///[Ctrl+Shift+C] Copy entire list
+        ///[Ctrl+Shift+X] Cut entire list
+        ///[Ctrl+Shift+V] Paste copied list に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string EntityBox_tipLists {
             get {
@@ -1041,8 +1041,8 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
-        ///   [Ctrl+C] Save the selected fields
-        ///[Delete] Remove the selected fields に類似しているローカライズされた文字列を検索します。
+        ///   [Ctrl+C] Save selected fields
+        ///[Delete] Remove selected fields に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string EntityPropertyBox_tipProperties {
             get {
@@ -1051,11 +1051,11 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
-        ///   [Ctrl+V] Copy the fields in the selected item
-        ///[Double-click / F2] Rename the selected item
-        ///[Delete] Remove the selected items
+        ///   [Ctrl+V] Copy fields in selected item
+        ///[Double-click / F2] Rename selected item
+        ///[Delete] Remove selected items
         ///--------------------------------
-        ///[Ctrl+R] Reload the list に類似しているローカライズされた文字列を検索します。
+        ///[Ctrl+R] Reload list に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string EntityPropertyBox_tipSavedProperties {
             get {
@@ -1946,7 +1946,7 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
-        ///   [Click] Open the viewer
+        ///   [Click] Open viewer
         ///[Ctrl+R] Reload に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string TextureChunkBox_TipText {
@@ -1992,10 +1992,10 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
-        ///   [Right-click] Save the selected texture region to a file
-        ///[Ctrl+C] Copy the texture to the buffer
-        ///[Ctrl+X] Cut the texture to the buffer
-        ///[Ctrl+V] Paste the texture from the buffer に類似しているローカライズされた文字列を検索します。
+        ///   [Right-click] Save selected texture region to file
+        ///[Ctrl+C] Copy texture to buffer
+        ///[Ctrl+X] Cut texture to buffer
+        ///[Ctrl+V] Paste texture from buffer に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string TextureViewer_tipViewer {
             get {

@@ -802,12 +802,12 @@ as Meters: {3:F3}m</value>
     <value>Export as COLLADA</value>
   </data>
   <data name="EntityBox_tipLists" xml:space="preserve">
-    <value>[Ctrl+C] Copy the value of the selected item
-[Ctrl+V] Paste the copied value to the selected item
-[Double-click / F2] Rename the selected item
-[Ctrl+Shift+C] Copy the entire list
-[Ctrl+Shift+X] Cut the entire list
-[Ctrl+Shift+V] Paste the copied list</value>
+    <value>[Ctrl+C] Copy value of selected item
+[Ctrl+V] Paste copied value to selected item
+[Double-click / F2] Rename selected item
+[Ctrl+Shift+C] Copy entire list
+[Ctrl+Shift+X] Cut entire list
+[Ctrl+Shift+V] Paste copied list</value>
   </data>
   <data name="EntityBox_fraVerifyDrawList" xml:space="preserve">
     <value>Verify Draw Lists</value>
@@ -832,17 +832,17 @@ as Meters: {3:F3}m</value>
     <comment>CE-tweaked</comment>
   </data>
   <data name="TextureViewer_tipViewer" xml:space="preserve">
-    <value>[Right-click] Save the selected texture region to a file
-[Ctrl+C] Copy the texture to the buffer
-[Ctrl+X] Cut the texture to the buffer
-[Ctrl+V] Paste the texture from the buffer</value>
+    <value>[Right-click] Save selected texture region to file
+[Ctrl+C] Copy texture to buffer
+[Ctrl+X] Cut texture to buffer
+[Ctrl+V] Paste texture from buffer</value>
   </data>
   <data name="Config_chkOutputModelTextureInfo" xml:space="preserve">
     <value>Output texture information to the console</value>
     <comment>CE-tweaked</comment>
   </data>
   <data name="TextureChunkBox_TipText" xml:space="preserve">
-    <value>[Click] Open the viewer
+    <value>[Click] Open viewer
 [Ctrl+R] Reload</value>
   </data>
   <data name="Config_chkApplyMica" xml:space="preserve">
@@ -868,15 +868,15 @@ as Meters: {3:F3}m</value>
     <comment>CE-tweaked</comment>
   </data>
   <data name="EntityPropertyBox_tipSavedProperties" xml:space="preserve">
-    <value>[Ctrl+V] Copy the fields in the selected item
-[Double-click / F2] Rename the selected item
-[Delete] Remove the selected items
+    <value>[Ctrl+V] Copy fields in selected item
+[Double-click / F2] Rename selected item
+[Delete] Remove selected items
 --------------------------------
-[Ctrl+R] Reload the list</value>
+[Ctrl+R] Reload list</value>
   </data>
   <data name="EntityPropertyBox_tipProperties" xml:space="preserve">
-    <value>[Ctrl+C] Save the selected fields
-[Delete] Remove the selected fields</value>
+    <value>[Ctrl+C] Save selected fields
+[Delete] Remove selected fields</value>
   </data>
   <data name="Config_chkIgnoreDuplicatedEntryError" xml:space="preserve">
     <value>Ignore errors when processing duplicated entries</value>
