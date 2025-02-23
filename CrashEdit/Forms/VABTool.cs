@@ -550,8 +550,10 @@ namespace CrashEdit.CE
             waveOut.Init(resampler);
 
             // Calculate the volume.
-            float maxVolume = 0.5F;
-            waveOut.Volume = (float)(trkVolume.Value / 127.0 * maxVolume);
+            float programVolume = trkProgramVolume.Value / 127.0f;
+            float toneVolume = trkVolume.Value / 127.0f;
+            float finalVolume = Math.Min(programVolume * toneVolume * 0.5f, 1.0f);
+            waveOut.Volume = finalVolume;
 
             waveOut.Play();
         }
