@@ -18,7 +18,7 @@ namespace CrashEdit.CE
         private string sf2Path;
 
         private MidiSampleProvider? player;
-        private WaveOut? waveOut;
+        private WaveOutEvent? waveOut;
 
         internal Stack<bool> dirty = new Stack<bool>();
         internal bool Dirty => dirty.Count > 0 && dirty.Peek();
@@ -47,9 +47,8 @@ namespace CrashEdit.CE
             player = new MidiSampleProvider(sf2Path);
 
             // Create WaveOut.
-            waveOut = new WaveOut(WaveCallbackInfo.FunctionCallback());
+            waveOut = new WaveOutEvent();
             waveOut.Init(player);
-            waveOut.Volume = 1.0f;
             waveOut.Play();
         }
 
@@ -108,6 +107,9 @@ namespace CrashEdit.CE
 
         private void piano_PianoKeyDown(object sender, PianoKeyEventArgs args)
         {
+            waveOut.Volume = 1.0f;
+            player.synthesizer.NoteOn(0, (byte)args.Key, 127);
+
             int oldOctave = octave;
             octave = args.Key / 12;
             if (oldOctave != octave)
@@ -116,8 +118,6 @@ namespace CrashEdit.CE
                 SetHotkeys();
             }
             lbNote.Text = $"Note: {args.Key.ToString()} ({GetNoteName(args.Key)}{octave})";
-
-            player.synthesizer.NoteOn(0, (byte)args.Key, 127);
         }
 
         private void piano_PianoKeyUp(object sender, PianoKeyEventArgs args)
@@ -130,7 +130,7 @@ namespace CrashEdit.CE
             string selectedText = cmbProgram.SelectedItem?.ToString() ?? string.Empty;
             if (Dirty || string.IsNullOrEmpty(selectedText)) return;
 
-            // Change the instrument.
+            // Get the program number from the instrument name and change the instrument.
             int program = Convert.ToInt32(Regex.Replace(selectedText, @"\D", ""));
             player.synthesizer.ProcessMidiMessage(0, 0xC0, program, 0);
         }
