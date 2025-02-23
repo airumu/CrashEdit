@@ -27,7 +27,7 @@ namespace CrashEdit.CE
         {
             this.vabTool = vabTool;
             InitializeComponent();
-            Text = "Preview Keyboard";
+            Text = "Preview Keyboard " + vabTool.titleText;
 
             string basePath = Path.Combine("tmp", "tmp");
             Directory.CreateDirectory(Path.GetDirectoryName(basePath) ?? "");

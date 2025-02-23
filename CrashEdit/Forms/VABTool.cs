@@ -4,7 +4,6 @@ using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
-using CrashEdit.Crash.GOOLIns;
 using MetroSet_UI.Controls;
 using NAudio.Wave;
 
@@ -34,6 +33,7 @@ namespace CrashEdit.CE
         private int toneIndex;
 
         private string fileName;
+        public string titleText;
 
         private readonly int ColHeadVersion = 0;
         private readonly int ColHeadTotalSize = 1;
@@ -106,7 +106,8 @@ namespace CrashEdit.CE
             {
                 this.musicBox = musicBox;
                 vab = musicBox.vab;
-                Text = $"VAB Tool [{musicBox.musicentry.EName}]";
+                titleText = $"[{musicBox.musicentry.EName}]";
+                Text = "VAB Tool " + titleText;
 
                 string basePath = Path.Combine("tmp", "tmp");
                 Directory.CreateDirectory(Path.GetDirectoryName(basePath) ?? "");
@@ -114,6 +115,8 @@ namespace CrashEdit.CE
                 File.WriteAllBytes(fileName, vab.Save());
 
                 LoadVAB();
+                tbbOpen.Visible = false;
+                tbbClose.Visible = false;
             }
         }
 
@@ -281,7 +284,8 @@ namespace CrashEdit.CE
                     byte[] file = File.ReadAllBytes(dialog.FileName);
                     vab = VAB.Load(file);
                     LoadVAB();
-                    Text = $"VAB Tool ({dialog.FileName})";
+                    titleText = $"- {dialog.FileName}";
+                    Text = "VAB Tool " + titleText;
                 }
             }
         }
@@ -346,6 +350,22 @@ namespace CrashEdit.CE
             dgvTones.Enabled =
             tbbSave.Enabled =
             tbbClose.Enabled = false;
+
+            if (frmADSR != null && !frmADSR.IsDisposed)
+            {
+                frmADSR.Close();
+                frmADSR = null;
+            }
+            if (frmVAGList != null && !frmVAGList.IsDisposed)
+            {
+                frmVAGList.Close();
+                frmVAGList = null;
+            }
+            if (frmMidiForm != null && !frmMidiForm.IsDisposed)
+            {
+                frmMidiForm.Close();
+                frmMidiForm = null;
+            }
         }
 
         private void tbbClose_Click(object sender, EventArgs e)
@@ -354,9 +374,9 @@ namespace CrashEdit.CE
             if (ConfirmCloseVAB())
             {
                 CloseVAB();
-                Text = "VAB Tool";
+                titleText = "VAB Tool";
+                Text = titleText;
             }
-
         }
 
         private void GetSelectedRow(DataGridView dataGridView, out int rowIdx, out DataGridViewRow? selectedRow)
@@ -394,7 +414,6 @@ namespace CrashEdit.CE
                 {
                     DataGridViewRow row = new DataGridViewRow();
                     VHTone tone = vhProgram.Tones[i];
-                    // TODO: fix maximum vaue of volume (it could be greater than 127)
                     int maxmumNote = tone.MaximumNote > 127 ? 127 : tone.MaximumNote;
                     row.CreateCells(dgvTones, i, tone.Priority, tone.Mode, tone.Volume, tone.Panning, tone.CenterNote, tone.PitchShift,
                         tone.MinimumNote, maxmumNote, tone.PitchBendMinimum, tone.PitchBendMaximum,
@@ -1196,11 +1215,11 @@ namespace CrashEdit.CE
         {
             this.vabTool = vabTool;
             MainInit();
+            Text = "VAG Data " + vabTool.titleText;
         }
 
         private void MainInit()
         {
-            Text = "VAG Data";
             Size = new Size(660, 520);
             MaximizeBox = false;
             MinimizeBox = false;
@@ -1529,11 +1548,11 @@ namespace CrashEdit.CE
         {
             this.vabTool = vabTool;
             MainInit();
+            Text = "ADSR Settings " + vabTool.titleText;
         }
 
         private void MainInit()
         {
-            Text = "ADSR Settings";
             Size = new Size(660, 520);
             MaximizeBox = false;
             MinimizeBox = false;
@@ -1549,7 +1568,9 @@ namespace CrashEdit.CE
                 AutoSize = true
             };
 
+            //
             // Top left layout
+            //
 
             adsrEnvelope = new ADSREnvelope
             {
@@ -1559,7 +1580,9 @@ namespace CrashEdit.CE
             };
             ResetADSR();
 
+            //
             // Top right layout
+            //
 
             lbADSR = new Label
             {
@@ -1569,7 +1592,9 @@ namespace CrashEdit.CE
                 Margin = new Padding(3, 6, 3, 3)
             };
 
+            //
             // Bottom left layout
+            //
 
             TableLayoutPanel layout2 = new TableLayoutPanel
             {
@@ -1579,6 +1604,7 @@ namespace CrashEdit.CE
                 AutoSize = true
             };
 
+            // Attack
             Label lbAttack = new Label
             {
                 Text = "Attack Rate",
@@ -1611,6 +1637,7 @@ namespace CrashEdit.CE
                 UpdateADSRInfo();
             };
 
+            // Decay
             Label lbDecay = new Label
             {
                 Text = "Decay Rate",
@@ -1632,6 +1659,7 @@ namespace CrashEdit.CE
                 UpdateADSRInfo();
             };
 
+            // Sustain Level
             Label lbSustainLevel = new Label
             {
                 Text = "Sustain Level",
@@ -1653,6 +1681,7 @@ namespace CrashEdit.CE
                 UpdateADSRInfo();
             };
 
+            // Sustain Rate
             Label lbSustainRate = new Label
             {
                 Text = "Sustain Rate",
@@ -1696,6 +1725,7 @@ namespace CrashEdit.CE
                 UpdateADSRInfo();
             };
 
+            // Release
             Label lbRelease = new Label
             {
                 Text = "Release Rate",
@@ -1728,7 +1758,9 @@ namespace CrashEdit.CE
                 UpdateADSRInfo();
             };
 
+            //
             // Bottom right layout
+            //
 
             FlowLayoutPanel layout3 = new FlowLayoutPanel
             {
@@ -1798,7 +1830,9 @@ namespace CrashEdit.CE
                 txtADSR2.SelectionStart = Math.Min(selectionStart, txtADSR2.Text.Length);
             };
 
+            //
             // Add controls to layouts
+            //
 
             numAttack.MouseWheel += ScrollHandlerFunction;
             numDecay.MouseWheel += ScrollHandlerFunction;

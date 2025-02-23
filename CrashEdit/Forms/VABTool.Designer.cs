@@ -88,6 +88,7 @@ namespace CrashEdit.CE
             trkPBmax = new TrackBar();
             cmdAppendTone = new DarkButton();
             dgvTones = new DataGridView();
+            fraPlay = new DarkGroupBox();
             toolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvHeader).BeginInit();
             fraVABHeader.SuspendLayout();
@@ -112,6 +113,7 @@ namespace CrashEdit.CE
             ((System.ComponentModel.ISupportInitialize)trkPBmin).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trkPBmax).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvTones).BeginInit();
+            fraPlay.SuspendLayout();
             SuspendLayout();
             // 
             // toolStrip
@@ -481,12 +483,9 @@ namespace CrashEdit.CE
             // 
             // pnToneControls2
             // 
-            pnToneControls2.Controls.Add(chkAutoPlay);
+            pnToneControls2.Controls.Add(fraPlay);
             pnToneControls2.Controls.Add(cmdADSR);
-            pnToneControls2.Controls.Add(cmdPlayTone);
-            pnToneControls2.Controls.Add(numNote);
             pnToneControls2.Controls.Add(numVAG);
-            pnToneControls2.Controls.Add(lbNote);
             pnToneControls2.Controls.Add(lbVAG);
             pnToneControls2.Location = new Point(549, 22);
             pnToneControls2.Name = "pnToneControls2";
@@ -496,7 +495,7 @@ namespace CrashEdit.CE
             // chkAutoPlay
             // 
             chkAutoPlay.AutoSize = true;
-            chkAutoPlay.Location = new Point(69, 117);
+            chkAutoPlay.Location = new Point(66, 58);
             chkAutoPlay.Name = "chkAutoPlay";
             chkAutoPlay.Size = new Size(52, 19);
             chkAutoPlay.TabIndex = 6;
@@ -509,7 +508,7 @@ namespace CrashEdit.CE
             cmdADSR.CustomColour = false;
             cmdADSR.FlatBottom = false;
             cmdADSR.FlatTop = false;
-            cmdADSR.Location = new Point(61, 24);
+            cmdADSR.Location = new Point(61, 22);
             cmdADSR.Name = "cmdADSR";
             cmdADSR.Padding = new Padding(5);
             cmdADSR.Size = new Size(60, 26);
@@ -523,7 +522,7 @@ namespace CrashEdit.CE
             cmdPlayTone.CustomColour = false;
             cmdPlayTone.FlatBottom = false;
             cmdPlayTone.FlatTop = false;
-            cmdPlayTone.Location = new Point(3, 112);
+            cmdPlayTone.Location = new Point(3, 54);
             cmdPlayTone.Name = "cmdPlayTone";
             cmdPlayTone.Padding = new Padding(5);
             cmdPlayTone.Size = new Size(60, 26);
@@ -533,7 +532,7 @@ namespace CrashEdit.CE
             // 
             // numNote
             // 
-            numNote.Location = new Point(3, 74);
+            numNote.Location = new Point(3, 27);
             numNote.Maximum = new decimal(new int[] { 127, 0, 0, 0 });
             numNote.Name = "numNote";
             numNote.Size = new Size(44, 23);
@@ -554,7 +553,7 @@ namespace CrashEdit.CE
             // 
             lbNote.AutoSize = true;
             lbNote.BackColor = Color.Transparent;
-            lbNote.Location = new Point(3, 53);
+            lbNote.Location = new Point(6, 6);
             lbNote.Margin = new Padding(3);
             lbNote.Name = "lbNote";
             lbNote.Size = new Size(33, 15);
@@ -648,7 +647,7 @@ namespace CrashEdit.CE
             trkVolume.Size = new Size(57, 108);
             trkVolume.TabIndex = 5;
             trkVolume.Tag = "Volume";
-            trkVolume.TickFrequency = 8;
+            trkVolume.TickFrequency = 16;
             trkVolume.ValueChanged += tonesTrackBar_ValueChanged;
             trkVolume.MouseWheel += trkScrollHandlerFunction2;
             // 
@@ -900,6 +899,18 @@ namespace CrashEdit.CE
             dgvTones.TabIndex = 1;
             dgvTones.SelectionChanged += dgvTones_SelectionChanged;
             // 
+            // fraPlay
+            // 
+            fraPlay.Controls.Add(chkAutoPlay);
+            fraPlay.Controls.Add(lbNote);
+            fraPlay.Controls.Add(numNote);
+            fraPlay.Controls.Add(cmdPlayTone);
+            fraPlay.Location = new Point(3, 56);
+            fraPlay.Name = "fraPlay";
+            fraPlay.Size = new Size(118, 83);
+            fraPlay.TabIndex = 7;
+            fraPlay.TabStop = false;
+            // 
             // VABTool
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -947,6 +958,8 @@ namespace CrashEdit.CE
             ((System.ComponentModel.ISupportInitialize)trkPBmin).EndInit();
             ((System.ComponentModel.ISupportInitialize)trkPBmax).EndInit();
             ((System.ComponentModel.ISupportInitialize)dgvTones).EndInit();
+            fraPlay.ResumeLayout(false);
+            fraPlay.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1009,5 +1022,6 @@ namespace CrashEdit.CE
         private DarkButton cmdADSR;
         private DarkGroupBox fraProgramControls;
         private DarkGroupBox fraProgramCommands;
+        private DarkGroupBox fraPlay;
     }
 }
