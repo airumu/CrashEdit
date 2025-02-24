@@ -451,7 +451,7 @@
     <value>Cancel</value>
   </data>
   <data name="InterpolatorForm" xml:space="preserve">
-    <value>Interpolate Path</value>
+    <value>Edit Path</value>
   </data>
   <data name="InterpolatorForm_cmdCancel" xml:space="preserve">
     <value>Cancel</value>
@@ -943,5 +943,8 @@ as Meters: {3:F3}m</value>
   </data>
   <data name="OldMainForm_tbxVABTool" xml:space="preserve">
     <value>VAB Tool</value>
+  </data>
+  <data name="EntityBox_CmdEditPath" xml:space="preserve">
+    <value>Edit Path</value>
   </data>
 </root>

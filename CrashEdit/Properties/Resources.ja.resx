@@ -451,7 +451,7 @@
     <value>キャンセル</value>
   </data>
   <data name="InterpolatorForm" xml:space="preserve">
-    <value>パスの補完</value>
+    <value>パスの編集</value>
   </data>
   <data name="InterpolatorForm_cmdCancel" xml:space="preserve">
     <value>キャンセル</value>
@@ -931,5 +931,8 @@
   </data>
   <data name="OldMainForm_tbxVABTool" xml:space="preserve">
     <value>VABツール</value>
+  </data>
+  <data name="EntityBox_CmdEditPath" xml:space="preserve">
+    <value>パスの編集</value>
   </data>
 </root>

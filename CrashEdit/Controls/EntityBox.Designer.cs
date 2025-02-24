@@ -38,7 +38,8 @@ namespace CrashEdit.CE
             chkSubtype = new CheckBox();
             numSubtype = new DarkNumericUpDown();
             fraPosition = new DarkGroupBox();
-            cmdInterpolate = new DarkButton();
+            chkSyncPositions = new CheckBox();
+            cmdEditPath = new DarkButton();
             lblPositionIndex = new Label();
             cmdNextPosition = new DarkButton();
             cmdPreviousPosition = new DarkButton();
@@ -401,7 +402,8 @@ namespace CrashEdit.CE
             // 
             // fraPosition
             // 
-            fraPosition.Controls.Add(cmdInterpolate);
+            fraPosition.Controls.Add(chkSyncPositions);
+            fraPosition.Controls.Add(cmdEditPath);
             fraPosition.Controls.Add(lblPositionIndex);
             fraPosition.Controls.Add(cmdNextPosition);
             fraPosition.Controls.Add(cmdPreviousPosition);
@@ -423,22 +425,34 @@ namespace CrashEdit.CE
             fraPosition.TabStop = false;
             fraPosition.Text = "Position(s)";
             // 
-            // cmdInterpolate
+            // chkSyncPositions
             // 
-            cmdInterpolate.AutoSize = true;
-            cmdInterpolate.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            cmdInterpolate.BorderColour = Color.Empty;
-            cmdInterpolate.CustomColour = false;
-            cmdInterpolate.FlatBottom = false;
-            cmdInterpolate.FlatTop = false;
-            cmdInterpolate.Location = new Point(7, 150);
-            cmdInterpolate.Margin = new Padding(4, 3, 4, 3);
-            cmdInterpolate.Name = "cmdInterpolate";
-            cmdInterpolate.Padding = new Padding(5);
-            cmdInterpolate.Size = new Size(84, 35);
-            cmdInterpolate.TabIndex = 8;
-            cmdInterpolate.Text = "Interpolate";
-            cmdInterpolate.Click += cmdInterpolate_Click;
+            chkSyncPositions.AutoSize = true;
+            chkSyncPositions.BackColor = Color.Transparent;
+            chkSyncPositions.Location = new Point(88, 159);
+            chkSyncPositions.Name = "chkSyncPositions";
+            chkSyncPositions.Size = new Size(51, 19);
+            chkSyncPositions.TabIndex = 9;
+            chkSyncPositions.Text = "Sync";
+            chkSyncPositions.UseVisualStyleBackColor = false;
+            chkSyncPositions.CheckedChanged += chkSyncPositions_CheckedChanged;
+            // 
+            // cmdEditPath
+            // 
+            cmdEditPath.AutoSize = true;
+            cmdEditPath.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            cmdEditPath.BorderColour = Color.Empty;
+            cmdEditPath.CustomColour = false;
+            cmdEditPath.FlatBottom = false;
+            cmdEditPath.FlatTop = false;
+            cmdEditPath.Location = new Point(7, 150);
+            cmdEditPath.Margin = new Padding(4, 3, 4, 3);
+            cmdEditPath.Name = "cmdEditPath";
+            cmdEditPath.Padding = new Padding(5);
+            cmdEditPath.Size = new Size(74, 35);
+            cmdEditPath.TabIndex = 8;
+            cmdEditPath.Text = "Edit Path";
+            cmdEditPath.Click += cmdInterpolate_Click;
             // 
             // lblPositionIndex
             // 
@@ -3603,7 +3617,7 @@ namespace CrashEdit.CE
         private DarkNumericUpDown numSettingC;
         private System.Windows.Forms.CheckBox chkSettingHex;
         private System.Windows.Forms.Label lblEIDErrB;
-        private DarkButton cmdInterpolate;
+        private DarkButton cmdEditPath;
         private DarkGroupBox fraTTReward;
         private System.Windows.Forms.CheckBox chkTTReward;
         private DarkNumericUpDown numTTReward;
@@ -3691,5 +3705,6 @@ namespace CrashEdit.CE
         private DarkListBox lbEntityB;
         private DarkButton cmdCopySetting;
         private DarkButton cmdPasteSetting;
+        private CheckBox chkSyncPositions;
     }
 }

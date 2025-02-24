@@ -94,14 +94,6 @@ namespace CrashEdit.CE
             DialogResult = DialogResult.OK;
         }
 
-        private void cmdOK3_Click(object sender, EventArgs e)
-        {
-            ShiftPoints();
-
-            Mode = 3;
-            DialogResult = DialogResult.OK;
-        }
-
         private void cmdCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
@@ -456,41 +448,6 @@ namespace CrashEdit.CE
         }
 
         #endregion
-
-        #region Tab3
-
-        private void ShiftPoints()
-        {
-            Amount = positions.Count - 1;
-
-            List<Point3D> pts = new List<Point3D>();
-            for (int i = 0; i < positions.Count; i++)
-            {
-                pts.Add(new Point3D(positions[i].X, positions[i].Y, positions[i].Z));
-            }
-
-            List<Point3D> points = new List<Point3D>();
-            for (int i = 0; i < pts.Count; i++)
-            {
-                double x = pts[i].X + (short)numShiftX.Value;
-                double y = pts[i].Y + (short)numShiftY.Value;
-                double z = pts[i].Z + (short)numShiftZ.Value;
-                x = Math.Clamp(x, short.MinValue, short.MaxValue);
-                y = Math.Clamp(y, short.MinValue, short.MaxValue);
-                z = Math.Clamp(z, short.MinValue, short.MaxValue);
-
-                points.Add(new Point3D(x, y, z));
-            }
-
-            NewPositions = new Position[points.Count];
-            for (int i = 0; i < points.Count; i++)
-            {
-                NewPositions[i] = new Position((float)points[i].X, (float)points[i].Y, (float)points[i].Z);
-            }
-        }
-
-        #endregion
-
 
         private void ScrollHandlerFunction(object sender, MouseEventArgs e)
         {

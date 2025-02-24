@@ -155,7 +155,7 @@ namespace CrashEdit.CE
                 }
             }
             chkSettingHex.Text = Resources.EntityBox_ChkHex;
-            cmdInterpolate.Text = Resources.EntityBox_CmdInterpolate;
+            cmdEditPath.Text = Resources.EntityBox_CmdEditPath;
             fraVictims.Text = Resources.EntityBox_FraVictims;
             fraBoxCount.Text = Resources.EntityBox_FraBoxCount;
             fraDDASection.Text = Resources.EntityBox_FraDDASection;
@@ -308,7 +308,7 @@ namespace CrashEdit.CE
                 cmdNextPosition.Enabled =
                 cmdInsertPosition.Enabled =
                 cmdRemovePosition.Enabled =
-                cmdInterpolate.Enabled = false;
+                cmdEditPath.Enabled = false;
                 lblX.Enabled = lblY.Enabled = lblZ.Enabled = numX.Enabled = numY.Enabled = numZ.Enabled = false;
             }
             else
@@ -322,7 +322,7 @@ namespace CrashEdit.CE
                 numX.Value = entity.Positions[positionindex].X;
                 numY.Value = entity.Positions[positionindex].Y;
                 numZ.Value = entity.Positions[positionindex].Z;
-                cmdInterpolate.Enabled = entity.Positions.Count >= 2;
+                cmdEditPath.Enabled = entity.Positions.Count >= 2;
             }
             dirty.Pop();
         }
@@ -365,12 +365,50 @@ namespace CrashEdit.CE
             UpdatePosition();
         }
 
+        private T ValidateValue<T>(T value, T dif) where T : struct, IComparable<T>
+        {
+            T result;
+            try
+            {
+                long tempResult = Convert.ToInt64(value) + Convert.ToInt64(dif);
+
+                T max = (T)typeof(T).GetField("MaxValue")?.GetValue(null);
+                T min = (T)typeof(T).GetField("MinValue")?.GetValue(null);
+
+                tempResult = Math.Clamp(tempResult, Convert.ToInt64(min), Convert.ToInt64(max));
+                result = (T)Convert.ChangeType(tempResult, typeof(T));
+            }
+            catch (OverflowException)
+            {
+                T max = (T)typeof(T).GetField("MaxValue")?.GetValue(null);
+                T min = (T)typeof(T).GetField("MinValue")?.GetValue(null);
+                result = dif.CompareTo(default(T)) > 0 ? max : min;
+            }
+
+            return result;
+        }
+
         private void numX_ValueChanged(object sender, EventArgs e)
         {
             if (!Dirty)
             {
-                EntityPosition pos = entity.Positions[positionindex];
-                entity.Positions[positionindex] = new EntityPosition((short)numX.Value, pos.Y, pos.Z);
+                short oldV = entity.Positions[positionindex].X;
+                short newV = (short)numX.Value;
+                short dif = (short)(newV - oldV);
+                if (chkSyncPositions.Checked)
+                {
+                    for (int i = 0; i < entity.Positions.Count; i++)
+                    {
+                        EntityPosition pos = entity.Positions[i];
+                        short result = ValidateValue(pos.X, dif);
+                        entity.Positions[i] = new EntityPosition(result, pos.Y, pos.Z);
+                    }
+                }
+                else
+                {
+                    EntityPosition pos = entity.Positions[positionindex];
+                    entity.Positions[positionindex] = new EntityPosition((short)numX.Value, pos.Y, pos.Z);
+                }
             }
         }
 
@@ -378,8 +416,23 @@ namespace CrashEdit.CE
         {
             if (!Dirty)
             {
-                EntityPosition pos = entity.Positions[positionindex];
-                entity.Positions[positionindex] = new EntityPosition(pos.X, (short)numY.Value, pos.Z);
+                short oldV = entity.Positions[positionindex].Y;
+                short newV = (short)numY.Value;
+                short dif = (short)(newV - oldV);
+                if (chkSyncPositions.Checked)
+                {
+                    for (int i = 0; i < entity.Positions.Count; i++)
+                    {
+                        EntityPosition pos = entity.Positions[i];
+                        short result = ValidateValue(pos.Y, dif);
+                        entity.Positions[i] = new EntityPosition(pos.X, result, pos.Z);
+                    }
+                }
+                else
+                {
+                    EntityPosition pos = entity.Positions[positionindex];
+                    entity.Positions[positionindex] = new EntityPosition(pos.X, (short)numY.Value, pos.Z);
+                }
             }
         }
 
@@ -387,8 +440,23 @@ namespace CrashEdit.CE
         {
             if (!Dirty)
             {
-                EntityPosition pos = entity.Positions[positionindex];
-                entity.Positions[positionindex] = new EntityPosition(pos.X, pos.Y, (short)numZ.Value);
+                short oldV = entity.Positions[positionindex].Z;
+                short newV = (short)numZ.Value;
+                short dif = (short)(newV - oldV);
+                if (chkSyncPositions.Checked)
+                {
+                    for (int i = 0; i < entity.Positions.Count; i++)
+                    {
+                        EntityPosition pos = entity.Positions[i];
+                        short result = ValidateValue(pos.Z, dif);
+                        entity.Positions[i] = new EntityPosition(pos.X, pos.Y, result);
+                    }
+                }
+                else
+                {
+                    EntityPosition pos = entity.Positions[positionindex];
+                    entity.Positions[positionindex] = new EntityPosition(pos.X, pos.Y, (short)numZ.Value);
+                }
             }
         }
 
@@ -2702,6 +2770,11 @@ namespace CrashEdit.CE
             SetCVal((long)numSettingC.Value);
         }
 
+        private void chkSyncPositions_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
         private void cmdInterpolate_Click(object sender, EventArgs e)
         {
             Position[] pos = new Position[entity.Positions.Count];
@@ -2732,7 +2805,7 @@ namespace CrashEdit.CE
                             entity.Positions.Add(new EntityPosition(interpolator.NewPositions[i]));
                         }
                     }
-                     
+
                     UpdatePosition();
                 }
             }

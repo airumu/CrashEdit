@@ -520,6 +520,15 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
+        ///   Edit Path に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_CmdEditPath {
+            get {
+                return ResourceManager.GetString("EntityBox_CmdEditPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Insert に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string EntityBox_CmdInsert {
@@ -1145,7 +1154,7 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
-        ///   Interpolate Path に類似しているローカライズされた文字列を検索します。
+        ///   Edit Path に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string InterpolatorForm {
             get {

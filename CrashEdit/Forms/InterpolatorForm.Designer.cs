@@ -86,16 +86,6 @@ namespace CrashEdit.CE
             numRadius = new DarkNumericUpDown();
             fraAmount2 = new DarkGroupBox();
             numAmount2 = new DarkNumericUpDown();
-            tabPage3 = new TabPage();
-            fraShift = new DarkGroupBox();
-            lbX3 = new Label();
-            lbY3 = new Label();
-            lbZ3 = new Label();
-            numShiftX = new DarkNumericUpDown();
-            numShiftZ = new DarkNumericUpDown();
-            numShiftY = new DarkNumericUpDown();
-            cmdOK3 = new DarkButton();
-            cmdCancel3 = new DarkButton();
             ((System.ComponentModel.ISupportInitialize)numX).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numY).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numZ).BeginInit();
@@ -124,11 +114,6 @@ namespace CrashEdit.CE
             ((System.ComponentModel.ISupportInitialize)numRadius).BeginInit();
             fraAmount2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numAmount2).BeginInit();
-            tabPage3.SuspendLayout();
-            fraShift.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numShiftX).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numShiftZ).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numShiftY).BeginInit();
             SuspendLayout();
             // 
             // cmdCancel
@@ -139,7 +124,7 @@ namespace CrashEdit.CE
             cmdCancel.DialogResult = DialogResult.Cancel;
             cmdCancel.FlatBottom = false;
             cmdCancel.FlatTop = false;
-            cmdCancel.Location = new Point(247, 289);
+            cmdCancel.Location = new Point(247, 293);
             cmdCancel.Margin = new Padding(4, 3, 4, 3);
             cmdCancel.Name = "cmdCancel";
             cmdCancel.Padding = new Padding(6);
@@ -155,7 +140,7 @@ namespace CrashEdit.CE
             cmdOK.CustomColour = false;
             cmdOK.FlatBottom = false;
             cmdOK.FlatTop = false;
-            cmdOK.Location = new Point(152, 289);
+            cmdOK.Location = new Point(152, 293);
             cmdOK.Margin = new Padding(4, 3, 4, 3);
             cmdOK.Name = "cmdOK";
             cmdOK.Padding = new Padding(6);
@@ -478,7 +463,6 @@ namespace CrashEdit.CE
             tabControl1.BackgroundColor = Color.FromArgb(30, 30, 30);
             tabControl1.Controls.Add(tabPage1);
             tabControl1.Controls.Add(tabPage2);
-            tabControl1.Controls.Add(tabPage3);
             tabControl1.Dock = DockStyle.Fill;
             tabControl1.IsDerivedStyle = true;
             tabControl1.ItemSize = new Size(100, 32);
@@ -486,7 +470,7 @@ namespace CrashEdit.CE
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
             tabControl1.SelectedTextColor = Color.White;
-            tabControl1.Size = new Size(347, 359);
+            tabControl1.Size = new Size(347, 363);
             tabControl1.SizeMode = TabSizeMode.Fixed;
             tabControl1.Speed = 100;
             tabControl1.Style = MetroSet_UI.Enums.Style.Dark;
@@ -512,9 +496,9 @@ namespace CrashEdit.CE
             tabPage1.Location = new Point(4, 36);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(339, 319);
+            tabPage1.Size = new Size(339, 323);
             tabPage1.TabIndex = 0;
-            tabPage1.Text = "Interpolate";
+            tabPage1.Text = "Interpolator";
             // 
             // tabPage2
             // 
@@ -529,9 +513,9 @@ namespace CrashEdit.CE
             tabPage2.Location = new Point(4, 36);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(339, 319);
+            tabPage2.Size = new Size(339, 323);
             tabPage2.TabIndex = 1;
-            tabPage2.Text = "Arrange";
+            tabPage2.Text = "Builder";
             // 
             // fraCenter
             // 
@@ -576,7 +560,7 @@ namespace CrashEdit.CE
             cmdOK2.CustomColour = false;
             cmdOK2.FlatBottom = false;
             cmdOK2.FlatTop = false;
-            cmdOK2.Location = new Point(152, 289);
+            cmdOK2.Location = new Point(152, 293);
             cmdOK2.Margin = new Padding(4, 3, 4, 3);
             cmdOK2.Name = "cmdOK2";
             cmdOK2.Padding = new Padding(6);
@@ -763,7 +747,7 @@ namespace CrashEdit.CE
             cmdCancel2.DialogResult = DialogResult.Cancel;
             cmdCancel2.FlatBottom = false;
             cmdCancel2.FlatTop = false;
-            cmdCancel2.Location = new Point(247, 289);
+            cmdCancel2.Location = new Point(247, 293);
             cmdCancel2.Margin = new Padding(4, 3, 4, 3);
             cmdCancel2.Name = "cmdCancel2";
             cmdCancel2.Padding = new Padding(6);
@@ -868,135 +852,6 @@ namespace CrashEdit.CE
             numAmount2.TabIndex = 0;
             numAmount2.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
-            // tabPage3
-            // 
-            tabPage3.BackColor = Color.FromArgb(31, 31, 32);
-            tabPage3.Controls.Add(fraShift);
-            tabPage3.Controls.Add(cmdOK3);
-            tabPage3.Controls.Add(cmdCancel3);
-            tabPage3.Location = new Point(4, 36);
-            tabPage3.Name = "tabPage3";
-            tabPage3.Padding = new Padding(3);
-            tabPage3.Size = new Size(339, 319);
-            tabPage3.TabIndex = 1;
-            tabPage3.Text = "Shift";
-            // 
-            // fraShift
-            // 
-            fraShift.AutoSize = true;
-            fraShift.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            fraShift.BackColor = Color.Transparent;
-            fraShift.Controls.Add(lbX3);
-            fraShift.Controls.Add(lbY3);
-            fraShift.Controls.Add(lbZ3);
-            fraShift.Controls.Add(numShiftX);
-            fraShift.Controls.Add(numShiftZ);
-            fraShift.Controls.Add(numShiftY);
-            fraShift.Location = new Point(7, 6);
-            fraShift.Margin = new Padding(4, 3, 4, 3);
-            fraShift.Name = "fraShift";
-            fraShift.Padding = new Padding(4, 3, 4, 3);
-            fraShift.Size = new Size(138, 127);
-            fraShift.TabIndex = 27;
-            fraShift.TabStop = false;
-            fraShift.Text = "Shift";
-            // 
-            // lbX3
-            // 
-            lbX3.AutoSize = true;
-            lbX3.BackColor = Color.Transparent;
-            lbX3.Location = new Point(9, 24);
-            lbX3.Margin = new Padding(4, 0, 4, 0);
-            lbX3.Name = "lbX3";
-            lbX3.Size = new Size(14, 15);
-            lbX3.TabIndex = 0;
-            lbX3.Text = "X";
-            // 
-            // lbY3
-            // 
-            lbY3.AutoSize = true;
-            lbY3.BackColor = Color.Transparent;
-            lbY3.Location = new Point(9, 54);
-            lbY3.Margin = new Padding(4, 0, 4, 0);
-            lbY3.Name = "lbY3";
-            lbY3.Size = new Size(14, 15);
-            lbY3.TabIndex = 1;
-            lbY3.Text = "Y";
-            // 
-            // lbZ3
-            // 
-            lbZ3.AutoSize = true;
-            lbZ3.BackColor = Color.Transparent;
-            lbZ3.Location = new Point(9, 84);
-            lbZ3.Margin = new Padding(4, 0, 4, 0);
-            lbZ3.Name = "lbZ3";
-            lbZ3.Size = new Size(14, 15);
-            lbZ3.TabIndex = 2;
-            lbZ3.Text = "Z";
-            // 
-            // numShiftX
-            // 
-            numShiftX.Location = new Point(30, 22);
-            numShiftX.Margin = new Padding(4, 3, 4, 3);
-            numShiftX.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
-            numShiftX.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
-            numShiftX.Name = "numShiftX";
-            numShiftX.Size = new Size(100, 23);
-            numShiftX.TabIndex = 3;
-            // 
-            // numShiftZ
-            // 
-            numShiftZ.Location = new Point(30, 82);
-            numShiftZ.Margin = new Padding(4, 3, 4, 3);
-            numShiftZ.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
-            numShiftZ.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
-            numShiftZ.Name = "numShiftZ";
-            numShiftZ.Size = new Size(100, 23);
-            numShiftZ.TabIndex = 5;
-            // 
-            // numShiftY
-            // 
-            numShiftY.Location = new Point(30, 52);
-            numShiftY.Margin = new Padding(4, 3, 4, 3);
-            numShiftY.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
-            numShiftY.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
-            numShiftY.Name = "numShiftY";
-            numShiftY.Size = new Size(100, 23);
-            numShiftY.TabIndex = 4;
-            // 
-            // cmdOK3
-            // 
-            cmdOK3.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            cmdOK3.BorderColour = Color.Empty;
-            cmdOK3.CustomColour = false;
-            cmdOK3.FlatBottom = false;
-            cmdOK3.FlatTop = false;
-            cmdOK3.Location = new Point(152, 289);
-            cmdOK3.Margin = new Padding(4, 3, 4, 3);
-            cmdOK3.Name = "cmdOK3";
-            cmdOK3.Padding = new Padding(6);
-            cmdOK3.Size = new Size(88, 27);
-            cmdOK3.TabIndex = 26;
-            cmdOK3.Text = "OK";
-            cmdOK3.Click += cmdOK3_Click;
-            // 
-            // cmdCancel3
-            // 
-            cmdCancel3.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            cmdCancel3.BorderColour = Color.Empty;
-            cmdCancel3.CustomColour = false;
-            cmdCancel3.DialogResult = DialogResult.Cancel;
-            cmdCancel3.FlatBottom = false;
-            cmdCancel3.FlatTop = false;
-            cmdCancel3.Location = new Point(247, 289);
-            cmdCancel3.Margin = new Padding(4, 3, 4, 3);
-            cmdCancel3.Name = "cmdCancel3";
-            cmdCancel3.Padding = new Padding(6);
-            cmdCancel3.Size = new Size(88, 27);
-            cmdCancel3.TabIndex = 25;
-            cmdCancel3.Text = "Cancel";
-            cmdCancel3.Click += cmdCancel_Click;
-            // 
             // InterpolatorForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -1004,14 +859,14 @@ namespace CrashEdit.CE
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackColor = Color.FromArgb(31, 31, 32);
-            ClientSize = new Size(347, 359);
+            ClientSize = new Size(347, 363);
             Controls.Add(tabControl1);
             CornerStyle = CornerPreference.Default;
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Margin = new Padding(4, 3, 4, 3);
-            MinimumSize = new Size(363, 396);
+            MinimumSize = new Size(363, 400);
             Name = "InterpolatorForm";
-            Text = "Interpolate Path";
+            Text = "Edit Path";
             TransparencyKey = Color.FromArgb(31, 31, 32);
             ((System.ComponentModel.ISupportInitialize)numX).EndInit();
             ((System.ComponentModel.ISupportInitialize)numY).EndInit();
@@ -1046,13 +901,6 @@ namespace CrashEdit.CE
             ((System.ComponentModel.ISupportInitialize)numRadius).EndInit();
             fraAmount2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)numAmount2).EndInit();
-            tabPage3.ResumeLayout(false);
-            tabPage3.PerformLayout();
-            fraShift.ResumeLayout(false);
-            fraShift.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)numShiftX).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numShiftZ).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numShiftY).EndInit();
             ResumeLayout(false);
 
         }
@@ -1088,7 +936,6 @@ namespace CrashEdit.CE
         private MetroSetTabControl tabControl1;
         private TabPage tabPage1;
         private TabPage tabPage2;
-        private TabPage tabPage3;
         private DarkButton cmdOK2;
         private DarkButton cmdCancel2;
         private DarkGroupBox fraRadius;
@@ -1108,15 +955,6 @@ namespace CrashEdit.CE
         private DarkButton cmdDegYAdd45;
         private DarkButton cmdDegZSub45;
         private DarkButton cmdDegZAdd45;
-        private DarkGroupBox fraShift;
-        private Label lbX3;
-        private Label lbY3;
-        private Label lbZ3;
-        private DarkNumericUpDown numShiftX;
-        private DarkNumericUpDown numShiftZ;
-        private DarkNumericUpDown numShiftY;
-        private DarkButton cmdOK3;
-        private DarkButton cmdCancel3;
         private DarkNumericUpDown numStartAngle;
         private DarkGroupBox fraStartAngle;
         private DarkButton cmdStartAngleAdd45;
