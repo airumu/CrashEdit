@@ -1011,7 +1011,6 @@ namespace CrashEdit.CE
             Margin = new Padding(4, 3, 4, 3);
             MinimumSize = new Size(363, 396);
             Name = "InterpolatorForm";
-            StartPosition = FormStartPosition.CenterScreen;
             Text = "Interpolate Path";
             TransparencyKey = Color.FromArgb(31, 31, 32);
             ((System.ComponentModel.ISupportInitialize)numX).EndInit();
