@@ -1,4 +1,5 @@
-﻿using AltUI.Forms;
+﻿using System.Windows.Media.Media3D;
+using AltUI.Forms;
 using CrashEdit.Crash;
 
 namespace CrashEdit.CE
@@ -59,13 +60,19 @@ namespace CrashEdit.CE
         public Position[] NewPositions { get; private set; }
         public int Start => (int)numStart.Value;
         public int End => (int)numEnd.Value;
-        public int Amount => (int)numAmount.Value;
+        public int Amount
+        {
+            get => (int)numAmount.Value;
+            set => numAmount.Value = value;
+        }
         public string Func => (string)dpdFunc.SelectedItem;
         public double Order => (double)numOrder.Value;
+        public int Mode { get; private set; }
 
         private void cmdOK_Click(object sender, EventArgs e)
         {
             CalcInterp();
+            Mode = 0;
             DialogResult = DialogResult.OK;
         }
 
@@ -73,6 +80,96 @@ namespace CrashEdit.CE
         {
             DialogResult = DialogResult.Cancel;
         }
+
+        private void cmdOK2_Click(object sender, EventArgs e)
+        {
+            Amount = (int)numAmount2.Value;
+            GenerateCirclePoints(Amount, (int)numRadius.Value);
+
+            Mode = 2;
+            DialogResult = DialogResult.OK;
+        }
+
+        private void cmdCancel2_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+        }
+
+        private void tabControl1_Enter(object sender, EventArgs e)
+        {
+            UpdatePosition();
+        }
+
+        private void tabPage2_Enter(object sender, EventArgs e)
+        {
+            UpdatePosition2();
+        }
+
+        #region Tab2
+
+        public double DegToRad(double degrees)
+        {
+            return degrees * Math.PI / 180.0;
+        }
+
+
+        public Point3D RotatePoint(Point3D point, double angleX, double angleY, double angleZ)
+        {
+            double cosX = Math.Cos(angleX), sinX = Math.Sin(angleX);
+            double y1 = point.Y * cosX - point.Z * sinX;
+            double z1 = point.Y * sinX + point.Z * cosX;
+            double x1 = point.X;
+
+            double cosY = Math.Cos(angleY), sinY = Math.Sin(angleY);
+            double x2 = x1 * cosY + z1 * sinY;
+            double z2 = -x1 * sinY + z1 * cosY;
+            double y2 = y1;
+
+            double cosZ = Math.Cos(angleZ), sinZ = Math.Sin(angleZ);
+            double x3 = x2 * cosZ - y2 * sinZ;
+            double y3 = x2 * sinZ + y2 * cosZ;
+            double z3 = z2;
+
+            return new Point3D((float)x3, (float)y3, (float)z3);
+        }
+
+        private void GenerateCirclePoints(int vertexCount, double radius)
+        {
+            NewPositions = new Position[vertexCount + 1];
+            Position start = positions[0];
+            double centerX = start.X;
+            double centerY = start.Y;
+            double centerZ = start.Z;
+            double angleStep = 2 * Math.PI / vertexCount;
+
+            double angleXDeg = (int)numDegreeX.Value;
+            double angleYDeg = (int)numDegreeY.Value;
+            double angleZDeg = (int)numDegreeZ.Value;
+
+            double angleX = DegToRad(angleXDeg);
+            double angleY = DegToRad(angleYDeg);
+            double angleZ = DegToRad(angleZDeg);
+
+            for (int i = 0; i < vertexCount; i++)
+            {
+                double theta = i * angleStep;
+                double x = radius * Math.Cos(theta);
+                double z = radius * Math.Sin(theta);
+                double y = 0;
+                Point3D point = new Point3D(x, y, z);
+
+                Point3D rotatedPoint = RotatePoint(point, angleX, angleY, angleZ);
+                rotatedPoint.X += centerX;
+                rotatedPoint.Y += centerY;
+                rotatedPoint.Z += centerZ;
+                NewPositions[i] = new Position((float)rotatedPoint.X, (float)rotatedPoint.Y, (float)rotatedPoint.Z);
+            }
+
+            // Close the circle.
+            NewPositions[vertexCount] = new Position(NewPositions[0].X, NewPositions[0].Y, NewPositions[0].Z);
+        }
+
+        #endregion
 
         private void UpdatePosition()
         {
@@ -82,6 +179,16 @@ namespace CrashEdit.CE
             numZ.Value = (decimal)positions[positionindex].Z;
             cmdPrev.Enabled = positionindex > 0;
             cmdNext.Enabled = positionindex < positions.Count - 1;
+        }
+
+        private void UpdatePosition2()
+        {
+            lblPosition2.Text = $"{positionindex + 1} / {positions.Count}";
+            numX2.Value = (decimal)positions[positionindex].X;
+            numY2.Value = (decimal)positions[positionindex].Y;
+            numZ2.Value = (decimal)positions[positionindex].Z;
+            cmdPrev2.Enabled = positionindex > 0;
+            cmdNext2.Enabled = positionindex < positions.Count - 1;
         }
 
         private void cmdPrev_Click(object sender, EventArgs e)
@@ -271,6 +378,36 @@ namespace CrashEdit.CE
         private void numOrder_ValueChanged(object sender, EventArgs e)
         {
             CalcInterp();
+        }
+
+        private void cmdDegXAdd45_Click(object sender, EventArgs e)
+        {
+            numDegreeX.Value = Math.Min(numDegreeX.Value + 45, 360);
+        }
+
+        private void cmdDegXSub45_Click(object sender, EventArgs e)
+        {
+            numDegreeX.Value = Math.Max(numDegreeX.Value - 45, -360);
+        }
+
+        private void cmdDegYAdd45_Click(object sender, EventArgs e)
+        {
+            numDegreeY.Value = Math.Min(numDegreeY.Value + 45, 360);
+        }
+
+        private void cmdDegYSub45_Click(object sender, EventArgs e)
+        {
+            numDegreeY.Value = Math.Max(numDegreeY.Value - 45, -360);
+        }
+
+        private void cmdDegZAdd45_Click(object sender, EventArgs e)
+        {
+            numDegreeZ.Value = Math.Min(numDegreeZ.Value + 45, 360);
+        }
+
+        private void cmdDegZSub45_Click(object sender, EventArgs e)
+        {
+            numDegreeZ.Value = Math.Max(numDegreeZ.Value - 45, -360);
         }
     }
 }

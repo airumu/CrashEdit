@@ -1,4 +1,5 @@
 ﻿using AltUI.Controls;
+using MetroSet_UI.Controls;
 
 namespace CrashEdit.CE
 {
@@ -30,437 +31,937 @@ namespace CrashEdit.CE
         /// </summary>
         private void InitializeComponent()
         {
-            this.cmdCancel = new DarkButton();
-            this.cmdOK = new DarkButton();
-            this.dpdFunc = new DarkComboBox();
-            this.lblX = new Label();
-            this.lblY = new Label();
-            this.lblZ = new Label();
-            this.numX = new DarkNumericUpDown();
-            this.numY = new DarkNumericUpDown();
-            this.numZ = new DarkNumericUpDown();
-            this.lblAverage = new Label();
-            this.fraFunction = new DarkGroupBox();
-            this.fraPosition = new DarkGroupBox();
-            this.lblPosition = new Label();
-            this.cmdNext = new DarkButton();
-            this.cmdPrev = new DarkButton();
-            this.cmdLast = new DarkButton();
-            this.cmdFirst = new DarkButton();
-            this.fraBound = new DarkGroupBox();
-            this.numEnd = new DarkNumericUpDown();
-            this.numStart = new DarkNumericUpDown();
-            this.fraAmount = new DarkGroupBox();
-            this.numAmount = new DarkNumericUpDown();
-            this.fraTension = new DarkGroupBox();
-            this.numTension = new DarkNumericUpDown();
-            this.fraOrder = new DarkGroupBox();
-            this.numOrder = new DarkNumericUpDown();
-            ((System.ComponentModel.ISupportInitialize)(this.numX)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numY)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numZ)).BeginInit();
-            this.fraFunction.SuspendLayout();
-            this.fraPosition.SuspendLayout();
-            this.fraBound.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numEnd)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numStart)).BeginInit();
-            this.fraAmount.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numAmount)).BeginInit();
-            this.fraTension.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numTension)).BeginInit();
-            this.fraOrder.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numOrder)).BeginInit();
-            this.SuspendLayout();
+            cmdCancel = new DarkButton();
+            cmdOK = new DarkButton();
+            dpdFunc = new DarkComboBox();
+            lblX = new Label();
+            lblY = new Label();
+            lblZ = new Label();
+            numX = new DarkNumericUpDown();
+            numY = new DarkNumericUpDown();
+            numZ = new DarkNumericUpDown();
+            lblAverage = new Label();
+            fraFunction = new DarkGroupBox();
+            fraPosition = new DarkGroupBox();
+            lblPosition = new Label();
+            cmdNext = new DarkButton();
+            cmdPrev = new DarkButton();
+            cmdLast = new DarkButton();
+            cmdFirst = new DarkButton();
+            fraBound = new DarkGroupBox();
+            numEnd = new DarkNumericUpDown();
+            numStart = new DarkNumericUpDown();
+            fraAmount = new DarkGroupBox();
+            numAmount = new DarkNumericUpDown();
+            fraTension = new DarkGroupBox();
+            numTension = new DarkNumericUpDown();
+            fraOrder = new DarkGroupBox();
+            numOrder = new DarkNumericUpDown();
+            tabControl1 = new MetroSetTabControl();
+            tabPage1 = new TabPage();
+            tabPage2 = new TabPage();
+            fraPositions2 = new DarkGroupBox();
+            lblPosition2 = new Label();
+            cmdNext2 = new DarkButton();
+            lbX2 = new Label();
+            cmdPrev2 = new DarkButton();
+            lbY2 = new Label();
+            lbZ2 = new Label();
+            numX2 = new DarkNumericUpDown();
+            numZ2 = new DarkNumericUpDown();
+            numY2 = new DarkNumericUpDown();
+            cmdOK2 = new DarkButton();
+            fraDegrees = new DarkGroupBox();
+            cmdDegZSub45 = new DarkButton();
+            cmdDegYSub45 = new DarkButton();
+            cmdDegXSub45 = new DarkButton();
+            cmdDegZAdd45 = new DarkButton();
+            cmdDegYAdd45 = new DarkButton();
+            cmdDegXAdd45 = new DarkButton();
+            numDegreeZ = new DarkNumericUpDown();
+            numDegreeY = new DarkNumericUpDown();
+            numDegreeX = new DarkNumericUpDown();
+            lbDegreeY = new Label();
+            lbDegreeX = new Label();
+            lbDegreeZ = new Label();
+            cmdCancel2 = new DarkButton();
+            fraRadius = new DarkGroupBox();
+            numRadius = new DarkNumericUpDown();
+            lblAverage2 = new Label();
+            fraAmount2 = new DarkGroupBox();
+            numAmount2 = new DarkNumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)numX).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numY).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numZ).BeginInit();
+            fraFunction.SuspendLayout();
+            fraPosition.SuspendLayout();
+            fraBound.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numEnd).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numStart).BeginInit();
+            fraAmount.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numAmount).BeginInit();
+            fraTension.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numTension).BeginInit();
+            fraOrder.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numOrder).BeginInit();
+            tabControl1.SuspendLayout();
+            tabPage1.SuspendLayout();
+            tabPage2.SuspendLayout();
+            fraPositions2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numX2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numZ2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numY2).BeginInit();
+            fraDegrees.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numDegreeZ).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numDegreeY).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numDegreeX).BeginInit();
+            fraRadius.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numRadius).BeginInit();
+            fraAmount2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numAmount2).BeginInit();
+            SuspendLayout();
             // 
             // cmdCancel
             // 
-            this.cmdCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | AnchorStyles.Right)));
-            this.cmdCancel.DialogResult = DialogResult.Cancel;
-            this.cmdCancel.Location = new System.Drawing.Point(194, 265);
-            this.cmdCancel.Name = "cmdCancel";
-            this.cmdCancel.Size = new System.Drawing.Size(75, 23);
-            this.cmdCancel.TabIndex = 3;
-            this.cmdCancel.Text = "Cancel";
-            this.cmdCancel.Click += new System.EventHandler(this.cmdCancel_Click);
+            cmdCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            cmdCancel.BorderColour = Color.Empty;
+            cmdCancel.CustomColour = false;
+            cmdCancel.DialogResult = DialogResult.Cancel;
+            cmdCancel.FlatBottom = false;
+            cmdCancel.FlatTop = false;
+            cmdCancel.Location = new Point(247, 289);
+            cmdCancel.Margin = new Padding(4, 3, 4, 3);
+            cmdCancel.Name = "cmdCancel";
+            cmdCancel.Padding = new Padding(6);
+            cmdCancel.Size = new Size(88, 27);
+            cmdCancel.TabIndex = 3;
+            cmdCancel.Text = "Cancel";
+            cmdCancel.Click += cmdCancel_Click;
             // 
             // cmdOK
             // 
-            this.cmdOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | AnchorStyles.Right)));
-            this.cmdOK.Location = new System.Drawing.Point(113, 265);
-            this.cmdOK.Name = "cmdOK";
-            this.cmdOK.Size = new System.Drawing.Size(75, 23);
-            this.cmdOK.TabIndex = 4;
-            this.cmdOK.Text = "Interpolate!";
-            this.cmdOK.Click += new System.EventHandler(this.cmdOK_Click);
+            cmdOK.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            cmdOK.BorderColour = Color.Empty;
+            cmdOK.CustomColour = false;
+            cmdOK.FlatBottom = false;
+            cmdOK.FlatTop = false;
+            cmdOK.Location = new Point(152, 289);
+            cmdOK.Margin = new Padding(4, 3, 4, 3);
+            cmdOK.Name = "cmdOK";
+            cmdOK.Padding = new Padding(6);
+            cmdOK.Size = new Size(88, 27);
+            cmdOK.TabIndex = 4;
+            cmdOK.Text = "OK";
+            cmdOK.Click += cmdOK_Click;
             // 
             // dpdFunc
             // 
-            this.dpdFunc.DropDownStyle = ComboBoxStyle.DropDownList;
-            this.dpdFunc.FormattingEnabled = true;
-            this.dpdFunc.Location = new System.Drawing.Point(6, 19);
-            this.dpdFunc.Name = "dpdFunc";
-            this.dpdFunc.Size = new System.Drawing.Size(121, 21);
-            this.dpdFunc.TabIndex = 5;
+            dpdFunc.DrawMode = DrawMode.OwnerDrawVariable;
+            dpdFunc.FormattingEnabled = true;
+            dpdFunc.Location = new Point(7, 22);
+            dpdFunc.Margin = new Padding(4, 3, 4, 3);
+            dpdFunc.Name = "dpdFunc";
+            dpdFunc.Size = new Size(140, 24);
+            dpdFunc.TabIndex = 5;
             // 
             // lblX
             // 
-            this.lblX.AutoSize = true;
-            this.lblX.Location = new System.Drawing.Point(6, 35);
-            this.lblX.Name = "lblX";
-            this.lblX.Size = new System.Drawing.Size(14, 13);
-            this.lblX.TabIndex = 0;
-            this.lblX.Text = "X";
+            lblX.AutoSize = true;
+            lblX.BackColor = Color.Transparent;
+            lblX.Location = new Point(8, 40);
+            lblX.Margin = new Padding(4, 0, 4, 0);
+            lblX.Name = "lblX";
+            lblX.Size = new Size(14, 15);
+            lblX.TabIndex = 0;
+            lblX.Text = "X";
             // 
             // lblY
             // 
-            this.lblY.AutoSize = true;
-            this.lblY.Location = new System.Drawing.Point(6, 61);
-            this.lblY.Name = "lblY";
-            this.lblY.Size = new System.Drawing.Size(14, 13);
-            this.lblY.TabIndex = 1;
-            this.lblY.Text = "Y";
+            lblY.AutoSize = true;
+            lblY.BackColor = Color.Transparent;
+            lblY.Location = new Point(8, 70);
+            lblY.Margin = new Padding(4, 0, 4, 0);
+            lblY.Name = "lblY";
+            lblY.Size = new Size(14, 15);
+            lblY.TabIndex = 1;
+            lblY.Text = "Y";
             // 
             // lblZ
             // 
-            this.lblZ.AutoSize = true;
-            this.lblZ.Location = new System.Drawing.Point(6, 87);
-            this.lblZ.Name = "lblZ";
-            this.lblZ.Size = new System.Drawing.Size(14, 13);
-            this.lblZ.TabIndex = 2;
-            this.lblZ.Text = "Z";
+            lblZ.AutoSize = true;
+            lblZ.BackColor = Color.Transparent;
+            lblZ.Location = new Point(8, 100);
+            lblZ.Margin = new Padding(4, 0, 4, 0);
+            lblZ.Name = "lblZ";
+            lblZ.Size = new Size(14, 15);
+            lblZ.TabIndex = 2;
+            lblZ.Text = "Z";
             // 
             // numX
             // 
-            this.numX.Location = new System.Drawing.Point(26, 33);
-            this.numX.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numX.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numX.Name = "numX";
-            this.numX.ReadOnly = true;
-            this.numX.Size = new System.Drawing.Size(86, 20);
-            this.numX.TabIndex = 3;
+            numX.Location = new Point(30, 38);
+            numX.Margin = new Padding(4, 3, 4, 3);
+            numX.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numX.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numX.Name = "numX";
+            numX.ReadOnly = true;
+            numX.Size = new Size(100, 23);
+            numX.TabIndex = 3;
             // 
             // numY
             // 
-            this.numY.Location = new System.Drawing.Point(26, 59);
-            this.numY.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numY.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numY.Name = "numY";
-            this.numY.ReadOnly = true;
-            this.numY.Size = new System.Drawing.Size(86, 20);
-            this.numY.TabIndex = 4;
+            numY.Location = new Point(30, 68);
+            numY.Margin = new Padding(4, 3, 4, 3);
+            numY.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numY.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numY.Name = "numY";
+            numY.ReadOnly = true;
+            numY.Size = new Size(100, 23);
+            numY.TabIndex = 4;
             // 
             // numZ
             // 
-            this.numZ.Location = new System.Drawing.Point(26, 85);
-            this.numZ.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numZ.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numZ.Name = "numZ";
-            this.numZ.ReadOnly = true;
-            this.numZ.Size = new System.Drawing.Size(86, 20);
-            this.numZ.TabIndex = 5;
+            numZ.Location = new Point(30, 98);
+            numZ.Margin = new Padding(4, 3, 4, 3);
+            numZ.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numZ.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numZ.Name = "numZ";
+            numZ.ReadOnly = true;
+            numZ.Size = new Size(100, 23);
+            numZ.TabIndex = 5;
             // 
             // lblAverage
             // 
-            this.lblAverage.AutoSize = true;
-            this.lblAverage.Location = new System.Drawing.Point(12, 245);
-            this.lblAverage.Name = "lblAverage";
-            this.lblAverage.Size = new System.Drawing.Size(128, 13);
-            this.lblAverage.TabIndex = 11;
-            this.lblAverage.Text = "Average Point Distance: -";
+            lblAverage.AutoSize = true;
+            lblAverage.BackColor = Color.Transparent;
+            lblAverage.Location = new Point(7, 275);
+            lblAverage.Margin = new Padding(4, 0, 4, 0);
+            lblAverage.Name = "lblAverage";
+            lblAverage.Size = new Size(140, 15);
+            lblAverage.TabIndex = 11;
+            lblAverage.Text = "Average Point Distance: -";
             // 
             // fraFunction
             // 
-            this.fraFunction.AutoSize = true;
-            this.fraFunction.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            this.fraFunction.Controls.Add(this.dpdFunc);
-            this.fraFunction.Location = new System.Drawing.Point(136, 60);
-            this.fraFunction.Name = "fraFunction";
-            this.fraFunction.Size = new System.Drawing.Size(133, 59);
-            this.fraFunction.TabIndex = 0;
-            this.fraFunction.TabStop = false;
-            this.fraFunction.Text = "Progress Function";
+            fraFunction.AutoSize = true;
+            fraFunction.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraFunction.Controls.Add(dpdFunc);
+            fraFunction.Location = new Point(152, 61);
+            fraFunction.Margin = new Padding(4, 3, 4, 3);
+            fraFunction.Name = "fraFunction";
+            fraFunction.Padding = new Padding(4, 3, 4, 3);
+            fraFunction.Size = new Size(155, 68);
+            fraFunction.TabIndex = 0;
+            fraFunction.TabStop = false;
+            fraFunction.Text = "Progress Function";
             // 
             // fraPosition
             // 
-            this.fraPosition.AutoSize = true;
-            this.fraPosition.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            this.fraPosition.Controls.Add(this.lblPosition);
-            this.fraPosition.Controls.Add(this.cmdNext);
-            this.fraPosition.Controls.Add(this.lblX);
-            this.fraPosition.Controls.Add(this.cmdPrev);
-            this.fraPosition.Controls.Add(this.lblY);
-            this.fraPosition.Controls.Add(this.cmdLast);
-            this.fraPosition.Controls.Add(this.lblZ);
-            this.fraPosition.Controls.Add(this.cmdFirst);
-            this.fraPosition.Controls.Add(this.numX);
-            this.fraPosition.Controls.Add(this.numZ);
-            this.fraPosition.Controls.Add(this.numY);
-            this.fraPosition.Location = new System.Drawing.Point(12, 12);
-            this.fraPosition.Name = "fraPosition";
-            this.fraPosition.Size = new System.Drawing.Size(118, 182);
-            this.fraPosition.TabIndex = 6;
-            this.fraPosition.TabStop = false;
-            this.fraPosition.Text = "Positions";
+            fraPosition.AutoSize = true;
+            fraPosition.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraPosition.Controls.Add(lblPosition);
+            fraPosition.Controls.Add(cmdNext);
+            fraPosition.Controls.Add(lblX);
+            fraPosition.Controls.Add(cmdPrev);
+            fraPosition.Controls.Add(lblY);
+            fraPosition.Controls.Add(cmdLast);
+            fraPosition.Controls.Add(lblZ);
+            fraPosition.Controls.Add(cmdFirst);
+            fraPosition.Controls.Add(numX);
+            fraPosition.Controls.Add(numZ);
+            fraPosition.Controls.Add(numY);
+            fraPosition.Location = new Point(7, 6);
+            fraPosition.Margin = new Padding(4, 3, 4, 3);
+            fraPosition.Name = "fraPosition";
+            fraPosition.Padding = new Padding(4, 3, 4, 3);
+            fraPosition.Size = new Size(139, 211);
+            fraPosition.TabIndex = 6;
+            fraPosition.TabStop = false;
+            fraPosition.Text = "Positions";
             // 
             // lblPosition
             // 
-            this.lblPosition.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPosition.Location = new System.Drawing.Point(6, 16);
-            this.lblPosition.Name = "lblPosition";
-            this.lblPosition.Size = new System.Drawing.Size(106, 14);
-            this.lblPosition.TabIndex = 6;
-            this.lblPosition.Text = "?? / ??";
-            this.lblPosition.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            lblPosition.BackColor = Color.Transparent;
+            lblPosition.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblPosition.Location = new Point(7, 18);
+            lblPosition.Margin = new Padding(4, 0, 4, 0);
+            lblPosition.Name = "lblPosition";
+            lblPosition.Size = new Size(124, 16);
+            lblPosition.TabIndex = 6;
+            lblPosition.Text = "?? / ??";
+            lblPosition.TextAlign = ContentAlignment.TopCenter;
             // 
             // cmdNext
             // 
-            this.cmdNext.Location = new System.Drawing.Point(62, 111);
-            this.cmdNext.Name = "cmdNext";
-            this.cmdNext.Size = new System.Drawing.Size(50, 23);
-            this.cmdNext.TabIndex = 0;
-            this.cmdNext.Text = "Next";
-            this.cmdNext.Click += new System.EventHandler(this.cmdNext_Click);
+            cmdNext.BorderColour = Color.Empty;
+            cmdNext.CustomColour = false;
+            cmdNext.FlatBottom = false;
+            cmdNext.FlatTop = false;
+            cmdNext.Location = new Point(72, 128);
+            cmdNext.Margin = new Padding(4, 3, 4, 3);
+            cmdNext.Name = "cmdNext";
+            cmdNext.Padding = new Padding(6);
+            cmdNext.Size = new Size(58, 27);
+            cmdNext.TabIndex = 0;
+            cmdNext.Text = "Next";
+            cmdNext.Click += cmdNext_Click;
             // 
             // cmdPrev
             // 
-            this.cmdPrev.Location = new System.Drawing.Point(6, 111);
-            this.cmdPrev.Name = "cmdPrev";
-            this.cmdPrev.Size = new System.Drawing.Size(50, 23);
-            this.cmdPrev.TabIndex = 1;
-            this.cmdPrev.Text = "Prev";
-            this.cmdPrev.Click += new System.EventHandler(this.cmdPrev_Click);
+            cmdPrev.BorderColour = Color.Empty;
+            cmdPrev.CustomColour = false;
+            cmdPrev.FlatBottom = false;
+            cmdPrev.FlatTop = false;
+            cmdPrev.Location = new Point(7, 128);
+            cmdPrev.Margin = new Padding(4, 3, 4, 3);
+            cmdPrev.Name = "cmdPrev";
+            cmdPrev.Padding = new Padding(6);
+            cmdPrev.Size = new Size(58, 27);
+            cmdPrev.TabIndex = 1;
+            cmdPrev.Text = "Prev";
+            cmdPrev.Click += cmdPrev_Click;
             // 
             // cmdLast
             // 
-            this.cmdLast.Location = new System.Drawing.Point(62, 140);
-            this.cmdLast.Name = "cmdLast";
-            this.cmdLast.Size = new System.Drawing.Size(50, 23);
-            this.cmdLast.TabIndex = 3;
-            this.cmdLast.Text = "Last";
-            this.cmdLast.Click += new System.EventHandler(this.cmdLast_Click);
+            cmdLast.BorderColour = Color.Empty;
+            cmdLast.CustomColour = false;
+            cmdLast.FlatBottom = false;
+            cmdLast.FlatTop = false;
+            cmdLast.Location = new Point(72, 162);
+            cmdLast.Margin = new Padding(4, 3, 4, 3);
+            cmdLast.Name = "cmdLast";
+            cmdLast.Padding = new Padding(6);
+            cmdLast.Size = new Size(58, 27);
+            cmdLast.TabIndex = 3;
+            cmdLast.Text = "Last";
+            cmdLast.Click += cmdLast_Click;
             // 
             // cmdFirst
             // 
-            this.cmdFirst.Location = new System.Drawing.Point(6, 140);
-            this.cmdFirst.Name = "cmdFirst";
-            this.cmdFirst.Size = new System.Drawing.Size(50, 23);
-            this.cmdFirst.TabIndex = 2;
-            this.cmdFirst.Text = "First";
-            this.cmdFirst.Click += new System.EventHandler(this.cmdFirst_Click);
+            cmdFirst.BorderColour = Color.Empty;
+            cmdFirst.CustomColour = false;
+            cmdFirst.FlatBottom = false;
+            cmdFirst.FlatTop = false;
+            cmdFirst.Location = new Point(7, 162);
+            cmdFirst.Margin = new Padding(4, 3, 4, 3);
+            cmdFirst.Name = "cmdFirst";
+            cmdFirst.Padding = new Padding(6);
+            cmdFirst.Size = new Size(58, 27);
+            cmdFirst.TabIndex = 2;
+            cmdFirst.Text = "First";
+            cmdFirst.Click += cmdFirst_Click;
             // 
             // fraBound
             // 
-            this.fraBound.Controls.Add(this.numEnd);
-            this.fraBound.Controls.Add(this.numStart);
-            this.fraBound.Location = new System.Drawing.Point(136, 12);
-            this.fraBound.Name = "fraBound";
-            this.fraBound.Size = new System.Drawing.Size(133, 42);
-            this.fraBound.TabIndex = 12;
-            this.fraBound.TabStop = false;
-            this.fraBound.Text = "Start/End Position";
+            fraBound.Controls.Add(numEnd);
+            fraBound.Controls.Add(numStart);
+            fraBound.Location = new Point(152, 6);
+            fraBound.Margin = new Padding(4, 3, 4, 3);
+            fraBound.Name = "fraBound";
+            fraBound.Padding = new Padding(4, 3, 4, 3);
+            fraBound.Size = new Size(155, 48);
+            fraBound.TabIndex = 12;
+            fraBound.TabStop = false;
+            fraBound.Text = "Start/End Position";
             // 
             // numEnd
             // 
-            this.numEnd.Location = new System.Drawing.Point(69, 16);
-            this.numEnd.Minimum = new decimal(new int[] {
-            2,
-            0,
-            0,
-            0});
-            this.numEnd.Name = "numEnd";
-            this.numEnd.Size = new System.Drawing.Size(60, 20);
-            this.numEnd.TabIndex = 1;
-            this.numEnd.Value = new decimal(new int[] {
-            2,
-            0,
-            0,
-            0});
-            this.numEnd.ValueChanged += new System.EventHandler(this.numEnd_ValueChanged);
+            numEnd.Location = new Point(80, 18);
+            numEnd.Margin = new Padding(4, 3, 4, 3);
+            numEnd.Minimum = new decimal(new int[] { 2, 0, 0, 0 });
+            numEnd.Name = "numEnd";
+            numEnd.Size = new Size(70, 23);
+            numEnd.TabIndex = 1;
+            numEnd.Value = new decimal(new int[] { 2, 0, 0, 0 });
+            numEnd.ValueChanged += numEnd_ValueChanged;
             // 
             // numStart
             // 
-            this.numStart.Location = new System.Drawing.Point(3, 16);
-            this.numStart.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numStart.Name = "numStart";
-            this.numStart.Size = new System.Drawing.Size(60, 20);
-            this.numStart.TabIndex = 0;
-            this.numStart.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numStart.ValueChanged += new System.EventHandler(this.numStart_ValueChanged);
+            numStart.Location = new Point(4, 18);
+            numStart.Margin = new Padding(4, 3, 4, 3);
+            numStart.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numStart.Name = "numStart";
+            numStart.Size = new Size(70, 23);
+            numStart.TabIndex = 0;
+            numStart.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            numStart.ValueChanged += numStart_ValueChanged;
             // 
             // fraAmount
             // 
-            this.fraAmount.Controls.Add(this.numAmount);
-            this.fraAmount.Location = new System.Drawing.Point(12, 200);
-            this.fraAmount.Name = "fraAmount";
-            this.fraAmount.Size = new System.Drawing.Size(73, 42);
-            this.fraAmount.TabIndex = 13;
-            this.fraAmount.TabStop = false;
-            this.fraAmount.Text = "Amount";
+            fraAmount.Controls.Add(numAmount);
+            fraAmount.Location = new Point(7, 223);
+            fraAmount.Margin = new Padding(4, 3, 4, 3);
+            fraAmount.Name = "fraAmount";
+            fraAmount.Padding = new Padding(4, 3, 4, 3);
+            fraAmount.Size = new Size(85, 48);
+            fraAmount.TabIndex = 13;
+            fraAmount.TabStop = false;
+            fraAmount.Text = "Amount";
             // 
             // numAmount
             // 
-            this.numAmount.Location = new System.Drawing.Point(3, 16);
-            this.numAmount.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numAmount.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numAmount.Name = "numAmount";
-            this.numAmount.Size = new System.Drawing.Size(60, 20);
-            this.numAmount.TabIndex = 0;
-            this.numAmount.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numAmount.ValueChanged += new System.EventHandler(this.numAmount_ValueChanged);
+            numAmount.Location = new Point(4, 18);
+            numAmount.Margin = new Padding(4, 3, 4, 3);
+            numAmount.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numAmount.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numAmount.Name = "numAmount";
+            numAmount.Size = new Size(70, 23);
+            numAmount.TabIndex = 0;
+            numAmount.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            numAmount.ValueChanged += numAmount_ValueChanged;
             // 
             // fraTension
             // 
-            this.fraTension.Controls.Add(this.numTension);
-            this.fraTension.Location = new System.Drawing.Point(136, 125);
-            this.fraTension.Name = "fraTension";
-            this.fraTension.Size = new System.Drawing.Size(133, 45);
-            this.fraTension.TabIndex = 14;
-            this.fraTension.TabStop = false;
-            this.fraTension.Text = "Tension";
+            fraTension.Controls.Add(numTension);
+            fraTension.Location = new Point(152, 136);
+            fraTension.Margin = new Padding(4, 3, 4, 3);
+            fraTension.Name = "fraTension";
+            fraTension.Padding = new Padding(4, 3, 4, 3);
+            fraTension.Size = new Size(155, 52);
+            fraTension.TabIndex = 14;
+            fraTension.TabStop = false;
+            fraTension.Text = "Tension";
             // 
             // numTension
             // 
-            this.numTension.DecimalPlaces = 2;
-            this.numTension.Increment = new decimal(new int[] {
-            5,
-            0,
-            0,
-            65536});
-            this.numTension.Location = new System.Drawing.Point(6, 19);
-            this.numTension.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.numTension.Name = "numTension";
-            this.numTension.Size = new System.Drawing.Size(121, 20);
-            this.numTension.TabIndex = 0;
-            this.numTension.Value = new decimal(new int[] {
-            2,
-            0,
-            0,
-            0});
-            this.numTension.ValueChanged += new System.EventHandler(this.numTension_ValueChanged);
+            numTension.DecimalPlaces = 2;
+            numTension.Increment = new decimal(new int[] { 5, 0, 0, 65536 });
+            numTension.Location = new Point(7, 22);
+            numTension.Margin = new Padding(4, 3, 4, 3);
+            numTension.Minimum = new decimal(new int[] { 1, 0, 0, 131072 });
+            numTension.Name = "numTension";
+            numTension.Size = new Size(141, 23);
+            numTension.TabIndex = 0;
+            numTension.Value = new decimal(new int[] { 2, 0, 0, 0 });
+            numTension.ValueChanged += numTension_ValueChanged;
             // 
             // fraOrder
             // 
-            this.fraOrder.Controls.Add(this.numOrder);
-            this.fraOrder.Location = new System.Drawing.Point(136, 176);
-            this.fraOrder.Name = "fraOrder";
-            this.fraOrder.Size = new System.Drawing.Size(133, 45);
-            this.fraOrder.TabIndex = 15;
-            this.fraOrder.TabStop = false;
-            this.fraOrder.Text = "Order";
+            fraOrder.Controls.Add(numOrder);
+            fraOrder.Location = new Point(152, 195);
+            fraOrder.Margin = new Padding(4, 3, 4, 3);
+            fraOrder.Name = "fraOrder";
+            fraOrder.Padding = new Padding(4, 3, 4, 3);
+            fraOrder.Size = new Size(155, 52);
+            fraOrder.TabIndex = 15;
+            fraOrder.TabStop = false;
+            fraOrder.Text = "Order";
             // 
             // numOrder
             // 
-            this.numOrder.DecimalPlaces = 3;
-            this.numOrder.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.numOrder.Location = new System.Drawing.Point(6, 19);
-            this.numOrder.Maximum = new decimal(new int[] {
-            16,
-            0,
-            0,
-            0});
-            this.numOrder.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numOrder.Name = "numOrder";
-            this.numOrder.Size = new System.Drawing.Size(121, 20);
-            this.numOrder.TabIndex = 0;
-            this.numOrder.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numOrder.ValueChanged += new System.EventHandler(this.numOrder_ValueChanged);
+            numOrder.DecimalPlaces = 3;
+            numOrder.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
+            numOrder.Location = new Point(7, 22);
+            numOrder.Margin = new Padding(4, 3, 4, 3);
+            numOrder.Maximum = new decimal(new int[] { 16, 0, 0, 0 });
+            numOrder.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numOrder.Name = "numOrder";
+            numOrder.Size = new Size(141, 23);
+            numOrder.TabIndex = 0;
+            numOrder.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            numOrder.ValueChanged += numOrder_ValueChanged;
+            // 
+            // tabControl1
+            // 
+            tabControl1.AnimateEasingType = MetroSet_UI.Enums.EasingType.CubeOut;
+            tabControl1.AnimateTime = 200;
+            tabControl1.BackgroundColor = Color.FromArgb(30, 30, 30);
+            tabControl1.Controls.Add(tabPage1);
+            tabControl1.Controls.Add(tabPage2);
+            tabControl1.Dock = DockStyle.Fill;
+            tabControl1.IsDerivedStyle = true;
+            tabControl1.ItemSize = new Size(100, 32);
+            tabControl1.Location = new Point(0, 0);
+            tabControl1.Name = "tabControl1";
+            tabControl1.SelectedIndex = 1;
+            tabControl1.SelectedTextColor = Color.White;
+            tabControl1.Size = new Size(347, 359);
+            tabControl1.SizeMode = TabSizeMode.Fixed;
+            tabControl1.Speed = 100;
+            tabControl1.Style = MetroSet_UI.Enums.Style.Dark;
+            tabControl1.StyleManager = null;
+            tabControl1.TabIndex = 16;
+            tabControl1.ThemeAuthor = "Narwin";
+            tabControl1.ThemeName = "MetroDark";
+            tabControl1.UnselectedTextColor = Color.Gray;
+            tabControl1.UseAnimation = false;
+            tabControl1.Enter += tabControl1_Enter;
+            // 
+            // tabPage1
+            // 
+            tabPage1.BackColor = Color.FromArgb(31, 31, 32);
+            tabPage1.Controls.Add(fraPosition);
+            tabPage1.Controls.Add(cmdOK);
+            tabPage1.Controls.Add(fraOrder);
+            tabPage1.Controls.Add(cmdCancel);
+            tabPage1.Controls.Add(fraFunction);
+            tabPage1.Controls.Add(fraTension);
+            tabPage1.Controls.Add(fraBound);
+            tabPage1.Controls.Add(lblAverage);
+            tabPage1.Controls.Add(fraAmount);
+            tabPage1.Location = new Point(4, 36);
+            tabPage1.Name = "tabPage1";
+            tabPage1.Padding = new Padding(3);
+            tabPage1.Size = new Size(339, 319);
+            tabPage1.TabIndex = 0;
+            tabPage1.Text = "Interpolate";
+            // 
+            // tabPage2
+            // 
+            tabPage2.BackColor = Color.FromArgb(31, 31, 32);
+            tabPage2.Controls.Add(fraPositions2);
+            tabPage2.Controls.Add(cmdOK2);
+            tabPage2.Controls.Add(fraDegrees);
+            tabPage2.Controls.Add(cmdCancel2);
+            tabPage2.Controls.Add(fraRadius);
+            tabPage2.Controls.Add(lblAverage2);
+            tabPage2.Controls.Add(fraAmount2);
+            tabPage2.Location = new Point(4, 36);
+            tabPage2.Name = "tabPage2";
+            tabPage2.Padding = new Padding(3);
+            tabPage2.Size = new Size(339, 319);
+            tabPage2.TabIndex = 1;
+            tabPage2.Text = "Arrange";
+            tabPage2.Enter += tabPage2_Enter;
+            // 
+            // fraPositions2
+            // 
+            fraPositions2.AutoSize = true;
+            fraPositions2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraPositions2.Controls.Add(lblPosition2);
+            fraPositions2.Controls.Add(cmdNext2);
+            fraPositions2.Controls.Add(lbX2);
+            fraPositions2.Controls.Add(cmdPrev2);
+            fraPositions2.Controls.Add(lbY2);
+            fraPositions2.Controls.Add(lbZ2);
+            fraPositions2.Controls.Add(numX2);
+            fraPositions2.Controls.Add(numZ2);
+            fraPositions2.Controls.Add(numY2);
+            fraPositions2.Location = new Point(7, 6);
+            fraPositions2.Margin = new Padding(4, 3, 4, 3);
+            fraPositions2.Name = "fraPositions2";
+            fraPositions2.Padding = new Padding(4, 3, 4, 3);
+            fraPositions2.Size = new Size(139, 177);
+            fraPositions2.TabIndex = 19;
+            fraPositions2.TabStop = false;
+            fraPositions2.Text = "Positions";
+            // 
+            // lblPosition2
+            // 
+            lblPosition2.BackColor = Color.Transparent;
+            lblPosition2.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblPosition2.Location = new Point(7, 18);
+            lblPosition2.Margin = new Padding(4, 0, 4, 0);
+            lblPosition2.Name = "lblPosition2";
+            lblPosition2.Size = new Size(124, 16);
+            lblPosition2.TabIndex = 6;
+            lblPosition2.Text = "?? / ??";
+            lblPosition2.TextAlign = ContentAlignment.TopCenter;
+            // 
+            // cmdNext2
+            // 
+            cmdNext2.BorderColour = Color.Empty;
+            cmdNext2.CustomColour = false;
+            cmdNext2.FlatBottom = false;
+            cmdNext2.FlatTop = false;
+            cmdNext2.Location = new Point(72, 128);
+            cmdNext2.Margin = new Padding(4, 3, 4, 3);
+            cmdNext2.Name = "cmdNext2";
+            cmdNext2.Padding = new Padding(6);
+            cmdNext2.Size = new Size(58, 27);
+            cmdNext2.TabIndex = 0;
+            cmdNext2.Text = "Next";
+            // 
+            // lbX2
+            // 
+            lbX2.AutoSize = true;
+            lbX2.BackColor = Color.Transparent;
+            lbX2.Location = new Point(8, 40);
+            lbX2.Margin = new Padding(4, 0, 4, 0);
+            lbX2.Name = "lbX2";
+            lbX2.Size = new Size(14, 15);
+            lbX2.TabIndex = 0;
+            lbX2.Text = "X";
+            // 
+            // cmdPrev2
+            // 
+            cmdPrev2.BorderColour = Color.Empty;
+            cmdPrev2.CustomColour = false;
+            cmdPrev2.FlatBottom = false;
+            cmdPrev2.FlatTop = false;
+            cmdPrev2.Location = new Point(7, 128);
+            cmdPrev2.Margin = new Padding(4, 3, 4, 3);
+            cmdPrev2.Name = "cmdPrev2";
+            cmdPrev2.Padding = new Padding(6);
+            cmdPrev2.Size = new Size(58, 27);
+            cmdPrev2.TabIndex = 1;
+            cmdPrev2.Text = "Prev";
+            // 
+            // lbY2
+            // 
+            lbY2.AutoSize = true;
+            lbY2.BackColor = Color.Transparent;
+            lbY2.Location = new Point(8, 70);
+            lbY2.Margin = new Padding(4, 0, 4, 0);
+            lbY2.Name = "lbY2";
+            lbY2.Size = new Size(14, 15);
+            lbY2.TabIndex = 1;
+            lbY2.Text = "Y";
+            // 
+            // lbZ2
+            // 
+            lbZ2.AutoSize = true;
+            lbZ2.BackColor = Color.Transparent;
+            lbZ2.Location = new Point(8, 100);
+            lbZ2.Margin = new Padding(4, 0, 4, 0);
+            lbZ2.Name = "lbZ2";
+            lbZ2.Size = new Size(14, 15);
+            lbZ2.TabIndex = 2;
+            lbZ2.Text = "Z";
+            // 
+            // numX2
+            // 
+            numX2.Location = new Point(30, 38);
+            numX2.Margin = new Padding(4, 3, 4, 3);
+            numX2.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numX2.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numX2.Name = "numX2";
+            numX2.ReadOnly = true;
+            numX2.Size = new Size(100, 23);
+            numX2.TabIndex = 3;
+            // 
+            // numZ2
+            // 
+            numZ2.Location = new Point(30, 98);
+            numZ2.Margin = new Padding(4, 3, 4, 3);
+            numZ2.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numZ2.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numZ2.Name = "numZ2";
+            numZ2.ReadOnly = true;
+            numZ2.Size = new Size(100, 23);
+            numZ2.TabIndex = 5;
+            // 
+            // numY2
+            // 
+            numY2.Location = new Point(30, 68);
+            numY2.Margin = new Padding(4, 3, 4, 3);
+            numY2.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numY2.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numY2.Name = "numY2";
+            numY2.ReadOnly = true;
+            numY2.Size = new Size(100, 23);
+            numY2.TabIndex = 4;
+            // 
+            // cmdOK2
+            // 
+            cmdOK2.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            cmdOK2.BorderColour = Color.Empty;
+            cmdOK2.CustomColour = false;
+            cmdOK2.FlatBottom = false;
+            cmdOK2.FlatTop = false;
+            cmdOK2.Location = new Point(152, 289);
+            cmdOK2.Margin = new Padding(4, 3, 4, 3);
+            cmdOK2.Name = "cmdOK2";
+            cmdOK2.Padding = new Padding(6);
+            cmdOK2.Size = new Size(88, 27);
+            cmdOK2.TabIndex = 18;
+            cmdOK2.Text = "OK";
+            cmdOK2.Click += cmdOK2_Click;
+            // 
+            // fraDegrees
+            // 
+            fraDegrees.Controls.Add(cmdDegZSub45);
+            fraDegrees.Controls.Add(cmdDegYSub45);
+            fraDegrees.Controls.Add(cmdDegXSub45);
+            fraDegrees.Controls.Add(cmdDegZAdd45);
+            fraDegrees.Controls.Add(cmdDegYAdd45);
+            fraDegrees.Controls.Add(cmdDegXAdd45);
+            fraDegrees.Controls.Add(numDegreeZ);
+            fraDegrees.Controls.Add(numDegreeY);
+            fraDegrees.Controls.Add(numDegreeX);
+            fraDegrees.Controls.Add(lbDegreeY);
+            fraDegrees.Controls.Add(lbDegreeX);
+            fraDegrees.Controls.Add(lbDegreeZ);
+            fraDegrees.Location = new Point(152, 64);
+            fraDegrees.Margin = new Padding(4, 3, 4, 3);
+            fraDegrees.Name = "fraDegrees";
+            fraDegrees.Padding = new Padding(4, 3, 4, 3);
+            fraDegrees.Size = new Size(155, 175);
+            fraDegrees.TabIndex = 24;
+            fraDegrees.TabStop = false;
+            fraDegrees.Text = "Degrees";
+            // 
+            // cmdDegZSub45
+            // 
+            cmdDegZSub45.BorderColour = Color.Empty;
+            cmdDegZSub45.CustomColour = false;
+            cmdDegZSub45.FlatBottom = false;
+            cmdDegZSub45.FlatTop = false;
+            cmdDegZSub45.Location = new Point(48, 146);
+            cmdDegZSub45.Name = "cmdDegZSub45";
+            cmdDegZSub45.Padding = new Padding(5);
+            cmdDegZSub45.Size = new Size(36, 20);
+            cmdDegZSub45.TabIndex = 3;
+            cmdDegZSub45.Text = "-45";
+            cmdDegZSub45.Click += cmdDegZSub45_Click;
+            // 
+            // cmdDegYSub45
+            // 
+            cmdDegYSub45.BorderColour = Color.Empty;
+            cmdDegYSub45.CustomColour = false;
+            cmdDegYSub45.FlatBottom = false;
+            cmdDegYSub45.FlatTop = false;
+            cmdDegYSub45.Location = new Point(48, 97);
+            cmdDegYSub45.Name = "cmdDegYSub45";
+            cmdDegYSub45.Padding = new Padding(5);
+            cmdDegYSub45.Size = new Size(36, 20);
+            cmdDegYSub45.TabIndex = 3;
+            cmdDegYSub45.Text = "-45";
+            cmdDegYSub45.Click += cmdDegYSub45_Click;
+            // 
+            // cmdDegXSub45
+            // 
+            cmdDegXSub45.BorderColour = Color.Empty;
+            cmdDegXSub45.CustomColour = false;
+            cmdDegXSub45.FlatBottom = false;
+            cmdDegXSub45.FlatTop = false;
+            cmdDegXSub45.Location = new Point(48, 48);
+            cmdDegXSub45.Name = "cmdDegXSub45";
+            cmdDegXSub45.Padding = new Padding(5);
+            cmdDegXSub45.Size = new Size(36, 20);
+            cmdDegXSub45.TabIndex = 3;
+            cmdDegXSub45.Text = "-45";
+            cmdDegXSub45.Click += cmdDegXSub45_Click;
+            // 
+            // cmdDegZAdd45
+            // 
+            cmdDegZAdd45.BorderColour = Color.Empty;
+            cmdDegZAdd45.CustomColour = false;
+            cmdDegZAdd45.FlatBottom = false;
+            cmdDegZAdd45.FlatTop = false;
+            cmdDegZAdd45.Location = new Point(86, 146);
+            cmdDegZAdd45.Name = "cmdDegZAdd45";
+            cmdDegZAdd45.Padding = new Padding(5);
+            cmdDegZAdd45.Size = new Size(36, 20);
+            cmdDegZAdd45.TabIndex = 3;
+            cmdDegZAdd45.Text = "+45";
+            cmdDegZAdd45.Click += cmdDegZAdd45_Click;
+            // 
+            // cmdDegYAdd45
+            // 
+            cmdDegYAdd45.BorderColour = Color.Empty;
+            cmdDegYAdd45.CustomColour = false;
+            cmdDegYAdd45.FlatBottom = false;
+            cmdDegYAdd45.FlatTop = false;
+            cmdDegYAdd45.Location = new Point(86, 97);
+            cmdDegYAdd45.Name = "cmdDegYAdd45";
+            cmdDegYAdd45.Padding = new Padding(5);
+            cmdDegYAdd45.Size = new Size(36, 20);
+            cmdDegYAdd45.TabIndex = 3;
+            cmdDegYAdd45.Text = "+45";
+            cmdDegYAdd45.Click += cmdDegYAdd45_Click;
+            // 
+            // cmdDegXAdd45
+            // 
+            cmdDegXAdd45.BorderColour = Color.Empty;
+            cmdDegXAdd45.CustomColour = false;
+            cmdDegXAdd45.FlatBottom = false;
+            cmdDegXAdd45.FlatTop = false;
+            cmdDegXAdd45.Location = new Point(86, 48);
+            cmdDegXAdd45.Name = "cmdDegXAdd45";
+            cmdDegXAdd45.Padding = new Padding(5);
+            cmdDegXAdd45.Size = new Size(36, 20);
+            cmdDegXAdd45.TabIndex = 3;
+            cmdDegXAdd45.Text = "+45";
+            cmdDegXAdd45.Click += cmdDegXAdd45_Click;
+            // 
+            // numDegreeZ
+            // 
+            numDegreeZ.Location = new Point(30, 120);
+            numDegreeZ.Margin = new Padding(4, 3, 4, 3);
+            numDegreeZ.Maximum = new decimal(new int[] { 360, 0, 0, 0 });
+            numDegreeZ.Minimum = new decimal(new int[] { 360, 0, 0, int.MinValue });
+            numDegreeZ.Name = "numDegreeZ";
+            numDegreeZ.Size = new Size(118, 23);
+            numDegreeZ.TabIndex = 0;
+            // 
+            // numDegreeY
+            // 
+            numDegreeY.Location = new Point(30, 71);
+            numDegreeY.Margin = new Padding(4, 3, 4, 3);
+            numDegreeY.Maximum = new decimal(new int[] { 360, 0, 0, 0 });
+            numDegreeY.Minimum = new decimal(new int[] { 360, 0, 0, int.MinValue });
+            numDegreeY.Name = "numDegreeY";
+            numDegreeY.Size = new Size(118, 23);
+            numDegreeY.TabIndex = 0;
+            // 
+            // numDegreeX
+            // 
+            numDegreeX.Location = new Point(30, 22);
+            numDegreeX.Margin = new Padding(4, 3, 4, 3);
+            numDegreeX.Maximum = new decimal(new int[] { 360, 0, 0, 0 });
+            numDegreeX.Minimum = new decimal(new int[] { 360, 0, 0, int.MinValue });
+            numDegreeX.Name = "numDegreeX";
+            numDegreeX.Size = new Size(118, 23);
+            numDegreeX.TabIndex = 0;
+            // 
+            // lbDegreeY
+            // 
+            lbDegreeY.AutoSize = true;
+            lbDegreeY.BackColor = Color.Transparent;
+            lbDegreeY.Location = new Point(8, 74);
+            lbDegreeY.Margin = new Padding(4, 0, 4, 0);
+            lbDegreeY.Name = "lbDegreeY";
+            lbDegreeY.Size = new Size(14, 15);
+            lbDegreeY.TabIndex = 1;
+            lbDegreeY.Text = "Y";
+            // 
+            // lbDegreeX
+            // 
+            lbDegreeX.AutoSize = true;
+            lbDegreeX.BackColor = Color.Transparent;
+            lbDegreeX.Location = new Point(8, 24);
+            lbDegreeX.Margin = new Padding(4, 0, 4, 0);
+            lbDegreeX.Name = "lbDegreeX";
+            lbDegreeX.Size = new Size(14, 15);
+            lbDegreeX.TabIndex = 0;
+            lbDegreeX.Text = "X";
+            // 
+            // lbDegreeZ
+            // 
+            lbDegreeZ.AutoSize = true;
+            lbDegreeZ.BackColor = Color.Transparent;
+            lbDegreeZ.Location = new Point(8, 124);
+            lbDegreeZ.Margin = new Padding(4, 0, 4, 0);
+            lbDegreeZ.Name = "lbDegreeZ";
+            lbDegreeZ.Size = new Size(14, 15);
+            lbDegreeZ.TabIndex = 2;
+            lbDegreeZ.Text = "Z";
+            // 
+            // cmdCancel2
+            // 
+            cmdCancel2.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            cmdCancel2.BorderColour = Color.Empty;
+            cmdCancel2.CustomColour = false;
+            cmdCancel2.DialogResult = DialogResult.Cancel;
+            cmdCancel2.FlatBottom = false;
+            cmdCancel2.FlatTop = false;
+            cmdCancel2.Location = new Point(247, 289);
+            cmdCancel2.Margin = new Padding(4, 3, 4, 3);
+            cmdCancel2.Name = "cmdCancel2";
+            cmdCancel2.Padding = new Padding(6);
+            cmdCancel2.Size = new Size(88, 27);
+            cmdCancel2.TabIndex = 17;
+            cmdCancel2.Text = "Cancel";
+            cmdCancel2.Click += cmdCancel2_Click;
+            // 
+            // fraRadius
+            // 
+            fraRadius.Controls.Add(numRadius);
+            fraRadius.Location = new Point(152, 6);
+            fraRadius.Margin = new Padding(4, 3, 4, 3);
+            fraRadius.Name = "fraRadius";
+            fraRadius.Padding = new Padding(4, 3, 4, 3);
+            fraRadius.Size = new Size(155, 52);
+            fraRadius.TabIndex = 23;
+            fraRadius.TabStop = false;
+            fraRadius.Text = "Radius";
+            // 
+            // numRadius
+            // 
+            numRadius.Location = new Point(7, 22);
+            numRadius.Margin = new Padding(4, 3, 4, 3);
+            numRadius.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numRadius.Name = "numRadius";
+            numRadius.Size = new Size(141, 23);
+            numRadius.TabIndex = 0;
+            numRadius.Value = new decimal(new int[] { 200, 0, 0, 0 });
+            // 
+            // lblAverage2
+            // 
+            lblAverage2.AutoSize = true;
+            lblAverage2.BackColor = Color.Transparent;
+            lblAverage2.Location = new Point(7, 275);
+            lblAverage2.Margin = new Padding(4, 0, 4, 0);
+            lblAverage2.Name = "lblAverage2";
+            lblAverage2.Size = new Size(140, 15);
+            lblAverage2.TabIndex = 20;
+            lblAverage2.Text = "Average Point Distance: -";
+            // 
+            // fraAmount2
+            // 
+            fraAmount2.Controls.Add(numAmount2);
+            fraAmount2.Location = new Point(7, 223);
+            fraAmount2.Margin = new Padding(4, 3, 4, 3);
+            fraAmount2.Name = "fraAmount2";
+            fraAmount2.Padding = new Padding(4, 3, 4, 3);
+            fraAmount2.Size = new Size(85, 48);
+            fraAmount2.TabIndex = 22;
+            fraAmount2.TabStop = false;
+            fraAmount2.Text = "Amount";
+            // 
+            // numAmount2
+            // 
+            numAmount2.Location = new Point(4, 18);
+            numAmount2.Margin = new Padding(4, 3, 4, 3);
+            numAmount2.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numAmount2.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numAmount2.Name = "numAmount2";
+            numAmount2.Size = new Size(70, 23);
+            numAmount2.TabIndex = 0;
+            numAmount2.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // InterpolatorForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = AutoScaleMode.Font;
-            this.AutoSize = true;
-            this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(281, 298);
-            this.Controls.Add(this.fraOrder);
-            this.Controls.Add(this.fraTension);
-            this.Controls.Add(this.lblAverage);
-            this.Controls.Add(this.fraAmount);
-            this.Controls.Add(this.fraBound);
-            this.Controls.Add(this.fraFunction);
-            this.Controls.Add(this.fraPosition);
-            this.Controls.Add(this.cmdOK);
-            this.Controls.Add(this.cmdCancel);
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            this.Name = "InterpolatorForm";
-            this.Text = "Interpolate Path";
-            ((System.ComponentModel.ISupportInitialize)(this.numX)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numY)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numZ)).EndInit();
-            this.fraFunction.ResumeLayout(false);
-            this.fraPosition.ResumeLayout(false);
-            this.fraPosition.PerformLayout();
-            this.fraBound.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numEnd)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numStart)).EndInit();
-            this.fraAmount.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numAmount)).EndInit();
-            this.fraTension.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numTension)).EndInit();
-            this.fraOrder.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numOrder)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            AutoSize = true;
+            AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            BackColor = Color.FromArgb(31, 31, 32);
+            ClientSize = new Size(347, 359);
+            Controls.Add(tabControl1);
+            CornerStyle = CornerPreference.Default;
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            Margin = new Padding(4, 3, 4, 3);
+            MinimumSize = new Size(363, 396);
+            Name = "InterpolatorForm";
+            Text = "Interpolate Path";
+            TransparencyKey = Color.FromArgb(31, 31, 32);
+            ((System.ComponentModel.ISupportInitialize)numX).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numY).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numZ).EndInit();
+            fraFunction.ResumeLayout(false);
+            fraPosition.ResumeLayout(false);
+            fraPosition.PerformLayout();
+            fraBound.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)numEnd).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numStart).EndInit();
+            fraAmount.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)numAmount).EndInit();
+            fraTension.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)numTension).EndInit();
+            fraOrder.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)numOrder).EndInit();
+            tabControl1.ResumeLayout(false);
+            tabPage1.ResumeLayout(false);
+            tabPage1.PerformLayout();
+            tabPage2.ResumeLayout(false);
+            tabPage2.PerformLayout();
+            fraPositions2.ResumeLayout(false);
+            fraPositions2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numX2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numZ2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numY2).EndInit();
+            fraDegrees.ResumeLayout(false);
+            fraDegrees.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numDegreeZ).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numDegreeY).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numDegreeX).EndInit();
+            fraRadius.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)numRadius).EndInit();
+            fraAmount2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)numAmount2).EndInit();
+            ResumeLayout(false);
 
         }
 
@@ -492,5 +993,38 @@ namespace CrashEdit.CE
         private DarkNumericUpDown numTension;
         private DarkGroupBox fraOrder;
         private DarkNumericUpDown numOrder;
+        private MetroSetTabControl tabControl1;
+        private TabPage tabPage1;
+        private TabPage tabPage2;
+        private DarkGroupBox fraPositions2;
+        private Label lblPosition2;
+        private DarkButton cmdNext2;
+        private Label lbX2;
+        private DarkButton cmdPrev2;
+        private Label lbY2;
+        private Label lbZ2;
+        private DarkNumericUpDown numX2;
+        private DarkNumericUpDown numZ2;
+        private DarkNumericUpDown numY2;
+        private DarkButton cmdOK2;
+        private DarkButton cmdCancel2;
+        private DarkGroupBox fraRadius;
+        private DarkNumericUpDown numRadius;
+        private Label lblAverage2;
+        private DarkGroupBox fraAmount2;
+        private DarkNumericUpDown numAmount2;
+        private DarkGroupBox fraDegrees;
+        private DarkNumericUpDown numDegreeX;
+        private DarkNumericUpDown numDegreeZ;
+        private DarkNumericUpDown numDegreeY;
+        private Label lbDegreeY;
+        private Label lbDegreeX;
+        private Label lbDegreeZ;
+        private DarkButton cmdDegXAdd45;
+        private DarkButton cmdDegXSub45;
+        private DarkButton cmdDegYSub45;
+        private DarkButton cmdDegYAdd45;
+        private DarkButton cmdDegZSub45;
+        private DarkButton cmdDegZAdd45;
     }
 }
