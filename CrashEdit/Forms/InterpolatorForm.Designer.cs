@@ -60,16 +60,9 @@ namespace CrashEdit.CE
             tabControl1 = new MetroSetTabControl();
             tabPage1 = new TabPage();
             tabPage2 = new TabPage();
-            fraPositions2 = new DarkGroupBox();
-            lblPosition2 = new Label();
-            cmdNext2 = new DarkButton();
-            lbX2 = new Label();
-            cmdPrev2 = new DarkButton();
-            lbY2 = new Label();
-            lbZ2 = new Label();
-            numX2 = new DarkNumericUpDown();
-            numZ2 = new DarkNumericUpDown();
-            numY2 = new DarkNumericUpDown();
+            fraCenter = new DarkGroupBox();
+            rdbCentral = new DarkRadioButton();
+            rdbPosition0 = new DarkRadioButton();
             cmdOK2 = new DarkButton();
             fraDegrees = new DarkGroupBox();
             cmdDegZSub45 = new DarkButton();
@@ -85,11 +78,24 @@ namespace CrashEdit.CE
             lbDegreeX = new Label();
             lbDegreeZ = new Label();
             cmdCancel2 = new DarkButton();
+            fraStartAngle = new DarkGroupBox();
+            numStartAngle = new DarkNumericUpDown();
+            cmdStartAngleAdd45 = new DarkButton();
+            cmdStartAngleSub45 = new DarkButton();
             fraRadius = new DarkGroupBox();
             numRadius = new DarkNumericUpDown();
-            lblAverage2 = new Label();
             fraAmount2 = new DarkGroupBox();
             numAmount2 = new DarkNumericUpDown();
+            tabPage3 = new TabPage();
+            fraShift = new DarkGroupBox();
+            lbX3 = new Label();
+            lbY3 = new Label();
+            lbZ3 = new Label();
+            numShiftX = new DarkNumericUpDown();
+            numShiftZ = new DarkNumericUpDown();
+            numShiftY = new DarkNumericUpDown();
+            cmdOK3 = new DarkButton();
+            cmdCancel3 = new DarkButton();
             ((System.ComponentModel.ISupportInitialize)numX).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numY).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numZ).BeginInit();
@@ -107,18 +113,22 @@ namespace CrashEdit.CE
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
-            fraPositions2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numX2).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numZ2).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numY2).BeginInit();
+            fraCenter.SuspendLayout();
             fraDegrees.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numDegreeZ).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numDegreeY).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numDegreeX).BeginInit();
+            fraStartAngle.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numStartAngle).BeginInit();
             fraRadius.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numRadius).BeginInit();
             fraAmount2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numAmount2).BeginInit();
+            tabPage3.SuspendLayout();
+            fraShift.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numShiftX).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numShiftZ).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numShiftY).BeginInit();
             SuspendLayout();
             // 
             // cmdCancel
@@ -468,12 +478,13 @@ namespace CrashEdit.CE
             tabControl1.BackgroundColor = Color.FromArgb(30, 30, 30);
             tabControl1.Controls.Add(tabPage1);
             tabControl1.Controls.Add(tabPage2);
+            tabControl1.Controls.Add(tabPage3);
             tabControl1.Dock = DockStyle.Fill;
             tabControl1.IsDerivedStyle = true;
             tabControl1.ItemSize = new Size(100, 32);
             tabControl1.Location = new Point(0, 0);
             tabControl1.Name = "tabControl1";
-            tabControl1.SelectedIndex = 1;
+            tabControl1.SelectedIndex = 0;
             tabControl1.SelectedTextColor = Color.White;
             tabControl1.Size = new Size(347, 359);
             tabControl1.SizeMode = TabSizeMode.Fixed;
@@ -485,7 +496,6 @@ namespace CrashEdit.CE
             tabControl1.ThemeName = "MetroDark";
             tabControl1.UnselectedTextColor = Color.Gray;
             tabControl1.UseAnimation = false;
-            tabControl1.Enter += tabControl1_Enter;
             // 
             // tabPage1
             // 
@@ -509,12 +519,12 @@ namespace CrashEdit.CE
             // tabPage2
             // 
             tabPage2.BackColor = Color.FromArgb(31, 31, 32);
-            tabPage2.Controls.Add(fraPositions2);
+            tabPage2.Controls.Add(fraCenter);
             tabPage2.Controls.Add(cmdOK2);
             tabPage2.Controls.Add(fraDegrees);
             tabPage2.Controls.Add(cmdCancel2);
+            tabPage2.Controls.Add(fraStartAngle);
             tabPage2.Controls.Add(fraRadius);
-            tabPage2.Controls.Add(lblAverage2);
             tabPage2.Controls.Add(fraAmount2);
             tabPage2.Location = new Point(4, 36);
             tabPage2.Name = "tabPage2";
@@ -522,135 +532,42 @@ namespace CrashEdit.CE
             tabPage2.Size = new Size(339, 319);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Arrange";
-            tabPage2.Enter += tabPage2_Enter;
             // 
-            // fraPositions2
+            // fraCenter
             // 
-            fraPositions2.AutoSize = true;
-            fraPositions2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            fraPositions2.Controls.Add(lblPosition2);
-            fraPositions2.Controls.Add(cmdNext2);
-            fraPositions2.Controls.Add(lbX2);
-            fraPositions2.Controls.Add(cmdPrev2);
-            fraPositions2.Controls.Add(lbY2);
-            fraPositions2.Controls.Add(lbZ2);
-            fraPositions2.Controls.Add(numX2);
-            fraPositions2.Controls.Add(numZ2);
-            fraPositions2.Controls.Add(numY2);
-            fraPositions2.Location = new Point(7, 6);
-            fraPositions2.Margin = new Padding(4, 3, 4, 3);
-            fraPositions2.Name = "fraPositions2";
-            fraPositions2.Padding = new Padding(4, 3, 4, 3);
-            fraPositions2.Size = new Size(139, 177);
-            fraPositions2.TabIndex = 19;
-            fraPositions2.TabStop = false;
-            fraPositions2.Text = "Positions";
+            fraCenter.AutoSize = true;
+            fraCenter.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraCenter.BackColor = Color.Transparent;
+            fraCenter.Controls.Add(rdbCentral);
+            fraCenter.Controls.Add(rdbPosition0);
+            fraCenter.Location = new Point(7, 64);
+            fraCenter.MinimumSize = new Size(140, 0);
+            fraCenter.Name = "fraCenter";
+            fraCenter.Size = new Size(140, 85);
+            fraCenter.TabIndex = 26;
+            fraCenter.TabStop = false;
+            fraCenter.Text = "Center";
             // 
-            // lblPosition2
+            // rdbCentral
             // 
-            lblPosition2.BackColor = Color.Transparent;
-            lblPosition2.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblPosition2.Location = new Point(7, 18);
-            lblPosition2.Margin = new Padding(4, 0, 4, 0);
-            lblPosition2.Name = "lblPosition2";
-            lblPosition2.Size = new Size(124, 16);
-            lblPosition2.TabIndex = 6;
-            lblPosition2.Text = "?? / ??";
-            lblPosition2.TextAlign = ContentAlignment.TopCenter;
+            rdbCentral.AutoSize = true;
+            rdbCentral.Location = new Point(6, 44);
+            rdbCentral.Name = "rdbCentral";
+            rdbCentral.Size = new Size(71, 19);
+            rdbCentral.TabIndex = 25;
+            rdbCentral.TabStop = true;
+            rdbCentral.Text = "Centroid";
             // 
-            // cmdNext2
+            // rdbPosition0
             // 
-            cmdNext2.BorderColour = Color.Empty;
-            cmdNext2.CustomColour = false;
-            cmdNext2.FlatBottom = false;
-            cmdNext2.FlatTop = false;
-            cmdNext2.Location = new Point(72, 128);
-            cmdNext2.Margin = new Padding(4, 3, 4, 3);
-            cmdNext2.Name = "cmdNext2";
-            cmdNext2.Padding = new Padding(6);
-            cmdNext2.Size = new Size(58, 27);
-            cmdNext2.TabIndex = 0;
-            cmdNext2.Text = "Next";
-            // 
-            // lbX2
-            // 
-            lbX2.AutoSize = true;
-            lbX2.BackColor = Color.Transparent;
-            lbX2.Location = new Point(8, 40);
-            lbX2.Margin = new Padding(4, 0, 4, 0);
-            lbX2.Name = "lbX2";
-            lbX2.Size = new Size(14, 15);
-            lbX2.TabIndex = 0;
-            lbX2.Text = "X";
-            // 
-            // cmdPrev2
-            // 
-            cmdPrev2.BorderColour = Color.Empty;
-            cmdPrev2.CustomColour = false;
-            cmdPrev2.FlatBottom = false;
-            cmdPrev2.FlatTop = false;
-            cmdPrev2.Location = new Point(7, 128);
-            cmdPrev2.Margin = new Padding(4, 3, 4, 3);
-            cmdPrev2.Name = "cmdPrev2";
-            cmdPrev2.Padding = new Padding(6);
-            cmdPrev2.Size = new Size(58, 27);
-            cmdPrev2.TabIndex = 1;
-            cmdPrev2.Text = "Prev";
-            // 
-            // lbY2
-            // 
-            lbY2.AutoSize = true;
-            lbY2.BackColor = Color.Transparent;
-            lbY2.Location = new Point(8, 70);
-            lbY2.Margin = new Padding(4, 0, 4, 0);
-            lbY2.Name = "lbY2";
-            lbY2.Size = new Size(14, 15);
-            lbY2.TabIndex = 1;
-            lbY2.Text = "Y";
-            // 
-            // lbZ2
-            // 
-            lbZ2.AutoSize = true;
-            lbZ2.BackColor = Color.Transparent;
-            lbZ2.Location = new Point(8, 100);
-            lbZ2.Margin = new Padding(4, 0, 4, 0);
-            lbZ2.Name = "lbZ2";
-            lbZ2.Size = new Size(14, 15);
-            lbZ2.TabIndex = 2;
-            lbZ2.Text = "Z";
-            // 
-            // numX2
-            // 
-            numX2.Location = new Point(30, 38);
-            numX2.Margin = new Padding(4, 3, 4, 3);
-            numX2.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
-            numX2.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
-            numX2.Name = "numX2";
-            numX2.ReadOnly = true;
-            numX2.Size = new Size(100, 23);
-            numX2.TabIndex = 3;
-            // 
-            // numZ2
-            // 
-            numZ2.Location = new Point(30, 98);
-            numZ2.Margin = new Padding(4, 3, 4, 3);
-            numZ2.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
-            numZ2.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
-            numZ2.Name = "numZ2";
-            numZ2.ReadOnly = true;
-            numZ2.Size = new Size(100, 23);
-            numZ2.TabIndex = 5;
-            // 
-            // numY2
-            // 
-            numY2.Location = new Point(30, 68);
-            numY2.Margin = new Padding(4, 3, 4, 3);
-            numY2.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
-            numY2.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
-            numY2.Name = "numY2";
-            numY2.ReadOnly = true;
-            numY2.Size = new Size(100, 23);
-            numY2.TabIndex = 4;
+            rdbPosition0.AutoSize = true;
+            rdbPosition0.Checked = true;
+            rdbPosition0.Location = new Point(6, 22);
+            rdbPosition0.Name = "rdbPosition0";
+            rdbPosition0.Size = new Size(77, 19);
+            rdbPosition0.TabIndex = 25;
+            rdbPosition0.TabStop = true;
+            rdbPosition0.Text = "Position 0";
             // 
             // cmdOK2
             // 
@@ -682,11 +599,11 @@ namespace CrashEdit.CE
             fraDegrees.Controls.Add(lbDegreeY);
             fraDegrees.Controls.Add(lbDegreeX);
             fraDegrees.Controls.Add(lbDegreeZ);
-            fraDegrees.Location = new Point(152, 64);
+            fraDegrees.Location = new Point(152, 88);
             fraDegrees.Margin = new Padding(4, 3, 4, 3);
             fraDegrees.Name = "fraDegrees";
             fraDegrees.Padding = new Padding(4, 3, 4, 3);
-            fraDegrees.Size = new Size(155, 175);
+            fraDegrees.Size = new Size(155, 183);
             fraDegrees.TabIndex = 24;
             fraDegrees.TabStop = false;
             fraDegrees.Text = "Degrees";
@@ -697,7 +614,7 @@ namespace CrashEdit.CE
             cmdDegZSub45.CustomColour = false;
             cmdDegZSub45.FlatBottom = false;
             cmdDegZSub45.FlatTop = false;
-            cmdDegZSub45.Location = new Point(48, 146);
+            cmdDegZSub45.Location = new Point(48, 151);
             cmdDegZSub45.Name = "cmdDegZSub45";
             cmdDegZSub45.Padding = new Padding(5);
             cmdDegZSub45.Size = new Size(36, 20);
@@ -711,7 +628,7 @@ namespace CrashEdit.CE
             cmdDegYSub45.CustomColour = false;
             cmdDegYSub45.FlatBottom = false;
             cmdDegYSub45.FlatTop = false;
-            cmdDegYSub45.Location = new Point(48, 97);
+            cmdDegYSub45.Location = new Point(48, 100);
             cmdDegYSub45.Name = "cmdDegYSub45";
             cmdDegYSub45.Padding = new Padding(5);
             cmdDegYSub45.Size = new Size(36, 20);
@@ -725,7 +642,7 @@ namespace CrashEdit.CE
             cmdDegXSub45.CustomColour = false;
             cmdDegXSub45.FlatBottom = false;
             cmdDegXSub45.FlatTop = false;
-            cmdDegXSub45.Location = new Point(48, 48);
+            cmdDegXSub45.Location = new Point(48, 49);
             cmdDegXSub45.Name = "cmdDegXSub45";
             cmdDegXSub45.Padding = new Padding(5);
             cmdDegXSub45.Size = new Size(36, 20);
@@ -739,7 +656,7 @@ namespace CrashEdit.CE
             cmdDegZAdd45.CustomColour = false;
             cmdDegZAdd45.FlatBottom = false;
             cmdDegZAdd45.FlatTop = false;
-            cmdDegZAdd45.Location = new Point(86, 146);
+            cmdDegZAdd45.Location = new Point(86, 151);
             cmdDegZAdd45.Name = "cmdDegZAdd45";
             cmdDegZAdd45.Padding = new Padding(5);
             cmdDegZAdd45.Size = new Size(36, 20);
@@ -753,7 +670,7 @@ namespace CrashEdit.CE
             cmdDegYAdd45.CustomColour = false;
             cmdDegYAdd45.FlatBottom = false;
             cmdDegYAdd45.FlatTop = false;
-            cmdDegYAdd45.Location = new Point(86, 97);
+            cmdDegYAdd45.Location = new Point(86, 100);
             cmdDegYAdd45.Name = "cmdDegYAdd45";
             cmdDegYAdd45.Padding = new Padding(5);
             cmdDegYAdd45.Size = new Size(36, 20);
@@ -767,7 +684,7 @@ namespace CrashEdit.CE
             cmdDegXAdd45.CustomColour = false;
             cmdDegXAdd45.FlatBottom = false;
             cmdDegXAdd45.FlatTop = false;
-            cmdDegXAdd45.Location = new Point(86, 48);
+            cmdDegXAdd45.Location = new Point(86, 49);
             cmdDegXAdd45.Name = "cmdDegXAdd45";
             cmdDegXAdd45.Padding = new Padding(5);
             cmdDegXAdd45.Size = new Size(36, 20);
@@ -777,7 +694,7 @@ namespace CrashEdit.CE
             // 
             // numDegreeZ
             // 
-            numDegreeZ.Location = new Point(30, 120);
+            numDegreeZ.Location = new Point(30, 124);
             numDegreeZ.Margin = new Padding(4, 3, 4, 3);
             numDegreeZ.Maximum = new decimal(new int[] { 360, 0, 0, 0 });
             numDegreeZ.Minimum = new decimal(new int[] { 360, 0, 0, int.MinValue });
@@ -787,7 +704,7 @@ namespace CrashEdit.CE
             // 
             // numDegreeY
             // 
-            numDegreeY.Location = new Point(30, 71);
+            numDegreeY.Location = new Point(30, 73);
             numDegreeY.Margin = new Padding(4, 3, 4, 3);
             numDegreeY.Maximum = new decimal(new int[] { 360, 0, 0, 0 });
             numDegreeY.Minimum = new decimal(new int[] { 360, 0, 0, int.MinValue });
@@ -809,7 +726,7 @@ namespace CrashEdit.CE
             // 
             lbDegreeY.AutoSize = true;
             lbDegreeY.BackColor = Color.Transparent;
-            lbDegreeY.Location = new Point(8, 74);
+            lbDegreeY.Location = new Point(8, 76);
             lbDegreeY.Margin = new Padding(4, 0, 4, 0);
             lbDegreeY.Name = "lbDegreeY";
             lbDegreeY.Size = new Size(14, 15);
@@ -831,7 +748,7 @@ namespace CrashEdit.CE
             // 
             lbDegreeZ.AutoSize = true;
             lbDegreeZ.BackColor = Color.Transparent;
-            lbDegreeZ.Location = new Point(8, 124);
+            lbDegreeZ.Location = new Point(8, 128);
             lbDegreeZ.Margin = new Padding(4, 0, 4, 0);
             lbDegreeZ.Name = "lbDegreeZ";
             lbDegreeZ.Size = new Size(14, 15);
@@ -853,16 +770,67 @@ namespace CrashEdit.CE
             cmdCancel2.Size = new Size(88, 27);
             cmdCancel2.TabIndex = 17;
             cmdCancel2.Text = "Cancel";
-            cmdCancel2.Click += cmdCancel2_Click;
+            cmdCancel2.Click += cmdCancel_Click;
+            // 
+            // fraStartAngle
+            // 
+            fraStartAngle.Controls.Add(numStartAngle);
+            fraStartAngle.Controls.Add(cmdStartAngleAdd45);
+            fraStartAngle.Controls.Add(cmdStartAngleSub45);
+            fraStartAngle.Location = new Point(152, 6);
+            fraStartAngle.Margin = new Padding(4, 3, 4, 3);
+            fraStartAngle.Name = "fraStartAngle";
+            fraStartAngle.Padding = new Padding(4, 3, 4, 3);
+            fraStartAngle.Size = new Size(155, 76);
+            fraStartAngle.TabIndex = 23;
+            fraStartAngle.TabStop = false;
+            fraStartAngle.Text = "Start Angle";
+            // 
+            // numStartAngle
+            // 
+            numStartAngle.Location = new Point(7, 22);
+            numStartAngle.Maximum = new decimal(new int[] { 360, 0, 0, 0 });
+            numStartAngle.Minimum = new decimal(new int[] { 360, 0, 0, int.MinValue });
+            numStartAngle.Name = "numStartAngle";
+            numStartAngle.Size = new Size(141, 23);
+            numStartAngle.TabIndex = 25;
+            // 
+            // cmdStartAngleAdd45
+            // 
+            cmdStartAngleAdd45.BorderColour = Color.Empty;
+            cmdStartAngleAdd45.CustomColour = false;
+            cmdStartAngleAdd45.FlatBottom = false;
+            cmdStartAngleAdd45.FlatTop = false;
+            cmdStartAngleAdd45.Location = new Point(86, 49);
+            cmdStartAngleAdd45.Name = "cmdStartAngleAdd45";
+            cmdStartAngleAdd45.Padding = new Padding(5);
+            cmdStartAngleAdd45.Size = new Size(36, 20);
+            cmdStartAngleAdd45.TabIndex = 3;
+            cmdStartAngleAdd45.Text = "+45";
+            cmdStartAngleAdd45.Click += cmdStartAngleAdd45_Click;
+            // 
+            // cmdStartAngleSub45
+            // 
+            cmdStartAngleSub45.BorderColour = Color.Empty;
+            cmdStartAngleSub45.CustomColour = false;
+            cmdStartAngleSub45.FlatBottom = false;
+            cmdStartAngleSub45.FlatTop = false;
+            cmdStartAngleSub45.Location = new Point(48, 49);
+            cmdStartAngleSub45.Name = "cmdStartAngleSub45";
+            cmdStartAngleSub45.Padding = new Padding(5);
+            cmdStartAngleSub45.Size = new Size(36, 20);
+            cmdStartAngleSub45.TabIndex = 3;
+            cmdStartAngleSub45.Text = "-45";
+            cmdStartAngleSub45.Click += cmdStartAngleSub45_Click;
             // 
             // fraRadius
             // 
             fraRadius.Controls.Add(numRadius);
-            fraRadius.Location = new Point(152, 6);
+            fraRadius.Location = new Point(7, 6);
             fraRadius.Margin = new Padding(4, 3, 4, 3);
             fraRadius.Name = "fraRadius";
             fraRadius.Padding = new Padding(4, 3, 4, 3);
-            fraRadius.Size = new Size(155, 52);
+            fraRadius.Size = new Size(140, 52);
             fraRadius.TabIndex = 23;
             fraRadius.TabStop = false;
             fraRadius.Text = "Radius";
@@ -873,20 +841,9 @@ namespace CrashEdit.CE
             numRadius.Margin = new Padding(4, 3, 4, 3);
             numRadius.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
             numRadius.Name = "numRadius";
-            numRadius.Size = new Size(141, 23);
+            numRadius.Size = new Size(122, 23);
             numRadius.TabIndex = 0;
             numRadius.Value = new decimal(new int[] { 200, 0, 0, 0 });
-            // 
-            // lblAverage2
-            // 
-            lblAverage2.AutoSize = true;
-            lblAverage2.BackColor = Color.Transparent;
-            lblAverage2.Location = new Point(7, 275);
-            lblAverage2.Margin = new Padding(4, 0, 4, 0);
-            lblAverage2.Name = "lblAverage2";
-            lblAverage2.Size = new Size(140, 15);
-            lblAverage2.TabIndex = 20;
-            lblAverage2.Text = "Average Point Distance: -";
             // 
             // fraAmount2
             // 
@@ -911,6 +868,135 @@ namespace CrashEdit.CE
             numAmount2.TabIndex = 0;
             numAmount2.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
+            // tabPage3
+            // 
+            tabPage3.BackColor = Color.FromArgb(31, 31, 32);
+            tabPage3.Controls.Add(fraShift);
+            tabPage3.Controls.Add(cmdOK3);
+            tabPage3.Controls.Add(cmdCancel3);
+            tabPage3.Location = new Point(4, 36);
+            tabPage3.Name = "tabPage3";
+            tabPage3.Padding = new Padding(3);
+            tabPage3.Size = new Size(339, 319);
+            tabPage3.TabIndex = 1;
+            tabPage3.Text = "Shift";
+            // 
+            // fraShift
+            // 
+            fraShift.AutoSize = true;
+            fraShift.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraShift.BackColor = Color.Transparent;
+            fraShift.Controls.Add(lbX3);
+            fraShift.Controls.Add(lbY3);
+            fraShift.Controls.Add(lbZ3);
+            fraShift.Controls.Add(numShiftX);
+            fraShift.Controls.Add(numShiftZ);
+            fraShift.Controls.Add(numShiftY);
+            fraShift.Location = new Point(7, 6);
+            fraShift.Margin = new Padding(4, 3, 4, 3);
+            fraShift.Name = "fraShift";
+            fraShift.Padding = new Padding(4, 3, 4, 3);
+            fraShift.Size = new Size(138, 127);
+            fraShift.TabIndex = 27;
+            fraShift.TabStop = false;
+            fraShift.Text = "Shift";
+            // 
+            // lbX3
+            // 
+            lbX3.AutoSize = true;
+            lbX3.BackColor = Color.Transparent;
+            lbX3.Location = new Point(9, 24);
+            lbX3.Margin = new Padding(4, 0, 4, 0);
+            lbX3.Name = "lbX3";
+            lbX3.Size = new Size(14, 15);
+            lbX3.TabIndex = 0;
+            lbX3.Text = "X";
+            // 
+            // lbY3
+            // 
+            lbY3.AutoSize = true;
+            lbY3.BackColor = Color.Transparent;
+            lbY3.Location = new Point(9, 54);
+            lbY3.Margin = new Padding(4, 0, 4, 0);
+            lbY3.Name = "lbY3";
+            lbY3.Size = new Size(14, 15);
+            lbY3.TabIndex = 1;
+            lbY3.Text = "Y";
+            // 
+            // lbZ3
+            // 
+            lbZ3.AutoSize = true;
+            lbZ3.BackColor = Color.Transparent;
+            lbZ3.Location = new Point(9, 84);
+            lbZ3.Margin = new Padding(4, 0, 4, 0);
+            lbZ3.Name = "lbZ3";
+            lbZ3.Size = new Size(14, 15);
+            lbZ3.TabIndex = 2;
+            lbZ3.Text = "Z";
+            // 
+            // numShiftX
+            // 
+            numShiftX.Location = new Point(30, 22);
+            numShiftX.Margin = new Padding(4, 3, 4, 3);
+            numShiftX.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numShiftX.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numShiftX.Name = "numShiftX";
+            numShiftX.Size = new Size(100, 23);
+            numShiftX.TabIndex = 3;
+            // 
+            // numShiftZ
+            // 
+            numShiftZ.Location = new Point(30, 82);
+            numShiftZ.Margin = new Padding(4, 3, 4, 3);
+            numShiftZ.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numShiftZ.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numShiftZ.Name = "numShiftZ";
+            numShiftZ.Size = new Size(100, 23);
+            numShiftZ.TabIndex = 5;
+            // 
+            // numShiftY
+            // 
+            numShiftY.Location = new Point(30, 52);
+            numShiftY.Margin = new Padding(4, 3, 4, 3);
+            numShiftY.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numShiftY.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numShiftY.Name = "numShiftY";
+            numShiftY.Size = new Size(100, 23);
+            numShiftY.TabIndex = 4;
+            // 
+            // cmdOK3
+            // 
+            cmdOK3.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            cmdOK3.BorderColour = Color.Empty;
+            cmdOK3.CustomColour = false;
+            cmdOK3.FlatBottom = false;
+            cmdOK3.FlatTop = false;
+            cmdOK3.Location = new Point(152, 289);
+            cmdOK3.Margin = new Padding(4, 3, 4, 3);
+            cmdOK3.Name = "cmdOK3";
+            cmdOK3.Padding = new Padding(6);
+            cmdOK3.Size = new Size(88, 27);
+            cmdOK3.TabIndex = 26;
+            cmdOK3.Text = "OK";
+            cmdOK3.Click += cmdOK3_Click;
+            // 
+            // cmdCancel3
+            // 
+            cmdCancel3.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            cmdCancel3.BorderColour = Color.Empty;
+            cmdCancel3.CustomColour = false;
+            cmdCancel3.DialogResult = DialogResult.Cancel;
+            cmdCancel3.FlatBottom = false;
+            cmdCancel3.FlatTop = false;
+            cmdCancel3.Location = new Point(247, 289);
+            cmdCancel3.Margin = new Padding(4, 3, 4, 3);
+            cmdCancel3.Name = "cmdCancel3";
+            cmdCancel3.Padding = new Padding(6);
+            cmdCancel3.Size = new Size(88, 27);
+            cmdCancel3.TabIndex = 25;
+            cmdCancel3.Text = "Cancel";
+            cmdCancel3.Click += cmdCancel_Click;
+            // 
             // InterpolatorForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -925,6 +1011,7 @@ namespace CrashEdit.CE
             Margin = new Padding(4, 3, 4, 3);
             MinimumSize = new Size(363, 396);
             Name = "InterpolatorForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Interpolate Path";
             TransparencyKey = Color.FromArgb(31, 31, 32);
             ((System.ComponentModel.ISupportInitialize)numX).EndInit();
@@ -947,20 +1034,26 @@ namespace CrashEdit.CE
             tabPage1.PerformLayout();
             tabPage2.ResumeLayout(false);
             tabPage2.PerformLayout();
-            fraPositions2.ResumeLayout(false);
-            fraPositions2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)numX2).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numZ2).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numY2).EndInit();
+            fraCenter.ResumeLayout(false);
+            fraCenter.PerformLayout();
             fraDegrees.ResumeLayout(false);
             fraDegrees.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numDegreeZ).EndInit();
             ((System.ComponentModel.ISupportInitialize)numDegreeY).EndInit();
             ((System.ComponentModel.ISupportInitialize)numDegreeX).EndInit();
+            fraStartAngle.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)numStartAngle).EndInit();
             fraRadius.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)numRadius).EndInit();
             fraAmount2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)numAmount2).EndInit();
+            tabPage3.ResumeLayout(false);
+            tabPage3.PerformLayout();
+            fraShift.ResumeLayout(false);
+            fraShift.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numShiftX).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numShiftZ).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numShiftY).EndInit();
             ResumeLayout(false);
 
         }
@@ -996,21 +1089,11 @@ namespace CrashEdit.CE
         private MetroSetTabControl tabControl1;
         private TabPage tabPage1;
         private TabPage tabPage2;
-        private DarkGroupBox fraPositions2;
-        private Label lblPosition2;
-        private DarkButton cmdNext2;
-        private Label lbX2;
-        private DarkButton cmdPrev2;
-        private Label lbY2;
-        private Label lbZ2;
-        private DarkNumericUpDown numX2;
-        private DarkNumericUpDown numZ2;
-        private DarkNumericUpDown numY2;
+        private TabPage tabPage3;
         private DarkButton cmdOK2;
         private DarkButton cmdCancel2;
         private DarkGroupBox fraRadius;
         private DarkNumericUpDown numRadius;
-        private Label lblAverage2;
         private DarkGroupBox fraAmount2;
         private DarkNumericUpDown numAmount2;
         private DarkGroupBox fraDegrees;
@@ -1026,5 +1109,21 @@ namespace CrashEdit.CE
         private DarkButton cmdDegYAdd45;
         private DarkButton cmdDegZSub45;
         private DarkButton cmdDegZAdd45;
+        private DarkGroupBox fraShift;
+        private Label lbX3;
+        private Label lbY3;
+        private Label lbZ3;
+        private DarkNumericUpDown numShiftX;
+        private DarkNumericUpDown numShiftZ;
+        private DarkNumericUpDown numShiftY;
+        private DarkButton cmdOK3;
+        private DarkButton cmdCancel3;
+        private DarkNumericUpDown numStartAngle;
+        private DarkGroupBox fraStartAngle;
+        private DarkButton cmdStartAngleAdd45;
+        private DarkButton cmdStartAngleSub45;
+        private DarkRadioButton rdbPosition0;
+        private DarkGroupBox fraCenter;
+        private DarkRadioButton rdbCentral;
     }
 }

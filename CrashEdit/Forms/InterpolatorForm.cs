@@ -1,6 +1,8 @@
 ﻿using System.Windows.Media.Media3D;
+using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.Crash;
+using MetroSet_UI.Controls;
 
 namespace CrashEdit.CE
 {
@@ -26,19 +28,25 @@ namespace CrashEdit.CE
                 DialogResult = DialogResult.Cancel;
                 Close();
             }
-            this.positions = new List<Position>(positions);
-            NewPositions = new Position[0];
+            this.positions = [.. positions];
+            NewPositions = Array.Empty<Position>();
 
             InitializeComponent();
 
+            // Tab1
             foreach (string name in MathFuncs.Keys)
                 dpdFunc.Items.Add(name);
-
             dpdFunc.SelectedIndex = 0;
             numAmount.Maximum = short.MaxValue - positions.Count;
             numEnd.Maximum = positions.Count;
             numEnd_ValueChanged(null, null);
             UpdatePosition();
+
+            // Tab2
+            numAmount2.Value = positions.Count - 1;
+
+            numAmount.MouseWheel += ScrollHandlerFunction;
+            numAmount2.MouseWheel += ScrollHandlerFunction;
 
             Text = Properties.Resources.InterpolatorForm;
             cmdCancel.Text = Properties.Resources.InterpolatorForm_cmdCancel;
@@ -67,12 +75,30 @@ namespace CrashEdit.CE
         }
         public string Func => (string)dpdFunc.SelectedItem;
         public double Order => (double)numOrder.Value;
+
         public int Mode { get; private set; }
 
         private void cmdOK_Click(object sender, EventArgs e)
         {
             CalcInterp();
+
             Mode = 0;
+            DialogResult = DialogResult.OK;
+        }
+
+        private void cmdOK2_Click(object sender, EventArgs e)
+        {
+            GenerateCirclePoints();
+
+            Mode = 2;
+            DialogResult = DialogResult.OK;
+        }
+
+        private void cmdOK3_Click(object sender, EventArgs e)
+        {
+            ShiftPoints();
+
+            Mode = 3;
             DialogResult = DialogResult.OK;
         }
 
@@ -80,96 +106,6 @@ namespace CrashEdit.CE
         {
             DialogResult = DialogResult.Cancel;
         }
-
-        private void cmdOK2_Click(object sender, EventArgs e)
-        {
-            Amount = (int)numAmount2.Value;
-            GenerateCirclePoints(Amount, (int)numRadius.Value);
-
-            Mode = 2;
-            DialogResult = DialogResult.OK;
-        }
-
-        private void cmdCancel2_Click(object sender, EventArgs e)
-        {
-            DialogResult = DialogResult.Cancel;
-        }
-
-        private void tabControl1_Enter(object sender, EventArgs e)
-        {
-            UpdatePosition();
-        }
-
-        private void tabPage2_Enter(object sender, EventArgs e)
-        {
-            UpdatePosition2();
-        }
-
-        #region Tab2
-
-        public double DegToRad(double degrees)
-        {
-            return degrees * Math.PI / 180.0;
-        }
-
-
-        public Point3D RotatePoint(Point3D point, double angleX, double angleY, double angleZ)
-        {
-            double cosX = Math.Cos(angleX), sinX = Math.Sin(angleX);
-            double y1 = point.Y * cosX - point.Z * sinX;
-            double z1 = point.Y * sinX + point.Z * cosX;
-            double x1 = point.X;
-
-            double cosY = Math.Cos(angleY), sinY = Math.Sin(angleY);
-            double x2 = x1 * cosY + z1 * sinY;
-            double z2 = -x1 * sinY + z1 * cosY;
-            double y2 = y1;
-
-            double cosZ = Math.Cos(angleZ), sinZ = Math.Sin(angleZ);
-            double x3 = x2 * cosZ - y2 * sinZ;
-            double y3 = x2 * sinZ + y2 * cosZ;
-            double z3 = z2;
-
-            return new Point3D((float)x3, (float)y3, (float)z3);
-        }
-
-        private void GenerateCirclePoints(int vertexCount, double radius)
-        {
-            NewPositions = new Position[vertexCount + 1];
-            Position start = positions[0];
-            double centerX = start.X;
-            double centerY = start.Y;
-            double centerZ = start.Z;
-            double angleStep = 2 * Math.PI / vertexCount;
-
-            double angleXDeg = (int)numDegreeX.Value;
-            double angleYDeg = (int)numDegreeY.Value;
-            double angleZDeg = (int)numDegreeZ.Value;
-
-            double angleX = DegToRad(angleXDeg);
-            double angleY = DegToRad(angleYDeg);
-            double angleZ = DegToRad(angleZDeg);
-
-            for (int i = 0; i < vertexCount; i++)
-            {
-                double theta = i * angleStep;
-                double x = radius * Math.Cos(theta);
-                double z = radius * Math.Sin(theta);
-                double y = 0;
-                Point3D point = new Point3D(x, y, z);
-
-                Point3D rotatedPoint = RotatePoint(point, angleX, angleY, angleZ);
-                rotatedPoint.X += centerX;
-                rotatedPoint.Y += centerY;
-                rotatedPoint.Z += centerZ;
-                NewPositions[i] = new Position((float)rotatedPoint.X, (float)rotatedPoint.Y, (float)rotatedPoint.Z);
-            }
-
-            // Close the circle.
-            NewPositions[vertexCount] = new Position(NewPositions[0].X, NewPositions[0].Y, NewPositions[0].Z);
-        }
-
-        #endregion
 
         private void UpdatePosition()
         {
@@ -181,15 +117,7 @@ namespace CrashEdit.CE
             cmdNext.Enabled = positionindex < positions.Count - 1;
         }
 
-        private void UpdatePosition2()
-        {
-            lblPosition2.Text = $"{positionindex + 1} / {positions.Count}";
-            numX2.Value = (decimal)positions[positionindex].X;
-            numY2.Value = (decimal)positions[positionindex].Y;
-            numZ2.Value = (decimal)positions[positionindex].Z;
-            cmdPrev2.Enabled = positionindex > 0;
-            cmdNext2.Enabled = positionindex < positions.Count - 1;
-        }
+        #region Tab1
 
         private void cmdPrev_Click(object sender, EventArgs e)
         {
@@ -380,6 +308,113 @@ namespace CrashEdit.CE
             CalcInterp();
         }
 
+        #endregion
+
+        #region Tab2
+
+        public double DegToRad(double degrees)
+        {
+            return degrees * Math.PI / 180.0;
+        }
+
+        public Point3D RotatePoint(Point3D point, double angleX, double angleY, double angleZ)
+        {
+            double cosX = Math.Cos(angleX), sinX = Math.Sin(angleX);
+            double y1 = point.Y * cosX - point.Z * sinX;
+            double z1 = point.Y * sinX + point.Z * cosX;
+            double x1 = point.X;
+
+            double cosY = Math.Cos(angleY), sinY = Math.Sin(angleY);
+            double x2 = x1 * cosY + z1 * sinY;
+            double z2 = -x1 * sinY + z1 * cosY;
+            double y2 = y1;
+
+            double cosZ = Math.Cos(angleZ), sinZ = Math.Sin(angleZ);
+            double x3 = x2 * cosZ - y2 * sinZ;
+            double y3 = x2 * sinZ + y2 * cosZ;
+            double z3 = z2;
+
+            return new Point3D((float)x3, (float)y3, (float)z3);
+        }
+
+        private void GenerateCirclePoints()
+        {
+            Amount = (int)numAmount2.Value;
+            int vertexCount = Amount;
+            double radius = (int)numRadius.Value;
+
+            Position start;
+            if (rdbPosition0.Checked)
+            {
+                start = positions[0];
+            }
+            else
+            {
+                List<Point3D> pts = new List<Point3D>();
+                for (int i = 0; i < positions.Count; i++)
+                {
+                    pts.Add(new Point3D(positions[i].X, positions[i].Y, positions[i].Z));
+                }
+                // Remove the last point if it's the same as the first point (closed circle).
+                if (pts.Count > 1 &&
+                   pts[0].X == pts[pts.Count - 1].X &&
+                   pts[0].Y == pts[pts.Count - 1].Y &&
+                   pts[0].Z == pts[pts.Count - 1].Z)
+                {
+                    pts = pts.Take(pts.Count - 1).ToList();
+                }
+
+                double sumX = 0;
+                double sumY = 0;
+                double sumZ = 0;
+                foreach (var pt in pts)
+                {
+                    sumX += pt.X;
+                    sumY += pt.Y;
+                    sumZ += pt.Z;
+                }
+
+                int count = pts.Count;
+                start = new Position((float)(sumX / count), (float)(sumY / count), (float)(sumZ / count));
+            }
+
+            double centerX = start.X;
+            double centerY = start.Y;
+            double centerZ = start.Z;
+            double angleStep = 2 * Math.PI / vertexCount;
+
+            double angleX = DegToRad((int)numDegreeX.Value);
+            double angleY = DegToRad((int)numDegreeY.Value);
+            double angleZ = DegToRad((int)numDegreeZ.Value);
+
+            double startAngle = DegToRad((int)numStartAngle.Value);
+
+            List<Point3D> points = new List<Point3D>();
+            for (int i = 0; i < vertexCount; i++)
+            {
+                double theta = startAngle + i * angleStep;
+                double x = radius * Math.Cos(theta);
+                double z = radius * Math.Sin(theta);
+                double y = 0;
+                Point3D point = new Point3D(x, y, z);
+
+                Point3D rotatedPoint = RotatePoint(point, angleX, angleY, angleZ);
+                rotatedPoint.X += centerX;
+                rotatedPoint.Y += centerY;
+                rotatedPoint.Z += centerZ;
+                points.Add(rotatedPoint);
+            }
+
+            // Close the circle.
+            points.Add(points[0]);
+
+            NewPositions = new Position[points.Count];
+            for (int i = 0; i < points.Count; i++)
+            {
+                NewPositions[i] = new Position((float)points[i].X, (float)points[i].Y, (float)points[i].Z);
+            }
+        }
+
         private void cmdDegXAdd45_Click(object sender, EventArgs e)
         {
             numDegreeX.Value = Math.Min(numDegreeX.Value + 45, 360);
@@ -408,6 +443,73 @@ namespace CrashEdit.CE
         private void cmdDegZSub45_Click(object sender, EventArgs e)
         {
             numDegreeZ.Value = Math.Max(numDegreeZ.Value - 45, -360);
+        }
+
+        private void cmdStartAngleAdd45_Click(object sender, EventArgs e)
+        {
+            numStartAngle.Value = Math.Min(numStartAngle.Value + 45, 360);
+        }
+
+        private void cmdStartAngleSub45_Click(object sender, EventArgs e)
+        {
+            numStartAngle.Value = Math.Max(numStartAngle.Value - 45, -360);
+        }
+
+        #endregion
+
+        #region Tab3
+
+        private void ShiftPoints()
+        {
+            Amount = positions.Count - 1;
+
+            List<Point3D> pts = new List<Point3D>();
+            for (int i = 0; i < positions.Count; i++)
+            {
+                pts.Add(new Point3D(positions[i].X, positions[i].Y, positions[i].Z));
+            }
+
+            List<Point3D> points = new List<Point3D>();
+            for (int i = 0; i < pts.Count; i++)
+            {
+                double x = pts[i].X + (short)numShiftX.Value;
+                double y = pts[i].Y + (short)numShiftY.Value;
+                double z = pts[i].Z + (short)numShiftZ.Value;
+                x = Math.Clamp(x, short.MinValue, short.MaxValue);
+                y = Math.Clamp(y, short.MinValue, short.MaxValue);
+                z = Math.Clamp(z, short.MinValue, short.MaxValue);
+
+                points.Add(new Point3D(x, y, z));
+            }
+
+            NewPositions = new Position[points.Count];
+            for (int i = 0; i < points.Count; i++)
+            {
+                NewPositions[i] = new Position((float)points[i].X, (float)points[i].Y, (float)points[i].Z);
+            }
+        }
+
+        #endregion
+
+
+        private void ScrollHandlerFunction(object sender, MouseEventArgs e)
+        {
+            if (sender is DarkNumericUpDown num)
+            {
+                HandledMouseEventArgs handledArgs = e as HandledMouseEventArgs;
+                if (handledArgs != null)
+                    handledArgs.Handled = true;
+
+                int newValue = (int)num.Value;
+                int increment = 1;
+                if (e.Delta > 0)
+                    newValue = (int)Math.Min(newValue += increment, num.Maximum);
+
+                else if (e.Delta < 0)
+                    newValue = (int)Math.Max(newValue -= increment, num.Minimum);
+
+                num.Value = newValue;
+            }
         }
     }
 }

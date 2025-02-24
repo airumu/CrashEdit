@@ -2713,15 +2713,7 @@ namespace CrashEdit.CE
             {
                 if (interpolator.ShowDialog() == DialogResult.OK)
                 {
-                    if (interpolator.Mode == 2)
-                    {
-                        entity.Positions.Clear();
-                        for (int i = 0; i < interpolator.Amount + 1; ++i)
-                        {
-                            entity.Positions.Add(new EntityPosition(interpolator.NewPositions[i]));
-                        }
-                    }
-                    else
+                    if (interpolator.Mode == 0)
                     {
                         for (int m = interpolator.Start - 1, i = interpolator.End - 2; i > m; --i)
                         {
@@ -2730,6 +2722,14 @@ namespace CrashEdit.CE
                         for (int i = 0; i < interpolator.Amount; ++i)
                         {
                             entity.Positions.Insert(i + interpolator.Start, new EntityPosition(interpolator.NewPositions[i + 1]));
+                        }
+                    }
+                    else
+                    {
+                        entity.Positions.Clear();
+                        for (int i = 0; i < interpolator.Amount + 1; ++i)
+                        {
+                            entity.Positions.Add(new EntityPosition(interpolator.NewPositions[i]));
                         }
                     }
                      
