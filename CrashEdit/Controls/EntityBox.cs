@@ -2869,7 +2869,23 @@ namespace CrashEdit.CE
                     WrapContents = false
                 };
 
-                DarkListBox lstSyncEntities = new()
+                DarkGroupBox fraSyncedEntities = new()
+                {
+                    Text = "Synced Entities",
+                    AutoSize = true,
+                    Margin = new Padding(6, 3, 6, 19)
+                };
+
+                FlowLayoutPanel panel2 = new()
+                {
+                    Dock = DockStyle.Fill,
+                    AutoSize = true,
+                    AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                    FlowDirection = FlowDirection.TopDown,
+                    WrapContents = false
+                };
+
+                DarkListBox lstSyncedEntities = new()
                 {
                     Size = new Size(200, 200),
                     SelectionMode = SelectionMode.MultiExtended
@@ -2880,19 +2896,19 @@ namespace CrashEdit.CE
                 {
                     foreach (string item in syncEntityList)
                     {
-                        lstSyncEntities.Items.Add(item);
+                        lstSyncedEntities.Items.Add(item);
                     }
                 }
 
                 DarkButton cmdRemove = new()
                 {
-                    Text = "Remove",
-                    Margin = new Padding(3, 3, 3, 19)
+                    Text = "Remove"
                 };
 
                 DarkComboBox cmbZones = new()
                 {
-                    DropDownHeight = 220
+                    DropDownHeight = 220,
+                    Margin = new Padding(6, 3, 6, 3)
                 };
                 foreach (ZoneEntry zone in controller.GetEntries<ZoneEntry>())
                 {
@@ -2901,13 +2917,15 @@ namespace CrashEdit.CE
 
                 DarkButton cmdAdd = new()
                 {
-                    Text = "Add"
+                    Text = "Add",
+                    Margin = new Padding(6, 3, 6, 3)
                 };
 
                 DarkListBox lstEntities = new()
                 {
                     Size = new Size(200, 200),
-                    SelectionMode = SelectionMode.MultiExtended
+                    SelectionMode = SelectionMode.MultiExtended,
+                    Margin = new Padding(6, 3, 6, 6)
                 };
 
                 cmbZones.SelectedIndexChanged += (sender, e) =>
@@ -2919,7 +2937,7 @@ namespace CrashEdit.CE
                         if (otherentity.ID.HasValue)
                         {
                             string text = $"{otherentity.Name} [ID {otherentity.ID}]";
-                            if (!lstSyncEntities.Items.Contains(text))
+                            if (!lstSyncedEntities.Items.Contains(text))
                             {
                                 lstEntities.Items.Add(text);
                             }
@@ -2931,7 +2949,7 @@ namespace CrashEdit.CE
                 {
                     foreach (var item in lstEntities.SelectedItems.Cast<object>().ToList())
                     {
-                        lstSyncEntities.Items.Add(item);
+                        lstSyncedEntities.Items.Add(item);
                         syncEntityList.Add((string)item);
                         lstEntities.Items.Remove(item);
                     }
@@ -2950,19 +2968,22 @@ namespace CrashEdit.CE
                         }
                     }
 
-                    foreach (var item in lstSyncEntities.SelectedItems.Cast<object>().ToList())
+                    foreach (var item in lstSyncedEntities.SelectedItems.Cast<object>().ToList())
                     {
                         if (fakeList.Contains(item))
                             lstEntities.Items.Add(item);
                         syncEntityList.Remove((string)item);
-                        lstSyncEntities.Items.Remove(item);
+                        lstSyncedEntities.Items.Remove(item);
                     }
                 };
 
                 cmbZones.SelectedItem = controller.ZoneEntry.EName;
 
-                panel.Controls.Add(lstSyncEntities);
-                panel.Controls.Add(cmdRemove);
+                panel2.Controls.Add(lstSyncedEntities);
+                panel2.Controls.Add(cmdRemove);
+                fraSyncedEntities.Controls.Add(panel2);
+
+                panel.Controls.Add(fraSyncedEntities);
                 panel.Controls.Add(cmbZones);
                 panel.Controls.Add(cmdAdd);
                 panel.Controls.Add(lstEntities);
