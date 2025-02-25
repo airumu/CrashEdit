@@ -9,12 +9,15 @@ namespace CrashEdit.CE
 {
     public sealed class SceneryEditor : DarkForm
     {
+        CheckBox chkLowestBrightness;
+        DarkNumericUpDown numLowestBrightness;
+
         public SceneryEditor(NSF nsf)
         {
             FormBorderStyle = FormBorderStyle.FixedDialog;
             MinimizeBox = false;
             MaximizeBox = false;
-            AutoSize = false;
+            AutoSize = true;
             Text = "Scenery Editor";
             Icon = Embeds.GetIcon("Wrench");
             Width = 328;
@@ -39,9 +42,41 @@ namespace CrashEdit.CE
             }
             lstSceneries.Sort();
 
+            FlowLayoutPanel flowMain = new()
+            {
+                AutoSize = true,
+                FlowDirection = FlowDirection.TopDown,
+            };
+
+            FlowLayoutPanel flowBrightness = new()
+            {
+                AutoSize = true,
+                FlowDirection = FlowDirection.LeftToRight,
+            };
+
+            numLowestBrightness = new()
+            {
+                DecimalPlaces = 2,
+                Enabled = false,
+                Increment = new decimal(new int[] { 5, 0, 0, 131072 }),
+                Maximum = new decimal(new int[] { 1, 0, 0, 0 }),
+                Size = new Size(56, 23)
+            };
+            numLowestBrightness.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
+            chkLowestBrightness = new()
+            {
+                Text = "Ignore colors with brightness below:",
+                AutoSize  = true,
+                Padding = new Padding(9, 3, 3, 3)
+            };
+            chkLowestBrightness.CheckedChanged += (sender, e) =>
+            {
+                numLowestBrightness.Enabled = chkLowestBrightness.Checked;
+            };
+
             ColorEditor editor = new()
             {
-                Size = new Size(320, 96),
+                Size = new Size(300, 96),
                 Color = Color.FromArgb(0, 0, 0),
                 ShowAlphaChannel = false,
                 ShowColorSpaceLabels = false,
@@ -67,6 +102,11 @@ namespace CrashEdit.CE
                             {
                                 Color rgbColor = Color.FromArgb(sceneryColors[i].Red, sceneryColors[i].Green, sceneryColors[i].Blue);
                                 HslColor hslColor = new HslColor(rgbColor);
+                                if (chkLowestBrightness.Checked)
+                                {
+                                    if (hslColor.L <= (double)numLowestBrightness.Value)
+                                        continue;
+                                }
 
                                 hslColor = ModelBox.ChangeHue(hslColor, editor.HslColor.H);
                                 hslColor.S = Math.Clamp(hslColor.S + (editor.HslColor.S - 0.5), 0.0, 1.0);
@@ -87,14 +127,8 @@ namespace CrashEdit.CE
 
             TableLayoutPanel panel = new()
             {
-                Dock = DockStyle.Fill,
-                AutoSize = false,
+                AutoSize = true,
                 Padding = new Padding(12)
-            };
-
-            Panel panelFake = new()
-            {
-                Height = editor.Height - 6
             };
 
             Label lblApply = new()
@@ -398,16 +432,10 @@ namespace CrashEdit.CE
                 }
             };
 
-            Label lblSeparator = new()
-            {
-                Text = ""
-            };
-
             DarkGroupBox frabuttons = new()
             {
-                Dock = DockStyle.Bottom,
                 Text = "Apply Changes",
-                Size = new Size(280, 80)
+                Size = new Size(308, 80)
             };
 
             DarkButton cmdApply = new()
@@ -434,26 +462,30 @@ namespace CrashEdit.CE
             };
 
             panel.ColumnCount = 2;
-            panel.RowCount = 8;
+            panel.RowCount = 4;
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
-            panel.Controls.Add(panelFake, 0, 0);
-            panel.Controls.Add(lblApply, 0, 1);
-            panel.Controls.Add(lblIgnore, 1, 1);
-            panel.Controls.Add(txtFilterApply, 0, 2);
-            panel.Controls.Add(txtFilterIgnore, 1, 2);
-            panel.Controls.Add(lstToApply, 0, 3);
-            panel.Controls.Add(lstToIgnore, 1, 3);
-            panel.Controls.Add(cmdAdd, 0, 4);
-            panel.Controls.Add(cmdRemove, 1, 4);
-            panel.Controls.Add(lblSeparator, 0, 5);
+            panel.Controls.Add(lblApply, 0, 0);
+            panel.Controls.Add(lblIgnore, 1, 0);
+            panel.Controls.Add(txtFilterApply, 0, 1);
+            panel.Controls.Add(txtFilterIgnore, 1, 1);
+            panel.Controls.Add(lstToApply, 0, 2);
+            panel.Controls.Add(lstToIgnore, 1, 2);
+            panel.Controls.Add(cmdAdd, 0, 3);
+            panel.Controls.Add(cmdRemove, 1, 3);
 
             frabuttons.Controls.Add(cmdApply);
             frabuttons.Controls.Add(cmdCancel);
 
-            Controls.Add(editor);
-            Controls.Add(panel);
-            Controls.Add(frabuttons);
+            flowBrightness.Controls.Add(chkLowestBrightness);
+            flowBrightness.Controls.Add(numLowestBrightness);
+
+            flowMain.Controls.Add(editor);
+            flowMain.Controls.Add(flowBrightness);
+            flowMain.Controls.Add(panel);
+            flowMain.Controls.Add(frabuttons);
+
+            Controls.Add(flowMain);
 
             AcceptButton = cmdApply;
             CancelButton = cmdCancel;
@@ -475,6 +507,25 @@ namespace CrashEdit.CE
                     }
                 }
             };
+        }
+
+        private void ScrollHandlerFunction(object? sender, MouseEventArgs e)
+        {
+            if (sender is NumericUpDown numericUpDown)
+            {
+                HandledMouseEventArgs handledArgs = e as HandledMouseEventArgs;
+                if (handledArgs != null)
+                    handledArgs.Handled = true;
+
+                decimal newValue = numericUpDown.Value;
+                if (e.Delta > 0 && newValue < numericUpDown.Maximum)
+                    newValue += numericUpDown.Increment;
+
+                else if (e.Delta < 0 && newValue > numericUpDown.Minimum)
+                    newValue -= numericUpDown.Increment;
+
+                numericUpDown.Value = newValue;
+            }
         }
     }
 }

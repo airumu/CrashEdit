@@ -237,6 +237,7 @@ namespace CrashEdit.CE.Controls
             replaceCLUT = true;
 
             numReplaceTo.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
+            numLowestBrightness.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
 
             tbpTextures.Enter -= tbpTextures_Enter;
         }
@@ -983,6 +984,11 @@ namespace CrashEdit.CE.Controls
                     byte[] hexColor = GetHexColor(lstColor.Items[i].SubItems[1].Text);
                     Color rgbColor = Color.FromArgb(hexColor[0], hexColor[1], hexColor[2]);
                     HslColor hslColor = new HslColor(rgbColor);
+                    if (chkLowestBrightness.Checked)
+                    {
+                        if (hslColor.L <= (double)numLowestBrightness.Value)
+                            continue;
+                    }
 
                     hslColor = ChangeHue(hslColor, MasterHue);
                     hslColor.S = Math.Clamp(hslColor.S + (MasterSaturation - 0.5), 0.0, 1.0);
@@ -1121,6 +1127,12 @@ namespace CrashEdit.CE.Controls
         {
             tglGlobalControl.Switched = false;
         }
+
+        private void chkLowestBrightness_CheckedChanged(object sender, EventArgs e)
+        {
+            numLowestBrightness.Enabled = chkLowestBrightness.Checked;
+        }
+
         #endregion
 
         #region Textures
@@ -2106,7 +2118,7 @@ namespace CrashEdit.CE.Controls
             numReplaceTo.Select(0, numReplaceTo.Text.Length);
         }
 
-        private void ScrollHandlerFunction(object sender, MouseEventArgs e)
+        private void ScrollHandlerFunction(object? sender, MouseEventArgs e)
         {
             if (sender is NumericUpDown numericUpDown)
             {

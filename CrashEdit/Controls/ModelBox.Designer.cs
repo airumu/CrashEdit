@@ -64,7 +64,9 @@ namespace CrashEdit.CE.Controls
             cmdCancel = new DarkButton();
             cmdApply = new DarkButton();
             pnGlobalControl = new Panel();
+            numLowestBrightness = new DarkNumericUpDown();
             colorEditorGlobal = new Cyotek.Windows.Forms.ColorEditor();
+            chkLowestBrightness = new CheckBox();
             tglGlobalControl = new MetroSetSwitch();
             pnSliders = new Panel();
             fraColorSlider = new DarkGroupBox();
@@ -120,6 +122,7 @@ namespace CrashEdit.CE.Controls
             tbpColors.SuspendLayout();
             fraGlobalControl.SuspendLayout();
             pnGlobalControl.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numLowestBrightness).BeginInit();
             pnSliders.SuspendLayout();
             fraColorSlider.SuspendLayout();
             tbpTextures.SuspendLayout();
@@ -492,7 +495,7 @@ namespace CrashEdit.CE.Controls
             // 
             lblColorIndex.AutoSize = true;
             lblColorIndex.BackColor = Color.Transparent;
-            lblColorIndex.Location = new Point(304, 379);
+            lblColorIndex.Location = new Point(304, 409);
             lblColorIndex.Name = "lblColorIndex";
             lblColorIndex.Size = new Size(47, 15);
             lblColorIndex.TabIndex = 8;
@@ -507,7 +510,7 @@ namespace CrashEdit.CE.Controls
             fraGlobalControl.Controls.Add(tglGlobalControl);
             fraGlobalControl.Location = new Point(304, 218);
             fraGlobalControl.Name = "fraGlobalControl";
-            fraGlobalControl.Size = new Size(293, 154);
+            fraGlobalControl.Size = new Size(293, 184);
             fraGlobalControl.TabIndex = 7;
             fraGlobalControl.TabStop = false;
             fraGlobalControl.Text = "Global Controller";
@@ -544,16 +547,28 @@ namespace CrashEdit.CE.Controls
             // 
             // pnGlobalControl
             // 
+            pnGlobalControl.Controls.Add(numLowestBrightness);
             pnGlobalControl.Controls.Add(colorEditorGlobal);
+            pnGlobalControl.Controls.Add(chkLowestBrightness);
             pnGlobalControl.Enabled = false;
-            pnGlobalControl.Location = new Point(0, 50);
+            pnGlobalControl.Location = new Point(1, 50);
             pnGlobalControl.Name = "pnGlobalControl";
-            pnGlobalControl.Size = new Size(293, 100);
+            pnGlobalControl.Size = new Size(292, 130);
             pnGlobalControl.TabIndex = 4;
+            // 
+            // numLowestBrightness
+            // 
+            numLowestBrightness.DecimalPlaces = 2;
+            numLowestBrightness.Enabled = false;
+            numLowestBrightness.Increment = new decimal(new int[] { 1, 0, 0, 131072 });
+            numLowestBrightness.Location = new Point(230, 102);
+            numLowestBrightness.Maximum = new decimal(new int[] { 1, 0, 0, 0 });
+            numLowestBrightness.Name = "numLowestBrightness";
+            numLowestBrightness.Size = new Size(56, 23);
+            numLowestBrightness.TabIndex = 7;
             // 
             // colorEditorGlobal
             // 
-            colorEditorGlobal.AutoSize = true;
             colorEditorGlobal.Color = Color.FromArgb(0, 0, 0);
             colorEditorGlobal.Location = new Point(4, 3);
             colorEditorGlobal.Margin = new Padding(4, 3, 4, 3);
@@ -566,6 +581,17 @@ namespace CrashEdit.CE.Controls
             colorEditorGlobal.Size = new Size(284, 96);
             colorEditorGlobal.TabIndex = 0;
             colorEditorGlobal.ColorChanged += colorEditorGlobal_ColorChanged;
+            // 
+            // chkLowestBrightness
+            // 
+            chkLowestBrightness.AutoSize = true;
+            chkLowestBrightness.Location = new Point(10, 104);
+            chkLowestBrightness.Name = "chkLowestBrightness";
+            chkLowestBrightness.Size = new Size(217, 19);
+            chkLowestBrightness.TabIndex = 6;
+            chkLowestBrightness.Text = "Ignore colors with brightness below:";
+            chkLowestBrightness.UseVisualStyleBackColor = true;
+            chkLowestBrightness.CheckedChanged += chkLowestBrightness_CheckedChanged;
             // 
             // tglGlobalControl
             // 
@@ -1012,7 +1038,6 @@ namespace CrashEdit.CE.Controls
             trkPictureSize.ValueColor = Color.FromArgb(65, 177, 225);
             trkPictureSize.Visible = false;
             trkPictureSize.ValueChanged += trkPictureSize_ValueChanged;
-            trkPictureSize.ValueChanged += trkPictureSize_ValueChanged;
             // 
             // dgvTextures
             // 
@@ -1139,6 +1164,7 @@ namespace CrashEdit.CE.Controls
             fraGlobalControl.ResumeLayout(false);
             pnGlobalControl.ResumeLayout(false);
             pnGlobalControl.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numLowestBrightness).EndInit();
             pnSliders.ResumeLayout(false);
             fraColorSlider.ResumeLayout(false);
             tbpTextures.ResumeLayout(false);
@@ -1240,5 +1266,7 @@ namespace CrashEdit.CE.Controls
         private DataGridView dgvPositions;
         private Label lblColorIndex;
         private Label lblStruct;
+        private DarkNumericUpDown numLowestBrightness;
+        private CheckBox chkLowestBrightness;
     }
 }
