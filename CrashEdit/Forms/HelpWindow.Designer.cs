@@ -42,13 +42,15 @@ namespace CrashEdit.CE
             fraEntity = new DarkGroupBox();
             darkGroupBox2 = new DarkGroupBox();
             lbEntityListBox = new Label();
-            darkGroupBox1 = new DarkGroupBox();
+            fraEntityProperty = new DarkGroupBox();
             fraSavedProperties = new DarkGroupBox();
             lbSavedProperties = new Label();
             fraProperties = new DarkGroupBox();
             lbProperties = new Label();
             fraTextureChunk = new DarkGroupBox();
             lbTextureChunk = new Label();
+            tableLayoutPanel1 = new TableLayoutPanel();
+            flowLayoutPanel2 = new FlowLayoutPanel();
             fraHexViewer.SuspendLayout();
             fraNSDBox.SuspendLayout();
             fraSpawns.SuspendLayout();
@@ -56,10 +58,12 @@ namespace CrashEdit.CE
             flowLayoutPanel1.SuspendLayout();
             fraEntity.SuspendLayout();
             darkGroupBox2.SuspendLayout();
-            darkGroupBox1.SuspendLayout();
+            fraEntityProperty.SuspendLayout();
             fraSavedProperties.SuspendLayout();
             fraProperties.SuspendLayout();
             fraTextureChunk.SuspendLayout();
+            tableLayoutPanel1.SuspendLayout();
+            flowLayoutPanel2.SuspendLayout();
             SuspendLayout();
             // 
             // fraHexViewer
@@ -97,7 +101,7 @@ namespace CrashEdit.CE
             fraNSDBox.BackColor = Color.Transparent;
             fraNSDBox.Controls.Add(fraSpawns);
             fraNSDBox.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            fraNSDBox.Location = new Point(273, 164);
+            fraNSDBox.Location = new Point(6, 164);
             fraNSDBox.Name = "fraNSDBox";
             fraNSDBox.Size = new Size(225, 132);
             fraNSDBox.TabIndex = 15;
@@ -138,7 +142,7 @@ namespace CrashEdit.CE
             fraTextureViewer.BackColor = Color.Transparent;
             fraTextureViewer.Controls.Add(lbTextureViewer);
             fraTextureViewer.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            fraTextureViewer.Location = new Point(273, 70);
+            fraTextureViewer.Location = new Point(6, 70);
             fraTextureViewer.Name = "fraTextureViewer";
             fraTextureViewer.Size = new Size(267, 88);
             fraTextureViewer.TabIndex = 15;
@@ -161,18 +165,17 @@ namespace CrashEdit.CE
             // 
             // flowLayoutPanel1
             // 
+            flowLayoutPanel1.AutoSize = true;
+            flowLayoutPanel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             flowLayoutPanel1.Controls.Add(fraEntity);
-            flowLayoutPanel1.Controls.Add(darkGroupBox1);
+            flowLayoutPanel1.Controls.Add(fraEntityProperty);
             flowLayoutPanel1.Controls.Add(fraHexViewer);
-            flowLayoutPanel1.Controls.Add(fraTextureChunk);
-            flowLayoutPanel1.Controls.Add(fraTextureViewer);
-            flowLayoutPanel1.Controls.Add(fraNSDBox);
             flowLayoutPanel1.Dock = DockStyle.Fill;
             flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
-            flowLayoutPanel1.Location = new Point(0, 0);
+            flowLayoutPanel1.Location = new Point(3, 3);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
             flowLayoutPanel1.Padding = new Padding(3);
-            flowLayoutPanel1.Size = new Size(554, 639);
+            flowLayoutPanel1.Size = new Size(282, 633);
             flowLayoutPanel1.TabIndex = 16;
             // 
             // fraEntity
@@ -216,20 +219,20 @@ namespace CrashEdit.CE
             lbEntityListBox.TabIndex = 0;
             lbEntityListBox.Text = resources.GetString("lbEntityListBox.Text");
             // 
-            // darkGroupBox1
+            // fraEntityProperty
             // 
-            darkGroupBox1.AutoSize = true;
-            darkGroupBox1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            darkGroupBox1.BackColor = Color.Transparent;
-            darkGroupBox1.Controls.Add(fraSavedProperties);
-            darkGroupBox1.Controls.Add(fraProperties);
-            darkGroupBox1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            darkGroupBox1.Location = new Point(6, 174);
-            darkGroupBox1.Name = "darkGroupBox1";
-            darkGroupBox1.Size = new Size(248, 208);
-            darkGroupBox1.TabIndex = 15;
-            darkGroupBox1.TabStop = false;
-            darkGroupBox1.Text = "Entity Property";
+            fraEntityProperty.AutoSize = true;
+            fraEntityProperty.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraEntityProperty.BackColor = Color.Transparent;
+            fraEntityProperty.Controls.Add(fraSavedProperties);
+            fraEntityProperty.Controls.Add(fraProperties);
+            fraEntityProperty.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            fraEntityProperty.Location = new Point(6, 174);
+            fraEntityProperty.Name = "fraEntityProperty";
+            fraEntityProperty.Size = new Size(248, 208);
+            fraEntityProperty.TabIndex = 15;
+            fraEntityProperty.TabStop = false;
+            fraEntityProperty.Text = "Entity Property";
             // 
             // fraSavedProperties
             // 
@@ -292,7 +295,7 @@ namespace CrashEdit.CE
             fraTextureChunk.BackColor = Color.Transparent;
             fraTextureChunk.Controls.Add(lbTextureChunk);
             fraTextureChunk.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            fraTextureChunk.Location = new Point(273, 6);
+            fraTextureChunk.Location = new Point(6, 6);
             fraTextureChunk.Name = "fraTextureChunk";
             fraTextureChunk.Size = new Size(122, 58);
             fraTextureChunk.TabIndex = 15;
@@ -313,13 +316,47 @@ namespace CrashEdit.CE
             lbTextureChunk.TabIndex = 0;
             lbTextureChunk.Text = "[Click] Open viewer\r\n[Ctrl+R] Reload";
             // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.AutoSize = true;
+            tableLayoutPanel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            tableLayoutPanel1.ColumnCount = 2;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.Controls.Add(flowLayoutPanel1, 0, 0);
+            tableLayoutPanel1.Controls.Add(flowLayoutPanel2, 1, 0);
+            tableLayoutPanel1.Dock = DockStyle.Fill;
+            tableLayoutPanel1.Location = new Point(0, 0);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 1;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.Size = new Size(576, 639);
+            tableLayoutPanel1.TabIndex = 16;
+            // 
+            // flowLayoutPanel2
+            // 
+            flowLayoutPanel2.AutoSize = true;
+            flowLayoutPanel2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowLayoutPanel2.Controls.Add(fraTextureChunk);
+            flowLayoutPanel2.Controls.Add(fraTextureViewer);
+            flowLayoutPanel2.Controls.Add(fraNSDBox);
+            flowLayoutPanel2.Dock = DockStyle.Fill;
+            flowLayoutPanel2.FlowDirection = FlowDirection.TopDown;
+            flowLayoutPanel2.Location = new Point(291, 3);
+            flowLayoutPanel2.Name = "flowLayoutPanel2";
+            flowLayoutPanel2.Padding = new Padding(3);
+            flowLayoutPanel2.Size = new Size(282, 633);
+            flowLayoutPanel2.TabIndex = 17;
+            // 
             // HelpWindow
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
-            ClientSize = new Size(554, 639);
-            Controls.Add(flowLayoutPanel1);
+            AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            ClientSize = new Size(576, 639);
+            Controls.Add(tableLayoutPanel1);
             CornerStyle = CornerPreference.Default;
             ForeColor = Color.Gainsboro;
             FormBorderStyle = FormBorderStyle.FixedSingle;
@@ -343,15 +380,20 @@ namespace CrashEdit.CE
             fraEntity.PerformLayout();
             darkGroupBox2.ResumeLayout(false);
             darkGroupBox2.PerformLayout();
-            darkGroupBox1.ResumeLayout(false);
-            darkGroupBox1.PerformLayout();
+            fraEntityProperty.ResumeLayout(false);
+            fraEntityProperty.PerformLayout();
             fraSavedProperties.ResumeLayout(false);
             fraSavedProperties.PerformLayout();
             fraProperties.ResumeLayout(false);
             fraProperties.PerformLayout();
             fraTextureChunk.ResumeLayout(false);
             fraTextureChunk.PerformLayout();
+            tableLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel1.PerformLayout();
+            flowLayoutPanel2.ResumeLayout(false);
+            flowLayoutPanel2.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -363,7 +405,7 @@ namespace CrashEdit.CE
         private DarkGroupBox fraTextureViewer;
         private Label lbTextureViewer;
         private FlowLayoutPanel flowLayoutPanel1;
-        private DarkGroupBox darkGroupBox1;
+        private DarkGroupBox fraEntityProperty;
         private Label lbProperties;
         private DarkGroupBox fraProperties;
         private DarkGroupBox fraSavedProperties;
@@ -373,5 +415,7 @@ namespace CrashEdit.CE
         private DarkGroupBox fraEntity;
         private Label lbEntityListBox;
         private DarkGroupBox darkGroupBox2;
+        private TableLayoutPanel tableLayoutPanel1;
+        private FlowLayoutPanel flowLayoutPanel2;
     }
 }
