@@ -21,6 +21,7 @@ namespace CrashEdit.CE
                 components.Dispose();
             }
             base.Dispose(disposing);
+            KillForm();
         }
 
         #region コンポーネント デザイナーで生成されたコード

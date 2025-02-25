@@ -11,7 +11,7 @@ namespace CrashEdit.CE
     {
         private MetroSetTabControl tbcTabs;
 
-        private TextureViewer frmViewer = null;
+        private TextureViewer? frmViewer = null;
 
         private TextureChunk texturechunk;
 
@@ -206,6 +206,13 @@ namespace CrashEdit.CE
 
             Array.Copy(source, 0, data, destOffset, destLength);
             return true;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (frmViewer != null)
+                frmViewer.Dispose();
         }
     }
 }

@@ -496,6 +496,12 @@ namespace CrashEdit.CE
             }
         }
 
+        private void KillForm()
+        {
+            if (frmVABTool != null)
+                frmVABTool.Dispose();
+        }
+
         //private Timer timer2;
 
         //private void StartWaveformTimer()
