@@ -64,10 +64,12 @@ namespace CrashEdit.CE
                 ZoneEntry zone = controller.ZoneEntryController.ZoneEntry;
                 if (zone.Entities.IndexOf(entity) < zone.CameraCount)
                 {
+                    // If it's camera[0]
                     if (entity.CameraSubIndex == 0)
                     {
                         OldMainForm.ListUpdated += OnEntityListUpdated;
                     }
+                    // Else
                     else
                     {
                         tbcTabs.Controls.Remove(tabLoadLists);
@@ -75,6 +77,8 @@ namespace CrashEdit.CE
                         tabLoadLists.Dispose();
                         tabDrawLists.Dispose();
                     }
+
+                    // Hide controls
                     tbcTabs.Controls.Remove(tabSpecial);
                     tabSpecial.Dispose();
                     tabGeneral.Controls.Remove(fraName);
@@ -82,10 +86,14 @@ namespace CrashEdit.CE
                     tabGeneral.Controls.Remove(fraType);
                     tabGeneral.Controls.Remove(fraSettings);
                     tabGeneral.Controls.Remove(fraZMod);
+                    fraPosition.Controls.Remove(cmdSyncEntities);
+                    fraPosition.Controls.Remove(chkSyncEntities);
+                    fraPosition.AutoSize = true;
                     fraPosition.Location = new Point(4, 3);
                 }
                 else
                 {
+                    // Hide controls
                     UpdateC2TTSets();
                     tbcTabs.Controls.Remove(tabCamera);
                     tbcTabs.Controls.Remove(tabLoadLists);
@@ -112,6 +120,9 @@ namespace CrashEdit.CE
             neighborsettingindex = 0;
             fovframeindex = 0;
             fovindex = 0;
+
+            cmdSyncEntities.Enabled = false;
+
             tabGeneral.Text = Resources.EntityBox_TabGeneral;
             tabSpecial.Text = Resources.EntityBox_TabSpecial;
             tabCamera.Text = Resources.EntityBox_TabCamera;
@@ -159,6 +170,9 @@ namespace CrashEdit.CE
             }
             chkSettingHex.Text = Resources.EntityBox_ChkHex;
             cmdEditPath.Text = Resources.EntityBox_CmdEditPath;
+            cmdSyncEntities.Text = Resources.EntityBox_CmdSyncEntities;
+            chkSyncPositions.Text = Resources.EntityBox_ChkSyncPositions;
+            chkSyncEntities.Text = Resources.EntityBox_ChkSyncEntities;
             fraVictims.Text = Resources.EntityBox_FraVictims;
             fraBoxCount.Text = Resources.EntityBox_FraBoxCount;
             fraDDASection.Text = Resources.EntityBox_FraDDASection;
@@ -393,7 +407,7 @@ namespace CrashEdit.CE
 
         private void UpdateSyncedEntitiesPositions(int type, short dif)
         {
-            if (syncEntityList != null)
+            if (chkSyncEntities.Checked && syncEntityList != null)
             {
                 foreach (string strings in syncEntityList)
                 {
@@ -418,7 +432,7 @@ namespace CrashEdit.CE
                                                 short result = ValidateValue(pos.X, dif);
                                                 otherentity.Positions[i] = new EntityPosition(result, pos.Y, pos.Z);
                                             }
-                                            else if(type == 1)
+                                            else if (type == 1)
                                             {
                                                 short result = ValidateValue(pos.Y, dif);
                                                 otherentity.Positions[i] = new EntityPosition(pos.X, result, pos.Z);
@@ -447,7 +461,6 @@ namespace CrashEdit.CE
                 short dif = (short)(newV - oldV);
                 if (chkSyncPositions.Checked)
                 {
-                    UpdateSyncedEntitiesPositions(0, dif);
                     for (int i = 0; i < entity.Positions.Count; i++)
                     {
                         EntityPosition pos = entity.Positions[i];
@@ -460,6 +473,7 @@ namespace CrashEdit.CE
                     EntityPosition pos = entity.Positions[positionindex];
                     entity.Positions[positionindex] = new EntityPosition((short)numX.Value, pos.Y, pos.Z);
                 }
+                UpdateSyncedEntitiesPositions(0, dif);
             }
         }
 
@@ -472,7 +486,6 @@ namespace CrashEdit.CE
                 short dif = (short)(newV - oldV);
                 if (chkSyncPositions.Checked)
                 {
-                    UpdateSyncedEntitiesPositions(1, dif);
                     for (int i = 0; i < entity.Positions.Count; i++)
                     {
                         EntityPosition pos = entity.Positions[i];
@@ -485,6 +498,7 @@ namespace CrashEdit.CE
                     EntityPosition pos = entity.Positions[positionindex];
                     entity.Positions[positionindex] = new EntityPosition(pos.X, (short)numY.Value, pos.Z);
                 }
+                UpdateSyncedEntitiesPositions(1, dif);
             }
         }
 
@@ -497,7 +511,6 @@ namespace CrashEdit.CE
                 short dif = (short)(newV - oldV);
                 if (chkSyncPositions.Checked)
                 {
-                    UpdateSyncedEntitiesPositions(2, dif);
                     for (int i = 0; i < entity.Positions.Count; i++)
                     {
                         EntityPosition pos = entity.Positions[i];
@@ -510,6 +523,7 @@ namespace CrashEdit.CE
                     EntityPosition pos = entity.Positions[positionindex];
                     entity.Positions[positionindex] = new EntityPosition(pos.X, pos.Y, (short)numZ.Value);
                 }
+                UpdateSyncedEntitiesPositions(2, dif);
             }
         }
 
@@ -2823,8 +2837,9 @@ namespace CrashEdit.CE
             SetCVal((long)numSettingC.Value);
         }
 
-        private void chkSyncPositions_CheckedChanged(object sender, EventArgs e)
+        private void chkSyncEntities_CheckedChanged(object sender, EventArgs e)
         {
+            cmdSyncEntities.Enabled = chkSyncEntities.Checked;
         }
 
         private void cmdSyncList_Click(object sender, EventArgs e)
@@ -2833,7 +2848,7 @@ namespace CrashEdit.CE
             {
                 syncListForm = new DarkForm()
                 {
-                    Text = "Sync List",
+                    Text = "Sync Entities",
                     Icon = Embeds.GetIcon("ThingViolet"),
                     Size = new Size(200, 360),
                     MinimizeBox = false,

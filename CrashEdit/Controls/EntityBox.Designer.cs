@@ -39,7 +39,8 @@ namespace CrashEdit.CE
             chkSubtype = new CheckBox();
             numSubtype = new DarkNumericUpDown();
             fraPosition = new DarkGroupBox();
-            cmdSyncList = new DarkButton();
+            cmdSyncEntities = new DarkButton();
+            chkSyncEntities = new CheckBox();
             chkSyncPositions = new CheckBox();
             cmdEditPath = new DarkButton();
             lblPositionIndex = new Label();
@@ -404,7 +405,9 @@ namespace CrashEdit.CE
             // 
             // fraPosition
             // 
-            fraPosition.Controls.Add(cmdSyncList);
+            fraPosition.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraPosition.Controls.Add(cmdSyncEntities);
+            fraPosition.Controls.Add(chkSyncEntities);
             fraPosition.Controls.Add(chkSyncPositions);
             fraPosition.Controls.Add(cmdEditPath);
             fraPosition.Controls.Add(lblPositionIndex);
@@ -423,40 +426,50 @@ namespace CrashEdit.CE
             fraPosition.Margin = new Padding(4, 3, 4, 3);
             fraPosition.Name = "fraPosition";
             fraPosition.Padding = new Padding(4, 3, 4, 3);
-            fraPosition.Size = new Size(233, 194);
+            fraPosition.Size = new Size(233, 224);
             fraPosition.TabIndex = 1;
             fraPosition.TabStop = false;
             fraPosition.Text = "Position(s)";
             // 
-            // cmdSyncList
+            // cmdSyncEntities
             // 
-            cmdSyncList.BorderColour = Color.Empty;
-            cmdSyncList.CustomColour = false;
-            cmdSyncList.FlatBottom = false;
-            cmdSyncList.FlatTop = false;
-            cmdSyncList.Location = new Point(159, 154);
-            cmdSyncList.Name = "cmdSyncList";
-            cmdSyncList.Padding = new Padding(5);
-            cmdSyncList.Size = new Size(67, 27);
-            cmdSyncList.TabIndex = 10;
-            cmdSyncList.Text = "Sync List";
-            cmdSyncList.Click += cmdSyncList_Click;
+            cmdSyncEntities.BorderColour = Color.Empty;
+            cmdSyncEntities.CustomColour = false;
+            cmdSyncEntities.FlatBottom = false;
+            cmdSyncEntities.FlatTop = false;
+            cmdSyncEntities.Location = new Point(7, 185);
+            cmdSyncEntities.Name = "cmdSyncEntities";
+            cmdSyncEntities.Padding = new Padding(5);
+            cmdSyncEntities.Size = new Size(74, 29);
+            cmdSyncEntities.TabIndex = 10;
+            cmdSyncEntities.Text = "View List";
+            cmdSyncEntities.Click += cmdSyncList_Click;
+            // 
+            // chkSyncEntities
+            // 
+            chkSyncEntities.AutoSize = true;
+            chkSyncEntities.BackColor = Color.Transparent;
+            chkSyncEntities.Location = new Point(88, 191);
+            chkSyncEntities.Name = "chkSyncEntities";
+            chkSyncEntities.Size = new Size(92, 19);
+            chkSyncEntities.TabIndex = 9;
+            chkSyncEntities.Text = "Sync Entities";
+            chkSyncEntities.UseVisualStyleBackColor = false;
+            chkSyncEntities.CheckedChanged += chkSyncEntities_CheckedChanged;
             // 
             // chkSyncPositions
             // 
             chkSyncPositions.AutoSize = true;
             chkSyncPositions.BackColor = Color.Transparent;
-            chkSyncPositions.Location = new Point(102, 159);
+            chkSyncPositions.Location = new Point(88, 156);
             chkSyncPositions.Name = "chkSyncPositions";
-            chkSyncPositions.Size = new Size(51, 19);
+            chkSyncPositions.Size = new Size(102, 19);
             chkSyncPositions.TabIndex = 9;
-            chkSyncPositions.Text = "Sync";
+            chkSyncPositions.Text = "Sync Positions";
             chkSyncPositions.UseVisualStyleBackColor = false;
-            chkSyncPositions.CheckedChanged += chkSyncPositions_CheckedChanged;
             // 
             // cmdEditPath
             // 
-            cmdEditPath.AutoSize = true;
             cmdEditPath.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             cmdEditPath.BorderColour = Color.Empty;
             cmdEditPath.CustomColour = false;
@@ -466,7 +479,7 @@ namespace CrashEdit.CE
             cmdEditPath.Margin = new Padding(4, 3, 4, 3);
             cmdEditPath.Name = "cmdEditPath";
             cmdEditPath.Padding = new Padding(5);
-            cmdEditPath.Size = new Size(74, 35);
+            cmdEditPath.Size = new Size(74, 29);
             cmdEditPath.TabIndex = 8;
             cmdEditPath.Text = "Edit Path";
             cmdEditPath.Click += cmdInterpolate_Click;
@@ -722,7 +735,7 @@ namespace CrashEdit.CE
             fraSettings.Controls.Add(cmdRemoveSetting);
             fraSettings.Controls.Add(numSettingB);
             fraSettings.Controls.Add(numSettingA);
-            fraSettings.Location = new Point(4, 292);
+            fraSettings.Location = new Point(4, 321);
             fraSettings.Margin = new Padding(4, 3, 4, 3);
             fraSettings.Name = "fraSettings";
             fraSettings.Padding = new Padding(4, 3, 4, 3);
@@ -3723,6 +3736,7 @@ namespace CrashEdit.CE
         private DarkButton cmdCopySetting;
         private DarkButton cmdPasteSetting;
         private CheckBox chkSyncPositions;
-        private DarkButton cmdSyncList;
+        private DarkButton cmdSyncEntities;
+        private CheckBox chkSyncEntities;
     }
 }

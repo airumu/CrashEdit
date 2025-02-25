@@ -935,4 +935,13 @@
   <data name="EntityBox_CmdEditPath" xml:space="preserve">
     <value>パスの編集</value>
   </data>
+  <data name="EntityBox_CmdSyncEntities" xml:space="preserve">
+    <value>リストを表示</value>
+  </data>
+  <data name="EntityBox_ChkSyncEntities" xml:space="preserve">
+    <value>エンティティを同期</value>
+  </data>
+  <data name="EntityBox_ChkSyncPositions" xml:space="preserve">
+    <value>ポジションを同期</value>
+  </data>
 </root>

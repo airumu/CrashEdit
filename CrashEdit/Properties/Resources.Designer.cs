@@ -493,6 +493,24 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
+        ///   Sync Entities に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_ChkSyncEntities {
+            get {
+                return ResourceManager.GetString("EntityBox_ChkSyncEntities", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sync Path に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_ChkSyncPositions {
+            get {
+                return ResourceManager.GetString("EntityBox_ChkSyncPositions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Add に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string EntityBox_CmdAdd {
@@ -588,6 +606,15 @@ namespace CrashEdit.CE.Properties {
         internal static string EntityBox_CmdRemove {
             get {
                 return ResourceManager.GetString("EntityBox_CmdRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   View List に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string EntityBox_CmdSyncEntities {
+            get {
+                return ResourceManager.GetString("EntityBox_CmdSyncEntities", resourceCulture);
             }
         }
         

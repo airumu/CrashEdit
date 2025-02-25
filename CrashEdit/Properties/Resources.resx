@@ -947,4 +947,13 @@ as Meters: {3:F3}m</value>
   <data name="EntityBox_CmdEditPath" xml:space="preserve">
     <value>Edit Path</value>
   </data>
+  <data name="EntityBox_CmdSyncEntities" xml:space="preserve">
+    <value>View List</value>
+  </data>
+  <data name="EntityBox_ChkSyncEntities" xml:space="preserve">
+    <value>Sync Entities</value>
+  </data>
+  <data name="EntityBox_ChkSyncPositions" xml:space="preserve">
+    <value>Sync Path</value>
+  </data>
 </root>
