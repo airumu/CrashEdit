@@ -22,6 +22,7 @@ namespace CrashEdit.CE
                 components.Dispose();
             }
             base.Dispose(disposing);
+            KillForm();
         }
 
         #region Component Designer generated code
@@ -38,6 +39,7 @@ namespace CrashEdit.CE
             chkSubtype = new CheckBox();
             numSubtype = new DarkNumericUpDown();
             fraPosition = new DarkGroupBox();
+            cmdSyncList = new DarkButton();
             chkSyncPositions = new CheckBox();
             cmdEditPath = new DarkButton();
             lblPositionIndex = new Label();
@@ -402,6 +404,7 @@ namespace CrashEdit.CE
             // 
             // fraPosition
             // 
+            fraPosition.Controls.Add(cmdSyncList);
             fraPosition.Controls.Add(chkSyncPositions);
             fraPosition.Controls.Add(cmdEditPath);
             fraPosition.Controls.Add(lblPositionIndex);
@@ -425,11 +428,25 @@ namespace CrashEdit.CE
             fraPosition.TabStop = false;
             fraPosition.Text = "Position(s)";
             // 
+            // cmdSyncList
+            // 
+            cmdSyncList.BorderColour = Color.Empty;
+            cmdSyncList.CustomColour = false;
+            cmdSyncList.FlatBottom = false;
+            cmdSyncList.FlatTop = false;
+            cmdSyncList.Location = new Point(159, 154);
+            cmdSyncList.Name = "cmdSyncList";
+            cmdSyncList.Padding = new Padding(5);
+            cmdSyncList.Size = new Size(67, 27);
+            cmdSyncList.TabIndex = 10;
+            cmdSyncList.Text = "Sync List";
+            cmdSyncList.Click += cmdSyncList_Click;
+            // 
             // chkSyncPositions
             // 
             chkSyncPositions.AutoSize = true;
             chkSyncPositions.BackColor = Color.Transparent;
-            chkSyncPositions.Location = new Point(88, 159);
+            chkSyncPositions.Location = new Point(102, 159);
             chkSyncPositions.Name = "chkSyncPositions";
             chkSyncPositions.Size = new Size(51, 19);
             chkSyncPositions.TabIndex = 9;
@@ -3706,5 +3723,6 @@ namespace CrashEdit.CE
         private DarkButton cmdCopySetting;
         private DarkButton cmdPasteSetting;
         private CheckBox chkSyncPositions;
+        private DarkButton cmdSyncList;
     }
 }

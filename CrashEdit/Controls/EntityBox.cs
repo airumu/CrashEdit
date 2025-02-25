@@ -35,6 +35,9 @@ namespace CrashEdit.CE
 
         private System.Windows.Forms.Timer argtexttimer;
 
+        private DarkForm? syncListForm;
+        private List<string>? syncEntityList;
+
         private DarkToolTip tipVictim;
         private DarkToolTip tipEIDA;
         private DarkToolTip tipEIDB;
@@ -388,6 +391,53 @@ namespace CrashEdit.CE
             return result;
         }
 
+        private void UpdateSyncedEntitiesPositions(int type, short dif)
+        {
+            if (syncEntityList != null)
+            {
+                foreach (string strings in syncEntityList)
+                {
+                    string idstring = new string(strings.Reverse().ToArray());
+                    Match match = Regex.Match(idstring, @"\d+");
+                    if (match.Success)
+                    {
+                        string id = new string(match.Value.Reverse().ToArray());
+                        if (int.TryParse(id, out int value))
+                        {
+                            foreach (ZoneEntry zone in controller.GetEntries<ZoneEntry>())
+                            {
+                                foreach (Entity otherentity in zone.Entities)
+                                {
+                                    if (otherentity.ID.HasValue && otherentity.ID.Value == value && otherentity.ID.Value != entity.ID.Value)
+                                    {
+                                        for (int i = 0; i < otherentity.Positions.Count; i++)
+                                        {
+                                            EntityPosition pos = otherentity.Positions[i];
+                                            if (type == 0)
+                                            {
+                                                short result = ValidateValue(pos.X, dif);
+                                                otherentity.Positions[i] = new EntityPosition(result, pos.Y, pos.Z);
+                                            }
+                                            else if(type == 1)
+                                            {
+                                                short result = ValidateValue(pos.Y, dif);
+                                                otherentity.Positions[i] = new EntityPosition(pos.X, result, pos.Z);
+                                            }
+                                            else if (type == 2)
+                                            {
+                                                short result = ValidateValue(pos.Z, dif);
+                                                otherentity.Positions[i] = new EntityPosition(pos.X, pos.Y, result);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         private void numX_ValueChanged(object sender, EventArgs e)
         {
             if (!Dirty)
@@ -397,6 +447,7 @@ namespace CrashEdit.CE
                 short dif = (short)(newV - oldV);
                 if (chkSyncPositions.Checked)
                 {
+                    UpdateSyncedEntitiesPositions(0, dif);
                     for (int i = 0; i < entity.Positions.Count; i++)
                     {
                         EntityPosition pos = entity.Positions[i];
@@ -421,6 +472,7 @@ namespace CrashEdit.CE
                 short dif = (short)(newV - oldV);
                 if (chkSyncPositions.Checked)
                 {
+                    UpdateSyncedEntitiesPositions(1, dif);
                     for (int i = 0; i < entity.Positions.Count; i++)
                     {
                         EntityPosition pos = entity.Positions[i];
@@ -445,6 +497,7 @@ namespace CrashEdit.CE
                 short dif = (short)(newV - oldV);
                 if (chkSyncPositions.Checked)
                 {
+                    UpdateSyncedEntitiesPositions(2, dif);
                     for (int i = 0; i < entity.Positions.Count; i++)
                     {
                         EntityPosition pos = entity.Positions[i];
@@ -2772,7 +2825,141 @@ namespace CrashEdit.CE
 
         private void chkSyncPositions_CheckedChanged(object sender, EventArgs e)
         {
+        }
 
+        private void cmdSyncList_Click(object sender, EventArgs e)
+        {
+            if (syncListForm == null || syncListForm.IsDisposed)
+            {
+                syncListForm = new DarkForm()
+                {
+                    Text = "Sync List",
+                    Icon = Embeds.GetIcon("ThingViolet"),
+                    Size = new Size(200, 360),
+                    MinimizeBox = false,
+                    MaximizeBox = false,
+                    AutoSize = true
+                };
+                syncListForm.FormClosing += (sender, e) =>
+                {
+                    syncListForm = null;
+                };
+
+                FlowLayoutPanel panel = new()
+                {
+                    Dock = DockStyle.Fill,
+                    AutoSize = true,
+                    AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                    FlowDirection = FlowDirection.TopDown,
+                    WrapContents = false
+                };
+
+                DarkListBox lstSyncEntities = new()
+                {
+                    Size = new Size(200, 200),
+                    SelectionMode = SelectionMode.MultiExtended
+                };
+                if (syncEntityList == null)
+                    syncEntityList = new();
+                else
+                {
+                    foreach (string item in syncEntityList)
+                    {
+                        lstSyncEntities.Items.Add(item);
+                    }
+                }
+
+                DarkButton cmdRemove = new()
+                {
+                    Text = "Remove",
+                    Margin = new Padding(3, 3, 3, 19)
+                };
+
+                DarkComboBox cmbZones = new()
+                {
+                    DropDownHeight = 220
+                };
+                foreach (ZoneEntry zone in controller.GetEntries<ZoneEntry>())
+                {
+                    cmbZones.Items.Add(zone.EName);
+                }
+
+                DarkButton cmdAdd = new()
+                {
+                    Text = "Add"
+                };
+
+                DarkListBox lstEntities = new()
+                {
+                    Size = new Size(200, 200),
+                    SelectionMode = SelectionMode.MultiExtended
+                };
+
+                cmbZones.SelectedIndexChanged += (sender, e) =>
+                {
+                    lstEntities.Items.Clear();
+                    ZoneEntry zone = controller.GetEntry<ZoneEntry>(Entry.ENameToEID(cmbZones.SelectedItem.ToString()));
+                    foreach (Entity otherentity in zone.Entities)
+                    {
+                        if (otherentity.ID.HasValue)
+                        {
+                            string text = $"{otherentity.Name} [ID {otherentity.ID}]";
+                            if (!lstSyncEntities.Items.Contains(text))
+                            {
+                                lstEntities.Items.Add(text);
+                            }
+                        }
+                    }
+                };
+
+                cmdAdd.Click += (sender, e) =>
+                {
+                    foreach (var item in lstEntities.SelectedItems.Cast<object>().ToList())
+                    {
+                        lstSyncEntities.Items.Add(item);
+                        syncEntityList.Add((string)item);
+                        lstEntities.Items.Remove(item);
+                    }
+                };
+
+                cmdRemove.Click += (sender, e) =>
+                {
+                    List<string> fakeList = new();
+                    ZoneEntry zone = controller.GetEntry<ZoneEntry>(Entry.ENameToEID(cmbZones.SelectedItem.ToString()));
+                    foreach (Entity otherentity in zone.Entities)
+                    {
+                        if (otherentity.ID.HasValue)
+                        {
+                            string text = $"{otherentity.Name} [ID {otherentity.ID}]";
+                            fakeList.Add(text);
+                        }
+                    }
+
+                    foreach (var item in lstSyncEntities.SelectedItems.Cast<object>().ToList())
+                    {
+                        if (fakeList.Contains(item))
+                            lstEntities.Items.Add(item);
+                        syncEntityList.Remove((string)item);
+                        lstSyncEntities.Items.Remove(item);
+                    }
+                };
+
+                cmbZones.SelectedItem = controller.ZoneEntry.EName;
+
+                panel.Controls.Add(lstSyncEntities);
+                panel.Controls.Add(cmdRemove);
+                panel.Controls.Add(cmbZones);
+                panel.Controls.Add(cmdAdd);
+                panel.Controls.Add(lstEntities);
+
+                syncListForm.Controls.Add(panel);
+                syncListForm.FormBorderStyle = FormBorderStyle.FixedSingle;
+                syncListForm.Show();
+            }
+            else
+            {
+                syncListForm.Select();
+            }
         }
 
         private void cmdInterpolate_Click(object sender, EventArgs e)
@@ -3391,6 +3578,12 @@ namespace CrashEdit.CE
         private void numFOV_ValueChanged(object sender, EventArgs e)
         {
             entity.FOV.Rows[fovframeindex].Values[fovindex] = new EntityVictim((short)numFOV.Value);
+        }
+
+        private void KillForm()
+        {
+            if (syncListForm != null)
+                syncListForm.Dispose();
         }
     }
 }
