@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="lblHexViewer.Text" xml:space="preserve">
+  <data name="lbHexViewer.Text" xml:space="preserve">
     <value>[N] Input the EID for "NONE!"
 [Space] Clear selected cell
 [Ctrl + Space] Clear selected chunk
@@ -133,7 +133,7 @@
 [Ctrl + Shift + X] Cut selected words as EID
 [Ctrl + Shift + V] Paste to words as EID</value>
   </data>
-  <data name="label6.Text" xml:space="preserve">
+  <data name="lbEntityListBox.Text" xml:space="preserve">
     <value>[Ctrl+C] Copy value of selected item
 [Ctrl+V] Paste copied value to selected item
 [Double-click / F2] Rename selected item

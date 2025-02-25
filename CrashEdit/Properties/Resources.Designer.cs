@@ -1172,6 +1172,28 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
+        ///   [N] Input the EID for &quot;NONE!&quot;
+        ///[Space] Clear selected cell
+        ///[Ctrl + Space] Clear selected chunk
+        ///[Z] Toggle chunk name view mode
+        ///[Ctrl + G] Goto
+        ///[+ / - ] Change line width
+        ///
+        ///[Mouse drag] Select multiple cells
+        ///[Ctrl + C] Copy selected words as bytes
+        ///[Ctrl + X] Cut selected words as bytes
+        ///[Ctrl + V] Paste to words as bytes
+        ///[Ctrl + Shift + C] Copy selected words as EID
+        ///[Ctrl + Shift + X] Cut selected words as EID
+        ///[Ctrl + Shift + V] Paste to words as EID に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string HexView_tip {
+            get {
+                return ResourceManager.GetString("HexView_tip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cancel に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string InputWindow_cmdCancel {
@@ -1627,6 +1649,18 @@ namespace CrashEdit.CE.Properties {
         internal static string NewEntryForm_fraType {
             get {
                 return ResourceManager.GetString("NewEntryForm_fraType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   [Mouse drag] Move row
+        ///[Right-click] Show context menu
+        ///[Ctrl + C] Copy selected spawn point
+        ///[Ctrl + V] Paste copied value to selected spawn point  に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string NSDBox_tipSpawnPoint {
+            get {
+                return ResourceManager.GetString("NSDBox_tipSpawnPoint", resourceCulture);
             }
         }
         

@@ -944,4 +944,26 @@
   <data name="EntityBox_ChkSyncPositions" xml:space="preserve">
     <value>ポジションを同期</value>
   </data>
+  <data name="NSDBox_tipSpawnPoint" xml:space="preserve">
+    <value>[マウスドラッグ] 行を移動
+[右クリック] メニューを表示
+[Ctrl + C] 選択したスポーンポイントをコピー
+[Ctrl + V] コピーしたスポーンポイントを貼り付け</value>
+  </data>
+  <data name="HexView_tip" xml:space="preserve">
+    <value>[N] 「NONE!」の EID を入力  
+[Space] 選択したセルをクリア  
+[Ctrl + Space] 選択したチャンクをクリア  
+[Z] 表示モードを切り替える  
+[Ctrl + G] 指定場所へ移動  
+[+ / -] ラインの幅を変更  
+
+[Mouse drag] 複数のセルを選択  
+[Ctrl + C] 選択したセルをバイトとしてコピー  
+[Ctrl + X] 選択したセルをバイトとしてカット  
+[Ctrl + V] セルへバイトとして貼り付け  
+[Ctrl + Shift + C] 選択したセルを EID としてコピー  
+[Ctrl + Shift + X] 選択したセルを EID としてカット  
+[Ctrl + Shift + V] セルへ EID として貼り付け</value>
+  </data>
 </root>

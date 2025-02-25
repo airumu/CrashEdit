@@ -956,4 +956,26 @@ as Meters: {3:F3}m</value>
   <data name="EntityBox_ChkSyncPositions" xml:space="preserve">
     <value>Sync Path</value>
   </data>
+  <data name="NSDBox_tipSpawnPoint" xml:space="preserve">
+    <value>[Mouse drag] Move row
+[Right-click] Show context menu
+[Ctrl + C] Copy selected spawn point
+[Ctrl + V] Paste copied value to selected spawn point </value>
+  </data>
+  <data name="HexView_tip" xml:space="preserve">
+    <value>[N] Input the EID for "NONE!"
+[Space] Clear selected cell
+[Ctrl + Space] Clear selected chunk
+[Z] Toggle chunk name view mode
+[Ctrl + G] Goto
+[+ / - ] Change line width
+
+[Mouse drag] Select multiple cells
+[Ctrl + C] Copy selected words as bytes
+[Ctrl + X] Cut selected words as bytes
+[Ctrl + V] Paste to words as bytes
+[Ctrl + Shift + C] Copy selected words as EID
+[Ctrl + Shift + X] Cut selected words as EID
+[Ctrl + Shift + V] Paste to words as EID</value>
+  </data>
 </root>
