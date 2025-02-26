@@ -966,4 +966,7 @@
 [Ctrl + Shift + X] 選択したセルを EID としてカット  
 [Ctrl + Shift + V] セルへ EID として貼り付け</value>
   </data>
+  <data name="Toolbar_SaveAs" xml:space="preserve">
+    <value>名前を付けて保存</value>
+  </data>
 </root>

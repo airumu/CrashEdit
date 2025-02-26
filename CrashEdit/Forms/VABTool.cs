@@ -6,6 +6,7 @@ using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 using MetroSet_UI.Controls;
 using NAudio.Wave;
+using Timer = System.Windows.Forms.Timer;
 
 namespace CrashEdit.CE
 {
@@ -65,6 +66,8 @@ namespace CrashEdit.CE
         private readonly int ColToneADSR2 = 12;
         private readonly int ColToneVAG = 13;
 
+        private Timer timer;
+
         internal Stack<bool> dirty = new Stack<bool>();
         internal bool Dirty => dirty.Count > 0 && dirty.Peek();
 
@@ -75,7 +78,10 @@ namespace CrashEdit.CE
             toolStrip.ImageList = Embeds.ImageList;
             ToolStripButtonInit(tbbOpen, "FolderOpen", Resources.Toolbar_Open, $"{Resources.Toolbar_Open} (Ctrl + O)");
             ToolStripButtonInit(tbbSave, "Floppy", Resources.Toolbar_Save, $"{Resources.Toolbar_Save} (Ctrl + S)");
+            ToolStripButtonInit(tbbSaveAs, "Floppy", Resources.Toolbar_SaveAs, $"{Resources.Toolbar_SaveAs} (Ctrl + Shift + S)");
             ToolStripButtonInit(tbbClose, "Folder", Resources.Toolbar_Close, $"{Resources.Toolbar_Close} (Ctrl + W)");
+            tbdExport.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            tbdExport.AutoToolTip = false;
 
             DoubleBufferedDataGridView.Initialize(dgvHeader);
             DoubleBufferedDataGridView.Initialize(dgvPrograms);
@@ -83,6 +89,16 @@ namespace CrashEdit.CE
             dgvColumnsInit();
 
             waveOut = new WaveOutEvent { DesiredLatency = 200 };
+
+            timer = new Timer()
+            {
+                Interval = 4000
+            };
+            timer.Tick += (sender, e) =>
+            {
+                tblSaved.Visible = false;
+                timer.Stop();
+            };
 
             frmMidiForm = null;
             fileName = string.Empty;
@@ -95,12 +111,41 @@ namespace CrashEdit.CE
             tblToneControls.Enabled =
             dgvTones.Enabled =
             tbbSave.Enabled =
-            tbbClose.Enabled = false;
+            tbbSaveAs.Enabled =
+            tbbClose.Enabled =
+            tbdExport.Enabled = false;
+
+            tblSaved.Visible = false;
 
             numPriority.MouseWheel += ScrollHandlerFunction;
             numMode.MouseWheel += ScrollHandlerFunction;
             numVAG.MouseWheel += ScrollHandlerFunction;
             numNote.MouseWheel += ScrollHandlerFunction;
+
+            KeyPreview = true;
+            KeyDown += (sender, e) =>
+            {
+                if (e.Control && e.KeyCode == Keys.O)
+                {
+                    tbbOpen.PerformClick();
+                    e.SuppressKeyPress = true;
+                }
+                else if (e.Control && e.Shift && e.KeyCode == Keys.S)
+                {
+                    tbbSaveAs.PerformClick();
+                    e.SuppressKeyPress = true;
+                }
+                else if (e.Control && e.KeyCode == Keys.S)
+                {
+                    tbbSave.PerformClick();
+                    e.SuppressKeyPress = true;
+                }
+                else if (e.Control && e.KeyCode == Keys.W)
+                {
+                    tbbClose.PerformClick();
+                    e.SuppressKeyPress = true;
+                }
+            };
 
             if (musicBox != null)
             {
@@ -123,7 +168,7 @@ namespace CrashEdit.CE
         {
             tbb.Text = text;
             tbb.ImageKey = imageKey;
-            //tbb.ToolTipText = tooltip;
+            tbb.ToolTipText = tooltip;
             //tbb.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText;
             //tbb.TextImageRelation = TextImageRelation.ImageAboveText;
             tbb.DisplayStyle = ToolStripItemDisplayStyle.Text;
@@ -273,7 +318,9 @@ namespace CrashEdit.CE
             fraVABPrograms.Enabled =
             fraTones.Enabled =
             tbbSave.Enabled =
-            tbbClose.Enabled = true;
+            tbbSaveAs.Enabled =
+            tbbClose.Enabled =
+            tbdExport.Enabled = true;
             UpdateHeader();
         }
 
@@ -287,8 +334,8 @@ namespace CrashEdit.CE
                 {
                     CloseVAB();
                     fileName = dialog.FileName;
-                    byte[] file = File.ReadAllBytes(dialog.FileName);
-                    vab = VAB.Load(file);
+                    byte[] data = File.ReadAllBytes(dialog.FileName);
+                    vab = VAB.Load(data);
                     LoadVAB();
                     titleText = $"- {dialog.FileName}";
                     Text = "VAB Tool " + titleText;
@@ -305,15 +352,47 @@ namespace CrashEdit.CE
             }
             else
             {
-                using (SaveFileDialog dialog = new SaveFileDialog())
+                try
                 {
-                    dialog.Filter = FileFilters.VAB + "|" + FileFilters.Any;
-                    if (dialog.ShowDialog(this) == DialogResult.OK)
+                    byte[] file = vab.Save(vh);
+                    File.WriteAllBytes(fileName, file);
+
+                    tblSaved.Visible = true;
+                    timer.Stop();
+                    timer.Start();
+                }
+                catch
+                {
+                }
+            }
+        }
+
+        private void tbbSaveAs_Click(object sender, EventArgs e)
+        {
+            if (vab == null) return;
+            if (musicBox != null)
+            {
+                musicBox.UpdateVAB(vab.Save(vh), true);
+            }
+            else
+            {
+                try
+                {
+                    using (SaveFileDialog dialog = new SaveFileDialog())
                     {
-                        byte[] file = vab.Save(vh);
-                        File.WriteAllBytes(dialog.FileName, file);
-                        fileName = dialog.FileName;
+                        dialog.Filter = FileFilters.VAB;
+                        if (dialog.ShowDialog(this) == DialogResult.OK)
+                        {
+                            byte[] data = vab.Save(vh);
+                            File.WriteAllBytes(dialog.FileName, data);
+                            fileName = dialog.FileName;
+                            titleText = $"- {dialog.FileName}";
+                            Text = "VAB Tool " + titleText;
+                        }
                     }
+                }
+                catch
+                {
                 }
             }
         }
@@ -355,7 +434,12 @@ namespace CrashEdit.CE
             tblToneControls.Enabled =
             dgvTones.Enabled =
             tbbSave.Enabled =
-            tbbClose.Enabled = false;
+            tbbSaveAs.Enabled =
+            tbbClose.Enabled =
+            tbdExport.Enabled = false;
+
+            tblSaved.Visible = false;
+            timer.Stop();
 
             if (frmADSR != null && !frmADSR.IsDisposed)
             {
@@ -382,6 +466,62 @@ namespace CrashEdit.CE
                 CloseVAB();
                 titleText = "VAB Tool";
                 Text = titleText;
+            }
+        }
+
+        private void tbbExportSF2_Click(object sender, EventArgs e)
+        {
+            if (vab == null) return;
+            if (musicBox != null)
+            {
+                musicBox.UpdateVAB(vab.Save(vh), true);
+            }
+            else
+            {
+                try
+                {
+                    using (SaveFileDialog dialog = new SaveFileDialog())
+                    {
+                        dialog.Filter = FileFilters.SF2;
+                        if (dialog.ShowDialog(this) == DialogResult.OK)
+                        {
+                            byte[] data = vab.Save(vh);
+                            byte[] convdata = SF2Conv.ToSF2(VAB.Load(data));
+                            File.WriteAllBytes(dialog.FileName, convdata);
+                        }
+                    }
+                }
+                catch
+                {
+                }
+            }
+        }
+
+        private void tbbExportDLS_Click(object sender, EventArgs e)
+        {
+            if (vab == null) return;
+            if (musicBox != null)
+            {
+                musicBox.UpdateVAB(vab.Save(vh), true);
+            }
+            else
+            {
+                try
+                {
+                    using (SaveFileDialog dialog = new SaveFileDialog())
+                    {
+                        dialog.Filter = FileFilters.DLS;
+                        if (dialog.ShowDialog(this) == DialogResult.OK)
+                        {
+                            byte[] data = vab.Save(vh);
+                            byte[] convdata = VAB.Load(data).ToDLS().Save();
+                            File.WriteAllBytes(dialog.FileName, convdata);
+                        }
+                    }
+                }
+                catch
+                {
+                }
             }
         }
 
@@ -709,11 +849,9 @@ namespace CrashEdit.CE
             GetSelectedRow(dgvPrograms, out int rowIdx, out DataGridViewRow? selectedRow);
             if (selectedRow == null || Dirty) return;
 
-            dirty.Push(true);
             vh.Programs[programIndex].Volume = (byte)trkProgramVolume.Value;
             selectedRow.Cells[ColProgVolume].Value = trkProgramVolume.Value;
             UpdateProgramVolumeText();
-            dirty.Pop();
         }
 
         private void trkProgramPan_ValueChanged(object sender, EventArgs e)
@@ -721,11 +859,9 @@ namespace CrashEdit.CE
             GetSelectedRow(dgvPrograms, out int rowIdx, out DataGridViewRow? selectedRow);
             if (selectedRow == null || Dirty) return;
 
-            dirty.Push(true);
             vh.Programs[programIndex].Panning = (byte)trkProgramPan.Value;
             selectedRow.Cells[ColProgPan].Value = trkProgramPan.Value;
             UpdateProgramPanText();
-            dirty.Pop();
         }
 
         private void UpdateToneLabel(string tag)
@@ -769,7 +905,6 @@ namespace CrashEdit.CE
 
             if (sender is TrackBar trackBar && trackBar.Tag is string tag)
             {
-                dirty.Push(true);
                 switch (tag)
                 {
                     case "Volume":
@@ -829,7 +964,6 @@ namespace CrashEdit.CE
                 }
 
                 UpdateToneLabel(tag);
-                dirty.Pop();
             }
         }
 
@@ -1419,6 +1553,15 @@ namespace CrashEdit.CE
                     break;
             }
         }
+
+        public void UpdateVABHeaderVAGs(int ammount)
+        {
+            GetSelectedRow(dgvHeader, out int rowIdx, out DataGridViewRow? selectedRow);
+            if (selectedRow == null) return;
+
+            selectedRow.Cells[ColHeadVAGs].Value = Convert.ToInt32(selectedRow.Cells[ColHeadVAGs].Value) + ammount;
+            numVAG.Maximum = vh.Waves.Count;
+        }
     }
 
     public class VAGListForm : DarkForm
@@ -1641,8 +1784,9 @@ namespace CrashEdit.CE
                         {
                             vabTool.musicBox.UpdateVAB(vabTool.vab.Save(vabTool.vh), false);
                         }
-                        byte[] file = File.ReadAllBytes(filename);
-                        SampleSet wave = SampleSet.Load(file);
+                        byte[] data = File.ReadAllBytes(filename);
+                        byte[] vag = TrimVAGHeader(data);
+                        SampleSet wave = SampleSet.Load(vag);
                         int vagSize = wave.SampleLines.Count * 16;
                         if (vagSize > VABTool.MaxVBSize - vabTool.vh.VBSize * 16)
                         {
@@ -1657,9 +1801,28 @@ namespace CrashEdit.CE
                         int offset = Convert.ToInt32(dgvVAG.Rows[lastRow].Cells[1].Value) + Convert.ToInt32(dgvVAG.Rows[lastRow].Cells[2].Value);
                         dgvVAG.Rows.Add(vabTool.vab.Waves.Count, offset, vagSize, Path.GetFileName(filename));
                         UpdateInfo();
+                        vabTool.UpdateVABHeaderVAGs(1);
                     }
                 }
             }
+        }
+
+        private byte[] TrimVAGHeader(byte[] original)
+        {
+            if (original.Length >= 48)
+            {
+                // Check if the first 16 bytes are all 0.
+                if (!original.Take(16).All(b => b == 0))
+                {
+                    // If they are not all 0, treat the first 48 bytes as a header and remove them.
+                    byte[] trimmedData = original.Skip(48).ToArray();
+                    return trimmedData;
+                }
+                else
+                    return original;
+            }
+            else
+                throw new Exception("Invalid VAG length.");
         }
 
         private void cmdDelete_Click(object? sender, EventArgs e)
@@ -1673,6 +1836,7 @@ namespace CrashEdit.CE
             vabTool.vh.VBSize -= size / 16;
             dgvVAG.Rows.RemoveAt(lastRow);
             UpdateInfo();
+            vabTool.UpdateVABHeaderVAGs(-1);
         }
 
     }

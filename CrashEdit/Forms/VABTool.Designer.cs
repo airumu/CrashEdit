@@ -36,7 +36,10 @@ namespace CrashEdit.CE
             toolStrip = new ToolStrip();
             tbbOpen = new ToolStripButton();
             tbbSave = new ToolStripButton();
+            tbbSaveAs = new ToolStripButton();
             tbbClose = new ToolStripButton();
+            toolStripSeparator1 = new ToolStripSeparator();
+            tblSaved = new ToolStripLabel();
             dgvHeader = new DataGridView();
             fraVABHeader = new DarkGroupBox();
             trkMasterPan = new MetroSetTrackBar();
@@ -91,6 +94,10 @@ namespace CrashEdit.CE
             trkPBmax = new TrackBar();
             cmdAppendTone = new DarkButton();
             dgvTones = new DataGridView();
+            toolStripSeparator2 = new ToolStripSeparator();
+            tbdExport = new ToolStripDropDownButton();
+            tbbExportSF2 = new ToolStripMenuItem();
+            tbbExportDLS = new ToolStripMenuItem();
             toolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvHeader).BeginInit();
             fraVABHeader.SuspendLayout();
@@ -120,7 +127,7 @@ namespace CrashEdit.CE
             // 
             // toolStrip
             // 
-            toolStrip.Items.AddRange(new ToolStripItem[] { tbbOpen, tbbSave, tbbClose });
+            toolStrip.Items.AddRange(new ToolStripItem[] { tbbOpen, tbbSave, tbbSaveAs, tbbClose, toolStripSeparator1, tbdExport, toolStripSeparator2, tblSaved });
             toolStrip.Location = new Point(0, 0);
             toolStrip.Name = "toolStrip";
             toolStrip.Size = new Size(1168, 25);
@@ -147,6 +154,16 @@ namespace CrashEdit.CE
             tbbSave.Text = "Save";
             tbbSave.Click += tbbSave_Click;
             // 
+            // tbbSaveAs
+            // 
+            tbbSaveAs.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            tbbSaveAs.Image = (Image)resources.GetObject("tbbSaveAs.Image");
+            tbbSaveAs.ImageTransparentColor = Color.Magenta;
+            tbbSaveAs.Name = "tbbSaveAs";
+            tbbSaveAs.Size = new Size(23, 22);
+            tbbSaveAs.Text = "SaveAs";
+            tbbSaveAs.Click += tbbSaveAs_Click;
+            // 
             // tbbClose
             // 
             tbbClose.DisplayStyle = ToolStripItemDisplayStyle.Image;
@@ -156,6 +173,18 @@ namespace CrashEdit.CE
             tbbClose.Size = new Size(23, 22);
             tbbClose.Text = "Close";
             tbbClose.Click += tbbClose_Click;
+            // 
+            // toolStripSeparator1
+            // 
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new Size(6, 25);
+            // 
+            // tblSaved
+            // 
+            tblSaved.ForeColor = Color.MediumSpringGreen;
+            tblSaved.Name = "tblSaved";
+            tblSaved.Size = new Size(65, 22);
+            tblSaved.Text = "VAB Saved!";
             // 
             // dgvHeader
             // 
@@ -977,6 +1006,35 @@ namespace CrashEdit.CE
             dgvTones.CellValueChanged += dgvTones_CellValueChanged;
             dgvTones.SelectionChanged += dgvTones_SelectionChanged;
             // 
+            // toolStripSeparator2
+            // 
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new Size(6, 25);
+            // 
+            // tbdExport
+            // 
+            tbdExport.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            tbdExport.DropDownItems.AddRange(new ToolStripItem[] { tbbExportSF2, tbbExportDLS });
+            tbdExport.Image = (Image)resources.GetObject("tbdExport.Image");
+            tbdExport.ImageTransparentColor = Color.Magenta;
+            tbdExport.Name = "tbdExport";
+            tbdExport.Size = new Size(29, 22);
+            tbdExport.Text = "Export";
+            // 
+            // tbbExportSF2
+            // 
+            tbbExportSF2.Name = "tbbExportSF2";
+            tbbExportSF2.Size = new Size(180, 22);
+            tbbExportSF2.Text = "Export as SF2";
+            tbbExportSF2.Click += tbbExportSF2_Click;
+            // 
+            // tbbExportDLS
+            // 
+            tbbExportDLS.Name = "tbbExportDLS";
+            tbbExportDLS.Size = new Size(180, 22);
+            tbbExportDLS.Text = "Export as DLS";
+            tbbExportDLS.Click += tbbExportDLS_Click;
+            // 
             // VABTool
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -1091,5 +1149,12 @@ namespace CrashEdit.CE
         private DarkGroupBox fraPlay;
         private MetroSetTrackBar trkMasterVolume;
         private MetroSetTrackBar trkMasterPan;
+        private ToolStripButton tbbSaveAs;
+        private ToolStripLabel tblSaved;
+        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripSeparator toolStripSeparator2;
+        private ToolStripDropDownButton tbdExport;
+        private ToolStripMenuItem tbbExportSF2;
+        private ToolStripMenuItem tbbExportDLS;
     }
 }

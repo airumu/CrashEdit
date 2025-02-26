@@ -978,4 +978,7 @@ as Meters: {3:F3}m</value>
 [Ctrl + Shift + X] Cut selected words as EID
 [Ctrl + Shift + V] Paste to words as EID</value>
   </data>
+  <data name="Toolbar_SaveAs" xml:space="preserve">
+    <value>Save As</value>
+  </data>
 </root>

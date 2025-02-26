@@ -2236,6 +2236,15 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
+        ///   Save As に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string Toolbar_SaveAs {
+            get {
+                return ResourceManager.GetString("Toolbar_SaveAs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Undo {0} に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string Toolbar_UndoAction {
