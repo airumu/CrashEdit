@@ -1,11 +1,13 @@
 ﻿using System.Drawing.Drawing2D;
 using System.Globalization;
+using System.Text.RegularExpressions;
 using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 using MetroSet_UI.Controls;
 using NAudio.Wave;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using Timer = System.Windows.Forms.Timer;
 
 namespace CrashEdit.CE
@@ -35,6 +37,10 @@ namespace CrashEdit.CE
 
         private string fileName;
         public string titleText;
+
+        private DarkForm? frmExportOptions;
+        private string exportPath;
+        private bool exportWithNumber;
 
         private readonly int ColHeadVersion = 0;
         private readonly int ColHeadTotalSize = 1;
@@ -471,6 +477,37 @@ namespace CrashEdit.CE
             }
         }
 
+        public string GetUniqueFilePath(string extension)
+        {
+            string directory = Path.GetDirectoryName(exportPath);
+            string baseFileName = Path.GetFileNameWithoutExtension(exportPath);
+            // Trim "_??" from the file name.
+            Regex NumberSuffixRegex = new Regex(@"_(\d+)$");
+            baseFileName = NumberSuffixRegex.Replace(baseFileName, "");
+
+            string filePath = Path.Combine(directory, baseFileName + extension);
+            if (!File.Exists(filePath))
+            {
+                return filePath;
+            }
+
+            int counter = 1;
+            string newFilePath;
+            do
+            {
+                newFilePath = Path.Combine(directory, $"{baseFileName}_{counter:D2}{extension}");
+                counter++;
+            } while (File.Exists(newFilePath));
+
+            return newFilePath;
+        }
+
+        private byte[] SaveSF2()
+        {
+            byte[] data = vab.Save(vh);
+            return SF2Conv.ToSF2(VAB.Load(data));
+        }
+
         private void tbbExportSF2_Click(object sender, EventArgs e)
         {
             if (vab == null) return;
@@ -482,14 +519,19 @@ namespace CrashEdit.CE
             {
                 try
                 {
-                    using (SaveFileDialog dialog = new SaveFileDialog())
+                    if (!string.IsNullOrEmpty(exportPath))
                     {
-                        dialog.Filter = FileFilters.SF2;
-                        if (dialog.ShowDialog(this) == DialogResult.OK)
+                        File.WriteAllBytes(GetUniqueFilePath(".sf2"), SaveSF2());
+                    }
+                    else
+                    {
+                        using (SaveFileDialog dialog = new SaveFileDialog())
                         {
-                            byte[] data = vab.Save(vh);
-                            byte[] convdata = SF2Conv.ToSF2(VAB.Load(data));
-                            File.WriteAllBytes(dialog.FileName, convdata);
+                            dialog.Filter = FileFilters.SF2;
+                            if (dialog.ShowDialog(this) == DialogResult.OK)
+                            {
+                                File.WriteAllBytes(dialog.FileName, SaveSF2());
+                            }
                         }
                     }
                 }
@@ -497,6 +539,12 @@ namespace CrashEdit.CE
                 {
                 }
             }
+        }
+
+        private byte[] SaveDLS()
+        {
+            byte[] data = vab.Save(vh);
+            return VAB.Load(data).ToDLS().Save();
         }
 
         private void tbbExportDLS_Click(object sender, EventArgs e)
@@ -510,14 +558,19 @@ namespace CrashEdit.CE
             {
                 try
                 {
-                    using (SaveFileDialog dialog = new SaveFileDialog())
+                    if (!string.IsNullOrEmpty(exportPath))
                     {
-                        dialog.Filter = FileFilters.DLS;
-                        if (dialog.ShowDialog(this) == DialogResult.OK)
+                        File.WriteAllBytes(GetUniqueFilePath(".dls"), SaveDLS());
+                    }
+                    else
+                    {
+                        using (SaveFileDialog dialog = new SaveFileDialog())
                         {
-                            byte[] data = vab.Save(vh);
-                            byte[] convdata = VAB.Load(data).ToDLS().Save();
-                            File.WriteAllBytes(dialog.FileName, convdata);
+                            dialog.Filter = FileFilters.DLS;
+                            if (dialog.ShowDialog(this) == DialogResult.OK)
+                            {
+                                File.WriteAllBytes(dialog.FileName, SaveDLS());
+                            }
                         }
                     }
                 }
@@ -525,6 +578,107 @@ namespace CrashEdit.CE
                 {
                 }
             }
+        }
+
+        private void exportOptionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (frmExportOptions == null || frmExportOptions.IsDisposed)
+            {
+                frmExportOptions = new()
+                {
+                    Text = "Export Settings",
+                    AutoSize = true,
+                    AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                    MinimizeBox = false,
+                    MaximizeBox = false,
+                };
+                frmExportOptions.FormClosed += (s, e) => frmExportOptions = null;
+
+                FlowLayoutPanel flow = new()
+                {
+                    Dock = DockStyle.Fill,
+                    FlowDirection = FlowDirection.TopDown,
+                    AutoSize = true,
+                    WrapContents = false
+                };
+
+                Label lbExportTo = new()
+                {
+                    Text = "Export to:"
+                };
+
+                Label lbPath = new()
+                {
+                    Text = "",
+                    AutoSize = true,
+                    Margin = new Padding(3, 3, 3, 9)
+                };
+
+                DarkButton cmdSetPath = new()
+                {
+                    Text = "Browse..."
+                };
+                cmdSetPath.Click += (sender, e) =>
+                {
+                    using (SaveFileDialog dlgSavePath = new SaveFileDialog())
+                    {
+                        if (dlgSavePath.ShowDialog(this) != DialogResult.OK)
+                            return;
+
+                        exportPath = dlgSavePath.FileName;
+                        lbPath.Text = exportPath;
+                    }
+                };
+
+                CheckBox chkEnableExport = new()
+                {
+                    Text = "Enable one-click export",
+                    AutoSize = true,
+                    Margin = new Padding(3, 3, 3, 15)
+                };
+                chkEnableExport.CheckedChanged += (sender, e) =>
+                {
+                    lbExportTo.Enabled =
+                    cmdSetPath.Enabled =
+                    lbPath.Enabled =
+                    chkEnableExport.Checked;
+
+                    if (!chkEnableExport.Checked)
+                    {
+                        exportPath = string.Empty;
+                        lbPath.Text = exportPath;
+                    }
+                };
+
+                bool pathIsNull = string.IsNullOrEmpty(exportPath);
+                chkEnableExport.Checked =
+                lbExportTo.Enabled =
+                cmdSetPath.Enabled =
+                lbPath.Enabled = !pathIsNull;
+
+                lbPath.Text = exportPath;
+
+                flow.Controls.Add(chkEnableExport);
+                flow.Controls.Add(lbExportTo);
+                flow.Controls.Add(cmdSetPath);
+                flow.Controls.Add(lbPath);
+
+                frmExportOptions.Controls.Add(flow);
+
+                frmExportOptions.FormClosing += (sender, e) =>
+                {
+                    if (chkEnableExport.Checked && string.IsNullOrEmpty(exportPath))
+                    {
+                        DarkMessageBox.ShowError("Export path cannot be empty.", "VAB Tool");
+                        e.Cancel = true;
+                    }
+                };
+            }
+
+            if (!frmExportOptions.Visible)
+                frmExportOptions.ShowDialog();
+            else
+                frmExportOptions.Activate();
         }
 
         private void GetSelectedRow(DataGridView dataGridView, out int rowIdx, out DataGridViewRow? selectedRow)
