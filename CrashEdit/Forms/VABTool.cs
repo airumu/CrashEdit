@@ -1725,6 +1725,7 @@ namespace CrashEdit.CE
                 Height = 26,
                 Margin = new Padding(3, 24, 3, 12)
             };
+            cmdReplace.Click += new EventHandler(cmdReplace_Click);
 
             flpVAG.Controls.Add(lbVAG);
             flpVAG.Controls.Add(txtVAG);
@@ -1769,6 +1770,24 @@ namespace CrashEdit.CE
             lbVAGCount.Text = $"VAG Count: {vabTool.vab.Waves.Count}\nTotal VAG (VB) File Size: {vbSize}\nFree Space Left: {VABTool.MaxVBSize - vbSize}";
         }
 
+        private byte[] TrimVAGHeader(byte[] original)
+        {
+            if (original.Length >= 48)
+            {
+                // Check if the first 16 bytes are all 0.
+                if (!original.Take(16).All(b => b == 0))
+                {
+                    // If they are not all 0, treat the first 48 bytes as a header and remove them.
+                    byte[] trimmedData = original.Skip(48).ToArray();
+                    return trimmedData;
+                }
+                else
+                    return original;
+            }
+            else
+                throw new Exception("Invalid VAG length.");
+        }
+
         private void cmdAdd_Click(object? sender, EventArgs e)
         {
             using (OpenFileDialog dialog = new OpenFileDialog())
@@ -1777,7 +1796,6 @@ namespace CrashEdit.CE
                 dialog.Multiselect = true;
                 if (dialog.ShowDialog(this) == DialogResult.OK)
                 {
-                    List<byte[]> files = new();
                     foreach (string filename in dialog.FileNames)
                     {
                         if (vabTool.musicBox != null)
@@ -1807,22 +1825,59 @@ namespace CrashEdit.CE
             }
         }
 
-        private byte[] TrimVAGHeader(byte[] original)
+        private void cmdReplace_Click(object? sender, EventArgs e)
         {
-            if (original.Length >= 48)
+            if (dgvVAG.SelectedCells.Count == 0) return;
+            int rowIdx = dgvVAG.SelectedCells[0].RowIndex;
+            var row = dgvVAG.Rows[rowIdx];
+            int waveIdx = Convert.ToInt32(row.Cells[0].Value) - 1;
+
+            using (OpenFileDialog dialog = new OpenFileDialog())
             {
-                // Check if the first 16 bytes are all 0.
-                if (!original.Take(16).All(b => b == 0))
+                dialog.Filter = FileFilters.VAG + "|" + FileFilters.Any;
+                if (dialog.ShowDialog(this) == DialogResult.OK)
                 {
-                    // If they are not all 0, treat the first 48 bytes as a header and remove them.
-                    byte[] trimmedData = original.Skip(48).ToArray();
-                    return trimmedData;
+                    string filename = dialog.FileName;
+                    if (vabTool.musicBox != null)
+                    {
+                        vabTool.musicBox.UpdateVAB(vabTool.vab.Save(vabTool.vh), false);
+                    }
+                    byte[] data = File.ReadAllBytes(filename);
+                    byte[] vag = TrimVAGHeader(data);
+
+                    SampleSet wave = SampleSet.Load(vag);
+                    int vagSize = wave.SampleLines.Count * 16;
+
+                    SampleSet olsWave = vabTool.vab.Waves[waveIdx];
+                    int oldVagSize = olsWave.SampleLines.Count * 16;
+
+                    int waveDif = vagSize - oldVagSize;
+                    int lineDif = wave.SampleLines.Count - olsWave.SampleLines.Count;
+
+                    if (waveDif > VABTool.MaxVBSize - vabTool.vh.VBSize * 16)
+                    {
+                        DarkMessageBox.ShowError("Not enough free space left.", "VAB Tool");
+                        return;
+                    }
+                    vabTool.vab.Waves.RemoveAt(waveIdx);
+                    vabTool.vab.Waves.Insert(waveIdx, wave);
+                    vabTool.vh.Waves.RemoveAt(waveIdx);
+                    vabTool.vh.Waves.Insert(waveIdx, wave.SampleLines.Count);
+                    vabTool.vh.VBSize += lineDif;
+
+                    for (int i = rowIdx; i < dgvVAG.Rows.Count; i++)
+                    {
+                        int oldOffset = Convert.ToInt32(dgvVAG.Rows[i].Cells[1].Value);
+                        int oldSize = Convert.ToInt32(dgvVAG.Rows[i].Cells[2].Value);
+                        if (i == rowIdx)
+                            dgvVAG.Rows[i].Cells[2].Value = oldSize + waveDif;
+                        else
+                            dgvVAG.Rows[i].Cells[1].Value = oldOffset + waveDif;
+                    }
+                    UpdateInfo();
+                    vabTool.UpdateVABHeaderVAGs(1);
                 }
-                else
-                    return original;
             }
-            else
-                throw new Exception("Invalid VAG length.");
         }
 
         private void cmdDelete_Click(object? sender, EventArgs e)
