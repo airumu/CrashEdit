@@ -191,7 +191,7 @@ namespace CrashEdit.CE
             dgvPrograms.Columns.Add("Volume", "Volume");
             dgvPrograms.Columns.Add("Pan", "Pan");
 
-            dgvTones.Columns.Add("\u00A0\u00A0\u00A0\u00A0", "\u00A0\u00A0\u00A0\u00A0");
+            dgvTones.Columns.Add("", "");
             dgvTones.Columns.Add("Priority", "Priority");
             dgvTones.Columns.Add("Mode", "Mode");
             dgvTones.Columns.Add("Volume", "Volume");
@@ -210,21 +210,22 @@ namespace CrashEdit.CE
             dgvTones.Columns[ColToneADSR1].Visible = false;
             dgvTones.Columns[ColToneADSR2].Visible = false;
 
-            dgvHeader.ColumnHeadersHeight = 36;
-            dgvHeader.ScrollBars = ScrollBars.None;
             foreach (DataGridViewColumn column in dgvHeader.Columns)
             {
                 column.SortMode = DataGridViewColumnSortMode.NotSortable;
                 column.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
             }
-            dgvPrograms.ScrollBars = ScrollBars.Vertical;
+            dgvHeader.ColumnHeadersHeight = 36;
+            dgvHeader.ScrollBars = ScrollBars.None;
+
             foreach (DataGridViewColumn column in dgvPrograms.Columns)
             {
                 column.SortMode = DataGridViewColumnSortMode.NotSortable;
                 column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                 column.Width = 60;
             }
-            dgvTones.ScrollBars = ScrollBars.Vertical;
+            dgvPrograms.ScrollBars = ScrollBars.Vertical;
+
             foreach (DataGridViewColumn column in dgvTones.Columns)
             {
                 column.SortMode = DataGridViewColumnSortMode.NotSortable;
@@ -232,6 +233,7 @@ namespace CrashEdit.CE
                 column.Width = 60;
             }
             dgvTones.Columns[ColToneIndex].Width = 32;
+            dgvTones.ScrollBars = ScrollBars.Vertical;
         }
 
         private void UpdateHeader()
@@ -1048,7 +1050,7 @@ namespace CrashEdit.CE
             bytes[13] = 0;
             bytes[14] = 0xB1;
             bytes[15] = 0xB2;
-            BitConv.ToUInt16(bytes, 16, 0x80DF);
+            BitConv.ToUInt16(bytes, 16, 0x80FF);
             BitConv.ToUInt16(bytes, 18, 0x5FDF);
             BitConv.ToUInt16(bytes, 20, programindex);  // Parent program
             BitConv.ToInt16(bytes, 22, sample);         // Sample number
