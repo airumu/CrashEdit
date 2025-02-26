@@ -1,4 +1,5 @@
 using AltUI.Controls;
+using AltUI.Forms;
 using CrashEdit.Crash;
 using MetroSet_UI.Controls;
 using System.Media;
@@ -162,18 +163,17 @@ namespace CrashEdit.CE
             // Todo refresh sound chunk
             byte[] data = FileUtil.OpenFile(FileFilters.VAG + "|" + FileFilters.Any);
             if (data == null) return;
-
-            bool hasHeader = false;
-            for (int i = 12; i <= 15; i++)
+            if (data.Length < 48)
             {
-                if (data[i] != 0)
-                    hasHeader = true;
+                DarkMessageBox.ShowError("Invalid VAG length.", "Import VAG");
+                return;
             }
-            if (hasHeader)
+
+            // Check if the first 16 bytes are all 0.
+            if (!data.Take(16).All(b => b == 0))
             {
-                byte[] result = new byte[data.Length - 48];
-                Array.Copy(data, 48, result, 0, data.Length - 48);
-                data = result;
+                // If they are not all 0, treat the first 48 bytes as a header and remove them.
+                data = data.Skip(48).ToArray();
             }
             samples = SampleSet.Load(data);
             if (isSpeech)
