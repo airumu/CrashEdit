@@ -1,11 +1,5 @@
 ﻿namespace CrashEdit.Crash
 {
-    // Offset
-    // 0x00        Decoding coefficient
-    // 0x01        Loop flag
-    // 0x02        Sound Data
-
-    // Loop Flag
     // 0x04, 0x06  Set the beginning of the current block to the loop address    
     // 0x03        Jump to the loop address after playing the current block
     // 0x07        The combination of the above two, play the current block endlessly
