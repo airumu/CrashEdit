@@ -1,7 +1,5 @@
-using CrashEdit.Crash;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Xml;
 
 namespace CrashEdit.CE
 {

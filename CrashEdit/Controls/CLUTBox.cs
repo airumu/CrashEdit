@@ -1,5 +1,4 @@
 ﻿using System.Collections.Concurrent;
-using System.Windows.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 using MetroSet_UI.Controls;

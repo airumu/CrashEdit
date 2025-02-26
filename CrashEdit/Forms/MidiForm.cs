@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Text.RegularExpressions;
 using AltUI.Forms;
-using CrashEdit.CE.Forms;
 using CrashEdit.Crash;
 using M;
 using NAudio.Wave;

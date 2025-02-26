@@ -1,12 +1,8 @@
 ﻿using AltUI.Controls;
 using AltUI.Forms;
-using CrashEdit.CE.Controls;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
-using System.Drawing;
 using System.Drawing.Imaging;
-using System.Text;
-using System.Windows.Forms;
 
 namespace CrashEdit.CE
 {

@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using CrashEdit.CE.Properties;
 
 namespace CrashEdit.CE
 {

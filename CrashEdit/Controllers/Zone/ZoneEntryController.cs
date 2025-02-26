@@ -1,5 +1,4 @@
 using AltUI.Forms;
-using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 
 namespace CrashEdit.CE

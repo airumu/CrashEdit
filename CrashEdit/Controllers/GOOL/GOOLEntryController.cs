@@ -1,6 +1,5 @@
 using CrashEdit.Crash;
 using CrashEdit.Crash.GOOLIns;
-using MetroSet_UI.Controls;
 
 namespace CrashEdit.CE
 {

@@ -2,7 +2,6 @@
 using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.Crash;
-using MetroSet_UI.Controls;
 
 namespace CrashEdit.CE
 {

@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography;
-using CrashEdit.CE;
+﻿using CrashEdit.CE;
 using CrashEdit.Crash;
 using OpenTK.Mathematics;
 

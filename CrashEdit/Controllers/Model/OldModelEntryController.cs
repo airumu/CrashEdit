@@ -1,4 +1,3 @@
-using CrashEdit.CE.Controls;
 using CrashEdit.Crash;
 
 namespace CrashEdit.CE

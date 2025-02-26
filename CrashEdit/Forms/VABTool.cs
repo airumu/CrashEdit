@@ -7,7 +7,6 @@ using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 using MetroSet_UI.Controls;
 using NAudio.Wave;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using Timer = System.Windows.Forms.Timer;
 
 namespace CrashEdit.CE

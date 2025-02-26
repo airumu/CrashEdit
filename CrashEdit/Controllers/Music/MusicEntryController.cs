@@ -1,4 +1,3 @@
-using AltUI.Forms;
 using CrashEdit.Crash;
 
 namespace CrashEdit.CE

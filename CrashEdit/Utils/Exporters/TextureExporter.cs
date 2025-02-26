@@ -1,6 +1,4 @@
 ﻿using CrashEdit.CE;
-using CrashEdit.Crash;
-using OpenTK.Mathematics;
 
 namespace CrashEdit.Exporters
 {
