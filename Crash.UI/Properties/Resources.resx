@@ -370,7 +370,7 @@
     <value>Analyze level</value>
   </data>
   <data name="NSFController_AcExportScenery" xml:space="preserve">
-    <value>Export all scenery as OBJ</value>
+    <value>Export All Scenery as OBJ</value>
   </data>
   <data name="AnimationEntryController_AcExportAsOBJ" xml:space="preserve">
     <value>Export as Wavefront OBJ</value>
