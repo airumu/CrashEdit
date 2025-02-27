@@ -451,6 +451,7 @@ namespace CrashEdit.CE.Controls
             dgvStructs.Name = "dgvStructs";
             dgvStructs.RowHeadersWidth = 24;
             dgvStructs.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dgvStructs.ShowCellToolTips = false;
             dgvStructs.Size = new Size(642, 347);
             dgvStructs.TabIndex = 0;
             dgvStructs.CellBeginEdit += dgvStructs_CellBeginEdit;
@@ -470,6 +471,7 @@ namespace CrashEdit.CE.Controls
             dgvPolygons.Name = "dgvPolygons";
             dgvPolygons.RowHeadersWidth = 24;
             dgvPolygons.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dgvPolygons.ShowCellToolTips = false;
             dgvPolygons.Size = new Size(642, 347);
             dgvPolygons.TabIndex = 0;
             dgvPolygons.CellParsing += dgv_CellParsing;
@@ -1052,6 +1054,7 @@ namespace CrashEdit.CE.Controls
             dgvTextures.RowHeadersWidth = 24;
             dgvTextures.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dgvTextures.ScrollBars = ScrollBars.Vertical;
+            dgvTextures.ShowCellToolTips = false;
             dgvTextures.Size = new Size(524, 372);
             dgvTextures.TabIndex = 0;
             dgvTextures.CellEndEdit += dgvTextures_CellEndEdit;
@@ -1095,6 +1098,7 @@ namespace CrashEdit.CE.Controls
             dgvExtendedTextures.RowHeadersWidth = 24;
             dgvExtendedTextures.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dgvExtendedTextures.ScrollBars = ScrollBars.Vertical;
+            dgvExtendedTextures.ShowCellToolTips = false;
             dgvExtendedTextures.Size = new Size(712, 391);
             dgvExtendedTextures.TabIndex = 0;
             dgvExtendedTextures.CellBeginEdit += dgvExtendedTextures_CellBeginEdit;
@@ -1126,6 +1130,7 @@ namespace CrashEdit.CE.Controls
             dgvPositions.Name = "dgvPositions";
             dgvPositions.RowHeadersWidth = 24;
             dgvPositions.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dgvPositions.ShowCellToolTips = false;
             dgvPositions.Size = new Size(377, 624);
             dgvPositions.TabIndex = 0;
             dgvPositions.CellBeginEdit += dgvPositions_CellBeginEdit;

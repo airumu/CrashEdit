@@ -180,6 +180,7 @@ namespace CrashEdit.CE
             dgvTexture.Name = "dgvTexture";
             dgvTexture.RowHeadersWidth = 24;
             dgvTexture.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dgvTexture.ShowCellToolTips = false;
             dgvTexture.Size = new Size(446, 403);
             dgvTexture.TabIndex = 0;
             dgvTexture.Visible = false;
@@ -202,6 +203,7 @@ namespace CrashEdit.CE
             dgvFrameGroup.Name = "dgvFrameGroup";
             dgvFrameGroup.RowHeadersWidth = 24;
             dgvFrameGroup.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dgvFrameGroup.ShowCellToolTips = false;
             dgvFrameGroup.Size = new Size(338, 403);
             dgvFrameGroup.TabIndex = 0;
             dgvFrameGroup.CellBeginEdit += dgvFrameGroup_CellBeginEdit;

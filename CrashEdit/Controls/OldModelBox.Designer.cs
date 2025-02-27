@@ -268,6 +268,7 @@ namespace CrashEdit.CE
             dgvPolygons.Name = "dgvPolygons";
             dgvPolygons.RowHeadersWidth = 24;
             dgvPolygons.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dgvPolygons.ShowCellToolTips = false;
             dgvPolygons.Size = new Size(597, 425);
             dgvPolygons.TabIndex = 0;
             dgvPolygons.CellValueChanged += dgvPolygons_CellValueChanged;
@@ -593,6 +594,7 @@ namespace CrashEdit.CE
             dgvTextures.RowHeadersWidth = 24;
             dgvTextures.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dgvTextures.ScrollBars = ScrollBars.Vertical;
+            dgvTextures.ShowCellToolTips = false;
             dgvTextures.Size = new Size(556, 372);
             dgvTextures.TabIndex = 0;
             dgvTextures.CellBeginEdit += dgvTextures_CellBeginEdit;

@@ -206,26 +206,26 @@ namespace CrashEdit.CE
             // tbbExportSF2
             // 
             tbbExportSF2.Name = "tbbExportSF2";
-            tbbExportSF2.Size = new Size(180, 22);
+            tbbExportSF2.Size = new Size(153, 22);
             tbbExportSF2.Text = "Export as SF2";
             tbbExportSF2.Click += tbbExportSF2_Click;
             // 
             // tbbExportDLS
             // 
             tbbExportDLS.Name = "tbbExportDLS";
-            tbbExportDLS.Size = new Size(180, 22);
+            tbbExportDLS.Size = new Size(153, 22);
             tbbExportDLS.Text = "Export as DLS";
             tbbExportDLS.Click += tbbExportDLS_Click;
             // 
             // toolStripMenuItem1
             // 
             toolStripMenuItem1.Name = "toolStripMenuItem1";
-            toolStripMenuItem1.Size = new Size(177, 6);
+            toolStripMenuItem1.Size = new Size(150, 6);
             // 
             // tbbExportSettings
             // 
             tbbExportSettings.Name = "tbbExportSettings";
-            tbbExportSettings.Size = new Size(180, 22);
+            tbbExportSettings.Size = new Size(153, 22);
             tbbExportSettings.Text = "Export Settings";
             tbbExportSettings.Click += exportOptionsToolStripMenuItem_Click;
             // 
@@ -257,6 +257,7 @@ namespace CrashEdit.CE
             dgvHeader.RowHeadersWidth = 24;
             dgvHeader.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dgvHeader.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            dgvHeader.ShowCellToolTips = false;
             dgvHeader.Size = new Size(446, 60);
             dgvHeader.TabIndex = 1;
             // 
@@ -524,6 +525,7 @@ namespace CrashEdit.CE
             dgvPrograms.RowHeadersWidth = 24;
             dgvPrograms.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dgvPrograms.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvPrograms.ShowCellToolTips = false;
             dgvPrograms.Size = new Size(290, 456);
             dgvPrograms.TabIndex = 1;
             dgvPrograms.CellBeginEdit += dgvPrograms_CellBeginEdit;
@@ -1054,6 +1056,7 @@ namespace CrashEdit.CE
             dgvTones.RowHeadersWidth = 24;
             dgvTones.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dgvTones.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvTones.ShowCellToolTips = false;
             dgvTones.Size = new Size(591, 408);
             dgvTones.TabIndex = 1;
             dgvTones.CellBeginEdit += dgvTones_CellBeginEdit;

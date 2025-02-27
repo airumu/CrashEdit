@@ -1766,7 +1766,8 @@ namespace CrashEdit.CE
                 ReadOnly = true,
                 RowHeadersWidth = 24,
                 RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing,
-                SelectionMode = DataGridViewSelectionMode.FullRowSelect
+                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
+                ShowCellToolTips = false
             };
             DoubleBufferedDataGridView.Initialize(dgvVAG);
             dgvVAG.Columns.Add("Number", "Number");
