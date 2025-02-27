@@ -42,6 +42,7 @@ namespace CrashEdit.CE
             txtMusic = new AltUI.Controls.DarkTextBox();
             lblEIDError = new Label();
             fraSpecialLoadList = new AltUI.Controls.DarkGroupBox();
+            pictureBox1 = new PictureBox();
             lblEIDErrorSP = new Label();
             cmdRemoveSP = new AltUI.Controls.DarkButton();
             txtSPLoadList = new AltUI.Controls.DarkTextBox();
@@ -57,6 +58,7 @@ namespace CrashEdit.CE
             ((System.ComponentModel.ISupportInitialize)dgvWorlds).BeginInit();
             fraMusic.SuspendLayout();
             fraSpecialLoadList.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             fraZoneFlags.SuspendLayout();
             pnHeader.SuspendLayout();
             pnMisc.SuspendLayout();
@@ -218,6 +220,7 @@ namespace CrashEdit.CE
             // 
             // fraSpecialLoadList
             // 
+            fraSpecialLoadList.Controls.Add(pictureBox1);
             fraSpecialLoadList.Controls.Add(lblEIDErrorSP);
             fraSpecialLoadList.Controls.Add(cmdRemoveSP);
             fraSpecialLoadList.Controls.Add(txtSPLoadList);
@@ -229,6 +232,14 @@ namespace CrashEdit.CE
             fraSpecialLoadList.TabIndex = 4;
             fraSpecialLoadList.TabStop = false;
             fraSpecialLoadList.Text = "Special Load List";
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.Location = new Point(106, 3);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(16, 16);
+            pictureBox1.TabIndex = 6;
+            pictureBox1.TabStop = false;
             // 
             // lblEIDErrorSP
             // 
@@ -361,6 +372,7 @@ namespace CrashEdit.CE
             fraMusic.PerformLayout();
             fraSpecialLoadList.ResumeLayout(false);
             fraSpecialLoadList.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             fraZoneFlags.ResumeLayout(false);
             fraZoneFlags.PerformLayout();
             pnHeader.ResumeLayout(false);
@@ -392,5 +404,6 @@ namespace CrashEdit.CE
         private AltUI.Controls.DarkButton cmdAppendZone;
         private AltUI.Controls.DarkButton cmdRemoveWorld;
         private AltUI.Controls.DarkButton cmdAppendWorld;
+        private PictureBox pictureBox1;
     }
 }

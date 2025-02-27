@@ -22,6 +22,7 @@ namespace CrashEdit.CE
         private int spLoadListCount;
         private BindingList<string> spLoadList;
         private DarkToolTip tipSPLoadList;
+        private DarkToolTip tipSP;
 
         private int maxZoneCount;
         private bool firstInit = true;
@@ -56,6 +57,10 @@ namespace CrashEdit.CE
 
             tipSPLoadList = new DarkToolTip();
             tipSPLoadList.SetToolTip(lbSPLoadList, Resources.EntityBox_tipLists);
+
+            pictureBox1.Image = Embeds.GetIcon("Hint")!.ToBitmap();
+            tipSP = new DarkToolTip();
+            tipSP.SetToolTip(pictureBox1, "Special load lists are for rebuilding;\nthey manually override dependencies to load specific entries.");
 
             HeaderInit();
             maxZoneCount = header.IsNew ? 16 : 8;
