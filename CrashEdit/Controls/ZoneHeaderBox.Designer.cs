@@ -32,8 +32,12 @@ namespace CrashEdit.CE
         {
             dgvZones = new DataGridView();
             fraZones = new AltUI.Controls.DarkGroupBox();
+            cmdRemoveZone = new AltUI.Controls.DarkButton();
+            cmdAppendZone = new AltUI.Controls.DarkButton();
             fraWorlds = new AltUI.Controls.DarkGroupBox();
             dgvWorlds = new DataGridView();
+            cmdRemoveWorld = new AltUI.Controls.DarkButton();
+            cmdAppendWorld = new AltUI.Controls.DarkButton();
             fraMusic = new AltUI.Controls.DarkGroupBox();
             txtMusic = new AltUI.Controls.DarkTextBox();
             lblEIDError = new Label();
@@ -46,6 +50,7 @@ namespace CrashEdit.CE
             fraZoneFlags = new AltUI.Controls.DarkGroupBox();
             txtZoneFlags = new AltUI.Controls.DarkTextBox();
             pnHeader = new Panel();
+            pnMisc = new Panel();
             ((System.ComponentModel.ISupportInitialize)dgvZones).BeginInit();
             fraZones.SuspendLayout();
             fraWorlds.SuspendLayout();
@@ -54,6 +59,7 @@ namespace CrashEdit.CE
             fraSpecialLoadList.SuspendLayout();
             fraZoneFlags.SuspendLayout();
             pnHeader.SuspendLayout();
+            pnMisc.SuspendLayout();
             SuspendLayout();
             // 
             // dgvZones
@@ -80,19 +86,51 @@ namespace CrashEdit.CE
             // fraZones
             // 
             fraZones.Controls.Add(dgvZones);
+            fraZones.Controls.Add(cmdRemoveZone);
+            fraZones.Controls.Add(cmdAppendZone);
             fraZones.Location = new Point(3, 3);
             fraZones.Name = "fraZones";
-            fraZones.Size = new Size(216, 248);
+            fraZones.Size = new Size(216, 284);
             fraZones.TabIndex = 1;
             fraZones.TabStop = false;
             fraZones.Text = "Zones";
             // 
+            // cmdRemoveZone
+            // 
+            cmdRemoveZone.BorderColour = Color.Empty;
+            cmdRemoveZone.CustomColour = false;
+            cmdRemoveZone.FlatBottom = false;
+            cmdRemoveZone.FlatTop = false;
+            cmdRemoveZone.Location = new Point(92, 248);
+            cmdRemoveZone.Name = "cmdRemoveZone";
+            cmdRemoveZone.Padding = new Padding(1, 5, 1, 5);
+            cmdRemoveZone.Size = new Size(80, 28);
+            cmdRemoveZone.TabIndex = 2;
+            cmdRemoveZone.Text = "Remove Last";
+            cmdRemoveZone.Click += cmdRemoveZone_Click;
+            // 
+            // cmdAppendZone
+            // 
+            cmdAppendZone.BorderColour = Color.Empty;
+            cmdAppendZone.CustomColour = false;
+            cmdAppendZone.FlatBottom = false;
+            cmdAppendZone.FlatTop = false;
+            cmdAppendZone.Location = new Point(6, 248);
+            cmdAppendZone.Name = "cmdAppendZone";
+            cmdAppendZone.Padding = new Padding(5);
+            cmdAppendZone.Size = new Size(80, 28);
+            cmdAppendZone.TabIndex = 2;
+            cmdAppendZone.Text = "Append";
+            cmdAppendZone.Click += cmdAppendZone_Click;
+            // 
             // fraWorlds
             // 
             fraWorlds.Controls.Add(dgvWorlds);
+            fraWorlds.Controls.Add(cmdRemoveWorld);
+            fraWorlds.Controls.Add(cmdAppendWorld);
             fraWorlds.Location = new Point(225, 3);
             fraWorlds.Name = "fraWorlds";
-            fraWorlds.Size = new Size(156, 248);
+            fraWorlds.Size = new Size(178, 284);
             fraWorlds.TabIndex = 2;
             fraWorlds.TabStop = false;
             fraWorlds.Text = "Worlds";
@@ -113,13 +151,42 @@ namespace CrashEdit.CE
             dgvWorlds.Size = new Size(144, 220);
             dgvWorlds.TabIndex = 0;
             dgvWorlds.CellBeginEdit += dgv_CellBeginEdit;
+            dgvWorlds.CellValidating += dgvWorlds_CellValidating;
             dgvWorlds.CellValueChanged += dgvWorlds_CellValueChanged;
+            // 
+            // cmdRemoveWorld
+            // 
+            cmdRemoveWorld.BorderColour = Color.Empty;
+            cmdRemoveWorld.CustomColour = false;
+            cmdRemoveWorld.FlatBottom = false;
+            cmdRemoveWorld.FlatTop = false;
+            cmdRemoveWorld.Location = new Point(92, 248);
+            cmdRemoveWorld.Name = "cmdRemoveWorld";
+            cmdRemoveWorld.Padding = new Padding(1, 5, 1, 5);
+            cmdRemoveWorld.Size = new Size(80, 28);
+            cmdRemoveWorld.TabIndex = 2;
+            cmdRemoveWorld.Text = "Remove Last";
+            cmdRemoveWorld.Click += cmdRemoveWorld_Click;
+            // 
+            // cmdAppendWorld
+            // 
+            cmdAppendWorld.BorderColour = Color.Empty;
+            cmdAppendWorld.CustomColour = false;
+            cmdAppendWorld.FlatBottom = false;
+            cmdAppendWorld.FlatTop = false;
+            cmdAppendWorld.Location = new Point(6, 248);
+            cmdAppendWorld.Name = "cmdAppendWorld";
+            cmdAppendWorld.Padding = new Padding(5);
+            cmdAppendWorld.Size = new Size(80, 28);
+            cmdAppendWorld.TabIndex = 2;
+            cmdAppendWorld.Text = "Append";
+            cmdAppendWorld.Click += cmdAppendWorld_Click;
             // 
             // fraMusic
             // 
             fraMusic.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             fraMusic.Controls.Add(txtMusic);
-            fraMusic.Location = new Point(3, 257);
+            fraMusic.Location = new Point(3, 3);
             fraMusic.Name = "fraMusic";
             fraMusic.Size = new Size(84, 52);
             fraMusic.TabIndex = 3;
@@ -142,7 +209,7 @@ namespace CrashEdit.CE
             // 
             lblEIDError.AutoSize = true;
             lblEIDError.ForeColor = Color.Red;
-            lblEIDError.Location = new Point(9, 317);
+            lblEIDError.Location = new Point(9, 63);
             lblEIDError.Name = "lblEIDError";
             lblEIDError.Size = new Size(66, 15);
             lblEIDError.TabIndex = 1;
@@ -156,9 +223,9 @@ namespace CrashEdit.CE
             fraSpecialLoadList.Controls.Add(txtSPLoadList);
             fraSpecialLoadList.Controls.Add(lbSPLoadList);
             fraSpecialLoadList.Controls.Add(cmdAppendSP);
-            fraSpecialLoadList.Location = new Point(225, 257);
+            fraSpecialLoadList.Location = new Point(225, 293);
             fraSpecialLoadList.Name = "fraSpecialLoadList";
-            fraSpecialLoadList.Size = new Size(156, 291);
+            fraSpecialLoadList.Size = new Size(156, 296);
             fraSpecialLoadList.TabIndex = 4;
             fraSpecialLoadList.TabStop = false;
             fraSpecialLoadList.Text = "Special Load List";
@@ -183,7 +250,7 @@ namespace CrashEdit.CE
             cmdRemoveSP.Location = new Point(82, 263);
             cmdRemoveSP.Name = "cmdRemoveSP";
             cmdRemoveSP.Padding = new Padding(5);
-            cmdRemoveSP.Size = new Size(68, 23);
+            cmdRemoveSP.Size = new Size(68, 28);
             cmdRemoveSP.TabIndex = 2;
             cmdRemoveSP.Text = "Remove";
             cmdRemoveSP.Click += cmdRemoveSP_Click;
@@ -199,6 +266,7 @@ namespace CrashEdit.CE
             txtSPLoadList.Size = new Size(144, 23);
             txtSPLoadList.TabIndex = 1;
             txtSPLoadList.TextChanged += txtSPLoadList_TextChanged;
+            txtSPLoadList.KeyDown += txtSPLoadList_KeyDown;
             // 
             // lbSPLoadList
             // 
@@ -211,8 +279,8 @@ namespace CrashEdit.CE
             lbSPLoadList.Size = new Size(144, 197);
             lbSPLoadList.TabIndex = 0;
             lbSPLoadList.SelectedIndexChanged += lbSPLoadList_SelectedIndexChanged;
-            lbSPLoadList.KeyDown += lbSPLoadList_KeyDown;
             lbSPLoadList.DoubleClick += lbSPLoadList_DoubleClick;
+            lbSPLoadList.KeyDown += lbSPLoadList_KeyDown;
             // 
             // cmdAppendSP
             // 
@@ -223,7 +291,7 @@ namespace CrashEdit.CE
             cmdAppendSP.Location = new Point(6, 263);
             cmdAppendSP.Name = "cmdAppendSP";
             cmdAppendSP.Padding = new Padding(5);
-            cmdAppendSP.Size = new Size(68, 23);
+            cmdAppendSP.Size = new Size(68, 28);
             cmdAppendSP.TabIndex = 2;
             cmdAppendSP.Text = "Append";
             cmdAppendSP.Click += cmdAppendSP_Click;
@@ -232,7 +300,7 @@ namespace CrashEdit.CE
             // 
             fraZoneFlags.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             fraZoneFlags.Controls.Add(txtZoneFlags);
-            fraZoneFlags.Location = new Point(93, 257);
+            fraZoneFlags.Location = new Point(93, 3);
             fraZoneFlags.Name = "fraZoneFlags";
             fraZoneFlags.Size = new Size(84, 52);
             fraZoneFlags.TabIndex = 3;
@@ -256,17 +324,25 @@ namespace CrashEdit.CE
             // pnHeader
             // 
             pnHeader.BackColor = Color.Transparent;
+            pnHeader.Controls.Add(pnMisc);
             pnHeader.Controls.Add(fraZones);
-            pnHeader.Controls.Add(lblEIDError);
             pnHeader.Controls.Add(fraWorlds);
             pnHeader.Controls.Add(fraSpecialLoadList);
-            pnHeader.Controls.Add(fraMusic);
-            pnHeader.Controls.Add(fraZoneFlags);
             pnHeader.Dock = DockStyle.Fill;
             pnHeader.Location = new Point(0, 0);
             pnHeader.Name = "pnHeader";
             pnHeader.Size = new Size(573, 652);
             pnHeader.TabIndex = 5;
+            // 
+            // pnMisc
+            // 
+            pnMisc.Controls.Add(fraMusic);
+            pnMisc.Controls.Add(fraZoneFlags);
+            pnMisc.Controls.Add(lblEIDError);
+            pnMisc.Location = new Point(3, 293);
+            pnMisc.Name = "pnMisc";
+            pnMisc.Size = new Size(216, 296);
+            pnMisc.TabIndex = 5;
             // 
             // ZoneHeaderBox
             // 
@@ -288,7 +364,8 @@ namespace CrashEdit.CE
             fraZoneFlags.ResumeLayout(false);
             fraZoneFlags.PerformLayout();
             pnHeader.ResumeLayout(false);
-            pnHeader.PerformLayout();
+            pnMisc.ResumeLayout(false);
+            pnMisc.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -310,5 +387,10 @@ namespace CrashEdit.CE
         private AltUI.Controls.DarkGroupBox fraZoneFlags;
         private AltUI.Controls.DarkTextBox txtZoneFlags;
         private Panel pnHeader;
+        private Panel pnMisc;
+        private AltUI.Controls.DarkButton cmdRemoveZone;
+        private AltUI.Controls.DarkButton cmdAppendZone;
+        private AltUI.Controls.DarkButton cmdRemoveWorld;
+        private AltUI.Controls.DarkButton cmdAppendWorld;
     }
 }

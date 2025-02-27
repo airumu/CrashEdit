@@ -41,7 +41,7 @@ namespace CrashEdit.CE
 
             ContextMenuStrip contextMenu = new ContextMenuStrip();
             ToolStripMenuItem appendRowItem = new ToolStripMenuItem("Append Row");
-            ToolStripMenuItem deleteRowItem = new ToolStripMenuItem("Delete Last Row");
+            ToolStripMenuItem deleteRowItem = new ToolStripMenuItem("Remove Last Row");
             appendRowItem.Click += AppendRowItem_Click;
             deleteRowItem.Click += DeleteRowItem_Click;
             contextMenu.Items.Add(appendRowItem);
@@ -50,6 +50,9 @@ namespace CrashEdit.CE
             dgvWorlds.ContextMenuStrip = contextMenu;
             dgvZones.CellMouseDown += DataGridView_CellMouseDown;
             dgvWorlds.CellMouseDown += DataGridView_CellMouseDown;
+
+            dgvZones.ShowCellToolTips = false;
+            dgvWorlds.ShowCellToolTips = false;
 
             tipSPLoadList = new DarkToolTip();
             tipSPLoadList.SetToolTip(lbSPLoadList, Resources.EntityBox_tipLists);
@@ -139,6 +142,7 @@ namespace CrashEdit.CE
                     dgvZones.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
                     column.Width = 60;
                 }
+                dgvZones.Columns[0].DefaultCellStyle.ForeColor = Color.Gray;
             }
 
             dgvZones.Rows.Clear();
@@ -160,6 +164,7 @@ namespace CrashEdit.CE
                     dgvWorlds.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
                     column.Width = 60;
                 }
+                dgvWorlds.Columns[0].DefaultCellStyle.ForeColor = Color.Gray;
             }
 
             dgvWorlds.Rows.Clear();
@@ -197,7 +202,10 @@ namespace CrashEdit.CE
             if (spLoadListCount >= 39)
                 cmdAppendSP.Enabled = false;
             if (spLoadListCount == 0)
+            {
                 cmdRemoveSP.Enabled = false;
+                txtSPLoadList.Enabled = false;
+            }
         }
 
         private void DataGridView_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
@@ -300,7 +308,6 @@ namespace CrashEdit.CE
         {
             if (e.ColumnIndex == 0)
             {
-                DarkMessageBox.ShowError("This cell cannot be edited.", Resources.Title_Error);
                 e.Cancel = true;
             }
         }
@@ -315,7 +322,6 @@ namespace CrashEdit.CE
                 if (eid != string.Empty)
                 {
                     DarkMessageBox.ShowError("Please enter a valid EID.", Resources.Title_InputError);
-                    dgvZones.CancelEdit();
                     e.Cancel = true;
                 }
             }
@@ -324,7 +330,6 @@ namespace CrashEdit.CE
                 if (!Regex.IsMatch(inputValue, @"\A\b[0-9a-fA-F]+\b\Z"))
                 {
                     DarkMessageBox.ShowError("Please enter a valid hexadecimal value.", Resources.Title_InputError);
-                    dgvZones.CancelEdit();
                     e.Cancel = true;
                 }
             }
@@ -367,6 +372,21 @@ namespace CrashEdit.CE
             }
         }
 
+        private void dgvWorlds_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            string inputValue = e.FormattedValue.ToString();
+
+            if (e.ColumnIndex == 1)
+            {
+                string eid = Entry.CheckEIDErrors(inputValue, true);
+                if (eid != string.Empty)
+                {
+                    DarkMessageBox.ShowError("Please enter a valid EID.", Resources.Title_InputError);
+                    e.Cancel = true;
+                }
+            }
+        }
+
         private void dgvWorlds_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             var cellValue = dgvWorlds.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
@@ -401,15 +421,22 @@ namespace CrashEdit.CE
             TextBox textBox = sender as TextBox;
             if (textBox != null)
             {
-                string originalText = textBox.Text;
-                string validText = Regex.Replace(originalText, "[^0-9A-Fa-f]", "");
-                if (originalText != validText)
+                if (!string.IsNullOrEmpty(textBox.Text))
                 {
-                    int cursorPosition = textBox.SelectionStart - (originalText.Length - validText.Length);
-                    textBox.Text = validText;
-                    textBox.SelectionStart = Math.Max(0, cursorPosition);
+                    string originalText = textBox.Text;
+                    string validText = Regex.Replace(originalText, "[^0-9A-Fa-f]", "");
+                    if (originalText != validText)
+                    {
+                        int cursorPosition = textBox.SelectionStart - (originalText.Length - validText.Length);
+                        textBox.Text = validText;
+                        textBox.SelectionStart = Math.Max(0, cursorPosition);
+                    }
+                    header.ZoneFlags = Convert.ToInt32(validText, 16);
                 }
-                header.ZoneFlags = Convert.ToInt32(validText, 16);
+                else
+                {
+                    header.ZoneFlags = 0;
+                }
             }
         }
 
@@ -467,6 +494,7 @@ namespace CrashEdit.CE
                 cmdAppendSP.Enabled = false;
             }
             cmdRemoveSP.Enabled = true;
+            txtSPLoadList.Enabled = true;
 
             dirty.Pop();
         }
@@ -496,6 +524,7 @@ namespace CrashEdit.CE
             if (spLoadListCount == 0)
             {
                 cmdRemoveSP.Enabled = false;
+                txtSPLoadList.Enabled = false;
             }
             cmdAppendSP.Enabled = true;
 
@@ -536,11 +565,17 @@ namespace CrashEdit.CE
                     UpdateSPLoadListsCount();
                     cmdAppendSP.Enabled = true;
                     cmdRemoveSP.Enabled = false;
+                    txtSPLoadList.Enabled = false;
                 }
             }
             // paste list
             else if (e.KeyCode == Keys.V && (e.Modifiers & Keys.Control) == Keys.Control && (e.Modifiers & Keys.Shift) == Keys.Shift)
             {
+                bool wasEmpty = false;
+                if (spLoadList.Count == 0)
+                {
+                    wasEmpty = true;
+                }
                 StringReader sr = new StringReader(Clipboard.GetText());
                 string line;
                 while ((line = sr.ReadLine()) != null)
@@ -555,11 +590,12 @@ namespace CrashEdit.CE
                         spLoadList.Add(line);
                         ++spLoadListCount;
                         cmdRemoveSP.Enabled = true;
+                        txtSPLoadList.Enabled = true;
                     }
                 }
                 UpdateSPLoadListsCount();
                 UpdateSPLoadListsEID(false);
-                if (spLoadList.Count > 0 && lbSPLoadList.SelectedIndex == -1)
+                if (spLoadList.Count > 0 && wasEmpty)
                 {
                     lbSPLoadList.SelectedIndex = 0;
                     txtSPLoadList.Text = lbSPLoadList.SelectedItem.ToString();
@@ -638,8 +674,6 @@ namespace CrashEdit.CE
 
             int selectedIndex = lbSPLoadList.SelectedIndex;
             spLoadList[selectedIndex] = txtSPLoadList.Text;
-
-            Console.WriteLine(txtSPLoadList.Text);
         }
 
         private bool HexView_DataChangeHandler(int destOffset, int destLength, byte[] source)
@@ -656,5 +690,36 @@ namespace CrashEdit.CE
             return true;
         }
 
+        private void txtSPLoadList_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                lbSPLoadList.Focus();
+            }
+        }
+
+        private void cmdAppendZone_Click(object sender, EventArgs e)
+        {
+            currentDataGridView = dgvZones;
+            AppendRowItem_Click(sender, e);
+        }
+
+        private void cmdRemoveZone_Click(object sender, EventArgs e)
+        {
+            currentDataGridView = dgvZones;
+            DeleteRowItem_Click(sender, e);
+        }
+
+        private void cmdAppendWorld_Click(object sender, EventArgs e)
+        {
+            currentDataGridView = dgvWorlds;
+            AppendRowItem_Click(sender, e);
+        }
+
+        private void cmdRemoveWorld_Click(object sender, EventArgs e)
+        {
+            currentDataGridView = dgvWorlds;
+            DeleteRowItem_Click(sender, e);
+        }
     }
 }
