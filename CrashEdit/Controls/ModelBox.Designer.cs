@@ -73,7 +73,7 @@ namespace CrashEdit.CE.Controls
             fraColorSlider = new DarkGroupBox();
             colorEditor = new Cyotek.Windows.Forms.ColorEditor();
             colorWheel = new Cyotek.Windows.Forms.ColorWheel();
-            lstColor = new DataGridView();
+            dgvColor = new DataGridView();
             tbpTextures = new TabPage();
             pnPicture = new Panel();
             pictureBox1 = new PictureBox();
@@ -127,7 +127,7 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)numLowestBrightness).BeginInit();
             pnSliders.SuspendLayout();
             fraColorSlider.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)lstColor).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvColor).BeginInit();
             tbpTextures.SuspendLayout();
             pnPicture.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -489,7 +489,7 @@ namespace CrashEdit.CE.Controls
             tbpColors.Controls.Add(lblColorIndex);
             tbpColors.Controls.Add(fraGlobalControl);
             tbpColors.Controls.Add(pnSliders);
-            tbpColors.Controls.Add(lstColor);
+            tbpColors.Controls.Add(dgvColor);
             tbpColors.Location = new Point(4, 32);
             tbpColors.Name = "tbpColors";
             tbpColors.Size = new Size(1032, 764);
@@ -684,25 +684,25 @@ namespace CrashEdit.CE.Controls
             colorWheel.Visible = false;
             colorWheel.ColorChanged += colorWheel_ColorChanged;
             // 
-            // lstColor
+            // dgvColor
             // 
-            lstColor.AllowUserToAddRows = false;
-            lstColor.AllowUserToResizeColumns = false;
-            lstColor.AllowUserToResizeRows = false;
-            lstColor.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-            lstColor.ColumnHeadersHeight = 24;
-            lstColor.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            lstColor.Location = new Point(3, 3);
-            lstColor.MultiSelect = false;
-            lstColor.Name = "lstColor";
-            lstColor.ReadOnly = true;
-            lstColor.RowHeadersWidth = 24;
-            lstColor.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            lstColor.ShowCellToolTips = false;
-            lstColor.Size = new Size(292, 573);
-            lstColor.TabIndex = 0;
-            lstColor.CellPainting += lstColor_CellPainting;
-            lstColor.SelectionChanged += lstColor_SelectedIndexChanged;
+            dgvColor.AllowUserToAddRows = false;
+            dgvColor.AllowUserToResizeColumns = false;
+            dgvColor.AllowUserToResizeRows = false;
+            dgvColor.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dgvColor.ColumnHeadersHeight = 24;
+            dgvColor.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvColor.Location = new Point(3, 3);
+            dgvColor.MultiSelect = false;
+            dgvColor.Name = "dgvColor";
+            dgvColor.ReadOnly = true;
+            dgvColor.RowHeadersWidth = 24;
+            dgvColor.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dgvColor.ShowCellToolTips = false;
+            dgvColor.Size = new Size(290, 573);
+            dgvColor.TabIndex = 0;
+            dgvColor.CellPainting += dgvColor_CellPainting;
+            dgvColor.SelectionChanged += dgvColor_SelectedIndexChanged;
             // 
             // tbpTextures
             // 
@@ -1203,7 +1203,7 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)numLowestBrightness).EndInit();
             pnSliders.ResumeLayout(false);
             fraColorSlider.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)lstColor).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvColor).EndInit();
             tbpTextures.ResumeLayout(false);
             tbpTextures.PerformLayout();
             pnPicture.ResumeLayout(false);
@@ -1242,7 +1242,7 @@ namespace CrashEdit.CE.Controls
         private TabPage tbpExtendedTextures;
         private AltUI.Controls.DarkGroupBox fraTPage;
         private DoubleBufferedListView lstTPages;
-        private DataGridView lstColor;
+        private DataGridView dgvColor;
         private Cyotek.Windows.Forms.ColorEditor colorEditor;
         private Cyotek.Windows.Forms.ColorWheel colorWheel;
         private MetroSetSwitch tglGlobalControl;
