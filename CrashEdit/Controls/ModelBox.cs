@@ -34,6 +34,7 @@ namespace CrashEdit.CE.Controls
         private Rectangle selectedregion;
 
         private DarkToolTip tipReloadTPage;
+        private DarkToolTip tipGlobalColor;
 
         private CancellationTokenSource _debounceTokenSource;
         private readonly int DebounceDelay = 50;
@@ -47,6 +48,7 @@ namespace CrashEdit.CE.Controls
         private int selectedRegionX;
         private int selectedRegionY;
         private int currentColorMode;
+        private List<string> colorCopy;
 
         private readonly int ColTexture = 0;
         private readonly int ColColor = 1;
@@ -194,71 +196,6 @@ namespace CrashEdit.CE.Controls
             dirty.Pop();
         }
 
-        private void tbpPolygons_Enter(object sender, EventArgs e)
-        {
-            DoubleBufferedDataGridView.Initialize(dgvStructs);
-            DoubleBufferedDataGridView.Initialize(dgvPolygons);
-            UpdateStructs();
-            UpdatePolygons();
-            tbpPolygons.Enter -= tbpPolygons_Enter;
-        }
-
-        private async void tbpColors_Enter(object sender, EventArgs e)
-        {
-            ResetColorSliders();
-            await UpdateColorListAsync();
-            tbpColors.Enter -= tbpColors_Enter;
-        }
-
-        private async void tbpTextures_Enter(object sender, EventArgs e)
-        {
-            tipReloadTPage = new DarkToolTip();
-            tipReloadTPage.SetToolTip(rbtReloadTPage, "Reload");
-            DoubleBufferedDataGridView.Initialize(dgvTextures);
-            if (isScenery)
-            {
-                dgvTextures.Width = 612;
-                pnTextureControls.Location = new Point(759, 0);
-            }
-            CreateTextureListColumns();
-            UpdateTPageList();
-            await UpdateTextureListAsync(true);
-            if (dgvTextures.Rows.Count > 0)
-            {
-                UpdateTPageButtons();
-                fraSwitches.Enabled =
-                fraReplace.Enabled =
-                fraReplaceTexture.Enabled = true;
-                trkPictureSize.Visible = true;
-                pnPicture.AutoScroll = true;
-            }
-
-            BGRAMode =
-            replaceCLUT = true;
-
-            numReplaceTo.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
-            numLowestBrightness.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
-
-            tbpTextures.Enter -= tbpTextures_Enter;
-        }
-
-        private async void tbpExtendedTextures_Enter(object sender, EventArgs e)
-        {
-            DoubleBufferedDataGridView.Initialize(dgvExtendedTextures);
-            CreateExtendedTextureColumns();
-            await UpdateExtendedTextureAsync();
-
-            tbpExtendedTextures.Enter -= tbpExtendedTextures_Enter;
-        }
-
-        private async void tbpPositions_Enter(object sender, EventArgs e)
-        {
-            DoubleBufferedDataGridView.Initialize(dgvPositions);
-            CreatePositionColumns();
-            await UpdatePositionAsync();
-
-            tbpPositions.Enter -= tbpPositions_Enter;
-        }
         #endregion
 
         #region General
@@ -379,6 +316,15 @@ namespace CrashEdit.CE.Controls
         #endregion
 
         #region Structs
+
+        private void tbpPolygons_Enter(object sender, EventArgs e)
+        {
+            DoubleBufferedDataGridView.Initialize(dgvStructs);
+            DoubleBufferedDataGridView.Initialize(dgvPolygons);
+            UpdateStructs();
+            UpdatePolygons();
+            tbpPolygons.Enter -= tbpPolygons_Enter;
+        }
 
         private void UpdateStructs()
         {
@@ -744,180 +690,135 @@ namespace CrashEdit.CE.Controls
 
         #region Colors
 
-        private async Task UpdateColorListAsync()
+        private void tbpColors_Enter(object sender, EventArgs e)
         {
-            if (lstColor.Items.Count > 0) return;
+            DoubleBufferedDataGridView.Initialize(lstColor);
+            lstColor.ColumnHeadersVisible = false;
+            lstColor.RowHeadersVisible = false;
+            lstColor.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            for (int i = 0; i < 4; ++i)
+            {
+                lstColor.Columns.Add("", "");
+            }
+            foreach (DataGridViewColumn column in lstColor.Columns)
+            {
+                column.SortMode = DataGridViewColumnSortMode.NotSortable;
+                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                column.Width = 64;
+            }
+            lstColor.RowTemplate.Height = 32;
+
+            pictureBox2.Image = Embeds.GetIcon("Hint")!.ToBitmap();
+            tipGlobalColor = new DarkToolTip();
+            tipGlobalColor.SetToolTip(pictureBox2, "If multiple cells are selected,\nchanges are applied only to those cells.\nIf no cell is selected, changes are applied to all cells.");
+
+            ResetColorSliders();
+            UpdateColorList();
+            tbpColors.Enter -= tbpColors_Enter;
+        }
+
+        private void UpdateColorList()
+        {
+            if (lstColor.Rows.Count > 0) return;
+
+            colorCopy = new List<string>();
 
             int colorCount = model.Colors.Count;
+            int rowCount = (int)Math.Ceiling(colorCount / 4.0);
 
-            if (isScenery)
+            for (int i = 0; i < rowCount; ++i)
             {
-                var rows = await Task.Run(() =>
-                {
-                    var rowsToAdd = new ConcurrentBag<(int Index, ListViewItem Row)>();
+                int rowIndex = i * 4;
 
-                    Parallel.For(0, colorCount, i =>
+                byte[] item1 = (rowIndex < colorCount)
+                    ? new byte[] { model.Colors[rowIndex].Red, model.Colors[rowIndex].Green, model.Colors[rowIndex].Blue }
+                    : new byte[] { 0, 0, 0 };
+
+                byte[] item2 = (rowIndex + 1 < colorCount)
+                    ? new byte[] { model.Colors[rowIndex + 1].Red, model.Colors[rowIndex + 1].Green, model.Colors[rowIndex + 1].Blue }
+                    : new byte[] { 0, 0, 0 };
+
+                byte[] item3 = (rowIndex + 2 < colorCount)
+                    ? new byte[] { model.Colors[rowIndex + 2].Red, model.Colors[rowIndex + 2].Green, model.Colors[rowIndex + 2].Blue }
+                    : new byte[] { 0, 0, 0 };
+
+                byte[] item4 = (rowIndex + 3 < colorCount)
+                    ? new byte[] { model.Colors[rowIndex + 3].Red, model.Colors[rowIndex + 3].Green, model.Colors[rowIndex + 3].Blue }
+                    : new byte[] { 0, 0, 0 };
+
+                string hex1 = Convert.ToHexString(item1);
+                string hex2 = Convert.ToHexString(item2);
+                string hex3 = Convert.ToHexString(item3);
+                string hex4 = Convert.ToHexString(item4);
+
+                DataGridViewRow row = new();
+                row.CreateCells(lstColor, hex1, hex2, hex3, hex4);
+
+                for (int j = 0; j < 4; ++j)
+                {
+                    string hexColor = row.Cells[j].Value.ToString();
+                    Color color = ColorTranslator.FromHtml($"#{hexColor}");
+
+                    if (rowIndex + j > colorCount - 1)
                     {
-                        var color = model.Colors[i];
-                        byte[] item = { color.Red, color.Green, color.Blue };
+                        Color transparentKey = Color.FromArgb(31, 31, 32); // transparent key
+                        row.Cells[j].Style.BackColor = transparentKey;
+                        row.Cells[j].Style.ForeColor = transparentKey;
+                    }
+                    else
+                    {
+                        row.Cells[j].Style.BackColor = color;
+                        row.Cells[j].Style.ForeColor = getBrightness(color) >= 0.5 ? Color.Black : Color.White;
+                    }
+                    row.Cells[j].Tag = rowIndex + j;
+                }
 
-                        ListViewItem lsi = new();
-                        lsi.Text = Convert.ToHexString(item);
-                        lsi.BackColor = Color.FromArgb(item[0], item[1], item[2]);
-                        lsi.ForeColor = getBrightness(lsi.BackColor) >= 0.5 ? Color.Black : Color.White;
-                        lsi.Tag = i;
-
-                        lsi.SubItems.Add(Convert.ToHexString(item)); // Original color
-                        lsi.SubItems.Add(Convert.ToHexString(item)); // Copy
-
-                        rowsToAdd.Add((i, lsi));
-                    });
-                    return rowsToAdd.OrderBy(pair => pair.Index).Select(pair => pair.Row).ToList();
-                });
-
-                lstColor.BeginUpdate();
-                lstColor.Items.AddRange(rows.ToArray());
-                lstColor.EndUpdate();
+                lstColor.Rows.Add(row);
+                colorCopy.Add(hex1);
+                colorCopy.Add(hex2);
+                colorCopy.Add(hex3);
+                colorCopy.Add(hex4);
             }
-            else
+        }
+
+        private void ResetColorListAsync()
+        {
+            for (int i = 0; i < lstColor.Rows.Count; i++)
             {
-                int colorcount = model.Colors.Count;
-                for (int i = 0; i < colorcount; ++i)
+                for (int j = 0; j < 4; j++)
                 {
-                    byte[] item = [model.Colors[i].Red, model.Colors[i].Green, model.Colors[i].Blue];
-                    ListViewItem lsi = new();
-                    lsi.Text = Convert.ToHexString(item);
-                    lsi.BackColor = Color.FromArgb(item[0], item[1], item[2]);
-                    lsi.ForeColor = getBrightness(lsi.BackColor) >= 0.5 ? Color.Black : Color.White;
-                    lsi.Tag = i;
-                    lsi.SubItems.Add(Convert.ToHexString(item)); // Original color
-                    lsi.SubItems.Add(Convert.ToHexString(item)); // Copy
-                    lstColor.Items.Add(lsi);
+                    int index = i * 4 + j;
+                    if (index > model.Colors.Count - 1) break;
+
+                    string hexColor = colorCopy[index];
+                    Color color = ColorTranslator.FromHtml($"#{hexColor}");
+                    UpdateModelColor(color, index);
+
+                    var cell = lstColor.Rows[i].Cells[j];
+                    cell.Value = hexColor;
+                    cell.Style.BackColor = color;
+                    cell.Style.ForeColor = getBrightness(color) >= 0.5 ? Color.Black : Color.White;
                 }
             }
         }
 
-        private async Task ResetColorListAsync()
+        private void UpdateColorCopyAll()
         {
-            if (isScenery)
+            for (int i = 0; i < lstColor.Rows.Count; i++)
             {
-                await Task.Run(() =>
+                for (int j = 0; j < 4; j++)
                 {
-                    Parallel.For(0, lstColor.Items.Count, i =>
-                    {
-                        byte[] item = GetHexColor(lstColor.Items[i].SubItems[1].Text);
-                        UpdateModelColor(Color.FromArgb(item[0], item[1], item[2]), i);
-                    });
-                });
-            }
-            else
-            {
-                for (int i = 0; i < lstColor.Items.Count; i++)
-                {
-                    byte[] item = GetHexColor(lstColor.Items[i].SubItems[1].Text);
-                    UpdateModelColor(Color.FromArgb(item[0], item[1], item[2]), i);
-                }
-            }
-            lstColor.Invoke(() => lstColor.Items.Clear());
-            await UpdateColorListAsync();
-        }
+                    int index = i * 4 + j;
+                    if (index > model.Colors.Count - 1) break;
 
-        private void UpdateColorCopy()
-        {
-            lstColor.Invoke(() =>
-            {
-                for (int i = 0; i < lstColor.Items.Count; i++)
-                {
-                    lstColor.Items[i].SubItems[1].Text = lstColor.Items[i].SubItems[0].Text;
-                }
-            });
-        }
-
-        private void lstColor_DrawItem(object sender, DrawListViewItemEventArgs e)
-        {
-            TextFormatFlags flags = TextFormatFlags.HorizontalCenter;
-            using (StringFormat sf = new StringFormat())
-            {
-                e.DrawBackground();
-                sf.Alignment = StringAlignment.Center;
-
-                bool isSelected = e.Item.Selected;
-                if (isSelected)
-                {
-
-                    // Draw the border.
-                    using (Pen borderPen = new Pen(Color.White, 1))
-                    {
-                        Rectangle borderRect = e.Bounds;
-                        borderRect.Width -= 1;
-                        borderRect.Height -= 1;
-                        e.Graphics.DrawRectangle(borderPen, borderRect);
-                    }
-
-                    // Draw the text.
-                    using (Brush brush = new SolidBrush(e.Item.ForeColor))
-                    {
-                        e.Graphics.DrawString(e.Item.Text, lstColor.Font, brush, e.Bounds, sf);
-                    }
-
-                    // Draw a marker.
-                    using (Brush markerBrush = new SolidBrush(Color.White))
-                    {
-                        string marker = "▲";
-                        Font markerFont = new Font(lstColor.Font.FontFamily, lstColor.Font.Size * 0.8f, FontStyle.Bold);
-
-                        PointF markerPosition = new PointF(
-                            e.Bounds.X + (e.Bounds.Width / 2) - 5, // center
-                            e.Bounds.Bottom - (markerFont.Size - 8)  // below the item
-                        );
-
-                        e.Graphics.DrawString(marker, markerFont, markerBrush, markerPosition);
-                    }
-                }
-                else
-                {
-                    e.DrawText(flags);
-
+                    colorCopy[index] = lstColor.Rows[i].Cells[j].Value.ToString();
                 }
             }
         }
 
-        private void lstColor_MouseDown(object sender, MouseEventArgs e)
+        private void UpdateColorCopy(int index, string color)
         {
-            if (!globalControlMode)
-            {
-                Point mousePosition = e.Location;
-                for (int i = 0; i < lstColor.Items.Count; i++)
-                {
-                    ListViewItem item = lstColor.Items[i];
-                    Rectangle itemBounds = item.Bounds;
-                    if (itemBounds.Contains(mousePosition))
-                    {
-                        item.Selected = true;
-                        return;
-                    }
-                }
-            }
-            lstColor.SelectedItems.Clear();
-        }
-
-        private void lstColor_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (!globalControlMode)
-            {
-                Point mousePosition = e.Location;
-                for (int i = 0; i < lstColor.Items.Count; i++)
-                {
-                    ListViewItem item = lstColor.Items[i];
-                    Rectangle itemBounds = item.Bounds;
-                    if (itemBounds.Contains(mousePosition))
-                    {
-                        item.Selected = true;
-                        return;
-                    }
-                }
-            }
-            lstColor.SelectedItems.Clear();
+            colorCopy[index] = color;
         }
 
         private void UpdateModelColor(Color color, int i)
@@ -957,19 +858,19 @@ namespace CrashEdit.CE.Controls
 
         private void UpdateSelectedColor(Color clr)
         {
-            if (lstColor.SelectedItems.Count <= 0)
+            if (lstColor.SelectedCells.Count <= 0)
             {
                 pnSliders.Enabled = false;
                 return;
             }
 
             Color color = clr;
-            var i = (int)lstColor.SelectedItems[0].Tag;
+            var i = (int)lstColor.SelectedCells[0].Tag;
             UpdateModelColor(color, i);
-            lstColor.Items[i].SubItems[0].Text = Convert.ToHexString(new byte[] { color.R, color.G, color.B });
-            lstColor.Items[i].SubItems[0].BackColor = color;
-            lstColor.Items[i].SubItems[0].ForeColor = getBrightness(lstColor.Items[i].SubItems[0].BackColor) >= 0.5 ? Color.Black : Color.White;
-            UpdateColorCopy();
+            lstColor.SelectedCells[0].Value = Convert.ToHexString(new byte[] { color.R, color.G, color.B });
+            lstColor.SelectedCells[0].Style.BackColor = color;
+            lstColor.SelectedCells[0].Style.ForeColor = getBrightness(color) >= 0.5 ? Color.Black : Color.White;
+            UpdateColorCopy(i, lstColor.SelectedCells[0].Value.ToString());
 
             colorEditor.Color = color;
             //colorWheel.Color = color;
@@ -979,37 +880,36 @@ namespace CrashEdit.CE.Controls
         {
             if (globalControlMode)
             {
-                for (int i = 0; i < lstColor.Items.Count; i++)
+                for (int i = 0; i < lstColor.Rows.Count; i++)
                 {
-                    byte[] hexColor = GetHexColor(lstColor.Items[i].SubItems[1].Text);
-                    Color rgbColor = Color.FromArgb(hexColor[0], hexColor[1], hexColor[2]);
-                    HslColor hslColor = new HslColor(rgbColor);
-                    if (chkLowestBrightness.Checked)
+                    for (int j = 0; j < 4; j++)
                     {
-                        if (hslColor.L <= (double)numLowestBrightness.Value)
-                            continue;
+                        var cell = lstColor.Rows[i].Cells[j];
+                        if (lstColor.SelectedCells.Count > 0 && !lstColor.SelectedCells.Contains(cell)) continue;
+
+                        int index = i * 4 + j;
+                        string hexColor = colorCopy[index];
+                        Color color = ColorTranslator.FromHtml($"#{hexColor}");
+                        HslColor hslColor = new HslColor(color);
+                        if (chkLowestBrightness.Checked)
+                        {
+                            if (hslColor.L <= (double)numLowestBrightness.Value)
+                                continue;
+                        }
+
+                        hslColor = ChangeHue(hslColor, MasterHue);
+                        hslColor.S = Math.Clamp(hslColor.S + (MasterSaturation - 0.5), 0.0, 1.0);
+                        hslColor.L = Math.Clamp(hslColor.L + (MasterLightness - 0.5), 0.0, 1.0);
+
+                        Color newColor = hslColor.ToRgbColor();
+
+                        UpdateModelColor(newColor, index);
+                        cell.Value = Convert.ToHexString(new byte[] { newColor.R, newColor.G, newColor.B });
+                        cell.Style.BackColor = newColor;
+                        cell.Style.ForeColor = getBrightness(newColor) >= 0.5 ? Color.Black : Color.White;
                     }
-
-                    hslColor = ChangeHue(hslColor, MasterHue);
-                    hslColor.S = Math.Clamp(hslColor.S + (MasterSaturation - 0.5), 0.0, 1.0);
-                    hslColor.L = Math.Clamp(hslColor.L + (MasterLightness - 0.5), 0.0, 1.0);
-
-                    Color newColor = hslColor.ToRgbColor();
-
-                    UpdateModelColor(newColor, i);
-                    lstColor.Items[i].SubItems[0].Text = Convert.ToHexString(new byte[] { newColor.R, newColor.G, newColor.B });
-                    lstColor.Items[i].SubItems[0].BackColor = newColor;
-                    lstColor.Items[i].SubItems[0].ForeColor = getBrightness(newColor) >= 0.5 ? Color.Black : Color.White;
                 }
             }
-        }
-
-        public static byte[] GetHexColor(string hex)
-        {
-            return Enumerable.Range(0, hex.Length)
-                             .Where(x => x % 2 == 0)
-                             .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
-                             .ToArray();
         }
 
         // color brightness as perceived:
@@ -1036,16 +936,19 @@ namespace CrashEdit.CE.Controls
                 pnGlobalControl.Enabled =
                 cmdApply.Enabled =
                 cmdCancel.Enabled = true;
+                lstColor.ClearSelection();
+                lstColor.MultiSelect = true;
             }
             else
             {
                 pnGlobalControl.Enabled =
                 cmdApply.Enabled =
                 cmdCancel.Enabled = false;
-                await ResetColorListAsync();
+                ResetColorListAsync();
                 ResetColorSliders();
+                lstColor.ClearSelection();
+                lstColor.MultiSelect = false;
             }
-            lstColor.SelectedItems.Clear();
         }
 
         private void ResetColorSliders()
@@ -1059,7 +962,7 @@ namespace CrashEdit.CE.Controls
 
         private Color GetSelectedItemColor()
         {
-            string hexcolor = lstColor.SelectedItems[0].Text;
+            string hexcolor = lstColor.SelectedCells[0].Value.ToString();
             int color = Int32.Parse(hexcolor.Replace("#", ""), NumberStyles.HexNumber);
             int alpha = 255;
             Color result = Color.FromArgb(alpha, Color.FromArgb(color));
@@ -1068,10 +971,15 @@ namespace CrashEdit.CE.Controls
 
         private void lstColor_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (lstColor.SelectedCells.Count <= 0) return;
+
             lstColor.Invalidate();
-            if (lstColor.SelectedItems.Count <= 0 || globalControlMode)
+
+            string index = lstColor.SelectedCells[0].Tag.ToString();
+            if (Convert.ToInt32(index) > model.Colors.Count - 1 || globalControlMode)
             {
                 //pnSliders.Enabled = false;
+                pnSliders.Enabled = false;
                 lblColorIndex.Text = "Index: -";
                 return;
             }
@@ -1087,7 +995,31 @@ namespace CrashEdit.CE.Controls
             //}
 
             //colorWheel.Color = color;
-            lblColorIndex.Text = $"Index: {lstColor.SelectedItems[0].Index}";
+            lblColorIndex.Text = $"Index: {index}";
+        }
+
+        private void lstColor_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0)
+                return;
+
+            DataGridViewCell cell = lstColor.Rows[e.RowIndex].Cells[e.ColumnIndex];
+            cell.Style.SelectionBackColor = cell.Style.BackColor;
+            cell.Style.SelectionForeColor = cell.Style.ForeColor;
+
+            if ((e.State & DataGridViewElementStates.Selected) != 0)
+            {
+                e.PaintBackground(e.ClipBounds, true);
+                e.PaintContent(e.ClipBounds);
+
+                Color color = Color.White;
+                using (Pen pen = new Pen(color, 1))
+                {
+                    Rectangle rect = new Rectangle(e.CellBounds.X, e.CellBounds.Y, e.CellBounds.Width - 1, e.CellBounds.Height - 1);
+                    e.Graphics.DrawRectangle(pen, rect);
+                }
+                e.Handled = true;
+            }
         }
 
         private void colorWheel_ColorChanged(object sender, EventArgs e)
@@ -1109,12 +1041,7 @@ namespace CrashEdit.CE.Controls
 
         private void ApplyChanges()
         {
-            foreach (ListViewItem item in lstColor.Items)
-            {
-                var i = (int)item.Tag;
-                UpdateModelColor(item.BackColor, i);
-            }
-            UpdateColorCopy();
+            UpdateColorCopyAll();
         }
 
         private void cmdApply_Click(object sender, EventArgs e)
@@ -1133,9 +1060,46 @@ namespace CrashEdit.CE.Controls
             numLowestBrightness.Enabled = chkLowestBrightness.Checked;
         }
 
+        private void cmdClearSelection_Click(object sender, EventArgs e)
+        {
+            lstColor.ClearSelection();
+        }
+
         #endregion
 
         #region Textures
+
+        private async void tbpTextures_Enter(object sender, EventArgs e)
+        {
+            tipReloadTPage = new DarkToolTip();
+            tipReloadTPage.SetToolTip(rbtReloadTPage, "Reload");
+            DoubleBufferedDataGridView.Initialize(dgvTextures);
+            if (isScenery)
+            {
+                dgvTextures.Width = 612;
+                pnTextureControls.Location = new Point(759, 0);
+            }
+            CreateTextureListColumns();
+            UpdateTPageList();
+            await UpdateTextureListAsync(true);
+            if (dgvTextures.Rows.Count > 0)
+            {
+                UpdateTPageButtons();
+                fraSwitches.Enabled =
+                fraReplace.Enabled =
+                fraReplaceTexture.Enabled = true;
+                trkPictureSize.Visible = true;
+                pnPicture.AutoScroll = true;
+            }
+
+            BGRAMode =
+            replaceCLUT = true;
+
+            numReplaceTo.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
+            numLowestBrightness.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
+
+            tbpTextures.Enter -= tbpTextures_Enter;
+        }
 
         private void UpdateTPageList()
         {
@@ -2241,6 +2205,15 @@ namespace CrashEdit.CE.Controls
 
         #region ExtendedTextures
 
+        private async void tbpExtendedTextures_Enter(object sender, EventArgs e)
+        {
+            DoubleBufferedDataGridView.Initialize(dgvExtendedTextures);
+            CreateExtendedTextureColumns();
+            await UpdateExtendedTextureAsync();
+
+            tbpExtendedTextures.Enter -= tbpExtendedTextures_Enter;
+        }
+
         private void CreateExtendedTextureColumns()
         {
             dgvExtendedTextures.Columns.Add("Offset", "Offset");
@@ -2477,6 +2450,15 @@ namespace CrashEdit.CE.Controls
         #endregion
 
         #region Positions
+
+        private async void tbpPositions_Enter(object sender, EventArgs e)
+        {
+            DoubleBufferedDataGridView.Initialize(dgvPositions);
+            CreatePositionColumns();
+            await UpdatePositionAsync();
+
+            tbpPositions.Enter -= tbpPositions_Enter;
+        }
 
         private void CreatePositionColumns()
         {

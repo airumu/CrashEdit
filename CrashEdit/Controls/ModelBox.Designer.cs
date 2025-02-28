@@ -64,6 +64,7 @@ namespace CrashEdit.CE.Controls
             cmdCancel = new DarkButton();
             cmdApply = new DarkButton();
             pnGlobalControl = new Panel();
+            cmdClearSelection = new DarkButton();
             numLowestBrightness = new DarkNumericUpDown();
             colorEditorGlobal = new Cyotek.Windows.Forms.ColorEditor();
             chkLowestBrightness = new CheckBox();
@@ -72,7 +73,7 @@ namespace CrashEdit.CE.Controls
             fraColorSlider = new DarkGroupBox();
             colorEditor = new Cyotek.Windows.Forms.ColorEditor();
             colorWheel = new Cyotek.Windows.Forms.ColorWheel();
-            lstColor = new DoubleBufferedListView();
+            lstColor = new DataGridView();
             tbpTextures = new TabPage();
             pnPicture = new Panel();
             pictureBox1 = new PictureBox();
@@ -105,6 +106,7 @@ namespace CrashEdit.CE.Controls
             dgvExtendedTextures = new DataGridView();
             tbpPositions = new TabPage();
             dgvPositions = new DataGridView();
+            pictureBox2 = new PictureBox();
             tabModel.SuspendLayout();
             tbpGeneral.SuspendLayout();
             panel1.SuspendLayout();
@@ -125,6 +127,7 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)numLowestBrightness).BeginInit();
             pnSliders.SuspendLayout();
             fraColorSlider.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)lstColor).BeginInit();
             tbpTextures.SuspendLayout();
             pnPicture.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -143,6 +146,7 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)dgvExtendedTextures).BeginInit();
             tbpPositions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvPositions).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             SuspendLayout();
             // 
             // tabModel
@@ -497,7 +501,7 @@ namespace CrashEdit.CE.Controls
             // 
             lblColorIndex.AutoSize = true;
             lblColorIndex.BackColor = Color.Transparent;
-            lblColorIndex.Location = new Point(304, 409);
+            lblColorIndex.Location = new Point(304, 439);
             lblColorIndex.Name = "lblColorIndex";
             lblColorIndex.Size = new Size(47, 15);
             lblColorIndex.TabIndex = 8;
@@ -512,7 +516,7 @@ namespace CrashEdit.CE.Controls
             fraGlobalControl.Controls.Add(tglGlobalControl);
             fraGlobalControl.Location = new Point(304, 218);
             fraGlobalControl.Name = "fraGlobalControl";
-            fraGlobalControl.Size = new Size(293, 184);
+            fraGlobalControl.Size = new Size(293, 214);
             fraGlobalControl.TabIndex = 7;
             fraGlobalControl.TabStop = false;
             fraGlobalControl.Text = "Global Controller";
@@ -549,14 +553,30 @@ namespace CrashEdit.CE.Controls
             // 
             // pnGlobalControl
             // 
+            pnGlobalControl.Controls.Add(pictureBox2);
+            pnGlobalControl.Controls.Add(cmdClearSelection);
             pnGlobalControl.Controls.Add(numLowestBrightness);
             pnGlobalControl.Controls.Add(colorEditorGlobal);
             pnGlobalControl.Controls.Add(chkLowestBrightness);
             pnGlobalControl.Enabled = false;
             pnGlobalControl.Location = new Point(1, 50);
             pnGlobalControl.Name = "pnGlobalControl";
-            pnGlobalControl.Size = new Size(292, 130);
+            pnGlobalControl.Size = new Size(292, 160);
             pnGlobalControl.TabIndex = 4;
+            // 
+            // cmdClearSelection
+            // 
+            cmdClearSelection.BorderColour = Color.Empty;
+            cmdClearSelection.CustomColour = false;
+            cmdClearSelection.FlatBottom = false;
+            cmdClearSelection.FlatTop = false;
+            cmdClearSelection.Location = new Point(10, 129);
+            cmdClearSelection.Name = "cmdClearSelection";
+            cmdClearSelection.Padding = new Padding(5);
+            cmdClearSelection.Size = new Size(95, 26);
+            cmdClearSelection.TabIndex = 8;
+            cmdClearSelection.Text = "Clear Selection";
+            cmdClearSelection.Click += cmdClearSelection_Click;
             // 
             // numLowestBrightness
             // 
@@ -666,20 +686,23 @@ namespace CrashEdit.CE.Controls
             // 
             // lstColor
             // 
-            lstColor.BackColor = Color.FromArgb(26, 26, 28);
-            lstColor.BorderStyle = BorderStyle.FixedSingle;
-            lstColor.ForeColor = Color.FromArgb(213, 213, 213);
+            lstColor.AllowUserToAddRows = false;
+            lstColor.AllowUserToResizeColumns = false;
+            lstColor.AllowUserToResizeRows = false;
+            lstColor.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            lstColor.ColumnHeadersHeight = 24;
+            lstColor.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             lstColor.Location = new Point(3, 3);
             lstColor.MultiSelect = false;
             lstColor.Name = "lstColor";
-            lstColor.OwnerDraw = true;
+            lstColor.ReadOnly = true;
+            lstColor.RowHeadersWidth = 24;
+            lstColor.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            lstColor.ShowCellToolTips = false;
             lstColor.Size = new Size(292, 573);
             lstColor.TabIndex = 0;
-            lstColor.UseCompatibleStateImageBehavior = false;
-            lstColor.DrawItem += lstColor_DrawItem;
-            lstColor.SelectedIndexChanged += lstColor_SelectedIndexChanged;
-            lstColor.MouseDown += lstColor_MouseDown;
-            lstColor.MouseUp += lstColor_MouseUp;
+            lstColor.CellPainting += lstColor_CellPainting;
+            lstColor.SelectionChanged += lstColor_SelectedIndexChanged;
             // 
             // tbpTextures
             // 
@@ -1139,6 +1162,14 @@ namespace CrashEdit.CE.Controls
             dgvPositions.CellValueChanged += dgvPositions_CellValueChanged;
             dgvPositions.EditingControlShowing += dgvPositions_EditingControlShowing;
             // 
+            // pictureBox2
+            // 
+            pictureBox2.Location = new Point(111, 134);
+            pictureBox2.Name = "pictureBox2";
+            pictureBox2.Size = new Size(16, 16);
+            pictureBox2.TabIndex = 9;
+            pictureBox2.TabStop = false;
+            // 
             // ModelBox
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -1172,6 +1203,7 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)numLowestBrightness).EndInit();
             pnSliders.ResumeLayout(false);
             fraColorSlider.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)lstColor).EndInit();
             tbpTextures.ResumeLayout(false);
             tbpTextures.PerformLayout();
             pnPicture.ResumeLayout(false);
@@ -1195,6 +1227,7 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)dgvExtendedTextures).EndInit();
             tbpPositions.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvPositions).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ResumeLayout(false);
         }
 
@@ -1209,7 +1242,7 @@ namespace CrashEdit.CE.Controls
         private TabPage tbpExtendedTextures;
         private AltUI.Controls.DarkGroupBox fraTPage;
         private DoubleBufferedListView lstTPages;
-        private DoubleBufferedListView lstColor;
+        private DataGridView lstColor;
         private Cyotek.Windows.Forms.ColorEditor colorEditor;
         private Cyotek.Windows.Forms.ColorWheel colorWheel;
         private MetroSetSwitch tglGlobalControl;
@@ -1273,5 +1306,7 @@ namespace CrashEdit.CE.Controls
         private Label lblStruct;
         private DarkNumericUpDown numLowestBrightness;
         private CheckBox chkLowestBrightness;
+        private DarkButton cmdClearSelection;
+        private PictureBox pictureBox2;
     }
 }
