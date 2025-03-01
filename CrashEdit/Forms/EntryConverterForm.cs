@@ -1,4 +1,5 @@
-﻿using AltUI.Forms;
+﻿using System.Windows.Media.Media3D;
+using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 using Frame = CrashEdit.Crash.Frame;
@@ -20,10 +21,17 @@ namespace CrashEdit.CE
         private const int TypeModel = 0;
         private const int TypeAnimation = 1;
 
-        private const int ModeC3toC2 = 0;
-        private const int ModeC2toC2 = 1;
-        private const int ModeC2toC3 = 2;
-        private const int ModeC3toC3 = 3;
+        private const int ModelC3toC2 = 0;
+        private const int ModelC2toC3 = 1;
+        private const int ModelC1AnimtoC2 = 2;
+        private const int ModelC1ColoredAnimtoC2 = 3;
+        private const int ModelC1AnimInfo = 4;
+        private const int ModelC1ColoredAnimInfo = 5;
+
+        private const int AnimC3toC2 = 0;
+        private const int AnimC2toC2 = 1;
+        private const int AnimC2toC3 = 2;
+        private const int AnimC3toC3 = 3;
 
         private const int Unknown2Index = 8;
         private const int Unknown2Length = 8;
@@ -54,6 +62,7 @@ namespace CrashEdit.CE
         {
             if (cmbType.SelectedIndex < 0) return;
 
+            List<ModelEntry> modelEntries = new List<ModelEntry>();
             List<OldModelEntry> oldModelEntries = new List<OldModelEntry>();
             List<OldAnimationEntry> oldAnimationEntries = new List<OldAnimationEntry>();
             List<ColoredAnimationEntry> coloredAnimationEntries = new List<ColoredAnimationEntry>();
@@ -78,21 +87,40 @@ namespace CrashEdit.CE
                             {
                                 string type = string.Empty;
                                 DataGridViewRow newRow = new DataGridViewRow();
-                                var _entry = entry.Process(GameVersion.Crash1);
 
-                                if (_entry is OldModelEntry oldModelEntry && (cmbMode.SelectedIndex == 0 || cmbMode.SelectedIndex == 1))
+                                bool isnew = false;
+                                GameVersion version;
+                                if (cmbMode.SelectedIndex == ModelC3toC2 || cmbMode.SelectedIndex == ModelC2toC3)
+                                {
+                                    isnew = true;
+                                    version = GameVersion.Crash2;
+                                }
+                                else
+                                {
+                                    version = GameVersion.Crash1;
+                                }
+                                var _entry = entry.Process(version);
+                               
+                                if (_entry is ModelEntry modelEntry && (cmbMode.SelectedIndex == ModelC3toC2 || cmbMode.SelectedIndex == ModelC2toC3))
+                                {
+                                    type = "Model";
+                                    newRow.Tag = Entry.EIDToEName(modelEntry.EID);
+
+                                    modelEntries.Add(modelEntry);
+                                }
+                                else if (_entry is OldModelEntry oldModelEntry && (cmbMode.SelectedIndex == ModelC1AnimtoC2 || cmbMode.SelectedIndex == ModelC1ColoredAnimtoC2))
                                 {
                                     type = "OldModel";
                                     newRow.Tag = Entry.EIDToEName(oldModelEntry.EID);
 
                                     oldModelEntries.Add(oldModelEntry);
                                 }
-                                else if (_entry is OldAnimationEntry oldAnimationEntry && (cmbMode.SelectedIndex == 0 || cmbMode.SelectedIndex == 2))
+                                else if (_entry is OldAnimationEntry oldAnimationEntry && (cmbMode.SelectedIndex == ModelC1AnimtoC2 || cmbMode.SelectedIndex == ModelC1AnimInfo))
                                 {
                                     type = "OldAnimation";
                                     newRow.Tag = Entry.EIDToEName(oldAnimationEntry.Frames[0].ModelEID);
 
-                                    if (cmbMode.SelectedIndex == 0)
+                                    if (cmbMode.SelectedIndex == ModelC1AnimtoC2)
                                     {
                                         oldAnimationEntries.Add(oldAnimationEntry);
                                     }
@@ -103,12 +131,12 @@ namespace CrashEdit.CE
                                         continue;
                                     }
                                 }
-                                else if (_entry is ColoredAnimationEntry coloredAnimationEntry && (cmbMode.SelectedIndex == 1 || cmbMode.SelectedIndex == 3))
+                                else if (_entry is ColoredAnimationEntry coloredAnimationEntry && (cmbMode.SelectedIndex == ModelC1ColoredAnimtoC2 || cmbMode.SelectedIndex == ModelC1ColoredAnimInfo))
                                 {
                                     type = "ColoredAnimation";
                                     newRow.Tag = Entry.EIDToEName(coloredAnimationEntry.Frames[0].ModelEID);
 
-                                    if (cmbMode.SelectedIndex == 1)
+                                    if (cmbMode.SelectedIndex == ModelC1ColoredAnimtoC2)
                                     {
                                         coloredAnimationEntries.Add(coloredAnimationEntry);
                                     }
@@ -124,29 +152,38 @@ namespace CrashEdit.CE
                                     throw new InvalidOperationException("Invalid entry type.");
                                 }
 
-                                foreach (OldModelEntry model in oldModelEntries)
+                                if (isnew)
                                 {
-                                    dynamic anims = cmbMode.SelectedIndex == 0 ? oldAnimationEntries : coloredAnimationEntries;
-                                    foreach (var anim in anims)
+                                    DataGridViewRow row = new DataGridViewRow();
+                                    row.CreateCells(dgvAnim, Path.GetFileNameWithoutExtension(fileInfo.Name), fileInfo.FullName, type);
+                                    dgvAnim.Rows.Add(row);
+                                }
+                                else
+                                {
+                                    foreach (OldModelEntry model in oldModelEntries)
                                     {
-                                        if (model.EID == anim.Frames[0].ModelEID)
+                                        dynamic anims = cmbMode.SelectedIndex == ModelC1AnimtoC2 ? oldAnimationEntries : coloredAnimationEntries;
+                                        foreach (var anim in anims)
                                         {
-                                            newRow.CreateCells(dgvAnim, Path.GetFileNameWithoutExtension(fileInfo.Name), fileInfo.FullName, type, Entry.EIDToEName(anim.EID), Entry.EIDToEName(model.EID));
-                                            newRow.Tag = new KeyValuePair<object, object>(anim, model);
-                                            foreach (DataGridViewRow row in dgvAnim.Rows)
+                                            if (model.EID == anim.Frames[0].ModelEID)
                                             {
-                                                if (Convert.ToString(row.Cells[ColAnimEID].Value) == Entry.EIDToEName(anim.EID))
+                                                newRow.CreateCells(dgvAnim, Path.GetFileNameWithoutExtension(fileInfo.Name), fileInfo.FullName, type, Entry.EIDToEName(anim.EID), Entry.EIDToEName(model.EID));
+                                                newRow.Tag = new KeyValuePair<object, object>(anim, model);
+                                                foreach (DataGridViewRow row in dgvAnim.Rows)
                                                 {
-                                                    throw new InvalidOperationException("Duplicate entry.");
+                                                    if (Convert.ToString(row.Cells[ColAnimEID].Value) == Entry.EIDToEName(anim.EID))
+                                                    {
+                                                        throw new InvalidOperationException("Duplicate entry.");
+                                                    }
                                                 }
+                                                dgvAnim.Rows.Add(newRow);
+                                                break;
                                             }
-                                            dgvAnim.Rows.Add(newRow);
-                                            break;
                                         }
                                     }
                                 }
                             }
-                            else
+                            else if (cmbType.SelectedIndex == TypeAnimation)
                             {
                                 int vertexcount = BitConv.FromInt32(entry.Items[0], 8);
                                 string type = vertexcount == 0 ? "Crash3" : "Crash2";
@@ -194,10 +231,45 @@ namespace CrashEdit.CE
                         {
                             throw new InvalidOperationException("Failed to get directory name from file path.");
                         }
-
-                        if (cmbMode.SelectedIndex == 0 || cmbMode.SelectedIndex == 1) // [OldModel & OldAnimation -> Model], [OldModel & ColoredAnimation -> Model]
+                        if (cmbMode.SelectedIndex == ModelC3toC2)
                         {
-                            if (cmbMode.SelectedIndex == 0)
+                            Console.WriteLine($"Processing entry: {fileName}");
+
+                            UnprocessedEntry entry = Entry.Load(file);
+                            ModelEntry model = (ModelEntry)entry.Process(GameVersion.Crash2);
+
+                            model.ScaleX *= 8;
+                            model.ScaleY *= 8;
+                            model.ScaleZ *= 8;
+
+                            byte[] fileBytes = model.Save();
+
+                            string mode = "C3toC2";
+                            string savePath = Path.Combine(saveDirectory, $"{fileName}_{mode}.nsentry");
+                            File.WriteAllBytes(savePath, fileBytes);
+                            Console.WriteLine($"    Saved entry: {savePath}");
+                        }
+                        else if (cmbMode.SelectedIndex == ModelC2toC3)
+                        {
+                            Console.WriteLine($"Processing entry: {fileName}");
+
+                            UnprocessedEntry entry = Entry.Load(file);
+                            ModelEntry model = (ModelEntry)entry.Process(GameVersion.Crash2);
+
+                            model.ScaleX /= 8;
+                            model.ScaleY /= 8;
+                            model.ScaleZ /= 8;
+
+                            byte[] fileBytes = model.Save();
+
+                            string mode = "C2toC3";
+                            string savePath = Path.Combine(saveDirectory, $"{fileName}_{mode}.nsentry");
+                            File.WriteAllBytes(savePath, fileBytes);
+                            Console.WriteLine($"    Saved entry: {savePath}");
+                        }
+                        else if (cmbMode.SelectedIndex == ModelC1AnimtoC2 || cmbMode.SelectedIndex == ModelC1ColoredAnimtoC2) // [OldModel & OldAnimation -> Model], [OldModel & ColoredAnimation -> Model]
+                        {
+                            if (cmbMode.SelectedIndex == ModelC1AnimtoC2)
                             {
                                 if (row.Tag is KeyValuePair<object, object> pair)
                                 {
@@ -224,7 +296,7 @@ namespace CrashEdit.CE
 
                             {
                                 ModelEntry modelEntry = null!;
-                                if (cmbMode.SelectedIndex == 0) // OldAnimation
+                                if (cmbMode.SelectedIndex == ModelC1AnimtoC2) // OldAnimation
                                 {
                                     modelEntry = ModelConverter.ConvertOldModelEntry(oldModelEntry, oldAnimationEntry, coloredAnimationEntry, false);
                                 }
@@ -241,7 +313,7 @@ namespace CrashEdit.CE
                                 Console.WriteLine($"    Saved entry: {savePath}");
                             }
                             {
-                                dynamic anim = cmbMode.SelectedIndex == 0 ? oldAnimationEntry : coloredAnimationEntry;
+                                dynamic anim = cmbMode.SelectedIndex == ModelC1AnimtoC2 ? oldAnimationEntry : coloredAnimationEntry;
 
                                 List<Frame> Frames = new List<Frame>();
                                 foreach (OldFrame frame in anim.Frames)
@@ -289,12 +361,12 @@ namespace CrashEdit.CE
                                 Console.WriteLine($"    Saved entry: {savePath}");
                             }
                         }
-                        else if (cmbMode.SelectedIndex == 2 || cmbMode.SelectedIndex == 3) // [OldAnimation -> Animation], [ColoredAnimation -> Animation]
+                        else if (cmbMode.SelectedIndex == ModelC1AnimInfo || cmbMode.SelectedIndex == ModelC1ColoredAnimInfo) // [OldAnimation -> Animation], [ColoredAnimation -> Animation]
                         {
                             UnprocessedEntry entry = Entry.Load(file);
                             dynamic anim = null!;
                             string animString = string.Empty;
-                            if (cmbMode.SelectedIndex == 2)
+                            if (cmbMode.SelectedIndex == ModelC1AnimInfo)
                             {
                                 anim = (OldAnimationEntry)entry.Process(GameVersion.Crash1);
                                 animString = "normals";
@@ -354,7 +426,7 @@ namespace CrashEdit.CE
                         Console.WriteLine($"Processing entry: {fileName}");
 
 
-                        if (cmbMode.SelectedIndex == ModeC3toC2 || cmbMode.SelectedIndex == ModeC3toC3)
+                        if (cmbMode.SelectedIndex == AnimC3toC2 || cmbMode.SelectedIndex == AnimC3toC3)
                         {
                             if (type != "Crash3")
                             {
@@ -373,7 +445,7 @@ namespace CrashEdit.CE
                             }
                         }
 
-                        if (cmbMode.SelectedIndex == ModeC3toC2 || cmbMode.SelectedIndex == ModeC2toC2)
+                        if (cmbMode.SelectedIndex == AnimC3toC2 || cmbMode.SelectedIndex == AnimC2toC2)
                         {
                             string checkedEID = Entry.CheckEIDErrors(modelEID, true);
                             if (checkedEID != string.Empty)
@@ -390,7 +462,7 @@ namespace CrashEdit.CE
                         {
                             byte[] data = entry.Items[i];
 
-                            if (cmbMode.SelectedIndex == ModeC3toC2)
+                            if (cmbMode.SelectedIndex == AnimC3toC2)
                             {
                                 // Remove unknown2
                                 byte[] newArray = new byte[data.Length - Unknown2Length];
@@ -423,7 +495,7 @@ namespace CrashEdit.CE
                                 entry.Items[i] = newArray2;
                                 mode = "C3toC2";
                             }
-                            else if (cmbMode.SelectedIndex == ModeC2toC3)
+                            else if (cmbMode.SelectedIndex == AnimC2toC3)
                             {
                                 // Remove ModelEID
                                 byte[] newArray = new byte[data.Length - ModelEIDLength];
@@ -452,7 +524,7 @@ namespace CrashEdit.CE
                                 entry.Items[i] = newArray2;
                                 mode = "C2toC3";
                             }
-                            else if (cmbMode.SelectedIndex == ModeC2toC2)
+                            else if (cmbMode.SelectedIndex == AnimC2toC2)
                             {
                                 // Set ModelEID
                                 int eid = Entry.ENameToEID(modelEID);
@@ -461,7 +533,7 @@ namespace CrashEdit.CE
                                 entry.Items[i] = data;
                                 mode = "C2toC2";
                             }
-                            else if (cmbMode.SelectedIndex == ModeC3toC3)
+                            else if (cmbMode.SelectedIndex == AnimC3toC3)
                             {
                                 // Do nothing
                                 mode = "C3toC3";
@@ -480,8 +552,8 @@ namespace CrashEdit.CE
                         ++successCount;
                     }
 
-                    if (errorCount == 0)
-                        DarkMessageBox.ShowInformation($"Processed {successCount} entries.", Text);
+                    if (errorCount == 0) { }
+                        //DarkMessageBox.ShowInformation($"Processed {successCount} entries.", Text);
                     else
                         DarkMessageBox.ShowInformation($"Processed {successCount} entries with {errorCount} errors.", Text);
                 }
@@ -552,7 +624,7 @@ namespace CrashEdit.CE
 
             if (cmbType.SelectedIndex == TypeModel)
             {
-                if (cmbMode.SelectedIndex == 0 || cmbMode.SelectedIndex == 1)
+                if (cmbMode.SelectedIndex == ModelC1AnimtoC2 || cmbMode.SelectedIndex == ModelC1ColoredAnimtoC2)
                 {
                     dgvAnim.Columns[ColFileName].Visible = false;
                     dgvAnim.Columns[ColType].Visible = false;
@@ -571,7 +643,7 @@ namespace CrashEdit.CE
             }
             else
             {
-                if (cmbMode.SelectedIndex == ModeC3toC2 || cmbMode.SelectedIndex == ModeC2toC2)
+                if (cmbMode.SelectedIndex == AnimC3toC2 || cmbMode.SelectedIndex == AnimC2toC2)
                 {
                     chkSetModelEID.Enabled = true;
                     dgvAnim.Columns[ColModelEID].Visible = true;
@@ -594,29 +666,31 @@ namespace CrashEdit.CE
             {
                 cmbMode.Items.AddRange(new object[]
                 {
-                    "OldModel & OldAnim → Model",
-                    "OldModel & ColoredAnim → Model",
+                    "Crash3 -> Crash2",
+                    "Crash2 -> Crash3",
+                    "OldModel & OldAnim -> Model",
+                    "OldModel & ColoredAnim -> Model",
                     "OldAnim Info",
                     "ColoredAnim Info"
                 });
-                cmbMode.SelectedIndex = 0;
+                cmbMode.SelectedIndex = ModelC3toC2;
 
                 //dgvAnim.Columns[ColModelEID].Visible =
                 //dgvAnim.Columns[ColAnimEID].Visible = false;
                 chkSetModelEID.Enabled = false;
-                dgvAnim.Columns[ColFileName].Visible = false;
-                dgvAnim.Columns[ColType].Visible = false;
+                //dgvAnim.Columns[ColFileName].Visible = false;
+                //dgvAnim.Columns[ColType].Visible = false;
             }
             else
             {
                 cmbMode.Items.AddRange(new object[]
                 {
-                    "Crash3 → Crash2",
-                    "Crash2 → Crash2",
-                    "Crash2 → Crash3",
-                    "Crash3 → Crash3"
+                    "Crash3 -> Crash2",
+                    "Crash2 -> Crash2",
+                    "Crash2 -> Crash3",
+                    "Crash3 -> Crash3"
                 });
-                cmbMode.SelectedIndex = ModeC3toC2;
+                cmbMode.SelectedIndex = AnimC3toC2;
 
                 //dgvAnim.Columns[ColModelEID].Visible =
                 //dgvAnim.Columns[ColAnimEID].Visible = true;
