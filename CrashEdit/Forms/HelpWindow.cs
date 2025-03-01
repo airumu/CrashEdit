@@ -15,7 +15,7 @@ namespace CrashEdit.CE
             lbHexViewer.Text = Resources.HexView_tip;
             lbTextureChunk.Text = Resources.TextureChunkBox_TipText;
             lbTextureViewer.Text = Resources.TextureViewer_tipViewer;
-            lbNSDBox.Text = Resources.EntityPropertyBox_tipSavedProperties;
+            lbNSDBox.Text = Resources.NSDBox_tipSpawnPoint;
         }
     }
 }

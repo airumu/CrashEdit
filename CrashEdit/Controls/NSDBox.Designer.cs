@@ -146,6 +146,7 @@ namespace CrashEdit.CE
             dgvSpawns.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dgvSpawns.ScrollBars = ScrollBars.Vertical;
             dgvSpawns.Size = new Size(428, 312);
+            dgvSpawns.ShowCellToolTips = false;
             dgvSpawns.TabIndex = 0;
             dgvSpawns.CellValidating += dgvSpawns_CellValidating;
             dgvSpawns.CellValueChanged += dgvSpawns_CellValueChanged;

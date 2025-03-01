@@ -1,4 +1,6 @@
 ﻿
+using AltUI.Controls;
+
 namespace CrashEdit.CE
 {
     partial class EntryConverterForm
@@ -30,13 +32,13 @@ namespace CrashEdit.CE
         private void InitializeComponent()
         {
             dgvAnim = new DataGridView();
-            cmbMode = new AltUI.Controls.DarkComboBox();
-            cmdLoad = new AltUI.Controls.DarkButton();
-            cmdProcess = new AltUI.Controls.DarkButton();
+            cmbMode = new DarkComboBox();
+            cmdLoad = new DarkButton();
+            cmdProcess = new DarkButton();
             chkShowFilePath = new CheckBox();
             chkSetModelEID = new CheckBox();
-            cmdClear = new AltUI.Controls.DarkButton();
-            cmbType = new AltUI.Controls.DarkComboBox();
+            cmdClear = new DarkButton();
+            cmbType = new DarkComboBox();
             lblWarning = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvAnim).BeginInit();
             SuspendLayout();
@@ -53,6 +55,7 @@ namespace CrashEdit.CE
             dgvAnim.Name = "dgvAnim";
             dgvAnim.RowHeadersWidth = 24;
             dgvAnim.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dgvAnim.ShowCellToolTips = false;
             dgvAnim.Size = new Size(469, 421);
             dgvAnim.TabIndex = 0;
             dgvAnim.CellBeginEdit += dgvAnim_CellBeginEdit;
@@ -185,13 +188,13 @@ namespace CrashEdit.CE
         #endregion
 
         private DataGridView dgvAnim;
-        private AltUI.Controls.DarkComboBox cmbMode;
-        private AltUI.Controls.DarkButton cmdLoad;
-        private AltUI.Controls.DarkButton cmdProcess;
+        private DarkComboBox cmbMode;
+        private DarkButton cmdLoad;
+        private DarkButton cmdProcess;
         private CheckBox chkShowFilePath;
         private CheckBox chkSetModelEID;
-        private AltUI.Controls.DarkButton cmdClear;
-        private AltUI.Controls.DarkComboBox cmbType;
+        private DarkButton cmdClear;
+        private DarkComboBox cmbType;
         private Label lblWarning;
     }
 }

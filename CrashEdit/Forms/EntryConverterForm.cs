@@ -47,7 +47,7 @@ namespace CrashEdit.CE
                 "Model",
                 "Animation"
             });
-            cmbType.SelectedIndex = TypeModel;
+            cmbType.SelectedIndex = TypeAnimation;
         }
 
         private void cmdLoad_Click(object sender, EventArgs e)
@@ -339,7 +339,7 @@ namespace CrashEdit.CE
                         }
                     }
                 }
-                else
+                else if (cmbType.SelectedIndex == TypeAnimation)
                 {
                     int successCount = 0;
                     int errorCount = 0;

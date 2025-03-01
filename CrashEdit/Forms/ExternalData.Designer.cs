@@ -124,6 +124,7 @@ namespace CrashEdit.CE
             dgvGroups.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dgvGroups.ScrollBars = ScrollBars.Vertical;
             dgvGroups.Size = new Size(162, 318);
+            dgvGroups.ShowCellToolTips = false;
             dgvGroups.TabIndex = 8;
             dgvGroups.CellBeginEdit += dgvGroups_CellBeginEdit;
             dgvGroups.CellEndEdit += dgvGroups_CellEndEdit;
