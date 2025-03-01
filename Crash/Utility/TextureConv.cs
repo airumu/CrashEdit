@@ -3,7 +3,6 @@ using System.Drawing;
 using CrashEdit.CE.Properties;
 using AltUI.Forms;
 using System.Windows.Forms;
-using System.Diagnostics;
 
 namespace CrashEdit.Crash
 {
@@ -36,7 +35,7 @@ namespace CrashEdit.Crash
                 case ".png":
                     try
                     {
-                        var result = ProcessPng(filePath, isBGRA);
+                        var result = ProcessPng(filePath, isBGRA, oldBpp);
                         newData = ReplaceTextureFromViewer(currentData, result.rawImageData, result.palette, result.width, result.height, destX, destY, replaceCLUT, oldBpp, clutX, clutY);
                     }
                     catch (Exception ex)
@@ -260,6 +259,7 @@ namespace CrashEdit.Crash
 
         public static (byte[] rawImageData, byte[] palette, int width, int height) ProcessBmp(string filePath)
         {
+            Console.WriteLine();
             byte[] bmpData = File.ReadAllBytes(filePath);
             int width = BitConverter.ToInt32(bmpData, 18);
             int height = BitConverter.ToInt32(bmpData, 22);
@@ -268,7 +268,7 @@ namespace CrashEdit.Crash
 
             if (bitsPerPixel != 4 && bitsPerPixel != 8)
             {
-                throw new InvalidOperationException("The loaded image is not 4bpp or 8bpp.");
+                throw new InvalidOperationException($"Unsupported bpp: {bitsPerPixel}");
             }
 
             int rowSize, paletteSize;
@@ -341,49 +341,59 @@ namespace CrashEdit.Crash
             return rgba5551;
         }
 
-        public static (byte[] rawImageData, byte[] palette, int width, int height) ProcessPng(string filePath, bool isBGRA)
+        public static (byte[] rawImageData, byte[] palette, int width, int height) ProcessPng(string filePath, bool isBGRA, int oldBpp)
         {
-            using (Bitmap bitmap = new Bitmap(filePath))
+            Console.WriteLine();
+            Bitmap bitmap = new Bitmap(filePath);
+            if (bitmap.PixelFormat != PixelFormat.Format4bppIndexed &&
+                bitmap.PixelFormat != PixelFormat.Format8bppIndexed)
             {
-                if (bitmap.PixelFormat != PixelFormat.Format4bppIndexed &&
-                    bitmap.PixelFormat != PixelFormat.Format8bppIndexed)
+                Console.WriteLine($"Input pixel format: {bitmap.PixelFormat}; start quantization...");
+                if (oldBpp == 4)
                 {
-                    throw new InvalidOperationException($"Unsupported pixel format: {bitmap.PixelFormat}");
+                    OctreeQuantizer quantizer = new OctreeQuantizer(16);
+                    bitmap = quantizer.Quantize4bpp(bitmap);
                 }
-
-                if (bitmap.Width <= 0 || bitmap.Height <= 0)
+                else if (oldBpp == 8)
                 {
-                    throw new InvalidOperationException("Invalid image dimensions.");
+                    OctreeQuantizer quantizer = new OctreeQuantizer(256);
+                    bitmap = quantizer.Quantize8bpp(bitmap);
                 }
-
-                ColorPalette palette = bitmap.Palette;
-                Color[] paletteColors = new Color[palette.Entries.Length];
-                if (isBGRA)
-                {
-                    for (int i = 0; i < palette.Entries.Length; i++)
-                    {
-                        Color color = palette.Entries[i];
-                        paletteColors[i] = Color.FromArgb(color.A, color.B, color.G, color.R);
-                    }
-                }
-                else
-                {
-                    paletteColors = palette.Entries;
-                }
-
-                byte[] paletteData = new byte[palette.Entries.Length * 4];
-                int index = 0;
-                foreach (Color color in paletteColors)
-                {
-                    paletteData[index++] = color.R;
-                    paletteData[index++] = color.G;
-                    paletteData[index++] = color.B;
-                    paletteData[index++] = color.A;
-                }
-
-                byte[] rawImageData = ExtractRawImageData(bitmap);
-                return (rawImageData, paletteData, bitmap.Width, bitmap.Height);
+                //throw new InvalidOperationException($"Unsupported pixel format: {bitmap.PixelFormat}");
             }
+
+            if (bitmap.Width <= 0 || bitmap.Height <= 0)
+            {
+                throw new InvalidOperationException("Invalid image dimensions.");
+            }
+
+            ColorPalette palette = bitmap.Palette;
+            Color[] paletteColors = new Color[palette.Entries.Length];
+            if (isBGRA)
+            {
+                for (int i = 0; i < palette.Entries.Length; i++)
+                {
+                    Color color = palette.Entries[i];
+                    paletteColors[i] = Color.FromArgb(color.A, color.B, color.G, color.R);
+                }
+            }
+            else
+            {
+                paletteColors = palette.Entries;
+            }
+
+            byte[] paletteData = new byte[palette.Entries.Length * 4];
+            int index = 0;
+            foreach (Color color in paletteColors)
+            {
+                paletteData[index++] = color.R;
+                paletteData[index++] = color.G;
+                paletteData[index++] = color.B;
+                paletteData[index++] = color.A;
+            }
+
+            byte[] rawImageData = ExtractRawImageData(bitmap);
+            return (rawImageData, paletteData, bitmap.Width, bitmap.Height);
         }
 
         private static byte[] ExtractRawImageData(Bitmap bitmap)
@@ -413,4 +423,300 @@ namespace CrashEdit.Crash
         }
 
     }
+
+    public class OctreeQuantizer
+    {
+        private OctreeNode root;
+        private int maxColors;
+        private int leafCount;
+        private List<OctreeNode>[] levels;
+
+        public OctreeQuantizer(int maxColors)
+        {
+            this.maxColors = maxColors;
+
+            levels = new List<OctreeNode>[9];
+            for (int i = 0; i < 9; i++)
+            {
+                levels[i] = new List<OctreeNode>();
+            }
+
+            root = new OctreeNode(0, this);
+            leafCount = 0;
+        }
+
+        public void AddColor(Color color)
+        {
+            root.AddColor(color, 0, this);
+            while (leafCount > maxColors)
+            {
+                Reduce();
+            }
+        }
+
+        public void IncrementLeafCount()
+        {
+            leafCount++;
+        }
+
+        public void DecrementLeafCount(int count)
+        {
+            leafCount -= count;
+        }
+
+        public void AddLevelNode(int level, OctreeNode node)
+        {
+            if (level < 8)
+                levels[level].Add(node);
+        }
+
+        private void Reduce()
+        {
+            int level = 7;
+            while (level >= 0 && levels[level].Count == 0)
+                level--;
+
+            if (level < 0)
+                return;
+
+            OctreeNode node = levels[level][0];
+            levels[level].RemoveAt(0);
+            int reducedLeaves = node.Reduce();
+            DecrementLeafCount(reducedLeaves);
+        }
+
+        public Color[] GetPalette()
+        {
+            Color[] palette = new Color[leafCount];
+            int index = 0;
+            root.ConstructPalette(ref palette, ref index);
+            return palette;
+        }
+
+        public Bitmap Quantize4bpp(Bitmap source)
+        {
+            for (int y = 0; y < source.Height; y++)
+            {
+                for (int x = 0; x < source.Width; x++)
+                {
+                    Color color = source.GetPixel(x, y);
+                    AddColor(color);
+                }
+            }
+
+            Color[] palette = GetPalette();
+
+            Bitmap result = new Bitmap(source.Width, source.Height, PixelFormat.Format4bppIndexed);
+            ColorPalette bmpPalette = result.Palette;
+            for (int i = 0; i < bmpPalette.Entries.Length; i++)
+            {
+                if (i < palette.Length)
+                    bmpPalette.Entries[i] = palette[i];
+                else
+                    bmpPalette.Entries[i] = Color.Black;
+            }
+            result.Palette = bmpPalette;
+
+            Rectangle rect = new Rectangle(0, 0, result.Width, result.Height);
+            BitmapData data = result.LockBits(rect, ImageLockMode.WriteOnly, result.PixelFormat);
+            int stride = data.Stride;
+            IntPtr scan0 = data.Scan0;
+            byte[] pixelIndices = new byte[stride * result.Height];
+
+            for (int y = 0; y < result.Height; y++)
+            {
+                for (int x = 0; x < result.Width; x++)
+                {
+                    Color color = source.GetPixel(x, y);
+                    int paletteIndex = root.GetPaletteIndex(color, 0);
+                    if (paletteIndex < 0 || paletteIndex > 15)
+                        paletteIndex = 0;
+
+                    int byteIndex = y * stride + (x / 2);
+                    if (x % 2 == 0)
+                    {
+                        pixelIndices[byteIndex] = (byte)(((paletteIndex & 0x0F) << 4) | (pixelIndices[byteIndex] & 0x0F));
+                    }
+                    else
+                    {
+                        pixelIndices[byteIndex] = (byte)((pixelIndices[byteIndex] & 0xF0) | (paletteIndex & 0x0F));
+                    }
+                }
+            }
+
+            System.Runtime.InteropServices.Marshal.Copy(pixelIndices, 0, scan0, pixelIndices.Length);
+            result.UnlockBits(data);
+
+            return result;
+        }
+
+        public Bitmap Quantize8bpp(Bitmap source)
+        {
+            for (int y = 0; y < source.Height; y++)
+            {
+                for (int x = 0; x < source.Width; x++)
+                {
+                    Color color = source.GetPixel(x, y);
+                    AddColor(color);
+                }
+            }
+
+            Color[] palette = GetPalette();
+
+            Bitmap result = new Bitmap(source.Width, source.Height, PixelFormat.Format8bppIndexed);
+            ColorPalette bmpPalette = result.Palette;
+            for (int i = 0; i < palette.Length && i < bmpPalette.Entries.Length; i++)
+            {
+                bmpPalette.Entries[i] = palette[i];
+            }
+            result.Palette = bmpPalette;
+
+            Rectangle rect = new Rectangle(0, 0, result.Width, result.Height);
+            BitmapData data = result.LockBits(rect, ImageLockMode.WriteOnly, result.PixelFormat);
+            int stride = data.Stride;
+            IntPtr scan0 = data.Scan0;
+            byte[] pixelIndices = new byte[stride * result.Height];
+
+            for (int y = 0; y < result.Height; y++)
+            {
+                for (int x = 0; x < result.Width; x++)
+                {
+                    Color color = source.GetPixel(x, y);
+                    int paletteIndex = root.GetPaletteIndex(color, 0);
+                    int offset = y * stride + x;
+                    if (offset < pixelIndices.Length)
+                        pixelIndices[offset] = (byte)paletteIndex;
+                }
+            }
+
+            System.Runtime.InteropServices.Marshal.Copy(pixelIndices, 0, scan0, pixelIndices.Length);
+            result.UnlockBits(data);
+
+            return result;
+        }
+    }
+
+    public class OctreeNode
+    {
+        private const int ChildCount = 8;
+        private bool isLeaf;
+        private int pixelCount;
+        private int red;
+        private int green;
+        private int blue;
+        private OctreeNode[] children;
+        private int paletteIndex;
+        private int level;
+
+        public OctreeNode(int level, OctreeQuantizer quantizer)
+        {
+            this.level = level;
+            isLeaf = (level == 8);
+            if (isLeaf)
+            {
+                quantizer.IncrementLeafCount();
+            }
+            else
+            {
+                children = new OctreeNode[ChildCount];
+                quantizer.AddLevelNode(level, this);
+            }
+        }
+
+        public void AddColor(Color color, int currentLevel, OctreeQuantizer quantizer)
+        {
+            if (isLeaf)
+            {
+                pixelCount++;
+                red += color.R;
+                green += color.G;
+                blue += color.B;
+            }
+            else
+            {
+                int index = GetColorIndex(color, currentLevel);
+                if (children[index] == null)
+                {
+                    children[index] = new OctreeNode(currentLevel + 1, quantizer);
+                }
+                children[index].AddColor(color, currentLevel + 1, quantizer);
+            }
+        }
+
+        public int Reduce()
+        {
+            int reducedLeaves = 0;
+            int rSum = 0, gSum = 0, bSum = 0, countSum = 0;
+            for (int i = 0; i < ChildCount; i++)
+            {
+                if (children[i] != null)
+                {
+                    rSum += children[i].red;
+                    gSum += children[i].green;
+                    bSum += children[i].blue;
+                    countSum += children[i].pixelCount;
+                    reducedLeaves++;
+                    children[i] = null;
+                }
+            }
+            isLeaf = true;
+            red += rSum;
+            green += gSum;
+            blue += bSum;
+            pixelCount += countSum;
+            return reducedLeaves - 1;
+        }
+
+        public void ConstructPalette(ref Color[] palette, ref int index)
+        {
+            if (isLeaf)
+            {
+                paletteIndex = index;
+                int r = (pixelCount == 0) ? 0 : (red / pixelCount);
+                int g = (pixelCount == 0) ? 0 : (green / pixelCount);
+                int b = (pixelCount == 0) ? 0 : (blue / pixelCount);
+                palette[index++] = Color.FromArgb(r, g, b);
+            }
+            else
+            {
+                for (int i = 0; i < ChildCount; i++)
+                {
+                    if (children[i] != null)
+                    {
+                        children[i].ConstructPalette(ref palette, ref index);
+                    }
+                }
+            }
+        }
+
+        public int GetPaletteIndex(Color color, int currentLevel)
+        {
+            if (isLeaf)
+            {
+                return paletteIndex;
+            }
+            int index = GetColorIndex(color, currentLevel);
+            if (children[index] != null)
+                return children[index].GetPaletteIndex(color, currentLevel + 1);
+            else
+            {
+                for (int i = 0; i < ChildCount; i++)
+                {
+                    if (children[i] != null)
+                        return children[i].GetPaletteIndex(color, currentLevel + 1);
+                }
+                return paletteIndex;
+            }
+        }
+
+        private int GetColorIndex(Color color, int currentLevel)
+        {
+            int shift = 7 - currentLevel;
+            int r = (color.R >> shift) & 1;
+            int g = (color.G >> shift) & 1;
+            int b = (color.B >> shift) & 1;
+            return (r << 2) | (g << 1) | b;
+        }
+    }
+
 }
