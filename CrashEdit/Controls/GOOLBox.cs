@@ -163,7 +163,12 @@ namespace CrashEdit.CE
                             ++addressIndex;
                         }
                         else
-                            rows.Add($"    Interrupt {i}: State_{goolentry.StateMap[i]}");
+                        {
+                            addressIndex = rows.Add($"    Interrupt {i}: State_{goolentry.StateMap[i]}");
+                            dgvCode.Rows[addressIndex].Tag = $"State_{goolentry.StateMap[i]}";
+                            ++addressIndex;
+                        }
+                        
                         ++headerCount;
                     }
                 }
@@ -175,7 +180,9 @@ namespace CrashEdit.CE
                 for (int i = goolentry.EventCount; i < goolentry.StateMap.Length; ++i)
                 {
                     if (i > goolentry.EventCount && i + 1 == goolentry.StateMap.Length && goolentry.StateMap[i] == 0) continue;
-                    rows.Add($"    Subtype {i - goolentry.EventCount}: {(goolentry.StateMap[i] == 255 ? "invalid" : $"State_{goolentry.StateMap[i]}")}");
+                    addressIndex = rows.Add($"    Subtype {i - goolentry.EventCount}: {(goolentry.StateMap[i] == 255 ? "invalid" : $"State_{goolentry.StateMap[i]}")}");
+                    dgvCode.Rows[addressIndex].Tag = $"State_{goolentry.StateMap[i]}";
+                    ++addressIndex;
                     ++headerCount;
                 }
 
@@ -401,19 +408,38 @@ namespace CrashEdit.CE
                 // header
                 if (e.RowIndex < headerCount)
                 {
-                    int targetIndex = Convert.ToInt32(dgvCode.Rows[e.RowIndex].Tag);
-
-                    for (int i = headerCount; i < dgvCode.Rows.Count; i++)
+                    string tag = dgvCode.Rows[e.RowIndex].Tag.ToString();
+                    if (tag.Contains("State"))
                     {
-                        if (dgvCode.Rows[i].Tag != null)
+                        string pattern = $@"^{Regex.Escape(tag)}\b";
+                        foreach (DataGridViewRow row in dgvCode.Rows)
                         {
-                            int targetTagValue = (int)dgvCode.Rows[i].Tag;
-                            if (targetIndex == targetTagValue)
+                            string targetCellText = row.Cells[0].Value?.ToString() ?? "";
+                            if (Regex.IsMatch(targetCellText, pattern))
                             {
-                                int targetRowIndex = dgvCode.Rows[i].Index;
+                                int targetRowIndex = row.Index;
                                 dgvCode.FirstDisplayedScrollingRowIndex = targetRowIndex;
                                 dgvCode.ClearSelection();
                                 dgvCode.Rows[targetRowIndex].Selected = true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        int targetIndex = Convert.ToInt32(dgvCode.Rows[e.RowIndex].Tag);
+
+                        for (int i = headerCount; i < dgvCode.Rows.Count; i++)
+                        {
+                            if (dgvCode.Rows[i].Tag != null)
+                            {
+                                int targetTagValue = (int)dgvCode.Rows[i].Tag;
+                                if (targetIndex == targetTagValue)
+                                {
+                                    int targetRowIndex = dgvCode.Rows[i].Index;
+                                    dgvCode.FirstDisplayedScrollingRowIndex = targetRowIndex;
+                                    dgvCode.ClearSelection();
+                                    dgvCode.Rows[targetRowIndex].Selected = true;
+                                }
                             }
                         }
                     }
