@@ -282,7 +282,7 @@ namespace CrashEdit.CE
 
         public static void SaveMaps()
         {
-            static void write_map(Utf8JsonWriter writer, EntityVisualList map, string name)
+            static void WriteMap(Utf8JsonWriter writer, EntityVisualList map, string name)
             {
                 writer.WriteStartObject(name);
                 writer.WriteStartArray("models");
@@ -299,41 +299,45 @@ namespace CrashEdit.CE
                 writer.WriteEndObject();
             }
 
-            using Utf8JsonWriter writer = new(new FileStream(MapsFileName, FileMode.Create), new() { Indented = true });
+            using var stream = new FileStream(MapsFileName, FileMode.Create, FileAccess.Write, FileShare.None);
+            using var writer = new Utf8JsonWriter(stream, new JsonWriterOptions { Indented = true });
             writer.WriteStartObject();
-            write_map(writer, MapCrash1, "crash1");
-            write_map(writer, MapCrash2, "crash2");
+            WriteMap(writer, MapCrash1, "crash1");
+            WriteMap(writer, MapCrash2, "crash2");
             writer.WriteEndObject();
             writer.Flush();
         }
 
         public static void LoadMaps()
         {
-            static void read_map(EntityVisualList map, JsonProperty elt)
+            static void ReadMap(EntityVisualList map, JsonProperty elt)
             {
                 foreach (var vis in elt.Value.GetProperty("models").EnumerateArray())
                 {
-                    var type = vis.GetProperty("type").GetInt32();
-                    var subtype = vis.GetProperty("subtype").GetInt32();
-                    var anim = vis.GetProperty("anim").GetString()!;
-                    var frame = vis.GetProperty("frame").GetInt32();
+                    int type = vis.GetProperty("type").GetInt32();
+                    int subtype = vis.GetProperty("subtype").GetInt32();
+                    string anim = vis.GetProperty("anim").GetString()!;
+                    int frame = vis.GetProperty("frame").GetInt32();
                     map.AddVisual(type, subtype, new(anim, frame));
                 }
             }
 
-            if (!File.Exists(MapsFileName)) return;
+            if (!File.Exists(MapsFileName))
+                return;
+
             try
             {
-                using var json = JsonDocument.Parse(new System.Buffers.ReadOnlySequence<byte>(File.ReadAllBytes(MapsFileName)));
+                using var stream = File.OpenRead(MapsFileName);
+                using var json = JsonDocument.Parse(stream);
                 foreach (var elt in json.RootElement.EnumerateObject())
                 {
-                    if (elt.Name == "crash1")
+                    if (elt.NameEquals("crash1"))
                     {
-                        read_map(MapCrash1, elt);
+                        ReadMap(MapCrash1, elt);
                     }
-                    else if (elt.Name == "crash2")
+                    else if (elt.NameEquals("crash2"))
                     {
-                        read_map(MapCrash2, elt);
+                        ReadMap(MapCrash2, elt);
                     }
                 }
             }
@@ -342,5 +346,6 @@ namespace CrashEdit.CE
                 Console.WriteLine(e.Message);
             }
         }
+
     }
 }
