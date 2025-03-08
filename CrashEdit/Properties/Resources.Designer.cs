@@ -1174,8 +1174,8 @@ namespace CrashEdit.CE.Properties {
         /// <summary>
         ///   [N] Input the EID for &quot;NONE!&quot;
         ///[Space] Clear selected cell
-        ///[Ctrl + Space] Clear selected chunk
-        ///[Z] Toggle chunk name view mode
+        ///[Ctrl + Space] Clear selected word
+        ///[Z] Toggle view mode
         ///[Ctrl + G] Goto
         ///[+ / - ] Change line width
         ///

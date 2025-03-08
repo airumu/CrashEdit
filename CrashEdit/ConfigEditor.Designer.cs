@@ -69,6 +69,7 @@ namespace CrashEdit.CE
             fraLang = new DarkGroupBox();
             tbp3D = new TabPage();
             tbpDebugDisplay = new TabPage();
+            chkShowRenderingErrors = new CheckBox();
             darkGroupBox3 = new DarkGroupBox();
             chkViewCamera = new CheckBox();
             chkViewCameraAngle = new CheckBox();
@@ -92,7 +93,6 @@ namespace CrashEdit.CE
             chkSplitViewerPanels = new CheckBox();
             chkLiteralCollisionTypes = new CheckBox();
             chkPatchGOOLC3toC2 = new CheckBox();
-            chkShowRenderingErrors = new CheckBox();
             tableLayoutPanel4 = new TableLayoutPanel();
             tableLayoutPanel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numFontSize).BeginInit();
@@ -436,7 +436,7 @@ namespace CrashEdit.CE
             cmdReset.Margin = new Padding(4, 3, 4, 3);
             cmdReset.Name = "cmdReset";
             cmdReset.Padding = new Padding(5);
-            cmdReset.Size = new Size(98, 25);
+            cmdReset.Size = new Size(98, 28);
             cmdReset.TabIndex = 1;
             cmdReset.Text = "Reset Settings";
             cmdReset.Click += cmdReset_Click;
@@ -600,11 +600,11 @@ namespace CrashEdit.CE
             cmdHelp.CustomColour = false;
             cmdHelp.FlatBottom = false;
             cmdHelp.FlatTop = false;
-            cmdHelp.Location = new Point(7, 132);
+            cmdHelp.Location = new Point(7, 135);
             cmdHelp.Margin = new Padding(4, 3, 4, 3);
             cmdHelp.Name = "cmdHelp";
             cmdHelp.Padding = new Padding(5);
-            cmdHelp.Size = new Size(98, 25);
+            cmdHelp.Size = new Size(98, 28);
             cmdHelp.TabIndex = 3;
             cmdHelp.Text = "Help";
             cmdHelp.Click += cmdHelp_Click;
@@ -651,6 +651,19 @@ namespace CrashEdit.CE
             tbpDebugDisplay.Size = new Size(417, 381);
             tbpDebugDisplay.TabIndex = 3;
             tbpDebugDisplay.Text = "Debug Displays";
+            // 
+            // chkShowRenderingErrors
+            // 
+            chkShowRenderingErrors.AutoSize = true;
+            chkShowRenderingErrors.Checked = true;
+            chkShowRenderingErrors.CheckState = CheckState.Checked;
+            chkShowRenderingErrors.Location = new Point(7, 106);
+            chkShowRenderingErrors.Name = "chkShowRenderingErrors";
+            chkShowRenderingErrors.Size = new Size(142, 19);
+            chkShowRenderingErrors.TabIndex = 17;
+            chkShowRenderingErrors.Text = "Show rendering errors";
+            chkShowRenderingErrors.UseVisualStyleBackColor = true;
+            chkShowRenderingErrors.CheckedChanged += chkShowRenderingErrors_CheckedChanged;
             // 
             // darkGroupBox3
             // 
@@ -937,19 +950,6 @@ namespace CrashEdit.CE
             chkPatchGOOLC3toC2.UseVisualStyleBackColor = true;
             chkPatchGOOLC3toC2.CheckedChanged += chkPatchGOOLC3toC2_CheckedChanged;
             chkPatchGOOLC3toC2.Click += chkPatchGOOLC3toC2_Click;
-            // 
-            // chkShowRenderingErrors
-            // 
-            chkShowRenderingErrors.AutoSize = true;
-            chkShowRenderingErrors.Checked = true;
-            chkShowRenderingErrors.CheckState = CheckState.Checked;
-            chkShowRenderingErrors.Location = new Point(7, 106);
-            chkShowRenderingErrors.Name = "chkShowRenderingErrors";
-            chkShowRenderingErrors.Size = new Size(142, 19);
-            chkShowRenderingErrors.TabIndex = 17;
-            chkShowRenderingErrors.Text = "Show rendering errors";
-            chkShowRenderingErrors.UseVisualStyleBackColor = true;
-            chkShowRenderingErrors.CheckedChanged += chkShowRenderingErrors_CheckedChanged;
             // 
             // ConfigEditor
             // 

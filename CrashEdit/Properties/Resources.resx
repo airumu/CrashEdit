@@ -965,8 +965,8 @@ as Meters: {3:F3}m</value>
   <data name="HexView_tip" xml:space="preserve">
     <value>[N] Input the EID for "NONE!"
 [Space] Clear selected cell
-[Ctrl + Space] Clear selected chunk
-[Z] Toggle chunk name view mode
+[Ctrl + Space] Clear selected word
+[Z] Toggle view mode
 [Ctrl + G] Goto
 [+ / - ] Change line width
 
