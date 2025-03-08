@@ -34,6 +34,8 @@ namespace CrashEdit.CE
             fraID = new DarkGroupBox();
             txtID = new DarkTextBox();
             fraSpawns = new DarkGroupBox();
+            cmdDelete = new DarkButton();
+            cmdAppend = new DarkButton();
             cmdPaste = new DarkButton();
             cmdCopy = new DarkButton();
             cmdGetSpawn = new DarkButton();
@@ -77,16 +79,46 @@ namespace CrashEdit.CE
             // fraSpawns
             // 
             fraSpawns.BackColor = Color.Transparent;
+            fraSpawns.Controls.Add(cmdDelete);
+            fraSpawns.Controls.Add(cmdAppend);
             fraSpawns.Controls.Add(cmdPaste);
             fraSpawns.Controls.Add(cmdCopy);
             fraSpawns.Controls.Add(cmdGetSpawn);
             fraSpawns.Controls.Add(dgvSpawns);
             fraSpawns.Location = new Point(3, 76);
             fraSpawns.Name = "fraSpawns";
-            fraSpawns.Size = new Size(523, 341);
+            fraSpawns.Size = new Size(523, 453);
             fraSpawns.TabIndex = 1;
             fraSpawns.TabStop = false;
             fraSpawns.Text = "Spawn Point(s)";
+            // 
+            // cmdDelete
+            // 
+            cmdDelete.BorderColour = Color.Empty;
+            cmdDelete.CustomColour = false;
+            cmdDelete.FlatBottom = false;
+            cmdDelete.FlatTop = false;
+            cmdDelete.Location = new Point(440, 204);
+            cmdDelete.Name = "cmdDelete";
+            cmdDelete.Padding = new Padding(5);
+            cmdDelete.Size = new Size(75, 28);
+            cmdDelete.TabIndex = 3;
+            cmdDelete.Text = "Delete";
+            cmdDelete.Click += cmdDelete_Click;
+            // 
+            // cmdAppend
+            // 
+            cmdAppend.BorderColour = Color.Empty;
+            cmdAppend.CustomColour = false;
+            cmdAppend.FlatBottom = false;
+            cmdAppend.FlatTop = false;
+            cmdAppend.Location = new Point(440, 170);
+            cmdAppend.Name = "cmdAppend";
+            cmdAppend.Padding = new Padding(5);
+            cmdAppend.Size = new Size(75, 28);
+            cmdAppend.TabIndex = 2;
+            cmdAppend.Text = "Append";
+            cmdAppend.Click += cmdAppend_Click;
             // 
             // cmdPaste
             // 
@@ -94,10 +126,10 @@ namespace CrashEdit.CE
             cmdPaste.CustomColour = false;
             cmdPaste.FlatBottom = false;
             cmdPaste.FlatTop = false;
-            cmdPaste.Location = new Point(440, 80);
+            cmdPaste.Location = new Point(440, 112);
             cmdPaste.Name = "cmdPaste";
             cmdPaste.Padding = new Padding(5);
-            cmdPaste.Size = new Size(75, 23);
+            cmdPaste.Size = new Size(75, 28);
             cmdPaste.TabIndex = 3;
             cmdPaste.Text = "Paste";
             cmdPaste.Click += cmdPaste_Click;
@@ -108,10 +140,10 @@ namespace CrashEdit.CE
             cmdCopy.CustomColour = false;
             cmdCopy.FlatBottom = false;
             cmdCopy.FlatTop = false;
-            cmdCopy.Location = new Point(440, 51);
+            cmdCopy.Location = new Point(440, 78);
             cmdCopy.Name = "cmdCopy";
             cmdCopy.Padding = new Padding(5);
-            cmdCopy.Size = new Size(75, 23);
+            cmdCopy.Size = new Size(75, 28);
             cmdCopy.TabIndex = 2;
             cmdCopy.Text = "Copy";
             cmdCopy.Click += cmdCopy_Click;
@@ -125,7 +157,7 @@ namespace CrashEdit.CE
             cmdGetSpawn.Location = new Point(440, 22);
             cmdGetSpawn.Name = "cmdGetSpawn";
             cmdGetSpawn.Padding = new Padding(5);
-            cmdGetSpawn.Size = new Size(75, 23);
+            cmdGetSpawn.Size = new Size(75, 28);
             cmdGetSpawn.TabIndex = 1;
             cmdGetSpawn.Text = "Get Spawn";
             cmdGetSpawn.Click += cmdGetSpawn_Click;
@@ -145,8 +177,8 @@ namespace CrashEdit.CE
             dgvSpawns.RowHeadersWidth = 24;
             dgvSpawns.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dgvSpawns.ScrollBars = ScrollBars.Vertical;
-            dgvSpawns.Size = new Size(428, 312);
             dgvSpawns.ShowCellToolTips = false;
+            dgvSpawns.Size = new Size(428, 424);
             dgvSpawns.TabIndex = 0;
             dgvSpawns.CellValidating += dgvSpawns_CellValidating;
             dgvSpawns.CellValueChanged += dgvSpawns_CellValueChanged;
@@ -235,5 +267,7 @@ namespace CrashEdit.CE
         private DarkGroupBox fraEntityCount;
         private Label lblEntityCount;
         private MetroSet_UI.Controls.MetroSetRadioButton rbtReload;
+        private DarkButton cmdDelete;
+        private DarkButton cmdAppend;
     }
 }

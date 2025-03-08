@@ -464,5 +464,15 @@ namespace CrashEdit.CE
 
             rbtReload.Checked = false;
         }
+
+        private void cmdAppend_Click(object sender, EventArgs e)
+        {
+            AppendRowItem_Click(this, e);
+        }
+
+        private void cmdDelete_Click(object sender, EventArgs e)
+        {
+            DeleteRowItem_Click(this, e);
+        }
     }
 }
