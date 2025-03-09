@@ -237,6 +237,7 @@ namespace CrashEdit.CE
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            AutoScroll = true;
             BackColor = Color.FromArgb(31, 31, 32);
             Controls.Add(pnPicture);
             Controls.Add(panel1);

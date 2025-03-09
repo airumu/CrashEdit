@@ -1002,6 +1002,7 @@ namespace CrashEdit.CE
             // 
             // pnFrameBox
             // 
+            pnFrameBox.AutoScroll = true;
             pnFrameBox.BackColor = Color.FromArgb(31, 31, 32);
             pnFrameBox.Controls.Add(fraCopy);
             pnFrameBox.Controls.Add(cmdInsertVertice);
@@ -1021,6 +1022,7 @@ namespace CrashEdit.CE
             // 
             // FrameBox
             // 
+            AutoScroll = true;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(31, 31, 32);

@@ -50,13 +50,13 @@ namespace CrashEdit.CE
             fraPropertyID = new DarkGroupBox();
             fraPropertyField = new DarkGroupBox();
             fraSaveProperties = new DarkGroupBox();
+            rbtReload = new MetroSet_UI.Controls.MetroSetRadioButton();
             pnControlsSaved = new Panel();
             cmdRenameSavedList = new DarkButton();
             cmdCopyFromSaved = new DarkButton();
             cmdRemoveSavedList = new DarkButton();
             lbSavedProperties = new DarkListBox();
             dgvSavePropertyValues = new DataGridView();
-            rbtReload = new MetroSet_UI.Controls.MetroSetRadioButton();
             fraPropertyControls.SuspendLayout();
             fraPropertyViewControls.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvPropertyMetaValues).BeginInit();
@@ -98,7 +98,7 @@ namespace CrashEdit.CE
             chkPropertyMetaValue.Enabled = false;
             chkPropertyMetaValue.Location = new Point(6, 22);
             chkPropertyMetaValue.Name = "chkPropertyMetaValue";
-            chkPropertyMetaValue.Size = new Size(119, 19);
+            chkPropertyMetaValue.Size = new Size(124, 19);
             chkPropertyMetaValue.TabIndex = 10;
             chkPropertyMetaValue.Text = "Toggle MetaValues";
             chkPropertyMetaValue.UseVisualStyleBackColor = true;
@@ -121,7 +121,7 @@ namespace CrashEdit.CE
             chkPropertyShowAllFields.AutoSize = true;
             chkPropertyShowAllFields.Location = new Point(6, 21);
             chkPropertyShowAllFields.Name = "chkPropertyShowAllFields";
-            chkPropertyShowAllFields.Size = new Size(101, 19);
+            chkPropertyShowAllFields.Size = new Size(126, 19);
             chkPropertyShowAllFields.TabIndex = 9;
             chkPropertyShowAllFields.Text = "Show all properties";
             chkPropertyShowAllFields.UseVisualStyleBackColor = true;
@@ -337,6 +337,27 @@ namespace CrashEdit.CE
             fraSaveProperties.TabStop = false;
             fraSaveProperties.Text = "Saved Properties";
             // 
+            // rbtReload
+            // 
+            rbtReload.BackgroundColor = Color.FromArgb(30, 30, 30);
+            rbtReload.BorderColor = Color.FromArgb(155, 155, 155);
+            rbtReload.Checked = true;
+            rbtReload.CheckSignColor = Color.FromArgb(65, 177, 225);
+            rbtReload.CheckState = MetroSet_UI.Enums.CheckState.Checked;
+            rbtReload.DisabledBorderColor = Color.FromArgb(85, 85, 85);
+            rbtReload.Font = new Font("Microsoft Sans Serif", 10F);
+            rbtReload.Group = 0;
+            rbtReload.IsDerivedStyle = true;
+            rbtReload.Location = new Point(576, 253);
+            rbtReload.Name = "rbtReload";
+            rbtReload.Size = new Size(19, 17);
+            rbtReload.Style = MetroSet_UI.Enums.Style.Dark;
+            rbtReload.StyleManager = null;
+            rbtReload.TabIndex = 21;
+            rbtReload.ThemeAuthor = "Narwin";
+            rbtReload.ThemeName = "MetroDark";
+            rbtReload.Click += rbtReload_Click;
+            // 
             // pnControlsSaved
             // 
             pnControlsSaved.Controls.Add(cmdRenameSavedList);
@@ -422,32 +443,11 @@ namespace CrashEdit.CE
             dgvSavePropertyValues.CellBeginEdit += dgvSavePropertyValues_CellBeginEdit;
             dgvSavePropertyValues.CellValueChanged += dgvSavePropertyValues_CellValueChanged;
             // 
-            // rbtReload
-            // 
-            rbtReload.BackgroundColor = Color.FromArgb(30, 30, 30);
-            rbtReload.BorderColor = Color.FromArgb(155, 155, 155);
-            rbtReload.Checked = false;
-            rbtReload.CheckSignColor = Color.FromArgb(65, 177, 225);
-            rbtReload.CheckState = MetroSet_UI.Enums.CheckState.Unchecked;
-            rbtReload.DisabledBorderColor = Color.FromArgb(85, 85, 85);
-            rbtReload.Font = new Font("Microsoft Sans Serif", 10F);
-            rbtReload.Group = 0;
-            rbtReload.Checked = true;
-            rbtReload.IsDerivedStyle = true;
-            rbtReload.Location = new Point(576, 253);
-            rbtReload.Name = "rbtReload";
-            rbtReload.Size = new Size(19, 17);
-            rbtReload.Style = MetroSet_UI.Enums.Style.Dark;
-            rbtReload.StyleManager = null;
-            rbtReload.TabIndex = 21;
-            rbtReload.ThemeAuthor = "Narwin";
-            rbtReload.ThemeName = "MetroDark";
-            rbtReload.Click += rbtReload_Click;
-            // 
             // EntityPropertyBox
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            AutoScroll = true;
             BackColor = Color.FromArgb(31, 31, 32);
             Controls.Add(fraSaveProperties);
             Controls.Add(fraPropertyField);

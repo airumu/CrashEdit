@@ -401,6 +401,7 @@ namespace CrashEdit.CE.Controls
             // 
             // tbpPolygons
             // 
+            tbpPolygons.AutoScroll = true;
             tbpPolygons.BackColor = Color.FromArgb(31, 31, 32);
             tbpPolygons.Controls.Add(lblStruct);
             tbpPolygons.Controls.Add(label3);
@@ -485,6 +486,7 @@ namespace CrashEdit.CE.Controls
             // 
             // tbpColors
             // 
+            tbpColors.AutoScroll = false;
             tbpColors.BackColor = Color.FromArgb(31, 31, 32);
             tbpColors.Controls.Add(lblColorIndex);
             tbpColors.Controls.Add(fraGlobalControl);
@@ -706,6 +708,7 @@ namespace CrashEdit.CE.Controls
             // 
             // tbpTextures
             // 
+            tbpTextures.AutoScroll = false;
             tbpTextures.BackColor = Color.FromArgb(31, 31, 32);
             tbpTextures.Controls.Add(pnPicture);
             tbpTextures.Controls.Add(panel2);
@@ -1089,6 +1092,7 @@ namespace CrashEdit.CE.Controls
             // 
             // tbpExtendedTextures
             // 
+            tbpExtendedTextures.AutoScroll = true;
             tbpExtendedTextures.BackColor = Color.FromArgb(31, 31, 32);
             tbpExtendedTextures.Controls.Add(panel3);
             tbpExtendedTextures.Location = new Point(4, 32);
@@ -1100,6 +1104,7 @@ namespace CrashEdit.CE.Controls
             // 
             // panel3
             // 
+            panel3.AutoScroll = true;
             panel3.AutoSize = true;
             panel3.Controls.Add(dgvExtendedTextures);
             panel3.Dock = DockStyle.Top;
@@ -1132,6 +1137,7 @@ namespace CrashEdit.CE.Controls
             // 
             // tbpPositions
             // 
+            tbpPositions.AutoScroll = true;
             tbpPositions.BackColor = Color.FromArgb(31, 31, 32);
             tbpPositions.Controls.Add(dgvPositions);
             tbpPositions.Location = new Point(4, 32);
