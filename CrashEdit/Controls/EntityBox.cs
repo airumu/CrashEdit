@@ -2768,66 +2768,81 @@ namespace CrashEdit.CE
 
         private void cmdVerifyDrawList_Click(object sender, EventArgs e)
         {
-            bool haserror = false;
-            List<int> drawnids = new List<int>();
-            string idlist = string.Empty;
-            for (int i = 0; i < entity.Positions.Count; ++i)
+            Dictionary<int, int> globalDrawCounts = new Dictionary<int, int>();
+            Dictionary<int, int> globalUndrawCounts = new Dictionary<int, int>();
+            Dictionary<int, List<int>> drawMetas = new Dictionary<int, List<int>>();
+            Dictionary<int, List<int>> undrawMetas = new Dictionary<int, List<int>>();
+
+            // DrawListB
+            foreach (var row in entity.DrawListB.Rows)
             {
-                foreach (var row in entity.DrawListB.Rows)
+                if (row?.Values == null)
+                    continue;
+                int meta = (int)row.MetaValue;
+                foreach (int rawId in row.Values)
                 {
-                    if (row.MetaValue == i)
-                    {
-                        // draw
-                        foreach (int id in row.Values)
-                        {
-                            drawnids.Add(id);
-                        }
-                    }
-                }
-                foreach (var row in entity.DrawListA.Rows)
-                {
-                    if (row.MetaValue == i)
-                    {
-                        // undraw
-                        foreach (int id in row.Values)
-                        {
-                            if (!drawnids.Remove(id))
-                            {
-                                idlist += $"\n[position {i}] {id >> 8 & 0xFFFF}";
-                            }
-                        }
-                    }
+                    int id = (rawId >> 8) & 0xFFFF;
+                    if (globalDrawCounts.ContainsKey(id))
+                        globalDrawCounts[id]++;
+                    else
+                        globalDrawCounts[id] = 1;
+
+                    if (!drawMetas.ContainsKey(id))
+                        drawMetas[id] = new List<int>();
+                    drawMetas[id].Add(meta);
                 }
             }
-            if (idlist != string.Empty)
+
+            // DrawListA
+            foreach (var row in entity.DrawListA.Rows)
+            {
+                if (row?.Values == null)
+                    continue;
+                int meta = (int)row.MetaValue;
+                foreach (int rawId in row.Values)
+                {
+                    int id = (rawId >> 8) & 0xFFFF;
+                    if (globalUndrawCounts.ContainsKey(id))
+                        globalUndrawCounts[id]++;
+                    else
+                        globalUndrawCounts[id] = 1;
+
+                    if (!undrawMetas.ContainsKey(id))
+                        undrawMetas[id] = new List<int>();
+                    undrawMetas[id].Add(meta);
+                }
+            }
+
+            StringBuilder errorSb = new StringBuilder();
+
+            HashSet<int> allIds = new HashSet<int>(globalDrawCounts.Keys);
+            foreach (var id in globalUndrawCounts.Keys)
+                allIds.Add(id);
+
+            foreach (int id in allIds)
+            {
+                int countDraw = globalDrawCounts.ContainsKey(id) ? globalDrawCounts[id] : 0;
+                int countUndraw = globalUndrawCounts.ContainsKey(id) ? globalUndrawCounts[id] : 0;
+                if (countDraw != countUndraw)
+                {
+                    string pos = string.Empty;
+                    if (drawMetas.ContainsKey(id))
+                        pos = $" at position {string.Join(", ", drawMetas[id])}";
+                    if (undrawMetas.ContainsKey(id))
+                        pos = $" at position {string.Join(", ", undrawMetas[id])}";
+
+                    errorSb.AppendLine($"ID {id}{pos}: drawn {countDraw} times, undrawn {countUndraw} times.");
+                }
+            }
+
+            if (errorSb.Length > 0)
             {
                 lblVerifyDrawLists.Visible = false;
-                DarkMessageBox.ShowWarning($"Draw lists are incorrect. The following entities were already undrawn:{idlist}", "Draw list verification exception");
-                haserror = true;
+                DarkMessageBox.ShowWarning($"Draw lists are incorrect:\n{errorSb}", "Draw list verification exception");
             }
-            if (drawnids.Count == 0 && !haserror)
+            else
+            {
                 lblVerifyDrawLists.Visible = true;
-            else if (drawnids.Count != 0)
-            {
-                string idlist2 = string.Empty;
-                for (int i = 0; i < entity.Positions.Count; ++i)
-                {
-                    foreach (var row in entity.DrawListB.Rows)
-                    {
-                        if (row.MetaValue == i)
-                        {
-                            foreach (int id in row.Values)
-                            {
-                                if (drawnids.Remove(id))
-                                {
-                                    idlist2 += $"\n[position {i}] {id >> 8 & 0xFFFF}";
-                                }
-                            }
-                        }
-                    }
-                }
-                lblVerifyDrawLists.Visible = false;
-                DarkMessageBox.ShowWarning($"Draw lists are incorrect. The following entities are never undrawn:{idlist2}", "Draw list verification exception");
             }
         }
 

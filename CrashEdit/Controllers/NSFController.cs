@@ -1,4 +1,5 @@
 using System.Media;
+using System.Text;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
@@ -114,7 +115,7 @@ namespace CrashEdit.CE
         public void Menu_AnalyzeLevel()
         {
             List<string> loadlistLines = new List<string>();
-            List<string> drawlistLines = new List<string>();
+            StringBuilder errorSb = new StringBuilder();
             Console.WriteLine("================================================================================");
             foreach (ZoneEntry zone in NSF.GetEntries<ZoneEntry>())
             {
@@ -185,62 +186,69 @@ namespace CrashEdit.CE
                     // Draw Lists
                     if (entity.DrawListA != null && entity.DrawListB != null)
                     {
-                        List<int> drawnids = new List<int>();
-                        string idlist = string.Empty;
-                        for (int i = 0; i < entity.Positions.Count; ++i)
+                        Dictionary<int, int> globalDrawCounts = new Dictionary<int, int>();
+                        Dictionary<int, int> globalUndrawCounts = new Dictionary<int, int>();
+                        Dictionary<int, List<int>> drawMetas = new Dictionary<int, List<int>>();
+                        Dictionary<int, List<int>> undrawMetas = new Dictionary<int, List<int>>();
+
+                        // DrawListB
+                        foreach (var row in entity.DrawListB.Rows)
                         {
-                            foreach (var row in entity.DrawListB.Rows)
+                            if (row?.Values == null)
+                                continue;
+                            int meta = (int)row.MetaValue;
+                            foreach (int rawId in row.Values)
                             {
-                                if (row.MetaValue == i)
-                                {
-                                    // draw
-                                    foreach (int id in row.Values)
-                                    {
-                                        drawnids.Add(id);
-                                    }
-                                }
-                            }
-                            foreach (var row in entity.DrawListA.Rows)
-                            {
-                                if (row.MetaValue == i)
-                                {
-                                    // undraw
-                                    foreach (int id in row.Values)
-                                    {
-                                        if (!drawnids.Remove(id))
-                                        {
-                                            idlist += $"\n\t\t  [position {i}] {id >> 8 & 0xFFFF}";
-                                        }
-                                    }
-                                }
+                                int id = (rawId >> 8) & 0xFFFF;
+                                if (globalDrawCounts.ContainsKey(id))
+                                    globalDrawCounts[id]++;
+                                else
+                                    globalDrawCounts[id] = 1;
+
+                                if (!drawMetas.ContainsKey(id))
+                                    drawMetas[id] = new List<int>();
+                                drawMetas[id].Add(meta);
                             }
                         }
-                        if (idlist != string.Empty)
+
+                        // DrawListA
+                        foreach (var row in entity.DrawListA.Rows)
                         {
-                            // Draw List A
-                            drawlistLines.Add($"[{zone.EName}, camera {entity.CameraIndex}] The following entities were already undrawn (Draw List A):{idlist}");
-                        }
-                        if (drawnids.Count != 0)
-                        {
-                            string idlist2 = string.Empty;
-                            for (int i = 0; i < entity.Positions.Count; ++i)
+                            if (row?.Values == null)
+                                continue;
+                            int meta = (int)row.MetaValue;
+                            foreach (int rawId in row.Values)
                             {
-                                foreach (var row in entity.DrawListB.Rows)
-                                {
-                                    if (row.MetaValue == i)
-                                    {
-                                        foreach (int id in row.Values)
-                                        {
-                                            if (drawnids.Remove(id))
-                                            {
-                                                idlist2 += $"\n\t\t  [position {i}] {id >> 8 & 0xFFFF}";
-                                            }
-                                        }
-                                    }
-                                }
+                                int id = (rawId >> 8) & 0xFFFF;
+                                if (globalUndrawCounts.ContainsKey(id))
+                                    globalUndrawCounts[id]++;
+                                else
+                                    globalUndrawCounts[id] = 1;
+
+                                if (!undrawMetas.ContainsKey(id))
+                                    undrawMetas[id] = new List<int>();
+                                undrawMetas[id].Add(meta);
                             }
-                            // Draw List B
-                            drawlistLines.Add($"[{zone.EName}, camera {entity.CameraIndex}] The following entities are never undrawn (Draw List B):{idlist2}");
+                        }
+
+                        HashSet<int> allIds = new HashSet<int>(globalDrawCounts.Keys);
+                        foreach (var id in globalUndrawCounts.Keys)
+                            allIds.Add(id);
+
+                        foreach (int id in allIds)
+                        {
+                            int countDraw = globalDrawCounts.ContainsKey(id) ? globalDrawCounts[id] : 0;
+                            int countUndraw = globalUndrawCounts.ContainsKey(id) ? globalUndrawCounts[id] : 0;
+                            if (countDraw != countUndraw)
+                            {
+                                string pos = string.Empty;
+                                if (drawMetas.ContainsKey(id))
+                                    pos = $" at position {string.Join(", ", drawMetas[id])}";
+                                if (undrawMetas.ContainsKey(id))
+                                    pos = $" at position {string.Join(", ", undrawMetas[id])}";
+
+                                errorSb.AppendLine($"[{zone.EName}, camera {entity.CameraIndex}] ID {id}{pos}: drawn {countDraw} times, undrawn {countUndraw} times.");
+                            }
                         }
                     }
                 }
@@ -257,8 +265,8 @@ namespace CrashEdit.CE
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("Draw list integrity check:");
             Console.ResetColor();
-            if (drawlistLines.Count > 0)
-                Console.WriteLine(string.Join(Environment.NewLine, drawlistLines.ToArray()));
+            if (errorSb.Length > 0)
+                Console.WriteLine(errorSb);
             else
                 Console.WriteLine("No draw list issues were found.");
 
