@@ -26,6 +26,14 @@ namespace CrashEdit
             DataChangeHandler = dataChangeHandler;
             BackColor = Color.FromArgb(31, 31, 32);
 
+            ToolStrip toolStrip = new ToolStrip();
+            ToolStripButton tsbExport = new ToolStripButton()
+            {
+                Text = "Export"
+            };
+            tsbExport.Click += new EventHandler(tsbExport_Click);
+            toolStrip.Items.Add(tsbExport);
+
             // HexBox
             hexBox = new HexBox(this)
             {
@@ -63,7 +71,7 @@ namespace CrashEdit
             txtGoto.KeyPress += new KeyPressEventHandler(txtGoto_KeyPress);
             lblPosition = new Label()
             {
-                Width = 200,
+                Width = 400,
                 Padding = new Padding(16, 6, 0, 4)
             };
             FlowLayoutPanel pnFooter = new FlowLayoutPanel()
@@ -87,16 +95,31 @@ namespace CrashEdit
                 ColumnCount = 1,
                 RowCount = 3
             };
+            pnMain.Controls.Add(toolStrip);
             pnMain.Controls.Add(hexBoxHeader);
             pnMain.Controls.Add(hexBox);
             pnMain.Controls.Add(pnFooter);
 
             pnMain.RowStyles.Clear();
+            pnMain.RowStyles.Add(new RowStyle(SizeType.Absolute, toolStrip.Height));
             pnMain.RowStyles.Add(new RowStyle(SizeType.Absolute, hexBoxHeader.Height));
             pnMain.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
             pnMain.RowStyles.Add(new RowStyle(SizeType.Absolute, pnFooter.Height));
 
             Controls.Add(pnMain);
+        }
+
+        private void tsbExport_Click(object? sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Filter = "All Files (*.*)|*.*"
+            };
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                File.WriteAllBytes(saveFileDialog.FileName, Data.ToArray());
+            }
         }
 
         private void txtGoto_KeyDown(object? sender, KeyEventArgs e)
@@ -833,7 +856,10 @@ namespace CrashEdit
         private void SetAnchor(int pos)
         {
             ByteAnchor = pos;
-            hexView.lblPosition.Text = $"Pos: {ByteCursor.ToString("X")}        Anchor: {ByteAnchor.ToString("X")}";
+            int position = Math.Min(ByteCursor, ByteAnchor);
+            string block = $"{Math.Min(ByteCursor, ByteAnchor).ToString("X")}-{Math.Max(ByteCursor, ByteAnchor).ToString("X")}";
+            int length = Math.Max(ByteCursor, ByteAnchor) - Math.Min(ByteCursor, ByteAnchor) + 1;
+            hexView.lblPosition.Text = $"Pos: {position.ToString("X")}        Block: {block}        Length: {length.ToString("X")}";
         }
 
         private int? CheckPosition(MouseEventArgs e)
