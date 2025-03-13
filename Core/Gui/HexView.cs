@@ -895,8 +895,16 @@ namespace CrashEdit
 
                 _dragStartPoint = e.Location;
                 _isDragging = false;
-                MoveTo(pos.Value, false);
-                ResetAnchor();
+                
+                if ((ModifierKeys & Keys.Shift) == Keys.Shift)
+                {
+                    MoveTo(pos.Value, true);
+                }
+                else
+                {
+                    MoveTo(pos.Value, false);
+                    ResetAnchor();
+                }
                 Invalidate();
             }
         }
