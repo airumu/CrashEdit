@@ -113,6 +113,7 @@ namespace CrashEdit
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
+                openFileDialog.Filter = "All Files (*.*)|*.*";
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     byte[] newData = File.ReadAllBytes(openFileDialog.FileName);
