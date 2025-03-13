@@ -754,7 +754,7 @@ namespace CrashEdit
         private static Brush brush_borderBrush = new SolidBrush(Color.FromArgb(36, 36, 40));
         private static Brush brush_borderWordBrush = new SolidBrush(Color.FromArgb(40, 40, 44));
         private static Brush brush_bgNormalBrush = new SolidBrush(Color.FromArgb(32, 32, 34));
-        private static Brush brush_bgAlternateBrush = new SolidBrush(Color.FromArgb(27, 27, 28));
+        private static Brush brush_bgAlternateBrush = new SolidBrush(Color.FromArgb(25, 25, 26));
         private static Brush brush_bgSelectedBrush = new SolidBrush(Color.FromArgb(37, 37, 40));
         private static Brush brush_bgChunkBrush = new SolidBrush(Color.FromArgb(38, 75, 104));
         private static Brush brush_bgSelectedChunkBrush = new SolidBrush(Color.FromArgb(41, 91, 132));
