@@ -41,6 +41,7 @@ namespace CrashEdit.CE
         public EntryConverterForm()
         {
             InitializeComponent();
+            Icon = Embeds.GetIcon("Wrench");
             DoubleBufferedDataGridView.Initialize(dgvAnim);
 
             dgvAnim.Columns.Add("Name", "File Name");
