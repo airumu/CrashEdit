@@ -323,10 +323,10 @@ namespace CrashEdit.CE
 
             if (e.ColumnIndex == 1)
             {
-                string eid = Entry.CheckEIDErrors(inputValue, true);
-                if (eid != string.Empty)
+                string eiderror = Entry.CheckEIDErrors(inputValue, true);
+                if (eiderror != string.Empty)
                 {
-                    DarkMessageBox.ShowError("Invalid EID.", Resources.Title_InputError);
+                    DarkMessageBox.ShowError($"Invalid EID; {eiderror}", Resources.Title_InputError);
                     e.Cancel = true;
                 }
             }
@@ -383,10 +383,10 @@ namespace CrashEdit.CE
 
             if (e.ColumnIndex == 1)
             {
-                string eid = Entry.CheckEIDErrors(inputValue, true);
-                if (eid != string.Empty)
+                string eiderror = Entry.CheckEIDErrors(inputValue, true);
+                if (eiderror != string.Empty)
                 {
-                    DarkMessageBox.ShowError("Please enter a valid EID.", Resources.Title_InputError);
+                    DarkMessageBox.ShowError($"Invalid EID; {eiderror}", Resources.Title_InputError);
                     e.Cancel = true;
                 }
             }
