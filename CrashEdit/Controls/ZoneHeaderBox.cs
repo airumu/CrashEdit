@@ -326,7 +326,7 @@ namespace CrashEdit.CE
                 string eid = Entry.CheckEIDErrors(inputValue, true);
                 if (eid != string.Empty)
                 {
-                    DarkMessageBox.ShowError("Please enter a valid EID.", Resources.Title_InputError);
+                    DarkMessageBox.ShowError("Invalid EID.", Resources.Title_InputError);
                     e.Cancel = true;
                 }
             }
@@ -334,7 +334,7 @@ namespace CrashEdit.CE
             {
                 if (!Regex.IsMatch(inputValue, @"\A\b[0-9a-fA-F]+\b\Z"))
                 {
-                    DarkMessageBox.ShowError("Please enter a valid hexadecimal value.", Resources.Title_InputError);
+                    DarkMessageBox.ShowError("Invalid hexadecimal value.", Resources.Title_InputError);
                     e.Cancel = true;
                 }
             }
