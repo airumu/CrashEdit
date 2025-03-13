@@ -308,11 +308,11 @@ namespace CrashEdit.CE
             File.Copy(nsdFilename, Path.Combine(basePath, Path.GetFileName(nsdFilename)));
             nsfFilename = Path.Combine(basePath, Path.GetFileName(nsfFilename));
             nsdFilename = Path.Combine(basePath, Path.GetFileName(nsdFilename));
-            bool temp_nsf_autosave_setting = Settings.Default.PatchNSDSavesNSF;
-            Settings.Default.PatchNSDSavesNSF = false;
-            PatchNSD(nsdFilename, true, nsfBox, nsfBox.NSFController, true, true);
+            //bool temp_nsf_autosave_setting = Settings.Default.PatchNSDSavesNSF;
+            //Settings.Default.PatchNSDSavesNSF = false;
+            //PatchNSD(nsdFilename, true, nsfBox, nsfBox.NSFController, true, true);
             SaveNSF(nsfFilename, nsf, true);
-            Settings.Default.PatchNSDSavesNSF = temp_nsf_autosave_setting;
+            //Settings.Default.PatchNSDSavesNSF = temp_nsf_autosave_setting;
             var fs = new CDBuilder();
             fs.AddFile("S0\\" + Path.GetFileName(nsfFilename) + ";1", nsfFilename);
             fs.AddFile("S0\\" + Path.GetFileName(nsdFilename) + ";1", nsdFilename);
