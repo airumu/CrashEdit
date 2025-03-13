@@ -1065,7 +1065,7 @@ namespace CrashEdit.CE.Properties {
         /// <summary>
         ///   [Ctrl+C] Copy value of selected item
         ///[Ctrl+V] Paste copied value to selected item
-        ///[Double-click / F2] Rename selected item
+        ///[Double-click / F2 / Enter] Rename selected item
         ///[Ctrl+Shift+C] Copy entire list
         ///[Ctrl+Shift+X] Cut entire list
         ///[Ctrl+Shift+V] Paste copied list に類似しているローカライズされた文字列を検索します。

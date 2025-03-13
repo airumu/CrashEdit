@@ -187,7 +187,7 @@ namespace CrashEdit.CE
             fraEntity.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             fraEntity.Location = new Point(6, 6);
             fraEntity.Name = "fraEntity";
-            fraEntity.Size = new Size(261, 162);
+            fraEntity.Size = new Size(286, 162);
             fraEntity.TabIndex = 15;
             fraEntity.TabStop = false;
             fraEntity.Text = "Entity";
@@ -200,7 +200,7 @@ namespace CrashEdit.CE
             darkGroupBox2.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             darkGroupBox2.Location = new Point(6, 22);
             darkGroupBox2.Name = "darkGroupBox2";
-            darkGroupBox2.Size = new Size(249, 118);
+            darkGroupBox2.Size = new Size(274, 118);
             darkGroupBox2.TabIndex = 1;
             darkGroupBox2.TabStop = false;
             darkGroupBox2.Text = "(ListBox Controls)";
@@ -215,7 +215,7 @@ namespace CrashEdit.CE
             lbEntityListBox.Margin = new Padding(3);
             lbEntityListBox.Name = "lbEntityListBox";
             lbEntityListBox.Padding = new Padding(3);
-            lbEntityListBox.Size = new Size(243, 96);
+            lbEntityListBox.Size = new Size(268, 96);
             lbEntityListBox.TabIndex = 0;
             lbEntityListBox.Text = resources.GetString("lbEntityListBox.Text");
             // 

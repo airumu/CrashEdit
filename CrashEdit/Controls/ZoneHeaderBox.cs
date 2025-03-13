@@ -631,7 +631,7 @@ namespace CrashEdit.CE
                     UpdateSPLoadListsEID(false);
                 }
             }
-            else if (e.KeyCode == Keys.F2)
+            else if (e.KeyCode == Keys.F2 || e.KeyCode == Keys.Enter)
             {
                 if (spLoadList.Count <= 0) return;
                 txtSPLoadList.Focus();
