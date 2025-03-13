@@ -101,14 +101,13 @@ namespace CrashEdit.CE
             tbbExtra.DropDown.Items.Add("-");
             tbbExtra.DropDown.Items.Add(tbxMakeBIN);
             tbbExtra.DropDown.Items.Add("-");
-            tbbExtra.DropDown.Items.Add(tbxConvertVHVB);
-            tbbExtra.DropDown.Items.Add(tbxConvertVAB);
-            tbbExtra.DropDown.Items.Add("-");
+            //tbbExtra.DropDown.Items.Add(tbxConvertVHVB);
+            //tbbExtra.DropDown.Items.Add(tbxConvertVAB);
+            //tbbExtra.DropDown.Items.Add("-");
             tbbExtra.DropDown.Items.Add(tbxEntryConverter);
+            tbbExtra.DropDown.Items.Add(tbxVABTool);
             tbbExtra.DropDown.Items.Add("-");
             tbbExtra.DropDown.Items.Add(tbxGenerateEID);
-            tbbExtra.DropDown.Items.Add("-");
-            tbbExtra.DropDown.Items.Add(tbxVABTool);
 
             ToolStrip.Items.Insert(0, tbbOpen);
             ToolStrip.Items.Insert(1, tbbSave);
