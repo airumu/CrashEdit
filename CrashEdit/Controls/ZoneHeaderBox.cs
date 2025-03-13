@@ -691,7 +691,20 @@ namespace CrashEdit.CE
                 throw new ArgumentException();
 
             Array.Copy(source, 0, data, destOffset, destLength);
-            header = header.IsNew ? ZoneHeader.LoadNew(header.Data) : ZoneHeader.Load(header.Data);
+            ZoneHeader fakeheader = header.IsNew ? ZoneHeader.LoadNew(header.Data) : ZoneHeader.Load(header.Data);
+            header.WorldCount = fakeheader.WorldCount;
+            header.Worlds = fakeheader.Worlds;
+            header.InfoCount = fakeheader.InfoCount;
+            header.CameraCount = fakeheader.CameraCount;
+            header.EntityCount = fakeheader.EntityCount;
+            header.ZoneCount = fakeheader.ZoneCount;
+            header.Zones = fakeheader.Zones;
+            header.ZoneLinkTypes = fakeheader.ZoneLinkTypes;
+            header.Chunk1 = fakeheader.Chunk1;
+            header.ZoneFlags = fakeheader.ZoneFlags;
+            header.Unk0x2A0 = fakeheader.Unk0x2A0;
+            header.Music = fakeheader.Music;
+            header.Chunk2 = fakeheader.Chunk2;
             return true;
         }
 
