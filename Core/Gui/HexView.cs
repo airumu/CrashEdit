@@ -3,7 +3,6 @@ using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 using System.Drawing;
-using System.Resources;
 using System.Text;
 using System.Windows.Forms;
 
@@ -17,21 +16,22 @@ namespace CrashEdit
         public DarkTextBox txtGoto;
         public Label lblPosition;
 
-        public ReadOnlyMemory<byte> Data { get; set; }
-        public Func<int, int, byte[], bool>? DataChangeHandler { get; set; }
-
         public HexView(ReadOnlyMemory<byte> data, Func<int, int, byte[], bool>? dataChangeHandler)
         {
-            Data = data;
-            DataChangeHandler = dataChangeHandler;
             BackColor = Color.FromArgb(31, 31, 32);
 
             ToolStrip toolStrip = new ToolStrip();
+            ToolStripButton tsbImport = new ToolStripButton()
+            {
+                Text = "Import"
+            };
+            tsbImport.Click += new EventHandler(tsbImport_Click);
             ToolStripButton tsbExport = new ToolStripButton()
             {
                 Text = "Export"
             };
             tsbExport.Click += new EventHandler(tsbExport_Click);
+            toolStrip.Items.Add(tsbImport);
             toolStrip.Items.Add(tsbExport);
 
             // HexBox
@@ -39,8 +39,8 @@ namespace CrashEdit
             {
                 Dock = DockStyle.Fill,
                 Margin = Padding.Empty,
-                Data = this.Data,
-                DataChangeHandler = this.DataChangeHandler
+                Data = data,
+                DataChangeHandler = dataChangeHandler
             };
 
             // Header
@@ -109,16 +109,43 @@ namespace CrashEdit
             Controls.Add(pnMain);
         }
 
+        private void tsbImport_Click(object? sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    byte[] newData = File.ReadAllBytes(openFileDialog.FileName);
+
+                    if (hexBox.DataChangeHandler != null)
+                    {
+                        int destOffset = 0;
+                        int destLength = hexBox.Data.Length;
+
+                        bool success = hexBox.DataChangeHandler(destOffset, destLength, newData);
+                        if (!success)
+                        {
+                            DarkMessageBox.ShowError("Failed to update data.", "HexView");
+                        }
+                    }
+                    else
+                    {
+                        hexBox.Data = newData;
+                    }
+                    hexBox.Invalidate();
+                }
+            }
+        }
+
         private void tsbExport_Click(object? sender, EventArgs e)
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
             {
-                Filter = "All Files (*.*)|*.*"
-            };
-
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                File.WriteAllBytes(saveFileDialog.FileName, Data.ToArray());
+                saveFileDialog.Filter = "All Files (*.*)|*.*";
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    File.WriteAllBytes(saveFileDialog.FileName, hexBox.Data.ToArray());
+                }
             }
         }
 
@@ -374,7 +401,6 @@ namespace CrashEdit
                 {
                     ByteCursor = _data.Length;
                 }
-                hexView.Data = _data;
                 ResetLayout();
                 Invalidate();
             }
@@ -417,7 +443,6 @@ namespace CrashEdit
 
                 ClearInput();
                 _dataChangeHandler = value;
-                hexView.DataChangeHandler = _dataChangeHandler;
             }
         }
 
