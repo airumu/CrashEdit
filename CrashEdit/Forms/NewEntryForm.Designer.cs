@@ -30,137 +30,154 @@ namespace CrashEdit.CE
         /// </summary>
         private void InitializeComponent()
         {
-            this.fraType = new DarkGroupBox();
-            this.numType = new DarkNumericUpDown();
-            this.dpdType = new DarkComboBox();
-            this.fraName = new DarkGroupBox();
-            this.lblEIDErr = new Label();
-            this.txtEID = new DarkTextBox();
-            this.cmdOK = new DarkButton();
-            this.cmdCancel = new DarkButton();
-            this.fraType.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numType)).BeginInit();
-            this.fraName.SuspendLayout();
-            this.SuspendLayout();
+            fraType = new DarkGroupBox();
+            numType = new DarkNumericUpDown();
+            dpdType = new DarkComboBox();
+            fraName = new DarkGroupBox();
+            lblEIDErr = new Label();
+            txtEID = new DarkTextBox();
+            cmdOK = new DarkButton();
+            cmdCancel = new DarkButton();
+            fraType.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numType).BeginInit();
+            fraName.SuspendLayout();
+            SuspendLayout();
             // 
             // fraType
             // 
-            this.fraType.AutoSize = true;
-            this.fraType.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            this.fraType.Controls.Add(this.numType);
-            this.fraType.Controls.Add(this.dpdType);
-            this.fraType.Location = new System.Drawing.Point(181, 12);
-            this.fraType.Name = "fraType";
-            this.fraType.Size = new System.Drawing.Size(197, 59);
-            this.fraType.TabIndex = 1;
-            this.fraType.TabStop = false;
-            this.fraType.Text = "Entry Type";
+            fraType.AutoSize = true;
+            fraType.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraType.Controls.Add(numType);
+            fraType.Controls.Add(dpdType);
+            fraType.Location = new Point(211, 14);
+            fraType.Margin = new Padding(4, 3, 4, 3);
+            fraType.Name = "fraType";
+            fraType.Padding = new Padding(4, 3, 4, 3);
+            fraType.Size = new Size(231, 68);
+            fraType.TabIndex = 1;
+            fraType.TabStop = false;
+            fraType.Text = "Entry Type";
             // 
             // numType
             // 
-            this.numType.Enabled = false;
-            this.numType.Location = new System.Drawing.Point(132, 20);
-            this.numType.Maximum = new decimal(new int[] {
-            22,
-            0,
-            0,
-            0});
-            this.numType.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numType.Name = "numType";
-            this.numType.Size = new System.Drawing.Size(59, 20);
-            this.numType.TabIndex = 1;
-            this.numType.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+            numType.Enabled = false;
+            numType.Location = new Point(154, 23);
+            numType.Margin = new Padding(4, 3, 4, 3);
+            numType.Maximum = new decimal(new int[] { 22, 0, 0, 0 });
+            numType.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numType.Name = "numType";
+            numType.Size = new Size(69, 23);
+            numType.TabIndex = 1;
+            numType.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // dpdType
             // 
-            this.dpdType.DropDownStyle = ComboBoxStyle.DropDownList;
-            this.dpdType.FormattingEnabled = true;
-            this.dpdType.Location = new System.Drawing.Point(6, 19);
-            this.dpdType.Name = "dpdType";
-            this.dpdType.Size = new System.Drawing.Size(120, 21);
-            this.dpdType.TabIndex = 0;
-            this.dpdType.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            dpdType.DrawMode = DrawMode.OwnerDrawVariable;
+            dpdType.FormattingEnabled = true;
+            dpdType.Location = new Point(7, 22);
+            dpdType.Margin = new Padding(4, 3, 4, 3);
+            dpdType.Name = "dpdType";
+            dpdType.Size = new Size(139, 24);
+            dpdType.TabIndex = 0;
+            dpdType.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
             // 
             // fraName
             // 
-            this.fraName.Controls.Add(this.lblEIDErr);
-            this.fraName.Controls.Add(this.txtEID);
-            this.fraName.Location = new System.Drawing.Point(12, 12);
-            this.fraName.Name = "fraName";
-            this.fraName.Size = new System.Drawing.Size(163, 71);
-            this.fraName.TabIndex = 2;
-            this.fraName.TabStop = false;
-            this.fraName.Text = "Entry Name";
+            fraName.Controls.Add(lblEIDErr);
+            fraName.Controls.Add(txtEID);
+            fraName.Location = new Point(14, 14);
+            fraName.Margin = new Padding(4, 3, 4, 3);
+            fraName.Name = "fraName";
+            fraName.Padding = new Padding(4, 3, 4, 3);
+            fraName.Size = new Size(190, 82);
+            fraName.TabIndex = 2;
+            fraName.TabStop = false;
+            fraName.Text = "Entry Name";
             // 
             // lblEIDErr
             // 
-            this.lblEIDErr.AutoSize = true;
-            this.lblEIDErr.ForeColor = System.Drawing.Color.Red;
-            this.lblEIDErr.Location = new System.Drawing.Point(6, 46);
-            this.lblEIDErr.Name = "lblEIDErr";
-            this.lblEIDErr.Size = new System.Drawing.Size(160, 13);
-            this.lblEIDErr.TabIndex = 6;
-            this.lblEIDErr.Text = "VERY LONG EID ERROR OMG";
-            this.lblEIDErr.Visible = false;
+            lblEIDErr.AutoSize = true;
+            lblEIDErr.ForeColor = Color.Red;
+            lblEIDErr.Location = new Point(7, 53);
+            lblEIDErr.Margin = new Padding(4, 0, 4, 0);
+            lblEIDErr.Name = "lblEIDErr";
+            lblEIDErr.Size = new Size(159, 15);
+            lblEIDErr.TabIndex = 6;
+            lblEIDErr.Text = "VERY LONG EID ERROR OMG";
+            lblEIDErr.Visible = false;
             // 
             // txtEID
             // 
-            this.txtEID.Location = new System.Drawing.Point(7, 20);
-            this.txtEID.MaxLength = 5;
-            this.txtEID.Name = "txtEID";
-            this.txtEID.Size = new System.Drawing.Size(50, 20);
-            this.txtEID.TabIndex = 0;
-            this.txtEID.Text = "NONE!";
-            this.txtEID.TextChanged += new System.EventHandler(this.txtEID_TextChanged);
+            txtEID.BackColor = Color.FromArgb(26, 26, 28);
+            txtEID.BorderStyle = BorderStyle.FixedSingle;
+            txtEID.ForeColor = Color.FromArgb(213, 213, 213);
+            txtEID.Location = new Point(8, 23);
+            txtEID.Margin = new Padding(4, 3, 4, 3);
+            txtEID.MaxLength = 5;
+            txtEID.Name = "txtEID";
+            txtEID.Size = new Size(58, 23);
+            txtEID.TabIndex = 0;
+            txtEID.Text = "NONE!";
+            txtEID.TextChanged += txtEID_TextChanged;
             // 
             // cmdOK
             // 
-            this.cmdOK.Enabled = false;
-            this.cmdOK.Location = new System.Drawing.Point(223, 77);
-            this.cmdOK.Name = "cmdOK";
-            this.cmdOK.Size = new System.Drawing.Size(75, 23);
-            this.cmdOK.TabIndex = 4;
-            this.cmdOK.Text = "OK";
-            this.cmdOK.Click += new System.EventHandler(this.cmdOK_Click);
+            cmdOK.BorderColour = Color.Empty;
+            cmdOK.CustomColour = false;
+            cmdOK.Enabled = false;
+            cmdOK.FlatBottom = false;
+            cmdOK.FlatTop = false;
+            cmdOK.Location = new Point(260, 89);
+            cmdOK.Margin = new Padding(4, 3, 4, 3);
+            cmdOK.Name = "cmdOK";
+            cmdOK.Padding = new Padding(6, 6, 6, 6);
+            cmdOK.Size = new Size(88, 27);
+            cmdOK.TabIndex = 4;
+            cmdOK.Text = "OK";
+            cmdOK.Click += cmdOK_Click;
             // 
             // cmdCancel
             // 
-            this.cmdCancel.DialogResult = DialogResult.Cancel;
-            this.cmdCancel.Location = new System.Drawing.Point(304, 77);
-            this.cmdCancel.Name = "cmdCancel";
-            this.cmdCancel.Size = new System.Drawing.Size(75, 23);
-            this.cmdCancel.TabIndex = 3;
-            this.cmdCancel.Text = "Cancel";
-            this.cmdCancel.Click += new System.EventHandler(this.cmdCancel_Click);
+            cmdCancel.BorderColour = Color.Empty;
+            cmdCancel.CustomColour = false;
+            cmdCancel.DialogResult = DialogResult.Cancel;
+            cmdCancel.FlatBottom = false;
+            cmdCancel.FlatTop = false;
+            cmdCancel.Location = new Point(355, 89);
+            cmdCancel.Margin = new Padding(4, 3, 4, 3);
+            cmdCancel.Name = "cmdCancel";
+            cmdCancel.Padding = new Padding(6, 6, 6, 6);
+            cmdCancel.Size = new Size(88, 27);
+            cmdCancel.TabIndex = 3;
+            cmdCancel.Text = "Cancel";
+            cmdCancel.Click += cmdCancel_Click;
             // 
             // NewEntryForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = AutoScaleMode.Font;
-            this.AutoSize = true;
-            this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(391, 110);
-            this.Controls.Add(this.cmdOK);
-            this.Controls.Add(this.cmdCancel);
-            this.Controls.Add(this.fraName);
-            this.Controls.Add(this.fraType);
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            this.Name = "NewEntryForm";
-            this.Text = "New Entry";
-            this.fraType.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numType)).EndInit();
-            this.fraName.ResumeLayout(false);
-            this.fraName.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            AutoSize = true;
+            AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            ClientSize = new Size(456, 127);
+            Controls.Add(cmdOK);
+            Controls.Add(cmdCancel);
+            Controls.Add(fraName);
+            Controls.Add(fraType);
+            CornerStyle = CornerPreference.Default;
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            Margin = new Padding(4, 3, 4, 3);
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "NewEntryForm";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "New Entry";
+            TransparencyKey = Color.FromArgb(31, 31, 32);
+            fraType.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)numType).EndInit();
+            fraName.ResumeLayout(false);
+            fraName.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
 
         }
 
