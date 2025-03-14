@@ -1,3 +1,4 @@
+using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.CE.Forms;
 using CrashEdit.CE.Properties;
@@ -37,6 +38,7 @@ namespace CrashEdit.CE
         private EntryConverterForm? frmEntryConverter;
         private MakeBin? frmMakebin;
         private VABTool? frmVABTool;
+        private DarkForm? frmGenerateEID;
 
         public static bool PAL { get; private set; } = Settings.Default.ModePAL;
         private const int RateNTSC = 30;
@@ -149,6 +151,7 @@ namespace CrashEdit.CE
             frmEntryConverter = null;
             frmMakebin = null;
             frmVABTool = null;
+            frmGenerateEID = null;
 
             Icon = OldResources.CBHacksIconAlt;
             // Width = Settings.Default.DefaultFormW;
@@ -913,40 +916,103 @@ namespace CrashEdit.CE
 
         void tbxGenerateEID_Click(object sender, EventArgs e)
         {
-            using (InputWindow inputWindow = new InputWindow(Resources.OldMainForm_tbxGenerateEID, "Calculator", "Enter entry name:", string.Empty, 5))
+            if (frmGenerateEID != null)
             {
-                if (inputWindow.ShowDialog() == DialogResult.OK)
-                {
-                    string input = inputWindow.Input;
-                    if (Entry.CheckEIDErrors(input, true) == string.Empty)
-                    {
-                        int chunk = Entry.ENameToEID(input);
-                        int temp = 0;
-                        List<byte> eid = new List<byte>();
-                        for (int i = 0; i < 8; i++)
-                        {
-                            if (i % 2 == 0)
-                            {
-                                temp = chunk & 0xF;
-                                chunk >>= 4;
-                                eid.Add((byte)(chunk & 0xF));
-                            }
-                            else
-                            {
-                                eid.Add((byte)temp);
-                                chunk >>= 4;
-                            }
-                        }
-                        string result = string.Join("", eid.Select(b => b.ToString("X")));
-                        Console.WriteLine($"{input} -> {result}\nCopied to clipboard.");
-                        Clipboard.SetDataObject(result, true, 10, 100);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Error: Invalid input.");
-                    }
-                }
+                frmGenerateEID.Focus();
+                return;
             }
+            frmGenerateEID = new DarkForm()
+            {
+                Text = "Generate EID",
+                Icon = Embeds.GetIcon("Calculator"),
+                FormBorderStyle = FormBorderStyle.FixedSingle,
+                Size = new Size(260, 190),
+                MinimizeBox = false,
+                MaximizeBox = false,
+                TopMost = true
+            };
+
+            FlowLayoutPanel flp = new FlowLayoutPanel()
+            {
+                Dock = DockStyle.Fill,
+                Padding = new Padding(9, 3, 3, 3),
+                FlowDirection = FlowDirection.TopDown,
+                WrapContents = false
+            };
+
+            Label lbText = new Label()
+            {
+                Text = "Enter entry name:",
+                Margin = new Padding(3, 3, 3, 0),
+            };
+            DarkTextBox txtEName = new DarkTextBox()
+            {
+                MaxLength = 5,
+                Width = 80,
+                Margin = new Padding(3, 0, 3, 3),
+            };
+            DarkTextBox txtEID = new DarkTextBox()
+            {
+                ReadOnly = true,
+                Width = 80,
+                Margin = new Padding(3, 15, 3, 3),
+            };
+            DarkButton cmdCopy = new DarkButton()
+            {
+                Text = "Copy"
+            };
+            Label lbEIDError = new Label()
+            {
+                AutoSize = true,
+                ForeColor = Color.Red
+            };
+
+            txtEName.TextChanged += (sender, e) =>
+            {
+                lbEIDError.Text = Entry.CheckEIDErrors(txtEName.Text, true);
+                if (lbEIDError.Text == string.Empty)
+                {
+                    int chunk = Entry.ENameToEID(txtEName.Text);
+                    int temp = 0;
+                    List<byte> eid = new List<byte>();
+                    for (int i = 0; i < 8; i++)
+                    {
+                        if (i % 2 == 0)
+                        {
+                            temp = chunk & 0xF;
+                            chunk >>= 4;
+                            eid.Add((byte)(chunk & 0xF));
+                        }
+                        else
+                        {
+                            eid.Add((byte)temp);
+                            chunk >>= 4;
+                        }
+                    }
+                    txtEID.Text = string.Join("", eid.Select(b => b.ToString("X")));
+                }
+                else
+                {
+                    txtEID.Text = string.Empty;
+                }
+            };
+            cmdCopy.Click += (sender, e) =>
+            {
+                Clipboard.SetDataObject(txtEID.Text, true, 10, 100);
+            };
+
+            flp.Controls.Add(lbText);
+            flp.Controls.Add(txtEName);
+            flp.Controls.Add(lbEIDError);
+            flp.Controls.Add(txtEID);
+            flp.Controls.Add(cmdCopy);
+            frmGenerateEID.Controls.Add(flp);
+
+            frmGenerateEID.FormClosing += (object? sender, FormClosingEventArgs e) =>
+            {
+                frmGenerateEID = null;
+            };
+            frmGenerateEID.Show();
         }
 
         void tbxVABTool_Click(object sender, EventArgs e)
