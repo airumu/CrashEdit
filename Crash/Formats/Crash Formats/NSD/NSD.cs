@@ -86,7 +86,7 @@ namespace CrashEdit.Crash
             extralength = data.Length - (0x6FC + 8 * entrycount + 24 * spawncount);
             byte[] imagedata = new byte[extralength];
             Array.Copy(data, data.Length - extralength, imagedata, 0, extralength);
-            return new NSD(hashkeymap, chunkcount, leveldata, uncompressedchunksec, preludecount, compressedchunkinfo, index, blank, id, entitycount, goolmap, extradata, spawns, imagedata);
+            return new NSD(hashkeymap, chunkcount, leveldata, uncompressedchunksec, preludecount, compressedchunkinfo, index, blank, id, entitycount, goolmap, extradata, spawns, imagedata, false);
         }
 
         public static NSD LoadC3(byte[] data)
@@ -173,12 +173,10 @@ namespace CrashEdit.Crash
             extralength = data.Length - (0x7FC + 8 * entrycount + 24 * spawncount);
             byte[] imagedata = new byte[extralength];
             Array.Copy(data, data.Length - extralength, imagedata, 0, extralength);
-            return new NSD(hashkeymap, chunkcount, leveldata, uncompressedchunksec, preludecount, compressedchunkinfo, index, blank, id, entitycount, goolmap, extradata, spawns, imagedata);
+            return new NSD(hashkeymap, chunkcount, leveldata, uncompressedchunksec, preludecount, compressedchunkinfo, index, blank, id, entitycount, goolmap, extradata, spawns, imagedata, true);
         }
 
-        private List<NSDSpawnPoint> spawns;
-
-        public NSD(int[] hashkeymap, int chunkcount, int[] leveldata, int uncompressedchunksec, int preludecount, int[] compressedchunkinfo, IEnumerable<NSDLink> index, int blank, int id, int entitycount, int[] goolmap, byte[] extradata, IEnumerable<NSDSpawnPoint> spawns, byte[] imagedata)
+        public NSD(int[] hashkeymap, int chunkcount, int[] leveldata, int uncompressedchunksec, int preludecount, int[] compressedchunkinfo, IEnumerable<NSDLink> index, int blank, int id, int entitycount, int[] goolmap, byte[] extradata, IEnumerable<NSDSpawnPoint> spawns, byte[] imagedata, bool isnew)
         {
             ArgumentNullException.ThrowIfNull(hashkeymap);
             ArgumentNullException.ThrowIfNull(leveldata);
@@ -208,17 +206,11 @@ namespace CrashEdit.Crash
             ExtraData = extradata ?? throw new ArgumentNullException(nameof(extradata));
             Spawns = new List<NSDSpawnPoint>(spawns);
             ImageData = imagedata ?? throw new ArgumentNullException(nameof(imagedata));
+            IsNew = isnew;
         }
 
         public string Title => "NSD";
         public string ImageKey => "NSD";
-
-        //[SubresourceList]
-        //public List<object> Items => new List<object>
-        //    {
-        //        ID,
-        //        Spawns
-        //    };
 
         public int[] HashKeyMap { get; set; }
         public int ChunkCount { get; set; }
@@ -234,6 +226,8 @@ namespace CrashEdit.Crash
         public byte[] ExtraData { get; }
         public IList<NSDSpawnPoint> Spawns { get; set; }
         public byte[] ImageData { get; }
+
+        public bool IsNew { get; }
 
         public byte[] Save()
         {

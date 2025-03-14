@@ -10,6 +10,19 @@ namespace CrashEdit.CE
         public NSDController(NSD nsd, SubcontrollerGroup parentGroup) : base(parentGroup, nsd)
         {
             NSD = nsd;
+            string nsfFilename = GetFileName();
+            string nsdFilename = string.Empty;
+            if (nsfFilename.EndsWith("F"))
+            {
+                nsdFilename = nsfFilename.Remove(nsfFilename.Length - 1);
+                nsdFilename += "D";
+            }
+            else if (nsfFilename.EndsWith("f"))
+            {
+                nsdFilename = nsfFilename.Remove(nsfFilename.Length - 1);
+                nsdFilename += "d";
+            }
+            NSDFileName = nsdFilename;
             AddMenu(Resources.ShowGOOLMap_Title, "ThingCode", Menu_ShowGOOLMap);
             AddMenu(Resources.GenerateSpawnPoint_Title, "Calculator", Menu_GenerateSpawnPoint);
         }
@@ -22,6 +35,8 @@ namespace CrashEdit.CE
         }
 
         public NSD NSD { get; }
+
+        public string NSDFileName { get; }
 
         private DarkForm? showGOOLMapForm { get; set; }
 
@@ -40,21 +55,9 @@ namespace CrashEdit.CE
                 return;
             }
 
-            string nsfFilename = GetFileName();
-            string nsdFilename = string.Empty;
-            if (nsfFilename.EndsWith("F"))
-            {
-                nsdFilename = nsfFilename.Remove(nsfFilename.Length - 1);
-                nsdFilename += "D";
-            }
-            else if (nsfFilename.EndsWith("f"))
-            {
-                nsdFilename = nsfFilename.Remove(nsfFilename.Length - 1);
-                nsdFilename += "d";
-            }
             showGOOLMapForm = new DarkForm()
             {
-                Text = $"GOOL Map ({nsdFilename})",
+                Text = $"GOOL Map ({NSDFileName})",
                 BackColor = Color.FromArgb(31, 31, 32),
                 MaximizeBox = false,
                 MinimizeBox = false,

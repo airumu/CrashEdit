@@ -458,11 +458,20 @@ namespace CrashEdit.CE
 
         private void rbtReload_Click(object sender, EventArgs e)
         {
-            UpdateSpawnPoint();
+            rbtReload.Checked = false;
+
+            UpdateNSD();
             txtID.Text = NSD.ID.ToString("X2");
             lblEntityCount.Text = NSD.EntityCount.ToString();
+            UpdateSpawnPoint();
+        }
 
-            rbtReload.Checked = false;
+        private void UpdateNSD()
+        {
+            NSD newNSD = NSD.IsNew ? NSD.LoadC3(File.ReadAllBytes(NSDController.NSDFileName)) : NSD.Load(File.ReadAllBytes(NSDController.NSDFileName));
+            NSD.ID = newNSD.ID;
+            NSD.EntityCount = newNSD.EntityCount;
+            NSD.Spawns = newNSD.Spawns;
         }
 
         private void cmdAppend_Click(object sender, EventArgs e)
