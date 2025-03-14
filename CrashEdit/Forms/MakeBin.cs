@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Media;
 using System.Text;
+using System.Text.RegularExpressions;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using DiscUtils.Iso9660;
@@ -111,15 +112,42 @@ namespace CrashEdit.CE.Forms
 
         void AddDirectoryToISO(CDBuilder fs, string prefix, DirectoryInfo dir)
         {
+            var allowedNames = new HashSet<string> { "S0", "S1", "S2", "S3", "M0", "M1", "M2", "M3" };
+
             foreach (DirectoryInfo subdir in dir.GetDirectories())
             {
-                AddDirectoryToISO(fs, $"{prefix}{subdir.Name}\\", subdir);
+                if (allowedNames.Contains(subdir.Name))
+                {
+                    AddDirectoryToISO(fs, $"{prefix}{subdir.Name}\\", subdir);
+                }
             }
+
             foreach (FileInfo file in dir.GetFiles())
             {
-                fs.AddFile($"{prefix}{file.Name};1", file.FullName);
+                if (string.Equals(file.Extension, ".nsf", StringComparison.OrdinalIgnoreCase) ||
+                    string.Equals(file.Extension, ".nsd", StringComparison.OrdinalIgnoreCase))
+                {
+                    fs.AddFile($"{prefix}{file.Name};1", file.FullName);
+                }
+                else if (Regex.IsMatch(Path.GetFileName(file.Name).ToUpper(), @"^(S[CL][UEP]S_\d\d\d\.\d\d|PSX\.EXE)$"))
+                {
+                    fs.AddFile($"{prefix}{file.Name};1", file.FullName);
+                }
+                else if (Path.GetFileName(file.Name).ToUpper() == "SYSTEM.CNF")
+                {
+                    fs.AddFile($"{prefix}{file.Name};1", file.FullName);
+                }
+                else if (Path.GetFileName(file.Name).ToUpper() == "KDAT.DAT")
+                {
+                    fs.AddFile($"{prefix}{file.Name};1", file.FullName);
+                }
+                else if (Regex.IsMatch(Path.GetFileName(file.Name).ToUpper(), @"^WARPSC[UEP]S\.BIN$"))
+                {
+                    fs.AddFile($"{prefix}{file.Name};1", file.FullName);
+                }
             }
         }
+
 
         private void bgwMakeBIN_DoWork(object sender, DoWorkEventArgs e)
         {
