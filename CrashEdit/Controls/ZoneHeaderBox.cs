@@ -116,7 +116,13 @@ namespace CrashEdit.CE
         {
             header.Data = header.Save();
             tbpHex.Controls.Clear();
-            tbpHex.Controls.Add(new HexView(header.Data, HexView_DataChangeHandler) { Dock = DockStyle.Fill });
+            tbpHex.Controls.Add(new HexView(this, header.Data, HexView_DataChangeHandler) { Dock = DockStyle.Fill });
+        }
+
+        public void ReplaceData(byte[] source)
+        {
+            header.Data = source;
+            UpdateData();
         }
 
         private void ZoneHeaderBox_Leave(object sender, EventArgs e)
@@ -691,6 +697,12 @@ namespace CrashEdit.CE
                 throw new ArgumentException();
 
             Array.Copy(source, 0, data, destOffset, destLength);
+            UpdateData();
+            return true;
+        }
+
+        private void UpdateData()
+        {
             ZoneHeader fakeheader = header.IsNew ? ZoneHeader.LoadNew(header.Data) : ZoneHeader.Load(header.Data);
             header.WorldCount = fakeheader.WorldCount;
             header.Worlds = fakeheader.Worlds;
@@ -705,7 +717,6 @@ namespace CrashEdit.CE
             header.Unk0x2A0 = fakeheader.Unk0x2A0;
             header.Music = fakeheader.Music;
             header.Chunk2 = fakeheader.Chunk2;
-            return true;
         }
 
         private void txtSPLoadList_KeyDown(object sender, KeyEventArgs e)

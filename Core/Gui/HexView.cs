@@ -10,13 +10,26 @@ namespace CrashEdit
 {
     public sealed class HexView : UserControl
     {
+        private dynamic? controller;
         private HexBox hexBox;
         private HexBoxHeader hexBoxHeader;
+
+        private TableLayoutPanel pnMain;
 
         public DarkTextBox txtGoto;
         public Label lblPosition;
 
-        public HexView(ReadOnlyMemory<byte> data, Func<int, int, byte[], bool>? dataChangeHandler)
+        public HexView(dynamic controller, ReadOnlyMemory<byte> data, Func<int, int, byte[], bool>? dataChangeHandler)
+        {
+            this.controller = controller;
+            MainInit(data, dataChangeHandler);
+        }
+
+        public HexView(ReadOnlyMemory<byte> data, Func<int, int, byte[], bool>? dataChangeHandler) : this(null, data, dataChangeHandler)
+        {
+        }
+
+        private void MainInit(ReadOnlyMemory<byte> data, Func<int, int, byte[], bool>? dataChangeHandler)
         {
             BackColor = Color.FromArgb(31, 31, 32);
 
@@ -31,7 +44,8 @@ namespace CrashEdit
                 Text = "Export"
             };
             tsbExport.Click += new EventHandler(tsbExport_Click);
-            toolStrip.Items.Add(tsbImport);
+            if (controller != null)
+                toolStrip.Items.Add(tsbImport);
             toolStrip.Items.Add(tsbExport);
 
             // HexBox
@@ -89,7 +103,7 @@ namespace CrashEdit
             pnFooter.Controls.Add(lblPosition);
 
             // Main Control
-            TableLayoutPanel pnMain = new TableLayoutPanel()
+            pnMain = new TableLayoutPanel()
             {
                 Dock = DockStyle.Fill,
                 ColumnCount = 1,
@@ -118,22 +132,12 @@ namespace CrashEdit
                 {
                     byte[] newData = File.ReadAllBytes(openFileDialog.FileName);
 
-                    if (hexBox.DataChangeHandler != null)
+                    if (controller != null)
                     {
-                        int destOffset = 0;
-                        int destLength = hexBox.Data.Length;
-
-                        bool success = hexBox.DataChangeHandler(destOffset, destLength, newData);
-                        if (!success)
-                        {
-                            DarkMessageBox.ShowError("Failed to update data.", "HexView");
-                        }
-                    }
-                    else
-                    {
+                        controller.ReplaceData(newData);
                         hexBox.Data = newData;
+                        hexBox.Invalidate();
                     }
-                    hexBox.Invalidate();
                 }
             }
         }

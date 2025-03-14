@@ -17,7 +17,7 @@ namespace CrashEdit
 
         protected override Control MakeControl()
         {
-            return new HexView((byte[])Subject.Resource, HexView_DataChangeHandler);
+            return new HexView(this, (byte[])Subject.Resource, HexView_DataChangeHandler);
         }
 
         private bool HexView_DataChangeHandler(int destOffset, int destLength, byte[] source)
@@ -31,6 +31,13 @@ namespace CrashEdit
 
             Array.Copy(source, 0, data, destOffset, destLength);
             return true;
+        }
+
+        public void ReplaceData(byte[] source)
+        {
+            var newRes = source;
+            Subject.ParentGroup.Replace(Subject, newRes);
+            Subject.UpdateResource(newRes);
         }
 
         public override void Sync()

@@ -40,7 +40,7 @@ namespace CrashEdit.CE
             };
             {
                 TabPage page = new TabPage("Hex");
-                page.Controls.Add(new HexView(chunk.Data, HexView_DataChangeHandler) { Dock = DockStyle.Fill });
+                page.Controls.Add(new HexView(this, chunk.Data, HexView_DataChangeHandler) { Dock = DockStyle.Fill });
                 tbcTabs.TabPages.Add(page);
             }
             {
@@ -214,6 +214,12 @@ namespace CrashEdit.CE
 
             Array.Copy(source, 0, data, destOffset, destLength);
             return true;
+        }
+
+        public void ReplaceData(byte[] source)
+        {
+            texturechunk.Data = source;
+            UpdatePicture(source);
         }
 
         protected override void Dispose(bool disposing)

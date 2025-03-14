@@ -7,7 +7,7 @@ namespace CrashEdit.Crash
             Data = data ?? throw new ArgumentNullException(nameof(data));
         }
 
-        public byte[] Data { get; }
+        public byte[] Data { get; set; }
 
         public override UnprocessedEntry Unprocess()
         {
