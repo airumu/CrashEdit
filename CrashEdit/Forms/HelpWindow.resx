@@ -125,6 +125,7 @@
 [Ctrl + G] Goto
 [+ / - ] Change line width
 
+[Shift-click] Select multiple cells
 [Mouse drag] Select multiple cells
 [Ctrl + C] Copy selected words as bytes
 [Ctrl + X] Cut selected words as bytes
@@ -132,6 +133,14 @@
 [Ctrl + Shift + C] Copy selected words as EID
 [Ctrl + Shift + X] Cut selected words as EID
 [Ctrl + Shift + V] Paste to words as EID</value>
+  </data>
+  <data name="lbNSDBox.Text" xml:space="preserve">
+    <value>[Right-click] Save selected texture region to file
+[Left-click] Move texture region
+[Mouse drag] Resize texture region
+[Ctrl+C] Copy texture to buffer
+[Ctrl+X] Cut texture to buffer
+[Ctrl+V] Paste texture from buffer</value>
   </data>
   <data name="lbEntityListBox.Text" xml:space="preserve">
     <value>[Ctrl+C] Copy value of selected item

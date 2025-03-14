@@ -1179,6 +1179,7 @@ namespace CrashEdit.CE.Properties {
         ///[Ctrl + G] Goto
         ///[+ / - ] Change line width
         ///
+        ///[Shift-click] Select multiple cells
         ///[Mouse drag] Select multiple cells
         ///[Ctrl + C] Copy selected words as bytes
         ///[Ctrl + X] Cut selected words as bytes
@@ -2063,6 +2064,8 @@ namespace CrashEdit.CE.Properties {
         
         /// <summary>
         ///   [Right-click] Save selected texture region to file
+        ///[Left-click] Move texture region
+        ///[Mouse drag] Resize texture region
         ///[Ctrl+C] Copy texture to buffer
         ///[Ctrl+X] Cut texture to buffer
         ///[Ctrl+V] Paste texture from buffer に類似しているローカライズされた文字列を検索します。

@@ -75,7 +75,7 @@ namespace CrashEdit.CE
             fraHexViewer.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             fraHexViewer.Location = new Point(6, 388);
             fraHexViewer.Name = "fraHexViewer";
-            fraHexViewer.Size = new Size(252, 238);
+            fraHexViewer.Size = new Size(252, 253);
             fraHexViewer.TabIndex = 15;
             fraHexViewer.TabStop = false;
             fraHexViewer.Text = "Hex Viewer";
@@ -90,7 +90,7 @@ namespace CrashEdit.CE
             lbHexViewer.Margin = new Padding(3);
             lbHexViewer.Name = "lbHexViewer";
             lbHexViewer.Padding = new Padding(3);
-            lbHexViewer.Size = new Size(246, 216);
+            lbHexViewer.Size = new Size(246, 231);
             lbHexViewer.TabIndex = 0;
             lbHexViewer.Text = resources.GetString("lbHexViewer.Text");
             // 
@@ -103,7 +103,7 @@ namespace CrashEdit.CE
             fraNSDBox.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             fraNSDBox.Location = new Point(6, 164);
             fraNSDBox.Name = "fraNSDBox";
-            fraNSDBox.Size = new Size(225, 132);
+            fraNSDBox.Size = new Size(279, 162);
             fraNSDBox.TabIndex = 15;
             fraNSDBox.TabStop = false;
             fraNSDBox.Text = "NSD";
@@ -117,7 +117,7 @@ namespace CrashEdit.CE
             fraSpawns.Font = new Font("Segoe UI", 9F);
             fraSpawns.Location = new Point(6, 22);
             fraSpawns.Name = "fraSpawns";
-            fraSpawns.Size = new Size(213, 88);
+            fraSpawns.Size = new Size(267, 118);
             fraSpawns.TabIndex = 16;
             fraSpawns.TabStop = false;
             fraSpawns.Text = "Spawn Points";
@@ -131,9 +131,9 @@ namespace CrashEdit.CE
             lbNSDBox.Margin = new Padding(3);
             lbNSDBox.Name = "lbNSDBox";
             lbNSDBox.Padding = new Padding(3);
-            lbNSDBox.Size = new Size(207, 66);
+            lbNSDBox.Size = new Size(261, 96);
             lbNSDBox.TabIndex = 0;
-            lbNSDBox.Text = "[Mouse drag] Move row\r\n[Right-click] Show context menu\r\n[Ctrl + C] Copy selected spawn point\r\n[Ctrl + V] Paste selected spawn point";
+            lbNSDBox.Text = resources.GetString("lbNSDBox.Text");
             // 
             // fraTextureViewer
             // 
@@ -175,7 +175,7 @@ namespace CrashEdit.CE
             flowLayoutPanel1.Location = new Point(3, 3);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
             flowLayoutPanel1.Padding = new Padding(3);
-            flowLayoutPanel1.Size = new Size(282, 633);
+            flowLayoutPanel1.Size = new Size(289, 648);
             flowLayoutPanel1.TabIndex = 16;
             // 
             // fraEntity
@@ -331,7 +331,7 @@ namespace CrashEdit.CE
             tableLayoutPanel1.RowCount = 1;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.Size = new Size(576, 639);
+            tableLayoutPanel1.Size = new Size(591, 654);
             tableLayoutPanel1.TabIndex = 16;
             // 
             // flowLayoutPanel2
@@ -343,10 +343,10 @@ namespace CrashEdit.CE
             flowLayoutPanel2.Controls.Add(fraNSDBox);
             flowLayoutPanel2.Dock = DockStyle.Fill;
             flowLayoutPanel2.FlowDirection = FlowDirection.TopDown;
-            flowLayoutPanel2.Location = new Point(291, 3);
+            flowLayoutPanel2.Location = new Point(298, 3);
             flowLayoutPanel2.Name = "flowLayoutPanel2";
             flowLayoutPanel2.Padding = new Padding(3);
-            flowLayoutPanel2.Size = new Size(282, 633);
+            flowLayoutPanel2.Size = new Size(290, 648);
             flowLayoutPanel2.TabIndex = 17;
             // 
             // HelpWindow
@@ -355,7 +355,7 @@ namespace CrashEdit.CE
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(576, 639);
+            ClientSize = new Size(591, 654);
             Controls.Add(tableLayoutPanel1);
             CornerStyle = CornerPreference.Default;
             ForeColor = Color.Gainsboro;
