@@ -339,7 +339,7 @@ namespace CrashEdit.CE
 
             if (e.ColumnIndex >= ColIndex && e.ColumnIndex <= ColIndexAlt)
             {
-                DarkMessageBox.ShowError("This cell cannot be edited.", Resources.Title_InputError);
+                //DarkMessageBox.ShowError("This cell cannot be edited.", Resources.Title_InputError);
                 e.Cancel = true;
             }
 
@@ -349,7 +349,7 @@ namespace CrashEdit.CE
                 if ((e.ColumnIndex == ColFrameCount && !(selectedGroup is VertexGroup2) && !(selectedGroup is VertexGroup3to2)) ||
                     (dgvFrameGroup.SelectedCells[0].Value.ToString() == "-")) // if interpolated is not set
                 {
-                    DarkMessageBox.ShowError("This cell cannot be edited.", Resources.Title_InputError);
+                    //DarkMessageBox.ShowError("This cell cannot be edited.", Resources.Title_InputError);
                     e.Cancel = true;
                 }
             }
@@ -530,7 +530,7 @@ namespace CrashEdit.CE
         {
             if (e.ColumnIndex >= ColX1 && e.ColumnIndex <= ColY4 && !(goolentry.Version == GOOLVersion.Version1))
             {
-                DarkMessageBox.ShowError("This cell cannot be edited.", Resources.Title_InputError);
+                //DarkMessageBox.ShowError("This cell cannot be edited.", Resources.Title_InputError);
                 e.Cancel = true;
             }
         }
