@@ -129,11 +129,22 @@ namespace CrashEdit
 
                         var item = new ToolStripMenuItem();
                         item.Text = legacyVerb.Text;
+                        if (legacyVerb.ImageKey != null)
+                        {
+                            item.ImageKey = legacyVerb.ImageKey;
+                        }
                         item.Click += (sender, e) =>
                         {
                             Executor.ExecuteVerb(legacyVerb);
                         };
-                        Items.Add(item);
+                        if (item.Text == "-")
+                        {
+                            Items.Add(new ToolStripSeparator());
+                        }
+                        else
+                        {
+                            Items.Add(item);
+                        }
                     }
                 }
 

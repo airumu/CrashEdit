@@ -8,7 +8,7 @@ namespace CrashEdit
 
         public override string Text => "Find Last";
 
-        public override string ImageKey => "RecordLast";
+        public override string ImageKey => "Last";
 
         public override bool Ready =>
             WsHost?.SearchPredicate != null;
@@ -23,6 +23,7 @@ namespace CrashEdit
             // Start from the last (by depth-first) controller.
             var w = new Walker();
             w.Cursor = WsHost.RootController;
+
             while (w.MoveToLastChild()) { }
 
             // Regress depth-first until a match is found.
@@ -31,7 +32,7 @@ namespace CrashEdit
                 if (!w.MoveToPreviousDFS())
                 {
                     // Nothing in the entire tree matches.
-                    Host.ShowError("No results found.");
+                    Host.ShowInformation("No results found.", "Find");
                     return false;
                 }
             }

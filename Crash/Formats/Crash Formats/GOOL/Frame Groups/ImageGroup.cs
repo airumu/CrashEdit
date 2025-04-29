@@ -1,6 +1,6 @@
 ﻿namespace CrashEdit.Crash
 {
-    public sealed class ImageGroup(List<List<ImageTexture>> frames, int eid) : GOOLFrameGroup<List<ImageTexture>>(frames, eid)
+    public sealed class ImageGroup : GOOLFrameGroup<List<ImageTexture>>
     {
         public override short Type() => 5;
 
@@ -10,8 +10,9 @@
             {
                 ErrorManager.SignalError("Image frame group version is wrong");
             }
+            int idx = index;
             index += 2;
-            
+
             short framecount = BitConv.FromInt16(data, index);
             index += 2;
 
@@ -28,13 +29,22 @@
                 frames.Add(parts);
                 for (int j = 0; j < partcount; ++j)
                 {
-                    parts.Add(new(BitConv.FromInt32(data, index), BitConv.FromInt32(data, index+4), BitConv.FromInt16(data, index + 8), BitConv.FromInt16(data, index + 10), BitConv.FromInt16(data, index + 12), BitConv.FromInt16(data, index + 14)));
+                    parts.Add(new(BitConv.FromInt32(data, index), BitConv.FromInt32(data, index + 4), BitConv.FromInt16(data, index + 8), BitConv.FromInt16(data, index + 10), BitConv.FromInt16(data, index + 12), BitConv.FromInt16(data, index + 14)));
                     index += 16;
                 }
             }
 
-            return new ImageGroup(frames, eid);
+            return new ImageGroup(frames, eid, idx);
         }
+
+        public ImageGroup(List<List<ImageTexture>> frames, int eid, int index) : base(frames, eid)
+        {
+            Frames = frames;
+            Index = index;
+        }
+
+        public List<List<ImageTexture>> Frames { get; }
+        public int Index { get; set; }
 
         public override byte[] Save()
         {

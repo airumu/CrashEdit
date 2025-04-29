@@ -1,3 +1,4 @@
+using AltUI.Controls;
 using CrashEdit.Crash;
 
 namespace CrashEdit.CE
@@ -8,13 +9,18 @@ namespace CrashEdit.CE
 
         private int totalsize;
 
-        private ListBox lstEntryList;
+        private DarkListBox lstEntryList;
 
         public EntryChunkBox(EntryChunkController controller)
         {
             this.controller = controller;
 
-            lstEntryList = new ListBox { Dock = DockStyle.Fill };
+            BackColor = Color.FromArgb(31, 31, 32);
+            lstEntryList = new DarkListBox
+            {
+                Dock = DockStyle.Fill,
+                BackColor = Color.FromArgb(31, 31, 32)
+            };
 
             Controls.Add(lstEntryList);
 

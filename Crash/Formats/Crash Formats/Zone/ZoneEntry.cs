@@ -2,9 +2,9 @@ namespace CrashEdit.Crash
 {
     public sealed class ZoneEntry : Entry
     {
-        public ZoneEntry(byte[] header, byte[] layout, IEnumerable<Entity> entities, int eid) : base(eid)
+        public ZoneEntry(ZoneHeader zoneheader, byte[] layout, IEnumerable<Entity> entities, int eid) : base(eid)
         {
-            Header = header;
+            Zoneheader = zoneheader;
             Layout = layout;
             Entities.AddRange(entities);
         }
@@ -15,7 +15,7 @@ namespace CrashEdit.Crash
         public override int Type => 7;
 
         [SubresourceSlot]
-        public byte[] Header { get; set; }
+        public ZoneHeader Zoneheader { get; set; }
 
         [SubresourceSlot]
         public byte[] Layout { get; set; }
@@ -25,36 +25,36 @@ namespace CrashEdit.Crash
 
         public int WorldCount
         {
-            get => BitConv.FromInt32(Header, 0);
-            set => BitConv.ToInt32(Header, 0, value);
+            get => Zoneheader.WorldCount;
+            set => Zoneheader.WorldCount = value;
         }
 
         public int InfoCount
         {
-            get => BitConv.FromInt32(Header, 0x184);
-            set => BitConv.ToInt32(Header, 0x184, value);
+            get => Zoneheader.InfoCount;
+            set => Zoneheader.InfoCount = value;
         }
 
         public int CameraCount
         {
-            get => BitConv.FromInt32(Header, 0x188);
-            set => BitConv.ToInt32(Header, 0x188, value);
+            get => Zoneheader.CameraCount;
+            set => Zoneheader.CameraCount = value;
         }
 
         public int EntityCount
         {
-            get => BitConv.FromInt32(Header, 0x18C);
-            set => BitConv.ToInt32(Header, 0x18C, value);
+            get => Zoneheader.EntityCount;
+            set => Zoneheader.EntityCount = value;
         }
 
         public int ZoneCount
         {
-            get => BitConv.FromInt32(Header, 0x190);
-            set => BitConv.ToInt32(Header, 0x190, value);
+            get => Zoneheader.ZoneCount;
+            set => Zoneheader.ZoneCount = value;
         }
 
-        public int GetLinkedWorld(int idx) => BitConv.FromInt32(Header, 0x4 + idx * 0x30);
-        public int GetLinkedZone(int idx) => BitConv.FromInt32(Header, 0x194 + idx * 0x4);
+        public int GetLinkedWorld(int idx) => Zoneheader.Worlds[idx];
+        public int GetLinkedZone(int idx) => Zoneheader.Zones[idx];
 
         public int X
         {
@@ -107,7 +107,7 @@ namespace CrashEdit.Crash
         public override UnprocessedEntry Unprocess()
         {
             byte[][] items = new byte[2 + Entities.Count][];
-            items[0] = Header;
+            items[0] = Zoneheader.Save();
             items[1] = Layout;
             for (int i = 0; i < Entities.Count; i++)
             {

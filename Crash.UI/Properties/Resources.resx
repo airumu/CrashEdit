@@ -357,4 +357,28 @@
   <data name="NSFController_AcShowLevelZones" xml:space="preserve">
     <value>Show All Level Zones</value>
   </data>
+  <data name="NSFController_AcAddTextureChunk" xml:space="preserve">
+    <value>Add Texture Chunk</value>
+  </data>
+  <data name="ZoneEntryController_AcChangeCollisionType" xml:space="preserve">
+    <value>Change Collision Type</value>
+  </data>
+  <data name="NSFController_AcFindEntities" xml:space="preserve">
+    <value>Find Entities</value>
+  </data>
+  <data name="NSFController_AcAnalyzeLevel" xml:space="preserve">
+    <value>Analyze level</value>
+  </data>
+  <data name="NSFController_AcExportScenery" xml:space="preserve">
+    <value>Export All Scenery as OBJ</value>
+  </data>
+  <data name="AnimationEntryController_AcExportAsOBJ" xml:space="preserve">
+    <value>Export as Wavefront OBJ</value>
+  </data>
+  <data name="SceneryEntryController_AcFixWGEOv3" xml:space="preserve">
+    <value>Fix coords imported from Crash 3</value>
+  </data>
+  <data name="NSFController_AcEditScenery" xml:space="preserve">
+    <value>Edit Scenery</value>
+  </data>
 </root>

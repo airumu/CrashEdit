@@ -1,6 +1,6 @@
 ﻿namespace CrashEdit.Crash
 {
-    public sealed class SpriteGroup2(List<SpriteTexture2> frames, int eid) : GOOLFrameGroup<SpriteTexture2>(frames, eid)
+    public sealed class SpriteGroup2 : GOOLFrameGroup<SpriteTexture2>
     {
         public override short Type() => 2;
 
@@ -10,23 +10,38 @@
             {
                 ErrorManager.SignalError("Sprite frame group version is wrong");
             }
+            int idx = index;
             index += 2;
-            
+
             short framecount = BitConv.FromInt16(data, index);
             index += 2;
 
             int eid = BitConv.FromInt32(data, index);
             index += 4;
 
+            if (index + framecount * 16 > data.Length)
+            {
+                ErrorManager.SignalError("Sprite frame group framecount is wrong");
+            }
             List<SpriteTexture2> frames = new();
             for (int i = 0; i < framecount; ++i)
             {
                 frames.Add(new(BitConv.FromInt32(data, index), BitConv.FromInt32(data, index + 4), BitConv.FromInt32(data, index + 8), BitConv.FromInt32(data, index + 12)));
+                frames[i] = SpriteTexture2.Load(BitConv.FromInt32(data, index), BitConv.FromInt32(data, index + 4), BitConv.FromInt32(data, index + 8), BitConv.FromInt32(data, index + 12));
                 index += 16;
             }
 
-            return new SpriteGroup2(frames, eid);
+            return new SpriteGroup2(frames, eid, idx);
         }
+
+        public SpriteGroup2(List<SpriteTexture2> frames, int eid, int index) : base(frames, eid)
+        {
+            Frames = frames;
+            Index = index;
+        }
+
+        public List<SpriteTexture2> Frames { get; }
+        public int Index { get; set; }
 
         public override byte[] Save()
         {
@@ -36,10 +51,7 @@
             BitConv.ToInt32(data, 4, EID);
             for (int i = 0; i < FrameCount; ++i)
             {
-                BitConv.ToInt32(data, 8 + i * 16 + 0, Frames[i].PackedValue1);
-                BitConv.ToInt32(data, 8 + i * 16 + 4, Frames[i].PackedValue2);
-                BitConv.ToInt32(data, 8 + i * 16 + 8, Frames[i].PackedValue3);
-                BitConv.ToInt32(data, 8 + i * 16 + 12, Frames[i].PackedValue4);
+                Frames[i].Save().CopyTo(data, 8 + i * 16);
             }
             return data;
         }

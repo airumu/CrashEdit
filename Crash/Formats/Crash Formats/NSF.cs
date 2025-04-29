@@ -213,7 +213,7 @@ namespace CrashEdit.Crash
         public GameVersion Version { get; private set; }
 
         public string Title => "NSF";
-        public string ImageKey => "File";
+        public string ImageKey => "NSF";
 
         [SubresourceList]
         public List<Chunk> Chunks { get; }
@@ -386,7 +386,7 @@ namespace CrashEdit.Crash
                             newindex.Add(entry.HashKey, new SortedDictionary<string, int>(new ENameComparer()));
                         if (newindex[entry.HashKey].ContainsKey(entry.EName))
                         {
-                            ErrorManager.SignalIgnorableError(string.Format("NSF.MakeNSDIndex: Duplicate entry {0}", entry.EName));
+                            ErrorManager.SignalError(string.Format("NSF.MakeNSDIndex: Duplicate entry {0}", entry.EName));
                         }
                         else
                         {

@@ -27,7 +27,7 @@ namespace CrashEdit
         {
             ArgumentNullException.ThrowIfNull(resource);
 
-            Resource = resource;
+            _resource = resource;
             ParentGroup = parentGroup;
 
             var type = resource.GetType();
@@ -67,7 +67,8 @@ namespace CrashEdit
             Legacy = legacy;
         }
 
-        public object Resource { get; }
+        private object _resource;
+        public object Resource => _resource;
 
         public Controller? Parent => ParentGroup?.Owner;
 
@@ -88,6 +89,13 @@ namespace CrashEdit
             "Arrow";
 
         public bool Dead { get; private set; }
+
+        public void UpdateResource(object newResource)
+        {
+            if (newResource == null)
+                throw new ArgumentNullException(nameof(newResource));
+            _resource = newResource;
+        }
 
         public void Kill()
         {

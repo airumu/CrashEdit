@@ -1,3 +1,4 @@
+using CrashEdit.CE.Controls;
 using CrashEdit.Crash;
 
 namespace CrashEdit.CE
@@ -14,20 +15,7 @@ namespace CrashEdit.CE
 
         public override Control CreateEditor()
         {
-            if (ModelEntry.Positions == null)
-                return new Label { Text = string.Format("Polygon count: {0}\nVertex count: {1}", ModelEntry.PolyCount, ModelEntry.VertexCount), TextAlign = ContentAlignment.MiddleCenter };
-            else
-            {
-                int totalbits = ModelEntry.Positions.Count * 8 * 3;
-                int bits = 0;
-                foreach (ModelPosition pos in ModelEntry.Positions)
-                {
-                    bits += 1 + pos.XBits;
-                    bits += 1 + pos.YBits;
-                    bits += 1 + pos.ZBits;
-                }
-                return new Label { Text = string.Format("Polygon count: {0}\nVertex count: {1}\nCompression ratio: {2:P1} ({3}/{4})", ModelEntry.PolyCount, ModelEntry.VertexCount, (float)bits / totalbits, bits, totalbits), TextAlign = ContentAlignment.MiddleCenter };
-            }
+            return new ModelBox(this);
         }
 
         public ModelEntry ModelEntry { get; }

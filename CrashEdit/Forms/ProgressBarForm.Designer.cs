@@ -1,4 +1,6 @@
-﻿namespace CrashEdit.CE.Forms
+﻿using MetroSet_UI.Controls;
+
+namespace CrashEdit.CE.Forms
 {
     partial class ProgressBarForm
     {
@@ -28,36 +30,55 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.uxProgress = new System.Windows.Forms.ProgressBar();
-            this.SuspendLayout();
+            uxProgress = new MetroSetProgressBar();
+            SuspendLayout();
             // 
             // uxProgress
             // 
-            this.uxProgress.Location = new System.Drawing.Point(12, 12);
-            this.uxProgress.Name = "uxProgress";
-            this.uxProgress.Size = new System.Drawing.Size(373, 23);
-            this.uxProgress.TabIndex = 0;
-            this.uxProgress.UseWaitCursor = true;
+            uxProgress.BackgroundColor = Color.FromArgb(38, 38, 38);
+            uxProgress.BorderColor = Color.FromArgb(38, 38, 38);
+            uxProgress.DisabledBackColor = Color.FromArgb(38, 38, 38);
+            uxProgress.DisabledBorderColor = Color.FromArgb(38, 38, 38);
+            uxProgress.DisabledProgressColor = Color.FromArgb(120, 65, 177, 225);
+            uxProgress.IsDerivedStyle = true;
+            uxProgress.Location = new Point(14, 14);
+            uxProgress.Margin = new Padding(4, 3, 4, 3);
+            uxProgress.Maximum = 100;
+            uxProgress.Minimum = 0;
+            uxProgress.Name = "uxProgress";
+            uxProgress.Orientation = MetroSet_UI.Enums.ProgressOrientation.Horizontal;
+            uxProgress.ProgressColor = Color.FromArgb(65, 177, 225);
+            uxProgress.Size = new Size(435, 27);
+            uxProgress.Style = MetroSet_UI.Enums.Style.Dark;
+            uxProgress.StyleManager = null;
+            uxProgress.TabIndex = 0;
+            uxProgress.ThemeAuthor = "Narwin";
+            uxProgress.ThemeName = "MetroDark";
+            uxProgress.UseWaitCursor = true;
+            uxProgress.Value = 0;
             // 
             // ProgressBarForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(397, 47);
-            this.ControlBox = false;
-            this.Controls.Add(this.uxProgress);
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "ProgressBarForm";
-            this.Text = " ";
-            this.TopMost = true;
-            this.UseWaitCursor = true;
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(463, 54);
+            ControlBox = false;
+            Controls.Add(uxProgress);
+            CornerStyle = CornerPreference.Default;
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            Margin = new Padding(4, 3, 4, 3);
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "ProgressBarForm";
+            Text = " ";
+            TopMost = true;
+            TransparencyKey = Color.FromArgb(31, 31, 32);
+            UseWaitCursor = true;
+            ResumeLayout(false);
         }
 
         #endregion
 
-        private System.Windows.Forms.ProgressBar uxProgress;
+        private MetroSetProgressBar uxProgress;
     }
 }

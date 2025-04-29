@@ -1,3 +1,4 @@
+using AltUI.Forms;
 using CrashEdit.Crash;
 
 namespace CrashEdit.CE
@@ -8,8 +9,8 @@ namespace CrashEdit.CE
         public EntryChunkController(EntryChunk entrychunk, SubcontrollerGroup parentGroup) : base(entrychunk, parentGroup)
         {
             EntryChunk = entrychunk;
-            AddMenu(CrashUI.Properties.Resources.EntryChunkController_AcImport, Menu_Import_Entry);
-            AddMenu(CrashUI.Properties.Resources.EntryChunkController_AcAddNew, Menu_Add_Entry);
+            AddMenu(CrashUI.Properties.Resources.EntryChunkController_AcImport, "Import", Menu_Import_Entry);
+            AddMenu(CrashUI.Properties.Resources.EntryChunkController_AcAddNew, "Add", Menu_Add_Entry);
         }
 
         public EntryChunk EntryChunk { get; }
@@ -23,7 +24,7 @@ namespace CrashEdit.CE
             byte[][] datas = FileUtil.OpenFiles(FileFilters.NSEntry, FileFilters.Any);
             if (datas == null)
                 return;
-            bool process = MessageBox.Show("Do you want to process the imported entries?", "Import Entry", MessageBoxButtons.YesNo) == DialogResult.Yes;
+            bool process = DarkMessageBox.ShowMessage("Do you want to process the imported entries?", "Import Entry", DarkDialogButton.YesNo) == DialogResult.Yes;
             foreach (var data in datas)
             {
                 try

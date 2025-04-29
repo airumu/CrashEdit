@@ -108,6 +108,18 @@ namespace CrashEdit.Crash
             str[offset + 1] = (byte)(value >> 8);
         }
 
+        public static void ToUInt16(byte[] str, int offset, ushort value)
+        {
+            ArgumentNullException.ThrowIfNull(str);
+            if (offset < 0)
+                throw new ArgumentOutOfRangeException(nameof(offset));
+            if (offset + 2 > str.Length)
+                throw new ArgumentOutOfRangeException(nameof(offset));
+            str[offset] = (byte)value;
+            str[offset + 1] = (byte)(value >> 8);
+        }
+
+
         public static void ToInt24(byte[] str, int offset, int value)
         {
             ArgumentNullException.ThrowIfNull(str);

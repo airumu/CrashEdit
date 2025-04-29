@@ -1,3 +1,5 @@
+using CrashEdit.CE.Properties;
+
 namespace CrashEdit.Crash
 {
 
@@ -7,10 +9,19 @@ namespace CrashEdit.Crash
         public GameVersion GameVersion { get; set; }
 
         [SubresourceSlot]
+        public NSD? NSD { get; set; }
+        [SubresourceSlot]
+        public OldNSD? OldNSD { get; set; }
+        [SubresourceSlot]
+        public ProtoNSD? ProtoNSD { get; set; }
+
+        [SubresourceSlot]
         public NSF? NSF { get; set; }
 
+        public string? FileName { get; set; }
+
         public Dictionary<int, IEntry> AllEntriesByEid { get; } = [];
-        
+
         public T? GetEntry<T>(int eid) where T : class
         {
             if (AllEntriesByEid.TryGetValue(eid, out var entry))
@@ -49,20 +60,33 @@ namespace CrashEdit.Crash
             if (NSF != null)
             {
                 int chunkid = -1;
-                foreach (var chunk in NSF.Chunks)
-                {
-                    chunkid += 2;
-                    chunk.ChunkId = chunkid;
-                    if (chunk is IEntry ientry)
-                    {
-                        AllEntriesByEid.Add(ientry.EID, ientry);
-                    }
 
-                    if (chunk is EntryChunk ec)
+                Settings.Default.Reload();
+                if (Settings.Default.IgnoreDuplicatedEntryError)
+                {
+                    foreach (var chunk in NSF.Chunks)
                     {
-                        foreach (var entry in ec.Entries)
+                        chunkid += 2;
+                        chunk.ChunkId = chunkid;
+                    }
+                }
+                else
+                {
+                    foreach (var chunk in NSF.Chunks)
+                    {
+                        chunkid += 2;
+                        chunk.ChunkId = chunkid;
+                        if (chunk is IEntry ientry)
                         {
-                            AllEntriesByEid.Add(entry.EID, entry);
+                            AllEntriesByEid.Add(ientry.EID, ientry);
+                        }
+
+                        if (chunk is EntryChunk ec)
+                        {
+                            foreach (var entry in ec.Entries)
+                            {
+                                AllEntriesByEid.Add(entry.EID, entry);
+                            }
                         }
                     }
                 }

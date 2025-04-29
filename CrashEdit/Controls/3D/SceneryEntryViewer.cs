@@ -1,5 +1,4 @@
 using CrashEdit.Crash;
-using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
 namespace CrashEdit.CE

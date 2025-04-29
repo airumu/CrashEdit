@@ -1,3 +1,6 @@
+using AltUI.Controls;
+using MetroSet_UI.Controls;
+
 namespace CrashEdit.CE
 {
     partial class OldEntityBox
@@ -28,635 +31,650 @@ namespace CrashEdit.CE
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.numType = new System.Windows.Forms.NumericUpDown();
-            this.fraType = new System.Windows.Forms.GroupBox();
-            this.lblCodeName = new System.Windows.Forms.Label();
-            this.fraSubtype = new System.Windows.Forms.GroupBox();
-            this.numSubtype = new System.Windows.Forms.NumericUpDown();
-            this.fraPosition = new System.Windows.Forms.GroupBox();
-            this.cmdInterpolate = new System.Windows.Forms.Button();
-            this.lblPositionIndex = new System.Windows.Forms.Label();
-            this.cmdNextPosition = new System.Windows.Forms.Button();
-            this.cmdPreviousPosition = new System.Windows.Forms.Button();
-            this.cmdInsertPosition = new System.Windows.Forms.Button();
-            this.lblZ = new System.Windows.Forms.Label();
-            this.cmdRemovePosition = new System.Windows.Forms.Button();
-            this.lblY = new System.Windows.Forms.Label();
-            this.cmdAppendPosition = new System.Windows.Forms.Button();
-            this.lblX = new System.Windows.Forms.Label();
-            this.numZ = new System.Windows.Forms.NumericUpDown();
-            this.numY = new System.Windows.Forms.NumericUpDown();
-            this.numX = new System.Windows.Forms.NumericUpDown();
-            this.fraID = new System.Windows.Forms.GroupBox();
-            this.numID = new System.Windows.Forms.NumericUpDown();
-            this.tbcTabs = new System.Windows.Forms.TabControl();
-            this.tabGeneral = new System.Windows.Forms.TabPage();
-            this.fraSettings = new System.Windows.Forms.GroupBox();
-            this.chkHexC = new System.Windows.Forms.CheckBox();
-            this.chkHexB = new System.Windows.Forms.CheckBox();
-            this.chkHexA = new System.Windows.Forms.CheckBox();
-            this.chkHexFlags = new System.Windows.Forms.CheckBox();
-            this.lblC = new System.Windows.Forms.Label();
-            this.numC = new System.Windows.Forms.NumericUpDown();
-            this.lblB = new System.Windows.Forms.Label();
-            this.lblA = new System.Windows.Forms.Label();
-            this.lblFlags = new System.Windows.Forms.Label();
-            this.numB = new System.Windows.Forms.NumericUpDown();
-            this.numA = new System.Windows.Forms.NumericUpDown();
-            this.numFlags = new System.Windows.Forms.NumericUpDown();
-            this.numSpawn = new System.Windows.Forms.NumericUpDown();
-            this.tipHover = new System.Windows.Forms.ToolTip(this.components);
-            this.fraSpawn = new System.Windows.Forms.GroupBox();
-            ((System.ComponentModel.ISupportInitialize)(this.numType)).BeginInit();
-            this.fraType.SuspendLayout();
-            this.fraSubtype.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numSubtype)).BeginInit();
-            this.fraPosition.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numZ)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numY)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numX)).BeginInit();
-            this.fraID.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numID)).BeginInit();
-            this.tbcTabs.SuspendLayout();
-            this.tabGeneral.SuspendLayout();
-            this.fraSettings.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numC)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numB)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numA)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numFlags)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numSpawn)).BeginInit();
-            this.fraSpawn.SuspendLayout();
-            this.SuspendLayout();
+            components = new System.ComponentModel.Container();
+            numType = new DarkNumericUpDown();
+            fraType = new DarkGroupBox();
+            lblCodeName = new Label();
+            fraSubtype = new DarkGroupBox();
+            numSubtype = new DarkNumericUpDown();
+            fraPosition = new DarkGroupBox();
+            cmdInterpolate = new DarkButton();
+            lblPositionIndex = new Label();
+            cmdNextPosition = new DarkButton();
+            cmdPreviousPosition = new DarkButton();
+            cmdInsertPosition = new DarkButton();
+            lblZ = new Label();
+            cmdRemovePosition = new DarkButton();
+            lblY = new Label();
+            cmdAppendPosition = new DarkButton();
+            lblX = new Label();
+            numZ = new DarkNumericUpDown();
+            numY = new DarkNumericUpDown();
+            numX = new DarkNumericUpDown();
+            fraID = new DarkGroupBox();
+            numID = new DarkNumericUpDown();
+            tbcTabs = new MetroSetTabControl();
+            tabGeneral = new TabPage();
+            fraSpawn = new DarkGroupBox();
+            numSpawn = new DarkNumericUpDown();
+            fraSettings = new DarkGroupBox();
+            chkHexC = new CheckBox();
+            chkHexB = new CheckBox();
+            chkHexA = new CheckBox();
+            chkHexFlags = new CheckBox();
+            lblC = new Label();
+            numC = new DarkNumericUpDown();
+            lblB = new Label();
+            lblA = new Label();
+            lblFlags = new Label();
+            numB = new DarkNumericUpDown();
+            numA = new DarkNumericUpDown();
+            numFlags = new DarkNumericUpDown();
+            tipHover = new ToolTip(components);
+            ((System.ComponentModel.ISupportInitialize)numType).BeginInit();
+            fraType.SuspendLayout();
+            fraSubtype.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numSubtype).BeginInit();
+            fraPosition.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numZ).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numY).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numX).BeginInit();
+            fraID.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numID).BeginInit();
+            tbcTabs.SuspendLayout();
+            tabGeneral.SuspendLayout();
+            fraSpawn.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numSpawn).BeginInit();
+            fraSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numC).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numB).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numA).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numFlags).BeginInit();
+            SuspendLayout();
             // 
             // numType
             // 
-            this.numType.Location = new System.Drawing.Point(6, 22);
-            this.numType.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numType.Name = "numType";
-            this.numType.Size = new System.Drawing.Size(77, 20);
-            this.numType.TabIndex = 1;
-            this.numType.ValueChanged += new System.EventHandler(this.numType_ValueChanged);
+            numType.Location = new Point(7, 25);
+            numType.Margin = new Padding(4, 3, 4, 3);
+            numType.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numType.Name = "numType";
+            numType.Size = new Size(90, 23);
+            numType.TabIndex = 1;
+            numType.ValueChanged += numType_ValueChanged;
             // 
             // fraType
             // 
-            this.fraType.Controls.Add(this.lblCodeName);
-            this.fraType.Controls.Add(this.numType);
-            this.fraType.Location = new System.Drawing.Point(209, 3);
-            this.fraType.Name = "fraType";
-            this.fraType.Size = new System.Drawing.Size(89, 67);
-            this.fraType.TabIndex = 4;
-            this.fraType.TabStop = false;
-            this.fraType.Text = "Type";
+            fraType.Controls.Add(lblCodeName);
+            fraType.Controls.Add(numType);
+            fraType.Location = new Point(244, 3);
+            fraType.Margin = new Padding(4, 3, 4, 3);
+            fraType.Name = "fraType";
+            fraType.Padding = new Padding(4, 3, 4, 3);
+            fraType.Size = new Size(104, 77);
+            fraType.TabIndex = 4;
+            fraType.TabStop = false;
+            fraType.Text = "Type";
             // 
             // lblCodeName
             // 
-            this.lblCodeName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCodeName.Location = new System.Drawing.Point(2, 45);
-            this.lblCodeName.Name = "lblCodeName";
-            this.lblCodeName.Size = new System.Drawing.Size(120, 19);
-            this.lblCodeName.TabIndex = 9;
-            this.lblCodeName.Text = "(Unknown)";
-            this.lblCodeName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            lblCodeName.BackColor = Color.Transparent;
+            lblCodeName.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblCodeName.Location = new Point(2, 52);
+            lblCodeName.Margin = new Padding(4, 0, 4, 0);
+            lblCodeName.Name = "lblCodeName";
+            lblCodeName.Size = new Size(140, 22);
+            lblCodeName.TabIndex = 9;
+            lblCodeName.Text = "(Unknown)";
+            lblCodeName.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // fraSubtype
             // 
-            this.fraSubtype.Controls.Add(this.numSubtype);
-            this.fraSubtype.Location = new System.Drawing.Point(209, 76);
-            this.fraSubtype.Name = "fraSubtype";
-            this.fraSubtype.Size = new System.Drawing.Size(89, 46);
-            this.fraSubtype.TabIndex = 5;
-            this.fraSubtype.TabStop = false;
-            this.fraSubtype.Text = "Subtype";
+            fraSubtype.Controls.Add(numSubtype);
+            fraSubtype.Location = new Point(244, 88);
+            fraSubtype.Margin = new Padding(4, 3, 4, 3);
+            fraSubtype.Name = "fraSubtype";
+            fraSubtype.Padding = new Padding(4, 3, 4, 3);
+            fraSubtype.Size = new Size(104, 53);
+            fraSubtype.TabIndex = 5;
+            fraSubtype.TabStop = false;
+            fraSubtype.Text = "Subtype";
             // 
             // numSubtype
             // 
-            this.numSubtype.Location = new System.Drawing.Point(6, 20);
-            this.numSubtype.Name = "numSubtype";
-            this.numSubtype.Size = new System.Drawing.Size(77, 20);
-            this.numSubtype.TabIndex = 1;
-            this.numSubtype.ValueChanged += new System.EventHandler(this.numSubtype_ValueChanged);
+            numSubtype.Location = new Point(7, 23);
+            numSubtype.Margin = new Padding(4, 3, 4, 3);
+            numSubtype.Name = "numSubtype";
+            numSubtype.Size = new Size(90, 23);
+            numSubtype.TabIndex = 1;
+            numSubtype.ValueChanged += numSubtype_ValueChanged;
             // 
             // fraPosition
             // 
-            this.fraPosition.AutoSize = true;
-            this.fraPosition.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.fraPosition.Controls.Add(this.cmdInterpolate);
-            this.fraPosition.Controls.Add(this.lblPositionIndex);
-            this.fraPosition.Controls.Add(this.cmdNextPosition);
-            this.fraPosition.Controls.Add(this.cmdPreviousPosition);
-            this.fraPosition.Controls.Add(this.cmdInsertPosition);
-            this.fraPosition.Controls.Add(this.lblZ);
-            this.fraPosition.Controls.Add(this.cmdRemovePosition);
-            this.fraPosition.Controls.Add(this.lblY);
-            this.fraPosition.Controls.Add(this.cmdAppendPosition);
-            this.fraPosition.Controls.Add(this.lblX);
-            this.fraPosition.Controls.Add(this.numZ);
-            this.fraPosition.Controls.Add(this.numY);
-            this.fraPosition.Controls.Add(this.numX);
-            this.fraPosition.Location = new System.Drawing.Point(3, 3);
-            this.fraPosition.Name = "fraPosition";
-            this.fraPosition.Size = new System.Drawing.Size(200, 172);
-            this.fraPosition.TabIndex = 1;
-            this.fraPosition.TabStop = false;
-            this.fraPosition.Text = "Position(s)";
+            fraPosition.AutoSize = true;
+            fraPosition.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraPosition.Controls.Add(cmdInterpolate);
+            fraPosition.Controls.Add(lblPositionIndex);
+            fraPosition.Controls.Add(cmdNextPosition);
+            fraPosition.Controls.Add(cmdPreviousPosition);
+            fraPosition.Controls.Add(cmdInsertPosition);
+            fraPosition.Controls.Add(lblZ);
+            fraPosition.Controls.Add(cmdRemovePosition);
+            fraPosition.Controls.Add(lblY);
+            fraPosition.Controls.Add(cmdAppendPosition);
+            fraPosition.Controls.Add(lblX);
+            fraPosition.Controls.Add(numZ);
+            fraPosition.Controls.Add(numY);
+            fraPosition.Controls.Add(numX);
+            fraPosition.Location = new Point(4, 3);
+            fraPosition.Margin = new Padding(4, 3, 4, 3);
+            fraPosition.Name = "fraPosition";
+            fraPosition.Padding = new Padding(4, 3, 4, 3);
+            fraPosition.Size = new Size(235, 199);
+            fraPosition.TabIndex = 1;
+            fraPosition.TabStop = false;
+            fraPosition.Text = "Position(s)";
             // 
             // cmdInterpolate
             // 
-            this.cmdInterpolate.Location = new System.Drawing.Point(6, 130);
-            this.cmdInterpolate.Name = "cmdInterpolate";
-            this.cmdInterpolate.Size = new System.Drawing.Size(75, 23);
-            this.cmdInterpolate.TabIndex = 8;
-            this.cmdInterpolate.Text = "Interpolate";
-            this.cmdInterpolate.UseVisualStyleBackColor = true;
-            this.cmdInterpolate.Click += new System.EventHandler(this.cmdInterpolate_Click);
+            cmdInterpolate.BorderColour = Color.Empty;
+            cmdInterpolate.CustomColour = false;
+            cmdInterpolate.FlatBottom = false;
+            cmdInterpolate.FlatTop = false;
+            cmdInterpolate.Location = new Point(7, 150);
+            cmdInterpolate.Margin = new Padding(4, 3, 4, 3);
+            cmdInterpolate.Name = "cmdInterpolate";
+            cmdInterpolate.Padding = new Padding(6);
+            cmdInterpolate.Size = new Size(88, 27);
+            cmdInterpolate.TabIndex = 8;
+            cmdInterpolate.Text = "Interpolate";
+            cmdInterpolate.Click += cmdInterpolate_Click;
             // 
             // lblPositionIndex
             // 
-            this.lblPositionIndex.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPositionIndex.Location = new System.Drawing.Point(6, 19);
-            this.lblPositionIndex.Name = "lblPositionIndex";
-            this.lblPositionIndex.Size = new System.Drawing.Size(60, 23);
-            this.lblPositionIndex.TabIndex = 5;
-            this.lblPositionIndex.Text = "?? / ??";
-            this.lblPositionIndex.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            lblPositionIndex.BackColor = Color.Transparent;
+            lblPositionIndex.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblPositionIndex.Location = new Point(7, 22);
+            lblPositionIndex.Margin = new Padding(4, 0, 4, 0);
+            lblPositionIndex.Name = "lblPositionIndex";
+            lblPositionIndex.Size = new Size(70, 27);
+            lblPositionIndex.TabIndex = 5;
+            lblPositionIndex.Text = "?? / ??";
+            lblPositionIndex.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // cmdNextPosition
             // 
-            this.cmdNextPosition.Location = new System.Drawing.Point(136, 19);
-            this.cmdNextPosition.Name = "cmdNextPosition";
-            this.cmdNextPosition.Size = new System.Drawing.Size(58, 23);
-            this.cmdNextPosition.TabIndex = 1;
-            this.cmdNextPosition.Text = "Next";
-            this.cmdNextPosition.UseVisualStyleBackColor = true;
-            this.cmdNextPosition.Click += new System.EventHandler(this.cmdNextPosition_Click);
+            cmdNextPosition.BorderColour = Color.Empty;
+            cmdNextPosition.CustomColour = false;
+            cmdNextPosition.FlatBottom = false;
+            cmdNextPosition.FlatTop = false;
+            cmdNextPosition.Location = new Point(159, 22);
+            cmdNextPosition.Margin = new Padding(4, 3, 4, 3);
+            cmdNextPosition.Name = "cmdNextPosition";
+            cmdNextPosition.Padding = new Padding(6);
+            cmdNextPosition.Size = new Size(68, 27);
+            cmdNextPosition.TabIndex = 1;
+            cmdNextPosition.Text = "Next";
+            cmdNextPosition.Click += cmdNextPosition_Click;
             // 
             // cmdPreviousPosition
             // 
-            this.cmdPreviousPosition.Location = new System.Drawing.Point(72, 19);
-            this.cmdPreviousPosition.Name = "cmdPreviousPosition";
-            this.cmdPreviousPosition.Size = new System.Drawing.Size(58, 23);
-            this.cmdPreviousPosition.TabIndex = 0;
-            this.cmdPreviousPosition.Text = "Previous";
-            this.cmdPreviousPosition.UseVisualStyleBackColor = true;
-            this.cmdPreviousPosition.Click += new System.EventHandler(this.cmdPreviousPosition_Click);
+            cmdPreviousPosition.BorderColour = Color.Empty;
+            cmdPreviousPosition.CustomColour = false;
+            cmdPreviousPosition.FlatBottom = false;
+            cmdPreviousPosition.FlatTop = false;
+            cmdPreviousPosition.Location = new Point(84, 22);
+            cmdPreviousPosition.Margin = new Padding(4, 3, 4, 3);
+            cmdPreviousPosition.Name = "cmdPreviousPosition";
+            cmdPreviousPosition.Padding = new Padding(6);
+            cmdPreviousPosition.Size = new Size(68, 27);
+            cmdPreviousPosition.TabIndex = 0;
+            cmdPreviousPosition.Text = "Previous";
+            cmdPreviousPosition.Click += cmdPreviousPosition_Click;
             // 
             // cmdInsertPosition
             // 
-            this.cmdInsertPosition.Location = new System.Drawing.Point(119, 75);
-            this.cmdInsertPosition.Name = "cmdInsertPosition";
-            this.cmdInsertPosition.Size = new System.Drawing.Size(75, 23);
-            this.cmdInsertPosition.TabIndex = 6;
-            this.cmdInsertPosition.Text = "Insert";
-            this.cmdInsertPosition.UseVisualStyleBackColor = true;
-            this.cmdInsertPosition.Click += new System.EventHandler(this.cmdInsertPosition_Click);
+            cmdInsertPosition.BorderColour = Color.Empty;
+            cmdInsertPosition.CustomColour = false;
+            cmdInsertPosition.FlatBottom = false;
+            cmdInsertPosition.FlatTop = false;
+            cmdInsertPosition.Location = new Point(139, 87);
+            cmdInsertPosition.Margin = new Padding(4, 3, 4, 3);
+            cmdInsertPosition.Name = "cmdInsertPosition";
+            cmdInsertPosition.Padding = new Padding(6);
+            cmdInsertPosition.Size = new Size(88, 27);
+            cmdInsertPosition.TabIndex = 6;
+            cmdInsertPosition.Text = "Insert";
+            cmdInsertPosition.Click += cmdInsertPosition_Click;
             // 
             // lblZ
             // 
-            this.lblZ.AutoSize = true;
-            this.lblZ.Location = new System.Drawing.Point(6, 106);
-            this.lblZ.Name = "lblZ";
-            this.lblZ.Size = new System.Drawing.Size(14, 13);
-            this.lblZ.TabIndex = 5;
-            this.lblZ.Text = "Z";
+            lblZ.AutoSize = true;
+            lblZ.BackColor = Color.Transparent;
+            lblZ.Location = new Point(7, 122);
+            lblZ.Margin = new Padding(4, 0, 4, 0);
+            lblZ.Name = "lblZ";
+            lblZ.Size = new Size(14, 15);
+            lblZ.TabIndex = 5;
+            lblZ.Text = "Z";
             // 
             // cmdRemovePosition
             // 
-            this.cmdRemovePosition.Location = new System.Drawing.Point(119, 101);
-            this.cmdRemovePosition.Name = "cmdRemovePosition";
-            this.cmdRemovePosition.Size = new System.Drawing.Size(75, 23);
-            this.cmdRemovePosition.TabIndex = 7;
-            this.cmdRemovePosition.Text = "Remove";
-            this.cmdRemovePosition.UseVisualStyleBackColor = true;
-            this.cmdRemovePosition.Click += new System.EventHandler(this.cmdRemovePosition_Click);
+            cmdRemovePosition.BorderColour = Color.Empty;
+            cmdRemovePosition.CustomColour = false;
+            cmdRemovePosition.FlatBottom = false;
+            cmdRemovePosition.FlatTop = false;
+            cmdRemovePosition.Location = new Point(139, 117);
+            cmdRemovePosition.Margin = new Padding(4, 3, 4, 3);
+            cmdRemovePosition.Name = "cmdRemovePosition";
+            cmdRemovePosition.Padding = new Padding(6);
+            cmdRemovePosition.Size = new Size(88, 27);
+            cmdRemovePosition.TabIndex = 7;
+            cmdRemovePosition.Text = "Remove";
+            cmdRemovePosition.Click += cmdRemovePosition_Click;
             // 
             // lblY
             // 
-            this.lblY.AutoSize = true;
-            this.lblY.Location = new System.Drawing.Point(6, 80);
-            this.lblY.Name = "lblY";
-            this.lblY.Size = new System.Drawing.Size(14, 13);
-            this.lblY.TabIndex = 4;
-            this.lblY.Text = "Y";
+            lblY.AutoSize = true;
+            lblY.BackColor = Color.Transparent;
+            lblY.Location = new Point(7, 92);
+            lblY.Margin = new Padding(4, 0, 4, 0);
+            lblY.Name = "lblY";
+            lblY.Size = new Size(14, 15);
+            lblY.TabIndex = 4;
+            lblY.Text = "Y";
             // 
             // cmdAppendPosition
             // 
-            this.cmdAppendPosition.Location = new System.Drawing.Point(119, 49);
-            this.cmdAppendPosition.Name = "cmdAppendPosition";
-            this.cmdAppendPosition.Size = new System.Drawing.Size(75, 23);
-            this.cmdAppendPosition.TabIndex = 5;
-            this.cmdAppendPosition.Text = "Append";
-            this.cmdAppendPosition.UseVisualStyleBackColor = true;
-            this.cmdAppendPosition.Click += new System.EventHandler(this.cmdAppendPosition_Click);
+            cmdAppendPosition.BorderColour = Color.Empty;
+            cmdAppendPosition.CustomColour = false;
+            cmdAppendPosition.FlatBottom = false;
+            cmdAppendPosition.FlatTop = false;
+            cmdAppendPosition.Location = new Point(139, 57);
+            cmdAppendPosition.Margin = new Padding(4, 3, 4, 3);
+            cmdAppendPosition.Name = "cmdAppendPosition";
+            cmdAppendPosition.Padding = new Padding(6);
+            cmdAppendPosition.Size = new Size(88, 27);
+            cmdAppendPosition.TabIndex = 5;
+            cmdAppendPosition.Text = "Append";
+            cmdAppendPosition.Click += cmdAppendPosition_Click;
             // 
             // lblX
             // 
-            this.lblX.AutoSize = true;
-            this.lblX.Location = new System.Drawing.Point(6, 54);
-            this.lblX.Name = "lblX";
-            this.lblX.Size = new System.Drawing.Size(14, 13);
-            this.lblX.TabIndex = 3;
-            this.lblX.Text = "X";
+            lblX.AutoSize = true;
+            lblX.BackColor = Color.Transparent;
+            lblX.Location = new Point(7, 62);
+            lblX.Margin = new Padding(4, 0, 4, 0);
+            lblX.Name = "lblX";
+            lblX.Size = new Size(14, 15);
+            lblX.TabIndex = 3;
+            lblX.Text = "X";
             // 
             // numZ
             // 
-            this.numZ.Increment = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            this.numZ.Location = new System.Drawing.Point(26, 104);
-            this.numZ.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numZ.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numZ.Name = "numZ";
-            this.numZ.Size = new System.Drawing.Size(86, 20);
-            this.numZ.TabIndex = 4;
-            this.numZ.ValueChanged += new System.EventHandler(this.numZ_ValueChanged);
+            numZ.Increment = new decimal(new int[] { 50, 0, 0, 0 });
+            numZ.Location = new Point(30, 120);
+            numZ.Margin = new Padding(4, 3, 4, 3);
+            numZ.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numZ.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numZ.Name = "numZ";
+            numZ.Size = new Size(100, 23);
+            numZ.TabIndex = 4;
+            numZ.ValueChanged += numZ_ValueChanged;
             // 
             // numY
             // 
-            this.numY.Increment = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            this.numY.Location = new System.Drawing.Point(26, 78);
-            this.numY.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numY.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numY.Name = "numY";
-            this.numY.Size = new System.Drawing.Size(86, 20);
-            this.numY.TabIndex = 3;
-            this.numY.ValueChanged += new System.EventHandler(this.numY_ValueChanged);
+            numY.Increment = new decimal(new int[] { 50, 0, 0, 0 });
+            numY.Location = new Point(30, 90);
+            numY.Margin = new Padding(4, 3, 4, 3);
+            numY.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numY.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numY.Name = "numY";
+            numY.Size = new Size(100, 23);
+            numY.TabIndex = 3;
+            numY.ValueChanged += numY_ValueChanged;
             // 
             // numX
             // 
-            this.numX.Increment = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            this.numX.Location = new System.Drawing.Point(26, 52);
-            this.numX.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numX.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numX.Name = "numX";
-            this.numX.Size = new System.Drawing.Size(86, 20);
-            this.numX.TabIndex = 2;
-            this.numX.ValueChanged += new System.EventHandler(this.numX_ValueChanged);
+            numX.Increment = new decimal(new int[] { 50, 0, 0, 0 });
+            numX.Location = new Point(30, 60);
+            numX.Margin = new Padding(4, 3, 4, 3);
+            numX.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numX.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numX.Name = "numX";
+            numX.Size = new Size(100, 23);
+            numX.TabIndex = 2;
+            numX.ValueChanged += numX_ValueChanged;
             // 
             // fraID
             // 
-            this.fraID.Controls.Add(this.numID);
-            this.fraID.Location = new System.Drawing.Point(209, 128);
-            this.fraID.Name = "fraID";
-            this.fraID.Size = new System.Drawing.Size(89, 49);
-            this.fraID.TabIndex = 3;
-            this.fraID.TabStop = false;
-            this.fraID.Text = "ID";
+            fraID.Controls.Add(numID);
+            fraID.Location = new Point(244, 148);
+            fraID.Margin = new Padding(4, 3, 4, 3);
+            fraID.Name = "fraID";
+            fraID.Padding = new Padding(4, 3, 4, 3);
+            fraID.Size = new Size(104, 57);
+            fraID.TabIndex = 3;
+            fraID.TabStop = false;
+            fraID.Text = "ID";
             // 
             // numID
             // 
-            this.numID.Location = new System.Drawing.Point(6, 19);
-            this.numID.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
-            this.numID.Minimum = new decimal(new int[] {
-            -2147483648,
-            0,
-            0,
-            -2147483648});
-            this.numID.Name = "numID";
-            this.numID.Size = new System.Drawing.Size(77, 20);
-            this.numID.TabIndex = 1;
-            this.numID.ValueChanged += new System.EventHandler(this.numID_ValueChanged);
+            numID.Location = new Point(7, 22);
+            numID.Margin = new Padding(4, 3, 4, 3);
+            numID.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numID.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numID.Name = "numID";
+            numID.Size = new Size(90, 23);
+            numID.TabIndex = 1;
+            numID.ValueChanged += numID_ValueChanged;
             // 
             // tbcTabs
             // 
-            this.tbcTabs.Controls.Add(this.tabGeneral);
-            this.tbcTabs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbcTabs.Location = new System.Drawing.Point(0, 0);
-            this.tbcTabs.Name = "tbcTabs";
-            this.tbcTabs.SelectedIndex = 0;
-            this.tbcTabs.Size = new System.Drawing.Size(349, 370);
-            this.tbcTabs.TabIndex = 7;
+            tbcTabs.AnimateEasingType = MetroSet_UI.Enums.EasingType.CubeOut;
+            tbcTabs.AnimateTime = 200;
+            tbcTabs.BackgroundColor = Color.FromArgb(31, 31, 32);
+            tbcTabs.Controls.Add(tabGeneral);
+            tbcTabs.Dock = DockStyle.Fill;
+            tbcTabs.IsDerivedStyle = false;
+            tbcTabs.ItemSize = new Size(100, 28);
+            tbcTabs.Location = new Point(0, 0);
+            tbcTabs.Margin = new Padding(4, 3, 4, 3);
+            tbcTabs.Name = "tbcTabs";
+            tbcTabs.SelectedIndex = 0;
+            tbcTabs.SelectedTextColor = Color.White;
+            tbcTabs.Size = new Size(407, 427);
+            tbcTabs.SizeMode = TabSizeMode.Fixed;
+            tbcTabs.Speed = 100;
+            tbcTabs.Style = MetroSet_UI.Enums.Style.Dark;
+            tbcTabs.StyleManager = null;
+            tbcTabs.TabIndex = 7;
+            tbcTabs.ThemeAuthor = "Narwin";
+            tbcTabs.ThemeName = "MetroDark";
+            tbcTabs.UnselectedTextColor = Color.Gray;
+            tbcTabs.UseAnimation = false;
             // 
             // tabGeneral
             // 
-            this.tabGeneral.AutoScroll = true;
-            this.tabGeneral.Controls.Add(this.fraSpawn);
-            this.tabGeneral.Controls.Add(this.fraSettings);
-            this.tabGeneral.Controls.Add(this.fraType);
-            this.tabGeneral.Controls.Add(this.fraSubtype);
-            this.tabGeneral.Controls.Add(this.fraPosition);
-            this.tabGeneral.Controls.Add(this.fraID);
-            this.tabGeneral.Location = new System.Drawing.Point(4, 22);
-            this.tabGeneral.Name = "tabGeneral";
-            this.tabGeneral.Size = new System.Drawing.Size(341, 344);
-            this.tabGeneral.TabIndex = 0;
-            this.tabGeneral.Text = "General";
-            this.tabGeneral.UseVisualStyleBackColor = true;
-            // 
-            // fraSettings
-            // 
-            this.fraSettings.Controls.Add(this.chkHexC);
-            this.fraSettings.Controls.Add(this.chkHexB);
-            this.fraSettings.Controls.Add(this.chkHexA);
-            this.fraSettings.Controls.Add(this.chkHexFlags);
-            this.fraSettings.Controls.Add(this.lblC);
-            this.fraSettings.Controls.Add(this.numC);
-            this.fraSettings.Controls.Add(this.lblB);
-            this.fraSettings.Controls.Add(this.lblA);
-            this.fraSettings.Controls.Add(this.lblFlags);
-            this.fraSettings.Controls.Add(this.numB);
-            this.fraSettings.Controls.Add(this.numA);
-            this.fraSettings.Controls.Add(this.numFlags);
-            this.fraSettings.Location = new System.Drawing.Point(3, 181);
-            this.fraSettings.Name = "fraSettings";
-            this.fraSettings.Size = new System.Drawing.Size(200, 133);
-            this.fraSettings.TabIndex = 8;
-            this.fraSettings.TabStop = false;
-            this.fraSettings.Text = "Settings";
-            // 
-            // chkHexC
-            // 
-            this.chkHexC.AutoSize = true;
-            this.chkHexC.Location = new System.Drawing.Point(154, 98);
-            this.chkHexC.Name = "chkHexC";
-            this.chkHexC.Size = new System.Drawing.Size(45, 17);
-            this.chkHexC.TabIndex = 11;
-            this.chkHexC.Text = "Hex";
-            this.chkHexC.UseVisualStyleBackColor = true;
-            this.chkHexC.CheckedChanged += new System.EventHandler(this.chkHexC_CheckedChanged);
-            // 
-            // chkHexB
-            // 
-            this.chkHexB.AutoSize = true;
-            this.chkHexB.Location = new System.Drawing.Point(154, 72);
-            this.chkHexB.Name = "chkHexB";
-            this.chkHexB.Size = new System.Drawing.Size(45, 17);
-            this.chkHexB.TabIndex = 10;
-            this.chkHexB.Text = "Hex";
-            this.chkHexB.UseVisualStyleBackColor = true;
-            this.chkHexB.CheckedChanged += new System.EventHandler(this.chkHexB_CheckedChanged);
-            // 
-            // chkHexA
-            // 
-            this.chkHexA.AutoSize = true;
-            this.chkHexA.Location = new System.Drawing.Point(154, 46);
-            this.chkHexA.Name = "chkHexA";
-            this.chkHexA.Size = new System.Drawing.Size(45, 17);
-            this.chkHexA.TabIndex = 9;
-            this.chkHexA.Text = "Hex";
-            this.chkHexA.UseVisualStyleBackColor = true;
-            this.chkHexA.CheckedChanged += new System.EventHandler(this.chkHexA_CheckedChanged);
-            // 
-            // chkHexFlags
-            // 
-            this.chkHexFlags.AutoSize = true;
-            this.chkHexFlags.Checked = true;
-            this.chkHexFlags.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkHexFlags.Location = new System.Drawing.Point(154, 20);
-            this.chkHexFlags.Name = "chkHexFlags";
-            this.chkHexFlags.Size = new System.Drawing.Size(45, 17);
-            this.chkHexFlags.TabIndex = 8;
-            this.chkHexFlags.Text = "Hex";
-            this.chkHexFlags.UseVisualStyleBackColor = true;
-            this.chkHexFlags.CheckedChanged += new System.EventHandler(this.chkHexUnknown_CheckedChanged);
-            // 
-            // lblC
-            // 
-            this.lblC.AutoSize = true;
-            this.lblC.Location = new System.Drawing.Point(6, 99);
-            this.lblC.Name = "lblC";
-            this.lblC.Size = new System.Drawing.Size(48, 13);
-            this.lblC.TabIndex = 7;
-            this.lblC.Text = "Vector Z";
-            // 
-            // numC
-            // 
-            this.numC.Location = new System.Drawing.Point(62, 97);
-            this.numC.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numC.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numC.Name = "numC";
-            this.numC.Size = new System.Drawing.Size(86, 20);
-            this.numC.TabIndex = 6;
-            this.numC.ValueChanged += new System.EventHandler(this.numC_ValueChanged);
-            // 
-            // lblB
-            // 
-            this.lblB.AutoSize = true;
-            this.lblB.Location = new System.Drawing.Point(6, 73);
-            this.lblB.Name = "lblB";
-            this.lblB.Size = new System.Drawing.Size(48, 13);
-            this.lblB.TabIndex = 5;
-            this.lblB.Text = "Vector Y";
-            // 
-            // lblA
-            // 
-            this.lblA.AutoSize = true;
-            this.lblA.Location = new System.Drawing.Point(6, 47);
-            this.lblA.Name = "lblA";
-            this.lblA.Size = new System.Drawing.Size(48, 13);
-            this.lblA.TabIndex = 4;
-            this.lblA.Text = "Vector X";
-            // 
-            // lblFlags
-            // 
-            this.lblFlags.AutoSize = true;
-            this.lblFlags.Location = new System.Drawing.Point(6, 21);
-            this.lblFlags.Name = "lblFlags";
-            this.lblFlags.Size = new System.Drawing.Size(32, 13);
-            this.lblFlags.TabIndex = 3;
-            this.lblFlags.Text = "Flags";
-            // 
-            // numB
-            // 
-            this.numB.Location = new System.Drawing.Point(62, 71);
-            this.numB.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numB.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numB.Name = "numB";
-            this.numB.Size = new System.Drawing.Size(86, 20);
-            this.numB.TabIndex = 4;
-            this.numB.ValueChanged += new System.EventHandler(this.numB_ValueChanged);
-            // 
-            // numA
-            // 
-            this.numA.Location = new System.Drawing.Point(62, 45);
-            this.numA.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numA.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numA.Name = "numA";
-            this.numA.Size = new System.Drawing.Size(86, 20);
-            this.numA.TabIndex = 3;
-            this.numA.ValueChanged += new System.EventHandler(this.numA_ValueChanged);
-            // 
-            // numFlags
-            // 
-            this.numFlags.Hexadecimal = true;
-            this.numFlags.Location = new System.Drawing.Point(62, 19);
-            this.numFlags.Maximum = new decimal(new int[] {
-            65535,
-            0,
-            0,
-            0});
-            this.numFlags.Name = "numFlags";
-            this.numFlags.Size = new System.Drawing.Size(86, 20);
-            this.numFlags.TabIndex = 2;
-            this.numFlags.ValueChanged += new System.EventHandler(this.numUnknown_ValueChanged);
-            // 
-            // numSpawn
-            // 
-            this.numSpawn.Location = new System.Drawing.Point(6, 19);
-            this.numSpawn.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numSpawn.Name = "numSpawn";
-            this.numSpawn.Size = new System.Drawing.Size(77, 20);
-            this.numSpawn.TabIndex = 12;
-            this.numSpawn.ValueChanged += new System.EventHandler(this.numSpawn_ValueChanged);
-            // 
-            // tipHover
-            // 
-            this.tipHover.AutomaticDelay = 250;
+            tabGeneral.AutoScroll = true;
+            tabGeneral.BackColor = Color.FromArgb(31, 31, 32);
+            tabGeneral.Controls.Add(fraSpawn);
+            tabGeneral.Controls.Add(fraSettings);
+            tabGeneral.Controls.Add(fraType);
+            tabGeneral.Controls.Add(fraSubtype);
+            tabGeneral.Controls.Add(fraPosition);
+            tabGeneral.Controls.Add(fraID);
+            tabGeneral.Location = new Point(4, 32);
+            tabGeneral.Margin = new Padding(4, 3, 4, 3);
+            tabGeneral.Name = "tabGeneral";
+            tabGeneral.Size = new Size(399, 391);
+            tabGeneral.TabIndex = 0;
+            tabGeneral.Text = "General";
             // 
             // fraSpawn
             // 
-            this.fraSpawn.Controls.Add(this.numSpawn);
-            this.fraSpawn.Location = new System.Drawing.Point(209, 183);
-            this.fraSpawn.Name = "fraSpawn";
-            this.fraSpawn.Size = new System.Drawing.Size(89, 49);
-            this.fraSpawn.TabIndex = 4;
-            this.fraSpawn.TabStop = false;
-            this.fraSpawn.Text = "Spawn [?]";
-            this.tipHover.SetToolTip(this.fraSpawn, "Must be set to 3, or entity will not spawn!");
+            fraSpawn.Controls.Add(numSpawn);
+            fraSpawn.Location = new Point(244, 211);
+            fraSpawn.Margin = new Padding(4, 3, 4, 3);
+            fraSpawn.Name = "fraSpawn";
+            fraSpawn.Padding = new Padding(4, 3, 4, 3);
+            fraSpawn.Size = new Size(104, 57);
+            fraSpawn.TabIndex = 4;
+            fraSpawn.TabStop = false;
+            fraSpawn.Text = "Spawn [?]";
+            tipHover.SetToolTip(fraSpawn, "Must be set to 3, or entity will not spawn!");
+            // 
+            // numSpawn
+            // 
+            numSpawn.Location = new Point(7, 22);
+            numSpawn.Margin = new Padding(4, 3, 4, 3);
+            numSpawn.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numSpawn.Name = "numSpawn";
+            numSpawn.Size = new Size(90, 23);
+            numSpawn.TabIndex = 12;
+            numSpawn.ValueChanged += numSpawn_ValueChanged;
+            // 
+            // fraSettings
+            // 
+            fraSettings.Controls.Add(chkHexC);
+            fraSettings.Controls.Add(chkHexB);
+            fraSettings.Controls.Add(chkHexA);
+            fraSettings.Controls.Add(chkHexFlags);
+            fraSettings.Controls.Add(lblC);
+            fraSettings.Controls.Add(numC);
+            fraSettings.Controls.Add(lblB);
+            fraSettings.Controls.Add(lblA);
+            fraSettings.Controls.Add(lblFlags);
+            fraSettings.Controls.Add(numB);
+            fraSettings.Controls.Add(numA);
+            fraSettings.Controls.Add(numFlags);
+            fraSettings.Location = new Point(4, 209);
+            fraSettings.Margin = new Padding(4, 3, 4, 3);
+            fraSettings.Name = "fraSettings";
+            fraSettings.Padding = new Padding(4, 3, 4, 3);
+            fraSettings.Size = new Size(233, 153);
+            fraSettings.TabIndex = 8;
+            fraSettings.TabStop = false;
+            fraSettings.Text = "Settings";
+            // 
+            // chkHexC
+            // 
+            chkHexC.AutoSize = true;
+            chkHexC.BackColor = Color.Transparent;
+            chkHexC.Location = new Point(180, 113);
+            chkHexC.Margin = new Padding(4, 3, 4, 3);
+            chkHexC.Name = "chkHexC";
+            chkHexC.Size = new Size(47, 19);
+            chkHexC.TabIndex = 11;
+            chkHexC.Text = "Hex";
+            chkHexC.UseVisualStyleBackColor = false;
+            chkHexC.CheckedChanged += chkHexC_CheckedChanged;
+            // 
+            // chkHexB
+            // 
+            chkHexB.AutoSize = true;
+            chkHexB.BackColor = Color.Transparent;
+            chkHexB.Location = new Point(180, 83);
+            chkHexB.Margin = new Padding(4, 3, 4, 3);
+            chkHexB.Name = "chkHexB";
+            chkHexB.Size = new Size(47, 19);
+            chkHexB.TabIndex = 10;
+            chkHexB.Text = "Hex";
+            chkHexB.UseVisualStyleBackColor = false;
+            chkHexB.CheckedChanged += chkHexB_CheckedChanged;
+            // 
+            // chkHexA
+            // 
+            chkHexA.AutoSize = true;
+            chkHexA.BackColor = Color.Transparent;
+            chkHexA.Location = new Point(180, 53);
+            chkHexA.Margin = new Padding(4, 3, 4, 3);
+            chkHexA.Name = "chkHexA";
+            chkHexA.Size = new Size(47, 19);
+            chkHexA.TabIndex = 9;
+            chkHexA.Text = "Hex";
+            chkHexA.UseVisualStyleBackColor = false;
+            chkHexA.CheckedChanged += chkHexA_CheckedChanged;
+            // 
+            // chkHexFlags
+            // 
+            chkHexFlags.AutoSize = true;
+            chkHexFlags.BackColor = Color.Transparent;
+            chkHexFlags.Checked = true;
+            chkHexFlags.CheckState = CheckState.Checked;
+            chkHexFlags.Location = new Point(180, 23);
+            chkHexFlags.Margin = new Padding(4, 3, 4, 3);
+            chkHexFlags.Name = "chkHexFlags";
+            chkHexFlags.Size = new Size(47, 19);
+            chkHexFlags.TabIndex = 8;
+            chkHexFlags.Text = "Hex";
+            chkHexFlags.UseVisualStyleBackColor = false;
+            chkHexFlags.CheckedChanged += chkHexUnknown_CheckedChanged;
+            // 
+            // lblC
+            // 
+            lblC.AutoSize = true;
+            lblC.BackColor = Color.Transparent;
+            lblC.Location = new Point(7, 114);
+            lblC.Margin = new Padding(4, 0, 4, 0);
+            lblC.Name = "lblC";
+            lblC.Size = new Size(50, 15);
+            lblC.TabIndex = 7;
+            lblC.Text = "Vector Z";
+            // 
+            // numC
+            // 
+            numC.Location = new Point(72, 112);
+            numC.Margin = new Padding(4, 3, 4, 3);
+            numC.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numC.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numC.Name = "numC";
+            numC.Size = new Size(100, 23);
+            numC.TabIndex = 6;
+            numC.ValueChanged += numC_ValueChanged;
+            // 
+            // lblB
+            // 
+            lblB.AutoSize = true;
+            lblB.BackColor = Color.Transparent;
+            lblB.Location = new Point(7, 84);
+            lblB.Margin = new Padding(4, 0, 4, 0);
+            lblB.Name = "lblB";
+            lblB.Size = new Size(50, 15);
+            lblB.TabIndex = 5;
+            lblB.Text = "Vector Y";
+            // 
+            // lblA
+            // 
+            lblA.AutoSize = true;
+            lblA.BackColor = Color.Transparent;
+            lblA.Location = new Point(7, 54);
+            lblA.Margin = new Padding(4, 0, 4, 0);
+            lblA.Name = "lblA";
+            lblA.Size = new Size(50, 15);
+            lblA.TabIndex = 4;
+            lblA.Text = "Vector X";
+            // 
+            // lblFlags
+            // 
+            lblFlags.AutoSize = true;
+            lblFlags.BackColor = Color.Transparent;
+            lblFlags.Location = new Point(7, 24);
+            lblFlags.Margin = new Padding(4, 0, 4, 0);
+            lblFlags.Name = "lblFlags";
+            lblFlags.Size = new Size(34, 15);
+            lblFlags.TabIndex = 3;
+            lblFlags.Text = "Flags";
+            // 
+            // numB
+            // 
+            numB.Location = new Point(72, 82);
+            numB.Margin = new Padding(4, 3, 4, 3);
+            numB.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numB.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numB.Name = "numB";
+            numB.Size = new Size(100, 23);
+            numB.TabIndex = 4;
+            numB.ValueChanged += numB_ValueChanged;
+            // 
+            // numA
+            // 
+            numA.Location = new Point(72, 52);
+            numA.Margin = new Padding(4, 3, 4, 3);
+            numA.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numA.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numA.Name = "numA";
+            numA.Size = new Size(100, 23);
+            numA.TabIndex = 3;
+            numA.ValueChanged += numA_ValueChanged;
+            // 
+            // numFlags
+            // 
+            numFlags.Hexadecimal = true;
+            numFlags.Location = new Point(72, 22);
+            numFlags.Margin = new Padding(4, 3, 4, 3);
+            numFlags.Maximum = new decimal(new int[] { 65535, 0, 0, 0 });
+            numFlags.Name = "numFlags";
+            numFlags.Size = new Size(100, 23);
+            numFlags.TabIndex = 2;
+            numFlags.ValueChanged += numUnknown_ValueChanged;
+            // 
+            // tipHover
+            // 
+            tipHover.AutomaticDelay = 250;
             // 
             // OldEntityBox
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.tbcTabs);
-            this.Name = "OldEntityBox";
-            this.Size = new System.Drawing.Size(349, 370);
-            ((System.ComponentModel.ISupportInitialize)(this.numType)).EndInit();
-            this.fraType.ResumeLayout(false);
-            this.fraSubtype.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numSubtype)).EndInit();
-            this.fraPosition.ResumeLayout(false);
-            this.fraPosition.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numZ)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numY)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numX)).EndInit();
-            this.fraID.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numID)).EndInit();
-            this.tbcTabs.ResumeLayout(false);
-            this.tabGeneral.ResumeLayout(false);
-            this.tabGeneral.PerformLayout();
-            this.fraSettings.ResumeLayout(false);
-            this.fraSettings.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numC)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numB)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numA)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numFlags)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numSpawn)).EndInit();
-            this.fraSpawn.ResumeLayout(false);
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(tbcTabs);
+            Margin = new Padding(4, 3, 4, 3);
+            Name = "OldEntityBox";
+            Size = new Size(407, 427);
+            ((System.ComponentModel.ISupportInitialize)numType).EndInit();
+            fraType.ResumeLayout(false);
+            fraSubtype.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)numSubtype).EndInit();
+            fraPosition.ResumeLayout(false);
+            fraPosition.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numZ).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numY).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numX).EndInit();
+            fraID.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)numID).EndInit();
+            tbcTabs.ResumeLayout(false);
+            tabGeneral.ResumeLayout(false);
+            tabGeneral.PerformLayout();
+            fraSpawn.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)numSpawn).EndInit();
+            fraSettings.ResumeLayout(false);
+            fraSettings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numC).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numB).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numA).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numFlags).EndInit();
+            ResumeLayout(false);
         }
 
         #endregion
 
-        private System.Windows.Forms.NumericUpDown numType;
-        private System.Windows.Forms.GroupBox fraType;
-        private System.Windows.Forms.GroupBox fraSubtype;
-        private System.Windows.Forms.NumericUpDown numSubtype;
-        private System.Windows.Forms.GroupBox fraPosition;
-        private System.Windows.Forms.Label lblZ;
-        private System.Windows.Forms.Label lblY;
-        private System.Windows.Forms.Label lblX;
-        private System.Windows.Forms.NumericUpDown numZ;
-        private System.Windows.Forms.NumericUpDown numY;
-        private System.Windows.Forms.NumericUpDown numX;
-        private System.Windows.Forms.Button cmdInsertPosition;
-        private System.Windows.Forms.Button cmdRemovePosition;
-        private System.Windows.Forms.Button cmdAppendPosition;
-        private System.Windows.Forms.Button cmdNextPosition;
-        private System.Windows.Forms.Button cmdPreviousPosition;
-        private System.Windows.Forms.Label lblPositionIndex;
-        private System.Windows.Forms.GroupBox fraID;
-        private System.Windows.Forms.NumericUpDown numID;
-        private System.Windows.Forms.TabControl tbcTabs;
-        private System.Windows.Forms.TabPage tabGeneral;
-        private System.Windows.Forms.GroupBox fraSettings;
-        private System.Windows.Forms.Label lblC;
-        private System.Windows.Forms.NumericUpDown numC;
-        private System.Windows.Forms.Label lblB;
-        private System.Windows.Forms.Label lblA;
-        private System.Windows.Forms.Label lblFlags;
-        private System.Windows.Forms.NumericUpDown numB;
-        private System.Windows.Forms.NumericUpDown numA;
-        private System.Windows.Forms.NumericUpDown numFlags;
-        private System.Windows.Forms.Label lblCodeName;
-        private System.Windows.Forms.CheckBox chkHexC;
-        private System.Windows.Forms.CheckBox chkHexB;
-        private System.Windows.Forms.CheckBox chkHexA;
-        private System.Windows.Forms.CheckBox chkHexFlags;
-        private System.Windows.Forms.Button cmdInterpolate;
-        private System.Windows.Forms.NumericUpDown numSpawn;
-        private System.Windows.Forms.ToolTip tipHover;
-        private System.Windows.Forms.GroupBox fraSpawn;
+        private DarkNumericUpDown numType;
+        private DarkGroupBox fraType;
+        private DarkGroupBox fraSubtype;
+        private DarkNumericUpDown numSubtype;
+        private DarkGroupBox fraPosition;
+        private Label lblZ;
+        private Label lblY;
+        private Label lblX;
+        private DarkNumericUpDown numZ;
+        private DarkNumericUpDown numY;
+        private DarkNumericUpDown numX;
+        private DarkButton cmdInsertPosition;
+        private DarkButton cmdRemovePosition;
+        private DarkButton cmdAppendPosition;
+        private DarkButton cmdNextPosition;
+        private DarkButton cmdPreviousPosition;
+        private Label lblPositionIndex;
+        private DarkGroupBox fraID;
+        private DarkNumericUpDown numID;
+        private MetroSetTabControl tbcTabs;
+        private TabPage tabGeneral;
+        private DarkGroupBox fraSettings;
+        private Label lblC;
+        private DarkNumericUpDown numC;
+        private Label lblB;
+        private Label lblA;
+        private Label lblFlags;
+        private DarkNumericUpDown numB;
+        private DarkNumericUpDown numA;
+        private DarkNumericUpDown numFlags;
+        private Label lblCodeName;
+        private CheckBox chkHexC;
+        private CheckBox chkHexB;
+        private CheckBox chkHexA;
+        private CheckBox chkHexFlags;
+        private DarkButton cmdInterpolate;
+        private DarkNumericUpDown numSpawn;
+        private ToolTip tipHover;
+        private DarkGroupBox fraSpawn;
     }
 }

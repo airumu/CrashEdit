@@ -542,7 +542,7 @@ namespace CrashEdit.CE
                     AddText3D("entity-" + entity.ID, trans, GetZoneColor(Color4.Yellow), size: text_size, ofs_y: text_y, flags: TextRenderFlags.Default | TextRenderFlags.Bottom);
 
                 bool rendered_model = false;
-                if (!Settings.Default.DisableVisual)
+                if (Settings.Default.EnableVisual)
                 {
                     rendered_model = RenderEntityVisual(entity, trans);
                 }

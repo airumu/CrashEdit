@@ -223,7 +223,7 @@ namespace CrashEdit.Crash.GOOLIns
     {
         public static string GetName(GOOLInstruction ins) => "RAND";
         public static string GetFormat() => "[BBBBBBBBBBBB] [AAAAAAAAAAAA]";
-        public static string GetComment(GOOLInstruction ins) => $"rand({ins.GetArg('B')}, {ins.GetArg('A')})";
+        public static string GetComment(GOOLInstruction ins) => $"rand({ins.GetArg('B')},{ins.GetArg('A')})";
     }
 
     [GOOLInstruction(17, GameVersion.Crash1)]
@@ -276,7 +276,7 @@ namespace CrashEdit.Crash.GOOLIns
     {
         public static string GetName(GOOLInstruction ins) => "LOOP";
         public static string GetFormat() => GOOLInstruction.DefaultFormatLR;
-        public static string GetComment(GOOLInstruction ins) => $"loop({ins.GetArg('L')}, " + (ins.Args['R'].Value == GOOLInstruction.DoubleStackRef ? "[sp-1], [sp])" : $"{ins.GetArg('R')}, 0x100)");
+        public static string GetComment(GOOLInstruction ins) => $"loop({ins.GetArg('L')}," + (ins.Args['R'].Value == GOOLInstruction.DoubleStackRef ? "[sp-1],[sp])" : $"{ins.GetArg('R')},0x100)");
     }
 
     [GOOLInstruction(20, GameVersion.Crash1)]
@@ -414,7 +414,7 @@ namespace CrashEdit.Crash.GOOLIns
     {
         public static string GetName(GOOLInstruction ins) => "VEL";
         public static string GetFormat() => GOOLInstruction.DefaultFormat;
-        public static string GetComment(GOOLInstruction ins) => $"VEL({ins.GetArg('A')}, {ins.GetArg('B')})";
+        public static string GetComment(GOOLInstruction ins) => $"VEL({ins.GetArg('A')},{ins.GetArg('B')})";
     }
 
     [GOOLInstruction(28, GameVersion.Crash1)]
@@ -523,7 +523,7 @@ namespace CrashEdit.Crash.GOOLIns
     {
         public static string GetName(GOOLInstruction ins) => "SEEK";
         public static string GetFormat() => GOOLInstruction.DefaultFormatLR;
-        public static string GetComment(GOOLInstruction ins) => $"seek({ins.GetArg('L')}, " + (ins.Args['R'].Value == GOOLInstruction.DoubleStackRef ? "[sp-1], [sp])" : $"{ins.GetArg('R')}, 0x100)");
+        public static string GetComment(GOOLInstruction ins) => $"seek({ins.GetArg('L')}," + (ins.Args['R'].Value == GOOLInstruction.DoubleStackRef ? "[sp-1],[sp])" : $"{ins.GetArg('R')},0x100)");
     }
 
     [GOOLInstruction(35, GameVersion.Crash1)]
@@ -560,7 +560,7 @@ namespace CrashEdit.Crash.GOOLIns
     {
         public static string GetName(GOOLInstruction ins) => "DSEK";
         public static string GetFormat() => GOOLInstruction.DefaultFormatLR;
-        public static string GetComment(GOOLInstruction ins) => $"degseek({ins.GetArg('L')}, " + (ins.Args['R'].Value == GOOLInstruction.DoubleStackRef ? "[sp-1], [sp])" : $"{ins.GetArg('R')}, 0x100)");
+        public static string GetComment(GOOLInstruction ins) => $"degseek({ins.GetArg('L')}," + (ins.Args['R'].Value == GOOLInstruction.DoubleStackRef ? "[sp-1],[sp])" : $"{ins.GetArg('R')},0x100)");
     }
 
     [GOOLInstruction(38, GameVersion.Crash1)]
@@ -922,7 +922,7 @@ namespace CrashEdit.Crash.GOOLIns
             return "CFL";
         }
 
-        public static string GetFormat() => "IIIIIIIIII VVVV (RRRRRR) CC TT";
+        public static string GetFormat() => "<IIIIIIIIII> VVVV (RRRRRR) CC TT";
         public static string GetComment(GOOLInstruction ins)
         {
             int v = ins.Args['V'].Value;
@@ -1065,7 +1065,7 @@ namespace CrashEdit.Crash.GOOLIns
             }
             else if (ins.Args['T'].Value == 1)
             {
-                str += $" and change state to {ins.GetArg('I')}";
+                str += $" and go to state {ins.GetArg('I')}";
             }
             else if (ins.Args['T'].Value == 2)
             {
@@ -1104,7 +1104,7 @@ namespace CrashEdit.Crash.GOOLIns
             }
             else if (ins.Args['T'].Value == 1)
             {
-                str += $" and change state to {ins.GetArg('I')}";
+                str += $" and go to state {ins.GetArg('I')}";
             }
             else if (ins.Args['T'].Value == 2)
             {
@@ -1138,7 +1138,39 @@ namespace CrashEdit.Crash.GOOLIns
     {
         public static string GetName(GOOLInstruction ins) => "CHNK";
         public static string GetFormat() => "[EEEEEEEEEEEE] [TTTTTTTTTTTT]";
-        public static string GetComment(GOOLInstruction ins) => string.Empty;
+        public static string GetComment(GOOLInstruction ins)
+        {
+            string str = string.Empty;
+            if (ins.TryGetImmediate('T', out int i))
+            {
+                if (i == 1)
+                {
+                    str += $"load {ins.GetArg('E')}";
+                }
+                else if (i == 2)
+                {
+                    str += $"deload {ins.GetArg('E')}";
+                }
+                else if (i == 3)
+                {
+                    str += $"push {ins.GetArg('E')}";
+                }
+                else if (i == 4)
+                {
+                    str += "push freepages";
+                }
+                else if (i == 5)
+                {
+                    str += "push payload";
+                }
+                else if (i == 6)
+                {
+                    str += $"load2 {ins.GetArg('E')}";
+                }
+            }
+
+            return str;
+        }
     }
 
     [GOOLInstruction(140, GameVersion.Crash1)]

@@ -1,4 +1,6 @@
-﻿using CrashEdit.CE.Properties;
+﻿using AltUI.Forms;
+using CrashEdit.CE.Properties;
+using Settings = CrashEdit.CE.Properties.Settings;
 
 namespace CrashEdit.CE
 {
@@ -8,6 +10,8 @@ namespace CrashEdit.CE
 
         private static readonly List<string> FontFileNames = new();
         private static readonly List<string> FontExtensions = new() { ".ttf", ".otf" };
+
+        public HelpWindow? frmhelp = null;
 
         private void MakeFontsList()
         {
@@ -66,13 +70,22 @@ namespace CrashEdit.CE
                 dpdFont.SelectedIndex = FontFileNames.IndexOf(Settings.Default.FontName);
             else
                 dpdFont.SelectedIndex = 0;
+
+            dpdHexView.Items.AddRange(new object[] { "Small", "Medium", "Large" });
+            dpdHexView.SelectedItem = Settings.Default.HexViewCellSize;
+            dpdHexView.SelectedIndexChanged += new EventHandler(dpdHexView_SelectedIndexChanged);
+
             numFontSize.Value = (decimal)Settings.Default.FontSize;
             numW.Value = Settings.Default.DefaultFormW;
             numH.Value = Settings.Default.DefaultFormH;
             numAnimGrid.Value = Settings.Default.AnimGridLen;
+            sldNodeShadeAmt.Value = (int)(Settings.Default.NodeShadeMax * 100);
+            cdlClearCol.Color = picClearCol.BackColor = Color.FromArgb(Settings.Default.ClearColorRGB);
+            cdlClearCol.Color = picClearCol.BackColor = Color.FromArgb(Settings.Default.ClearColorRGB);
+
+            // chk.Checked
             chkNormalDisplay.Checked = Settings.Default.DisplayNormals;
             chkCollisionDisplay.Checked = Settings.Default.DisplayFrameCollision;
-            cdlClearCol.Color = picClearCol.BackColor = System.Drawing.Color.FromArgb(Settings.Default.ClearColorRGB);
             chkDeleteInvalidEntries.Checked = Settings.Default.DeleteInvalidEntries;
             chkAnimGrid.Checked = Settings.Default.DisplayAnimGrid;
             chkFont3DEnable.Checked = Settings.Default.Font3DEnable;
@@ -83,10 +96,26 @@ namespace CrashEdit.CE
             chkViewCamera.Checked = Settings.Default.ViewCamera;
             chkViewCameraAngle.Checked = Settings.Default.ViewCameraAngle;
             chkShowEntityParams.Checked = Settings.Default.ShowEntityParams;
-            cdlClearCol.Color = picClearCol.BackColor = Color.FromArgb(Settings.Default.ClearColorRGB);
-            sldNodeShadeAmt.Value = (int)(Settings.Default.NodeShadeMax * 100);
-            lblNodeShadeAmt.Text = string.Format("{0:F0}%", sldNodeShadeAmt.Value);
+            chkPatchNSDSavesNSF.Checked = Settings.Default.PatchNSDSavesNSF;
 
+            chkLagacyPatchNSD.Checked = Settings.Default.UseOldPatchNSD;
+            chkLiteralCollisionTypes.Checked = Settings.Default.ShowliteralCollisionTypes;
+            chkEnableCustomCrates.Checked = Settings.Default.EnableCustomCrates;
+            chkEnableC2TT.Checked = Settings.Default.EnableC2TTEditor;
+            chkPatchGOOLC3toC2.Checked = Settings.Default.PatchGOOLC3toC2;
+            chkSplitViewerPanels.Checked = Settings.Default.SplitAnimViewerPanels;
+            chkEnableLegacyEntityBox.Checked = Settings.Default.EnableLegacyEntityBox;
+            chkOutputCopyTextureResult.Checked = Settings.Default.OutputCopyTextureResult;
+            chkOutputModelTextureInfo.Checked = Settings.Default.OutputModelTextureInfo;
+            chkOutputCLUTInfo.Checked = Settings.Default.OutputCLUTInfo;
+            chkApplyMica.Checked = Settings.Default.ApplyMica;
+            chkIgnoreDuplicatedEntryError.Checked = Settings.Default.IgnoreDuplicatedEntryError;
+            chkShowRenderingErrors.Checked = Settings.Default.ShowRenderingErrors;
+
+            // chk.Enabled
+            chkViewCameraAngle.Enabled = chkViewCamera.Checked;
+
+            // chk.Text
             fraSize.Text = Resources.Config_fraSize;
             fraClearCol.Text = Resources.Config_fraClearCol;
             fraFont.Text = Resources.Config_fraFont;
@@ -110,13 +139,58 @@ namespace CrashEdit.CE
             chkViewCamera.Text = Resources.Config_chkViewCamera;
             chkViewCameraAngle.Text = Resources.Config_chkViewCameraAngle;
             chkShowEntityParams.Text = Resources.Config_chkShowEntityParams;
+            lblNodeShadeAmt.Text = string.Format("{0:F0}%", sldNodeShadeAmt.Value);
             cmdReset.Text = Resources.Config_cmdReset;
+
+            chkLagacyPatchNSD.Text = Resources.Config_chkLegacyPatchNSD;
+            chkLiteralCollisionTypes.Text = Resources.Config_chkLiteralCollisionTypes;
+            chkEnableCustomCrates.Text = Resources.Config_chkEnableCustomCrates;
+            chkEnableC2TT.Text = Resources.Config_chkEnableC2TT;
+            chkPatchGOOLC3toC2.Text = Resources.Config_chkPatchGOOLC3toC2;
+            chkSplitViewerPanels.Text = Resources.Config_chkSplitViewerPanels;
+            chkEnableLegacyEntityBox.Text = Resources.Config_chkEnableLegacyEntityBox;
+            chkOutputCopyTextureResult.Text = Resources.Config_chkOutputCopyTextureResult;
+            chkOutputModelTextureInfo.Text = Resources.Config_chkOutputModelTextureInfo;
+            chkOutputCLUTInfo.Text = Resources.Config_chkOutputCLUTInfo;
+            chkApplyMica.Text = Resources.Config_chkApplyMica;
+            chkIgnoreDuplicatedEntryError.Text = Resources.Config_chkIgnoreDuplicatedEntryError;
+            chkShowRenderingErrors.Text = Resources.Config_chkShowRenderingErrors;
+        }
+
+        private void AskRestartProgram()
+        {
+            if (DarkMessageBox.ShowInformation(Resources.Restart, Resources.Restart_ConfirmationPrompt, DarkDialogButton.YesNo) == DialogResult.Yes)
+            {
+                Application.Restart();
+                Environment.Exit(0);
+            }
+        }
+
+        private void cmdHelp_Click(object sender, EventArgs e)
+        {
+            if (frmhelp == null || frmhelp.IsDisposed)
+            {
+                frmhelp = new HelpWindow();
+                frmhelp.FormClosing += (object? sender, FormClosingEventArgs e) =>
+                {
+                    frmhelp = null;
+                };
+            }
+            if (!frmhelp.Visible)
+            {
+                frmhelp.Show();
+            }
+            else
+            {
+                frmhelp.Activate();
+            }
         }
 
         private void dpdLang_SelectedIndexChanged(object sender, EventArgs e)
         {
             Settings.Default.Language = Languages[dpdLang.SelectedIndex];
             Settings.Default.Save();
+            AskRestartProgram();
         }
 
         private void dpdFont_SelectedIndexChanged(object sender, EventArgs e)
@@ -125,10 +199,20 @@ namespace CrashEdit.CE
             Settings.Default.Save();
         }
 
+        private void dpdHexView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Settings.Default.HexViewCellSize = Convert.ToString(dpdHexView.SelectedItem);
+            Settings.Default.Save();
+            AskRestartProgram();
+        }
+
         private void cmdReset_Click(object sender, EventArgs e)
         {
-            Settings.Default.Reset();
-            ((OldMainForm)TopLevelControl).ResetConfig();
+            if (DarkMessageBox.ShowWarning("Are you sure you want to reset the settings?", Resources.Reset_onfirmationPrompt, DarkDialogButton.YesNo) == DialogResult.Yes)
+            {
+                Settings.Default.Reset();
+                ((OldMainForm)TopLevelControl).ResetConfig();
+            }
         }
 
         private void numW_ValueChanged(object sender, EventArgs e)
@@ -212,12 +296,20 @@ namespace CrashEdit.CE
             Settings.Default.Save();
         }
 
-        private void sldNodeShadeAmt_Scroll(object sender, EventArgs e)
+        //private void sldNodeShadeAmt_Scroll(object sender, EventArgs e)
+        //{
+        //    Settings.Default.NodeShadeMax = sldNodeShadeAmt.Value / 100f;
+        //    lblNodeShadeAmt.Text = string.Format("{0:F0}%", sldNodeShadeAmt.Value);
+        //    Settings.Default.Save();
+        //}
+
+        private void sldNodeShadeAmt_ValueChangedl(object sender, EventArgs e)
         {
             Settings.Default.NodeShadeMax = sldNodeShadeAmt.Value / 100f;
             lblNodeShadeAmt.Text = string.Format("{0:F0}%", sldNodeShadeAmt.Value);
             Settings.Default.Save();
         }
+
 
         private void chkViewZoneBox_CheckedChanged(object sender, EventArgs e)
         {
@@ -235,6 +327,7 @@ namespace CrashEdit.CE
         {
             Settings.Default.ViewCamera = chkViewCamera.Checked;
             Settings.Default.Save();
+            chkViewCameraAngle.Enabled = chkViewCamera.Checked;
         }
 
         private void chkViewCameraAngle_CheckedChanged(object sender, EventArgs e)
@@ -243,15 +336,100 @@ namespace CrashEdit.CE
             Settings.Default.Save();
         }
 
-        private void chkDisableVisual_CheckedChanged(object sender, EventArgs e)
-        {
-            Settings.Default.DisableVisual = chkDisableVisual.Checked;
-            Settings.Default.Save();
-        }
-
         private void chkShowEntityParams_CheckedChanged(object sender, EventArgs e)
         {
             Settings.Default.ShowEntityParams = chkShowEntityParams.Checked;
+            Settings.Default.Save();
+        }
+
+        private void chkOldPatchNSD_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.UseOldPatchNSD = chkLagacyPatchNSD.Checked;
+            Settings.Default.Save();
+        }
+
+        private void chkDetailedCollision_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.ShowliteralCollisionTypes = chkLiteralCollisionTypes.Checked;
+            Settings.Default.Save();
+        }
+
+        private void chkShowCustomCrates_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.EnableCustomCrates = chkEnableCustomCrates.Checked;
+            Settings.Default.Save();
+        }
+
+        private void chkEnableC2TT_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.EnableC2TTEditor = chkEnableC2TT.Checked;
+            Settings.Default.Save();
+        }
+
+        private void chkPatchGOOLC3toC2_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.PatchGOOLC3toC2 = chkPatchGOOLC3toC2.Checked;
+            Settings.Default.Save();
+        }
+
+        private void chkPatchGOOLC3toC2_Click(object sender, EventArgs e)
+        {
+            Settings.Default.PatchGOOLC3toC2 = chkPatchGOOLC3toC2.Checked;
+            Settings.Default.Save();
+        }
+
+        private void chkSplitViewerPanels_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.SplitAnimViewerPanels = chkSplitViewerPanels.Checked;
+            Settings.Default.Save();
+        }
+
+        private void chkEnableLegacyEntityBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.EnableLegacyEntityBox = chkEnableLegacyEntityBox.Checked;
+            Settings.Default.Save();
+        }
+
+        private void chkOutputCopyTextureResult_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.OutputCopyTextureResult = chkOutputCopyTextureResult.Checked;
+            Settings.Default.Save();
+        }
+
+        private void chkOutputModelTextureInfo_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.OutputModelTextureInfo = chkOutputModelTextureInfo.Checked;
+            Settings.Default.Save();
+        }
+
+        private void chkApplyMica_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.ApplyMica = chkApplyMica.Checked;
+            Settings.Default.Save();
+        }
+
+        private void chkApplyMica_Click(object sender, EventArgs e)
+        {
+            Settings.Default.ApplyMica = chkApplyMica.Checked;
+            Settings.Default.Save();
+            AskRestartProgram();
+        }
+
+        private void chkOutputCLUTInfo_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.OutputCLUTInfo = chkOutputCLUTInfo.Checked;
+            Settings.Default.Save();
+        }
+
+        private void chkIgnoreDuplicatedEntryError_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.IgnoreDuplicatedEntryError = chkIgnoreDuplicatedEntryError.Checked;
+            Settings.Default.Save();
+        }
+
+        private void chkShowRenderingErrors_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.ShowRenderingErrors = chkShowRenderingErrors.Checked;
             Settings.Default.Save();
         }
     }

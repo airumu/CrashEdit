@@ -1,16 +1,19 @@
+using AltUI.Controls;
 using CrashEdit.Crash;
 
 namespace CrashEdit.CE
 {
     public sealed class OldSLSTDeltaBox : UserControl
     {
-        private ListBox lstValues;
+        private DarkListBox lstValues;
 
         public OldSLSTDeltaBox(OldSLSTDelta slstitem)
         {
-            lstValues = new ListBox
+            BackColor = Color.FromArgb(31, 31, 32);
+            lstValues = new DarkListBox
             {
-                Dock = DockStyle.Fill
+                Dock = DockStyle.Fill,
+                BackColor = Color.FromArgb(31, 31, 32)
             };
             lstValues.Items.Add(string.Format("Type: {0}", 1));
             lstValues.Items.Add(string.Format("Remove Nodes: {0}", slstitem.RemoveNodes.Count));

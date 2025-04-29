@@ -1,16 +1,19 @@
+using AltUI.Controls;
 using CrashEdit.Crash;
 
 namespace CrashEdit.CE
 {
     public sealed class SLSTSourceBox : UserControl
     {
-        private ListBox lstValues;
+        private DarkListBox lstValues;
 
         public SLSTSourceBox(SLSTSource slstitem)
         {
-            lstValues = new ListBox
+            BackColor = Color.FromArgb(31, 31, 32);
+            lstValues = new DarkListBox
             {
-                Dock = DockStyle.Fill
+                Dock = DockStyle.Fill,
+                BackColor = Color.FromArgb(31, 31, 32)
             };
             lstValues.Items.Add(string.Format("Count: {0}", slstitem.Polygons.Count));
             foreach (SLSTPolygonID value in slstitem.Polygons)

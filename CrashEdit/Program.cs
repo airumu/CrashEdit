@@ -1,7 +1,5 @@
-using CrashEdit.Crash;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Xml;
 
 namespace CrashEdit.CE
 {
@@ -70,6 +68,7 @@ namespace CrashEdit.CE
                 FileUtil.Owner = mainform;
                 TopLevelGLViewer = new GLViewerLoader();
                 mainform.Controls.Add(TopLevelGLViewer);
+                Application.SetColorMode(SystemColorMode.Dark);
                 Application.Run(mainform);
             }
 

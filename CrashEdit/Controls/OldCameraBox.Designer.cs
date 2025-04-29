@@ -1,3 +1,6 @@
+using AltUI.Controls;
+using MetroSet_UI.Controls;
+
 namespace CrashEdit.CE
 {
     partial class OldCameraBox
@@ -28,1526 +31,1504 @@ namespace CrashEdit.CE
         /// </summary>
         private void InitializeComponent()
         {
-            this.fraPosition = new System.Windows.Forms.GroupBox();
-            this.cmdPosInterpolate = new System.Windows.Forms.Button();
-            this.cmdFirstPosition = new System.Windows.Forms.Button();
-            this.cmdLastPosition = new System.Windows.Forms.Button();
-            this.lblZRot = new System.Windows.Forms.Label();
-            this.lblYRot = new System.Windows.Forms.Label();
-            this.lblXRot = new System.Windows.Forms.Label();
-            this.numZRot = new System.Windows.Forms.NumericUpDown();
-            this.numYRot = new System.Windows.Forms.NumericUpDown();
-            this.numXRot = new System.Windows.Forms.NumericUpDown();
-            this.lblPositionIndex = new System.Windows.Forms.Label();
-            this.cmdNextPosition = new System.Windows.Forms.Button();
-            this.cmdPreviousPosition = new System.Windows.Forms.Button();
-            this.cmdInsertPosition = new System.Windows.Forms.Button();
-            this.lblZ = new System.Windows.Forms.Label();
-            this.cmdRemovePosition = new System.Windows.Forms.Button();
-            this.lblY = new System.Windows.Forms.Label();
-            this.cmdAppendPosition = new System.Windows.Forms.Button();
-            this.lblX = new System.Windows.Forms.Label();
-            this.numZ = new System.Windows.Forms.NumericUpDown();
-            this.numY = new System.Windows.Forms.NumericUpDown();
-            this.numX = new System.Windows.Forms.NumericUpDown();
-            this.tbcTabs = new System.Windows.Forms.TabControl();
-            this.tabPosition = new System.Windows.Forms.TabPage();
-            this.tabSettings = new System.Windows.Forms.TabPage();
-            this.fraSLST = new System.Windows.Forms.GroupBox();
-            this.lblSLST = new System.Windows.Forms.Label();
-            this.txtSLST = new System.Windows.Forms.TextBox();
-            this.fraUnknown = new System.Windows.Forms.GroupBox();
-            this.lblUnk1 = new System.Windows.Forms.Label();
-            this.numUnk1 = new System.Windows.Forms.NumericUpDown();
-            this.numUnk2 = new System.Windows.Forms.NumericUpDown();
-            this.numUnk3 = new System.Windows.Forms.NumericUpDown();
-            this.lblUnk3 = new System.Windows.Forms.Label();
-            this.lblUnk2 = new System.Windows.Forms.Label();
-            this.fraLink = new System.Windows.Forms.GroupBox();
-            this.lblExitPoint = new System.Windows.Forms.Label();
-            this.numExitPoint = new System.Windows.Forms.NumericUpDown();
-            this.lblEntryPoint = new System.Windows.Forms.Label();
-            this.numEntryPoint = new System.Windows.Forms.NumericUpDown();
-            this.fraAvgDist = new System.Windows.Forms.GroupBox();
-            this.cmdAvgDistCalc = new System.Windows.Forms.Button();
-            this.numAvgDist = new System.Windows.Forms.NumericUpDown();
-            this.fraZoom = new System.Windows.Forms.GroupBox();
-            this.numZoom = new System.Windows.Forms.NumericUpDown();
-            this.fraMode = new System.Windows.Forms.GroupBox();
-            this.numMode = new System.Windows.Forms.NumericUpDown();
-            this.fraDirection = new System.Windows.Forms.GroupBox();
-            this.lblXDir = new System.Windows.Forms.Label();
-            this.numXDir = new System.Windows.Forms.NumericUpDown();
-            this.numYDir = new System.Windows.Forms.NumericUpDown();
-            this.numZDir = new System.Windows.Forms.NumericUpDown();
-            this.lblZDir = new System.Windows.Forms.Label();
-            this.lblYDir = new System.Windows.Forms.Label();
-            this.tabNeighbor = new System.Windows.Forms.TabPage();
-            this.fraNeighbor3 = new System.Windows.Forms.GroupBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.numRelativeFlag4 = new System.Windows.Forms.NumericUpDown();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.numRelative4 = new System.Windows.Forms.NumericUpDown();
-            this.numPathItem4 = new System.Windows.Forms.NumericUpDown();
-            this.numParentZone4 = new System.Windows.Forms.NumericUpDown();
-            this.fraNeighbor2 = new System.Windows.Forms.GroupBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.numRelativeFlag3 = new System.Windows.Forms.NumericUpDown();
-            this.numRelative3 = new System.Windows.Forms.NumericUpDown();
-            this.numParentZone3 = new System.Windows.Forms.NumericUpDown();
-            this.numPathItem3 = new System.Windows.Forms.NumericUpDown();
-            this.fraNeighbor1 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.numRelativeFlag2 = new System.Windows.Forms.NumericUpDown();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.numParentZone2 = new System.Windows.Forms.NumericUpDown();
-            this.numRelative2 = new System.Windows.Forms.NumericUpDown();
-            this.numPathItem2 = new System.Windows.Forms.NumericUpDown();
-            this.fraNeighbor0 = new System.Windows.Forms.GroupBox();
-            this.lblRelativeFlag = new System.Windows.Forms.Label();
-            this.lblRelative = new System.Windows.Forms.Label();
-            this.numRelative1 = new System.Windows.Forms.NumericUpDown();
-            this.lblPathItem = new System.Windows.Forms.Label();
-            this.lblParentZone = new System.Windows.Forms.Label();
-            this.numRelativeFlag1 = new System.Windows.Forms.NumericUpDown();
-            this.numParentZone1 = new System.Windows.Forms.NumericUpDown();
-            this.numPathItem1 = new System.Windows.Forms.NumericUpDown();
-            this.fraCount = new System.Windows.Forms.GroupBox();
-            this.numNeighborCount = new System.Windows.Forms.NumericUpDown();
-            this.fraPosition.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numZRot)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numYRot)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numXRot)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numZ)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numY)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numX)).BeginInit();
-            this.tbcTabs.SuspendLayout();
-            this.tabPosition.SuspendLayout();
-            this.tabSettings.SuspendLayout();
-            this.fraSLST.SuspendLayout();
-            this.fraUnknown.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numUnk1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numUnk2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numUnk3)).BeginInit();
-            this.fraLink.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numExitPoint)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numEntryPoint)).BeginInit();
-            this.fraAvgDist.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numAvgDist)).BeginInit();
-            this.fraZoom.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numZoom)).BeginInit();
-            this.fraMode.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numMode)).BeginInit();
-            this.fraDirection.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numXDir)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numYDir)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numZDir)).BeginInit();
-            this.tabNeighbor.SuspendLayout();
-            this.fraNeighbor3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numRelativeFlag4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numRelative4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numPathItem4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numParentZone4)).BeginInit();
-            this.fraNeighbor2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numRelativeFlag3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numRelative3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numParentZone3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numPathItem3)).BeginInit();
-            this.fraNeighbor1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numRelativeFlag2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numParentZone2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numRelative2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numPathItem2)).BeginInit();
-            this.fraNeighbor0.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numRelative1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numRelativeFlag1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numParentZone1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numPathItem1)).BeginInit();
-            this.fraCount.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numNeighborCount)).BeginInit();
-            this.SuspendLayout();
+            fraPosition = new DarkGroupBox();
+            cmdPosInterpolate = new DarkButton();
+            cmdFirstPosition = new DarkButton();
+            cmdLastPosition = new DarkButton();
+            lblZRot = new Label();
+            lblYRot = new Label();
+            lblXRot = new Label();
+            numZRot = new DarkNumericUpDown();
+            numYRot = new DarkNumericUpDown();
+            numXRot = new DarkNumericUpDown();
+            lblPositionIndex = new Label();
+            cmdNextPosition = new DarkButton();
+            cmdPreviousPosition = new DarkButton();
+            cmdInsertPosition = new DarkButton();
+            lblZ = new Label();
+            cmdRemovePosition = new DarkButton();
+            lblY = new Label();
+            cmdAppendPosition = new DarkButton();
+            lblX = new Label();
+            numZ = new DarkNumericUpDown();
+            numY = new DarkNumericUpDown();
+            numX = new DarkNumericUpDown();
+            tbcTabs = new MetroSetTabControl();
+            tabPosition = new TabPage();
+            tabSettings = new TabPage();
+            fraSLST = new DarkGroupBox();
+            lblSLST = new Label();
+            txtSLST = new DarkTextBox();
+            fraUnknown = new DarkGroupBox();
+            lblUnk1 = new Label();
+            numUnk1 = new DarkNumericUpDown();
+            numUnk2 = new DarkNumericUpDown();
+            numUnk3 = new DarkNumericUpDown();
+            lblUnk3 = new Label();
+            lblUnk2 = new Label();
+            fraLink = new DarkGroupBox();
+            lblExitPoint = new Label();
+            numExitPoint = new DarkNumericUpDown();
+            lblEntryPoint = new Label();
+            numEntryPoint = new DarkNumericUpDown();
+            fraAvgDist = new DarkGroupBox();
+            cmdAvgDistCalc = new DarkButton();
+            numAvgDist = new DarkNumericUpDown();
+            fraZoom = new DarkGroupBox();
+            numZoom = new DarkNumericUpDown();
+            fraMode = new DarkGroupBox();
+            numMode = new DarkNumericUpDown();
+            fraDirection = new DarkGroupBox();
+            lblXDir = new Label();
+            numXDir = new DarkNumericUpDown();
+            numYDir = new DarkNumericUpDown();
+            numZDir = new DarkNumericUpDown();
+            lblZDir = new Label();
+            lblYDir = new Label();
+            tabNeighbor = new TabPage();
+            fraNeighbor3 = new DarkGroupBox();
+            label5 = new Label();
+            numRelativeFlag4 = new DarkNumericUpDown();
+            label6 = new Label();
+            label7 = new Label();
+            label8 = new Label();
+            numRelative4 = new DarkNumericUpDown();
+            numPathItem4 = new DarkNumericUpDown();
+            numParentZone4 = new DarkNumericUpDown();
+            fraNeighbor2 = new DarkGroupBox();
+            label9 = new Label();
+            label10 = new Label();
+            label11 = new Label();
+            label12 = new Label();
+            numRelativeFlag3 = new DarkNumericUpDown();
+            numRelative3 = new DarkNumericUpDown();
+            numParentZone3 = new DarkNumericUpDown();
+            numPathItem3 = new DarkNumericUpDown();
+            fraNeighbor1 = new DarkGroupBox();
+            label1 = new Label();
+            label2 = new Label();
+            numRelativeFlag2 = new DarkNumericUpDown();
+            label3 = new Label();
+            label4 = new Label();
+            numParentZone2 = new DarkNumericUpDown();
+            numRelative2 = new DarkNumericUpDown();
+            numPathItem2 = new DarkNumericUpDown();
+            fraNeighbor0 = new DarkGroupBox();
+            lblRelativeFlag = new Label();
+            lblRelative = new Label();
+            numRelative1 = new DarkNumericUpDown();
+            lblPathItem = new Label();
+            lblParentZone = new Label();
+            numRelativeFlag1 = new DarkNumericUpDown();
+            numParentZone1 = new DarkNumericUpDown();
+            numPathItem1 = new DarkNumericUpDown();
+            fraCount = new DarkGroupBox();
+            numNeighborCount = new DarkNumericUpDown();
+            fraPosition.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numZRot).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numYRot).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numXRot).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numZ).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numY).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numX).BeginInit();
+            tbcTabs.SuspendLayout();
+            tabPosition.SuspendLayout();
+            tabSettings.SuspendLayout();
+            fraSLST.SuspendLayout();
+            fraUnknown.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numUnk1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numUnk2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numUnk3).BeginInit();
+            fraLink.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numExitPoint).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numEntryPoint).BeginInit();
+            fraAvgDist.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numAvgDist).BeginInit();
+            fraZoom.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numZoom).BeginInit();
+            fraMode.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numMode).BeginInit();
+            fraDirection.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numXDir).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numYDir).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numZDir).BeginInit();
+            tabNeighbor.SuspendLayout();
+            fraNeighbor3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numRelativeFlag4).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRelative4).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numPathItem4).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numParentZone4).BeginInit();
+            fraNeighbor2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numRelativeFlag3).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRelative3).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numParentZone3).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numPathItem3).BeginInit();
+            fraNeighbor1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numRelativeFlag2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numParentZone2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRelative2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numPathItem2).BeginInit();
+            fraNeighbor0.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numRelative1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRelativeFlag1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numParentZone1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numPathItem1).BeginInit();
+            fraCount.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numNeighborCount).BeginInit();
+            SuspendLayout();
             // 
             // fraPosition
             // 
-            this.fraPosition.AutoSize = true;
-            this.fraPosition.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.fraPosition.Controls.Add(this.cmdPosInterpolate);
-            this.fraPosition.Controls.Add(this.cmdFirstPosition);
-            this.fraPosition.Controls.Add(this.cmdLastPosition);
-            this.fraPosition.Controls.Add(this.lblZRot);
-            this.fraPosition.Controls.Add(this.lblYRot);
-            this.fraPosition.Controls.Add(this.lblXRot);
-            this.fraPosition.Controls.Add(this.numZRot);
-            this.fraPosition.Controls.Add(this.numYRot);
-            this.fraPosition.Controls.Add(this.numXRot);
-            this.fraPosition.Controls.Add(this.lblPositionIndex);
-            this.fraPosition.Controls.Add(this.cmdNextPosition);
-            this.fraPosition.Controls.Add(this.cmdPreviousPosition);
-            this.fraPosition.Controls.Add(this.cmdInsertPosition);
-            this.fraPosition.Controls.Add(this.lblZ);
-            this.fraPosition.Controls.Add(this.cmdRemovePosition);
-            this.fraPosition.Controls.Add(this.lblY);
-            this.fraPosition.Controls.Add(this.cmdAppendPosition);
-            this.fraPosition.Controls.Add(this.lblX);
-            this.fraPosition.Controls.Add(this.numZ);
-            this.fraPosition.Controls.Add(this.numY);
-            this.fraPosition.Controls.Add(this.numX);
-            this.fraPosition.Location = new System.Drawing.Point(3, 3);
-            this.fraPosition.Name = "fraPosition";
-            this.fraPosition.Size = new System.Drawing.Size(356, 172);
-            this.fraPosition.TabIndex = 1;
-            this.fraPosition.TabStop = false;
-            this.fraPosition.Text = "Position(s)";
+            fraPosition.AutoSize = true;
+            fraPosition.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraPosition.Controls.Add(cmdPosInterpolate);
+            fraPosition.Controls.Add(cmdFirstPosition);
+            fraPosition.Controls.Add(cmdLastPosition);
+            fraPosition.Controls.Add(lblZRot);
+            fraPosition.Controls.Add(lblYRot);
+            fraPosition.Controls.Add(lblXRot);
+            fraPosition.Controls.Add(numZRot);
+            fraPosition.Controls.Add(numYRot);
+            fraPosition.Controls.Add(numXRot);
+            fraPosition.Controls.Add(lblPositionIndex);
+            fraPosition.Controls.Add(cmdNextPosition);
+            fraPosition.Controls.Add(cmdPreviousPosition);
+            fraPosition.Controls.Add(cmdInsertPosition);
+            fraPosition.Controls.Add(lblZ);
+            fraPosition.Controls.Add(cmdRemovePosition);
+            fraPosition.Controls.Add(lblY);
+            fraPosition.Controls.Add(cmdAppendPosition);
+            fraPosition.Controls.Add(lblX);
+            fraPosition.Controls.Add(numZ);
+            fraPosition.Controls.Add(numY);
+            fraPosition.Controls.Add(numX);
+            fraPosition.Location = new Point(4, 3);
+            fraPosition.Margin = new Padding(4, 3, 4, 3);
+            fraPosition.Name = "fraPosition";
+            fraPosition.Padding = new Padding(4, 3, 4, 3);
+            fraPosition.Size = new Size(417, 209);
+            fraPosition.TabIndex = 1;
+            fraPosition.TabStop = false;
+            fraPosition.Text = "Position(s)";
             // 
             // cmdPosInterpolate
             // 
-            this.cmdPosInterpolate.AutoSize = true;
-            this.cmdPosInterpolate.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.cmdPosInterpolate.Location = new System.Drawing.Point(9, 130);
-            this.cmdPosInterpolate.Name = "cmdPosInterpolate";
-            this.cmdPosInterpolate.Size = new System.Drawing.Size(67, 23);
-            this.cmdPosInterpolate.TabIndex = 16;
-            this.cmdPosInterpolate.Text = "Interpolate";
-            this.cmdPosInterpolate.UseVisualStyleBackColor = true;
-            this.cmdPosInterpolate.Click += new System.EventHandler(this.cmdPosInterpolate_Click);
+            cmdPosInterpolate.AutoSize = true;
+            cmdPosInterpolate.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            cmdPosInterpolate.BorderColour = Color.Empty;
+            cmdPosInterpolate.CustomColour = false;
+            cmdPosInterpolate.FlatBottom = false;
+            cmdPosInterpolate.FlatTop = false;
+            cmdPosInterpolate.Location = new Point(10, 150);
+            cmdPosInterpolate.Margin = new Padding(4, 3, 4, 3);
+            cmdPosInterpolate.Name = "cmdPosInterpolate";
+            cmdPosInterpolate.Padding = new Padding(6);
+            cmdPosInterpolate.Size = new Size(86, 37);
+            cmdPosInterpolate.TabIndex = 16;
+            cmdPosInterpolate.Text = "Interpolate";
+            cmdPosInterpolate.Click += cmdPosInterpolate_Click;
             // 
             // cmdFirstPosition
             // 
-            this.cmdFirstPosition.Location = new System.Drawing.Point(214, 19);
-            this.cmdFirstPosition.Name = "cmdFirstPosition";
-            this.cmdFirstPosition.Size = new System.Drawing.Size(65, 23);
-            this.cmdFirstPosition.TabIndex = 15;
-            this.cmdFirstPosition.Text = "First";
-            this.cmdFirstPosition.UseVisualStyleBackColor = true;
-            this.cmdFirstPosition.Click += new System.EventHandler(this.cmdFirstPosition_Click);
+            cmdFirstPosition.BorderColour = Color.Empty;
+            cmdFirstPosition.CustomColour = false;
+            cmdFirstPosition.FlatBottom = false;
+            cmdFirstPosition.FlatTop = false;
+            cmdFirstPosition.Location = new Point(250, 22);
+            cmdFirstPosition.Margin = new Padding(4, 3, 4, 3);
+            cmdFirstPosition.Name = "cmdFirstPosition";
+            cmdFirstPosition.Padding = new Padding(6);
+            cmdFirstPosition.Size = new Size(76, 27);
+            cmdFirstPosition.TabIndex = 15;
+            cmdFirstPosition.Text = "First";
+            cmdFirstPosition.Click += cmdFirstPosition_Click;
             // 
             // cmdLastPosition
             // 
-            this.cmdLastPosition.Location = new System.Drawing.Point(285, 19);
-            this.cmdLastPosition.Name = "cmdLastPosition";
-            this.cmdLastPosition.Size = new System.Drawing.Size(65, 23);
-            this.cmdLastPosition.TabIndex = 14;
-            this.cmdLastPosition.Text = "Last";
-            this.cmdLastPosition.UseVisualStyleBackColor = true;
-            this.cmdLastPosition.Click += new System.EventHandler(this.cmdLastPosition_Click);
+            cmdLastPosition.BorderColour = Color.Empty;
+            cmdLastPosition.CustomColour = false;
+            cmdLastPosition.FlatBottom = false;
+            cmdLastPosition.FlatTop = false;
+            cmdLastPosition.Location = new Point(332, 22);
+            cmdLastPosition.Margin = new Padding(4, 3, 4, 3);
+            cmdLastPosition.Name = "cmdLastPosition";
+            cmdLastPosition.Padding = new Padding(6);
+            cmdLastPosition.Size = new Size(76, 27);
+            cmdLastPosition.TabIndex = 14;
+            cmdLastPosition.Text = "Last";
+            cmdLastPosition.Click += cmdLastPosition_Click;
             // 
             // lblZRot
             // 
-            this.lblZRot.AutoSize = true;
-            this.lblZRot.Location = new System.Drawing.Point(118, 106);
-            this.lblZRot.Name = "lblZRot";
-            this.lblZRot.Size = new System.Drawing.Size(57, 13);
-            this.lblZRot.TabIndex = 13;
-            this.lblZRot.Text = "Z Rotation";
+            lblZRot.AutoSize = true;
+            lblZRot.BackColor = Color.Transparent;
+            lblZRot.Location = new Point(138, 122);
+            lblZRot.Margin = new Padding(4, 0, 4, 0);
+            lblZRot.Name = "lblZRot";
+            lblZRot.Size = new Size(62, 15);
+            lblZRot.TabIndex = 13;
+            lblZRot.Text = "Z Rotation";
             // 
             // lblYRot
             // 
-            this.lblYRot.AutoSize = true;
-            this.lblYRot.Location = new System.Drawing.Point(118, 80);
-            this.lblYRot.Name = "lblYRot";
-            this.lblYRot.Size = new System.Drawing.Size(57, 13);
-            this.lblYRot.TabIndex = 11;
-            this.lblYRot.Text = "Y Rotation";
+            lblYRot.AutoSize = true;
+            lblYRot.BackColor = Color.Transparent;
+            lblYRot.Location = new Point(138, 92);
+            lblYRot.Margin = new Padding(4, 0, 4, 0);
+            lblYRot.Name = "lblYRot";
+            lblYRot.Size = new Size(62, 15);
+            lblYRot.TabIndex = 11;
+            lblYRot.Text = "Y Rotation";
             // 
             // lblXRot
             // 
-            this.lblXRot.AutoSize = true;
-            this.lblXRot.Location = new System.Drawing.Point(118, 54);
-            this.lblXRot.Name = "lblXRot";
-            this.lblXRot.Size = new System.Drawing.Size(57, 13);
-            this.lblXRot.TabIndex = 9;
-            this.lblXRot.Text = "X Rotation";
+            lblXRot.AutoSize = true;
+            lblXRot.BackColor = Color.Transparent;
+            lblXRot.Location = new Point(138, 62);
+            lblXRot.Margin = new Padding(4, 0, 4, 0);
+            lblXRot.Name = "lblXRot";
+            lblXRot.Size = new Size(62, 15);
+            lblXRot.TabIndex = 9;
+            lblXRot.Text = "X Rotation";
             // 
             // numZRot
             // 
-            this.numZRot.Location = new System.Drawing.Point(181, 104);
-            this.numZRot.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numZRot.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numZRot.Name = "numZRot";
-            this.numZRot.Size = new System.Drawing.Size(86, 20);
-            this.numZRot.TabIndex = 12;
-            this.numZRot.ValueChanged += new System.EventHandler(this.numZRot_ValueChanged);
+            numZRot.Location = new Point(211, 120);
+            numZRot.Margin = new Padding(4, 3, 4, 3);
+            numZRot.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numZRot.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numZRot.Name = "numZRot";
+            numZRot.Size = new Size(100, 23);
+            numZRot.TabIndex = 12;
+            numZRot.ValueChanged += numZRot_ValueChanged;
             // 
             // numYRot
             // 
-            this.numYRot.Location = new System.Drawing.Point(181, 78);
-            this.numYRot.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numYRot.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numYRot.Name = "numYRot";
-            this.numYRot.Size = new System.Drawing.Size(86, 20);
-            this.numYRot.TabIndex = 10;
-            this.numYRot.ValueChanged += new System.EventHandler(this.numYRot_ValueChanged);
+            numYRot.Location = new Point(211, 90);
+            numYRot.Margin = new Padding(4, 3, 4, 3);
+            numYRot.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numYRot.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numYRot.Name = "numYRot";
+            numYRot.Size = new Size(100, 23);
+            numYRot.TabIndex = 10;
+            numYRot.ValueChanged += numYRot_ValueChanged;
             // 
             // numXRot
             // 
-            this.numXRot.Location = new System.Drawing.Point(181, 52);
-            this.numXRot.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numXRot.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numXRot.Name = "numXRot";
-            this.numXRot.Size = new System.Drawing.Size(86, 20);
-            this.numXRot.TabIndex = 8;
-            this.numXRot.ValueChanged += new System.EventHandler(this.numXRot_ValueChanged);
+            numXRot.Location = new Point(211, 60);
+            numXRot.Margin = new Padding(4, 3, 4, 3);
+            numXRot.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numXRot.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numXRot.Name = "numXRot";
+            numXRot.Size = new Size(100, 23);
+            numXRot.TabIndex = 8;
+            numXRot.ValueChanged += numXRot_ValueChanged;
             // 
             // lblPositionIndex
             // 
-            this.lblPositionIndex.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPositionIndex.Location = new System.Drawing.Point(6, 19);
-            this.lblPositionIndex.Name = "lblPositionIndex";
-            this.lblPositionIndex.Size = new System.Drawing.Size(60, 23);
-            this.lblPositionIndex.TabIndex = 5;
-            this.lblPositionIndex.Text = "?? / ??";
-            this.lblPositionIndex.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            lblPositionIndex.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblPositionIndex.Location = new Point(7, 22);
+            lblPositionIndex.Margin = new Padding(4, 0, 4, 0);
+            lblPositionIndex.Name = "lblPositionIndex";
+            lblPositionIndex.Size = new Size(70, 27);
+            lblPositionIndex.TabIndex = 5;
+            lblPositionIndex.Text = "?? / ??";
+            lblPositionIndex.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // cmdNextPosition
             // 
-            this.cmdNextPosition.Location = new System.Drawing.Point(143, 19);
-            this.cmdNextPosition.Name = "cmdNextPosition";
-            this.cmdNextPosition.Size = new System.Drawing.Size(65, 23);
-            this.cmdNextPosition.TabIndex = 1;
-            this.cmdNextPosition.Text = "Next";
-            this.cmdNextPosition.UseVisualStyleBackColor = true;
-            this.cmdNextPosition.Click += new System.EventHandler(this.cmdNextPosition_Click);
+            cmdNextPosition.BorderColour = Color.Empty;
+            cmdNextPosition.CustomColour = false;
+            cmdNextPosition.FlatBottom = false;
+            cmdNextPosition.FlatTop = false;
+            cmdNextPosition.Location = new Point(167, 22);
+            cmdNextPosition.Margin = new Padding(4, 3, 4, 3);
+            cmdNextPosition.Name = "cmdNextPosition";
+            cmdNextPosition.Padding = new Padding(6);
+            cmdNextPosition.Size = new Size(76, 27);
+            cmdNextPosition.TabIndex = 1;
+            cmdNextPosition.Text = "Next";
+            cmdNextPosition.Click += cmdNextPosition_Click;
             // 
             // cmdPreviousPosition
             // 
-            this.cmdPreviousPosition.Location = new System.Drawing.Point(72, 19);
-            this.cmdPreviousPosition.Name = "cmdPreviousPosition";
-            this.cmdPreviousPosition.Size = new System.Drawing.Size(65, 23);
-            this.cmdPreviousPosition.TabIndex = 0;
-            this.cmdPreviousPosition.Text = "Previous";
-            this.cmdPreviousPosition.UseVisualStyleBackColor = true;
-            this.cmdPreviousPosition.Click += new System.EventHandler(this.cmdPreviousPosition_Click);
+            cmdPreviousPosition.BorderColour = Color.Empty;
+            cmdPreviousPosition.CustomColour = false;
+            cmdPreviousPosition.FlatBottom = false;
+            cmdPreviousPosition.FlatTop = false;
+            cmdPreviousPosition.Location = new Point(84, 22);
+            cmdPreviousPosition.Margin = new Padding(4, 3, 4, 3);
+            cmdPreviousPosition.Name = "cmdPreviousPosition";
+            cmdPreviousPosition.Padding = new Padding(6);
+            cmdPreviousPosition.Size = new Size(76, 27);
+            cmdPreviousPosition.TabIndex = 0;
+            cmdPreviousPosition.Text = "Previous";
+            cmdPreviousPosition.Click += cmdPreviousPosition_Click;
             // 
             // cmdInsertPosition
             // 
-            this.cmdInsertPosition.Location = new System.Drawing.Point(275, 75);
-            this.cmdInsertPosition.Name = "cmdInsertPosition";
-            this.cmdInsertPosition.Size = new System.Drawing.Size(75, 23);
-            this.cmdInsertPosition.TabIndex = 6;
-            this.cmdInsertPosition.Text = "Insert";
-            this.cmdInsertPosition.UseVisualStyleBackColor = true;
-            this.cmdInsertPosition.Click += new System.EventHandler(this.cmdInsertPosition_Click);
+            cmdInsertPosition.BorderColour = Color.Empty;
+            cmdInsertPosition.CustomColour = false;
+            cmdInsertPosition.FlatBottom = false;
+            cmdInsertPosition.FlatTop = false;
+            cmdInsertPosition.Location = new Point(321, 87);
+            cmdInsertPosition.Margin = new Padding(4, 3, 4, 3);
+            cmdInsertPosition.Name = "cmdInsertPosition";
+            cmdInsertPosition.Padding = new Padding(6);
+            cmdInsertPosition.Size = new Size(88, 27);
+            cmdInsertPosition.TabIndex = 6;
+            cmdInsertPosition.Text = "Insert";
+            cmdInsertPosition.Click += cmdInsertPosition_Click;
             // 
             // lblZ
             // 
-            this.lblZ.AutoSize = true;
-            this.lblZ.Location = new System.Drawing.Point(6, 106);
-            this.lblZ.Name = "lblZ";
-            this.lblZ.Size = new System.Drawing.Size(14, 13);
-            this.lblZ.TabIndex = 5;
-            this.lblZ.Text = "Z";
+            lblZ.AutoSize = true;
+            lblZ.BackColor = Color.Transparent;
+            lblZ.Location = new Point(7, 122);
+            lblZ.Margin = new Padding(4, 0, 4, 0);
+            lblZ.Name = "lblZ";
+            lblZ.Size = new Size(14, 15);
+            lblZ.TabIndex = 5;
+            lblZ.Text = "Z";
             // 
             // cmdRemovePosition
             // 
-            this.cmdRemovePosition.Location = new System.Drawing.Point(275, 101);
-            this.cmdRemovePosition.Name = "cmdRemovePosition";
-            this.cmdRemovePosition.Size = new System.Drawing.Size(75, 23);
-            this.cmdRemovePosition.TabIndex = 7;
-            this.cmdRemovePosition.Text = "Remove";
-            this.cmdRemovePosition.UseVisualStyleBackColor = true;
-            this.cmdRemovePosition.Click += new System.EventHandler(this.cmdRemovePosition_Click);
+            cmdRemovePosition.BorderColour = Color.Empty;
+            cmdRemovePosition.CustomColour = false;
+            cmdRemovePosition.FlatBottom = false;
+            cmdRemovePosition.FlatTop = false;
+            cmdRemovePosition.Location = new Point(321, 117);
+            cmdRemovePosition.Margin = new Padding(4, 3, 4, 3);
+            cmdRemovePosition.Name = "cmdRemovePosition";
+            cmdRemovePosition.Padding = new Padding(6);
+            cmdRemovePosition.Size = new Size(88, 27);
+            cmdRemovePosition.TabIndex = 7;
+            cmdRemovePosition.Text = "Remove";
+            cmdRemovePosition.Click += cmdRemovePosition_Click;
             // 
             // lblY
             // 
-            this.lblY.AutoSize = true;
-            this.lblY.Location = new System.Drawing.Point(6, 80);
-            this.lblY.Name = "lblY";
-            this.lblY.Size = new System.Drawing.Size(14, 13);
-            this.lblY.TabIndex = 4;
-            this.lblY.Text = "Y";
+            lblY.AutoSize = true;
+            lblY.BackColor = Color.Transparent;
+            lblY.Location = new Point(7, 92);
+            lblY.Margin = new Padding(4, 0, 4, 0);
+            lblY.Name = "lblY";
+            lblY.Size = new Size(14, 15);
+            lblY.TabIndex = 4;
+            lblY.Text = "Y";
             // 
             // cmdAppendPosition
             // 
-            this.cmdAppendPosition.Location = new System.Drawing.Point(275, 49);
-            this.cmdAppendPosition.Name = "cmdAppendPosition";
-            this.cmdAppendPosition.Size = new System.Drawing.Size(75, 23);
-            this.cmdAppendPosition.TabIndex = 5;
-            this.cmdAppendPosition.Text = "Append";
-            this.cmdAppendPosition.UseVisualStyleBackColor = true;
-            this.cmdAppendPosition.Click += new System.EventHandler(this.cmdAppendPosition_Click);
+            cmdAppendPosition.BorderColour = Color.Empty;
+            cmdAppendPosition.CustomColour = false;
+            cmdAppendPosition.FlatBottom = false;
+            cmdAppendPosition.FlatTop = false;
+            cmdAppendPosition.Location = new Point(321, 57);
+            cmdAppendPosition.Margin = new Padding(4, 3, 4, 3);
+            cmdAppendPosition.Name = "cmdAppendPosition";
+            cmdAppendPosition.Padding = new Padding(6);
+            cmdAppendPosition.Size = new Size(88, 27);
+            cmdAppendPosition.TabIndex = 5;
+            cmdAppendPosition.Text = "Append";
+            cmdAppendPosition.Click += cmdAppendPosition_Click;
             // 
             // lblX
             // 
-            this.lblX.AutoSize = true;
-            this.lblX.Location = new System.Drawing.Point(6, 54);
-            this.lblX.Name = "lblX";
-            this.lblX.Size = new System.Drawing.Size(14, 13);
-            this.lblX.TabIndex = 3;
-            this.lblX.Text = "X";
+            lblX.AutoSize = true;
+            lblX.BackColor = Color.Transparent;
+            lblX.Location = new Point(7, 62);
+            lblX.Margin = new Padding(4, 0, 4, 0);
+            lblX.Name = "lblX";
+            lblX.Size = new Size(14, 15);
+            lblX.TabIndex = 3;
+            lblX.Text = "X";
             // 
             // numZ
             // 
-            this.numZ.Increment = new decimal(new int[] {
-            80,
-            0,
-            0,
-            0});
-            this.numZ.Location = new System.Drawing.Point(26, 104);
-            this.numZ.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numZ.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numZ.Name = "numZ";
-            this.numZ.Size = new System.Drawing.Size(86, 20);
-            this.numZ.TabIndex = 4;
-            this.numZ.ValueChanged += new System.EventHandler(this.numZ_ValueChanged);
+            numZ.Increment = new decimal(new int[] { 80, 0, 0, 0 });
+            numZ.Location = new Point(30, 120);
+            numZ.Margin = new Padding(4, 3, 4, 3);
+            numZ.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numZ.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numZ.Name = "numZ";
+            numZ.Size = new Size(100, 23);
+            numZ.TabIndex = 4;
+            numZ.ValueChanged += numZ_ValueChanged;
             // 
             // numY
             // 
-            this.numY.Increment = new decimal(new int[] {
-            80,
-            0,
-            0,
-            0});
-            this.numY.Location = new System.Drawing.Point(26, 78);
-            this.numY.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numY.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numY.Name = "numY";
-            this.numY.Size = new System.Drawing.Size(86, 20);
-            this.numY.TabIndex = 3;
-            this.numY.ValueChanged += new System.EventHandler(this.numY_ValueChanged);
+            numY.Increment = new decimal(new int[] { 80, 0, 0, 0 });
+            numY.Location = new Point(30, 90);
+            numY.Margin = new Padding(4, 3, 4, 3);
+            numY.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numY.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numY.Name = "numY";
+            numY.Size = new Size(100, 23);
+            numY.TabIndex = 3;
+            numY.ValueChanged += numY_ValueChanged;
             // 
             // numX
             // 
-            this.numX.Increment = new decimal(new int[] {
-            80,
-            0,
-            0,
-            0});
-            this.numX.Location = new System.Drawing.Point(26, 52);
-            this.numX.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numX.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numX.Name = "numX";
-            this.numX.Size = new System.Drawing.Size(86, 20);
-            this.numX.TabIndex = 2;
-            this.numX.ValueChanged += new System.EventHandler(this.numX_ValueChanged);
+            numX.Increment = new decimal(new int[] { 80, 0, 0, 0 });
+            numX.Location = new Point(30, 60);
+            numX.Margin = new Padding(4, 3, 4, 3);
+            numX.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numX.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numX.Name = "numX";
+            numX.Size = new Size(100, 23);
+            numX.TabIndex = 2;
+            numX.ValueChanged += numX_ValueChanged;
             // 
             // tbcTabs
             // 
-            this.tbcTabs.Controls.Add(this.tabPosition);
-            this.tbcTabs.Controls.Add(this.tabSettings);
-            this.tbcTabs.Controls.Add(this.tabNeighbor);
-            this.tbcTabs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbcTabs.Location = new System.Drawing.Point(0, 0);
-            this.tbcTabs.Name = "tbcTabs";
-            this.tbcTabs.SelectedIndex = 0;
-            this.tbcTabs.Size = new System.Drawing.Size(400, 400);
-            this.tbcTabs.TabIndex = 7;
+            tbcTabs.AnimateEasingType = MetroSet_UI.Enums.EasingType.CubeOut;
+            tbcTabs.AnimateTime = 200;
+            tbcTabs.BackgroundColor = Color.FromArgb(31, 31, 32);
+            tbcTabs.Controls.Add(tabPosition);
+            tbcTabs.Controls.Add(tabSettings);
+            tbcTabs.Controls.Add(tabNeighbor);
+            tbcTabs.Dock = DockStyle.Fill;
+            tbcTabs.IsDerivedStyle = false;
+            tbcTabs.ItemSize = new Size(100, 28);
+            tbcTabs.Location = new Point(0, 0);
+            tbcTabs.Margin = new Padding(4, 3, 4, 3);
+            tbcTabs.Name = "tbcTabs";
+            tbcTabs.SelectedIndex = 0;
+            tbcTabs.SelectedTextColor = Color.White;
+            tbcTabs.Size = new Size(467, 462);
+            tbcTabs.SizeMode = TabSizeMode.Fixed;
+            tbcTabs.Speed = 100;
+            tbcTabs.Style = MetroSet_UI.Enums.Style.Dark;
+            tbcTabs.StyleManager = null;
+            tbcTabs.TabIndex = 7;
+            tbcTabs.ThemeAuthor = "Narwin";
+            tbcTabs.ThemeName = "MetroDark";
+            tbcTabs.UnselectedTextColor = Color.Gray;
+            tbcTabs.UseAnimation = false;
             // 
             // tabPosition
             // 
-            this.tabPosition.AutoScroll = true;
-            this.tabPosition.Controls.Add(this.fraPosition);
-            this.tabPosition.Location = new System.Drawing.Point(4, 22);
-            this.tabPosition.Name = "tabPosition";
-            this.tabPosition.Size = new System.Drawing.Size(392, 374);
-            this.tabPosition.TabIndex = 0;
-            this.tabPosition.Text = "Positions";
-            this.tabPosition.UseVisualStyleBackColor = true;
+            tabPosition.AutoScroll = true;
+            tabPosition.BackColor = Color.FromArgb(31, 31, 32);
+            tabPosition.Controls.Add(fraPosition);
+            tabPosition.Location = new Point(4, 32);
+            tabPosition.Margin = new Padding(4, 3, 4, 3);
+            tabPosition.Name = "tabPosition";
+            tabPosition.Size = new Size(459, 426);
+            tabPosition.TabIndex = 0;
+            tabPosition.Text = "Positions";
             // 
             // tabSettings
             // 
-            this.tabSettings.Controls.Add(this.fraSLST);
-            this.tabSettings.Controls.Add(this.fraUnknown);
-            this.tabSettings.Controls.Add(this.fraLink);
-            this.tabSettings.Controls.Add(this.fraAvgDist);
-            this.tabSettings.Controls.Add(this.fraZoom);
-            this.tabSettings.Controls.Add(this.fraMode);
-            this.tabSettings.Controls.Add(this.fraDirection);
-            this.tabSettings.Location = new System.Drawing.Point(4, 22);
-            this.tabSettings.Name = "tabSettings";
-            this.tabSettings.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSettings.Size = new System.Drawing.Size(392, 374);
-            this.tabSettings.TabIndex = 1;
-            this.tabSettings.Text = "Trail Settings";
-            this.tabSettings.UseVisualStyleBackColor = true;
+            tabSettings.BackColor = Color.FromArgb(31, 31, 32);
+            tabSettings.Controls.Add(fraSLST);
+            tabSettings.Controls.Add(fraUnknown);
+            tabSettings.Controls.Add(fraLink);
+            tabSettings.Controls.Add(fraAvgDist);
+            tabSettings.Controls.Add(fraZoom);
+            tabSettings.Controls.Add(fraMode);
+            tabSettings.Controls.Add(fraDirection);
+            tabSettings.Location = new Point(4, 32);
+            tabSettings.Margin = new Padding(4, 3, 4, 3);
+            tabSettings.Name = "tabSettings";
+            tabSettings.Padding = new Padding(4, 3, 4, 3);
+            tabSettings.Size = new Size(459, 426);
+            tabSettings.TabIndex = 1;
+            tabSettings.Text = "Trail Settings";
             // 
             // fraSLST
             // 
-            this.fraSLST.AutoSize = true;
-            this.fraSLST.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.fraSLST.Controls.Add(this.lblSLST);
-            this.fraSLST.Controls.Add(this.txtSLST);
-            this.fraSLST.Location = new System.Drawing.Point(6, 224);
-            this.fraSLST.Name = "fraSLST";
-            this.fraSLST.Size = new System.Drawing.Size(139, 75);
-            this.fraSLST.TabIndex = 33;
-            this.fraSLST.TabStop = false;
-            this.fraSLST.Text = "SLST";
+            fraSLST.AutoSize = true;
+            fraSLST.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraSLST.Controls.Add(lblSLST);
+            fraSLST.Controls.Add(txtSLST);
+            fraSLST.Location = new Point(7, 258);
+            fraSLST.Margin = new Padding(4, 3, 4, 3);
+            fraSLST.Name = "fraSLST";
+            fraSLST.Padding = new Padding(4, 3, 4, 3);
+            fraSLST.Size = new Size(140, 87);
+            fraSLST.TabIndex = 33;
+            fraSLST.TabStop = false;
+            fraSLST.Text = "SLST";
             // 
             // lblSLST
             // 
-            this.lblSLST.AutoSize = true;
-            this.lblSLST.ForeColor = System.Drawing.Color.Red;
-            this.lblSLST.Location = new System.Drawing.Point(7, 46);
-            this.lblSLST.Name = "lblSLST";
-            this.lblSLST.Size = new System.Drawing.Size(126, 13);
-            this.lblSLST.TabIndex = 1;
-            this.lblSLST.Text = "EID ERROR WARNING!";
+            lblSLST.AutoSize = true;
+            lblSLST.BackColor = Color.Transparent;
+            lblSLST.ForeColor = Color.Red;
+            lblSLST.Location = new Point(8, 53);
+            lblSLST.Margin = new Padding(4, 0, 4, 0);
+            lblSLST.Name = "lblSLST";
+            lblSLST.Size = new Size(124, 15);
+            lblSLST.TabIndex = 1;
+            lblSLST.Text = "EID ERROR WARNING!";
             // 
             // txtSLST
             // 
-            this.txtSLST.Location = new System.Drawing.Point(6, 19);
-            this.txtSLST.MaxLength = 5;
-            this.txtSLST.Name = "txtSLST";
-            this.txtSLST.Size = new System.Drawing.Size(64, 20);
-            this.txtSLST.TabIndex = 0;
-            this.txtSLST.Text = "WWWWW";
-            this.txtSLST.TextChanged += new System.EventHandler(this.txtSLST_TextChanged);
+            txtSLST.BackColor = Color.FromArgb(26, 26, 28);
+            txtSLST.BorderStyle = BorderStyle.FixedSingle;
+            txtSLST.ForeColor = Color.FromArgb(213, 213, 213);
+            txtSLST.Location = new Point(7, 22);
+            txtSLST.Margin = new Padding(4, 3, 4, 3);
+            txtSLST.MaxLength = 5;
+            txtSLST.Name = "txtSLST";
+            txtSLST.Size = new Size(74, 23);
+            txtSLST.TabIndex = 0;
+            txtSLST.Text = "WWWWW";
+            txtSLST.TextChanged += txtSLST_TextChanged;
             // 
             // fraUnknown
             // 
-            this.fraUnknown.AutoSize = true;
-            this.fraUnknown.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.fraUnknown.Controls.Add(this.lblUnk1);
-            this.fraUnknown.Controls.Add(this.numUnk1);
-            this.fraUnknown.Controls.Add(this.numUnk2);
-            this.fraUnknown.Controls.Add(this.numUnk3);
-            this.fraUnknown.Controls.Add(this.lblUnk3);
-            this.fraUnknown.Controls.Add(this.lblUnk2);
-            this.fraUnknown.Location = new System.Drawing.Point(279, 6);
-            this.fraUnknown.Name = "fraUnknown";
-            this.fraUnknown.Size = new System.Drawing.Size(101, 110);
-            this.fraUnknown.TabIndex = 26;
-            this.fraUnknown.TabStop = false;
-            this.fraUnknown.Text = "Unknown";
+            fraUnknown.AutoSize = true;
+            fraUnknown.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraUnknown.Controls.Add(lblUnk1);
+            fraUnknown.Controls.Add(numUnk1);
+            fraUnknown.Controls.Add(numUnk2);
+            fraUnknown.Controls.Add(numUnk3);
+            fraUnknown.Controls.Add(lblUnk3);
+            fraUnknown.Controls.Add(lblUnk2);
+            fraUnknown.Location = new Point(326, 7);
+            fraUnknown.Margin = new Padding(4, 3, 4, 3);
+            fraUnknown.Name = "fraUnknown";
+            fraUnknown.Padding = new Padding(4, 3, 4, 3);
+            fraUnknown.Size = new Size(119, 127);
+            fraUnknown.TabIndex = 26;
+            fraUnknown.TabStop = false;
+            fraUnknown.Text = "Unknown";
             // 
             // lblUnk1
             // 
-            this.lblUnk1.AutoSize = true;
-            this.lblUnk1.Location = new System.Drawing.Point(6, 21);
-            this.lblUnk1.Name = "lblUnk1";
-            this.lblUnk1.Size = new System.Drawing.Size(13, 13);
-            this.lblUnk1.TabIndex = 21;
-            this.lblUnk1.Text = "1";
+            lblUnk1.AutoSize = true;
+            lblUnk1.BackColor = Color.Transparent;
+            lblUnk1.Location = new Point(7, 24);
+            lblUnk1.Margin = new Padding(4, 0, 4, 0);
+            lblUnk1.Name = "lblUnk1";
+            lblUnk1.Size = new Size(13, 15);
+            lblUnk1.TabIndex = 21;
+            lblUnk1.Text = "1";
             // 
             // numUnk1
             // 
-            this.numUnk1.Location = new System.Drawing.Point(25, 19);
-            this.numUnk1.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numUnk1.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numUnk1.Name = "numUnk1";
-            this.numUnk1.Size = new System.Drawing.Size(70, 20);
-            this.numUnk1.TabIndex = 20;
-            this.numUnk1.ValueChanged += new System.EventHandler(this.numUnk1_ValueChanged);
+            numUnk1.Location = new Point(29, 22);
+            numUnk1.Margin = new Padding(4, 3, 4, 3);
+            numUnk1.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numUnk1.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numUnk1.Name = "numUnk1";
+            numUnk1.Size = new Size(82, 23);
+            numUnk1.TabIndex = 20;
+            numUnk1.ValueChanged += numUnk1_ValueChanged;
             // 
             // numUnk2
             // 
-            this.numUnk2.Location = new System.Drawing.Point(25, 45);
-            this.numUnk2.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numUnk2.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numUnk2.Name = "numUnk2";
-            this.numUnk2.Size = new System.Drawing.Size(70, 20);
-            this.numUnk2.TabIndex = 22;
-            this.numUnk2.ValueChanged += new System.EventHandler(this.numUnk2_ValueChanged);
+            numUnk2.Location = new Point(29, 52);
+            numUnk2.Margin = new Padding(4, 3, 4, 3);
+            numUnk2.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numUnk2.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numUnk2.Name = "numUnk2";
+            numUnk2.Size = new Size(82, 23);
+            numUnk2.TabIndex = 22;
+            numUnk2.ValueChanged += numUnk2_ValueChanged;
             // 
             // numUnk3
             // 
-            this.numUnk3.Location = new System.Drawing.Point(25, 71);
-            this.numUnk3.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numUnk3.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numUnk3.Name = "numUnk3";
-            this.numUnk3.Size = new System.Drawing.Size(70, 20);
-            this.numUnk3.TabIndex = 24;
-            this.numUnk3.ValueChanged += new System.EventHandler(this.numUnk3_ValueChanged);
+            numUnk3.Location = new Point(29, 82);
+            numUnk3.Margin = new Padding(4, 3, 4, 3);
+            numUnk3.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numUnk3.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numUnk3.Name = "numUnk3";
+            numUnk3.Size = new Size(82, 23);
+            numUnk3.TabIndex = 24;
+            numUnk3.ValueChanged += numUnk3_ValueChanged;
             // 
             // lblUnk3
             // 
-            this.lblUnk3.AutoSize = true;
-            this.lblUnk3.Location = new System.Drawing.Point(6, 73);
-            this.lblUnk3.Name = "lblUnk3";
-            this.lblUnk3.Size = new System.Drawing.Size(13, 13);
-            this.lblUnk3.TabIndex = 25;
-            this.lblUnk3.Text = "3";
+            lblUnk3.AutoSize = true;
+            lblUnk3.BackColor = Color.Transparent;
+            lblUnk3.Location = new Point(7, 84);
+            lblUnk3.Margin = new Padding(4, 0, 4, 0);
+            lblUnk3.Name = "lblUnk3";
+            lblUnk3.Size = new Size(13, 15);
+            lblUnk3.TabIndex = 25;
+            lblUnk3.Text = "3";
             // 
             // lblUnk2
             // 
-            this.lblUnk2.AutoSize = true;
-            this.lblUnk2.Location = new System.Drawing.Point(6, 47);
-            this.lblUnk2.Name = "lblUnk2";
-            this.lblUnk2.Size = new System.Drawing.Size(13, 13);
-            this.lblUnk2.TabIndex = 23;
-            this.lblUnk2.Text = "2";
+            lblUnk2.AutoSize = true;
+            lblUnk2.BackColor = Color.Transparent;
+            lblUnk2.Location = new Point(7, 54);
+            lblUnk2.Margin = new Padding(4, 0, 4, 0);
+            lblUnk2.Name = "lblUnk2";
+            lblUnk2.Size = new Size(13, 15);
+            lblUnk2.TabIndex = 23;
+            lblUnk2.Text = "2";
             // 
             // fraLink
             // 
-            this.fraLink.AutoSize = true;
-            this.fraLink.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.fraLink.Controls.Add(this.lblExitPoint);
-            this.fraLink.Controls.Add(this.numExitPoint);
-            this.fraLink.Controls.Add(this.lblEntryPoint);
-            this.fraLink.Controls.Add(this.numEntryPoint);
-            this.fraLink.Location = new System.Drawing.Point(6, 134);
-            this.fraLink.Name = "fraLink";
-            this.fraLink.Size = new System.Drawing.Size(99, 84);
-            this.fraLink.TabIndex = 32;
-            this.fraLink.TabStop = false;
-            this.fraLink.Text = "Link Settings";
+            fraLink.AutoSize = true;
+            fraLink.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraLink.Controls.Add(lblExitPoint);
+            fraLink.Controls.Add(numExitPoint);
+            fraLink.Controls.Add(lblEntryPoint);
+            fraLink.Controls.Add(numEntryPoint);
+            fraLink.Location = new Point(7, 155);
+            fraLink.Margin = new Padding(4, 3, 4, 3);
+            fraLink.Name = "fraLink";
+            fraLink.Padding = new Padding(4, 3, 4, 3);
+            fraLink.Size = new Size(116, 97);
+            fraLink.TabIndex = 32;
+            fraLink.TabStop = false;
+            fraLink.Text = "Link Settings";
             // 
             // lblExitPoint
             // 
-            this.lblExitPoint.AutoSize = true;
-            this.lblExitPoint.Location = new System.Drawing.Point(6, 47);
-            this.lblExitPoint.Name = "lblExitPoint";
-            this.lblExitPoint.Size = new System.Drawing.Size(24, 13);
-            this.lblExitPoint.TabIndex = 3;
-            this.lblExitPoint.Text = "Exit";
+            lblExitPoint.AutoSize = true;
+            lblExitPoint.BackColor = Color.Transparent;
+            lblExitPoint.Location = new Point(7, 54);
+            lblExitPoint.Margin = new Padding(4, 0, 4, 0);
+            lblExitPoint.Name = "lblExitPoint";
+            lblExitPoint.Size = new Size(26, 15);
+            lblExitPoint.TabIndex = 3;
+            lblExitPoint.Text = "Exit";
             // 
             // numExitPoint
             // 
-            this.numExitPoint.Location = new System.Drawing.Point(43, 45);
-            this.numExitPoint.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numExitPoint.Name = "numExitPoint";
-            this.numExitPoint.Size = new System.Drawing.Size(50, 20);
-            this.numExitPoint.TabIndex = 2;
-            this.numExitPoint.ValueChanged += new System.EventHandler(this.numExitPoint_ValueChanged);
+            numExitPoint.Location = new Point(50, 52);
+            numExitPoint.Margin = new Padding(4, 3, 4, 3);
+            numExitPoint.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numExitPoint.Name = "numExitPoint";
+            numExitPoint.Size = new Size(58, 23);
+            numExitPoint.TabIndex = 2;
+            numExitPoint.ValueChanged += numExitPoint_ValueChanged;
             // 
             // lblEntryPoint
             // 
-            this.lblEntryPoint.AutoSize = true;
-            this.lblEntryPoint.Location = new System.Drawing.Point(6, 21);
-            this.lblEntryPoint.Name = "lblEntryPoint";
-            this.lblEntryPoint.Size = new System.Drawing.Size(31, 13);
-            this.lblEntryPoint.TabIndex = 1;
-            this.lblEntryPoint.Text = "Entry";
+            lblEntryPoint.AutoSize = true;
+            lblEntryPoint.BackColor = Color.Transparent;
+            lblEntryPoint.Location = new Point(7, 24);
+            lblEntryPoint.Margin = new Padding(4, 0, 4, 0);
+            lblEntryPoint.Name = "lblEntryPoint";
+            lblEntryPoint.Size = new Size(34, 15);
+            lblEntryPoint.TabIndex = 1;
+            lblEntryPoint.Text = "Entry";
             // 
             // numEntryPoint
             // 
-            this.numEntryPoint.Location = new System.Drawing.Point(43, 19);
-            this.numEntryPoint.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numEntryPoint.Name = "numEntryPoint";
-            this.numEntryPoint.Size = new System.Drawing.Size(50, 20);
-            this.numEntryPoint.TabIndex = 0;
-            this.numEntryPoint.ValueChanged += new System.EventHandler(this.numEntryPoint_ValueChanged);
+            numEntryPoint.Location = new Point(50, 22);
+            numEntryPoint.Margin = new Padding(4, 3, 4, 3);
+            numEntryPoint.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numEntryPoint.Name = "numEntryPoint";
+            numEntryPoint.Size = new Size(58, 23);
+            numEntryPoint.TabIndex = 0;
+            numEntryPoint.ValueChanged += numEntryPoint_ValueChanged;
             // 
             // fraAvgDist
             // 
-            this.fraAvgDist.AutoSize = true;
-            this.fraAvgDist.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.fraAvgDist.Controls.Add(this.cmdAvgDistCalc);
-            this.fraAvgDist.Controls.Add(this.numAvgDist);
-            this.fraAvgDist.Location = new System.Drawing.Point(6, 70);
-            this.fraAvgDist.Name = "fraAvgDist";
-            this.fraAvgDist.Size = new System.Drawing.Size(153, 58);
-            this.fraAvgDist.TabIndex = 31;
-            this.fraAvgDist.TabStop = false;
-            this.fraAvgDist.Text = "Average Distance";
+            fraAvgDist.AutoSize = true;
+            fraAvgDist.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraAvgDist.Controls.Add(cmdAvgDistCalc);
+            fraAvgDist.Controls.Add(numAvgDist);
+            fraAvgDist.Location = new Point(7, 81);
+            fraAvgDist.Margin = new Padding(4, 3, 4, 3);
+            fraAvgDist.Name = "fraAvgDist";
+            fraAvgDist.Padding = new Padding(4, 3, 4, 3);
+            fraAvgDist.Size = new Size(180, 67);
+            fraAvgDist.TabIndex = 31;
+            fraAvgDist.TabStop = false;
+            fraAvgDist.Text = "Average Distance";
             // 
             // cmdAvgDistCalc
             // 
-            this.cmdAvgDistCalc.Location = new System.Drawing.Point(72, 16);
-            this.cmdAvgDistCalc.Name = "cmdAvgDistCalc";
-            this.cmdAvgDistCalc.Size = new System.Drawing.Size(75, 23);
-            this.cmdAvgDistCalc.TabIndex = 28;
-            this.cmdAvgDistCalc.Text = "Calculate";
-            this.cmdAvgDistCalc.UseVisualStyleBackColor = true;
-            this.cmdAvgDistCalc.Click += new System.EventHandler(this.cmdAvgDistCalc_Click);
+            cmdAvgDistCalc.BorderColour = Color.Empty;
+            cmdAvgDistCalc.CustomColour = false;
+            cmdAvgDistCalc.FlatBottom = false;
+            cmdAvgDistCalc.FlatTop = false;
+            cmdAvgDistCalc.Location = new Point(84, 18);
+            cmdAvgDistCalc.Margin = new Padding(4, 3, 4, 3);
+            cmdAvgDistCalc.Name = "cmdAvgDistCalc";
+            cmdAvgDistCalc.Padding = new Padding(6);
+            cmdAvgDistCalc.Size = new Size(88, 27);
+            cmdAvgDistCalc.TabIndex = 28;
+            cmdAvgDistCalc.Text = "Calculate";
+            cmdAvgDistCalc.Click += cmdAvgDistCalc_Click;
             // 
             // numAvgDist
             // 
-            this.numAvgDist.Location = new System.Drawing.Point(6, 19);
-            this.numAvgDist.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numAvgDist.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numAvgDist.Name = "numAvgDist";
-            this.numAvgDist.Size = new System.Drawing.Size(60, 20);
-            this.numAvgDist.TabIndex = 27;
-            this.numAvgDist.ValueChanged += new System.EventHandler(this.numAvgDist_ValueChanged);
+            numAvgDist.Location = new Point(7, 22);
+            numAvgDist.Margin = new Padding(4, 3, 4, 3);
+            numAvgDist.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numAvgDist.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numAvgDist.Name = "numAvgDist";
+            numAvgDist.Size = new Size(70, 23);
+            numAvgDist.TabIndex = 27;
+            numAvgDist.ValueChanged += numAvgDist_ValueChanged;
             // 
             // fraZoom
             // 
-            this.fraZoom.AutoSize = true;
-            this.fraZoom.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.fraZoom.Controls.Add(this.numZoom);
-            this.fraZoom.Location = new System.Drawing.Point(84, 6);
-            this.fraZoom.Name = "fraZoom";
-            this.fraZoom.Size = new System.Drawing.Size(72, 58);
-            this.fraZoom.TabIndex = 30;
-            this.fraZoom.TabStop = false;
-            this.fraZoom.Text = "Zoom";
+            fraZoom.AutoSize = true;
+            fraZoom.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraZoom.Controls.Add(numZoom);
+            fraZoom.Location = new Point(98, 7);
+            fraZoom.Margin = new Padding(4, 3, 4, 3);
+            fraZoom.Name = "fraZoom";
+            fraZoom.Padding = new Padding(4, 3, 4, 3);
+            fraZoom.Size = new Size(85, 67);
+            fraZoom.TabIndex = 30;
+            fraZoom.TabStop = false;
+            fraZoom.Text = "Zoom";
             // 
             // numZoom
             // 
-            this.numZoom.Increment = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            this.numZoom.Location = new System.Drawing.Point(6, 19);
-            this.numZoom.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numZoom.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numZoom.Name = "numZoom";
-            this.numZoom.Size = new System.Drawing.Size(60, 20);
-            this.numZoom.TabIndex = 19;
-            this.numZoom.ValueChanged += new System.EventHandler(this.numZoom_ValueChanged);
+            numZoom.Increment = new decimal(new int[] { 50, 0, 0, 0 });
+            numZoom.Location = new Point(7, 22);
+            numZoom.Margin = new Padding(4, 3, 4, 3);
+            numZoom.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numZoom.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numZoom.Name = "numZoom";
+            numZoom.Size = new Size(70, 23);
+            numZoom.TabIndex = 19;
+            numZoom.ValueChanged += numZoom_ValueChanged;
             // 
             // fraMode
             // 
-            this.fraMode.AutoSize = true;
-            this.fraMode.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.fraMode.Controls.Add(this.numMode);
-            this.fraMode.Location = new System.Drawing.Point(6, 6);
-            this.fraMode.Name = "fraMode";
-            this.fraMode.Size = new System.Drawing.Size(72, 58);
-            this.fraMode.TabIndex = 29;
-            this.fraMode.TabStop = false;
-            this.fraMode.Text = "Mode";
+            fraMode.AutoSize = true;
+            fraMode.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraMode.Controls.Add(numMode);
+            fraMode.Location = new Point(7, 7);
+            fraMode.Margin = new Padding(4, 3, 4, 3);
+            fraMode.Name = "fraMode";
+            fraMode.Padding = new Padding(4, 3, 4, 3);
+            fraMode.Size = new Size(85, 67);
+            fraMode.TabIndex = 29;
+            fraMode.TabStop = false;
+            fraMode.Text = "Mode";
             // 
             // numMode
             // 
-            this.numMode.Location = new System.Drawing.Point(6, 19);
-            this.numMode.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numMode.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numMode.Name = "numMode";
-            this.numMode.Size = new System.Drawing.Size(60, 20);
-            this.numMode.TabIndex = 18;
-            this.numMode.ValueChanged += new System.EventHandler(this.numMode_ValueChanged);
+            numMode.Location = new Point(7, 22);
+            numMode.Margin = new Padding(4, 3, 4, 3);
+            numMode.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numMode.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numMode.Name = "numMode";
+            numMode.Size = new Size(70, 23);
+            numMode.TabIndex = 18;
+            numMode.ValueChanged += numMode_ValueChanged;
             // 
             // fraDirection
             // 
-            this.fraDirection.AutoSize = true;
-            this.fraDirection.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.fraDirection.Controls.Add(this.lblXDir);
-            this.fraDirection.Controls.Add(this.numXDir);
-            this.fraDirection.Controls.Add(this.numYDir);
-            this.fraDirection.Controls.Add(this.numZDir);
-            this.fraDirection.Controls.Add(this.lblZDir);
-            this.fraDirection.Controls.Add(this.lblYDir);
-            this.fraDirection.Location = new System.Drawing.Point(165, 6);
-            this.fraDirection.Name = "fraDirection";
-            this.fraDirection.Size = new System.Drawing.Size(108, 110);
-            this.fraDirection.TabIndex = 15;
-            this.fraDirection.TabStop = false;
-            this.fraDirection.Text = "Direction";
+            fraDirection.AutoSize = true;
+            fraDirection.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraDirection.Controls.Add(lblXDir);
+            fraDirection.Controls.Add(numXDir);
+            fraDirection.Controls.Add(numYDir);
+            fraDirection.Controls.Add(numZDir);
+            fraDirection.Controls.Add(lblZDir);
+            fraDirection.Controls.Add(lblYDir);
+            fraDirection.Location = new Point(192, 7);
+            fraDirection.Margin = new Padding(4, 3, 4, 3);
+            fraDirection.Name = "fraDirection";
+            fraDirection.Padding = new Padding(4, 3, 4, 3);
+            fraDirection.Size = new Size(127, 127);
+            fraDirection.TabIndex = 15;
+            fraDirection.TabStop = false;
+            fraDirection.Text = "Direction";
             // 
             // lblXDir
             // 
-            this.lblXDir.AutoSize = true;
-            this.lblXDir.Location = new System.Drawing.Point(6, 21);
-            this.lblXDir.Name = "lblXDir";
-            this.lblXDir.Size = new System.Drawing.Size(30, 13);
-            this.lblXDir.TabIndex = 21;
-            this.lblXDir.Text = "X Dir";
+            lblXDir.AutoSize = true;
+            lblXDir.BackColor = Color.Transparent;
+            lblXDir.Location = new Point(7, 24);
+            lblXDir.Margin = new Padding(4, 0, 4, 0);
+            lblXDir.Name = "lblXDir";
+            lblXDir.Size = new Size(32, 15);
+            lblXDir.TabIndex = 21;
+            lblXDir.Text = "X Dir";
             // 
             // numXDir
             // 
-            this.numXDir.DecimalPlaces = 5;
-            this.numXDir.Location = new System.Drawing.Point(42, 19);
-            this.numXDir.Maximum = new decimal(new int[] {
-            7,
-            0,
-            0,
-            0});
-            this.numXDir.Minimum = new decimal(new int[] {
-            8,
-            0,
-            0,
-            -2147483648});
-            this.numXDir.Name = "numXDir";
-            this.numXDir.Size = new System.Drawing.Size(60, 20);
-            this.numXDir.TabIndex = 20;
-            this.numXDir.ValueChanged += new System.EventHandler(this.numXDir_ValueChanged);
+            numXDir.DecimalPlaces = 5;
+            numXDir.Location = new Point(49, 22);
+            numXDir.Margin = new Padding(4, 3, 4, 3);
+            numXDir.Maximum = new decimal(new int[] { 7, 0, 0, 0 });
+            numXDir.Minimum = new decimal(new int[] { 8, 0, 0, int.MinValue });
+            numXDir.Name = "numXDir";
+            numXDir.Size = new Size(70, 23);
+            numXDir.TabIndex = 20;
+            numXDir.ValueChanged += numXDir_ValueChanged;
             // 
             // numYDir
             // 
-            this.numYDir.DecimalPlaces = 5;
-            this.numYDir.Location = new System.Drawing.Point(42, 45);
-            this.numYDir.Maximum = new decimal(new int[] {
-            7,
-            0,
-            0,
-            0});
-            this.numYDir.Minimum = new decimal(new int[] {
-            8,
-            0,
-            0,
-            -2147483648});
-            this.numYDir.Name = "numYDir";
-            this.numYDir.Size = new System.Drawing.Size(60, 20);
-            this.numYDir.TabIndex = 22;
-            this.numYDir.ValueChanged += new System.EventHandler(this.numYDir_ValueChanged);
+            numYDir.DecimalPlaces = 5;
+            numYDir.Location = new Point(49, 52);
+            numYDir.Margin = new Padding(4, 3, 4, 3);
+            numYDir.Maximum = new decimal(new int[] { 7, 0, 0, 0 });
+            numYDir.Minimum = new decimal(new int[] { 8, 0, 0, int.MinValue });
+            numYDir.Name = "numYDir";
+            numYDir.Size = new Size(70, 23);
+            numYDir.TabIndex = 22;
+            numYDir.ValueChanged += numYDir_ValueChanged;
             // 
             // numZDir
             // 
-            this.numZDir.DecimalPlaces = 5;
-            this.numZDir.Location = new System.Drawing.Point(42, 71);
-            this.numZDir.Maximum = new decimal(new int[] {
-            7,
-            0,
-            0,
-            0});
-            this.numZDir.Minimum = new decimal(new int[] {
-            8,
-            0,
-            0,
-            -2147483648});
-            this.numZDir.Name = "numZDir";
-            this.numZDir.Size = new System.Drawing.Size(60, 20);
-            this.numZDir.TabIndex = 24;
-            this.numZDir.ValueChanged += new System.EventHandler(this.numZDir_ValueChanged);
+            numZDir.DecimalPlaces = 5;
+            numZDir.Location = new Point(49, 82);
+            numZDir.Margin = new Padding(4, 3, 4, 3);
+            numZDir.Maximum = new decimal(new int[] { 7, 0, 0, 0 });
+            numZDir.Minimum = new decimal(new int[] { 8, 0, 0, int.MinValue });
+            numZDir.Name = "numZDir";
+            numZDir.Size = new Size(70, 23);
+            numZDir.TabIndex = 24;
+            numZDir.ValueChanged += numZDir_ValueChanged;
             // 
             // lblZDir
             // 
-            this.lblZDir.AutoSize = true;
-            this.lblZDir.Location = new System.Drawing.Point(6, 73);
-            this.lblZDir.Name = "lblZDir";
-            this.lblZDir.Size = new System.Drawing.Size(30, 13);
-            this.lblZDir.TabIndex = 25;
-            this.lblZDir.Text = "Z Dir";
+            lblZDir.AutoSize = true;
+            lblZDir.BackColor = Color.Transparent;
+            lblZDir.Location = new Point(7, 84);
+            lblZDir.Margin = new Padding(4, 0, 4, 0);
+            lblZDir.Name = "lblZDir";
+            lblZDir.Size = new Size(32, 15);
+            lblZDir.TabIndex = 25;
+            lblZDir.Text = "Z Dir";
             // 
             // lblYDir
             // 
-            this.lblYDir.AutoSize = true;
-            this.lblYDir.Location = new System.Drawing.Point(6, 47);
-            this.lblYDir.Name = "lblYDir";
-            this.lblYDir.Size = new System.Drawing.Size(30, 13);
-            this.lblYDir.TabIndex = 23;
-            this.lblYDir.Text = "Y Dir";
+            lblYDir.AutoSize = true;
+            lblYDir.BackColor = Color.Transparent;
+            lblYDir.Location = new Point(7, 54);
+            lblYDir.Margin = new Padding(4, 0, 4, 0);
+            lblYDir.Name = "lblYDir";
+            lblYDir.Size = new Size(32, 15);
+            lblYDir.TabIndex = 23;
+            lblYDir.Text = "Y Dir";
             // 
             // tabNeighbor
             // 
-            this.tabNeighbor.Controls.Add(this.fraNeighbor3);
-            this.tabNeighbor.Controls.Add(this.fraNeighbor2);
-            this.tabNeighbor.Controls.Add(this.fraNeighbor1);
-            this.tabNeighbor.Controls.Add(this.fraNeighbor0);
-            this.tabNeighbor.Controls.Add(this.fraCount);
-            this.tabNeighbor.Location = new System.Drawing.Point(4, 22);
-            this.tabNeighbor.Name = "tabNeighbor";
-            this.tabNeighbor.Padding = new System.Windows.Forms.Padding(3);
-            this.tabNeighbor.Size = new System.Drawing.Size(392, 374);
-            this.tabNeighbor.TabIndex = 2;
-            this.tabNeighbor.Text = "Neighbors";
-            this.tabNeighbor.UseVisualStyleBackColor = true;
+            tabNeighbor.BackColor = Color.FromArgb(31, 31, 32);
+            tabNeighbor.Controls.Add(fraNeighbor3);
+            tabNeighbor.Controls.Add(fraNeighbor2);
+            tabNeighbor.Controls.Add(fraNeighbor1);
+            tabNeighbor.Controls.Add(fraNeighbor0);
+            tabNeighbor.Controls.Add(fraCount);
+            tabNeighbor.Location = new Point(4, 32);
+            tabNeighbor.Margin = new Padding(4, 3, 4, 3);
+            tabNeighbor.Name = "tabNeighbor";
+            tabNeighbor.Padding = new Padding(4, 3, 4, 3);
+            tabNeighbor.Size = new Size(459, 426);
+            tabNeighbor.TabIndex = 2;
+            tabNeighbor.Text = "Neighbors";
             // 
             // fraNeighbor3
             // 
-            this.fraNeighbor3.AutoSize = true;
-            this.fraNeighbor3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.fraNeighbor3.Controls.Add(this.label5);
-            this.fraNeighbor3.Controls.Add(this.numRelativeFlag4);
-            this.fraNeighbor3.Controls.Add(this.label6);
-            this.fraNeighbor3.Controls.Add(this.label7);
-            this.fraNeighbor3.Controls.Add(this.label8);
-            this.fraNeighbor3.Controls.Add(this.numRelative4);
-            this.fraNeighbor3.Controls.Add(this.numPathItem4);
-            this.fraNeighbor3.Controls.Add(this.numParentZone4);
-            this.fraNeighbor3.Location = new System.Drawing.Point(161, 212);
-            this.fraNeighbor3.Name = "fraNeighbor3";
-            this.fraNeighbor3.Size = new System.Drawing.Size(149, 136);
-            this.fraNeighbor3.TabIndex = 40;
-            this.fraNeighbor3.TabStop = false;
-            this.fraNeighbor3.Text = "Neighbor 4";
+            fraNeighbor3.AutoSize = true;
+            fraNeighbor3.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraNeighbor3.Controls.Add(label5);
+            fraNeighbor3.Controls.Add(numRelativeFlag4);
+            fraNeighbor3.Controls.Add(label6);
+            fraNeighbor3.Controls.Add(label7);
+            fraNeighbor3.Controls.Add(label8);
+            fraNeighbor3.Controls.Add(numRelative4);
+            fraNeighbor3.Controls.Add(numPathItem4);
+            fraNeighbor3.Controls.Add(numParentZone4);
+            fraNeighbor3.Location = new Point(188, 245);
+            fraNeighbor3.Margin = new Padding(4, 3, 4, 3);
+            fraNeighbor3.Name = "fraNeighbor3";
+            fraNeighbor3.Padding = new Padding(4, 3, 4, 3);
+            fraNeighbor3.Size = new Size(175, 157);
+            fraNeighbor3.TabIndex = 40;
+            fraNeighbor3.TabStop = false;
+            fraNeighbor3.Text = "Neighbor 4";
             // 
             // label5
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 99);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(32, 13);
-            this.label5.TabIndex = 37;
-            this.label5.Text = "Flags";
+            label5.AutoSize = true;
+            label5.BackColor = Color.Transparent;
+            label5.Location = new Point(7, 114);
+            label5.Margin = new Padding(4, 0, 4, 0);
+            label5.Name = "label5";
+            label5.Size = new Size(34, 15);
+            label5.TabIndex = 37;
+            label5.Text = "Flags";
             // 
             // numRelativeFlag4
             // 
-            this.numRelativeFlag4.Location = new System.Drawing.Point(73, 97);
-            this.numRelativeFlag4.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numRelativeFlag4.Name = "numRelativeFlag4";
-            this.numRelativeFlag4.Size = new System.Drawing.Size(70, 20);
-            this.numRelativeFlag4.TabIndex = 35;
-            this.numRelativeFlag4.ValueChanged += new System.EventHandler(this.numRelativeFlag4_ValueChanged);
+            numRelativeFlag4.Location = new Point(85, 112);
+            numRelativeFlag4.Margin = new Padding(4, 3, 4, 3);
+            numRelativeFlag4.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRelativeFlag4.Name = "numRelativeFlag4";
+            numRelativeFlag4.Size = new Size(82, 23);
+            numRelativeFlag4.TabIndex = 35;
+            numRelativeFlag4.ValueChanged += numRelativeFlag4_ValueChanged;
             // 
             // label6
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 21);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(54, 13);
-            this.label6.TabIndex = 19;
-            this.label6.Text = "Link Type";
+            label6.AutoSize = true;
+            label6.BackColor = Color.Transparent;
+            label6.Location = new Point(7, 24);
+            label6.Margin = new Padding(4, 0, 4, 0);
+            label6.Name = "label6";
+            label6.Size = new Size(56, 15);
+            label6.TabIndex = 19;
+            label6.Text = "Link Type";
             // 
             // label7
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 73);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(60, 13);
-            this.label7.TabIndex = 36;
-            this.label7.Text = "Cam. Index";
+            label7.AutoSize = true;
+            label7.BackColor = Color.Transparent;
+            label7.Location = new Point(7, 84);
+            label7.Margin = new Padding(4, 0, 4, 0);
+            label7.Name = "label7";
+            label7.Size = new Size(67, 15);
+            label7.TabIndex = 36;
+            label7.Text = "Cam. Index";
             // 
             // label8
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(6, 47);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(61, 13);
-            this.label8.TabIndex = 27;
-            this.label8.Text = "Zone Index";
+            label8.AutoSize = true;
+            label8.BackColor = Color.Transparent;
+            label8.Location = new Point(7, 54);
+            label8.Margin = new Padding(4, 0, 4, 0);
+            label8.Name = "label8";
+            label8.Size = new Size(66, 15);
+            label8.TabIndex = 27;
+            label8.Text = "Zone Index";
             // 
             // numRelative4
             // 
-            this.numRelative4.Location = new System.Drawing.Point(73, 19);
-            this.numRelative4.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numRelative4.Name = "numRelative4";
-            this.numRelative4.Size = new System.Drawing.Size(70, 20);
-            this.numRelative4.TabIndex = 22;
-            this.numRelative4.ValueChanged += new System.EventHandler(this.numRelative4_ValueChanged);
+            numRelative4.Location = new Point(85, 22);
+            numRelative4.Margin = new Padding(4, 3, 4, 3);
+            numRelative4.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRelative4.Name = "numRelative4";
+            numRelative4.Size = new Size(82, 23);
+            numRelative4.TabIndex = 22;
+            numRelative4.ValueChanged += numRelative4_ValueChanged;
             // 
             // numPathItem4
             // 
-            this.numPathItem4.Location = new System.Drawing.Point(73, 71);
-            this.numPathItem4.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numPathItem4.Name = "numPathItem4";
-            this.numPathItem4.Size = new System.Drawing.Size(70, 20);
-            this.numPathItem4.TabIndex = 31;
-            this.numPathItem4.ValueChanged += new System.EventHandler(this.numPathItem4_ValueChanged);
+            numPathItem4.Location = new Point(85, 82);
+            numPathItem4.Margin = new Padding(4, 3, 4, 3);
+            numPathItem4.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numPathItem4.Name = "numPathItem4";
+            numPathItem4.Size = new Size(82, 23);
+            numPathItem4.TabIndex = 31;
+            numPathItem4.ValueChanged += numPathItem4_ValueChanged;
             // 
             // numParentZone4
             // 
-            this.numParentZone4.Location = new System.Drawing.Point(73, 45);
-            this.numParentZone4.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numParentZone4.Name = "numParentZone4";
-            this.numParentZone4.Size = new System.Drawing.Size(70, 20);
-            this.numParentZone4.TabIndex = 26;
-            this.numParentZone4.ValueChanged += new System.EventHandler(this.numParentZone4_ValueChanged);
+            numParentZone4.Location = new Point(85, 52);
+            numParentZone4.Margin = new Padding(4, 3, 4, 3);
+            numParentZone4.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numParentZone4.Name = "numParentZone4";
+            numParentZone4.Size = new Size(82, 23);
+            numParentZone4.TabIndex = 26;
+            numParentZone4.ValueChanged += numParentZone4_ValueChanged;
             // 
             // fraNeighbor2
             // 
-            this.fraNeighbor2.AutoSize = true;
-            this.fraNeighbor2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.fraNeighbor2.Controls.Add(this.label9);
-            this.fraNeighbor2.Controls.Add(this.label10);
-            this.fraNeighbor2.Controls.Add(this.label11);
-            this.fraNeighbor2.Controls.Add(this.label12);
-            this.fraNeighbor2.Controls.Add(this.numRelativeFlag3);
-            this.fraNeighbor2.Controls.Add(this.numRelative3);
-            this.fraNeighbor2.Controls.Add(this.numParentZone3);
-            this.fraNeighbor2.Controls.Add(this.numPathItem3);
-            this.fraNeighbor2.Location = new System.Drawing.Point(6, 212);
-            this.fraNeighbor2.Name = "fraNeighbor2";
-            this.fraNeighbor2.Size = new System.Drawing.Size(149, 136);
-            this.fraNeighbor2.TabIndex = 39;
-            this.fraNeighbor2.TabStop = false;
-            this.fraNeighbor2.Text = "Neighbor 3";
+            fraNeighbor2.AutoSize = true;
+            fraNeighbor2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraNeighbor2.Controls.Add(label9);
+            fraNeighbor2.Controls.Add(label10);
+            fraNeighbor2.Controls.Add(label11);
+            fraNeighbor2.Controls.Add(label12);
+            fraNeighbor2.Controls.Add(numRelativeFlag3);
+            fraNeighbor2.Controls.Add(numRelative3);
+            fraNeighbor2.Controls.Add(numParentZone3);
+            fraNeighbor2.Controls.Add(numPathItem3);
+            fraNeighbor2.Location = new Point(7, 245);
+            fraNeighbor2.Margin = new Padding(4, 3, 4, 3);
+            fraNeighbor2.Name = "fraNeighbor2";
+            fraNeighbor2.Padding = new Padding(4, 3, 4, 3);
+            fraNeighbor2.Size = new Size(175, 157);
+            fraNeighbor2.TabIndex = 39;
+            fraNeighbor2.TabStop = false;
+            fraNeighbor2.Text = "Neighbor 3";
             // 
             // label9
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(6, 99);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(32, 13);
-            this.label9.TabIndex = 37;
-            this.label9.Text = "Flags";
+            label9.AutoSize = true;
+            label9.BackColor = Color.Transparent;
+            label9.Location = new Point(7, 114);
+            label9.Margin = new Padding(4, 0, 4, 0);
+            label9.Name = "label9";
+            label9.Size = new Size(34, 15);
+            label9.TabIndex = 37;
+            label9.Text = "Flags";
             // 
             // label10
             // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(6, 21);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(54, 13);
-            this.label10.TabIndex = 19;
-            this.label10.Text = "Link Type";
+            label10.AutoSize = true;
+            label10.BackColor = Color.Transparent;
+            label10.Location = new Point(7, 24);
+            label10.Margin = new Padding(4, 0, 4, 0);
+            label10.Name = "label10";
+            label10.Size = new Size(56, 15);
+            label10.TabIndex = 19;
+            label10.Text = "Link Type";
             // 
             // label11
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(6, 73);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(60, 13);
-            this.label11.TabIndex = 36;
-            this.label11.Text = "Cam. Index";
+            label11.AutoSize = true;
+            label11.BackColor = Color.Transparent;
+            label11.Location = new Point(7, 84);
+            label11.Margin = new Padding(4, 0, 4, 0);
+            label11.Name = "label11";
+            label11.Size = new Size(67, 15);
+            label11.TabIndex = 36;
+            label11.Text = "Cam. Index";
             // 
             // label12
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(6, 47);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(61, 13);
-            this.label12.TabIndex = 27;
-            this.label12.Text = "Zone Index";
+            label12.AutoSize = true;
+            label12.BackColor = Color.Transparent;
+            label12.Location = new Point(7, 54);
+            label12.Margin = new Padding(4, 0, 4, 0);
+            label12.Name = "label12";
+            label12.Size = new Size(66, 15);
+            label12.TabIndex = 27;
+            label12.Text = "Zone Index";
             // 
             // numRelativeFlag3
             // 
-            this.numRelativeFlag3.Location = new System.Drawing.Point(73, 97);
-            this.numRelativeFlag3.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numRelativeFlag3.Name = "numRelativeFlag3";
-            this.numRelativeFlag3.Size = new System.Drawing.Size(70, 20);
-            this.numRelativeFlag3.TabIndex = 34;
-            this.numRelativeFlag3.ValueChanged += new System.EventHandler(this.numRelativeFlag3_ValueChanged);
+            numRelativeFlag3.Location = new Point(85, 112);
+            numRelativeFlag3.Margin = new Padding(4, 3, 4, 3);
+            numRelativeFlag3.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRelativeFlag3.Name = "numRelativeFlag3";
+            numRelativeFlag3.Size = new Size(82, 23);
+            numRelativeFlag3.TabIndex = 34;
+            numRelativeFlag3.ValueChanged += numRelativeFlag3_ValueChanged;
             // 
             // numRelative3
             // 
-            this.numRelative3.Location = new System.Drawing.Point(73, 19);
-            this.numRelative3.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numRelative3.Name = "numRelative3";
-            this.numRelative3.Size = new System.Drawing.Size(70, 20);
-            this.numRelative3.TabIndex = 21;
-            this.numRelative3.ValueChanged += new System.EventHandler(this.numRelative3_ValueChanged);
+            numRelative3.Location = new Point(85, 22);
+            numRelative3.Margin = new Padding(4, 3, 4, 3);
+            numRelative3.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRelative3.Name = "numRelative3";
+            numRelative3.Size = new Size(82, 23);
+            numRelative3.TabIndex = 21;
+            numRelative3.ValueChanged += numRelative3_ValueChanged;
             // 
             // numParentZone3
             // 
-            this.numParentZone3.Location = new System.Drawing.Point(73, 45);
-            this.numParentZone3.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numParentZone3.Name = "numParentZone3";
-            this.numParentZone3.Size = new System.Drawing.Size(70, 20);
-            this.numParentZone3.TabIndex = 25;
-            this.numParentZone3.ValueChanged += new System.EventHandler(this.numParentZone3_ValueChanged);
+            numParentZone3.Location = new Point(85, 52);
+            numParentZone3.Margin = new Padding(4, 3, 4, 3);
+            numParentZone3.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numParentZone3.Name = "numParentZone3";
+            numParentZone3.Size = new Size(82, 23);
+            numParentZone3.TabIndex = 25;
+            numParentZone3.ValueChanged += numParentZone3_ValueChanged;
             // 
             // numPathItem3
             // 
-            this.numPathItem3.Location = new System.Drawing.Point(73, 71);
-            this.numPathItem3.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numPathItem3.Name = "numPathItem3";
-            this.numPathItem3.Size = new System.Drawing.Size(70, 20);
-            this.numPathItem3.TabIndex = 30;
-            this.numPathItem3.ValueChanged += new System.EventHandler(this.numPathItem3_ValueChanged);
+            numPathItem3.Location = new Point(85, 82);
+            numPathItem3.Margin = new Padding(4, 3, 4, 3);
+            numPathItem3.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numPathItem3.Name = "numPathItem3";
+            numPathItem3.Size = new Size(82, 23);
+            numPathItem3.TabIndex = 30;
+            numPathItem3.ValueChanged += numPathItem3_ValueChanged;
             // 
             // fraNeighbor1
             // 
-            this.fraNeighbor1.AutoSize = true;
-            this.fraNeighbor1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.fraNeighbor1.Controls.Add(this.label1);
-            this.fraNeighbor1.Controls.Add(this.label2);
-            this.fraNeighbor1.Controls.Add(this.numRelativeFlag2);
-            this.fraNeighbor1.Controls.Add(this.label3);
-            this.fraNeighbor1.Controls.Add(this.label4);
-            this.fraNeighbor1.Controls.Add(this.numParentZone2);
-            this.fraNeighbor1.Controls.Add(this.numRelative2);
-            this.fraNeighbor1.Controls.Add(this.numPathItem2);
-            this.fraNeighbor1.Location = new System.Drawing.Point(161, 70);
-            this.fraNeighbor1.Name = "fraNeighbor1";
-            this.fraNeighbor1.Size = new System.Drawing.Size(149, 136);
-            this.fraNeighbor1.TabIndex = 38;
-            this.fraNeighbor1.TabStop = false;
-            this.fraNeighbor1.Text = "Neighbor 2";
+            fraNeighbor1.AutoSize = true;
+            fraNeighbor1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraNeighbor1.Controls.Add(label1);
+            fraNeighbor1.Controls.Add(label2);
+            fraNeighbor1.Controls.Add(numRelativeFlag2);
+            fraNeighbor1.Controls.Add(label3);
+            fraNeighbor1.Controls.Add(label4);
+            fraNeighbor1.Controls.Add(numParentZone2);
+            fraNeighbor1.Controls.Add(numRelative2);
+            fraNeighbor1.Controls.Add(numPathItem2);
+            fraNeighbor1.Location = new Point(188, 81);
+            fraNeighbor1.Margin = new Padding(4, 3, 4, 3);
+            fraNeighbor1.Name = "fraNeighbor1";
+            fraNeighbor1.Padding = new Padding(4, 3, 4, 3);
+            fraNeighbor1.Size = new Size(175, 157);
+            fraNeighbor1.TabIndex = 38;
+            fraNeighbor1.TabStop = false;
+            fraNeighbor1.Text = "Neighbor 2";
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 99);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(32, 13);
-            this.label1.TabIndex = 37;
-            this.label1.Text = "Flags";
+            label1.AutoSize = true;
+            label1.BackColor = Color.Transparent;
+            label1.Location = new Point(7, 114);
+            label1.Margin = new Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new Size(34, 15);
+            label1.TabIndex = 37;
+            label1.Text = "Flags";
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 21);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(54, 13);
-            this.label2.TabIndex = 19;
-            this.label2.Text = "Link Type";
+            label2.AutoSize = true;
+            label2.BackColor = Color.Transparent;
+            label2.Location = new Point(7, 24);
+            label2.Margin = new Padding(4, 0, 4, 0);
+            label2.Name = "label2";
+            label2.Size = new Size(56, 15);
+            label2.TabIndex = 19;
+            label2.Text = "Link Type";
             // 
             // numRelativeFlag2
             // 
-            this.numRelativeFlag2.Location = new System.Drawing.Point(73, 97);
-            this.numRelativeFlag2.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numRelativeFlag2.Name = "numRelativeFlag2";
-            this.numRelativeFlag2.Size = new System.Drawing.Size(70, 20);
-            this.numRelativeFlag2.TabIndex = 33;
-            this.numRelativeFlag2.ValueChanged += new System.EventHandler(this.numRelativeFlag2_ValueChanged);
+            numRelativeFlag2.Location = new Point(85, 112);
+            numRelativeFlag2.Margin = new Padding(4, 3, 4, 3);
+            numRelativeFlag2.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRelativeFlag2.Name = "numRelativeFlag2";
+            numRelativeFlag2.Size = new Size(82, 23);
+            numRelativeFlag2.TabIndex = 33;
+            numRelativeFlag2.ValueChanged += numRelativeFlag2_ValueChanged;
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 73);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(60, 13);
-            this.label3.TabIndex = 36;
-            this.label3.Text = "Cam. Index";
+            label3.AutoSize = true;
+            label3.BackColor = Color.Transparent;
+            label3.Location = new Point(7, 84);
+            label3.Margin = new Padding(4, 0, 4, 0);
+            label3.Name = "label3";
+            label3.Size = new Size(67, 15);
+            label3.TabIndex = 36;
+            label3.Text = "Cam. Index";
             // 
             // label4
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 47);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(61, 13);
-            this.label4.TabIndex = 27;
-            this.label4.Text = "Zone Index";
+            label4.AutoSize = true;
+            label4.BackColor = Color.Transparent;
+            label4.Location = new Point(7, 54);
+            label4.Margin = new Padding(4, 0, 4, 0);
+            label4.Name = "label4";
+            label4.Size = new Size(66, 15);
+            label4.TabIndex = 27;
+            label4.Text = "Zone Index";
             // 
             // numParentZone2
             // 
-            this.numParentZone2.Location = new System.Drawing.Point(73, 45);
-            this.numParentZone2.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numParentZone2.Name = "numParentZone2";
-            this.numParentZone2.Size = new System.Drawing.Size(70, 20);
-            this.numParentZone2.TabIndex = 24;
-            this.numParentZone2.ValueChanged += new System.EventHandler(this.numParentZone2_ValueChanged);
+            numParentZone2.Location = new Point(85, 52);
+            numParentZone2.Margin = new Padding(4, 3, 4, 3);
+            numParentZone2.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numParentZone2.Name = "numParentZone2";
+            numParentZone2.Size = new Size(82, 23);
+            numParentZone2.TabIndex = 24;
+            numParentZone2.ValueChanged += numParentZone2_ValueChanged;
             // 
             // numRelative2
             // 
-            this.numRelative2.Location = new System.Drawing.Point(73, 19);
-            this.numRelative2.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numRelative2.Name = "numRelative2";
-            this.numRelative2.Size = new System.Drawing.Size(70, 20);
-            this.numRelative2.TabIndex = 20;
-            this.numRelative2.ValueChanged += new System.EventHandler(this.numRelative2_ValueChanged);
+            numRelative2.Location = new Point(85, 22);
+            numRelative2.Margin = new Padding(4, 3, 4, 3);
+            numRelative2.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRelative2.Name = "numRelative2";
+            numRelative2.Size = new Size(82, 23);
+            numRelative2.TabIndex = 20;
+            numRelative2.ValueChanged += numRelative2_ValueChanged;
             // 
             // numPathItem2
             // 
-            this.numPathItem2.Location = new System.Drawing.Point(73, 71);
-            this.numPathItem2.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numPathItem2.Name = "numPathItem2";
-            this.numPathItem2.Size = new System.Drawing.Size(70, 20);
-            this.numPathItem2.TabIndex = 29;
-            this.numPathItem2.ValueChanged += new System.EventHandler(this.numPathItem2_ValueChanged);
+            numPathItem2.Location = new Point(85, 82);
+            numPathItem2.Margin = new Padding(4, 3, 4, 3);
+            numPathItem2.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numPathItem2.Name = "numPathItem2";
+            numPathItem2.Size = new Size(82, 23);
+            numPathItem2.TabIndex = 29;
+            numPathItem2.ValueChanged += numPathItem2_ValueChanged;
             // 
             // fraNeighbor0
             // 
-            this.fraNeighbor0.AutoSize = true;
-            this.fraNeighbor0.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.fraNeighbor0.Controls.Add(this.lblRelativeFlag);
-            this.fraNeighbor0.Controls.Add(this.lblRelative);
-            this.fraNeighbor0.Controls.Add(this.numRelative1);
-            this.fraNeighbor0.Controls.Add(this.lblPathItem);
-            this.fraNeighbor0.Controls.Add(this.lblParentZone);
-            this.fraNeighbor0.Controls.Add(this.numRelativeFlag1);
-            this.fraNeighbor0.Controls.Add(this.numParentZone1);
-            this.fraNeighbor0.Controls.Add(this.numPathItem1);
-            this.fraNeighbor0.Location = new System.Drawing.Point(6, 70);
-            this.fraNeighbor0.Name = "fraNeighbor0";
-            this.fraNeighbor0.Size = new System.Drawing.Size(149, 136);
-            this.fraNeighbor0.TabIndex = 23;
-            this.fraNeighbor0.TabStop = false;
-            this.fraNeighbor0.Text = "Neighbor 1";
+            fraNeighbor0.AutoSize = true;
+            fraNeighbor0.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraNeighbor0.Controls.Add(lblRelativeFlag);
+            fraNeighbor0.Controls.Add(lblRelative);
+            fraNeighbor0.Controls.Add(numRelative1);
+            fraNeighbor0.Controls.Add(lblPathItem);
+            fraNeighbor0.Controls.Add(lblParentZone);
+            fraNeighbor0.Controls.Add(numRelativeFlag1);
+            fraNeighbor0.Controls.Add(numParentZone1);
+            fraNeighbor0.Controls.Add(numPathItem1);
+            fraNeighbor0.Location = new Point(7, 81);
+            fraNeighbor0.Margin = new Padding(4, 3, 4, 3);
+            fraNeighbor0.Name = "fraNeighbor0";
+            fraNeighbor0.Padding = new Padding(4, 3, 4, 3);
+            fraNeighbor0.Size = new Size(175, 157);
+            fraNeighbor0.TabIndex = 23;
+            fraNeighbor0.TabStop = false;
+            fraNeighbor0.Text = "Neighbor 1";
             // 
             // lblRelativeFlag
             // 
-            this.lblRelativeFlag.AutoSize = true;
-            this.lblRelativeFlag.Location = new System.Drawing.Point(6, 99);
-            this.lblRelativeFlag.Name = "lblRelativeFlag";
-            this.lblRelativeFlag.Size = new System.Drawing.Size(32, 13);
-            this.lblRelativeFlag.TabIndex = 37;
-            this.lblRelativeFlag.Text = "Flags";
+            lblRelativeFlag.AutoSize = true;
+            lblRelativeFlag.BackColor = Color.Transparent;
+            lblRelativeFlag.Location = new Point(7, 114);
+            lblRelativeFlag.Margin = new Padding(4, 0, 4, 0);
+            lblRelativeFlag.Name = "lblRelativeFlag";
+            lblRelativeFlag.Size = new Size(34, 15);
+            lblRelativeFlag.TabIndex = 37;
+            lblRelativeFlag.Text = "Flags";
             // 
             // lblRelative
             // 
-            this.lblRelative.AutoSize = true;
-            this.lblRelative.Location = new System.Drawing.Point(6, 21);
-            this.lblRelative.Name = "lblRelative";
-            this.lblRelative.Size = new System.Drawing.Size(54, 13);
-            this.lblRelative.TabIndex = 19;
-            this.lblRelative.Text = "Link Type";
+            lblRelative.AutoSize = true;
+            lblRelative.BackColor = Color.Transparent;
+            lblRelative.Location = new Point(7, 24);
+            lblRelative.Margin = new Padding(4, 0, 4, 0);
+            lblRelative.Name = "lblRelative";
+            lblRelative.Size = new Size(56, 15);
+            lblRelative.TabIndex = 19;
+            lblRelative.Text = "Link Type";
             // 
             // numRelative1
             // 
-            this.numRelative1.Location = new System.Drawing.Point(73, 19);
-            this.numRelative1.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numRelative1.Name = "numRelative1";
-            this.numRelative1.Size = new System.Drawing.Size(70, 20);
-            this.numRelative1.TabIndex = 15;
-            this.numRelative1.ValueChanged += new System.EventHandler(this.numRelative1_ValueChanged);
+            numRelative1.Location = new Point(85, 22);
+            numRelative1.Margin = new Padding(4, 3, 4, 3);
+            numRelative1.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRelative1.Name = "numRelative1";
+            numRelative1.Size = new Size(82, 23);
+            numRelative1.TabIndex = 15;
+            numRelative1.ValueChanged += numRelative1_ValueChanged;
             // 
             // lblPathItem
             // 
-            this.lblPathItem.AutoSize = true;
-            this.lblPathItem.Location = new System.Drawing.Point(6, 73);
-            this.lblPathItem.Name = "lblPathItem";
-            this.lblPathItem.Size = new System.Drawing.Size(60, 13);
-            this.lblPathItem.TabIndex = 36;
-            this.lblPathItem.Text = "Cam. Index";
+            lblPathItem.AutoSize = true;
+            lblPathItem.BackColor = Color.Transparent;
+            lblPathItem.Location = new Point(7, 84);
+            lblPathItem.Margin = new Padding(4, 0, 4, 0);
+            lblPathItem.Name = "lblPathItem";
+            lblPathItem.Size = new Size(67, 15);
+            lblPathItem.TabIndex = 36;
+            lblPathItem.Text = "Cam. Index";
             // 
             // lblParentZone
             // 
-            this.lblParentZone.AutoSize = true;
-            this.lblParentZone.Location = new System.Drawing.Point(6, 47);
-            this.lblParentZone.Name = "lblParentZone";
-            this.lblParentZone.Size = new System.Drawing.Size(61, 13);
-            this.lblParentZone.TabIndex = 27;
-            this.lblParentZone.Text = "Zone Index";
+            lblParentZone.AutoSize = true;
+            lblParentZone.BackColor = Color.Transparent;
+            lblParentZone.Location = new Point(7, 54);
+            lblParentZone.Margin = new Padding(4, 0, 4, 0);
+            lblParentZone.Name = "lblParentZone";
+            lblParentZone.Size = new Size(66, 15);
+            lblParentZone.TabIndex = 27;
+            lblParentZone.Text = "Zone Index";
             // 
             // numRelativeFlag1
             // 
-            this.numRelativeFlag1.Location = new System.Drawing.Point(73, 97);
-            this.numRelativeFlag1.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numRelativeFlag1.Name = "numRelativeFlag1";
-            this.numRelativeFlag1.Size = new System.Drawing.Size(70, 20);
-            this.numRelativeFlag1.TabIndex = 32;
-            this.numRelativeFlag1.ValueChanged += new System.EventHandler(this.numRelativeFlag1_ValueChanged);
+            numRelativeFlag1.Location = new Point(85, 112);
+            numRelativeFlag1.Margin = new Padding(4, 3, 4, 3);
+            numRelativeFlag1.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numRelativeFlag1.Name = "numRelativeFlag1";
+            numRelativeFlag1.Size = new Size(82, 23);
+            numRelativeFlag1.TabIndex = 32;
+            numRelativeFlag1.ValueChanged += numRelativeFlag1_ValueChanged;
             // 
             // numParentZone1
             // 
-            this.numParentZone1.Location = new System.Drawing.Point(73, 45);
-            this.numParentZone1.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numParentZone1.Name = "numParentZone1";
-            this.numParentZone1.Size = new System.Drawing.Size(70, 20);
-            this.numParentZone1.TabIndex = 23;
-            this.numParentZone1.ValueChanged += new System.EventHandler(this.numParentZone1_ValueChanged);
+            numParentZone1.Location = new Point(85, 52);
+            numParentZone1.Margin = new Padding(4, 3, 4, 3);
+            numParentZone1.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numParentZone1.Name = "numParentZone1";
+            numParentZone1.Size = new Size(82, 23);
+            numParentZone1.TabIndex = 23;
+            numParentZone1.ValueChanged += numParentZone1_ValueChanged;
             // 
             // numPathItem1
             // 
-            this.numPathItem1.Location = new System.Drawing.Point(73, 71);
-            this.numPathItem1.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numPathItem1.Name = "numPathItem1";
-            this.numPathItem1.Size = new System.Drawing.Size(70, 20);
-            this.numPathItem1.TabIndex = 28;
-            this.numPathItem1.ValueChanged += new System.EventHandler(this.numPathItem1_ValueChanged);
+            numPathItem1.Location = new Point(85, 82);
+            numPathItem1.Margin = new Padding(4, 3, 4, 3);
+            numPathItem1.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numPathItem1.Name = "numPathItem1";
+            numPathItem1.Size = new Size(82, 23);
+            numPathItem1.TabIndex = 28;
+            numPathItem1.ValueChanged += numPathItem1_ValueChanged;
             // 
             // fraCount
             // 
-            this.fraCount.AutoSize = true;
-            this.fraCount.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.fraCount.Controls.Add(this.numNeighborCount);
-            this.fraCount.Location = new System.Drawing.Point(6, 6);
-            this.fraCount.Name = "fraCount";
-            this.fraCount.Size = new System.Drawing.Size(66, 58);
-            this.fraCount.TabIndex = 22;
-            this.fraCount.TabStop = false;
-            this.fraCount.Text = "Count";
+            fraCount.AutoSize = true;
+            fraCount.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraCount.Controls.Add(numNeighborCount);
+            fraCount.Location = new Point(7, 7);
+            fraCount.Margin = new Padding(4, 3, 4, 3);
+            fraCount.Name = "fraCount";
+            fraCount.Padding = new Padding(4, 3, 4, 3);
+            fraCount.Size = new Size(78, 67);
+            fraCount.TabIndex = 22;
+            fraCount.TabStop = false;
+            fraCount.Text = "Count";
             // 
             // numNeighborCount
             // 
-            this.numNeighborCount.Location = new System.Drawing.Point(6, 19);
-            this.numNeighborCount.Maximum = new decimal(new int[] {
-            4,
-            0,
-            0,
-            0});
-            this.numNeighborCount.Name = "numNeighborCount";
-            this.numNeighborCount.Size = new System.Drawing.Size(54, 20);
-            this.numNeighborCount.TabIndex = 39;
-            this.numNeighborCount.ValueChanged += new System.EventHandler(this.numNeighborCount_ValueChanged);
+            numNeighborCount.Location = new Point(7, 22);
+            numNeighborCount.Margin = new Padding(4, 3, 4, 3);
+            numNeighborCount.Maximum = new decimal(new int[] { 4, 0, 0, 0 });
+            numNeighborCount.Name = "numNeighborCount";
+            numNeighborCount.Size = new Size(63, 23);
+            numNeighborCount.TabIndex = 39;
+            numNeighborCount.ValueChanged += numNeighborCount_ValueChanged;
             // 
             // OldCameraBox
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.tbcTabs);
-            this.Name = "OldCameraBox";
-            this.Size = new System.Drawing.Size(400, 400);
-            this.fraPosition.ResumeLayout(false);
-            this.fraPosition.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numZRot)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numYRot)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numXRot)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numZ)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numY)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numX)).EndInit();
-            this.tbcTabs.ResumeLayout(false);
-            this.tabPosition.ResumeLayout(false);
-            this.tabPosition.PerformLayout();
-            this.tabSettings.ResumeLayout(false);
-            this.tabSettings.PerformLayout();
-            this.fraSLST.ResumeLayout(false);
-            this.fraSLST.PerformLayout();
-            this.fraUnknown.ResumeLayout(false);
-            this.fraUnknown.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numUnk1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numUnk2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numUnk3)).EndInit();
-            this.fraLink.ResumeLayout(false);
-            this.fraLink.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numExitPoint)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numEntryPoint)).EndInit();
-            this.fraAvgDist.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numAvgDist)).EndInit();
-            this.fraZoom.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numZoom)).EndInit();
-            this.fraMode.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numMode)).EndInit();
-            this.fraDirection.ResumeLayout(false);
-            this.fraDirection.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numXDir)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numYDir)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numZDir)).EndInit();
-            this.tabNeighbor.ResumeLayout(false);
-            this.tabNeighbor.PerformLayout();
-            this.fraNeighbor3.ResumeLayout(false);
-            this.fraNeighbor3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numRelativeFlag4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numRelative4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numPathItem4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numParentZone4)).EndInit();
-            this.fraNeighbor2.ResumeLayout(false);
-            this.fraNeighbor2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numRelativeFlag3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numRelative3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numParentZone3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numPathItem3)).EndInit();
-            this.fraNeighbor1.ResumeLayout(false);
-            this.fraNeighbor1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numRelativeFlag2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numParentZone2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numRelative2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numPathItem2)).EndInit();
-            this.fraNeighbor0.ResumeLayout(false);
-            this.fraNeighbor0.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numRelative1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numRelativeFlag1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numParentZone1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numPathItem1)).EndInit();
-            this.fraCount.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numNeighborCount)).EndInit();
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(tbcTabs);
+            Margin = new Padding(4, 3, 4, 3);
+            Name = "OldCameraBox";
+            Size = new Size(467, 462);
+            fraPosition.ResumeLayout(false);
+            fraPosition.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numZRot).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numYRot).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numXRot).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numZ).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numY).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numX).EndInit();
+            tbcTabs.ResumeLayout(false);
+            tabPosition.ResumeLayout(false);
+            tabPosition.PerformLayout();
+            tabSettings.ResumeLayout(false);
+            tabSettings.PerformLayout();
+            fraSLST.ResumeLayout(false);
+            fraSLST.PerformLayout();
+            fraUnknown.ResumeLayout(false);
+            fraUnknown.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numUnk1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numUnk2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numUnk3).EndInit();
+            fraLink.ResumeLayout(false);
+            fraLink.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numExitPoint).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numEntryPoint).EndInit();
+            fraAvgDist.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)numAvgDist).EndInit();
+            fraZoom.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)numZoom).EndInit();
+            fraMode.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)numMode).EndInit();
+            fraDirection.ResumeLayout(false);
+            fraDirection.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numXDir).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numYDir).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numZDir).EndInit();
+            tabNeighbor.ResumeLayout(false);
+            tabNeighbor.PerformLayout();
+            fraNeighbor3.ResumeLayout(false);
+            fraNeighbor3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numRelativeFlag4).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRelative4).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numPathItem4).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numParentZone4).EndInit();
+            fraNeighbor2.ResumeLayout(false);
+            fraNeighbor2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numRelativeFlag3).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRelative3).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numParentZone3).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numPathItem3).EndInit();
+            fraNeighbor1.ResumeLayout(false);
+            fraNeighbor1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numRelativeFlag2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numParentZone2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRelative2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numPathItem2).EndInit();
+            fraNeighbor0.ResumeLayout(false);
+            fraNeighbor0.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numRelative1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRelativeFlag1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numParentZone1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numPathItem1).EndInit();
+            fraCount.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)numNeighborCount).EndInit();
+            ResumeLayout(false);
         }
 
         #endregion
 
-        private System.Windows.Forms.GroupBox fraPosition;
-        private System.Windows.Forms.Label lblZ;
-        private System.Windows.Forms.Label lblY;
-        private System.Windows.Forms.Label lblX;
-        private System.Windows.Forms.NumericUpDown numZ;
-        private System.Windows.Forms.NumericUpDown numY;
-        private System.Windows.Forms.NumericUpDown numX;
-        private System.Windows.Forms.Button cmdInsertPosition;
-        private System.Windows.Forms.Button cmdRemovePosition;
-        private System.Windows.Forms.Button cmdAppendPosition;
-        private System.Windows.Forms.Button cmdNextPosition;
-        private System.Windows.Forms.Button cmdPreviousPosition;
-        private System.Windows.Forms.Label lblPositionIndex;
-        private System.Windows.Forms.TabControl tbcTabs;
-        private System.Windows.Forms.TabPage tabPosition;
-        private System.Windows.Forms.Label lblZRot;
-        private System.Windows.Forms.Label lblYRot;
-        private System.Windows.Forms.Label lblXRot;
-        private System.Windows.Forms.NumericUpDown numZRot;
-        private System.Windows.Forms.NumericUpDown numYRot;
-        private System.Windows.Forms.NumericUpDown numXRot;
-        private System.Windows.Forms.Button cmdLastPosition;
-        private System.Windows.Forms.Button cmdFirstPosition;
-        private System.Windows.Forms.TabPage tabSettings;
-        private System.Windows.Forms.TabPage tabNeighbor;
-        private System.Windows.Forms.GroupBox fraNeighbor0;
-        private System.Windows.Forms.Label lblRelativeFlag;
-        private System.Windows.Forms.Label lblRelative;
-        private System.Windows.Forms.NumericUpDown numRelative1;
-        private System.Windows.Forms.Label lblPathItem;
-        private System.Windows.Forms.Label lblParentZone;
-        private System.Windows.Forms.NumericUpDown numRelativeFlag1;
-        private System.Windows.Forms.NumericUpDown numParentZone1;
-        private System.Windows.Forms.NumericUpDown numPathItem1;
-        private System.Windows.Forms.GroupBox fraCount;
-        private System.Windows.Forms.NumericUpDown numNeighborCount;
-        private System.Windows.Forms.NumericUpDown numRelativeFlag4;
-        private System.Windows.Forms.NumericUpDown numRelativeFlag3;
-        private System.Windows.Forms.NumericUpDown numRelativeFlag2;
-        private System.Windows.Forms.NumericUpDown numPathItem4;
-        private System.Windows.Forms.NumericUpDown numPathItem3;
-        private System.Windows.Forms.NumericUpDown numPathItem2;
-        private System.Windows.Forms.NumericUpDown numParentZone4;
-        private System.Windows.Forms.NumericUpDown numParentZone3;
-        private System.Windows.Forms.NumericUpDown numParentZone2;
-        private System.Windows.Forms.NumericUpDown numRelative4;
-        private System.Windows.Forms.NumericUpDown numRelative3;
-        private System.Windows.Forms.NumericUpDown numRelative2;
-        private System.Windows.Forms.GroupBox fraNeighbor3;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.GroupBox fraNeighbor2;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.GroupBox fraNeighbor1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.NumericUpDown numMode;
-        private System.Windows.Forms.NumericUpDown numAvgDist;
-        private System.Windows.Forms.NumericUpDown numZoom;
-        private System.Windows.Forms.GroupBox fraDirection;
-        private System.Windows.Forms.Label lblXDir;
-        private System.Windows.Forms.NumericUpDown numXDir;
-        private System.Windows.Forms.NumericUpDown numYDir;
-        private System.Windows.Forms.NumericUpDown numZDir;
-        private System.Windows.Forms.Label lblZDir;
-        private System.Windows.Forms.Label lblYDir;
-        private System.Windows.Forms.GroupBox fraAvgDist;
-        private System.Windows.Forms.GroupBox fraZoom;
-        private System.Windows.Forms.GroupBox fraMode;
-        private System.Windows.Forms.Button cmdAvgDistCalc;
-        private System.Windows.Forms.GroupBox fraLink;
-        private System.Windows.Forms.Label lblExitPoint;
-        private System.Windows.Forms.NumericUpDown numExitPoint;
-        private System.Windows.Forms.Label lblEntryPoint;
-        private System.Windows.Forms.NumericUpDown numEntryPoint;
-        private System.Windows.Forms.GroupBox fraUnknown;
-        private System.Windows.Forms.Label lblUnk1;
-        private System.Windows.Forms.NumericUpDown numUnk1;
-        private System.Windows.Forms.NumericUpDown numUnk2;
-        private System.Windows.Forms.NumericUpDown numUnk3;
-        private System.Windows.Forms.Label lblUnk3;
-        private System.Windows.Forms.Label lblUnk2;
-        private System.Windows.Forms.GroupBox fraSLST;
-        private System.Windows.Forms.TextBox txtSLST;
-        private System.Windows.Forms.Label lblSLST;
-        private System.Windows.Forms.Button cmdPosInterpolate;
+        private DarkGroupBox fraPosition;
+        private Label lblZ;
+        private Label lblY;
+        private Label lblX;
+        private DarkNumericUpDown numZ;
+        private DarkNumericUpDown numY;
+        private DarkNumericUpDown numX;
+        private DarkButton cmdInsertPosition;
+        private DarkButton cmdRemovePosition;
+        private DarkButton cmdAppendPosition;
+        private DarkButton cmdNextPosition;
+        private DarkButton cmdPreviousPosition;
+        private Label lblPositionIndex;
+        private MetroSetTabControl tbcTabs;
+        private TabPage tabPosition;
+        private Label lblZRot;
+        private Label lblYRot;
+        private Label lblXRot;
+        private DarkNumericUpDown numZRot;
+        private DarkNumericUpDown numYRot;
+        private DarkNumericUpDown numXRot;
+        private DarkButton cmdLastPosition;
+        private DarkButton cmdFirstPosition;
+        private TabPage tabSettings;
+        private TabPage tabNeighbor;
+        private DarkGroupBox fraNeighbor0;
+        private Label lblRelativeFlag;
+        private Label lblRelative;
+        private DarkNumericUpDown numRelative1;
+        private Label lblPathItem;
+        private Label lblParentZone;
+        private DarkNumericUpDown numRelativeFlag1;
+        private DarkNumericUpDown numParentZone1;
+        private DarkNumericUpDown numPathItem1;
+        private DarkGroupBox fraCount;
+        private DarkNumericUpDown numNeighborCount;
+        private DarkNumericUpDown numRelativeFlag4;
+        private DarkNumericUpDown numRelativeFlag3;
+        private DarkNumericUpDown numRelativeFlag2;
+        private DarkNumericUpDown numPathItem4;
+        private DarkNumericUpDown numPathItem3;
+        private DarkNumericUpDown numPathItem2;
+        private DarkNumericUpDown numParentZone4;
+        private DarkNumericUpDown numParentZone3;
+        private DarkNumericUpDown numParentZone2;
+        private DarkNumericUpDown numRelative4;
+        private DarkNumericUpDown numRelative3;
+        private DarkNumericUpDown numRelative2;
+        private DarkGroupBox fraNeighbor3;
+        private Label label5;
+        private Label label6;
+        private Label label7;
+        private Label label8;
+        private DarkGroupBox fraNeighbor2;
+        private Label label9;
+        private Label label10;
+        private Label label11;
+        private Label label12;
+        private DarkGroupBox fraNeighbor1;
+        private Label label1;
+        private Label label2;
+        private Label label3;
+        private Label label4;
+        private DarkNumericUpDown numMode;
+        private DarkNumericUpDown numAvgDist;
+        private DarkNumericUpDown numZoom;
+        private DarkGroupBox fraDirection;
+        private Label lblXDir;
+        private DarkNumericUpDown numXDir;
+        private DarkNumericUpDown numYDir;
+        private DarkNumericUpDown numZDir;
+        private Label lblZDir;
+        private Label lblYDir;
+        private DarkGroupBox fraAvgDist;
+        private DarkGroupBox fraZoom;
+        private DarkGroupBox fraMode;
+        private DarkButton cmdAvgDistCalc;
+        private DarkGroupBox fraLink;
+        private Label lblExitPoint;
+        private DarkNumericUpDown numExitPoint;
+        private Label lblEntryPoint;
+        private DarkNumericUpDown numEntryPoint;
+        private DarkGroupBox fraUnknown;
+        private Label lblUnk1;
+        private DarkNumericUpDown numUnk1;
+        private DarkNumericUpDown numUnk2;
+        private DarkNumericUpDown numUnk3;
+        private Label lblUnk3;
+        private Label lblUnk2;
+        private DarkGroupBox fraSLST;
+        private DarkTextBox txtSLST;
+        private Label lblSLST;
+        private DarkButton cmdPosInterpolate;
     }
 }

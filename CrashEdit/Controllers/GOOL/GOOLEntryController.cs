@@ -25,7 +25,7 @@ namespace CrashEdit.CE
 
         public override Control CreateEditor()
         {
-            return new GOOLBox(GOOLEntry);
+            return new GOOLBox(this, GOOLEntry);
         }
 
         public GOOLEntry GOOLEntry { get; }

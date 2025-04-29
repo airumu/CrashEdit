@@ -1,10 +1,12 @@
 using System.Drawing;
 using System.Windows.Forms;
+using AltUI.Controls;
+using AltUI.Forms;
 
 namespace CrashEdit
 {
 
-    public sealed class ChoiceDialog : Form
+    public sealed class ChoiceDialog : DarkForm
     {
 
         public ChoiceDialog()
@@ -13,6 +15,8 @@ namespace CrashEdit
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             MinimumSize = new Size(300, 1);
             FormBorderStyle = FormBorderStyle.FixedDialog;
+            MinimizeBox = false;
+            MaximizeBox = false;
 
             OverallTable = new TableLayoutPanel
             {
@@ -40,7 +44,7 @@ namespace CrashEdit
             };
             OverallTable.Controls.Add(ChoiceButtonTable);
 
-            CancelButton = new Button
+            CancelButton = new DarkButton
             {
                 Text = "Cancel",
                 Anchor = AnchorStyles.Bottom | AnchorStyles.Right,
@@ -68,7 +72,7 @@ namespace CrashEdit
 
         private TableLayoutPanel ChoiceButtonTable { get; }
 
-        private new Button CancelButton { get; }
+        private new DarkButton CancelButton { get; }
 
         private static Font _choiceFont = new Font(Button.DefaultFont.FontFamily, 16, GraphicsUnit.Pixel);
 
@@ -76,18 +80,15 @@ namespace CrashEdit
         {
             ArgumentNullException.ThrowIfNull(choice);
 
-            var button = new Button
+            var button = new DarkButton
             {
                 AutoSize = true,
                 Margin = new Padding(0, 3, 0, 3),
                 Padding = new Padding(12),
-                FlatStyle = FlatStyle.Popup,
                 Font = _choiceFont,
                 Text = "    " + choice.Text,
-                TextAlign = ContentAlignment.MiddleCenter,
                 ImageKey = choice.ImageKey,
                 ImageList = Embeds.ImageList,
-                ImageAlign = ContentAlignment.MiddleLeft,
                 TextImageRelation = TextImageRelation.ImageBeforeText,
                 Anchor =
                     AnchorStyles.Top |

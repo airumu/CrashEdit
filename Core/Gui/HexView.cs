@@ -1,16 +1,292 @@
+using AltUI.Controls;
+using AltUI.Forms;
+using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 using System.Drawing;
+using System.Text;
 using System.Windows.Forms;
 
 namespace CrashEdit
 {
-
     public sealed class HexView : UserControl
     {
+        private dynamic? controller;
+        private HexBox hexBox;
+        private HexBoxHeader hexBoxHeader;
 
-        public HexView()
+        private TableLayoutPanel pnMain;
+
+        public DarkTextBox txtGoto;
+        public Label lblPosition;
+
+        public HexView(dynamic controller, ReadOnlyMemory<byte> data, Func<int, int, byte[], bool>? dataChangeHandler)
         {
+            this.controller = controller;
+            MainInit(data, dataChangeHandler);
+        }
+
+        public HexView(ReadOnlyMemory<byte> data, Func<int, int, byte[], bool>? dataChangeHandler) : this(null, data, dataChangeHandler)
+        {
+        }
+
+        private void MainInit(ReadOnlyMemory<byte> data, Func<int, int, byte[], bool>? dataChangeHandler)
+        {
+            BackColor = Color.FromArgb(31, 31, 32);
+
+            ToolStrip toolStrip = new ToolStrip();
+            ToolStripButton tsbImport = new ToolStripButton()
+            {
+                Text = "Import"
+            };
+            tsbImport.Click += new EventHandler(tsbImport_Click);
+            ToolStripButton tsbExport = new ToolStripButton()
+            {
+                Text = "Export"
+            };
+            tsbExport.Click += new EventHandler(tsbExport_Click);
+            if (controller != null)
+                toolStrip.Items.Add(tsbImport);
+            toolStrip.Items.Add(tsbExport);
+
+            // HexBox
+            hexBox = new HexBox(this)
+            {
+                Dock = DockStyle.Fill,
+                Margin = Padding.Empty,
+                Data = data,
+                DataChangeHandler = dataChangeHandler
+            };
+
+            // Header
+            hexBoxHeader = new HexBoxHeader(this, hexBox)
+            {
+                Dock = DockStyle.Fill,
+                Margin = Padding.Empty,
+                Height = HexBox.TextPadding + hexBox.CharSize.Height + HexBox.TextPadding
+            };
+
+            // Footer
+            Label lblGoto = new Label()
+            {
+                Text = "Goto",
+                Padding = new Padding(0, 6, 0, 4)
+            };
+            using (Graphics g = lblGoto.CreateGraphics())
+            {
+                int width = (int)g.MeasureString(lblGoto.Text, lblGoto.Font).Width + 10;
+                lblGoto.Width = width;
+            }
+            txtGoto = new DarkTextBox()
+            {
+                Width = 60,
+                Padding = new Padding(0, 4, 0, 4)
+            };
+            txtGoto.KeyDown += new KeyEventHandler(txtGoto_KeyDown);
+            txtGoto.KeyPress += new KeyPressEventHandler(txtGoto_KeyPress);
+            lblPosition = new Label()
+            {
+                Width = 400,
+                Padding = new Padding(16, 6, 0, 4)
+            };
+            FlowLayoutPanel pnFooter = new FlowLayoutPanel()
+            {
+                Dock = DockStyle.Fill,
+                Margin = Padding.Empty,
+                BackColor = Color.FromArgb(27, 27, 28),
+                Height = txtGoto.Height + 8,
+                FlowDirection = FlowDirection.LeftToRight,
+                WrapContents = false,
+                AutoScroll = false
+            };
+            pnFooter.Controls.Add(lblGoto);
+            pnFooter.Controls.Add(txtGoto);
+            pnFooter.Controls.Add(lblPosition);
+
+            // Main Control
+            pnMain = new TableLayoutPanel()
+            {
+                Dock = DockStyle.Fill,
+                ColumnCount = 1,
+                RowCount = 3
+            };
+            pnMain.Controls.Add(toolStrip);
+            pnMain.Controls.Add(hexBoxHeader);
+            pnMain.Controls.Add(hexBox);
+            pnMain.Controls.Add(pnFooter);
+
+            pnMain.RowStyles.Clear();
+            pnMain.RowStyles.Add(new RowStyle(SizeType.Absolute, toolStrip.Height));
+            pnMain.RowStyles.Add(new RowStyle(SizeType.Absolute, hexBoxHeader.Height));
+            pnMain.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+            pnMain.RowStyles.Add(new RowStyle(SizeType.Absolute, pnFooter.Height));
+
+            Controls.Add(pnMain);
+        }
+
+        private void tsbImport_Click(object? sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "All Files (*.*)|*.*";
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    byte[] newData = File.ReadAllBytes(openFileDialog.FileName);
+
+                    if (controller != null)
+                    {
+                        controller.ReplaceData(newData);
+                        hexBox.Data = newData;
+                        hexBox.Invalidate();
+                    }
+                }
+            }
+        }
+
+        private void tsbExport_Click(object? sender, EventArgs e)
+        {
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.Filter = "All Files (*.*)|*.*";
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    File.WriteAllBytes(saveFileDialog.FileName, hexBox.Data.ToArray());
+                }
+            }
+        }
+
+        private void txtGoto_KeyDown(object? sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.G && (e.Modifiers & Keys.Control) == Keys.Control)
+            {
+                txtGoto.SelectAll();
+            }
+        }
+
+        private void txtGoto_KeyPress(object? sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Return)
+            {
+                // avoid to play "Ding" sound
+                e.Handled = true;
+                e.KeyChar = (char)Keys.D0;
+
+                if (int.TryParse(txtGoto.Text, System.Globalization.NumberStyles.HexNumber, null, out int pos))
+                {
+                    hexBox.MoveTo(pos, false);
+                    hexBox.ResetAnchor();
+                    hexBox.Invalidate();
+                    hexBox.Focus();
+                    e.Handled = true;
+                }
+                else
+                {
+                    DarkMessageBox.ShowError($"Invalid address '{txtGoto.Text}'.", "HexView");
+                }
+            }
+        }
+
+        public void UpdateHeader()
+        {
+            hexBoxHeader.Invalidate();
+        }
+    }
+
+    public sealed class HexBoxHeader : UserControl
+    {
+        private HexView hexView;
+        private HexBox hexBox;
+
+        private static Brush _bgAddressBrush = Brushes.DarkGray;
+
+        public HexBoxHeader(HexView hexview, HexBox hexbox)
+        {
+            hexView = hexview;
+            hexBox = hexbox;
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+
+            var strFormat = new StringFormat();
+            strFormat.Alignment = StringAlignment.Center;
+            strFormat.LineAlignment = StringAlignment.Center;
+            strFormat.Trimming = StringTrimming.None;
+            strFormat.FormatFlags |= StringFormatFlags.MeasureTrailingSpaces;
+
+            int row = 0;
+            int rowY = hexBox.YStart + hexBox.YStep * row;
+            int rowFirstByte = row * hexBox.ColumnCount - hexBox.FirstByteColumn;
+
+            int colFirst = 0;
+            int colLast = hexBox.ColumnCount;
+
+            for (int col = colFirst; col < colLast; col++)
+            {
+                int colX = hexBox.XStart + hexBox.XStep * col;
+
+                Brush fgBrush = _bgAddressBrush;
+                Brush bgBrush = new SolidBrush(Color.Transparent);
+
+                bool leftBorderDrawn = col == 0;
+
+                var cellInnerRect = new Rectangle();
+                cellInnerRect.X = colX + (leftBorderDrawn ? HexBox.BorderSize : 0);
+                cellInnerRect.Y = rowY + HexBox.BorderSize;
+                cellInnerRect.Width = HexBox.TextPadding + hexBox.CharSize.Width * 2 + HexBox.TextPadding + (leftBorderDrawn ? 0 : HexBox.BorderSize);
+                cellInnerRect.Height = HexBox.TextPadding + hexBox.CharSize.Height + HexBox.TextPadding;
+
+                e.Graphics.FillRectangle(bgBrush, cellInnerRect);
+
+                var text = (col % 16).ToString("X");
+                e.Graphics.DrawString(
+                    text,
+                    HexBox.Font,
+                    fgBrush,
+                    cellInnerRect,
+                    strFormat);
+            }
+        }
+    }
+
+    public sealed class HexBox : UserControl
+    {
+        private HexView hexView;
+
+        public HexBox(HexView hexview)
+        {
+            hexView = hexview;
             DoubleBuffered = true;
+            BackColor = Color.FromArgb(31, 31, 32);
+
+            ContextMenuStrip contextMenu = new ContextMenuStrip();
+            ToolStripMenuItem copyBytes = new ToolStripMenuItem("Copy as Bytes");
+            ToolStripMenuItem cutBytes = new ToolStripMenuItem("Cut as Bytes");
+            ToolStripMenuItem pasteBytes = new ToolStripMenuItem("Paste as Bytes");
+            ToolStripMenuItem copyEID = new ToolStripMenuItem("Copy as EID");
+            ToolStripMenuItem cutEID = new ToolStripMenuItem("Cut as EID");
+            ToolStripMenuItem pasteEID = new ToolStripMenuItem("Paste as EID");
+            //copyBytes.Image = Embeds.GetIcon("Copy")?.ToBitmap();
+            //cutBytes.Image = Embeds.GetIcon("Cut")?.ToBitmap();
+            //pasteBytes.Image = Embeds.GetIcon("Paste")?.ToBitmap();
+            //copyEID.Image = Embeds.GetIcon("Copy")?.ToBitmap();
+            //cutEID.Image = Embeds.GetIcon("Cut")?.ToBitmap();
+            //pasteEID.Image = Embeds.GetIcon("Paste")?.ToBitmap();
+            copyBytes.Click += CopyBytes_Click;
+            cutBytes.Click += CutBytes_Click;
+            pasteBytes.Click += PasteBytes_Click;
+            copyEID.Click += CopyEID_Click;
+            cutEID.Click += CutEID_Click;
+            pasteEID.Click += PasteEID_Click;
+            contextMenu.Items.Add(copyBytes);
+            contextMenu.Items.Add(cutBytes);
+            contextMenu.Items.Add(pasteBytes);
+            contextMenu.Items.Add("-");
+            contextMenu.Items.Add(copyEID);
+            contextMenu.Items.Add(cutEID);
+            contextMenu.Items.Add(pasteEID);
+            ContextMenuStrip = contextMenu;
+
             ResetLayout();
         }
 
@@ -109,6 +385,9 @@ namespace CrashEdit
         // The address of the currently selected byte.
         public long ByteCursorAddress => FirstByteAddress + ByteCursor;
 
+        // Anchor set by right-clicking.
+        public int ByteAnchor { get; private set; }
+
         // The data on which the HexView operates. The memory must remain valid until replaced
         // or until the control is disposed.
         //
@@ -198,7 +477,7 @@ namespace CrashEdit
         public int MoveBy(int delta)
         {
             int oldCursor = ByteCursor;
-            MoveTo(ByteCursor + delta);
+            MoveTo(ByteCursor + delta, false);
             return ByteCursor - oldCursor;
         }
 
@@ -207,25 +486,49 @@ namespace CrashEdit
         // valid range and false is returned.
         //
         // This also scrolls the view in the control to fully display the new target.
-        public bool MoveTo(int target)
+        public bool MoveTo(int target, bool isAnchor)
         {
-            int oldCursor = ByteCursor;
-
+            int oldCursor;
             bool inRange;
-            if (target < 0)
+            if (isAnchor)
             {
-                ByteCursor = 0;
-                inRange = false;
-            }
-            else if (target > Data.Length)
-            {
-                ByteCursor = Data.Length;
-                inRange = false;
+                oldCursor = ByteAnchor;
+
+                if (target < 0)
+                {
+                    ByteAnchor = 0;
+                    inRange = false;
+                }
+                else if (target > Data.Length)
+                {
+                    ByteAnchor = Data.Length;
+                    inRange = false;
+                }
+                else
+                {
+                    ByteAnchor = target;
+                    inRange = true;
+                }
             }
             else
             {
-                ByteCursor = target;
-                inRange = true;
+                oldCursor = ByteCursor;
+
+                if (target < 0)
+                {
+                    ByteCursor = 0;
+                    inRange = false;
+                }
+                else if (target > Data.Length)
+                {
+                    ByteCursor = Data.Length;
+                    inRange = false;
+                }
+                else
+                {
+                    ByteCursor = target;
+                    inRange = true;
+                }
             }
 
             ClearInput();
@@ -234,13 +537,24 @@ namespace CrashEdit
             int oldRow = (oldCursor + FirstByteColumn) / ColumnCount;
             InvalidateCell(oldCol, oldRow);
 
-            int newCol = (ByteCursor + FirstByteColumn) % ColumnCount;
-            int newRow = (ByteCursor + FirstByteColumn) / ColumnCount;
+            int newCol;
+            int newRow;
+            if (isAnchor)
+            {
+                newCol = (ByteAnchor + FirstByteColumn) % ColumnCount;
+                newRow = (ByteAnchor + FirstByteColumn) / ColumnCount;
+            }
+            else
+            {
+                newCol = (ByteCursor + FirstByteColumn) % ColumnCount;
+                newRow = (ByteCursor + FirstByteColumn) / ColumnCount;
+            }
+
             var newRect = new Rectangle();
             newRect.X = XStart + XStep * newCol + AutoScrollPosition.X;
             newRect.Y = YStart + YStep * newRow + AutoScrollPosition.Y;
-            newRect.Width = XStep + _borderSize;
-            newRect.Height = YStep + _borderSize;
+            newRect.Width = XStep + BorderSize;
+            newRect.Height = YStep + BorderSize;
             InvalidateCell(newCol, newRow);
 
             Point newScrollPos = AutoScrollPosition;
@@ -268,7 +582,16 @@ namespace CrashEdit
                     -newScrollPos.X,
                     -newScrollPos.Y);
             }
-
+            if (isAnchor)
+            {
+                SetAnchor(target);
+            }
+            else
+            {
+                ResetAnchor();
+            }
+             
+            Invalidate();
             return inRange;
         }
 
@@ -286,173 +609,254 @@ namespace CrashEdit
         // Handle keyboard inputs.
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            switch (e.KeyCode)
+            if (e.Modifiers == (Keys.Control | Keys.Shift))
             {
-                case Keys.Up:
-                    // Move up by one cell.
-                    MoveBy(-ColumnCount);
-                    break;
+                switch (e.KeyCode)
+                {
+                    case Keys.C:
+                        // Copy chunks as EID
+                        CopyBytes(false, true);
+                        break;
 
-                case Keys.Down:
-                    // Move down by one cell.
-                    MoveBy(ColumnCount);
-                    break;
+                    case Keys.X:
+                        // Cut chunks as EID
+                        CopyBytes(true, true);
+                        break;
 
-                case Keys.Left:
-                    // Move backward by one cell.
-                    MoveBy(-1);
-                    break;
+                    case Keys.V:
+                        // Paste chunks as EID
+                        PasteBytes(true);
+                        break;
+                }
+            }
+            else if (e.Modifiers == Keys.Control)
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.C:
+                        // Copy chunks as bytes.
+                        CopyBytes(false, false);
+                        break;
 
-                case Keys.Right:
-                    // Move forward by one cell.
-                    MoveBy(1);
-                    break;
+                    case Keys.X:
+                        // Cut chunks as bytes.
+                        CopyBytes(true, false);
+                        break;
 
-                case Keys.PageUp:
-                    // Move up by one "page".
-                    MoveBy(-ColumnCount * RowsPerPage);
-                    break;
+                    case Keys.V:
+                        // Paste chunks as bytes.
+                        PasteBytes(false);
+                        break;
 
-                case Keys.PageDown:
-                    // Move down by one "page".
-                    MoveBy(ColumnCount * RowsPerPage);
-                    break;
+                    case Keys.Space:
+                        // Input zero.
+                        InputZero(4);
+                        break;
 
-                case Keys.Home:
-                    // Move to the start ...
-                    if (e.Control)
-                    {
-                        // ... of the entire data.
-                        MoveTo(0);
-                    }
-                    else
-                    {
-                        // ... of the current row.
-                        MoveBy(-ByteCursorColumn);
-                    }
-                    break;
+                    case Keys.G:
+                        // Goto.
+                        hexView.txtGoto.SelectAll();
+                        hexView.txtGoto.Focus();
+                        break;
+                }
+            }
+            else
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.Up:
+                        // Move up by one cell.
+                        MoveBy(-ColumnCount);
+                        break;
 
-                case Keys.End:
-                    // Move to the end ...
-                    if (e.Control)
-                    {
-                        // ... of the entire data.
-                        MoveTo(Data.Length);
-                    }
-                    else
-                    {
-                        // ... of the current row.
-                        MoveBy(ColumnCount - ByteCursorColumn - 1);
-                    }
-                    break;
+                    case Keys.Down:
+                        // Move down by one cell.
+                        MoveBy(ColumnCount);
+                        break;
 
-                case Keys k when (k >= Keys.D0 && k <= Keys.D9):
-                    // Input hex digit 0-9.
-                    InputNybble(k - Keys.D0);
-                    break;
+                    case Keys.Left:
+                        // Move backward by one cell.
+                        MoveBy(-1);
+                        break;
 
-                case Keys k when (k >= Keys.NumPad0 && k <= Keys.NumPad9):
-                    // Input hex digit 0-9 on numpad.
-                    InputNybble(k - Keys.NumPad0);
-                    break;
+                    case Keys.Right:
+                        // Move forward by one cell.
+                        MoveBy(1);
+                        break;
 
-                case Keys k when (k >= Keys.A && k <= Keys.F):
-                    // Input hex digit A-F.
-                    InputNybble(k - Keys.A + 0xA);
-                    break;
+                    case Keys.PageUp:
+                        // Move up by one "page".
+                        MoveBy(-ColumnCount * RowsPerPage);
+                        break;
 
-                case Keys.Back:
-                    // Backspace input, if possible.
-                    ClearInput();
-                    break;
+                    case Keys.PageDown:
+                        // Move down by one "page".
+                        MoveBy(ColumnCount * RowsPerPage);
+                        break;
 
-                case Keys.N:
-                    // Input the EID for "NONE!"
-                    InputNone();
-                    break;
+                    case Keys.Home:
+                        // Move to the start ...
+                        if (e.Control)
+                        {
+                            // ... of the entire data.
+                            MoveTo(0, false);
+                        }
+                        else
+                        {
+                            // ... of the current row.
+                            MoveBy(-ByteCursorColumn);
+                        }
+                        break;
 
-                case Keys.Space:
-                    // Input zero
-                    // (lazy)
-                    if (_pendingInput != null)
-                    {
-                        _pendingInput = null;
-                    }
-                    InputNybble(0);
-                    InputNybble(0);
-                    break;
+                    case Keys.End:
+                        // Move to the end ...
+                        if (e.Control)
+                        {
+                            // ... of the entire data.
+                            MoveTo(Data.Length, false);
+                        }
+                        else
+                        {
+                            // ... of the current row.
+                            MoveBy(ColumnCount - ByteCursorColumn - 1);
+                        }
+                        break;
 
-                case Keys.Z:
-                    // Toggle chunk name view mode
-                    _modeChunkName = !_modeChunkName;
-                    Invalidate();
-                    break;
+                    case Keys.Add:
+                        if (ColumnCount < 24)
+                        {
+                            ColumnCount += 4;
+                        }
+                        hexView.UpdateHeader();
+                        break;
 
-                default:
-                    base.OnKeyDown(e);
-                    break;
+                    case Keys.Subtract:
+                        if (ColumnCount > 4)
+                        {
+                            ColumnCount -= 4;
+                        }
+                        hexView.UpdateHeader();
+                        break;
+
+                    case Keys k when (k >= Keys.D0 && k <= Keys.D9):
+                        // Input hex digit 0-9.
+                        InputNybble(k - Keys.D0);
+                        break;
+
+                    case Keys k when (k >= Keys.NumPad0 && k <= Keys.NumPad9):
+                        // Input hex digit 0-9 on numpad.
+                        InputNybble(k - Keys.NumPad0);
+                        break;
+
+                    case Keys k when (k >= Keys.A && k <= Keys.F):
+                        // Input hex digit A-F.
+                        InputNybble(k - Keys.A + 0xA);
+                        break;
+
+                    case Keys.Back:
+                        // Backspace input, if possible.
+                        ClearInput();
+                        break;
+
+                    case Keys.N:
+                        // Input the EID for "NONE!"
+                        InputNone();
+                        break;
+
+                    case Keys.Space:
+                        // Input zero
+                        InputZero(1);
+                        break;
+
+                    case Keys.Z:
+                        // Toggle chunk name view mode
+                        _modeChunkName = !_modeChunkName;
+                        Invalidate();
+                        break;
+
+                    default:
+                        base.OnKeyDown(e);
+                        break;
+                }
             }
         }
 
+        private static Brush brush_borderBrush = new SolidBrush(Color.FromArgb(36, 36, 40));
+        private static Brush brush_borderWordBrush = new SolidBrush(Color.FromArgb(40, 40, 44));
+        private static Brush brush_bgNormalBrush = new SolidBrush(Color.FromArgb(32, 32, 34));
+        private static Brush brush_bgAlternateBrush = new SolidBrush(Color.FromArgb(25, 25, 26));
+        private static Brush brush_bgSelectedBrush = new SolidBrush(Color.FromArgb(37, 37, 40));
+        private static Brush brush_bgChunkBrush = new SolidBrush(Color.FromArgb(38, 75, 104));
+        private static Brush brush_bgSelectedChunkBrush = new SolidBrush(Color.FromArgb(41, 91, 132));
+        private static Brush brush_bgSelectedAnchorBrush = new SolidBrush(Color.FromArgb(28, 43, 56));
+
         // Border color drawn around cells.
-        private static Brush _borderBrush = Brushes.Black;
+        private static Brush _borderBrush = brush_borderBrush;
 
         // Border color drawn around cells of the same word.
-        private static Brush _borderWordBrush = Brushes.DarkGray;
+        private static Brush _borderWordBrush = brush_borderWordBrush;
 
         // Border color drawn around the selected cell.
-        private static Brush _selectedBorderBrush = Brushes.Red;
+        private static Brush _selectedBorderBrush = Brushes.DarkCyan;
+
+        // Border color drawn around the anchor cell.
+        private static Brush _anchorBorderBrush = Brushes.DarkTurquoise;
 
         // Color for data being typed in.
-        private static Brush _inputBrush = Brushes.Red;
+        private static Brush _inputBrush = Brushes.Turquoise;
 
         // Colors for normal cells.
-        private static Brush _fgNormalBrush = Brushes.Navy;
-        private static Brush _bgNormalBrush = Brushes.White;
+        private static Brush _fgNormalBrush = Brushes.GhostWhite;
+        private static Brush _bgNormalBrush = brush_bgNormalBrush;
 
         // Colors for normal cells, but for every-other column group.
-        private static Brush _fgAlternateBrush = Brushes.Navy;
-        private static Brush _bgAlternateBrush = Brushes.LightGray;
+        private static Brush _fgAlternateBrush = Brushes.GhostWhite;
+        private static Brush _bgAlternateBrush = brush_bgAlternateBrush;
 
         // Color for zero-value cells.
         private static Brush _fgZeroBrush = Brushes.DimGray;
-        //private static Brush _bgZeroBrush = Brushes.White;
 
         // Color for the selected cell. This overrides the other colors.
-        private static Brush _fgSelectedBrush = Brushes.White;
-        private static Brush _bgSelectedBrush = Brushes.Navy;
+        private static Brush _fgSelectedBrush = Brushes.GhostWhite;
+        private static Brush _bgSelectedBrush = brush_bgSelectedBrush;
 
         // Color for cells when they're being displayed as chunk names
-        private static Brush _fgChunkBrush = Brushes.White;
-        private static Brush _bgChunkBrush = Brushes.Chocolate;
-        private static Brush _bgSelectedChunkBrush = Brushes.Brown;
+        private static Brush _fgChunkBrush = Brushes.GhostWhite;
+        private static Brush _bgChunkBrush = brush_bgChunkBrush;
+        private static Brush _bgSelectedChunkBrush = brush_bgSelectedChunkBrush;
+
+        // Color for selected cells with the anchor.
+        private static Brush _bgSelectedAnchorBrush = brush_bgSelectedAnchorBrush;
+
+        // Color for address.
+        private static Brush _bgAddressBrush = Brushes.DarkGray;
 
         // Size of borders between and around cells, in pixels.
-        private static int _borderSize = 2;
+        public static int BorderSize => 2;
 
         // Size of padding around the text, in pixels.
-        private static int _padding = 4;
+        public static int TextPadding => Settings.Default.HexViewCellSize == "Small" ? 4 : Settings.Default.HexViewCellSize == "Medium" ? 6 : 8;
 
         // Font used for displaying numbers.
-        private static Font _font = new Font(FontFamily.GenericMonospace, 8);
+        public static new Font Font => new Font(FontFamily.GenericMonospace, 10);
 
         // The space occupied by one character of text. This assumes a fixed-width font.
-        private Size CharSize { get; set; }
+        public Size CharSize { get; set; }
 
         // The number of characters in an address.
-        private int AddressCharCount { get; set; }
+        public int AddressCharCount { get; set; }
 
         // The distance between the left side of the control and the left side of the first column.
-        private int XStart => _padding + CharSize.Width * AddressCharCount + _padding;
+        public int XStart => TextPadding + CharSize.Width * AddressCharCount + TextPadding;
 
         // The distance between the left side of one column and the left side of the next.
-        private int XStep => _borderSize + _padding + CharSize.Width * 2 + _padding;
+        public int XStep => BorderSize + TextPadding + CharSize.Width * 2 + TextPadding;
 
         // The distance between the top of the control and the top of the first row.
-        private int YStart => 0;
+        public int YStart => 0;
 
         // The distance between the top of one row and the top of the next.
-        private int YStep => _borderSize + _padding + CharSize.Height + _padding;
+        public int YStep => BorderSize + TextPadding + CharSize.Height + TextPadding;
 
         // Whether we're trying to display cells as chunk names or not
         private bool _modeChunkName = false;
@@ -462,41 +866,109 @@ namespace CrashEdit
         {
             using (var g = CreateGraphics())
             {
-                CharSize = TextRenderer.MeasureText(g, "A", _font, Size.Empty, TextFormatFlags.NoPadding);
+                CharSize = TextRenderer.MeasureText(g, "A", Font, Size.Empty, TextFormatFlags.NoPadding);
             }
             AddressCharCount = 5; // sensible minimum
             AddressCharCount = Math.Max(AddressCharCount, FirstByteAddress.ToString("x").Length);
             AddressCharCount = Math.Max(AddressCharCount, (FirstByteAddress + Data.Length).ToString("x").Length);
             AutoScrollMinSize = new Size(
-                XStart + XStep * ColumnCount + _borderSize,
-                YStart + YStep * RowCount + _borderSize
+                XStart + XStep * ColumnCount + BorderSize,
+                YStart + YStep * RowCount + BorderSize
             );
         }
 
-        protected override void OnMouseClick(MouseEventArgs e)
+        public void ResetAnchor()
         {
-            base.OnMouseClick(e);
+            ByteAnchor = ByteCursor;
+            hexView.lblPosition.Text = $"Pos: {ByteCursor.ToString("X")}";
+        }
+
+        private void SetAnchor(int pos)
+        {
+            ByteAnchor = pos;
+            int position = Math.Min(ByteCursor, ByteAnchor);
+            string block = $"{Math.Min(ByteCursor, ByteAnchor).ToString("X")}-{Math.Max(ByteCursor, ByteAnchor).ToString("X")}";
+            int length = Math.Max(ByteCursor, ByteAnchor) - Math.Min(ByteCursor, ByteAnchor) + 1;
+            hexView.lblPosition.Text = $"Pos: {position.ToString("X")}        Block: {block}        Length: {length.ToString("X")}";
+        }
+
+        private int? CheckPosition(MouseEventArgs e)
+        {
+            if (e.X - AutoScrollPosition.X < XStart) return null;
+            if (e.Y - AutoScrollPosition.Y < YStart) return null;
+
+            int col = (e.X - AutoScrollPosition.X - XStart) / XStep;
+            int row = (e.Y - AutoScrollPosition.Y - YStart) / YStep;
+            if (col < 0 || col >= ColumnCount) return null;
+            if (row < 0 || row >= RowCount) return null;
+
+            int pos = row * ColumnCount + col - FirstByteColumn;
+            if (pos < 0 || pos > Data.Length) return null;
+
+            return pos;
+        }
+
+        // Dragging flag  
+        private bool _isDragging = false;
+
+        // Drag start position 
+        private Point _dragStartPoint;
+
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            base.OnMouseDown(e);
 
             if (e.Button == MouseButtons.Left)
             {
-                if (e.X - AutoScrollPosition.X < XStart)
-                    return;
-                if (e.Y - AutoScrollPosition.Y < YStart)
-                    return;
+                int? pos = CheckPosition(e);
+                if (!pos.HasValue) return;
 
-                int col = (e.X - AutoScrollPosition.X - XStart) / XStep;
-                int row = (e.Y - AutoScrollPosition.Y - YStart) / YStep;
+                _dragStartPoint = e.Location;
+                _isDragging = false;
+                
+                if ((ModifierKeys & Keys.Shift) == Keys.Shift)
+                {
+                    MoveTo(pos.Value, true);
+                }
+                else
+                {
+                    MoveTo(pos.Value, false);
+                    ResetAnchor();
+                }
+                Invalidate();
+            }
+        }
 
-                if (col < 0 || col >= ColumnCount)
-                    return;
-                if (row < 0 || row >= RowCount)
-                    return;
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
 
-                int target = row * ColumnCount + col - FirstByteColumn;
-                if (target < 0 || target > Data.Length)
-                    return;
+            if (e.Button == MouseButtons.Left)
+            {
+                if (!_isDragging)
+                {
+                    if (Math.Abs(e.X - _dragStartPoint.X) > 5 || Math.Abs(e.Y - _dragStartPoint.Y) > 5)
+                    {
+                        _isDragging = true;
+                    }
+                }
+                if (_isDragging)
+                {
+                    int? pos = CheckPosition(e);
+                    if (!pos.HasValue) return;
 
-                MoveTo(target);
+                    MoveTo(pos.Value, true);
+                }
+            }
+        }
+
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+            base.OnMouseUp(e);
+
+            if (_isDragging)
+            {
+                _isDragging = false;
             }
         }
 
@@ -532,7 +1004,7 @@ namespace CrashEdit
 
             // Determine which rows need to be drawn.
             int visRowFirst = (int)Math.Floor((clipRect.Top - YStart) / (float)YStep);
-            int visRowLast = (int)Math.Ceiling((clipRect.Bottom - YStart + _borderSize) / (float)YStep);
+            int visRowLast = (int)Math.Ceiling((clipRect.Bottom - YStart + BorderSize) / (float)YStep);
             if (visRowFirst < 0)
             {
                 visRowFirst = 0;
@@ -554,11 +1026,11 @@ namespace CrashEdit
                 rowAddrRect.X = 0;
                 rowAddrRect.Y = rowY;
                 rowAddrRect.Width = XStart;
-                rowAddrRect.Height = YStep + _borderSize;
+                rowAddrRect.Height = YStep + BorderSize;
                 e.Graphics.DrawString(
                     rowAddress.ToString("X").PadLeft(AddressCharCount),
-                    _font,
-                    SystemBrushes.ControlText,
+                    Font,
+                    _bgAddressBrush,
                     rowAddrRect,
                     strFormat);
 
@@ -587,8 +1059,8 @@ namespace CrashEdit
                     _borderBrush,
                     XStart + XStep * colFirst,
                     YStart + YStep * row,
-                    XStep * (colLast - colFirst + 1) + _borderSize,
-                    _borderSize);
+                    XStep * (colLast - colFirst + 1) + BorderSize,
+                    BorderSize);
 
                 // Draw each cell.
                 for (int col = colFirst; col <= colLast; col++)
@@ -606,9 +1078,9 @@ namespace CrashEdit
                         e.Graphics.FillRectangle(
                             cellByte % 4 == 0 ? _borderBrush : _borderWordBrush,
                             XStart + XStep * col,
-                            YStart + YStep * row + _borderSize,
-                            _borderSize,
-                            YStep - _borderSize);
+                            YStart + YStep * row + BorderSize,
+                            BorderSize,
+                            YStep - BorderSize);
                     }
 
                     // If this is the last column, also draw the right border.
@@ -617,9 +1089,9 @@ namespace CrashEdit
                         e.Graphics.FillRectangle(
                             _borderBrush,
                             XStart + XStep * (col + 1),
-                            YStart + YStep * row + _borderSize,
-                            _borderSize,
-                            YStep - _borderSize);
+                            YStart + YStep * row + BorderSize,
+                            BorderSize,
+                            YStep - BorderSize);
                     }
 
                     // The final cell corresponds to the position one past the end of the
@@ -627,9 +1099,25 @@ namespace CrashEdit
                     if (cellByte == data.Length)
                         break;
 
+                    bool isAnchor = false;
                     Brush fgBrush;
                     Brush bgBrush;
-                    if (cellByte == ByteCursor)
+                    if (cellByte == ByteAnchor)
+                    {
+                        fgBrush = _fgSelectedBrush;
+                        bgBrush = showChunkName ? _bgSelectedChunkBrush : _bgSelectedAnchorBrush;
+                    }
+                    else if ((cellByte >= ByteAnchor && cellByte <= ByteCursor) && ByteCursor != ByteAnchor)
+                    {
+                        fgBrush = _fgSelectedBrush;
+                        bgBrush = showChunkName ? _bgSelectedChunkBrush : _bgSelectedAnchorBrush;
+                    }
+                    else if ((cellByte >= ByteCursor && cellByte <= ByteAnchor) && ByteCursor != ByteAnchor)
+                    {
+                        fgBrush = _fgSelectedBrush;
+                        bgBrush = showChunkName ? _bgSelectedChunkBrush : _bgSelectedAnchorBrush;
+                    }
+                    else if (cellByte == ByteCursor)
                     {
                         fgBrush = _fgSelectedBrush;
                         bgBrush = showChunkName ? _bgSelectedChunkBrush : _bgSelectedBrush;
@@ -646,10 +1134,10 @@ namespace CrashEdit
                     }
 
                     var cellInnerRect = new Rectangle();
-                    cellInnerRect.X = colX + (leftBorderDrawn ? _borderSize : 0);
-                    cellInnerRect.Y = rowY + _borderSize;
-                    cellInnerRect.Width = _padding + CharSize.Width * 2 + _padding + (leftBorderDrawn ? 0 : _borderSize);
-                    cellInnerRect.Height = _padding + CharSize.Height + _padding;
+                    cellInnerRect.X = colX + (leftBorderDrawn ? BorderSize : 0);
+                    cellInnerRect.Y = rowY + BorderSize;
+                    cellInnerRect.Width = TextPadding + CharSize.Width * 2 + TextPadding + (leftBorderDrawn ? 0 : BorderSize);
+                    cellInnerRect.Height = TextPadding + CharSize.Height + TextPadding;
 
                     // Draw the background.
                     e.Graphics.FillRectangle(bgBrush, cellInnerRect);
@@ -665,7 +1153,7 @@ namespace CrashEdit
                         }
                         e.Graphics.DrawString(
                             text,
-                            _font,
+                            Font,
                             fgBrush,
                             cellInnerRect,
                             strFormat);
@@ -676,11 +1164,11 @@ namespace CrashEdit
                         var text = Entry.EIDToEName(BitConv.FromInt32(data, cellByte - chunkNameByteOfs));
                         int colSpan = (col % 4) - chunkNameByteOfs + 4;
                         var oldWidth = cellInnerRect.Width;
-                        cellInnerRect.Width = oldWidth * colSpan - _borderSize;
+                        cellInnerRect.Width = oldWidth * colSpan - BorderSize;
                         cellInnerRect.X -= cellInnerRect.Width - oldWidth;
                         e.Graphics.DrawString(
                             text,
-                            _font,
+                            Font,
                             _fgChunkBrush,
                             cellInnerRect,
                             strFormat);
@@ -695,52 +1183,81 @@ namespace CrashEdit
                         _borderBrush,
                         XStart + XStep * colFirst,
                         YStart + YStep * (row + 1),
-                        XStep * (colLast - colFirst + 1) + _borderSize,
-                        _borderSize);
+                        XStep * (colLast - colFirst + 1) + BorderSize,
+                        BorderSize);
                 }
             }
 
-            // Draw a special border around the selected cell, if we have focus.
+            // Draw a special border around the anchor and the selected cell, if we have focus.
             if (Focused)
             {
+                // Anchor
+                int anchorCursorColumn = (FirstByteColumn + ByteAnchor) % ColumnCount;
+                int anchorCursorRow = (FirstByteColumn + ByteAnchor) / ColumnCount;
+                e.Graphics.FillRectangle(
+                     _anchorBorderBrush,
+                     XStart + XStep * anchorCursorColumn,
+                     YStart + YStep * anchorCursorRow,
+                     XStep + BorderSize,
+                     BorderSize);
+                e.Graphics.FillRectangle(
+                    _anchorBorderBrush,
+                    XStart + XStep * anchorCursorColumn,
+                    YStart + YStep * (anchorCursorRow + 1),
+                    XStep + BorderSize,
+                    BorderSize);
+                e.Graphics.FillRectangle(
+                    _anchorBorderBrush,
+                    XStart + XStep * anchorCursorColumn,
+                    YStart + YStep * anchorCursorRow + BorderSize,
+                    BorderSize,
+                    YStep - BorderSize);
+                e.Graphics.FillRectangle(
+                    _anchorBorderBrush,
+                    XStart + XStep * (anchorCursorColumn + 1),
+                    YStart + YStep * anchorCursorRow + BorderSize,
+                    BorderSize,
+                    YStep - BorderSize);
+
+                // Selected cell
                 e.Graphics.FillRectangle(
                     _selectedBorderBrush,
                     XStart + XStep * ByteCursorColumn,
                     YStart + YStep * ByteCursorRow,
-                    XStep + _borderSize,
-                    _borderSize);
+                    XStep + BorderSize,
+                    BorderSize);
                 e.Graphics.FillRectangle(
                     _selectedBorderBrush,
                     XStart + XStep * ByteCursorColumn,
                     YStart + YStep * (ByteCursorRow + 1),
-                    XStep + _borderSize,
-                    _borderSize);
+                    XStep + BorderSize,
+                    BorderSize);
                 e.Graphics.FillRectangle(
                     _selectedBorderBrush,
                     XStart + XStep * ByteCursorColumn,
-                    YStart + YStep * ByteCursorRow + _borderSize,
-                    _borderSize,
-                    YStep - _borderSize);
+                    YStart + YStep * ByteCursorRow + BorderSize,
+                    BorderSize,
+                    YStep - BorderSize);
                 e.Graphics.FillRectangle(
                     _selectedBorderBrush,
                     XStart + XStep * (ByteCursorColumn + 1),
-                    YStart + YStep * ByteCursorRow + _borderSize,
-                    _borderSize,
-                    YStep - _borderSize);
+                    YStart + YStep * ByteCursorRow + BorderSize,
+                    BorderSize,
+                    YStep - BorderSize);
             }
 
             // Draw the input nybble if input is in progress as well.
             if (_pendingInput != null)
             {
                 var cellInnerRect = new Rectangle();
-                cellInnerRect.X = XStart + XStep * ByteCursorColumn + _borderSize;
-                cellInnerRect.Y = YStart + YStep * ByteCursorRow + _borderSize;
-                cellInnerRect.Width = _padding + CharSize.Width * 2 + _padding;
-                cellInnerRect.Height = _padding + CharSize.Height + _padding;
+                cellInnerRect.X = XStart + XStep * ByteCursorColumn + BorderSize;
+                cellInnerRect.Y = YStart + YStep * ByteCursorRow + BorderSize;
+                cellInnerRect.Width = TextPadding + CharSize.Width * 2 + TextPadding;
+                cellInnerRect.Height = TextPadding + CharSize.Height + TextPadding;
 
                 e.Graphics.DrawString(
                     _pendingInput.Value.ToString("X") + " ",
-                    _font,
+                    Font,
                     _inputBrush,
                     cellInnerRect,
                     strFormat);
@@ -757,8 +1274,8 @@ namespace CrashEdit
             var rect = new Rectangle();
             rect.X = XStart + XStep * col + AutoScrollPosition.X;
             rect.Y = YStart + YStep * row + AutoScrollPosition.Y;
-            rect.Width = XStep + _borderSize;
-            rect.Height = YStep + _borderSize;
+            rect.Width = XStep + BorderSize;
+            rect.Height = YStep + BorderSize;
             Invalidate(rect);
             if (_modeChunkName)
             {
@@ -853,13 +1370,11 @@ namespace CrashEdit
                 return false;
 
             // If cursor is not word-aligned
-            if (ByteCursor % 4 != 0)
-                return false;
+            while (ByteCursor % 4 != 0)
+                MoveBy(-1);
 
             if (_pendingInput != null)
-            {
                 _pendingInput = null;
-            }
 
             bool ok = DataChangeHandler(ByteCursor, 4, [Entry.NullEID & 0xFF, (Entry.NullEID >> 8) & 0xFF, (Entry.NullEID >> 16) & 0xFF, (Entry.NullEID >> 24) & 0xFF]);
             if (ok)
@@ -870,6 +1385,8 @@ namespace CrashEdit
                 MoveBy(1);
             }
 
+            ResetAnchor();
+            Invalidate();
             return true;
         }
 
@@ -882,6 +1399,209 @@ namespace CrashEdit
             }
         }
 
-    }
+        public bool InputZero(int length)
+        {
+            // If edits are not allowed, fail now.
+            if (DataChangeHandler == null)
+                return false;
 
+            // If cursor is not word-aligned
+            while (ByteCursor % 4 != 0 && length > 1)
+                MoveBy(-1);
+
+            if (_pendingInput != null)
+                _pendingInput = null;
+
+            for (int i = 0; i < length; ++i)
+            {
+                InputNybble(0);
+                InputNybble(0);
+            }
+
+            ResetAnchor();
+            Invalidate();
+            return true;
+        }
+
+        public bool CopyBytes(bool cut, bool asEID)
+        {
+            if (ByteCursor == _data.Length)
+                return false;
+
+            int start = ByteCursor, end;
+            if (ByteCursor <= ByteAnchor)
+            {
+                end = ByteAnchor;
+            }
+            else
+            {
+                end = ByteCursor;
+                ByteCursor = ByteAnchor;
+            }
+
+            // If cursor is not word-aligned
+            while (ByteCursor % 4 != 0)
+                MoveBy(-1);
+
+            if (_pendingInput != null)
+                _pendingInput = null;
+
+            int col = ByteCursorColumn, row = ByteCursorRow;
+
+            StringBuilder sb = new StringBuilder();
+            for (var i = ByteCursor; i <= end; i += 4)
+            {
+                var data = Data.Span;
+                int cellByte = row * ColumnCount - FirstByteColumn + col;
+                int cellByteChunkNameOfs = cellByte % 4;
+                int offset = cellByte - cellByteChunkNameOfs;
+                string str;
+                if (asEID)
+                {
+                    int chunk = BitConv.FromInt32(data, offset);
+                    str = Entry.EIDToEName(chunk);
+                }
+                else
+                {
+                    byte[] chunk = [data[offset], data[offset + 1], data[offset + 2], data[offset + 3]];
+                    str = Convert.ToHexString(chunk);
+                }
+                sb.Append(str).Append("\n");
+                if (cut)
+                {
+                    InputZero(4);
+                }
+                col += 4;
+            }
+            if (sb.Length > 0)
+            {
+                sb.Length--; // Remove the last "\n".
+                Clipboard.SetDataObject(sb.ToString(), true, 10, 100);
+            }
+
+            if (!cut)
+            {
+                ByteCursor = start;
+            }
+            ResetAnchor();
+            Invalidate();
+            return true;
+        }
+
+        public bool PasteBytes(bool asEID)
+        {
+            if (DataChangeHandler == null)
+                return false;
+
+            while (ByteCursor % 4 != 0)
+                MoveBy(-1);
+
+            if (_pendingInput != null)
+                _pendingInput = null;
+
+            StringReader sr = new StringReader(Clipboard.GetText());
+            string line;
+            while ((line = sr.ReadLine()) != null)
+            {
+                if (asEID)
+                {
+                    if (CheckEname(line).Length > 0)
+                    {
+                        int chunk = Entry.ENameToEID(line);
+                        if (chunk == 1) chunk = 0;
+
+                        int temp = 0;
+                        for (int i = 0; i < 8; i++)
+                        {
+                            if (i % 2 == 0)
+                            {
+                                temp = chunk & 0xF;
+                                chunk >>= 4;
+                                InputNybble(chunk & 0xF);
+                            }
+                            else
+                            {
+                                InputNybble(temp);
+                                chunk >>= 4;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (IsHexString(line) && line.Length == 8)
+                    {
+                        byte[] chunk = Convert.FromHexString(line);
+                        int chunkLength = chunk.Length;
+                        for (int i = 0; i < chunkLength; i++)
+                        {
+                            InputNybble(chunk[i] >> 4);
+                            InputNybble(chunk[i] & 0xF);
+                        }
+                        if (chunkLength % 4 != 0)
+                        {
+                            for (int i = 0; i < 4 - chunkLength % 4; i++)
+                            {
+                                InputNybble(0);
+                                InputNybble(0);
+                            }
+                        }
+                    }
+                }
+            }
+            ResetAnchor();
+            Invalidate();
+            return true;
+        }
+
+        public static string CheckEname(string ename)
+        {
+            if (ename.Length != 5) return string.Empty;
+            int eid = Entry.NullEID;
+            try { eid = Entry.ENameToEID(ename); }
+            catch (ArgumentException) { return string.Empty; }
+            return ename;
+        }
+
+        public bool IsHexString(string value)
+        {
+            string hx = "0123456789ABCDEF";
+            foreach (char c in value.ToUpper())
+            {
+                if (!hx.Contains(c))
+                    return false;
+            }
+            return true;
+        }
+
+        private void CopyBytes_Click(object? sender, EventArgs e)
+        {
+            CopyBytes(false, false);
+        }
+
+        private void CutBytes_Click(object? sender, EventArgs e)
+        {
+            CopyBytes(true, false);
+        }
+
+        private void PasteBytes_Click(object? sender, EventArgs e)
+        {
+            PasteBytes(false);
+        }
+
+        private void CopyEID_Click(object? sender, EventArgs e)
+        {
+            CopyBytes(false, true);
+        }
+
+        private void CutEID_Click(object? sender, EventArgs e)
+        {
+            CopyBytes(true, true);
+        }
+
+        private void PasteEID_Click(object? sender, EventArgs e)
+        {
+            PasteBytes(true);
+        }
+    }
 }

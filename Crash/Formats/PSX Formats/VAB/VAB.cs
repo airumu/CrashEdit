@@ -1,7 +1,32 @@
+using System.Text;
+
 namespace CrashEdit.Crash
 {
     public sealed class VAB
     {
+        public static VAB Load(byte[] data)
+        {
+            VH vh = VH.Load(data);
+
+            int vb_offset = 2592 + 32 * 16 * vh.Programs.Count;
+            if ((data.Length - vb_offset) % 16 != 0)
+            {
+                ErrorManager.SignalIgnorableError("extra feature: VB size is invalid");
+            }
+            vh.VBSize = (data.Length - vb_offset) / 16;
+            var _vb = new List<SampleLine>();
+            byte[] line_data = new byte[16];
+            for (int i = 0; i < vh.VBSize; i++)
+            {
+                Array.Copy(data, vb_offset + i * 16, line_data, 0, 16);
+                _vb.Add(SampleLine.Load(line_data));
+            }
+            SampleLine[] vb = new SampleLine[_vb.Count];
+            vb = _vb.ToArray();
+
+            return Join(vh, vb);
+        }
+
         public static VAB Join(VH vh, SampleLine[] vb)
         {
             ArgumentNullException.ThrowIfNull(vh);
@@ -27,26 +52,40 @@ namespace CrashEdit.Crash
                 offset += wavelength;
                 waves[i] = new SampleSet(wavelines);
             }
-            return new VAB(vh.IsOldVersion, vh.Volume, vh.Panning, vh.Attribute1, vh.Attribute2, vh.Programs, waves);
+            return new VAB(vh.VHVersion, vh.IsOldVersion, vh.Size, vh.VBSize, vh.Volume, vh.Panning, vh.Attribute1, vh.Attribute2, vh.Programs, vh.NullPrograms, waves);
         }
 
+        private int vhversion;
         private bool isoldversion;
+        private int size;
+        private int vbsize;
         private byte volume;
         private byte panning;
         private byte attribute1;
         private byte attribute2;
         private Dictionary<int, VHProgram> programs;
+        private Dictionary<int, VHProgram> nullprograms;
         private List<SampleSet> waves;
 
-        public VAB(bool isoldversion, byte volume, byte panning, byte attribute1, byte attribute2, IDictionary<int, VHProgram> programs, IEnumerable<SampleSet> waves)
+        public VAB(int version, bool isoldversion, int size, int vbsize, byte volume, byte panning, byte attribute1, byte attribute2, IDictionary<int, VHProgram> programs, IDictionary<int, VHProgram> nullprograms, IEnumerable<SampleSet> waves)
         {
+            this.vhversion = version;
             this.isoldversion = isoldversion;
+            this.size = size;
+            this.vbsize = vbsize;
             this.volume = volume;
             this.panning = panning;
             this.attribute1 = attribute1;
             this.attribute2 = attribute2;
             this.programs = new Dictionary<int, VHProgram>(programs);
+            this.nullprograms = new Dictionary<int, VHProgram>(nullprograms);
             this.waves = new List<SampleSet>(waves);
+        }
+
+        public List<SampleSet> Waves
+        {
+            get => waves;
+            set => waves = value;
         }
 
         public void Split(out VH vh, out SampleLine[] vb)
@@ -58,7 +97,7 @@ namespace CrashEdit.Crash
                 samples.AddRange(wave.SampleLines);
                 wavelengths.Add(wave.SampleLines.Count);
             }
-            vh = new VH(isoldversion, samples.Count, volume, panning, attribute1, attribute2, programs, wavelengths);
+            vh = new VH(vhversion, isoldversion, size, vbsize, volume, panning, attribute1, attribute2, programs, nullprograms, wavelengths);
             vb = samples.ToArray();
         }
 
@@ -74,66 +113,95 @@ namespace CrashEdit.Crash
             return result.ToArray();
         }
 
+        public byte[] Save(VH vh)
+        {
+            List<byte> result = new List<byte>();
+            result.AddRange(vh.Save());
+            foreach (SampleSet sample in waves)
+            {
+                result.AddRange(sample.Save());
+            }
+            return result.ToArray();
+        }
+
         public RIFF ToDLS()
         {
+            // DLS RIFF
             RIFF dls = new RIFF("DLS ");
+
+            // colh chunk
+            int instrumentCount = programs.Count;
             byte[] colh = new byte[4];
-            BitConv.ToInt32(colh, 0, programs.Count * 2);
+            BitConv.ToInt32(colh, 0, instrumentCount);
             dls.Items.Add(new RIFFData("colh", colh));
-            RIFF lins = new RIFF("lins");
-            for (int i = 0; i < 128; i++)
-            {
-                if (programs.ContainsKey(i))
-                {
-                    lins.Items.Add(programs[i].ToDLSInstrument(i, false));
-                    lins.Items.Add(programs[i].ToDLSInstrument(i, true));
-                }
-            }
-            dls.Items.Add(lins);
+
+            // LIST wvpl chunk: Creates waveform data (Wave Pool).  
             RIFF wvpl = new RIFF("wvpl");
+            int offset = 0;
             foreach (SampleSet sampleset in waves)
             {
                 List<byte> pcm = new List<byte>();
                 double s0 = 0.0;
                 double s1 = 0.0;
-                int loopstart = 0;
-                for (int i = 0; i < sampleset.SampleLines.Count; i++)
+                foreach (SampleLine sampleline in sampleset.SampleLines)
                 {
-                    SampleLine sampleline = sampleset.SampleLines[i];
-                    pcm.AddRange(sampleline.ToPCM(ref s0, ref s1));
-                    if ((sampleline.Flags & SampleLineFlags.LoopEnd) != 0)
+                    if (sampleline.Flags == SampleLineFlags.LoopStart || sampleline.Flags == SampleLineFlags.LoopStartAlt)
                     {
+                        sampleset.LoopStart = pcm.Count;
+                    }
+
+                    pcm.AddRange(sampleline.ToPCM(ref s0, ref s1));
+
+                    if (sampleline.Flags == SampleLineFlags.StopEnvelope)
+                    {
+                        sampleset.LoopStart = 0;
+                        sampleset.LoopEnd = pcm.Count;
                         break;
                     }
-                    if ((sampleline.Flags & SampleLineFlags.LoopStart) != 0)
+                    if (sampleline.Flags == SampleLineFlags.LoopEnd)
                     {
-                        loopstart = i;
+                        sampleset.LoopEnd = pcm.Count;
+                        break;
                     }
                 }
-                /*for (int i = loopstart;i < sampleset.SampleLines.Count;i++)
-                {
-                    SampleLine sampleline = sampleset.SampleLines[i];
-                    pcm.AddRange(sampleline.ToPCM(ref s0,ref s1));
-                    if ((sampleline.Flags & SampleLineFlags.LoopEnd) != 0)
-                    {
-                        break;
-                    }
-                }*/
-                RIFF wave = WaveConv.ToWave(pcm.ToArray(), 44100);
+                RIFF wave = WaveConv.ToDLSWave(pcm.ToArray(), 44100, $"Sample {offset}");
                 wave.Name = "wave";
                 wvpl.Items.Add(wave);
+                ++offset;
             }
-            int waveoffset = 0;
-            byte[] ptbl = new byte[8 + 4 * waves.Count];
+
+            // LIST lins chunk: Generates instruments from each program.  
+            RIFF lins = new RIFF("lins");
+            for (int i = 0; i < 128; i++)
+            {
+                if (programs.ContainsKey(i))
+                {
+                    lins.Items.Add(programs[i].ToDLSCreateIns(this, i, drumkit: false));
+                }
+            }
+            dls.Items.Add(lins);
+
+            // ptbl chunk: Generates offset information for each waveform.  
+            int waveCount = waves.Count;
+            byte[] ptbl = new byte[8 + 4 * waveCount];
             BitConv.ToInt32(ptbl, 0, 8);
-            BitConv.ToInt32(ptbl, 4, waves.Count);
-            for (int i = 0; i < waves.Count; i++)
+            BitConv.ToInt32(ptbl, 4, waveCount);
+            int waveoffset = 0;
+            for (int i = 0; i < waveCount; i++)
             {
                 BitConv.ToInt32(ptbl, 8 + i * 4, waveoffset);
                 waveoffset += wvpl.Items[i].Length;
             }
             dls.Items.Add(new RIFFData("ptbl", ptbl));
             dls.Items.Add(wvpl);
+
+            // LIST INFO chunk: Adds name information to the DLS file.
+            RIFF info = new RIFF("INFO");
+            StringBuilder name = new StringBuilder("VAB Converted DLS");
+            byte[] inamData = Encoding.ASCII.GetBytes(RIFF.AlignName(name).ToString());
+            info.Items.Add(new RIFFData("INAM", inamData));
+            dls.Items.Add(info);
+
             return dls;
         }
     }

@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace CrashEdit.Crash
 {
     public sealed class VHProgram
@@ -80,11 +82,11 @@ namespace CrashEdit.Crash
         }
 
         public bool IsOldVersion { get; }
-        public byte Volume { get; }
-        public byte Priority { get; }
-        public byte Mode { get; }
-        public byte Panning { get; }
-        public short Attribute { get; }
+        public byte Volume { get; set; }
+        public byte Priority { get; set; }
+        public byte Mode { get; set; }
+        public byte Panning { get; set; }
+        public short Attribute { get; set; }
         public IList<VHTone> Tones => tones;
 
         public byte[] Save()
@@ -102,7 +104,7 @@ namespace CrashEdit.Crash
             return data;
         }
 
-        public RIFF ToDLSInstrument(int programnumber, bool drumkit)
+        public RIFF ToDLSCreateIns(VAB vab, int programnumber, bool drumkit)
         {
             RIFF ins = new RIFF("ins ");
             byte[] insh = new byte[12];
@@ -113,9 +115,15 @@ namespace CrashEdit.Crash
             RIFF lrgn = new RIFF("lrgn");
             foreach (VHTone tone in tones)
             {
-                lrgn.Items.Add(tone.ToDLSRegion());
+                // rgn2
+                lrgn.Items.Add(tone.ToDLSCreatergn2(vab, this, drumkit));
             }
             ins.Items.Add(lrgn);
+            RIFF info = new RIFF("INFO");
+            StringBuilder name = new StringBuilder($"Inst {programnumber}");
+            byte[] inamData = Encoding.ASCII.GetBytes(RIFF.AlignName(name).ToString());
+            info.Items.Add(new RIFFData("INAM", inamData));
+            ins.Items.Add(info);
             return ins;
         }
     }

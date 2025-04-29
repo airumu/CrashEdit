@@ -9,6 +9,7 @@ namespace CrashEdit
 
         public ResourceBox()
         {
+            BackColor = Color.FromArgb(31, 31, 32);
             NoResourceLabel = new Label
             {
                 Dock = DockStyle.Fill,

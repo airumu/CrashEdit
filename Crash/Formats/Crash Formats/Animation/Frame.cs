@@ -116,6 +116,7 @@ namespace CrashEdit.Crash
 
         private List<FrameCollision> collision;
         private List<FrameVertex> vertices;
+        private List<Position> positions;
         public IList<Position> MakeVertices(ModelEntry? model)
         {
             IList<Position> verts = new Position[Vertices.Count];
@@ -212,6 +213,7 @@ namespace CrashEdit.Crash
                     verts[i] *= 8;
                 }
             }
+            positions = new List<Position>(verts);
             return verts;
         }
 
@@ -230,16 +232,17 @@ namespace CrashEdit.Crash
             Temporals = temporals;
         }
 
-        public int ModelEID { get; }
-        public short XOffset { get; }
-        public short YOffset { get; }
-        public short ZOffset { get; }
-        public int HeaderSize { get; }
+        public int ModelEID { get; set; }
+        public short XOffset { get; set; }
+        public short YOffset { get; set; }
+        public short ZOffset { get; set; }
+        public int HeaderSize { get; set; }
         public IList<FrameCollision> Collision => collision;
         public IList<FrameVertex> Vertices => vertices;
-        public int SpecialVertexCount { get; }
-        public bool[] Temporals { get; }
-        public short Unknown { get; }
+        public IList<Position> Positions => positions;
+        public int SpecialVertexCount { get; set; }
+        public bool[] Temporals { get; set; }
+        public short Unknown { get; set; }
 
         public bool IsNew { get; }
 

@@ -1,4 +1,5 @@
 using CrashEdit.Crash;
+using CrashEdit.Exporters;
 
 namespace CrashEdit.CE
 {
@@ -9,10 +10,11 @@ namespace CrashEdit.CE
         {
             SceneryEntry = sceneryentry;
             AddMenuSeparator();
-            AddMenu("Export as Wavefront OBJ", Menu_Export_OBJ);
-            AddMenu("Export as Stanford PLY", Menu_Export_PLY);
+            AddMenu(CrashUI.Properties.Resources.AnimationEntryController_AcExportAsOBJ, Menu_Export_OBJ);
+            //AddMenu("Export as Stanford PLY", Menu_Export_PLY);
             //AddMenu("Export as COLLADA",Menu_Export_COLLADA);
-            AddMenu("Fix coords imported from Crash 3", Menu_Fix_WGEOv3);
+            AddMenuSeparator();
+            AddMenu(CrashUI.Properties.Resources.SceneryEntryController_AcFixWGEOv3, "Calculator", Menu_Fix_WGEOv3);
         }
 
         public override bool EditorAvailable => true;
@@ -26,21 +28,33 @@ namespace CrashEdit.CE
 
         private void Menu_Export_OBJ()
         {
-            if (MessageBox.Show("Exporting to Wavefront OBJ (.obj) is experimental.\nTexture and color information will not be exported.\n\nContinue anyway?", "Export as OBJ", MessageBoxButtons.YesNo) != DialogResult.Yes)
-            {
+            if (!FileUtil.SelectSaveFile(out string filename, FileFilters.OBJ, FileFilters.Any))
                 return;
-            }
-            FileUtil.SaveFile(SceneryEntry.ToOBJ(), FileFilters.OBJ, FileFilters.Any);
+
+            ToOBJ(Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename), GetNSF(), SceneryEntry);
         }
 
-        private void Menu_Export_PLY()
+        public static void ToOBJ(string path, string modelname, NSF nsf, SceneryEntry scenery)
         {
-            if (MessageBox.Show("Exporting to Stanford PLY (.ply) is experimental.\nTexture information will not be exported.\n\nContinue anyway?", "Export as PLY", MessageBoxButtons.YesNo) != DialogResult.Yes)
+            var exporter = new OBJExporter();
+
+            // detect how many textures are used and their eids to prepare the image
+            Dictionary<int, int> textureEIDs = new();
+            Dictionary<string, TexInfoUnpacked> objTranslate = new Dictionary<string, TexInfoUnpacked>();
+
+            exporter.AddScenery(nsf, scenery, ref textureEIDs, ref objTranslate);
+
+            exporter.Export(path, modelname);
+        }
+
+        /*private void Menu_Export_PLY()
+        {
+            if (DarkMessageBox.ShowWarning(Resources.Scenery_ExportPLY, Resources.Scenery_ExportPLY_Title, DarkDialogButton.YesNo) != DialogResult.Yes)
             {
                 return;
             }
             FileUtil.SaveFile(SceneryEntry.ToPLY(), FileFilters.PLY, FileFilters.Any);
-        }
+        }*/
 
         /*private void Menu_Export_COLLADA()
         {

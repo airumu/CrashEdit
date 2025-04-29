@@ -8,7 +8,7 @@ namespace CrashEdit.CE
         public OldEntityController(OldEntity entity, SubcontrollerGroup parentGroup) : base(parentGroup, entity)
         {
             OldEntity = entity;
-            AddMenu("Duplicate Entity", Menu_Duplicate);
+            AddMenu("Duplicate Entity", "Copy", Menu_Duplicate);
         }
 
         public override bool EditorAvailable => true;

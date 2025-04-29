@@ -2,7 +2,7 @@
 
 namespace CrashEdit.Crash
 {
-    public sealed class TextGroup(List<string> frames, int eid, int font) : GOOLFrameGroup<string>(frames, eid)
+    public sealed class TextGroup : GOOLFrameGroup<string>
     {
         public override short Type() => 4;
 
@@ -12,8 +12,9 @@ namespace CrashEdit.Crash
             {
                 ErrorManager.SignalError("Text frame group version is wrong");
             }
+            int idx = index;
             index += 2;
-            
+
             short framecount = BitConv.FromInt16(data, index);
             index += 2;
 
@@ -33,10 +34,19 @@ namespace CrashEdit.Crash
 
             Aligner.Align(ref index, 4);
 
-            return new TextGroup(frames, eid, font);
+            return new TextGroup(frames, eid, font, idx);
         }
 
-        public int Font { get; set; } = font;
+        public TextGroup(List<string> frames, int eid, int font, int index) : base(frames, eid)
+        {
+            Frames = frames;
+            Font = font;
+            Index = index;
+        }
+
+        public List<string> Frames { get; }
+        public int Font { get; set; }
+        public int Index { get; set; }
 
         public override byte[] Save()
         {

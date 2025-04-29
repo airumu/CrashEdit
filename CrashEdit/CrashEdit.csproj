@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net9.0-windows7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <StartupObject>CrashEdit.CE.Program</StartupObject>
     <PackageIcon></PackageIcon>
-    <ApplicationIcon>Resources\Icons\cbhacks-logo-new.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Icons\cbhacks-logo-new-alt.ico</ApplicationIcon>
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
     <AssemblyVersion>0.4.0.1</AssemblyVersion>
     <FileVersion>0.4.0.1</FileVersion>
@@ -21,10 +21,16 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <Optimize>False</Optimize>
+    <DebugType>portable</DebugType>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <Optimize>True</Optimize>
+    <Optimize>False</Optimize>
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <NoWarn>$(NoWarn);WFO5001</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -62,7 +68,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AltUI" Version="1.0.4" />
+    <PackageReference Include="Cyotek.Windows.Forms.ColorPicker" Version="2.0.0-beta.6" />
     <PackageReference Include="DiscUtils.Iso9660" Version="0.16.13" />
+    <PackageReference Include="MeltySynth" Version="2.4.11" />
+    <PackageReference Include="MetroSetUI" Version="1.0.11" />
+    <PackageReference Include="NAudio" Version="2.2.1" />
     <PackageReference Include="OpenTK.WinForms" Version="4.0.0-pre.7" />
     <PackageReference Include="SpaceWizards.SharpFont" Version="1.0.2" />
   </ItemGroup>
@@ -101,7 +112,7 @@
 
   <ItemGroup>
     <None Update="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>

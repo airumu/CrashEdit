@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace CrashEdit.Crash
 {
     public sealed class RIFF : RIFFItem
@@ -58,6 +60,15 @@ namespace CrashEdit.Crash
                 data.AddRange(itemdata);
             }
             return data.ToArray();
+        }
+
+        public static StringBuilder AlignName(StringBuilder name)
+        {
+            name.Append('\0');
+            // Add another null byte if the length is odd.
+            if (name.Length % 2 != 0)
+                name.Append('\0');
+            return name;
         }
     }
 }

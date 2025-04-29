@@ -8,7 +8,7 @@ namespace CrashEdit
 
         public override string Text => "Find First";
 
-        public override string ImageKey => "RecordFirst";
+        public override string ImageKey => "First";
 
         public override bool Ready =>
             WsHost?.SearchPredicate != null;
@@ -30,7 +30,7 @@ namespace CrashEdit
                 if (!w.MoveToNextDFS())
                 {
                     // Nothing in the entire tree matches.
-                    Host.ShowError("No results found.");
+                    Host.ShowInformation("No results found.", "Find");
                     return false;
                 }
             }

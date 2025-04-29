@@ -1,3 +1,5 @@
+using CrashEdit.CE.Properties;
+
 namespace CrashEdit.Crash
 {
     internal static class GOOLEntryLoader
@@ -51,6 +53,7 @@ namespace CrashEdit.Crash
                     }
                     else
                     {
+                        Settings.Default.Reload();
                         int i = 0;
                         bool warned = false;
                         while (i + 2 < items[5].Length)
@@ -63,7 +66,28 @@ namespace CrashEdit.Crash
                                     if (goolver == GOOLVersion.Version1)
                                         fgroups.Add(VertexGroup.Load(items[5], ref i));
                                     else if (goolver == GOOLVersion.Version2)
+                                    {
+                                        // check if it's ported from Crash 3 to Crash 2
+                                        if (Settings.Default.PatchGOOLC3toC2)
+                                        {
+                                            int offset10 = BitConv.FromInt16(items[5], i + 10);
+                                            if (i + 12 < items[5].Length)
+                                            {
+                                                int offset12 = BitConv.FromInt16(items[5], i + 12);
+                                                if (offset12 == 0 || offset12 > 5)
+                                                {
+                                                    fgroups.Add(VertexGroup3to2.Load(items[5], ref i));
+                                                    break;
+                                                }
+                                            }
+                                            if (offset10 != 0)
+                                            {
+                                                fgroups.Add(VertexGroup3to2.Load(items[5], ref i));
+                                                break;
+                                            }
+                                        }
                                         fgroups.Add(VertexGroup2.Load(items[5], ref i));
+                                    }
                                     else if (goolver == GOOLVersion.Version3)
                                         fgroups.Add(VertexGroup3.Load(items[5], ref i));
                                     break;
@@ -95,7 +119,7 @@ namespace CrashEdit.Crash
                                 i += 4;
 
                                 if (!warned)
-                                    ErrorManager.SignalIgnorableError(string.Format("Unknown frame groups in {0}", Entry.EIDToEName(eid)));
+                                    ErrorManager.SignalIgnorableError(string.Format("Unknown frame groups at 0x{1:X} in {0}", Entry.EIDToEName(eid), begin));
                             }
                         }
                     }

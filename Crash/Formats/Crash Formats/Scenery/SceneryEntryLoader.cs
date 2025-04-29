@@ -5,7 +5,7 @@ namespace CrashEdit.Crash
     {
         public override Entry Load(byte[][] items, int eid)
         {
-            return SceneryEntryLoaderInternal.LoadScenery(items, eid, false);
+            return SceneryEntryLoaderInternal.LoadScenery(new Scenery(), items, eid, false);
         }
     }
 
@@ -14,13 +14,13 @@ namespace CrashEdit.Crash
     {
         public override Entry Load(byte[][] items, int eid)
         {
-            return SceneryEntryLoaderInternal.LoadScenery(items, eid, true);
+            return SceneryEntryLoaderInternal.LoadScenery(new Scenery(), items, eid, true);
         }
     }
 
     internal static class SceneryEntryLoaderInternal
     {
-        internal static Entry LoadScenery(byte[][] items, int eid, bool is_c3)
+        internal static Entry LoadScenery(Scenery scenery, byte[][] items, int eid, bool is_c3)
         {
             ArgumentNullException.ThrowIfNull(items);
             if (items.Length != 7)
@@ -109,7 +109,7 @@ namespace CrashEdit.Crash
                 Array.Copy(items[6], i * 4, animatedtexturedata, 0, animatedtexturedata.Length);
                 animatedtextures[i] = ModelExtendedTexture.Load(animatedtexturedata);
             }
-            return new SceneryEntry(items[0], vertices, triangles, quads, textures, colors, animatedtextures, is_c3, eid);
+            return new SceneryEntry(scenery, items[0], vertices, triangles, quads, textures, colors, animatedtextures, is_c3, eid);
         }
     }
 }

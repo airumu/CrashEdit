@@ -1,6 +1,6 @@
 ﻿namespace CrashEdit.Crash
 {
-    public struct ModelTransformedTriangle
+    public class ModelTransformedTriangle
     {
         public ModelTransformedTriangle(int v1, int v2, int v3, int c1, int c2, int c3, int tex, int type, int subtype, bool animated)
         {
@@ -12,11 +12,11 @@
             Animated = animated;
         }
 
-        public int[] Vertex { get; }
-        public int[] Color { get; }
-        public int Texture { get; }
-        public int Type { get; }
-        public int Subtype { get; }
-        public bool Animated { get; }
+        public int[] Vertex { get; set; }
+        public int[] Color { get; set; }
+        public int Texture { get; set; }
+        public int Type { get; set; }
+        public int Subtype { get; set; }
+        public bool Animated { get; set; }
     }
 }

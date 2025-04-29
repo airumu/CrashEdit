@@ -8,8 +8,8 @@ namespace CrashEdit.CE
         public ProtoEntityController(ProtoEntity entity, SubcontrollerGroup parentGroup) : base(parentGroup, entity)
         {
             Entity = entity;
-            //AddMenu("Duplicate Entity",Menu_Duplicate);
-            //AddMenu("Delete Entity",Menu_Delete);
+            //AddMenu("Duplicate Entity", "Copy", Menu_Duplicate);
+            //AddMenu("Delete Entity", Menu_Delete);
         }
 
         public override bool EditorAvailable => true;

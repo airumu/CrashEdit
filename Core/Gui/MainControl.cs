@@ -1,3 +1,5 @@
+using System.Drawing;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace CrashEdit
@@ -13,10 +15,15 @@ namespace CrashEdit
 
             Ui = ui;
             RootController = rootController;
+            BackColor = Color.FromArgb(31, 31, 32);
+
+            FilterText = "Default";
 
             Split = new SplitContainer
             {
-                Dock = DockStyle.Fill
+                Dock = DockStyle.Fill,
+                SplitterDistance = ClientSize.Width / 100 * 40,
+                BackColor = Color.FromArgb(31, 31, 32)
             };
             Controls.Add(Split);
 
@@ -24,7 +31,7 @@ namespace CrashEdit
             {
                 Dock = DockStyle.Fill,
                 RootController = RootController,
-                HideSelection = false
+                HideSelection = false,
             };
             ResourceTree.SelectedControllerChanged += (sender, e) =>
             {
@@ -33,12 +40,14 @@ namespace CrashEdit
                 OnActiveControllerChanged(EventArgs.Empty);
             };
             Split.Panel1.Controls.Add(ResourceTree);
+            Split.Panel1.BackColor = Color.FromArgb(31, 31, 32);
 
             ResourceBox = new ResourceBox
             {
                 Dock = DockStyle.Fill
             };
             Split.Panel2.Controls.Add(ResourceBox);
+            Split.Panel2.BackColor = Color.FromArgb(31, 31, 32);
         }
 
         public IUserInterface Ui { get; }
@@ -62,7 +71,17 @@ namespace CrashEdit
 
         public event EventHandler? ActiveControllerChanged;
 
-        private string _searchQuery = "";
+      
+
+        public string? Filter { get; set; }
+
+        public bool IgnoreFilter { get; set; }
+
+        public bool UseRegex { get; set; }
+
+        public bool IsCaseSensitive { get; set; }
+
+        private string _searchQuery = string.Empty;
 
         public string SearchQuery
         {
@@ -74,18 +93,71 @@ namespace CrashEdit
 
                 _searchQuery = value;
 
-                var queryLowerCase = value.ToLower();
-                if (value == "")
+                string query = value;
+
+                // Apply filter.
+                if (!string.IsNullOrEmpty(Filter) && !IgnoreFilter)
+                {
+                    if (Filter == "Entity")
+                    {
+                        query = $@"{Regex.Escape(value)}.*\[ID|.*\[ID {Regex.Escape(value)}";
+                    }
+                    else if (Filter == "GOOL")
+                    {
+                        query = $@"GOOLv?\d* \({Regex.Escape(value)}";
+                    }
+                    else if (Filter == "Texture")
+                    {
+                        query = $@"Texture Chunk \d* \({Regex.Escape(value)}";
+                    }
+                    else
+                    {
+                        query = $@"{Filter} \({Regex.Escape(value)}";
+                    }
+                    UseRegex = true;
+                }
+                else
+                {
+                    UseRegex = false;
+                }
+
+                if (string.IsNullOrEmpty(query))
                 {
                     SearchPredicate = null;
                 }
                 else
                 {
-                    SearchPredicate = (x =>
-                        x.Text.ToLower().Contains(queryLowerCase));
+                    if (UseRegex)
+                    {
+                        if (IsCaseSensitive)
+                        {
+                            SearchPredicate = (x =>
+                                Regex.IsMatch(x.Text, query));
+                        }
+                        else
+                        {
+                            SearchPredicate = (x =>
+                                Regex.IsMatch(x.Text, query, RegexOptions.IgnoreCase));
+                        }
+                    }
+                    else
+                    {
+                        if (IsCaseSensitive)
+                        {
+                            SearchPredicate = (x =>
+                                x.Text.Contains(query));
+                        }
+                        else
+                        {
+                            SearchPredicate = (x =>
+                                x.Text.Contains(query, StringComparison.InvariantCultureIgnoreCase));
+                        }
+                    }
                 }
             }
         }
+
+        public string FilterText { get; set; }
 
         public Predicate<Controller>? SearchPredicate { get; private set; }
 

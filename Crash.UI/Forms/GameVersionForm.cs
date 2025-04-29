@@ -1,9 +1,10 @@
+using AltUI.Forms;
 using CrashEdit.Crash;
 using System.Windows.Forms;
 
 namespace CrashEdit.CrashUI
 {
-    public partial class GameVersionForm : Form
+    public partial class GameVersionForm : DarkForm
     {
         public GameVersionForm()
         {
@@ -16,7 +17,7 @@ namespace CrashEdit.CrashUI
             cmdCancel.Text = Properties.Resources.Cancel;
         }
 
-        public GameVersion SelectedVersion { get; private set; }
+        public GameVersion SelectedVersion { get; set; }
 
         private void cmdCrash1_Click(object sender, EventArgs e)
         {

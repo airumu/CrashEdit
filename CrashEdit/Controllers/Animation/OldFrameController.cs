@@ -1,4 +1,5 @@
 using CrashEdit.Crash;
+using CrashEdit.Exporters;
 
 namespace CrashEdit.CE
 {
@@ -8,55 +9,57 @@ namespace CrashEdit.CE
         public OldFrameController(OldFrame oldframe, SubcontrollerGroup parentGroup) : base(parentGroup, oldframe)
         {
             OldFrame = oldframe;
-            AddMenu("Export as OBJ", Menu_Export_OBJ);
+            AddMenuSeparator();
+            AddMenu(CrashUI.Properties.Resources.AnimationEntryController_AcExportAsOBJ, Menu_Export_OBJ);
         }
 
         public override bool EditorAvailable => true;
 
         public override Control CreateEditor()
         {
-            TabControl tbcTabs = new TabControl() { Dock = DockStyle.Fill };
-            OldModelEntry modelentry = GetEntry<OldModelEntry>(OldFrame.ModelEID);
-
-            var framebox = new OldFrameBox(this)
-            {
-                Dock = DockStyle.Fill
-            };
-            var entry = OldAnimationEntryController.OldAnimationEntry;
-            var viewerbox = new OldAnimationEntryViewer(GetNSF(), entry.EID, entry.Frames.IndexOf(OldFrame))
-            {
-                Dock = DockStyle.Fill
-            };
-            framebox.Dock = DockStyle.Fill;
-
-            TabPage edittab = new TabPage("Editor");
-            edittab.Controls.Add(framebox);
-            TabPage viewertab = new TabPage("Viewer");
-            viewertab.Controls.Add(viewerbox);
-
-            tbcTabs.TabPages.Add(viewertab);
-            tbcTabs.TabPages.Add(edittab);
-            tbcTabs.SelectedTab = viewertab;
-
-            return tbcTabs;
+            return new OldFrameBox(this);
         }
 
         public OldAnimationEntryController OldAnimationEntryController => Modern.Parent.Legacy as OldAnimationEntryController;
         public ColoredAnimationEntryController ColoredAnimationEntryController => Modern.Parent.Legacy as ColoredAnimationEntryController;
         public OldFrame OldFrame { get; }
+        public bool IsColored => Modern.Parent.Text.Contains("Colored Animation");
 
         private void Menu_Export_OBJ()
         {
-            OldModelEntry modelentry = GetEntry<OldModelEntry>(OldFrame.ModelEID);
-            if (modelentry == null)
-            {
-                throw new GUIException("The linked model entry could not be found.");
-            }
-            if (MessageBox.Show("Texture and color information will not be exported.\n\nContinue anyway?", "Export as OBJ", MessageBoxButtons.YesNo) != DialogResult.Yes)
-            {
+            if (!FileUtil.SelectSaveFile(out string filename, FileFilters.OBJ, FileFilters.Any))
                 return;
+
+            if (IsColored)
+            {
+                ToOBJ_Colored(Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename), GetNSF(), OldFrame);
             }
-            FileUtil.SaveFile(OldFrame.ToOBJ(modelentry), FileFilters.OBJ, FileFilters.Any);
+            else
+            {
+                ToOBJ_Old(Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename), GetNSF(), OldFrame);
+            }
+        }
+
+        public static void ToOBJ_Old(string path, string modelname, NSF nsf, OldFrame oldFrame)
+        {
+            Dictionary<int, int> textureEIDs = new Dictionary<int, int>();
+            Dictionary<string, TexInfoUnpacked> objTranslate = new Dictionary<string, TexInfoUnpacked>();
+
+            var exporter = new OBJExporter();
+
+            exporter.AddFrame_Old(nsf, oldFrame, ref textureEIDs, ref objTranslate);
+            exporter.Export(path, modelname);
+        }
+
+        public static void ToOBJ_Colored(string path, string modelname, NSF nsf, OldFrame oldFrame)
+        {
+            Dictionary<int, int> textureEIDs = new Dictionary<int, int>();
+            Dictionary<string, TexInfoUnpacked> objTranslate = new Dictionary<string, TexInfoUnpacked>();
+
+            var exporter = new OBJExporter();
+
+            exporter.AddFrame_Colored(nsf, oldFrame, ref textureEIDs, ref objTranslate);
+            exporter.Export(path, modelname);
         }
     }
 }

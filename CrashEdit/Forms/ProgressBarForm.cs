@@ -1,6 +1,9 @@
-﻿namespace CrashEdit.CE.Forms
+﻿using AltUI.Forms;
+using MetroSet_UI.Controls;
+
+namespace CrashEdit.CE.Forms
 {
-    public partial class ProgressBarForm : Form
+    public partial class ProgressBarForm : DarkForm
     {
         public ProgressBarForm()
         {
@@ -23,6 +26,6 @@
         }
 
         public bool IsShown { get; set; }
-        public ProgressBar ProgressBar => uxProgress;
+        public MetroSetProgressBar ProgressBar => uxProgress;
     }
 }

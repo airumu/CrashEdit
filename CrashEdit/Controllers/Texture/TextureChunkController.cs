@@ -1,3 +1,4 @@
+using System.Media;
 using CrashEdit.Crash;
 
 namespace CrashEdit.CE
@@ -8,9 +9,9 @@ namespace CrashEdit.CE
         public TextureChunkController(TextureChunk texturechunk, SubcontrollerGroup parentGroup) : base(texturechunk, parentGroup)
         {
             TextureChunk = texturechunk;
-            AddMenu(CrashUI.Properties.Resources.TextureChunkController_AcRecalcChecksum, Menu_Recalculate_Checksum);
-            AddMenu(CrashUI.Properties.Resources.TextureChunkController_AcRename, Menu_Rename_Entry);
-            AddMenu(CrashUI.Properties.Resources.TextureChunkController_AcOpenViewer, Menu_Open_Viewer);
+            AddMenu(CrashUI.Properties.Resources.TextureChunkController_AcRename, "Modify", Menu_Rename_Entry);
+            AddMenu(CrashUI.Properties.Resources.TextureChunkController_AcRecalcChecksum, "Calculator", Menu_Recalculate_Checksum);
+            AddMenu(CrashUI.Properties.Resources.TextureChunkController_AcOpenViewer, "Painting", Menu_Open_Viewer);
         }
 
         public override bool EditorAvailable => Type.GetType("Mono.Runtime") == null;
@@ -27,15 +28,18 @@ namespace CrashEdit.CE
 
         private void Menu_Recalculate_Checksum()
         {
+            //int correct_checksum = Chunk.CalculateChecksum(TextureChunk.Data);
+            //BitConv.ToInt32(TextureChunk.Data, 12, correct_checksum);
+            SystemSounds.Asterisk.Play();
             int current_checksum = BitConv.FromInt32(TextureChunk.Data, 12);
             int correct_checksum = Chunk.CalculateChecksum(TextureChunk.Data);
             if (current_checksum == correct_checksum)
             {
-                MessageBox.Show("Checksum was already correct.");
+                Console.WriteLine("Checksum was already correct.");
                 return;
             }
             BitConv.ToInt32(TextureChunk.Data, 12, correct_checksum);
-            MessageBox.Show("Checksum was incorrect and has been corrected.");
+            Console.WriteLine("Checksum was incorrect and has been corrected.");
         }
 
         private void Menu_Rename_Entry()
@@ -47,6 +51,7 @@ namespace CrashEdit.CE
                 if (newentrywindow.ShowDialog() == DialogResult.OK)
                 {
                     TextureChunk.EID = newentrywindow.EID;
+                    BitConv.ToInt32(TextureChunk.Data, 12, Chunk.CalculateChecksum(TextureChunk.Data));
                 }
             }
         }

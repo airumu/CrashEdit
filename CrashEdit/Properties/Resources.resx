@@ -214,7 +214,7 @@
     <value>The file "{0}" has not been saved since it was last modified. Continue anyway?</value>
   </data>
   <data name="Config_lblLang" xml:space="preserve">
-    <value>Language (requires restart)</value>
+    <value>Language</value>
   </data>
   <data name="EntityBox_ChkBonusBoxCount" xml:space="preserve">
     <value>Enabled (Bonus)</value>
@@ -253,11 +253,10 @@
     <value>DDA Section</value>
   </data>
   <data name="EntityBox_FraDDASettings" xml:space="preserve">
-    <value>DDA Death/1-Up Count</value>
+    <value>DDA Death Count</value>
   </data>
   <data name="EntityBox_FraID" xml:space="preserve">
-    <value>ID &amp;&amp; Look-up ID</value>
-    <comment>Two &amp; are used because &amp; is used to select the mnemonic character in titles.</comment>
+    <value>ID &amp; Look-up ID</value>
   </data>
   <data name="EntityBox_FraName" xml:space="preserve">
     <value>Name</value>
@@ -281,8 +280,7 @@
     <value>Time Trial Reward</value>
   </data>
   <data name="EntityBox_FraType" xml:space="preserve">
-    <value>Type &amp;&amp; Subtype</value>
-    <comment>Two &amp; are used because &amp; is used to select the mnemonic character in titles.</comment>
+    <value>Type &amp; Subtype</value>
   </data>
   <data name="EntityBox_FraVictims" xml:space="preserve">
     <value>Victims</value>
@@ -453,7 +451,7 @@
     <value>Cancel</value>
   </data>
   <data name="InterpolatorForm" xml:space="preserve">
-    <value>Interpolate Path</value>
+    <value>Edit Path</value>
   </data>
   <data name="InterpolatorForm_cmdCancel" xml:space="preserve">
     <value>Cancel</value>
@@ -510,16 +508,7 @@
     <value>Convert VH+VB to DLS</value>
   </data>
   <data name="OldMainForm_tbxMakeBIN" xml:space="preserve">
-    <value>Make BIN (no region)</value>
-  </data>
-  <data name="OldMainForm_tbxMakeBINEUR" xml:space="preserve">
-    <value>Make BIN (PAL)</value>
-  </data>
-  <data name="OldMainForm_tbxMakeBINJAP" xml:space="preserve">
-    <value>Make BIN (NTSC-J)</value>
-  </data>
-  <data name="OldMainForm_tbxMakeBINUSA" xml:space="preserve">
-    <value>Make BIN (NTSC-U/C)</value>
+    <value>Make BIN settings</value>
   </data>
   <data name="TextureViewer_groupBox1" xml:space="preserve">
     <value>Color Mode</value>
@@ -681,7 +670,7 @@ as Meters: {3:F3}m</value>
     <value>W/A/S/D to move, Q/E to pan up/down</value>
   </data>
   <data name="ViewerControls_MoveAligned" xml:space="preserve">
-    <value>Hold Shift for aligned movement</value>
+    <value>Toggle aligned movement ({0})</value>
   </data>
   <data name="ViewerControls_OpenOctreeWindow" xml:space="preserve">
     <value>Open octree node window</value>
@@ -755,9 +744,6 @@ as Meters: {3:F3}m</value>
   <data name="ViewerControls_ToggleSlowAnim" xml:space="preserve">
     <value>Toggle half-speed animations ({0})</value>
   </data>
-  <data name="Config_chkDisableVisual" xml:space="preserve">
-    <value>Disable 3D entity display</value>
-  </data>
   <data name="Config_chkViewCamera" xml:space="preserve">
     <value>Show camera entities</value>
   </data>
@@ -778,5 +764,224 @@ as Meters: {3:F3}m</value>
   </data>
   <data name="Config_chkShowEntityParams" xml:space="preserve">
     <value>Show entity parameters</value>
+  </data>
+  <data name="Restart" xml:space="preserve">
+    <value>This requires a restart. Do you want to restart now?</value>
+  </data>
+  <data name="Restart_ConfirmationPrompt" xml:space="preserve">
+    <value>Restart Confirmation Prompt</value>
+  </data>
+  <data name="Config_chkPatchGOOLC3toC2" xml:space="preserve">
+    <value>(Crash 2) Patch GOOL frame groups imported from Crash 3</value>
+    <comment>CE-tweaked</comment>
+  </data>
+  <data name="Config_chkEnableC2TT" xml:space="preserve">
+    <value>Enable Crash 2 time trial editor</value>
+    <comment>CE-tweaked</comment>
+  </data>
+  <data name="Config_chkLiteralCollisionTypes" xml:space="preserve">
+    <value>Show collision node types as literal values</value>
+    <comment>CE-tweaked</comment>
+  </data>
+  <data name="Scenery_ExportOBJ" xml:space="preserve">
+    <value>Exporting to Wavefront OBJ (.obj) is experimental. Texture and color information will not be exported. Continue anyway?</value>
+  </data>
+  <data name="Scenery_ExportPLY" xml:space="preserve">
+    <value>Exporting to Stanford PLY (.ply) is experimental. Texture information will not be exported. Continue anyway?</value>
+  </data>
+  <data name="Scenery_ExportOBJ_Title" xml:space="preserve">
+    <value>Export as OBJ</value>
+  </data>
+  <data name="Scenery_ExportPLY_Title" xml:space="preserve">
+    <value>Export as PLY</value>
+  </data>
+  <data name="Scenery_ExportCOLLADA" xml:space="preserve">
+    <value>Exporting to COLLADA is experimental. Texture information will not be exported. Continue anyway?</value>
+  </data>
+  <data name="Scenery_ExportCOLLADA_Title" xml:space="preserve">
+    <value>Export as COLLADA</value>
+  </data>
+  <data name="EntityBox_tipLists" xml:space="preserve">
+    <value>[Ctrl+C] Copy value of selected item
+[Ctrl+V] Paste copied value to selected item
+[Double-click / F2 / Enter] Rename selected item
+[Ctrl+Shift+C] Copy entire list
+[Ctrl+Shift+X] Cut entire list
+[Ctrl+Shift+V] Paste copied list</value>
+  </data>
+  <data name="EntityBox_fraVerifyDrawList" xml:space="preserve">
+    <value>Verify Draw Lists</value>
+  </data>
+  <data name="ViewerControls_FastMove" xml:space="preserve">
+    <value>Hold right-click to increase movement speed</value>
+  </data>
+  <data name="Config_chkEnableVisual" xml:space="preserve">
+    <value>Enable 3D entity display</value>
+  </data>
+  <data name="Toolbar_Play" xml:space="preserve">
+    <value>Play</value>
+  </data>
+  <data name="Toolbar_BIN" xml:space="preserve">
+    <value>BIN</value>
+  </data>
+  <data name="Playtest_Error5" xml:space="preserve">
+    <value>Could not find pcsx-hdbg exe. Please place this in the same directory as CrashEdit.</value>
+  </data>
+  <data name="Config_chkOutputCopyTextureResult" xml:space="preserve">
+    <value>Output copying texture result to the console</value>
+    <comment>CE-tweaked</comment>
+  </data>
+  <data name="TextureViewer_tipViewer" xml:space="preserve">
+    <value>[Right-click] Save selected texture region to file
+[Left-click] Move texture region
+[Mouse drag] Resize texture region
+[Ctrl+C] Copy texture to buffer
+[Ctrl+X] Cut texture to buffer
+[Ctrl+V] Paste texture from buffer</value>
+  </data>
+  <data name="Config_chkOutputModelTextureInfo" xml:space="preserve">
+    <value>Output texture information to the console</value>
+    <comment>CE-tweaked</comment>
+  </data>
+  <data name="TextureChunkBox_TipText" xml:space="preserve">
+    <value>[Click] Open viewer
+[Ctrl+R] Reload</value>
+  </data>
+  <data name="Config_chkApplyMica" xml:space="preserve">
+    <value>Apply Mica</value>
+    <comment>CE-tweaked</comment>
+  </data>
+  <data name="Config_chkOutputCLUTInfo" xml:space="preserve">
+    <value>Output CLUT information to the console</value>
+    <comment>CE-tweaked</comment>
+  </data>
+  <data name="ViewerControls_ToggleEntityVisual" xml:space="preserve">
+    <value>Toggle 3D entity display ({0})</value>
+  </data>
+  <data name="Delete_ConfirmationPrompt" xml:space="preserve">
+    <value>Delete Confirmation Prompt</value>
+  </data>
+  <data name="Config_chkEnableCustomCrates" xml:space="preserve">
+    <value>Enable custom crates</value>
+    <comment>CE-tweaked</comment>
+  </data>
+  <data name="Config_chkLegacyPatchNSD" xml:space="preserve">
+    <value>Use legacy NSD patching from CrashEdit v0.2.49.0</value>
+    <comment>CE-tweaked</comment>
+  </data>
+  <data name="EntityPropertyBox_tipSavedProperties" xml:space="preserve">
+    <value>[Ctrl+V] Copy fields in selected item
+[Double-click / F2] Rename selected item
+[Delete] Remove selected items
+--------------------------------
+[Ctrl+R] Reload list</value>
+  </data>
+  <data name="EntityPropertyBox_tipProperties" xml:space="preserve">
+    <value>[Ctrl+C] Save selected fields
+[Delete] Remove selected fields</value>
+  </data>
+  <data name="Config_chkIgnoreDuplicatedEntryError" xml:space="preserve">
+    <value>Ignore errors when processing duplicated entries</value>
+    <comment>CE-tweaked</comment>
+  </data>
+  <data name="Title_Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Title_InputError" xml:space="preserve">
+    <value>Input Error</value>
+  </data>
+  <data name="Title_ValidationError" xml:space="preserve">
+    <value>Validation Error</value>
+  </data>
+  <data name="Title_TextureReplacement" xml:space="preserve">
+    <value>Texture Replacement</value>
+  </data>
+  <data name="OldMainForm_tbxGenerateSpawnPoint" xml:space="preserve">
+    <value>Generate Spawn Point</value>
+  </data>
+  <data name="GenerateSpawnPoint_Title" xml:space="preserve">
+    <value>Generate Spawn Point</value>
+  </data>
+  <data name="Title_Success" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="GOOLBox_Goto" xml:space="preserve">
+    <value>Goto</value>
+  </data>
+  <data name="Toolbar_Undock" xml:space="preserve">
+    <value>Undock</value>
+  </data>
+  <data name="Toolbar_PAL" xml:space="preserve">
+    <value>PAL</value>
+  </data>
+  <data name="Toolbar_Patch" xml:space="preserve">
+    <value>Patch</value>
+  </data>
+  <data name="Config_chkSplitViewerPanels" xml:space="preserve">
+    <value>Split animation viewer panels</value>
+    <comment>CE-tweaked</comment>
+  </data>
+  <data name="Config_chkEnableLegacyEntityBox" xml:space="preserve">
+    <value>Enable legacy entity editor</value>
+    <comment>CE-tweaked</comment>
+  </data>
+  <data name="Reset_onfirmationPrompt" xml:space="preserve">
+    <value>Reset Confirmation Prompt</value>
+  </data>
+  <data name="PatchNSD_Error3" xml:space="preserve">
+    <value>NSD file '{0}' does not exist!</value>
+  </data>
+  <data name="ShowGOOLMap_Title" xml:space="preserve">
+    <value>Show GOOL Map</value>
+  </data>
+  <data name="OldMainForm_tbxEntryConverter" xml:space="preserve">
+    <value>Entry Converter</value>
+  </data>
+  <data name="Config_chkShowRenderingErrors" xml:space="preserve">
+    <value>Show rendering errors</value>
+  </data>
+  <data name="OldMainForm_tbxGenerateEID" xml:space="preserve">
+    <value>Generate EID</value>
+  </data>
+  <data name="OldMainForm_tbxVABTool" xml:space="preserve">
+    <value>VAB Tool</value>
+  </data>
+  <data name="EntityBox_CmdEditPath" xml:space="preserve">
+    <value>Edit Path</value>
+  </data>
+  <data name="EntityBox_CmdSyncEntities" xml:space="preserve">
+    <value>View List</value>
+  </data>
+  <data name="EntityBox_ChkSyncEntities" xml:space="preserve">
+    <value>Sync Entities</value>
+  </data>
+  <data name="EntityBox_ChkSyncPositions" xml:space="preserve">
+    <value>Sync Path</value>
+  </data>
+  <data name="NSDBox_tipSpawnPoint" xml:space="preserve">
+    <value>[Mouse drag] Move row
+[Right-click] Show context menu
+[Ctrl + C] Copy selected spawn point
+[Ctrl + V] Paste copied value to selected spawn point </value>
+  </data>
+  <data name="HexView_tip" xml:space="preserve">
+    <value>[N] Input the EID for "NONE!"
+[Space] Clear selected cell
+[Ctrl + Space] Clear selected word
+[Z] Toggle view mode
+[Ctrl + G] Goto
+[+ / - ] Change line width
+
+[Shift-click] Select multiple cells
+[Mouse drag] Select multiple cells
+[Ctrl + C] Copy selected words as bytes
+[Ctrl + X] Cut selected words as bytes
+[Ctrl + V] Paste to words as bytes
+[Ctrl + Shift + C] Copy selected words as EID
+[Ctrl + Shift + X] Cut selected words as EID
+[Ctrl + Shift + V] Paste to words as EID</value>
+  </data>
+  <data name="Toolbar_SaveAs" xml:space="preserve">
+    <value>Save As</value>
   </data>
 </root>

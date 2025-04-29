@@ -1,4 +1,9 @@
+using System.Media;
+using System.Text;
+using AltUI.Forms;
+using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
+using CrashEdit.Exporters;
 
 namespace CrashEdit.CE
 {
@@ -8,50 +13,64 @@ namespace CrashEdit.CE
         public NSFController(NSF nsf, SubcontrollerGroup parentGroup) : base(parentGroup, nsf)
         {
             NSF = nsf;
-            AddMenu(CrashUI.Properties.Resources.NSFController_AcAddNormalChunk, Menu_Add_NormalChunk);
+            AddMenu(CrashUI.Properties.Resources.NSFController_AcAddNormalChunk, "JournalOrange", Menu_Add_NormalChunk);
             if (GameVersion != GameVersion.Crash2 && GameVersion != GameVersion.Crash3 && GameVersion != GameVersion.Crash1)
-                AddMenu(CrashUI.Properties.Resources.NSFController_AcAddOldSoundChunk, Menu_Add_OldSoundChunk);
-            AddMenu(CrashUI.Properties.Resources.NSFController_AcAddSoundChunk, Menu_Add_SoundChunk);
-            AddMenu(CrashUI.Properties.Resources.NSFController_AcAddWavebankChunk, Menu_Add_WavebankChunk);
-            AddMenu(CrashUI.Properties.Resources.NSFController_AcAddSpeechChunk, Menu_Add_SpeechChunk);
-            AddMenu(CrashUI.Properties.Resources.NSFController_AcImportChunk, Menu_Import_Chunk);
+                AddMenu(CrashUI.Properties.Resources.NSFController_AcAddOldSoundChunk, "JournalBlue", Menu_Add_OldSoundChunk);
+            AddMenu(CrashUI.Properties.Resources.NSFController_AcAddSoundChunk, "JournalBlue", Menu_Add_SoundChunk);
+            AddMenu(CrashUI.Properties.Resources.NSFController_AcAddWavebankChunk, "JournalRed",Menu_Add_WavebankChunk);
+            AddMenu(CrashUI.Properties.Resources.NSFController_AcAddSpeechChunk, "JournalWhite", Menu_Add_SpeechChunk);
+            AddMenu(CrashUI.Properties.Resources.NSFController_AcAddTextureChunk, "Painting", Menu_Add_TextureChunk);
+            AddMenu(CrashUI.Properties.Resources.NSFController_AcImportChunk, "Import", Menu_Import_Chunk);
             if (GameVersion == GameVersion.Crash2 || GameVersion == GameVersion.Crash3)
             {
                 AddMenuSeparator();
-                AddMenu(CrashUI.Properties.Resources.NSFController_AcFixDetonator, Menu_Fix_Detonator);
-                AddMenu(CrashUI.Properties.Resources.NSFController_AcFixBoxCount, Menu_Fix_BoxCount);
+                AddMenu(CrashUI.Properties.Resources.NSFController_AcAnalyzeLevel, "HardDisk", Menu_AnalyzeLevel);
+                AddMenu(CrashUI.Properties.Resources.NSFController_AcFindEntities, "Find", Menu_FindEntities);
+                AddMenuSeparator();
+                AddMenu(CrashUI.Properties.Resources.NSFController_AcFixDetonator, "Calculator", Menu_Fix_Detonator);
+                AddMenu(CrashUI.Properties.Resources.NSFController_AcFixBoxCount, "Calculator", Menu_Fix_BoxCount);
                 AddMenuSeparator();
             }
             if (GameVersion == GameVersion.Crash1 || GameVersion == GameVersion.Crash1BetaMAR08 || GameVersion == GameVersion.Crash1BetaMAY11)
             {
-                AddMenu(CrashUI.Properties.Resources.NSFController_AcShowLevel, Menu_ShowLevelC1);
-                AddMenu(CrashUI.Properties.Resources.NSFController_AcShowLevelZones, Menu_ShowLevelZonesC1);
+                AddMenu(CrashUI.Properties.Resources.NSFController_AcShowLevel, "ThingBlue", Menu_ShowLevelC1);
+                AddMenu(CrashUI.Properties.Resources.NSFController_AcShowLevelZones, "ThingViolet", Menu_ShowLevelZonesC1);
+                AddMenuSeparator();
+                AddMenu(CrashUI.Properties.Resources.NSFController_AcExportScenery, Menu_ExportSceneryC1OBJ);
             }
             else if (GameVersion == GameVersion.Crash1Beta1995)
             {
-                AddMenu(CrashUI.Properties.Resources.NSFController_AcShowLevel, Menu_ShowLevelC1Proto);
-                AddMenu(CrashUI.Properties.Resources.NSFController_AcShowLevelZones, Menu_ShowLevelZonesC1Proto);
+                AddMenu(CrashUI.Properties.Resources.NSFController_AcShowLevel, "ThingBlue", Menu_ShowLevelC1Proto);
+                AddMenu(CrashUI.Properties.Resources.NSFController_AcShowLevelZones, "ThingViolet", Menu_ShowLevelZonesC1Proto);
             }
             else if (GameVersion == GameVersion.Crash2 || GameVersion == GameVersion.Crash3)
             {
-                AddMenu(CrashUI.Properties.Resources.NSFController_AcShowLevel, Menu_ShowLevelC2);
-                AddMenu(CrashUI.Properties.Resources.NSFController_AcShowLevelZones, Menu_ShowLevelZonesC2);
+                AddMenu(CrashUI.Properties.Resources.NSFController_AcShowLevel, "ThingBlue", Menu_ShowLevelC2);
+                AddMenu(CrashUI.Properties.Resources.NSFController_AcShowLevelZones, "ThingViolet", Menu_ShowLevelZonesC2);
+                AddMenuSeparator();
+                AddMenu(CrashUI.Properties.Resources.NSFController_AcEditScenery, "Wrench", Menu_EditSceneryC2);
+                AddMenuSeparator();
+                AddMenu(CrashUI.Properties.Resources.NSFController_AcExportScenery, Menu_ExportSceneryC2OBJ);
             }
         }
 
         public NSF NSF { get; }
 
-        private Form? ShowLevelForm { get; set; }
-        private Form? ShowLevelZonesForm { get; set; }
+        private DarkForm? ShowLevelForm { get; set; }
+        private DarkForm? ShowLevelZonesForm { get; set; }
+        private SceneryEditor? SceneryEditorForm { get; set; }
 
         public void Kill()
         {
             ShowLevelForm?.Close();
-            ShowLevelZonesForm?.Close();
             ShowLevelForm?.Dispose();
-            ShowLevelZonesForm?.Dispose();
             ShowLevelForm = null;
+            ShowLevelZonesForm?.Close();
+            ShowLevelZonesForm?.Dispose();
             ShowLevelZonesForm = null;
+            SceneryEditorForm?.Close();
+            SceneryEditorForm?.Dispose();
+            SceneryEditorForm = null;
         }
 
         private void Menu_Add_NormalChunk()
@@ -84,89 +103,396 @@ namespace CrashEdit.CE
             NSF.Chunks.Add(chunk);
         }
 
-        private void Menu_Fix_Detonator()
+        private void Menu_Add_TextureChunk()
         {
-            List<Entity> nitros = new List<Entity>();
-            List<Entity> detonators = new List<Entity>();
-            foreach (ZoneEntry entry in NSF.GetEntries<ZoneEntry>())
-            {
-                foreach (Entity entity in entry.Entities)
-                {
-                    if (entity.Type == 34)
-                    {
-                        if (entity.Subtype == 18 && entity.ID.HasValue)
-                        {
-                            nitros.Add(entity);
-                        }
-                        else if (entity.Subtype == 24)
-                        {
-                            detonators.Add(entity);
-                        }
-                    }
-                }
-            }
-            foreach (Entity detonator in detonators)
-            {
-                detonator.Victims.Clear();
-                foreach (Entity nitro in nitros)
-                {
-                    detonator.Victims.Add(new EntityVictim((short)nitro.ID.Value));
-                }
-            }
+            byte[] header = { 0x34, 0x12, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0xAE, 0x5B, 0x34, 0x56};
+            byte[] newchunk = new byte[65536];
+            Array.Copy(header, 0, newchunk, 0, header.Length);
+            TextureChunk chunk = new TextureChunk(newchunk);
+            NSF.Chunks.Add(chunk);
         }
 
-        private void Menu_Fix_BoxCount()
+        public void Menu_AnalyzeLevel()
         {
-            int boxcount = 0;
-            List<Entity> willys = new List<Entity>();
+            List<string> loadlistLines = new List<string>();
+            StringBuilder errorSb = new StringBuilder();
+            Console.WriteLine("================================================================================");
             foreach (ZoneEntry zone in NSF.GetEntries<ZoneEntry>())
             {
                 foreach (Entity entity in zone.Entities)
                 {
-                    if (entity.Type == 0 && entity.Subtype == 0)
+                    // Load lists
+                    if (entity.LoadListA != null && entity.LoadListB != null)
                     {
-                        willys.Add(entity);
-                    }
-                    else if (entity.Type == 34)
-                    {
-                        switch (entity.Subtype)
+                        List<int> loadedentries = new List<int>();
+                        string eidlist = string.Empty;
+                        for (int i = 0; i < entity.Positions.Count; ++i)
                         {
-                            case 0: // tnt
-                            case 2: // empty
-                            case 3: // spring
-                            case 4: // continue
-                            case 6: // fruit
-                            case 8: // life
-                            case 9: // doctor
-                            case 10: // pickup
-                            case 11: // pow
-                            case 13: // ghost
-                            case 17: // auto pickup
-                            case 18: // nitro
-                            case 20: // auto empty
-                            case 21: // empty 2
-                            case 25: // slot
-                                boxcount++;
-                                break;
-                            default:
-                                break;
+                            foreach (var row in entity.LoadListA.Rows)
+                            {
+                                if (row.MetaValue == i)
+                                {
+                                    // load
+                                    foreach (int eid in row.Values)
+                                    {
+                                        loadedentries.Add(eid);
+                                    }
+                                }
+                            }
+                            foreach (var row in entity.LoadListB.Rows)
+                            {
+                                if (row.MetaValue == i)
+                                {
+                                    // unload
+                                    foreach (int eid in row.Values)
+                                    {
+                                        if (!loadedentries.Remove(eid))
+                                        {
+                                            eidlist += $"\n\t\t  [position {i}] {Entry.EIDToEName(eid)}";
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (eidlist != string.Empty)
+                        {
+                            // Load List B
+                            loadlistLines.Add($"[{zone.EName}, camera {entity.CameraIndex}] The following entries were already deloaded (Load List B):{eidlist}");
+                        }
+                        if (loadedentries.Count != 0)
+                        {
+                            string eidlist2 = string.Empty;
+                            for (int i = 0; i < entity.Positions.Count; ++i)
+                            {
+                                foreach (var row in entity.LoadListA.Rows)
+                                {
+                                    if (row.MetaValue == i)
+                                    {
+                                        foreach (int eid in row.Values)
+                                        {
+                                            if (loadedentries.Remove(eid))
+                                            {
+                                                eidlist2 += $"\n\t\t  [position {i}] {Entry.EIDToEName(eid)}";
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            // Load List A
+                            loadlistLines.Add($"[{zone.EName}, camera {entity.CameraIndex}] The following entries are never deloaded (Load List A):{eidlist2}");
                         }
                     }
-                    //else if (entity.Type == 36)
-                    //{
-                    //    if (entity.Subtype == 1)
-                    //    {
-                    //        boxcount++;
-                    //    }
-                    //}
+
+                    // Draw Lists
+                    if (entity.DrawListA != null && entity.DrawListB != null)
+                    {
+                        Dictionary<int, int> globalDrawCounts = new Dictionary<int, int>();
+                        Dictionary<int, int> globalUndrawCounts = new Dictionary<int, int>();
+                        Dictionary<int, List<int>> drawMetas = new Dictionary<int, List<int>>();
+                        Dictionary<int, List<int>> undrawMetas = new Dictionary<int, List<int>>();
+
+                        // DrawListB
+                        foreach (var row in entity.DrawListB.Rows)
+                        {
+                            if (row?.Values == null)
+                                continue;
+                            int meta = (int)row.MetaValue;
+                            foreach (int rawId in row.Values)
+                            {
+                                int id = (rawId >> 8) & 0xFFFF;
+                                if (globalDrawCounts.ContainsKey(id))
+                                    globalDrawCounts[id]++;
+                                else
+                                    globalDrawCounts[id] = 1;
+
+                                if (!drawMetas.ContainsKey(id))
+                                    drawMetas[id] = new List<int>();
+                                drawMetas[id].Add(meta);
+                            }
+                        }
+
+                        // DrawListA
+                        foreach (var row in entity.DrawListA.Rows)
+                        {
+                            if (row?.Values == null)
+                                continue;
+                            int meta = (int)row.MetaValue;
+                            foreach (int rawId in row.Values)
+                            {
+                                int id = (rawId >> 8) & 0xFFFF;
+                                if (globalUndrawCounts.ContainsKey(id))
+                                    globalUndrawCounts[id]++;
+                                else
+                                    globalUndrawCounts[id] = 1;
+
+                                if (!undrawMetas.ContainsKey(id))
+                                    undrawMetas[id] = new List<int>();
+                                undrawMetas[id].Add(meta);
+                            }
+                        }
+
+                        HashSet<int> allIds = new HashSet<int>(globalDrawCounts.Keys);
+                        foreach (var id in globalUndrawCounts.Keys)
+                            allIds.Add(id);
+
+                        foreach (int id in allIds)
+                        {
+                            int countDraw = globalDrawCounts.ContainsKey(id) ? globalDrawCounts[id] : 0;
+                            int countUndraw = globalUndrawCounts.ContainsKey(id) ? globalUndrawCounts[id] : 0;
+                            if (countDraw != countUndraw)
+                            {
+                                string pos = string.Empty;
+                                if (drawMetas.ContainsKey(id))
+                                    pos = $" at position {string.Join(", ", drawMetas[id])}";
+                                if (undrawMetas.ContainsKey(id))
+                                    pos = $" at position {string.Join(", ", undrawMetas[id])}";
+
+                                errorSb.AppendLine($"[{zone.EName}, camera {entity.CameraIndex}] ID {id}{pos}: drawn {countDraw} times, undrawn {countUndraw} times.");
+                            }
+                        }
+                    }
                 }
             }
-            foreach (Entity willy in willys)
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("Load list integrity check:");
+            Console.ResetColor();
+            if (loadlistLines.Count > 0)
+                Console.WriteLine(string.Join(Environment.NewLine, loadlistLines.ToArray()));
+            else
+                Console.WriteLine("No load list issues were found.");
+
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("Draw list integrity check:");
+            Console.ResetColor();
+            if (errorSb.Length > 0)
+                Console.WriteLine(errorSb);
+            else
+                Console.WriteLine("No draw list issues were found.");
+
+            SystemSounds.Asterisk.Play();
+        }
+
+        public void Menu_FindEntities()
+        {
+            int type = -1;
+            int subtype = -1;
+            using (InputWindow inputWindow = new InputWindow(CrashUI.Properties.Resources.NSFController_AcFindEntities, "Find",
+                "Enter entity type:", string.Empty, -1,
+                "Enter entity subtype (leave empty to search all):", string.Empty, -1))
             {
-                if (willy.BoxCount.HasValue)
+                if (inputWindow.ShowDialog() == DialogResult.OK)
                 {
-                    willy.BoxCount = new EntitySetting(0, boxcount);
+                    if (int.TryParse(inputWindow.Input, out type) && type >= 0) { }
+                    else
+                    {
+                        DarkMessageBox.ShowError("Invalid input.", Resources.Title_InputError);
+                        return;
+                    }
+
+                    if (!string.IsNullOrEmpty(inputWindow.Input2))
+                    {
+                        if (int.TryParse(inputWindow.Input2, out subtype) && subtype >= 0) { }
+                        else
+                        {
+                            DarkMessageBox.ShowError("Invalid input.", Resources.Title_InputError);
+                            return;
+                        }
+                    }
                 }
+                else return;
+            }
+
+            List<string> list = new List<string>();
+            Console.WriteLine("================================================================================");
+            foreach (ZoneEntry zone in NSF.GetEntries<ZoneEntry>())
+            {
+                foreach (Entity entity in zone.Entities)
+                {
+                    if (entity.Type == type && (subtype == -1 || entity.Subtype == subtype))
+                    {
+                        list.Add($"Type {entity.Type:D2}, subtype {entity.Subtype:D2}: {entity.Name} [ID {entity.ID}]");
+                    }
+                }
+            }
+            list.Sort();
+            Console.WriteLine(string.Join(Environment.NewLine, list.ToArray()));
+            Console.WriteLine($"Total count: {list.Count}");
+        }
+
+        private void Menu_Fix_Detonator()
+        {
+            using (ExternalData externalData = new ExternalData(CrashUI.Properties.Resources.NSFController_AcFixDetonator))
+            {
+                if (externalData.ShowDialog() == DialogResult.OK)
+                {
+                    List<Entity> nitros = new List<Entity>();
+                    List<Entity> detonators = new List<Entity>();
+                    foreach (ZoneEntry entry in NSF.GetEntries<ZoneEntry>())
+                    {
+                        foreach (Entity entity in entry.Entities)
+                        {
+                            if (entity.Type == 34 && entity.ID.HasValue)
+                            {
+                                if (entity.Subtype == 18)
+                                {
+                                    nitros.Add(entity);
+                                    DebugOutput(externalData.outputResult, (int)entity.Type, (int)entity.Subtype, entity.ID.Value);
+                                }
+                                if (entity.Subtype == 24)
+                                {
+                                    detonators.Add(entity);
+                                }
+                            }
+
+                            foreach (var pair in externalData.Group)
+                            {
+                                if (entity.Type == pair.Key && entity.ID.HasValue)
+                                {
+                                    if (entity.Subtype == pair.Value)
+                                    {
+                                        nitros.Add(entity);
+                                        DebugOutput(externalData.outputResult, pair.Key, pair.Value, entity.ID.Value);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    Console.WriteLine($"Total nitro count: {nitros.Count}");
+                    foreach (Entity detonator in detonators)
+                    {
+                        detonator.Victims.Clear();
+                        foreach (Entity nitro in nitros)
+                        {
+                            detonator.Victims.Add(new EntityVictim((short)nitro.ID.Value));
+                        }
+                    }
+                }
+            }
+          
+        }
+
+        private void Menu_Fix_BoxCount()
+        {
+            using (ExternalData externalData = new ExternalData(CrashUI.Properties.Resources.NSFController_AcFixBoxCount))
+            {
+                if (externalData.ShowDialog() == DialogResult.OK)
+                {
+                    int boxcount = 0;
+                    List<Entity> willys = new List<Entity>();
+                    foreach (ZoneEntry zone in NSF.GetEntries<ZoneEntry>())
+                    {
+                        foreach (Entity entity in zone.Entities)
+                        {
+                            if (Settings.Default.EnableCustomCrates)
+                            {
+                                if (entity.Type == 4 && entity.Subtype == 17)
+                                    willys.Add(entity);
+                            }
+                            else
+                            {
+                                if (entity.Type == 0 && entity.Subtype == 0)
+                                    willys.Add(entity);
+                            }
+                                
+                            if (entity.Type == 34 && entity.ID.HasValue)
+                            {
+                                if (GameVersion != GameVersion.Crash2 && GameVersion != GameVersion.Crash3)
+                                {
+                                    switch (entity.Subtype)
+                                    {
+                                        case 11: // pow
+                                        case 16: // auto tnt
+                                        case 17: // auto pickup
+                                        case 20: // auto empty
+                                        case 21: // empty 2
+                                            boxcount++;
+                                            DebugOutput(externalData.outputResult, (int)entity.Type, (int)entity.Subtype, entity.ID.Value);
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                                else if (GameVersion == GameVersion.Crash3)
+                                {
+                                    switch (entity.Subtype)
+                                    {
+                                        case 25: // slot
+                                            boxcount++;
+                                            DebugOutput(externalData.outputResult, (int)entity.Type, (int)entity.Subtype, entity.ID.Value);
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                                else if (Settings.Default.EnableCustomCrates)
+                                {
+                                    switch (entity.Subtype)
+                                    {
+                                        case 11: // pow
+                                        case 12: // purple
+                                        case 17: // slot
+                                        case 25: // steel pickup
+                                        case 26: // steel fruit
+                                            boxcount++;
+                                            DebugOutput(externalData.outputResult, (int)entity.Type, (int)entity.Subtype, entity.ID.Value);
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+
+                                switch (entity.Subtype)
+                                {
+                                    case 0: // tnt
+                                    case 2: // empty
+                                    case 3: // spring
+                                    case 4: // continue
+                                    case 6: // fruit
+                                    case 8: // life
+                                    case 9: // doctor
+                                    case 10: // pickup
+                                    case 13: // ghost
+                                    case 18: // nitro
+                                    case 23: // steel
+                                        boxcount++;
+                                        DebugOutput(externalData.outputResult, (int)entity.Type, (int)entity.Subtype, entity.ID.Value);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+
+                            foreach (var pair in externalData.Group)
+                            {
+                                if (entity.Type == pair.Key)
+                                {
+                                    if (entity.Subtype == pair.Value && entity.ID.HasValue)
+                                    {
+                                        boxcount++;
+                                        DebugOutput(externalData.outputResult, pair.Key, pair.Value, entity.ID.Value);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    Console.WriteLine($"Total box count: {boxcount}");
+                    foreach (Entity willy in willys)
+                    {
+                        if (willy.BoxCount.HasValue)
+                        {
+                            willy.BoxCount = new EntitySetting(0, boxcount);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void DebugOutput(bool output, int type, int subtype, int id)
+        {
+            if (output)
+            {
+                Console.WriteLine($"{type:D2}, {subtype:D2}, [ID {id}]");
             }
         }
 
@@ -308,17 +634,90 @@ namespace CrashEdit.CE
             };
         }
 
+        private void Menu_EditSceneryC2()
+        {
+            if (SceneryEditorForm != null)
+            {
+                SceneryEditorForm.Focus();
+                return;
+            }
+            SceneryEditorForm = new (NSF);
+            SceneryEditorForm.FormClosed += (sender, e) =>
+            {
+                SceneryEditorForm = null;
+            };
+            SceneryEditorForm.Show();
+        }
+
+        private void Menu_ExportSceneryC1OBJ()
+        {
+            if (!FileUtil.SelectSaveFile(out string filename, FileFilters.OBJ, FileFilters.Any))
+                return;
+
+            ExportSceneryC1OBJ(Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename));
+        }
+
+        private void Menu_ExportSceneryC2OBJ()
+        {
+            if (!FileUtil.SelectSaveFile(out string filename, FileFilters.OBJ, FileFilters.Any))
+                return;
+
+            ExportSceneryC2OBJ(Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename));
+        }
+
+        private void ExportSceneryC1OBJ(string path, string modelname)
+        {
+            var exporter = new OBJExporter();
+
+            // detect how many textures are used and their eids to prepare the image
+            Dictionary<int, int> textureEIDs = new();
+            Dictionary<string, TexInfoUnpacked> objTranslate = new Dictionary<string, TexInfoUnpacked>();
+
+            // find all the scenery insde chunks
+            foreach (OldSceneryEntry scenery in NSF.GetEntries<OldSceneryEntry>())
+            {
+                Console.WriteLine($"Exporting {scenery.EName}...");
+                exporter.AddScenery(NSF, scenery, ref textureEIDs, ref objTranslate);
+            }
+
+            exporter.Export(path, modelname);
+            Console.WriteLine("Done.");
+            SystemSounds.Asterisk.Play();
+        }
+
+        private void ExportSceneryC2OBJ(string path, string modelname)
+        {
+            var exporter = new OBJExporter();
+
+            // detect how many textures are used and their eids to prepare the image
+            Dictionary<int, int> textureEIDs = new();
+            Dictionary<string, TexInfoUnpacked> objTranslate = new Dictionary<string, TexInfoUnpacked>();
+
+            // find all the scenery insde chunks
+            foreach (SceneryEntry scenery in NSF.GetEntries<SceneryEntry>())
+            {
+                Console.WriteLine($"Exporting {scenery.EName}...");
+                exporter.AddScenery(NSF, scenery, ref textureEIDs, ref objTranslate);
+            }
+
+            exporter.Export(path, modelname);
+            Console.WriteLine("Done.");
+            SystemSounds.Asterisk.Play();
+        }
+
         private void Menu_Import_Chunk()
         {
             byte[][] datas = FileUtil.OpenFiles(FileFilters.Any);
             if (datas == null)
                 return;
-            bool process = MessageBox.Show("Do you want to process the imported chunks?", "Import Chunk", MessageBoxButtons.YesNo) == DialogResult.Yes;
+            bool process = DarkMessageBox.ShowMessage("Do you want to process the imported chunks?", "Import Chunk", DarkDialogButton.YesNo) == DialogResult.Yes;
             foreach (var data in datas)
             {
                 try
                 {
                     UnprocessedChunk chunk = Chunk.Load(data);
+                    if (chunk.Type == 1) // Texture Chunk
+                        process = true;
                     if (process)
                     {
                         Chunk processedchunk = chunk.Process();

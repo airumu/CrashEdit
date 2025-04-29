@@ -9,9 +9,10 @@ namespace CrashEdit.Crash
         private List<SceneryColor> colors;
         private List<ModelExtendedTexture> animatedtextures;
 
-        public SceneryEntry(byte[] info, IEnumerable<SceneryVertex> vertices, IEnumerable<SceneryTriangle> triangles, IEnumerable<SceneryQuad> quads, IEnumerable<ModelTexture> textures, IEnumerable<SceneryColor> colors, IEnumerable<ModelExtendedTexture> animatedtextures, bool is_c3, int eid)
+        public SceneryEntry(Scenery scenery, byte[] info, IEnumerable<SceneryVertex> vertices, IEnumerable<SceneryTriangle> triangles, IEnumerable<SceneryQuad> quads, IEnumerable<ModelTexture> textures, IEnumerable<SceneryColor> colors, IEnumerable<ModelExtendedTexture> animatedtextures, bool is_c3, int eid)
             : base(eid)
         {
+            Scenery = scenery;
             Info = info;
             this.vertices = new List<SceneryVertex>(vertices);
             this.triangles = new List<SceneryTriangle>(triangles);
@@ -26,6 +27,10 @@ namespace CrashEdit.Crash
         public override string ImageKey => "ThingBlue";
 
         public override int Type => 3;
+
+        [SubresourceSlot]
+        public Scenery Scenery { get; }
+
         public byte[] Info { get; }
         public IList<SceneryVertex> Vertices => vertices;
         public IList<SceneryTriangle> Triangles => triangles;
@@ -59,9 +64,15 @@ namespace CrashEdit.Crash
             set => BitConv.ToInt32(Info, 12, value ? 1 : 0);
         }
 
-        public int TPAGCount => BitConv.FromInt32(Info, 0x28);
+        public int TPAGCount
+        {
+            get => BitConv.FromInt32(Info, 0x28);
+            set => BitConv.ToInt32(Info, 0x28, value);
+        }
 
         public int GetTPAG(int idx) => BitConv.FromInt32(Info, 0x2C + 4 * idx);
+
+        public void SetTPAG(int idx, int value) => BitConv.ToInt32(Info, 0x2C + 4 * idx, value);
 
         public override UnprocessedEntry Unprocess()
         {
@@ -105,7 +116,7 @@ namespace CrashEdit.Crash
             return new UnprocessedEntry(items, EID, Type);
         }
 
-        public byte[] ToOBJ()
+        /*public byte[] ToOBJ()
         {
             using (MemoryStream stream = new MemoryStream())
             {
@@ -139,9 +150,9 @@ namespace CrashEdit.Crash
                 }
                 return stream.ToArray();
             }
-        }
+        }*/
 
-        public byte[] ToPLY()
+        /*public byte[] ToPLY()
         {
             using (MemoryStream stream = new MemoryStream())
             {
@@ -203,7 +214,7 @@ namespace CrashEdit.Crash
                 }
                 return stream.ToArray();
             }
-        }
+        }*/
 
         /*public byte[] ToCOLLADA()
         {

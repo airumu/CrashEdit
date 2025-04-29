@@ -6,7 +6,7 @@ namespace CrashEdit
 
         public override string Text => "Replace from file...";
 
-        public override string ImageKey => "Fire";
+        public override string ImageKey => "ArrowRefresh";
 
         public override bool ApplicableForSubject(Controller subj)
         {

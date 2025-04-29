@@ -34,6 +34,7 @@ namespace CrashEdit.CE
             this_zone = zone_eid;
             octree_renderer = new(this);
             animation_renderer = new() { TPages = tpages, Render = render };
+            GetGOOLs();
         }
 
         public ZoneEntryViewer(NSF nsf, List<int> zone_eids) : base(nsf, new List<int>())
@@ -42,6 +43,7 @@ namespace CrashEdit.CE
             this_zone = Entry.NullEID;
             octree_renderer = new(this);
             animation_renderer = new() { TPages = tpages, Render = render };
+            GetGOOLs();
         }
 
         protected override void OnInvalidated(InvalidateEventArgs e)
@@ -72,7 +74,7 @@ namespace CrashEdit.CE
                     {
                         Entity entity = zone.Entities[i];
                         float scale = GameScales.ZoneEntityC1;
-                        if (entity.Scaling.HasValue)
+                        if (entity.Scaling.HasValue && nsf.Version == GameVersion.Crash3)
                         {
                             scale *= 4;
                             scale /= 1 << entity.Scaling.Value;
@@ -93,6 +95,7 @@ namespace CrashEdit.CE
         {
             base.PrintHelp();
             con_help += octree_renderer.PrintHelp();
+            con_help += KeyboardControls.ToggleEntityVisual.Print(OnOffName(Settings.Default.EnableVisual));
             con_help += KeyboardControls.ToggleTimeTrial.Print(OnOffName(time_trial_mode));
         }
 
@@ -100,6 +103,11 @@ namespace CrashEdit.CE
         {
             base.RunLogic();
             octree_renderer.RunLogic();
+            if (KPress(KeyboardControls.ToggleEntityVisual))
+            {
+                Settings.Default.EnableVisual = !Settings.Default.EnableVisual;
+                Settings.Default.Save();
+            }
             if (KPress(KeyboardControls.ToggleTimeTrial)) time_trial_mode = !time_trial_mode;
         }
 
@@ -132,6 +140,18 @@ namespace CrashEdit.CE
                 return nsf.GetEntry<ZoneEntry>(this_zone);
         }
 
+        private void GetGOOLs()
+        {
+            gools.Clear();
+            foreach (var e in nsf.GetEntries<GOOLEntry>())
+            {
+                if (e.ParentGOOL == null)
+                {
+                    gools.Add(e.ID, e);
+                }
+            }
+        }
+
         protected override void Render()
         {
             var allzones = GetZones();
@@ -150,15 +170,6 @@ namespace CrashEdit.CE
                 }
             }
             SetWorlds(worlds);
-
-            gools.Clear();
-            foreach (var e in nsf.GetEntries<GOOLEntry>())
-            {
-                if (e.ParentGOOL == null)
-                {
-                    gools.Add(e.ID, e);
-                }
-            }
 
             animation_renderer.Setup(true, true);
 
@@ -241,7 +252,83 @@ namespace CrashEdit.CE
             EntityVisual visual;
             if (crash2)
             {
-                if (type == 26 && subtype == 0 && entity.ID.HasValue) // ruins crumbler plat
+                if (type == 1 && (subtype == 7 || subtype == 8)) // warp gate
+                {
+                    bool ok = false;
+                    if (map.TryGetVisual(type, subtype + 0000, out visual))
+                        ok = RenderEntityVisual(visual, trans) || ok;
+                    if (map.TryGetVisual(type, subtype + 0900, out visual))
+                        ok = RenderEntityVisual(visual, trans) || ok;
+                    if (map.TryGetVisual(type, subtype + 1000, out visual))
+                        ok = RenderEntityVisual(visual, trans) || ok;
+                    if (map.TryGetVisual(type, subtype + 1900, out visual))
+                        ok = RenderEntityVisual(visual, trans) || ok;
+                    if (map.TryGetVisual(type, subtype + 2000, out visual))
+                        ok = RenderEntityVisual(visual, trans) || ok;
+                    if (map.TryGetVisual(type, subtype + 2900, out visual))
+                        ok = RenderEntityVisual(visual, trans) || ok;
+                    if (map.TryGetVisual(type, subtype + 3000, out visual))
+                        ok = RenderEntityVisual(visual, trans) || ok;
+                    if (map.TryGetVisual(type, subtype + 3900, out visual))
+                        ok = RenderEntityVisual(visual, trans) || ok;
+                    if (map.TryGetVisual(type, subtype + 4000, out visual))
+                        ok = RenderEntityVisual(visual, trans) || ok;
+                    if (map.TryGetVisual(type, subtype + 4900, out visual))
+                        ok = RenderEntityVisual(visual, trans) || ok;
+                    if (map.TryGetVisual(type, subtype + 5000, out visual))
+                        ok = RenderEntityVisual(visual, trans) || ok;
+                    if (map.TryGetVisual(type, subtype + 5900, out visual))
+                        ok = RenderEntityVisual(visual, trans) || ok;
+                    return ok;
+                }
+                else if (type == 11 && subtype == 0) // boulder gorilla
+                {
+                    if (map.TryGetVisual(type, subtype, out visual))
+                        return RenderEntityVisual(visual, trans + new Vector3(0, -1900f / 400f, 0));
+                }
+                else if (type == 9 && subtype == 6 && entity.Settings.Count == 8) // elevator
+                {
+                    if (map.TryGetVisual(type, subtype + (entity.Settings[4].Value >> 8), out visual))
+                        return RenderEntityVisual(visual, trans);
+                }
+                else if (type == 9 && subtype == 32 && entity.Settings.Count == 2) // elevator catch
+                {
+                    bool ok = false;
+                    if (entity.Settings[1].Value == 0) // regular/bonus elevator
+                    {
+                        if (map.TryGetVisual(type, subtype + entity.Settings[0].Value, out visual))
+                            ok |= RenderEntityVisual(visual, trans);
+                    }
+                    else // gem elevator
+                    {
+                        if (map.TryGetVisual(type, subtype + entity.Settings[1].Value, out visual))
+                            ok |= RenderEntityVisual(visual, trans);
+                    }
+                    return ok;
+                }
+                else if (type == 9 && subtype == 33 && entity.Settings.Count == 2) // hole gate
+                {
+                    bool ok = false;
+                    if (map.TryGetVisual(type, subtype + entity.Settings[1].Value, out visual))
+                        ok |= RenderEntityVisual(visual, trans);
+                    return ok;
+                }
+                else if (type == 9 && subtype == 39 && entity.Settings.Count == 4) // bonus guard
+                {
+                    if (map.TryGetVisual(type, subtype, out visual))
+                        return RenderEntityVisual(visual, trans, scale: new Vector3(entity.Settings[1].Value / 4096f));
+                }
+                else if (type == 14 && (subtype == 3 || subtype == 4) && entity.Settings.Count > 9) // drop plat
+                {
+                    if (map.TryGetVisual(type, subtype + 1000 * (entity.Settings[entity.Settings.Count - 9 - 1].Value >> 8), out visual))
+                        return RenderEntityVisual(visual, trans);
+                }
+                else if (type == 15 && subtype == 10) // swallup
+                {
+                    if (map.TryGetVisual(type, subtype, out visual))
+                        return RenderEntityVisual(visual, trans, scale: new Vector3(8192f / 4096f));
+                }
+                else if (type == 26 && subtype == 0 && entity.ID.HasValue) // ruins crumbler plat
                 {
                     if (map.TryGetVisual(type, (entity.ID & 0x1) != 0 ? 1000 : 2000, out visual))
                         return RenderEntityVisual(visual, trans);
@@ -251,36 +338,62 @@ namespace CrashEdit.CE
                     if (map.TryGetVisual(type, (entity.Settings[0].ValueB + 1) * 1000, out visual))
                         return RenderEntityVisual(visual, trans);
                 }
-                else if (type == 14 && subtype == 4 && entity.Settings.Count > 9) // drop plat
-                {
-                    if (map.TryGetVisual(type, subtype + 1000 * (entity.Settings[entity.Settings.Count - 9 - 1].Value >> 8), out visual))
-                        return RenderEntityVisual(visual, trans);
-                }
-                else if (type == 55 && subtype == 1 && entity.Settings.Count > 0) // pistons
-                {
-                    if (map.TryGetVisual(type, subtype + 1000 * (entity.Settings[entity.Settings.Count - 0 - 1].Value != 0 ? 1 : 0), out visual))
-                        return RenderEntityVisual(visual, trans);
-                }
-                else if (type == 42 && subtype == 0) // space lab ass
+                else if (type == 26 && subtype == 4 && entity.Settings.Count == 3) // pillar array
                 {
                     bool ok = false;
                     if (map.TryGetVisual(type, subtype, out visual))
-                        ok |= RenderEntityVisual(visual, entity.Settings.Count > 0 ? trans + new Vector3(0, 0, entity.Settings[entity.Settings.Count - 0 - 1].Value / (256f * 400)) : trans);
-                    if (map.TryGetVisual(type, 2, out visual))
-                        ok |= RenderEntityVisual(visual, trans);
+                    {
+                        float deg_per_plat = MathHelper.TwoPi / 4;
+                        float plat_distance = entity.Settings[0].Value / 256f / 400f;
+                        for (int i = 0; i < 4; i++)
+                        {
+                            float deg = deg_per_plat * i;
+                            ok |= RenderEntityVisual(visual, trans + new Vector3(MathF.Cos(deg) * plat_distance, 0, MathF.Sin(deg) * plat_distance));
+                        }
+                    }
+                    if (map.TryGetVisual(type, subtype + entity.Settings[2].Value, out visual))
+                    {
+                        float deg_per_plat = MathHelper.TwoPi / 4;
+                        float plat_distance = entity.Settings[0].Value / 256f / 400f;
+                        for (int i = 0; i < 4; i++)
+                        {
+                            float deg = deg_per_plat * i;
+                            ok |= RenderEntityVisual(visual, trans + new Vector3(MathF.Cos(deg) * plat_distance, 0, MathF.Sin(deg) * plat_distance));
+                        }
+                    }
                     return ok;
                 }
-                else if (type == 11 && subtype == 0) // boulder gorilla
+                else if (type == 27 && subtype == 0) // porcupine
                 {
                     if (map.TryGetVisual(type, subtype, out visual))
-                        return RenderEntityVisual(visual, trans + new Vector3(0, -1900f / 400f, 0));
+                        return RenderEntityVisual(visual, trans, scale: new Vector3(2457f / 4096f));
                 }
-                else if (type == 46 && subtype == 0) // dragonfly
+                else if (type == 28 && subtype == 2) // possum
                 {
+                    bool ok = false;
                     if (map.TryGetVisual(type, subtype, out visual))
-                        return RenderEntityVisual(visual, trans + new Vector3(0, 320f / 400f, 0), scale: new Vector3(2621f / 4096f));
+                        ok |= RenderEntityVisual(visual, trans, scale: new Vector3(4915f / 4096f));
+                    if (map.TryGetVisual(type, subtype + 1000, out visual))
+                        ok |= RenderEntityVisual(visual, trans, scale: new Vector3(4915f / 4096f));
+                    return ok;
                 }
-                else if (type == 35 && subtype == 15 && entity.Settings.Count == 9)
+                else if (type == 28 && subtype == 4 && entity.Settings.Count == 6) // rat circle
+                {
+                    bool ok = false;
+                    if (map.TryGetVisual(type, subtype, out visual))
+                    {
+                        int rat_count = entity.Settings[5].Value >> 8;
+                        float deg_per_rat = MathHelper.TwoPi / rat_count;
+                        float rat_distance = entity.Settings[4].Value / 256f / 400f;
+                        for (int i = 0; i < rat_count; i++)
+                        {
+                            float deg = deg_per_rat * i;
+                            ok |= RenderEntityVisual(visual, trans + new Vector3(MathF.Cos(deg) * rat_distance, 0, MathF.Sin(deg) * rat_distance));
+                        }
+                    }
+                    return ok;
+                }
+                else if (type == 35 && subtype == 15 && entity.Settings.Count == 9) // space bomb ring
                 {
                     bool ok = false;
                     if (map.TryGetVisual(type, subtype, out visual))
@@ -295,7 +408,62 @@ namespace CrashEdit.CE
                     }
                     return ok;
                 }
-                else if ((type == 35 && subtype == 6) || (type == 38 && subtype == 0))
+                else if (type == 38 && subtype == 0) // spore plant
+                {
+                    if (map.TryGetVisual(type, subtype, out visual))
+                        return RenderEntityVisual(visual, trans, scale: new Vector3(3276f / 4096f));
+                }
+                else if (type == 38 && subtype == 4) // evil plant
+                {
+                    if (map.TryGetVisual(type, subtype, out visual))
+                        return RenderEntityVisual(visual, trans, scale: new Vector3(6553f / 4096f));
+                }
+                else if (type == 39 && subtype == 7) // tiki
+                {
+                    if (map.TryGetVisual(type, subtype, out visual))
+                        return RenderEntityVisual(visual, trans, scale: new Vector3(2727f / 4096f));
+                }
+                else if (type == 41 && subtype == 0) // boulder
+                {
+                    if (map.TryGetVisual(type, subtype, out visual))
+                        return RenderEntityVisual(visual, trans + new Vector3(0, 1000f / 400f, 0));
+                }
+                else if (type == 42 && subtype == 0) // space lab ass
+                {
+                    bool ok = false;
+                    if (map.TryGetVisual(type, subtype, out visual))
+                        ok |= RenderEntityVisual(visual, entity.Settings.Count > 0 ? trans + new Vector3(0, 0, entity.Settings[entity.Settings.Count - 0 - 1].Value / (256f * 400)) : trans);
+                    if (map.TryGetVisual(type, 2, out visual))
+                        ok |= RenderEntityVisual(visual, trans);
+                    return ok;
+                }
+                else if (type == 46 && subtype == 0) // dragonfly
+                {
+                    if (map.TryGetVisual(type, subtype, out visual))
+                        return RenderEntityVisual(visual, trans + new Vector3(0, 320f / 400f, 0), scale: new Vector3(2621f / 4096f));
+                }
+                else if (type == 55 && subtype == 1 && entity.Settings.Count > 0) // pistons
+                {
+                    if (map.TryGetVisual(type, subtype + 1000 * (entity.Settings[entity.Settings.Count - 0 - 1].Value != 0 ? 1 : 0), out visual))
+                        return RenderEntityVisual(visual, trans);
+                }
+                else if ((type == 35 && subtype == 1) || (type == 35 && subtype == 6) || (type == 38 && subtype == 0)) // space lock, spore plant
+                {
+                    bool ok = false;
+                    if (map.TryGetVisual(type, subtype, out visual))
+                        ok |= RenderEntityVisual(visual, trans);
+                    if (map.TryGetVisual(type, subtype + 1000, out visual))
+                        ok |= RenderEntityVisual(visual, trans);
+                    return ok;
+                }
+                else if (
+                    (type == 8 && subtype == 0) || // swarmer
+                    (type == 14 && (subtype == 1 || subtype == 2)) || // drop plat
+                    (type == 15 && (subtype == 0 || subtype == 1 || subtype == 2)) || // butterfly
+                    (type == 20 && (subtype == 0 || subtype == 1)) || // armadillo
+                    (type == 28 && subtype == 3) || // lizard
+                    (type == 34 && subtype == 4) // box continue
+                    )
                 {
                     bool ok = false;
                     if (map.TryGetVisual(type, subtype, out visual))
@@ -316,13 +484,15 @@ namespace CrashEdit.CE
             return false;
         }
 
+        public static Color4 DarkRed => new Color4(60, 20, 0, byte.MaxValue);
+
         private void RenderEntity(Entity entity)
         {
             float text_y = 0;
             float text_size = 0.65f;
             bool draw_type = entity.Type.HasValue && entity.Subtype.HasValue;
             float scale = GameScales.ZoneEntityC1;
-            if (entity.Scaling.HasValue)
+            if (entity.Scaling.HasValue && nsf.Version == GameVersion.Crash3)
             {
                 scale *= 4;
                 scale /= 1 << entity.Scaling.Value;
@@ -336,7 +506,7 @@ namespace CrashEdit.CE
                 }
 
                 bool rendered_model = false;
-                if (!Settings.Default.DisableVisual && entity.Type.HasValue && entity.Subtype.HasValue)
+                if (Settings.Default.EnableVisual && entity.Type.HasValue && entity.Subtype.HasValue)
                 {
                     rendered_model = RenderEntityVisual(entity, trans);
                 }
@@ -350,13 +520,18 @@ namespace CrashEdit.CE
                         {
                             draw_type = false;
                             int gem_id = entity.Settings[0].ValueB;
-                            text_y += AddText3D(gem_id.ToString(), trans, GetZoneColor(GetColorForGemId(gem_id)), size: text_size, ofs_y: text_y).Y;
+                            string gem_name = $"id {gem_id}";
+                            text_y += AddText3D(gem_name, trans, GetZoneColor(GetColorForGemId(gem_id)), size: text_size, ofs_y: text_y).Y;
                         }
                     }
                     else if (entity.Subtype.HasValue && entity.Type == 34)
                     {
                         draw_type = false;
-                        int timetrialcontents = entity.TimeTrialReward.HasValue ? entity.TimeTrialReward.Value >> 8 : 0;
+                        int timetrialcontents;
+                        if (Settings.Default.EnableCustomCrates)
+                            timetrialcontents = entity.C2TTType.HasValue ? entity.C2TTType.Value >> 8 : 0;
+                        else
+                            timetrialcontents = entity.TimeTrialReward.HasValue ? entity.TimeTrialReward.Value >> 8 : 0;
                         if (entity.Subtype.Value == 29 && nsf.Version == GameVersion.Crash3)
                         {
                             float size_x = 1, size_y = 1, size_z = 1;
@@ -411,8 +586,8 @@ namespace CrashEdit.CE
                                         {
                                             var lzone_trans = new Vector3(lzone.X, lzone.Y, lzone.Z) / GameScales.ZoneC1;
                                             Vector3 link_trans = new Vector3(link.Positions[0].X, link.Positions[0].Y, link.Positions[0].Z) / scale + lzone_trans;
-                                            vaoLinesThick.PushAttrib(trans: trans, rgba: GetZoneColor(Color4.Red));
-                                            vaoLinesThick.PushAttrib(trans: link_trans, rgba: GetZoneColor(Color4.Lime));
+                                            vaoLinesThick.PushAttrib(trans: trans, rgba: GetZoneColor(Color4.Blue));
+                                            vaoLinesThick.PushAttrib(trans: link_trans, rgba: GetZoneColor(Color4.Cyan));
                                         }
                                     }
                                 }
@@ -437,9 +612,9 @@ namespace CrashEdit.CE
                     for (int i = 1; i < entity.Positions.Count; ++i)
                     {
                         vaoLines.PushAttrib(trans: new Vector3(entity.Positions[i - 1].X, entity.Positions[i - 1].Y, entity.Positions[i - 1].Z) / scale + zone_trans,
-                                            rgba: GetZoneColor(Color4.Blue));
+                                            rgba: GetZoneColor(DarkRed));
                         vaoLines.PushAttrib(trans: new Vector3(entity.Positions[i].X, entity.Positions[i].Y, entity.Positions[i].Z) / scale + zone_trans,
-                                            rgba: GetZoneColor(Color4.Blue));
+                                            rgba: GetZoneColor(DarkRed));
                     }
                     foreach (EntityPosition position in entity.Positions)
                     {
@@ -487,7 +662,7 @@ namespace CrashEdit.CE
                     var dir_vec2 = (rot_mat2 * new Vector4(0, 0, -1, 1)).Xyz;
 
                     Rgba angColor1 = GetZoneColor(Color4.Olive);
-                    Rgba angColor2 = GetZoneColor(Color4.DarkRed);
+                    Rgba angColor2 = GetZoneColor(Color4.DarkGreen);
                     vaoLines.PushAttrib(trans: trans, rgba: angColor1);
                     vaoLines.PushAttrib(trans: trans + dir_vec1, rgba: angColor1);
                     AddSprite(trans + dir_vec1, new Vector2(0.5f), angColor1, OldResources.PointTexture);
@@ -560,28 +735,93 @@ namespace CrashEdit.CE
 
         private Bitmap GetBoxTopTexture(int subtype, int timetrialcontents)
         {
+            if (Settings.Default.EnableCustomCrates)
+            {
+                if (time_trial_mode && timetrialcontents != 0)
+                {
+                    switch (timetrialcontents)
+                    {
+                        case 1: // Time 1
+                            return OldResources.TimeBoxTopTexture;
+                        case 2: // Time 2
+                            return OldResources.TimeBoxTopTexture;
+                        case 3: // Time 3
+                            return OldResources.TimeBoxTopTexture;
+                        case 5: // TNT
+                            return OldResources.TNTBoxTopTexture;
+                        case 6: // Nitro
+                            return OldResources.NitroBoxTopTexture;
+                        case 7: // POW
+                            return OldResources.POWBoxTopTexture;
+                        case 9: // Action
+                        case 10: // Iron
+                        case 11: // Iron arrow
+                            return OldResources.IronBoxTexture;
+                        default: // Empty
+                            return OldResources.EmptyBoxTexture;
+                    }
+                }
+                switch (subtype)
+                {
+                    case 0: // TNT
+                        return OldResources.TNTBoxTopTexture;
+                    case 2: // Empty
+                    case 3: // Spring
+                    case 4: // Continue
+                    case 6: // Fruit
+                    case 8: // Life
+                    case 9: // Doctor
+                    case 10: // Pickup
+                    case 17: // Slot
+                        return OldResources.EmptyBoxTexture;
+                    case 5: // Iron
+                    case 7: // Action
+                    case 15: // Iron Spring
+                    case 27: // Iron Continue
+                    case 28: // Switch OFF
+                    case 29: // Switch ON
+                        return OldResources.IronBoxTexture;
+                    case 11: // POW
+                        return OldResources.POWBoxTopTexture;
+                    case 12: // Purple
+                        return OldResources.PurpleBoxTopTexture;
+                    case 18: // Nitro
+                        return OldResources.NitroBoxTopTexture;
+                    case 23: // Steel
+                    case 25: // Steel Pickup
+                    case 26: // Steel Fruit
+                        return OldResources.SteelBoxTexture;
+                    case 24: // Action Nitro
+                        return OldResources.ActionNitroBoxTopTexture;
+                    case 30: // Switch Ghost to Red
+                    case 32: // Switch Ghost to Green
+                        return OldResources.SwitchGhostBoxTexture;
+                    case 31: // Switch Green
+                        return OldResources.SwitchSolidGreenBoxTexture;
+                    case 33: // Switch Red
+                        return OldResources.SwitchSolidRedBoxTexture;
+                    default:
+                        return OldResources.UnknownBoxTopTexture;
+                }
+            }
+
             switch (subtype)
             {
                 case 0: // TNT
-                case 16: // TNT AutoGrav
                     return OldResources.TNTBoxTopTexture;
                 case 2: // Empty
                 case 6: // Fruit
                 case 8: // Life
                 case 10: // Pickup
-                case 11: // POW
-                case 17: // Pickup AutoGrav
-                case 20: // Empty AutoGrav
                 case 25: // Slot
                     if (time_trial_mode && timetrialcontents >= 111 && timetrialcontents <= 113)
                         return OldResources.TimeBoxTopTexture;
                     else
                         return OldResources.EmptyBoxTexture;
                 case 3: // Spring
+                case 4: // Continue
                 case 9: // Doctor
                     return OldResources.EmptyBoxTexture;
-                case 4: // Continue
-                    return time_trial_mode ? OldResources.EmptyBoxTexture : OldResources.ContinueBoxTexture;
                 case 5: // Iron
                 case 7: // Action
                 case 15: // Iron Spring
@@ -603,13 +843,103 @@ namespace CrashEdit.CE
 
         private Bitmap GetBoxSideTexture(int subtype, int timetrialcontents)
         {
+            if (Settings.Default.EnableCustomCrates)
+            {
+                if (time_trial_mode && timetrialcontents != 0)
+                {
+                    switch (timetrialcontents)
+                    {
+                        case 1: // Time 1
+                            return OldResources.Time1BoxTexture;
+                        case 2: // Time 2
+                            return OldResources.Time2BoxTexture;
+                        case 3: // Time 3
+                            return OldResources.Time3BoxTexture;
+                        case 4: // Doctor
+                            return OldResources.DoctorBoxTexture;
+                        case 5: // TNT
+                            return OldResources.TNTBoxTexture;
+                        case 6: // Nitro
+                            return OldResources.NitroBoxTexture;
+                        case 7: // POW
+                            return OldResources.POWBoxTexture;
+                        case 9: // Action
+                            return OldResources.ActionBoxTexture;
+                        case 10: // Iron
+                            return OldResources.IronBoxTexture;
+                        case 11: // Iron arrow
+                            return OldResources.IronSpringBoxTexture;
+                        default: // Empty
+                            return OldResources.EmptyBoxTexture;
+                    }
+                }
+                switch (subtype)
+                {
+                    case 0: // TNT
+                        return OldResources.TNTBoxTexture;
+                    case 2: // Empty
+                        return OldResources.EmptyBoxTexture;
+                    case 3: // Spring
+                        return OldResources.SpringBoxTexture;
+                    case 4: // Continue
+                        return time_trial_mode ? OldResources.EmptyBoxTexture : OldResources.ContinueBoxTexture;
+                    case 5: // Iron
+                        return OldResources.IronBoxTexture;
+                    case 6: // Fruit
+                        return time_trial_mode ? OldResources.EmptyBoxTexture : OldResources.FruitBoxTexture;
+                    case 7: // Action
+                        return OldResources.ActionBoxTexture;
+                    case 8: // Life
+                        return time_trial_mode ? OldResources.EmptyBoxTexture : OldResources.LifeBoxTexture;
+                    case 9: // Doctor
+                        return time_trial_mode ? OldResources.EmptyBoxTexture : OldResources.DoctorBoxTexture;
+                    case 10: // Pickup
+                        return OldResources.PickupBoxTexture;
+                    case 11: // POW
+                        return OldResources.POWBoxTexture;
+                    case 12: // Purple
+                        return OldResources.PurpleBoxTexture;
+                    case 13: // Ghost
+                    case 19: // Ghost Iron
+                        return OldResources.UnknownBoxTopTexture;
+                    case 15: // Iron Spring
+                        return OldResources.IronSpringBoxTexture;
+                    case 17: // Slot
+                        return time_trial_mode ? OldResources.EmptyBoxTexture : OldResources.SlotBoxTexture;
+                    case 18: // Nitro
+                        return OldResources.NitroBoxTexture;
+                    case 23: // Steel
+                        return OldResources.SteelBoxTexture;
+                    case 24: // Action Nitro
+                        return OldResources.ActionNitroBoxTexture;
+                    case 25: // Steel Pickup
+                        return OldResources.SteelPickupBoxTexture;
+                    case 26: // Steel Fruit
+                        return time_trial_mode ? OldResources.SteelBoxTexture : OldResources.SteelFruitBoxTexture;
+                    case 27: // Iron Continue
+                        return time_trial_mode ? OldResources.IronBoxTexture : OldResources.IronContinueBoxTexture;
+                    case 28: // Switch OFF
+                        return OldResources.SwitchOFFBoxTexture;
+                    case 29: // Switch OB
+                        return OldResources.SwitchONBoxTexture;
+                    case 30: // Switch Ghost to Red
+                        return OldResources.SwitchGhostToRedBoxTexture;
+                    case 31: // Switch Green
+                        return OldResources.SwitchSolidGreenBoxTexture;
+                    case 32: // Switch Ghost to Green
+                        return OldResources.SwitchGhostToGreenBoxTexture;
+                    case 33: // Switch Red
+                        return OldResources.SwitchSolidRedBoxTexture;
+                    default:
+                        return OldResources.UnknownBoxTexture;
+                }
+            }
+
             switch (subtype)
             {
                 case 0: // TNT
-                case 16: // TNT AutoGrav
                     return OldResources.TNTBoxTexture;
                 case 2: // Empty
-                case 20: // Empty AutoGrav
                     return time_trial_mode ? LoadBoxSideTextureTimeTrial(timetrialcontents) : OldResources.EmptyBoxTexture;
                 case 3: // Spring
                     return OldResources.SpringBoxTexture;
@@ -626,10 +956,7 @@ namespace CrashEdit.CE
                 case 9: // Doctor
                     return OldResources.DoctorBoxTexture;
                 case 10: // Pickup
-                case 17: // Pickup AutoGrav
                     return time_trial_mode ? LoadBoxSideTextureTimeTrial(timetrialcontents) : OldResources.PickupBoxTexture;
-                case 11: // POW
-                    return OldResources.POWBoxTexture;
                 case 13: // Ghost
                 case 19: // Ghost Iron
                     return OldResources.UnknownBoxTopTexture;

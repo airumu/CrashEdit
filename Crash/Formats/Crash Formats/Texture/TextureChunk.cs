@@ -18,7 +18,7 @@ namespace CrashEdit.Crash
         }
         public string EName => Entry.EIDToEName(EID);
         public int HashKey => EID >> 15 & 0xFF;
-        public byte[] Data { get; }
+        public byte[] Data { get; set; }
 
         public override UnprocessedChunk Unprocess()
         {

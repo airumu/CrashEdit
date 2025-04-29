@@ -1,4 +1,5 @@
-﻿using CrashEdit.CE.Properties;
+﻿using AltUI.Forms;
+using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
@@ -19,9 +20,10 @@ namespace CrashEdit.CE
 
         private readonly GLViewer viewer;
 
-        private Form octree_form;
+        private DarkForm octree_form;
         private bool form_want_update = false;
         private bool form_want_select = false;
+        private ListView octree_list;
 
         private int[] nodes;
         private int nodes_x;
@@ -103,7 +105,10 @@ namespace CrashEdit.CE
                 {
                     if (octree_form == null || octree_form.IsDisposed)
                     {
-                        octree_form = new Form();
+                        octree_form = new DarkForm()
+                        {
+                            Icon = Embeds.GetIcon("ThingViolet")
+                        };
                         octree_form.FormClosing += (sender, e) =>
                         {
                             node_filter = 0;
@@ -124,31 +129,83 @@ namespace CrashEdit.CE
             if (octree_form != null && !octree_form.IsDisposed)
             {
                 octree_form.Controls.Clear();
-                ListView lst = new()
+                octree_list = new ListView()
                 {
-                    Dock = DockStyle.Fill
+                    Dock = DockStyle.Fill,
+                    OwnerDraw = true
                 };
                 foreach (var node in node_types)
                 {
                     ListViewItem lsi = new();
-                    lsi.Text = string.Format("{2:X2}:{1:X2}:{0:X1}", node >> 1 & 0x7, node >> 4 & 0x3F, node >> 10 & 0x3F);
+                    if (Settings.Default.ShowliteralCollisionTypes)
+                        lsi.Text = node.ToString("X4");
+                    else
+                        lsi.Text = string.Format("{2:X2}:{1:X2}:{0:X1}", node >> 1 & 0x7, node >> 4 & 0x3F, node >> 10 & 0x3F);
                     lsi.BackColor = (Color)(Color4)node_colors[node >> 1];
-                    lsi.ForeColor = lsi.BackColor.GetBrightness() >= 0.5 ? Color.Black : Color.White;
+                    lsi.ForeColor = getBrightness(lsi.BackColor) >= 0.5 ? Color.Black : Color.White;
                     lsi.Tag = node;
-                    lst.Items.Add(lsi);
+                    octree_list.Items.Add(lsi);
                 }
-                lst.SelectedIndexChanged += (sender, e) =>
+                octree_list.DrawItem += octree_list_DrawItem;
+                octree_list.MouseDown += octree_list_MouseEvent;
+                octree_list.MouseUp += octree_list_MouseEvent;
+                octree_list.SelectedIndexChanged += (sender, e) =>
                 {
-                    if (lst.SelectedItems.Count == 0)
+                    if (octree_list.SelectedItems.Count == 0)
                     {
                         node_filter = 0;
                     }
                     else
                     {
-                        node_filter = (ushort)lst.SelectedItems[0].Tag;
+                        node_filter = (ushort)octree_list.SelectedItems[0].Tag;
                     }
                 };
-                octree_form.Controls.Add(lst);
+                octree_form.Controls.Add(octree_list);
+            }
+        }
+
+        float getBrightness(Color c)
+        { return (c.R * 0.299f + c.G * 0.587f + c.B * 0.114f) / 256f; }
+
+        private void octree_list_DrawItem(object sender, DrawListViewItemEventArgs e)
+        {
+            TextFormatFlags flags = TextFormatFlags.HorizontalCenter;
+            using (StringFormat sf = new StringFormat())
+            {
+                bool isSelected = e.Item.Selected;
+
+                e.DrawBackground();
+
+                sf.Alignment = StringAlignment.Center;
+
+                if (isSelected)
+                {
+                    //e.Graphics.FillRectangle(Brushes.LightBlue, e.Bounds);
+                    using (Brush brush = new SolidBrush(e.Item.ForeColor))
+                    {
+                        e.Graphics.DrawString(e.Item.Text, octree_list.Font, brush, e.Bounds, sf);
+                    }
+                }
+                else
+                {
+                    e.DrawText(flags);
+                }
+            }
+        }
+
+        private void octree_list_MouseEvent(object sender, MouseEventArgs e)
+        {
+            Point mousePosition = e.Location;
+            for (int i = 0; i < octree_list.Items.Count; i++)
+            {
+                ListViewItem item = octree_list.Items[i];
+                Rectangle itemBounds = item.Bounds;
+                if (itemBounds.Contains(mousePosition))
+                {
+                    octree_list.SelectedItems.Clear();
+                    item.Selected = true;
+                    break;
+                }
             }
         }
 

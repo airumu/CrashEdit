@@ -6,6 +6,7 @@ namespace CrashEdit.Crash
         public override Chunk Load(byte[] data)
         {
             ArgumentNullException.ThrowIfNull(data);
+            BitConv.ToInt32(data, 12, Chunk.CalculateChecksum(data));
             return new TextureChunk(data);
         }
     }

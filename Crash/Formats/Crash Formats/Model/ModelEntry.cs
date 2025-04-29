@@ -25,122 +25,122 @@ namespace CrashEdit.Crash
         private void ConvertIndices()
         {
             triangles = new List<ModelTransformedTriangle>();
-            Dictionary<byte, int> p = new Dictionary<byte, int>();
-            int v = positions == null ? 0 : -BitConv.FromInt32(Info, 0x4C); // special vertex count, let's get rid of it for compressed models
+            Dictionary<byte, int> pos = new Dictionary<byte, int>();
+            int vert = positions == null ? 0 : -BitConv.FromInt32(Info, 0x4C); // special vertex count, let'str get rid of it for compressed models
             List<int> vtx = new List<int>();
-            int lastvalidcc = -3; // dirty hack
-            int lastccpos = -1;
-            int lastaapos = -1;
+            int lastValidCC = -3; // dirty hack
+            int lastCCpos = -1;
+            int lastAApos = -1;
             int lastcolor = -1;
-            int lastnonbb = -1;
+            int lastNonBB = -1;
             ModelStruct[] structs = new ModelStruct[PolyData.Length];
             for (int i = 0; i < PolyData.Length; ++i) // pre-pass (ugh)
             {
-                ModelStruct s = ConvertPolyItem(PolyData[i]);
-                if (s == null) // footer
+                ModelStruct str = ConvertPolyItem(PolyData[i]);
+                if (str == null) // footer
                     break;
-                else if (s is ModelColor c) // color
-                    structs[i] = c;
-                else if (s is ModelTriangle t) // index
+                else if (str is ModelColor col) // color
+                    structs[i] = col;
+                else if (str is ModelTriangle tri) // index
                 {
-                    if (t.Type == ModelTriangle.IndexType.Original)
+                    if (tri.Type == ModelTriangle.IndexType.Original)
                     {
-                        if (t.PositionKey != ModelTriangle.NullPtr)
+                        if (tri.PositionKey != ModelTriangle.NullPtr)
                         {
-                            if (p.ContainsKey(t.PositionKey))
-                                p[t.PositionKey] = v;
+                            if (pos.ContainsKey(tri.PositionKey))
+                                pos[tri.PositionKey] = vert;
                             else
-                                p.Add(t.PositionKey, v);
+                                pos.Add(tri.PositionKey, vert);
                         }
-                        vtx.Add(v++);
+                        vtx.Add(vert++);
                     }
-                    else if (t.Type == ModelTriangle.IndexType.Duplicate)
+                    else if (tri.Type == ModelTriangle.IndexType.Duplicate)
                     {
-                        vtx.Add(p[t.PositionKey]);
+                        vtx.Add(pos[tri.PositionKey]);
                     }
                     else
                         throw new Exception();
-                    structs[i] = t;
+                    structs[i] = tri;
                 }
                 else
                     throw new Exception();
             }
-            for (int i = 0, cur_v = 0; i < PolyData.Length; ++i)
+            for (int i = 0, cur_str = 0; i < PolyData.Length; ++i)
             {
-                ModelStruct s = structs[i];
-                if (s == null) // footer
+                ModelStruct str = structs[i];
+                if (str == null) // footer
                     break;
-                else if (s is ModelColor c) // color
+                else if (str is ModelColor col) // color
                 {
                     lastcolor = i;
                 }
-                else if (s is ModelTriangle t) // index
+                else if (str is ModelTriangle tri) // index
                 {
-                    switch (t.TriangleType)
+                    switch (tri.TriangleType)
                     {
                         case 0:
-                            lastaapos = cur_v;
-                            lastnonbb = i;
+                            lastAApos = cur_str;
+                            lastNonBB = i;
                             triangles.Add(new ModelTransformedTriangle(
-                                vtx[cur_v],
-                                vtx[cur_v - 1],
-                                vtx[cur_v - 2],
-                                t.ColorIndex,
+                                vtx[cur_str],
+                                vtx[cur_str - 1],
+                                vtx[cur_str - 2],
+                                tri.ColorIndex,
                                 lastcolor + 1 == i ? ((ModelColor)structs[lastcolor]).Color1 : ((ModelTriangle)structs[i - 1]).ColorIndex,
                                 lastcolor + 1 == i ? ((ModelColor)structs[lastcolor]).Color2 : (lastcolor + 2 == i ? ((ModelColor)structs[lastcolor]).Color1 : ((ModelTriangle)structs[i - 2]).ColorIndex),
-                                t.TextureIndex,
-                                t.TriangleType,
-                                t.TriangleSubtype,
-                                t.Animated));
+                                tri.TextureIndex,
+                                tri.TriangleType,
+                                tri.TriangleSubtype,
+                                tri.Animated));
                             break;
                         case 1:
-                            int ci = -1;
-                            if (lastcolor < lastnonbb - 2) // 3
-                                ci = ((ModelTriangle)structs[lastnonbb - 2]).ColorIndex;
-                            else if (lastcolor == lastnonbb - 2) // 1
-                                ci = ((ModelColor)structs[lastcolor]).Color1;
-                            else if (lastcolor == lastnonbb - 1) // 2
-                                ci = ((ModelColor)structs[lastcolor]).Color2;
-                            else if (lastcolor > lastnonbb - 2) // 4
-                                ci = ((ModelColor)structs[lastcolor]).Color2;
+                            int colorIndex = -1;
+                            if (lastcolor < lastNonBB - 2) // 3
+                                colorIndex = ((ModelTriangle)structs[lastNonBB - 2]).ColorIndex;
+                            else if (lastcolor == lastNonBB - 2) // 1
+                                colorIndex = ((ModelColor)structs[lastcolor]).Color1;
+                            else if (lastcolor == lastNonBB - 1) // 2
+                                colorIndex = ((ModelColor)structs[lastcolor]).Color2;
+                            else if (lastcolor > lastNonBB - 2) // 4
+                                colorIndex = ((ModelColor)structs[lastcolor]).Color2;
                             triangles.Add(new ModelTransformedTriangle(
-                                vtx[cur_v],
-                                vtx[cur_v - 1],
-                                lastccpos > lastaapos ? vtx[lastccpos] : vtx[lastaapos - 2],
-                                t.ColorIndex,
+                                vtx[cur_str],
+                                vtx[cur_str - 1],
+                                lastCCpos > lastAApos ? vtx[lastCCpos] : vtx[lastAApos - 2],
+                                tri.ColorIndex,
                                 lastcolor + 1 == i ? ((ModelColor)structs[lastcolor]).Color1 : ((ModelTriangle)structs[i - 1]).ColorIndex,
-                                ci,
-                                t.TextureIndex,
-                                t.TriangleType,
-                                t.TriangleSubtype,
-                                t.Animated));
+                                colorIndex,
+                                tri.TextureIndex,
+                                tri.TriangleType,
+                                tri.TriangleSubtype,
+                                tri.Animated));
                             break;
                         case 2:
-                            if (i + 2 < PolyData.Length && lastvalidcc + 2 < i)
+                            if (i + 2 < PolyData.Length && lastValidCC + 2 < i)
                             {
-                                lastvalidcc = i;
+                                lastValidCC = i;
                                 triangles.Add(new ModelTransformedTriangle(
-                                    vtx[cur_v],
-                                    vtx[cur_v + 1],
-                                    vtx[cur_v + 2],
-                                    t.ColorIndex,
+                                    vtx[cur_str],
+                                    vtx[cur_str + 1],
+                                    vtx[cur_str + 2],
+                                    tri.ColorIndex,
                                     ((ModelTriangle)structs[i + 1]).ColorIndex,
                                     ((ModelTriangle)structs[i + 2]).ColorIndex,
-                                    t.TextureIndex,
-                                    t.TriangleType,
-                                    t.TriangleSubtype,
-                                    t.Animated));
+                                    tri.TextureIndex,
+                                    tri.TriangleType,
+                                    tri.TriangleSubtype,
+                                    tri.Animated));
                             }
-                            lastccpos = cur_v;
-                            lastnonbb = i;
+                            lastCCpos = cur_str;
+                            lastNonBB = i;
                             break;
                     }
-                    ++cur_v;
+                    ++cur_str;
                 }
             }
         }
 
-        private static ModelStruct ConvertPolyItem(uint item)
+        public static ModelStruct ConvertPolyItem(uint item)
         {
             if (item == 0xFFFFFFFF)
             {
@@ -161,11 +161,11 @@ namespace CrashEdit.Crash
             int result = 0;
             if (Positions != null)
             {
-                foreach (var p in Positions)
+                foreach (var pos in Positions)
                 {
-                    result += p.XBits + 1;
-                    result += p.YBits + 1;
-                    result += p.ZBits + 1;
+                    result += pos.XBits + 1;
+                    result += pos.YBits + 1;
+                    result += pos.ZBits + 1;
                 }
             }
             return result;
@@ -182,20 +182,37 @@ namespace CrashEdit.Crash
             "ThingRed";
 
         public override int Type => 2;
-        public byte[] Info { get; }
-        public uint[] PolyData { get; }
+        public byte[] Info { get; set; }
+        public uint[] PolyData { get; set; }
         public IList<ModelTransformedTriangle> Triangles => triangles;
         public IList<SceneryColor> Colors => colors;
         public IList<ModelTexture> Textures => textures;
         public IList<ModelExtendedTexture> AnimatedTextures => animatedtextures;
         public IList<ModelPosition> Positions => positions;
 
-        public int ScaleX => BitConv.FromInt32(Info, 0);
-        public int ScaleY => BitConv.FromInt32(Info, 4);
-        public int ScaleZ => BitConv.FromInt32(Info, 8);
+        public int ScaleX
+        {
+            get => BitConv.FromInt32(Info, 0);
+            set => BitConv.ToInt32(Info, 0, value);
+        }
+        public int ScaleY
+        {
+            get => BitConv.FromInt32(Info, 4);
+            set => BitConv.ToInt32(Info, 4, value);
+        }
+        public int ScaleZ
+        {
+            get => BitConv.FromInt32(Info, 8);
+            set => BitConv.ToInt32(Info, 8, value);
+        }
         public int GetTPAG(int idx) => BitConv.FromInt32(Info, 0xC + 4 * idx);
+        public void SetTPAG(int idx, int value) => BitConv.ToInt32(Info, 0xC + 4 * idx, value);
         public int VertexCount => BitConv.FromInt32(Info, 0x38);
-        public int TPAGCount => BitConv.FromInt32(Info, 0x40);
+        public int TPAGCount
+        {
+            get => BitConv.FromInt32(Info, 0x40);
+            set => BitConv.ToInt32(Info, 0x40, value);
+        }
         public int PolyCount => BitConv.FromInt32(Info, 0x44);
 
         public override UnprocessedEntry Unprocess()

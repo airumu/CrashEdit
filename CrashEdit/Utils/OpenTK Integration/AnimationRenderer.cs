@@ -136,7 +136,7 @@ namespace CrashEdit.CE
             }
 
             // decompress vertices, on the fly right now
-            var verts = frame.MakeVertices(model);
+            var verts = frame.Positions ?? frame.MakeVertices(model);
             var trans = new Vector3(frame.XOffset, frame.YOffset, frame.ZOffset) / 4;
             var scale = new Vector3(model.ScaleX, model.ScaleY, model.ScaleZ) / (GameScales.ModelC1 * GameScales.AnimC1);
 

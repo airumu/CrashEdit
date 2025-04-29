@@ -1,6 +1,6 @@
 namespace CrashEdit.Crash
 {
-    public readonly struct SceneryColor
+    public struct SceneryColor
     {
         public SceneryColor(byte red, byte green, byte blue) : this(red, green, blue, 0)
         {
@@ -14,9 +14,9 @@ namespace CrashEdit.Crash
             Extra = extra;
         }
 
-        public byte Red { get; }
-        public byte Green { get; }
-        public byte Blue { get; }
-        public byte Extra { get; }
+        public byte Red { get; set; }
+        public byte Green { get; set; }
+        public byte Blue { get; set; }
+        public byte Extra { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace CrashEdit.Crash
 {
-    public sealed class VertexGroup2(bool lerp, short frames, int eid) : GOOLFrameGroupWithChunk(eid)
+    public sealed class VertexGroup2(bool lerp, short frames, int eid, int index) : GOOLFrameGroupWithChunk(eid)
     {
         public override short Type() => 1;
 
@@ -10,8 +10,9 @@
             {
                 ErrorManager.SignalError("Vertex frame group version is wrong");
             }
+            int idx = index;
             index += 2;
-            
+
             short frames = BitConv.FromInt16(data, index);
             index += 2;
 
@@ -21,11 +22,12 @@
             int lerp = BitConv.FromInt32(data, index);
             index += 4;
 
-            return new VertexGroup2(lerp != 0, frames, eid);
+            return new VertexGroup2(lerp != 0, frames, eid, idx);
         }
 
         public short FrameCount { get; set; } = frames;
         public bool Interpolated { get; set; } = lerp;
+        public int Index { get; set; } = index;
 
         public override byte[] Save()
         {

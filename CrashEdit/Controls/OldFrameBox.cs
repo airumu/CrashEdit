@@ -1,4 +1,6 @@
+using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
+using MetroSet_UI.Controls;
 
 namespace CrashEdit.CE
 {
@@ -6,6 +8,8 @@ namespace CrashEdit.CE
     {
         private OldFrameController controller;
         private OldFrame frame;
+
+        SplitContainer pnSplit;
 
         private bool vertexdirty;
         private int vertexindex;
@@ -15,6 +19,77 @@ namespace CrashEdit.CE
             this.controller = controller;
             frame = controller.OldFrame;
             InitializeComponent();
+            CreateTabs();
+        }
+
+        private void CreateTabs()
+        {
+            MetroSetTabControl tbcTabs = new MetroSetTabControl()
+            {
+                BackgroundColor = Color.FromArgb(31, 31, 32),
+                Dock = DockStyle.Fill,
+                IsDerivedStyle = false,
+                ItemSize = new Size(100, 28),
+                Style = MetroSet_UI.Enums.Style.Dark,
+                TabStyle = MetroSet_UI.Enums.TabStyle.Style1
+            };
+            dynamic entry = null!;
+            if (controller.IsColored)
+            {
+                entry = controller.ColoredAnimationEntryController.ColoredAnimationEntry;
+            }
+            else
+            {
+                entry = controller.OldAnimationEntryController.OldAnimationEntry;
+            }
+            var viewerbox = new OldAnimationEntryViewer(controller.GetNSF(), entry.EID, entry.Frames.IndexOf(frame))
+            {
+                Dock = DockStyle.Fill
+            };
+
+            if (Settings.Default.SplitAnimViewerPanels)
+            {
+                pnSplit = new SplitContainer
+                {
+                    Orientation = Orientation.Horizontal,
+                    SplitterDistance = 55,
+                    IsSplitterFixed = true,
+                    Dock = DockStyle.Fill
+                };
+                pnSplit.Panel1.Controls.Add(pnOldFrameBox);
+                pnSplit.Panel2.Controls.Add(viewerbox);
+                Controls.Add(pnSplit);
+                MainInit();
+            }
+            else
+            {
+                TabPage viewertab = new TabPage("Viewer");
+                viewertab.Controls.Add(viewerbox);
+                TabPage edittab = new TabPage("Editor");
+                edittab.Controls.Add(pnOldFrameBox);
+                edittab.BackColor = Color.FromArgb(31, 31, 32);
+
+                tbcTabs.TabPages.Add(viewertab);
+                tbcTabs.TabPages.Add(edittab);
+
+                EventHandler tabChangedHandler = null;
+                tabChangedHandler = (sender, e) =>
+                {
+                    if (tbcTabs.SelectedTab == edittab)
+                    {
+                        MainInit();
+                        tbcTabs.SelectedIndexChanged -= tabChangedHandler;
+                    }
+                };
+                tbcTabs.SelectedIndexChanged += tabChangedHandler;
+
+                tbcTabs.SelectedTab = viewertab;
+                Controls.Add(tbcTabs);
+            }
+        }
+
+        private void MainInit()
+        {
             UpdateVertice();
             UpdateUnknown();
             UpdateFactor1();

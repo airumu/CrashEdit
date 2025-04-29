@@ -8,7 +8,7 @@ namespace CrashEdit
 
         public override string Text => "Find Previous";
 
-        public override string ImageKey => "RecordPrevious";
+        public override string ImageKey => "Previous";
 
         public override bool Ready =>
             WsHost?.SearchPredicate != null &&
@@ -39,7 +39,7 @@ namespace CrashEdit
             }
 
             // No match.
-            Host.ShowError("No results before the current selection.");
+            Host.ShowInformation("No results before the current selection.", "Find");
             return false;
         }
 

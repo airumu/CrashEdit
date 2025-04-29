@@ -1,9 +1,12 @@
-﻿using CrashEdit.Crash;
+﻿using AltUI.Controls;
+using AltUI.Forms;
+using CrashEdit.CE.Properties;
+using CrashEdit.Crash;
 using System.Drawing.Imaging;
 
 namespace CrashEdit.CE
 {
-    public partial class TextureViewer : Form
+    public partial class TextureViewer : DarkForm
     {
         internal enum TextureType
         {
@@ -15,28 +18,54 @@ namespace CrashEdit.CE
         private TextureType textype;
         private Rectangle selectedregion;
 
+        private bool isDragging = false;
+        private Point dragStartPoint;
+        private Point initialSelectedRegionPosition;
+        private int selectionSize;
+        private byte[] tempTexture;
+        private int tempWidth;
+        private int tempHeight;
+        private int tempBpp;
+        private byte[] tempCLUT;
+
+        private bool isBGRA;
+        private bool replaceCLUT;
+
+        private DarkToolTip tipViewer;
+
         public TextureViewer(TextureChunk texturechunk)
         {
             chunk = texturechunk;
             textype = TextureType.Crash2;
 
-            Text = string.Format("Texture Viewer [{0}] - Right-click to save texture region to file", texturechunk.EName);
+            Icon = Embeds.GetIcon("Painting");
+            Text = string.Format("Texture Viewer [{0}]", texturechunk.EName);
 
             InitializeComponent();
 
-            tabC1.Enter += delegate (object sender, EventArgs e)
+            tabC1.Enter += delegate (object? sender, EventArgs e)
             {
                 textype = TextureType.Crash1;
                 UpdatePicture();
             };
-            tabC2.Enter += delegate (object sender, EventArgs e)
+            tabC2.Enter += delegate (object? sender, EventArgs e)
             {
                 textype = TextureType.Crash2;
                 UpdatePicture();
             };
             tabControl1.SelectedTab = tabC2;
+            C1dpdW.SelectedIndex = 0;
+            C1dpdH.SelectedIndex = 0;
+            C1dpdColor.SelectedIndex = 0;
+            C1dpdBlend.SelectedIndex = 3;
+            C2dpdColor.SelectedIndex = 0;
+            C2dpdBlend.SelectedIndex = 3;
+            selectionSize = 32;
 
-            pictureBox1.MouseClick += delegate (object sender, MouseEventArgs e)
+            isBGRA = true;
+            replaceCLUT = true;
+
+            pictureBox1.MouseClick += delegate (object? sender, MouseEventArgs e)
             {
                 if (e.Button == MouseButtons.Right && pictureBox1.Image != null && pictureBox1.Image is Bitmap bmp)
                 {
@@ -48,10 +77,92 @@ namespace CrashEdit.CE
                 }
             };
 
+            pictureBox1.MouseDown += (sender, e) =>
+            {
+                tabControl1.Focus();
+                if (textype == TextureType.Crash1) return;
+                if (e.Button == MouseButtons.Left)
+                {
+                    selectedregion.Width = selectionSize;
+                    selectedregion.Height = selectionSize;
+                    C2numW.Value = selectionSize;
+                    C2numH.Value = selectionSize;
+
+                    dragStartPoint = e.Location;
+                    //initialSelectedRegionPosition = selectedregion.Location;
+                    selectedregion = new Rectangle(dragStartPoint.X, dragStartPoint.Y, TexW, TexH);
+                    isDragging = true;
+
+                    int clickX = e.X;
+                    int clickY = e.Y;
+                    int offsetX = clickX / TexW * TexW;
+                    int offsetY = clickY / TexH * TexH;
+                    selectedregion.X = offsetX;
+                    selectedregion.Y = offsetY;
+                    C2numX.Value = offsetX;
+                    C2numY.Value = offsetY;
+                    UpdatePicture();
+                }
+            };
+
+            pictureBox1.MouseMove += (sender, e) =>
+            {
+                if (textype == TextureType.Crash1) return;
+                if (isDragging)
+                {
+                    int deltaX = e.X - dragStartPoint.X + selectionSize;
+                    int deltaY = e.Y - dragStartPoint.Y + selectionSize;
+                    selectedregion.Width = deltaX;
+                    selectedregion.Height = deltaY;
+                    selectedregion.Width = (selectedregion.Width / selectionSize) * selectionSize;
+                    selectedregion.Height = (selectedregion.Height / selectionSize) * selectionSize;
+
+                    if (selectedregion.Width < selectionSize)
+                        selectedregion.Width = selectionSize;
+                    else if (selectedregion.Width > 1024)
+                        selectedregion.Width = 1024;
+
+                    if (selectedregion.Height < selectionSize)
+                        selectedregion.Height = selectionSize;
+                    else if (selectedregion.Height > 128)
+                        selectedregion.Height = 128;
+
+                    C2numW.Value = selectedregion.Width;
+                    C2numH.Value = selectedregion.Height;
+                    UpdatePicture();
+                }
+                //if (isDragging)
+                //{
+                //    int deltaX = e.X - dragStartPoint.X;
+                //    int deltaY = e.Y - dragStartPoint.Y;
+                //    int newX = initialSelectedRegionPosition.X + deltaX;
+                //    int newY = initialSelectedRegionPosition.Y + deltaY;
+                //    newX = (newX / TexW) * TexW;
+                //    newY = (newY / TexH) * TexH;
+                //    C2numX.Value = newX;
+                //    C2numY.Value = newY;
+                //    selectedregion.X = newX;
+                //    selectedregion.Y = newY;
+                //    UpdatePicture();
+                //}
+            };
+
+            pictureBox1.MouseUp += (sender, e) =>
+            {
+                if (textype == TextureType.Crash1) return;
+                if (e.Button == MouseButtons.Left)
+                {
+                    isDragging = false;
+                }
+            };
+
             foreach (ComboBox dpd in this.GetAll(typeof(ComboBox)))
             {
                 dpd.SelectedIndex = 0;
             }
+
+            tipViewer = new DarkToolTip();
+            tipViewer.SetToolTip(pictureBox1, Resources.TextureViewer_tipViewer);
 
             C1dpdColor.SelectedIndexChanged += new EventHandler(Control_UpdatePicture);
             C1dpdBlend.SelectedIndexChanged += new EventHandler(Control_UpdatePicture);
@@ -63,12 +174,29 @@ namespace CrashEdit.CE
             C1numY.ValueChanged += new EventHandler(Control_UpdatePicture);
             C1numCX.ValueChanged += new EventHandler(Control_UpdatePicture);
             C1numCY.ValueChanged += new EventHandler(Control_UpdatePicture);
-            C2numX.ValueChanged += new EventHandler(Control_UpdatePicture);
-            C2numY.ValueChanged += new EventHandler(Control_UpdatePicture);
-            C2numCX.ValueChanged += new EventHandler(Control_UpdatePicture);
-            C2numCY.ValueChanged += new EventHandler(Control_UpdatePicture);
+            C2numX.ValueChanged += new EventHandler(Control_UpdatePicture_1);
+            C2numY.ValueChanged += new EventHandler(Control_UpdatePicture_1);
+            C2numX2.ValueChanged += new EventHandler(Control_UpdatePicture_2);
+            C2numY2.ValueChanged += new EventHandler(Control_UpdatePicture_2);
+            C2numCX.ValueChanged += new EventHandler(Control_UpdatePicture_3);
+            C2numCY.ValueChanged += new EventHandler(Control_UpdatePicture_3);
             C2numW.ValueChanged += new EventHandler(Control_UpdatePicture);
             C2numH.ValueChanged += new EventHandler(Control_UpdatePicture);
+
+            C1numX.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
+            C1numY.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
+            C1numCX.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
+            C1numCY.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
+            C2numCX.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
+            C2numCY.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
+            C2numX.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
+            C2numY.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
+            C2numX2.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
+            C2numY2.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
+            C2numW.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
+            C2numH.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
+            C2numShiftX.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
+            C2numShiftY.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
 
             UpdatePicture();
 
@@ -80,6 +208,8 @@ namespace CrashEdit.CE
             groupBox7.Text = Properties.Resources.TextureViewer_groupBox4;
             groupBox9.Text = Properties.Resources.TextureViewer_groupBox2;
             groupBox10.Text = Properties.Resources.TextureViewer_groupBox1;
+
+            MakeArgAsText();
         }
 
         internal int TexColorMode => textype == TextureType.Crash1 ? C1dpdColor.SelectedIndex : C2dpdColor.SelectedIndex;
@@ -91,8 +221,37 @@ namespace CrashEdit.CE
         internal int TexCX => textype == TextureType.Crash1 ? (int)C1numCX.Value : (int)C2numCX.Value;
         internal int TexCY => textype == TextureType.Crash1 ? (int)C1numCY.Value : (int)C2numCY.Value;
 
+        private void MakeArgAsText()
+        {
+            int clut_offset = ((int)C2numCX.Value * 0x20) + ((int)C2numCY.Value * 0x200);
+            int clut_val = (int)C2numCX.Value + ((int)C2numCY.Value * 0x40);
+            string clut_offset_hex = clut_offset.ToString("X");
+            string clut_val_hex = clut_val.ToString("X");
+            lblCLUT.Text = string.Format("Hex    0x{0}\r\nOffset 0x{1}", clut_val_hex, clut_offset_hex);
+        }
+
         private void Control_UpdatePicture(object sender, EventArgs e)
         {
+            UpdatePicture();
+        }
+
+        private void Control_UpdatePicture_1(object sender, EventArgs e)
+        {
+            C2numY2.Value = (int)C2numY.Value;
+            C2numX2.Value = (int)C2numX.Value;
+            UpdatePicture();
+        }
+
+        private void Control_UpdatePicture_2(object sender, EventArgs e)
+        {
+            C2numY.Value = (int)C2numY2.Value;
+            C2numX.Value = (int)C2numX2.Value;
+            UpdatePicture();
+        }
+
+        private void Control_UpdatePicture_3(object sender, EventArgs e)
+        {
+            MakeArgAsText();
             UpdatePicture();
         }
 
@@ -100,7 +259,8 @@ namespace CrashEdit.CE
         {
             int pw = 256 << (2 - TexColorMode);
             int ph = 128;
-            Bitmap bitmap = new Bitmap(pw + 64, ph + 64, PixelFormat.Format32bppArgb); // we give the image some buffer space for the selection graphic
+            // Bitmap bitmap = new Bitmap(pw + 64, ph + 64, PixelFormat.Format32bppArgb); // we give the image some buffer space for the selection graphic
+            Bitmap bitmap = new Bitmap(pw + 2, ph + 2, PixelFormat.Format32bppArgb);
             Rectangle brect = new Rectangle(Point.Empty, bitmap.Size);
             BitmapData bdata = bitmap.LockBits(brect, ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
             int[] palette = null;
@@ -149,34 +309,367 @@ namespace CrashEdit.CE
                 int y = TexY;
                 int w = TexW;
                 int h = TexH;
+
                 using (var brush = new SolidBrush(Color.FromArgb(127, 0, 0, 0)))
                 using (var pen = new Pen(Color.Black))
                 {
                     int minh = Math.Min(h, ph - y);
                     g.FillRectangles(brush, new Rectangle[4]
                     {
-                        new Rectangle(0, 0, pw, y),
-                        new Rectangle(0, y, x, minh),
-                        new Rectangle(x+w, y, Math.Max(pw-(x+w),0), minh),
-                        new Rectangle(0, y+h, pw, Math.Max(ph-(y+h),0))
+                    new Rectangle(0, 0, pw, y),
+                    new Rectangle(0, y, x, minh),
+                    new Rectangle(x + w, y, Math.Max(pw - (x + w), 0), minh),
+                    new Rectangle(0, y + h, pw, Math.Max(ph - (y + h), 0))
                     });
-                    g.DrawRectangles(pen, new Rectangle[2]
+
+                    if (textype == TextureType.Crash1)
                     {
-                        new Rectangle(x-1,y-1,w+1,h+1),
-                        new Rectangle(x-3,y-3,w+5,h+5)
-                    });
-                    pen.Color = Color.White;
-                    g.DrawRectangle(pen, new Rectangle(x - 2, y - 2, w + 3, h + 3));
+                        g.DrawRectangles(pen, new Rectangle[2]
+                        {
+                            new Rectangle(x-1,y-1,w+1,h+1),
+                            new Rectangle(x-3,y-3,w+5,h+5)
+                        });
+                        pen.Color = Color.White;
+                        g.DrawRectangle(pen, new Rectangle(x - 2, y - 2, w + 3, h + 3));
+                    }
+                    else
+                    {
+                        g.DrawRectangles(pen, new Rectangle[2]
+                        {
+                            new Rectangle(selectedregion.X - 1, selectedregion.Y - 1, selectedregion.Width + 1, selectedregion.Height + 1),
+                            new Rectangle(selectedregion.X - 3, selectedregion.Y - 3, selectedregion.Width + 5, selectedregion.Height + 5)
+                        });
+                        pen.Color = Color.White;
+                        g.DrawRectangle(pen, new Rectangle(selectedregion.X - 2, selectedregion.Y - 2, selectedregion.Width + 3, selectedregion.Height + 3));
+                    }
                 }
                 selectedregion.X = x;
                 selectedregion.Y = y;
                 selectedregion.Width = w;
                 selectedregion.Height = h;
             }
+
             pictureBox1.Image = bitmap;
             pictureBox1.Size = bitmap.Size;
-            if (Width != pw + 16)
-                Width = pw + 16;
+            Width = 1024 + 32;
         }
+
+        private void C2Size16_Click(object sender, EventArgs e)
+        {
+            C2numW.Value = 16;
+            C2numH.Value = 16;
+            selectionSize = 16;
+            UpdatePicture();
+        }
+
+        private void C2Size32_Click(object sender, EventArgs e)
+        {
+            C2numW.Value = 32;
+            C2numH.Value = 32;
+            selectionSize = 32;
+            UpdatePicture();
+        }
+
+        private void C2Size64_Click(object sender, EventArgs e)
+        {
+            C2numW.Value = 64;
+            C2numH.Value = 64;
+            selectionSize = 64;
+            UpdatePicture();
+        }
+
+        private void C2SizeMax_Click(object sender, EventArgs e)
+        {
+            C2numW.Value = 256 << (2 - TexColorMode);
+            C2numH.Value = 128;
+            UpdatePicture();
+        }
+
+        private void C1Size16_Click(object sender, EventArgs e)
+        {
+            C1dpdW.SelectedItem = "16";
+            C1dpdH.SelectedItem = "16";
+            UpdatePicture();
+        }
+
+        private void C1Size32_Click(object sender, EventArgs e)
+        {
+            C1dpdW.SelectedItem = "32";
+            C1dpdH.SelectedItem = "32";
+            UpdatePicture();
+        }
+
+        private void C1Size64_Click(object sender, EventArgs e)
+        {
+            C1dpdW.SelectedItem = "64";
+            C1dpdH.SelectedItem = "64";
+            UpdatePicture();
+        }
+
+        private void C2btnMoveX1_Click(object sender, EventArgs e)
+        {
+            int arg = (int)C2numShiftX.Value;
+            if ((int)C2numX.Value > arg)
+                C2numX.Value -= arg;
+            else
+                C2numX.Value = 0;
+        }
+
+        private void C2btnMoveX2_Click(object sender, EventArgs e)
+        {
+            int arg = (int)C2numShiftX.Value;
+            if ((int)C2numX.Value < (256 << (2 - TexColorMode)) - 1 - arg)
+                C2numX.Value += arg;
+        }
+
+        private void C2btnMoveY1_Click(object sender, EventArgs e)
+        {
+            int arg = (int)C2numShiftY.Value;
+            if ((int)C2numY.Value > arg)
+                C2numY.Value -= arg;
+            else
+                C2numY.Value = 0;
+        }
+
+        private void C2btnMoveY2_Click(object sender, EventArgs e)
+        {
+            int arg = (int)C2numShiftY.Value;
+            if ((int)C2numY.Value < 127 - arg)
+                C2numY.Value += arg;
+        }
+
+        private void splitContainer1_GotFocus(object sender, EventArgs e)
+        {
+            tabControl1.Focus();
+        }
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdatePicture();
+        }
+
+        private void cmdReplace_Click(object sender, EventArgs e)
+        {
+            if (TexColorMode == 2)
+            {
+                DarkMessageBox.ShowError("Unsupported color depth.", Resources.Title_TextureReplacement);
+                return;
+            }
+            if ((int)C2numX.Value < 32 && (int)C2numY.Value == 0)
+            {
+                DarkMessageBox.ShowError("Textures cannot be replaced on the header.", Resources.Title_TextureReplacement);
+                return;
+            }
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "Image Files|*.bmp;*.png;|All Files|*.*";
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string filePath = openFileDialog.FileName;
+                    string extension = Path.GetExtension(filePath).ToLower();
+
+                    int destX = (int)C2numX.Value;
+                    int destY = (int)C2numY.Value;
+                    int clutX = (int)C2numCX.Value;
+                    int clutY = (int)C2numCY.Value;
+
+                    int oldBpp = 4;
+                    if (TexColorMode == 1)
+                    {
+                        oldBpp = 8;
+                        destX *= 2;
+                        clutX = 0;
+                    }
+
+                    chunk.Data = TextureConv.ReplaceTextureFromFile(filePath, extension, isBGRA, chunk.Data, destX, destY, replaceCLUT, oldBpp, clutX, clutY);
+                    UpdatePicture();
+                }
+            }
+        }
+
+        private void chkBGRA_CheckedChanged(object sender, EventArgs e)
+        {
+            isBGRA = chkBGRA.Checked;
+        }
+
+        private void chkReplaceCLUT_CheckedChanged(object sender, EventArgs e)
+        {
+            replaceCLUT = chkReplaceCLUT.Checked;
+        }
+
+        private void tabControl1_KeyDown(object sender, KeyEventArgs e)
+        {
+            string basePath = basePath = Path.Combine(Path.GetTempPath(), "CrashEdit");
+            int currentBpp = (int)Math.Pow(2, TexColorMode + 2);
+
+            if ((e.KeyCode == Keys.C || e.KeyCode == Keys.X) && e.Modifiers == Keys.Control)
+            {
+                if (TexColorMode == 2)
+                {
+                    DarkMessageBox.ShowError("Unsupported color depth.", Resources.Title_TextureReplacement);
+                    return;
+                }
+                else if ((int)C2numX.Value + (int)C2numW.Value > (256 << (2 - TexColorMode)) || (int)C2numY.Value + (int)C2numH.Value > 128)
+                {
+                    DarkMessageBox.ShowError("Textures cannot be copied outside the bounds.", Resources.Title_TextureReplacement);
+                    return;
+                }
+
+                var temp = TextureConv.CopyTexture(chunk.Data, currentBpp, (int)C2numX.Value, (int)C2numY.Value, (int)C2numW.Value, (int)C2numH.Value);
+                tempTexture = temp.tempTexture;
+                tempWidth = temp.tempWidth;
+                tempHeight = temp.tempHeight;
+                tempBpp = temp.tempBpp;
+
+                if (!Directory.Exists(basePath))
+                {
+                    Directory.CreateDirectory(basePath);
+                }
+
+                File.WriteAllBytes(Path.Combine(basePath, "tempTexture"), tempTexture);
+                List<string> tempInfo = new List<string> { tempWidth.ToString(), tempHeight.ToString(), tempBpp.ToString() };
+                File.WriteAllLines(Path.Combine(basePath, "tempInfo"), tempInfo);
+
+                int length, offset;
+                if (TexColorMode == 0)
+                {
+                    length = 0x20;
+                    offset = (int)C2numCX.Value * 0x20 + (int)C2numCY.Value * 0x200;
+                }
+                else
+                {
+                    length = 0x200;
+                    offset = (int)C2numCY.Value * 0x200;
+                }
+                tempCLUT = new byte[length];
+                Array.Copy(chunk.Data, offset, tempCLUT, 0, length);
+                File.WriteAllBytes(Path.Combine(basePath, "tempCLUT"), tempCLUT);
+
+                if (e.KeyCode == Keys.X) // clear
+                {
+                    if ((int)C2numX.Value < 32 && (int)C2numY.Value == 0)
+                    {
+                        DarkMessageBox.ShowError("Textures cannot be replaced on the header.", Resources.Title_TextureReplacement);
+                    }
+                    else
+                    {
+                        byte[] emptyChunk = new byte[65536];
+                        TextureConv.ReplaceTexture(emptyChunk, chunk.Data, tempWidth, tempHeight, tempBpp, 0, 0, tempWidth, tempHeight, (int)C2numX.Value, (int)C2numY.Value, false);
+
+                        BitConv.ToInt32(chunk.Data, 12, Chunk.CalculateChecksum(chunk.Data));
+                    }
+                }
+
+                Console.WriteLine("Copied texture successfully.");
+                UpdatePicture();
+            }
+            else if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
+            {
+                if (TexColorMode == 2)
+                {
+                    DarkMessageBox.ShowError("Unsupported color depth.", Resources.Title_TextureReplacement);
+                    return;
+                }
+
+                string[] files = Directory.GetFiles(basePath);
+                if (!Directory.Exists(basePath) || files.Length != 3)
+                {
+                    DarkMessageBox.ShowError("There is no texture in buffer.", Resources.Title_TextureReplacement);
+                    return;
+                }
+
+                tempTexture = File.ReadAllBytes(Path.Combine(basePath, "tempTexture"));
+                tempCLUT = File.ReadAllBytes(Path.Combine(basePath, "tempCLUT"));
+
+                string tempInfo = File.ReadAllText(Path.Combine(basePath, "tempInfo"));
+                List<int> restoredData = new List<int>();
+                foreach (string line in tempInfo.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    if (int.TryParse(line, out int value))
+                        restoredData.Add(value);
+                }
+                tempWidth = restoredData[0];
+                tempHeight = restoredData[1];
+                tempBpp = restoredData[2];
+
+                bool failed = false;
+                if ((int)C2numX.Value < 32 && (int)C2numY.Value == 0)
+                {
+                    DarkMessageBox.ShowError("Textures cannot be replaced on the header.", Resources.Title_TextureReplacement);
+                    failed = true;
+                }
+                else if ((int)C2numX.Value + tempWidth > (256 << (2 - TexColorMode)) || (int)C2numY.Value + tempHeight > 128)
+                {
+                    DarkMessageBox.ShowError("Textures cannot be pasted outside the bounds.", Resources.Title_TextureReplacement);
+                    failed = true;
+                }
+                else if (currentBpp != tempBpp)
+                {
+                    DarkMessageBox.ShowError("The color depth of the selected image differs from the current one.", Resources.Title_TextureReplacement);
+                    failed = true;
+                }
+
+                if (failed)
+                {
+                    Console.WriteLine("Failed to paste texture.");
+                    return;
+                }
+
+                TextureConv.ReplaceTexture(tempTexture, chunk.Data, tempWidth, tempHeight, tempBpp, 0, 0, tempWidth, tempHeight, (int)C2numX.Value, (int)C2numY.Value, false);
+
+                Console.WriteLine();
+                Console.WriteLine("========================================");
+                Console.WriteLine($"{tempWidth} x {tempHeight}, {tempBpp}bpp");
+                Console.WriteLine("Pasted texture successfully.");
+
+                if (replaceCLUT)
+                {
+                    chunk.Data = TextureConv.ReplaceClut(tempCLUT, chunk.Data, currentBpp, tempBpp, (int)C2numCX.Value, (int)C2numCY.Value);
+                }
+
+                BitConv.ToInt32(chunk.Data, 12, Chunk.CalculateChecksum(chunk.Data));
+                UpdatePicture();
+            }
+        }
+
+        private void ScrollHandlerFunction(object sender, MouseEventArgs e)
+        {
+            if (sender is NumericUpDown numericUpDown)
+            {
+                HandledMouseEventArgs handledArgs = e as HandledMouseEventArgs;
+                if (handledArgs != null)
+                    handledArgs.Handled = true;
+
+                decimal newValue = numericUpDown.Value;
+                if (e.Delta > 0 && newValue < numericUpDown.Maximum)
+                    newValue += numericUpDown.Increment;
+
+                else if (e.Delta < 0 && newValue > numericUpDown.Minimum)
+                    newValue -= numericUpDown.Increment;
+
+                numericUpDown.Value = newValue;
+            }
+        }
+
+        private void ScrollHandlerFunction2(object sender, MouseEventArgs e)
+        {
+            if (sender is NumericUpDown numericUpDown)
+            {
+                HandledMouseEventArgs handledArgs = e as HandledMouseEventArgs;
+                if (handledArgs != null)
+                    handledArgs.Handled = true;
+
+                decimal newValue = numericUpDown.Value;
+                if (e.Delta > 0 && newValue + 8 < numericUpDown.Maximum)
+                    newValue += 8;
+
+                else if (e.Delta < 0 && newValue - 8 >= numericUpDown.Minimum)
+                    newValue -= 8;
+
+                numericUpDown.Value = newValue;
+                UpdatePicture();
+            }
+        }
+
     }
 }

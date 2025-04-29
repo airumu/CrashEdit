@@ -1,6 +1,6 @@
 ﻿namespace CrashEdit.Crash
 {
-    public struct OldModelTexture : OldModelStruct
+    public class OldModelTexture : OldModelStruct
     {
         public static OldModelTexture Load(byte[] data)
         {
@@ -20,10 +20,11 @@
             byte segment = (byte)(texinfo >> 18 & 3);
             byte xoffu = (byte)(texinfo >> 13 & 0x1F);
             byte cluty = (byte)(texinfo >> 6 & 0x7F);
+            bool unknown = (texinfo >> 5 & 1) != 0;
             byte yoffu = (byte)(texinfo & 0x1F);
-            return new OldModelTexture(uvindex, clutx, cluty, xoffu, yoffu, colormode, blendmode, segment, r, g, b, n, eid);
+            return new OldModelTexture(uvindex, clutx, cluty, xoffu, yoffu, colormode, blendmode, segment, r, g, b, n, eid, unknown);
         }
-        public OldModelTexture(int uvindex, byte clutx, byte cluty, byte xoffu, byte yoffu, byte colormode, byte blendmode, byte segment, byte r, byte g, byte b, bool n, int eid)
+        public OldModelTexture(int uvindex, byte clutx, byte cluty, byte xoffu, byte yoffu, byte colormode, byte blendmode, byte segment, byte r, byte g, byte b, bool n, int eid, bool unknown)
         {
             UVIndex = uvindex;
             ClutX = clutx;
@@ -38,6 +39,7 @@
             B = b;
             N = n;
             EID = eid;
+            Unknown = unknown;
 
             int w = 4 << (UVIndex % 5);
             int h = 4 << ((UVIndex / 5) % 5);
@@ -52,37 +54,39 @@
             V3 = h * ((0x6DB249 >> winding) & 1) + yoff;
         }
 
-        public byte R { get; }
-        public byte G { get; }
-        public byte B { get; }
-        public bool N { get; }
+        public byte R { get; set; }
+        public byte G { get; set; }
+        public byte B { get; set; }
+        public bool N { get; set; }
 
-        public int EID { get; }
+        public int EID { get; set; }
 
-        public byte ColorMode { get; }
-        public int UVIndex { get; }
-        public byte ClutX { get; } // 16-color (32-byte) segments
-        public byte ClutY { get; }
-        public byte XOffU { get; }
-        public byte YOffU { get; }
-        public byte BlendMode { get; }
-        public byte Segment { get; }
-        public int U1 { get; }
-        public int V1 { get; }
-        public int U2 { get; }
-        public int V2 { get; }
-        public int U3 { get; }
-        public int V3 { get; }
+        public byte ColorMode { get; set; }
+        public int UVIndex { get; set; }
+        public byte ClutX { get; set; } // 16-color (32-byte) segments
+        public byte ClutY { get; set; }
+        public byte XOffU { get; set; }
+        public byte YOffU { get; set; }
+        public byte BlendMode { get; set; }
+        public byte Segment { get; set; }
+        public bool Unknown { get; set; }
+        public int U1 { get; set; }
+        public int V1 { get; set; }
+        public int U2 { get; set; }
+        public int V2 { get; set; }
+        public int U3 { get; set; }
+        public int V3 { get; set; }
 
         public byte[] Save()
         {
-            byte[] result = new byte[8];
+            byte[] result = new byte[12];
             result[0] = R;
             result[1] = G;
             result[2] = B;
             result[3] = (byte)(0x80 | (BlendMode << 5) | (Convert.ToByte(N) << 4) | ClutX);
-            uint texinfo = ((uint)UVIndex << 22) | ((uint)ColorMode << 20) | ((uint)Segment << 18) | ((uint)XOffU << 13) | ((uint)ClutY << 6) | YOffU;
-            BitConv.ToInt32(result, 4, (int)texinfo);
+            BitConv.ToInt32(result, 4, EID);
+            uint texinfo = (uint)(Unknown ? 0x20 : 0) | ((uint)UVIndex << 22) | ((uint)ColorMode << 20) | ((uint)Segment << 18) | ((uint)XOffU << 13) | ((uint)ClutY << 6) | YOffU;
+            BitConv.ToInt32(result, 8, (int)texinfo);
             return result;
         }
     }

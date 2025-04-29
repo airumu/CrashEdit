@@ -7,9 +7,9 @@ namespace CrashEdit.CE
         public ChunkController(Chunk chunk, SubcontrollerGroup parentGroup) : base(parentGroup, chunk)
         {
             Chunk = chunk;
-            if (!(this is UnprocessedChunkController))
+            if (this is not (UnprocessedChunkController) &&  this is not (TextureChunkController))
             {
-                AddMenu(CrashUI.Properties.Resources.ChunkController_AcDeprocess, Menu_Unprocess_Chunk);
+                AddMenu(CrashUI.Properties.Resources.ChunkController_AcDeprocess, "Pinion", Menu_Unprocess_Chunk);
             }
         }
 

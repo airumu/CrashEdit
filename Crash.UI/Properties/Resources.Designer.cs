@@ -59,7 +59,18 @@ namespace CrashEdit.CrashUI.Properties {
                 resourceCulture = value;
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Animation ({0}).
+        /// </summary>
+        public static string AnimationEntryController_AcExportAsOBJ
+        {
+            get
+            {
+                return ResourceManager.GetString("AnimationEntryController_AcExportAsOBJ", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Animation ({0}).
         /// </summary>
@@ -392,7 +403,62 @@ namespace CrashEdit.CrashUI.Properties {
                 return ResourceManager.GetString("NSFController_AcAddWavebankChunk", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Add Wavebank Chunk.
+        /// </summary>
+        public static string NSFController_AcAddTextureChunk
+        {
+            get
+            {
+                return ResourceManager.GetString("NSFController_AcAddTextureChunk", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Fix Box Count.
+        /// </summary>
+        public static string NSFController_AcAnalyzeLevel
+        {
+            get
+            {
+                return ResourceManager.GetString("NSFController_AcAnalyzeLevel", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Animation ({0}).
+        /// </summary>
+        public static string NSFController_AcEditScenery
+        {
+            get
+            {
+                return ResourceManager.GetString("NSFController_AcEditScenery", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Fix Box Count.
+        /// </summary>
+        public static string NSFController_AcExportScenery
+        {
+            get
+            {
+                return ResourceManager.GetString("NSFController_AcExportScenery", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Fix Box Count.
+        /// </summary>
+        public static string NSFController_AcFindEntities
+        {
+            get
+            {
+                return ResourceManager.GetString("NSFController_AcFindEntities", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Fix Box Count.
         /// </summary>
@@ -563,7 +629,18 @@ namespace CrashEdit.CrashUI.Properties {
                 return ResourceManager.GetString("ProtoZoneEntryController_Text", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Scenery ({0}).
+        /// </summary>
+        public static string SceneryEntryController_AcFixWGEOv3
+        {
+            get
+            {
+                return ResourceManager.GetString("SceneryEntryController_AcFixWGEOv3", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Scenery ({0}).
         /// </summary>
@@ -770,7 +847,18 @@ namespace CrashEdit.CrashUI.Properties {
                 return ResourceManager.GetString("ZoneEntryController_AcAddEntity", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Add Entity.
+        /// </summary>
+        public static string ZoneEntryController_AcChangeCollisionType
+        {
+            get
+            {
+                return ResourceManager.GetString("ZoneEntryController_AcChangeCollisionType", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Zone ({0}).
         /// </summary>

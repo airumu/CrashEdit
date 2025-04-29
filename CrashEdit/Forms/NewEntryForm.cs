@@ -1,8 +1,9 @@
-﻿using CrashEdit.Crash;
+﻿using AltUI.Forms;
+using CrashEdit.Crash;
 
 namespace CrashEdit.CE
 {
-    public partial class NewEntryForm : Form
+    public partial class NewEntryForm : DarkForm
     {
         private const string EntryTypeUnprocessed = "Unprocessed";
         private const string EntryTypeZone = "Zone (T7 ZDAT)";
@@ -18,6 +19,8 @@ namespace CrashEdit.CE
 
         public NewEntryForm(NSF nsf, GameVersion gameVersion)
         {
+            Icon = Embeds.GetIcon("ThingOrange");
+
             this.nsf = nsf;
             InitializeComponent();
             dpdType.Items.Add(EntryTypeUnprocessed);

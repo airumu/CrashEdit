@@ -1,6 +1,6 @@
 namespace CrashEdit.Crash
 {
-    public sealed class ProtoNSD
+    public sealed class ProtoNSD : IResource
     {
         public static ProtoNSD Load(byte[] data)
         {
@@ -46,6 +46,9 @@ namespace CrashEdit.Crash
             ChunkCount = chunkcount;
             Index = new List<NSDLink>(index);
         }
+
+        public string Title => "ProtoNSD";
+        public string ImageKey => "NSD";
 
         public int[] HashKeyMap { get; set; }
         public int ChunkCount { get; set; }

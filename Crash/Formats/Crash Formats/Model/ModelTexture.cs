@@ -47,7 +47,9 @@ namespace CrashEdit.Crash
             Left = Math.Min(U1, Math.Min(U2, U3)) + xoff;
             Top = Math.Min(V1, Math.Min(V2, V3));
             Width = Math.Max(U1, Math.Max(U2, U3)) + xoff - Left;
+            Width++; // fake value
             Height = Math.Max(V1, Math.Max(V2, V3)) - Top;
+            Height++; // fake value
             int tx1 = U1 + xoff;
             int tx2 = U2 + xoff;
             int tx3 = U3 + xoff;
@@ -75,34 +77,34 @@ namespace CrashEdit.Crash
         }
 
         public byte ColorMode { get; set; }
-        public byte U1 { get; }
-        public byte V1 { get; }
-        public byte U2 { get; }
-        public byte V2 { get; }
-        public byte U3 { get; }
-        public byte V3 { get; }
-        public byte U4 { get; }
-        public byte V4 { get; }
+        public byte U1 { get; set; }
+        public byte V1 { get; set; }
+        public byte U2 { get; set; }
+        public byte V2 { get; set; }
+        public byte U3 { get; set; }
+        public byte V3 { get; set; }
+        public byte U4 { get; set; }
+        public byte V4 { get; set; }
         public byte ClutX { get; set; } // 16-color (32-byte) segments
         public byte ClutY1 { get; set; }
         public byte ClutY2 { get; set; }
         public byte BlendMode { get; set; }
-        public byte Segment { get; }
-        public byte Page { get; }
+        public byte Segment { get; set; }
+        public byte Page { get; set; }
 
         public int ClutY => (ClutY2 << 2) | (ClutY1 >> 2 & 0x3);
-        public int Left { get; }
-        public int Top { get; }
-        public int Width { get; }
-        public int Height { get; }
-        public float X1 { get; }
-        public float X2 { get; }
-        public float X3 { get; }
-        public float X4 { get; }
-        public float Y1 { get; }
-        public float Y2 { get; }
-        public float Y3 { get; }
-        public float Y4 { get; }
+        public int Left { get; set; }
+        public int Top { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
+        public float X1 { get; set; }
+        public float X2 { get; set; }
+        public float X3 { get; set; }
+        public float X4 { get; set; }
+        public float Y1 { get; set; }
+        public float Y2 { get; set; }
+        public float Y3 { get; set; }
+        public float Y4 { get; set; }
 
         public byte[] Save()
         {

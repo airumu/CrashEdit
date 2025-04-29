@@ -11,9 +11,14 @@ namespace CrashEdit.CE
             LegacyVerbs.Add(new LegacyVerb(text, new Action(proc)));
         }
 
+        protected void AddMenu(string text, string imageKey, ControllerMenuDelegate proc)
+        {
+            LegacyVerbs.Add(new LegacyVerb(text, imageKey, new Action(proc)));
+        }
+
         protected void AddMenuSeparator()
         {
-            // FIXME
+            LegacyVerbs.Add(new LegacyVerb("-", () => { }));
         }
 
         public GameVersion GameVersion =>
@@ -32,6 +37,11 @@ namespace CrashEdit.CE
         public IEnumerable<T> GetEntries<T>() where T : class, IEntry
         {
             return (Modern.Root.Resource as LevelWorkspace)?.NSF?.GetEntries<T>();
+        }
+
+        public string GetFileName()
+        {
+            return (Modern.Root.Resource as LevelWorkspace)?.FileName;
         }
     }
 }

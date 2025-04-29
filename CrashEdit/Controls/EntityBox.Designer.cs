@@ -1,3 +1,7 @@
+using System.Windows.Forms;
+using AltUI.Controls;
+using MetroSet_UI.Controls;
+
 namespace CrashEdit.CE
 {
     partial class EntityBox
@@ -18,6 +22,7 @@ namespace CrashEdit.CE
                 components.Dispose();
             }
             base.Dispose(disposing);
+            KillForm();
         }
 
         #region Component Designer generated code
@@ -28,3072 +33,3715 @@ namespace CrashEdit.CE
         /// </summary>
         private void InitializeComponent()
         {
-            this.chkType = new System.Windows.Forms.CheckBox();
-            this.numType = new System.Windows.Forms.NumericUpDown();
-            this.fraType = new System.Windows.Forms.GroupBox();
-            this.chkSubtype = new System.Windows.Forms.CheckBox();
-            this.numSubtype = new System.Windows.Forms.NumericUpDown();
-            this.fraPosition = new System.Windows.Forms.GroupBox();
-            this.cmdInterpolate = new System.Windows.Forms.Button();
-            this.lblPositionIndex = new System.Windows.Forms.Label();
-            this.cmdNextPosition = new System.Windows.Forms.Button();
-            this.cmdPreviousPosition = new System.Windows.Forms.Button();
-            this.cmdInsertPosition = new System.Windows.Forms.Button();
-            this.lblZ = new System.Windows.Forms.Label();
-            this.cmdRemovePosition = new System.Windows.Forms.Button();
-            this.lblY = new System.Windows.Forms.Label();
-            this.cmdAppendPosition = new System.Windows.Forms.Button();
-            this.lblX = new System.Windows.Forms.Label();
-            this.numZ = new System.Windows.Forms.NumericUpDown();
-            this.numY = new System.Windows.Forms.NumericUpDown();
-            this.numX = new System.Windows.Forms.NumericUpDown();
-            this.cmdInsertVictim = new System.Windows.Forms.Button();
-            this.fraID = new System.Windows.Forms.GroupBox();
-            this.chkID2 = new System.Windows.Forms.CheckBox();
-            this.numID2 = new System.Windows.Forms.NumericUpDown();
-            this.chkID = new System.Windows.Forms.CheckBox();
-            this.numID = new System.Windows.Forms.NumericUpDown();
-            this.fraSettings = new System.Windows.Forms.GroupBox();
-            this.chkSettingHex = new System.Windows.Forms.CheckBox();
-            this.numSettingC = new System.Windows.Forms.NumericUpDown();
-            this.lblSettingIndex = new System.Windows.Forms.Label();
-            this.cmdNextSetting = new System.Windows.Forms.Button();
-            this.cmdPreviousSetting = new System.Windows.Forms.Button();
-            this.cmdAddSetting = new System.Windows.Forms.Button();
-            this.cmdRemoveSetting = new System.Windows.Forms.Button();
-            this.numSettingB = new System.Windows.Forms.NumericUpDown();
-            this.numSettingA = new System.Windows.Forms.NumericUpDown();
-            this.fraName = new System.Windows.Forms.GroupBox();
-            this.txtName = new System.Windows.Forms.TextBox();
-            this.chkName = new System.Windows.Forms.CheckBox();
-            this.tbcTabs = new System.Windows.Forms.TabControl();
-            this.tabGeneral = new System.Windows.Forms.TabPage();
-            this.tabSpecial = new System.Windows.Forms.TabPage();
-            this.fraZMod = new System.Windows.Forms.GroupBox();
-            this.chkZMod = new System.Windows.Forms.CheckBox();
-            this.numZMod = new System.Windows.Forms.NumericUpDown();
-            this.fraTTReward = new System.Windows.Forms.GroupBox();
-            this.chkTTReward = new System.Windows.Forms.CheckBox();
-            this.numTTReward = new System.Windows.Forms.NumericUpDown();
-            this.fraOtherSettings = new System.Windows.Forms.GroupBox();
-            this.chkOtherSettings = new System.Windows.Forms.CheckBox();
-            this.numOtherSettings = new System.Windows.Forms.NumericUpDown();
-            this.fraScaling = new System.Windows.Forms.GroupBox();
-            this.chkScaling = new System.Windows.Forms.CheckBox();
-            this.numScaling = new System.Windows.Forms.NumericUpDown();
-            this.fraDDASection = new System.Windows.Forms.GroupBox();
-            this.chkDDASection = new System.Windows.Forms.CheckBox();
-            this.numDDASection = new System.Windows.Forms.NumericUpDown();
-            this.fraDDASettings = new System.Windows.Forms.GroupBox();
-            this.chkDDASettings = new System.Windows.Forms.CheckBox();
-            this.numDDASettings = new System.Windows.Forms.NumericUpDown();
-            this.fraBoxCount = new System.Windows.Forms.GroupBox();
-            this.chkBonusBoxCount = new System.Windows.Forms.CheckBox();
-            this.numBonusBoxCount = new System.Windows.Forms.NumericUpDown();
-            this.chkBoxCount = new System.Windows.Forms.CheckBox();
-            this.numBoxCount = new System.Windows.Forms.NumericUpDown();
-            this.fraVictims = new System.Windows.Forms.GroupBox();
-            this.cmdClearAllVictims = new System.Windows.Forms.Button();
-            this.numVictimID = new System.Windows.Forms.NumericUpDown();
-            this.cmdRemoveVictim = new System.Windows.Forms.Button();
-            this.cmdNextVictim = new System.Windows.Forms.Button();
-            this.cmdPreviousVictim = new System.Windows.Forms.Button();
-            this.lblVictimIndex = new System.Windows.Forms.Label();
-            this.tabCamera = new System.Windows.Forms.TabPage();
-            this.fraFOV = new System.Windows.Forms.GroupBox();
-            this.lblFOVPosition = new System.Windows.Forms.Label();
-            this.cmdRemoveFOVFrame = new System.Windows.Forms.Button();
-            this.cmdInsertFOVFrame = new System.Windows.Forms.Button();
-            this.numFOVPosition = new System.Windows.Forms.NumericUpDown();
-            this.lblFOVFrame = new System.Windows.Forms.Label();
-            this.fraFOVFrame = new System.Windows.Forms.GroupBox();
-            this.lblFOVIndex = new System.Windows.Forms.Label();
-            this.cmdRemoveFOV = new System.Windows.Forms.Button();
-            this.cmdInsertFOV = new System.Windows.Forms.Button();
-            this.cmdPrevFOV = new System.Windows.Forms.Button();
-            this.cmdNextFOV = new System.Windows.Forms.Button();
-            this.lblFOV = new System.Windows.Forms.Label();
-            this.numFOV = new System.Windows.Forms.NumericUpDown();
-            this.cmdPrevFOVFrame = new System.Windows.Forms.Button();
-            this.cmdNextFOVFrame = new System.Windows.Forms.Button();
-            this.fraNeighbor = new System.Windows.Forms.GroupBox();
-            this.lblNeighborPosition = new System.Windows.Forms.Label();
-            this.cmdRemoveNeighbor = new System.Windows.Forms.Button();
-            this.cmdInsertNeighbor = new System.Windows.Forms.Button();
-            this.numNeighborPosition = new System.Windows.Forms.NumericUpDown();
-            this.lblNeighbor = new System.Windows.Forms.Label();
-            this.fraNeighborSetting = new System.Windows.Forms.GroupBox();
-            this.lblNeighborSetting = new System.Windows.Forms.Label();
-            this.cmdRemoveNeighborSetting = new System.Windows.Forms.Button();
-            this.cmdInsertNeighborSetting = new System.Windows.Forms.Button();
-            this.cmdPrevNeighborSetting = new System.Windows.Forms.Button();
-            this.cmdNextNeighborSetting = new System.Windows.Forms.Button();
-            this.lblNeighborLink = new System.Windows.Forms.Label();
-            this.lblNeighborFlag = new System.Windows.Forms.Label();
-            this.numNeighborFlag = new System.Windows.Forms.NumericUpDown();
-            this.lblNeighborCamera = new System.Windows.Forms.Label();
-            this.lblNeighborZone = new System.Windows.Forms.Label();
-            this.numNeighborLink = new System.Windows.Forms.NumericUpDown();
-            this.numNeighborCamera = new System.Windows.Forms.NumericUpDown();
-            this.numNeighborZone = new System.Windows.Forms.NumericUpDown();
-            this.cmdPrevNeighbor = new System.Windows.Forms.Button();
-            this.cmdNextNeighbor = new System.Windows.Forms.Button();
-            this.fraAvgDist = new System.Windows.Forms.GroupBox();
-            this.chkAvgDist = new System.Windows.Forms.CheckBox();
-            this.numAvgDist = new System.Windows.Forms.NumericUpDown();
-            this.fraMode = new System.Windows.Forms.GroupBox();
-            this.chkMode = new System.Windows.Forms.CheckBox();
-            this.numMode = new System.Windows.Forms.NumericUpDown();
-            this.fraCameraSubIndex = new System.Windows.Forms.GroupBox();
-            this.chkCameraSubIndex = new System.Windows.Forms.CheckBox();
-            this.numCameraSubIndex = new System.Windows.Forms.NumericUpDown();
-            this.fraCameraIndex = new System.Windows.Forms.GroupBox();
-            this.chkCameraIndex = new System.Windows.Forms.CheckBox();
-            this.numCameraIndex = new System.Windows.Forms.NumericUpDown();
-            this.fraSLST = new System.Windows.Forms.GroupBox();
-            this.lblEIDErr1 = new System.Windows.Forms.Label();
-            this.txtSLST = new System.Windows.Forms.TextBox();
-            this.chkSLST = new System.Windows.Forms.CheckBox();
-            this.tabLoadLists = new System.Windows.Forms.TabPage();
-            this.lblEIDErrB = new System.Windows.Forms.Label();
-            this.fraLoadListPayload = new System.Windows.Forms.GroupBox();
-            this.lblPayload = new System.Windows.Forms.Label();
-            this.cmdLoadListVerify = new System.Windows.Forms.Button();
-            this.cmdPayload = new System.Windows.Forms.Button();
-            this.lblPayloadPosition = new System.Windows.Forms.Label();
-            this.numPayloadPosition = new System.Windows.Forms.NumericUpDown();
-            this.fraLoadListB = new System.Windows.Forms.GroupBox();
-            this.lblMetavalueLoadB = new System.Windows.Forms.Label();
-            this.cmdRemoveRowB = new System.Windows.Forms.Button();
-            this.cmdInsertRowB = new System.Windows.Forms.Button();
-            this.numMetavalueLoadB = new System.Windows.Forms.NumericUpDown();
-            this.lblLoadListRowIndexB = new System.Windows.Forms.Label();
-            this.fraEIDB = new System.Windows.Forms.GroupBox();
-            this.txtEIDB = new System.Windows.Forms.TextBox();
-            this.lblEIDIndexB = new System.Windows.Forms.Label();
-            this.cmdAppendEIDB = new System.Windows.Forms.Button();
-            this.cmdRemoveEIDB = new System.Windows.Forms.Button();
-            this.cmdPrevEIDB = new System.Windows.Forms.Button();
-            this.cmdInsertEIDB = new System.Windows.Forms.Button();
-            this.cmdNextEIDB = new System.Windows.Forms.Button();
-            this.cmdPrevRowB = new System.Windows.Forms.Button();
-            this.cmdNextRowB = new System.Windows.Forms.Button();
-            this.lblEIDErrA = new System.Windows.Forms.Label();
-            this.fraLoadListA = new System.Windows.Forms.GroupBox();
-            this.lblMetavalueLoadA = new System.Windows.Forms.Label();
-            this.cmdRemoveRowA = new System.Windows.Forms.Button();
-            this.cmdInsertRowA = new System.Windows.Forms.Button();
-            this.numMetavalueLoadA = new System.Windows.Forms.NumericUpDown();
-            this.lblLoadListRowIndexA = new System.Windows.Forms.Label();
-            this.fraEIDA = new System.Windows.Forms.GroupBox();
-            this.txtEIDA = new System.Windows.Forms.TextBox();
-            this.lblEIDIndexA = new System.Windows.Forms.Label();
-            this.cmdAppendEIDA = new System.Windows.Forms.Button();
-            this.cmdRemoveEIDA = new System.Windows.Forms.Button();
-            this.cmdPrevEIDA = new System.Windows.Forms.Button();
-            this.cmdInsertEIDA = new System.Windows.Forms.Button();
-            this.cmdNextEIDA = new System.Windows.Forms.Button();
-            this.cmdPrevRowA = new System.Windows.Forms.Button();
-            this.cmdNextRowA = new System.Windows.Forms.Button();
-            this.tabDrawLists = new System.Windows.Forms.TabPage();
-            this.fraDrawListB = new System.Windows.Forms.GroupBox();
-            this.lblMetavalueDrawB = new System.Windows.Forms.Label();
-            this.cmdRemoveRowDrawB = new System.Windows.Forms.Button();
-            this.cmdInsertRowDrawB = new System.Windows.Forms.Button();
-            this.numMetavalueDrawB = new System.Windows.Forms.NumericUpDown();
-            this.lblDrawListRowIndexB = new System.Windows.Forms.Label();
-            this.fraEntityB = new System.Windows.Forms.GroupBox();
-            this.lblEntityB = new System.Windows.Forms.Label();
-            this.numEntityB = new System.Windows.Forms.NumericUpDown();
-            this.lblEntityIndexB = new System.Windows.Forms.Label();
-            this.cmdAppendEntityB = new System.Windows.Forms.Button();
-            this.cmdRemoveEntityB = new System.Windows.Forms.Button();
-            this.cmdPrevEntityB = new System.Windows.Forms.Button();
-            this.cmdInsertEntityB = new System.Windows.Forms.Button();
-            this.cmdNextEntityB = new System.Windows.Forms.Button();
-            this.cmdPrevRowDrawB = new System.Windows.Forms.Button();
-            this.cmdNextRowDrawB = new System.Windows.Forms.Button();
-            this.fraDrawListA = new System.Windows.Forms.GroupBox();
-            this.lblMetavalueDrawA = new System.Windows.Forms.Label();
-            this.cmdRemoveRowDrawA = new System.Windows.Forms.Button();
-            this.cmdInsertRowDrawA = new System.Windows.Forms.Button();
-            this.numMetavalueDrawA = new System.Windows.Forms.NumericUpDown();
-            this.lblDrawListRowIndexA = new System.Windows.Forms.Label();
-            this.fraEntityA = new System.Windows.Forms.GroupBox();
-            this.lblEntityA = new System.Windows.Forms.Label();
-            this.numEntityA = new System.Windows.Forms.NumericUpDown();
-            this.lblEntityIndexA = new System.Windows.Forms.Label();
-            this.cmdAppendEntityA = new System.Windows.Forms.Button();
-            this.cmdRemoveEntityA = new System.Windows.Forms.Button();
-            this.cmdPrevEntityA = new System.Windows.Forms.Button();
-            this.cmdInsertEntityA = new System.Windows.Forms.Button();
-            this.cmdNextEntityA = new System.Windows.Forms.Button();
-            this.cmdPrevRowDrawA = new System.Windows.Forms.Button();
-            this.cmdNextRowDrawA = new System.Windows.Forms.Button();
-            this.lblArgAs = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.numType)).BeginInit();
-            this.fraType.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numSubtype)).BeginInit();
-            this.fraPosition.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numZ)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numY)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numX)).BeginInit();
-            this.fraID.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numID2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numID)).BeginInit();
-            this.fraSettings.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numSettingC)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numSettingB)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numSettingA)).BeginInit();
-            this.fraName.SuspendLayout();
-            this.tbcTabs.SuspendLayout();
-            this.tabGeneral.SuspendLayout();
-            this.tabSpecial.SuspendLayout();
-            this.fraZMod.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numZMod)).BeginInit();
-            this.fraTTReward.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numTTReward)).BeginInit();
-            this.fraOtherSettings.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numOtherSettings)).BeginInit();
-            this.fraScaling.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numScaling)).BeginInit();
-            this.fraDDASection.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numDDASection)).BeginInit();
-            this.fraDDASettings.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numDDASettings)).BeginInit();
-            this.fraBoxCount.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numBonusBoxCount)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numBoxCount)).BeginInit();
-            this.fraVictims.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numVictimID)).BeginInit();
-            this.tabCamera.SuspendLayout();
-            this.fraFOV.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numFOVPosition)).BeginInit();
-            this.fraFOVFrame.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numFOV)).BeginInit();
-            this.fraNeighbor.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numNeighborPosition)).BeginInit();
-            this.fraNeighborSetting.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numNeighborFlag)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numNeighborLink)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numNeighborCamera)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numNeighborZone)).BeginInit();
-            this.fraAvgDist.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numAvgDist)).BeginInit();
-            this.fraMode.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numMode)).BeginInit();
-            this.fraCameraSubIndex.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numCameraSubIndex)).BeginInit();
-            this.fraCameraIndex.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numCameraIndex)).BeginInit();
-            this.fraSLST.SuspendLayout();
-            this.tabLoadLists.SuspendLayout();
-            this.fraLoadListPayload.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numPayloadPosition)).BeginInit();
-            this.fraLoadListB.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numMetavalueLoadB)).BeginInit();
-            this.fraEIDB.SuspendLayout();
-            this.fraLoadListA.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numMetavalueLoadA)).BeginInit();
-            this.fraEIDA.SuspendLayout();
-            this.tabDrawLists.SuspendLayout();
-            this.fraDrawListB.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numMetavalueDrawB)).BeginInit();
-            this.fraEntityB.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numEntityB)).BeginInit();
-            this.fraDrawListA.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numMetavalueDrawA)).BeginInit();
-            this.fraEntityA.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numEntityA)).BeginInit();
-            this.SuspendLayout();
+            chkType = new CheckBox();
+            numType = new DarkNumericUpDown();
+            fraType = new DarkGroupBox();
+            chkSubtype = new CheckBox();
+            numSubtype = new DarkNumericUpDown();
+            fraPosition = new DarkGroupBox();
+            cmdSyncEntities = new DarkButton();
+            chkSyncEntities = new CheckBox();
+            chkSyncPositions = new CheckBox();
+            cmdEditPath = new DarkButton();
+            lblPositionIndex = new Label();
+            cmdNextPosition = new DarkButton();
+            cmdPreviousPosition = new DarkButton();
+            cmdInsertPosition = new DarkButton();
+            lblZ = new Label();
+            cmdRemovePosition = new DarkButton();
+            lblY = new Label();
+            cmdAppendPosition = new DarkButton();
+            lblX = new Label();
+            numZ = new DarkNumericUpDown();
+            numY = new DarkNumericUpDown();
+            numX = new DarkNumericUpDown();
+            cmdInsertVictim = new DarkButton();
+            fraID = new DarkGroupBox();
+            chkID2 = new CheckBox();
+            numID2 = new DarkNumericUpDown();
+            chkID = new CheckBox();
+            numID = new DarkNumericUpDown();
+            fraSettings = new DarkGroupBox();
+            cmdPasteSetting = new DarkButton();
+            cmdCopySetting = new DarkButton();
+            lblSettingB = new Label();
+            lblSettingA = new Label();
+            lblArgAs = new Label();
+            chkSettingHex = new CheckBox();
+            numSettingC = new DarkNumericUpDown();
+            lblSettingIndex = new Label();
+            cmdNextSetting = new DarkButton();
+            cmdPreviousSetting = new DarkButton();
+            cmdAddSetting = new DarkButton();
+            cmdRemoveSetting = new DarkButton();
+            numSettingB = new DarkNumericUpDown();
+            numSettingA = new DarkNumericUpDown();
+            fraName = new DarkGroupBox();
+            txtName = new DarkTextBox();
+            chkName = new CheckBox();
+            tbcTabs = new MetroSetTabControl();
+            tabGeneral = new TabPage();
+            fraC2TTSet = new DarkGroupBox();
+            fraC2TTGhostTarget = new DarkGroupBox();
+            numC2TTGhostTarget = new DarkNumericUpDown();
+            chkC2TTGhostTarget = new CheckBox();
+            fraC2TTFlags = new DarkGroupBox();
+            numC2TTFlags = new DarkNumericUpDown();
+            chkC2TTFlags = new CheckBox();
+            fraC2TTYRot = new DarkGroupBox();
+            numC2TTYRot = new DarkNumericUpDown();
+            chkC2TTYRot = new CheckBox();
+            fraC2TTType = new DarkGroupBox();
+            numC2TTType = new DarkNumericUpDown();
+            chkC2TTType = new CheckBox();
+            fraZMod = new DarkGroupBox();
+            chkZMod = new CheckBox();
+            numZMod = new DarkNumericUpDown();
+            tabSpecial = new TabPage();
+            fraTTReward = new DarkGroupBox();
+            chkTTReward = new CheckBox();
+            numTTReward = new DarkNumericUpDown();
+            fraOtherSettings = new DarkGroupBox();
+            chkOtherSettings = new CheckBox();
+            numOtherSettings = new DarkNumericUpDown();
+            fraScaling = new DarkGroupBox();
+            chkScaling = new CheckBox();
+            numScaling = new DarkNumericUpDown();
+            fraDDASection = new DarkGroupBox();
+            chkDDASection = new CheckBox();
+            numDDASection = new DarkNumericUpDown();
+            fraDDASettings = new DarkGroupBox();
+            chkDDASettings = new CheckBox();
+            numDDASettings = new DarkNumericUpDown();
+            fraBoxCount = new DarkGroupBox();
+            chkBonusBoxCount = new CheckBox();
+            numBonusBoxCount = new DarkNumericUpDown();
+            chkBoxCount = new CheckBox();
+            numBoxCount = new DarkNumericUpDown();
+            fraVictims = new DarkGroupBox();
+            numEditVictimID = new DarkNumericUpDown();
+            lbVictimID = new DarkListBox();
+            cmdClearAllVictims = new DarkButton();
+            cmdRemoveVictim = new DarkButton();
+            lblVictimIndex = new Label();
+            tabCamera = new TabPage();
+            fraFOV = new DarkGroupBox();
+            lblFOVPosition = new Label();
+            cmdRemoveFOVFrame = new DarkButton();
+            cmdInsertFOVFrame = new DarkButton();
+            numFOVPosition = new DarkNumericUpDown();
+            lblFOVFrame = new Label();
+            fraFOVFrame = new DarkGroupBox();
+            lblFOVIndex = new Label();
+            cmdRemoveFOV = new DarkButton();
+            cmdInsertFOV = new DarkButton();
+            cmdPrevFOV = new DarkButton();
+            cmdNextFOV = new DarkButton();
+            lblFOV = new Label();
+            numFOV = new DarkNumericUpDown();
+            cmdPrevFOVFrame = new DarkButton();
+            cmdNextFOVFrame = new DarkButton();
+            fraNeighbor = new DarkGroupBox();
+            lblNeighborPosition = new Label();
+            cmdRemoveNeighbor = new DarkButton();
+            cmdInsertNeighbor = new DarkButton();
+            numNeighborPosition = new DarkNumericUpDown();
+            lblNeighbor = new Label();
+            fraNeighborSetting = new DarkGroupBox();
+            lblNeighborSetting = new Label();
+            cmdRemoveNeighborSetting = new DarkButton();
+            cmdInsertNeighborSetting = new DarkButton();
+            cmdPrevNeighborSetting = new DarkButton();
+            cmdNextNeighborSetting = new DarkButton();
+            lblNeighborLink = new Label();
+            lblNeighborFlag = new Label();
+            numNeighborFlag = new DarkNumericUpDown();
+            lblNeighborCamera = new Label();
+            lblNeighborZone = new Label();
+            numNeighborLink = new DarkNumericUpDown();
+            numNeighborCamera = new DarkNumericUpDown();
+            numNeighborZone = new DarkNumericUpDown();
+            cmdPrevNeighbor = new DarkButton();
+            cmdNextNeighbor = new DarkButton();
+            fraAvgDist = new DarkGroupBox();
+            chkAvgDist = new CheckBox();
+            numAvgDist = new DarkNumericUpDown();
+            fraMode = new DarkGroupBox();
+            chkMode = new CheckBox();
+            numMode = new DarkNumericUpDown();
+            fraCameraSubIndex = new DarkGroupBox();
+            chkCameraSubIndex = new CheckBox();
+            numCameraSubIndex = new DarkNumericUpDown();
+            fraCameraIndex = new DarkGroupBox();
+            chkCameraIndex = new CheckBox();
+            numCameraIndex = new DarkNumericUpDown();
+            fraSLST = new DarkGroupBox();
+            lblEIDErr1 = new Label();
+            txtSLST = new DarkTextBox();
+            chkSLST = new CheckBox();
+            tabLoadLists = new TabPage();
+            lblEIDErrB = new Label();
+            fraLoadListPayload = new DarkGroupBox();
+            lblPayloadSound = new Label();
+            lblPayloadTexture = new Label();
+            lblVerifyLoadLists = new Label();
+            lblPayload = new Label();
+            cmdLoadListVerify = new DarkButton();
+            cmdPayload = new DarkButton();
+            lblPayloadPosition = new Label();
+            numPayloadPosition = new DarkNumericUpDown();
+            fraLoadListB = new DarkGroupBox();
+            lblMetavalueLoadB = new Label();
+            cmdRemoveRowB = new DarkButton();
+            cmdInsertRowB = new DarkButton();
+            numMetavalueLoadB = new DarkNumericUpDown();
+            lblLoadListRowIndexB = new Label();
+            fraEIDB = new DarkGroupBox();
+            lbEIDB = new DarkListBox();
+            txtEIDB = new DarkTextBox();
+            lblEIDIndexB = new Label();
+            cmdAppendEIDB = new DarkButton();
+            cmdRemoveEIDB = new DarkButton();
+            cmdInsertEIDB = new DarkButton();
+            cmdPrevRowB = new DarkButton();
+            cmdNextRowB = new DarkButton();
+            lblEIDErrA = new Label();
+            fraLoadListA = new DarkGroupBox();
+            lblMetavalueLoadA = new Label();
+            cmdRemoveRowA = new DarkButton();
+            cmdInsertRowA = new DarkButton();
+            numMetavalueLoadA = new DarkNumericUpDown();
+            lblLoadListRowIndexA = new Label();
+            fraEIDA = new DarkGroupBox();
+            lbEIDA = new DarkListBox();
+            txtEIDA = new DarkTextBox();
+            lblEIDIndexA = new Label();
+            cmdAppendEIDA = new DarkButton();
+            cmdRemoveEIDA = new DarkButton();
+            cmdInsertEIDA = new DarkButton();
+            cmdPrevRowA = new DarkButton();
+            cmdNextRowA = new DarkButton();
+            tabDrawLists = new TabPage();
+            fraVerifyDrawList = new DarkGroupBox();
+            lblVerifyDrawLists = new Label();
+            cmdVerifyDrawList = new DarkButton();
+            fraDrawListB = new DarkGroupBox();
+            lblMetavalueDrawB = new Label();
+            cmdRemoveRowDrawB = new DarkButton();
+            cmdInsertRowDrawB = new DarkButton();
+            numMetavalueDrawB = new DarkNumericUpDown();
+            lblDrawListRowIndexB = new Label();
+            fraEntityB = new DarkGroupBox();
+            lbEntityB = new DarkListBox();
+            numEntityB = new DarkNumericUpDown();
+            lblEntityIndexB = new Label();
+            cmdAppendEntityB = new DarkButton();
+            cmdRemoveEntityB = new DarkButton();
+            cmdInsertEntityB = new DarkButton();
+            cmdPrevRowDrawB = new DarkButton();
+            cmdNextRowDrawB = new DarkButton();
+            fraDrawListA = new DarkGroupBox();
+            lblMetavalueDrawA = new Label();
+            cmdRemoveRowDrawA = new DarkButton();
+            cmdInsertRowDrawA = new DarkButton();
+            numMetavalueDrawA = new DarkNumericUpDown();
+            lblDrawListRowIndexA = new Label();
+            fraEntityA = new DarkGroupBox();
+            lbEntityA = new DarkListBox();
+            numEntityA = new DarkNumericUpDown();
+            lblEntityIndexA = new Label();
+            cmdAppendEntityA = new DarkButton();
+            cmdRemoveEntityA = new DarkButton();
+            cmdInsertEntityA = new DarkButton();
+            cmdPrevRowDrawA = new DarkButton();
+            cmdNextRowDrawA = new DarkButton();
+            ((System.ComponentModel.ISupportInitialize)numType).BeginInit();
+            fraType.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numSubtype).BeginInit();
+            fraPosition.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numZ).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numY).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numX).BeginInit();
+            fraID.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numID2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numID).BeginInit();
+            fraSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numSettingC).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numSettingB).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numSettingA).BeginInit();
+            fraName.SuspendLayout();
+            tbcTabs.SuspendLayout();
+            tabGeneral.SuspendLayout();
+            fraC2TTSet.SuspendLayout();
+            fraC2TTGhostTarget.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numC2TTGhostTarget).BeginInit();
+            fraC2TTFlags.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numC2TTFlags).BeginInit();
+            fraC2TTYRot.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numC2TTYRot).BeginInit();
+            fraC2TTType.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numC2TTType).BeginInit();
+            fraZMod.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numZMod).BeginInit();
+            tabSpecial.SuspendLayout();
+            fraTTReward.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numTTReward).BeginInit();
+            fraOtherSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numOtherSettings).BeginInit();
+            fraScaling.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numScaling).BeginInit();
+            fraDDASection.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numDDASection).BeginInit();
+            fraDDASettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numDDASettings).BeginInit();
+            fraBoxCount.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numBonusBoxCount).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numBoxCount).BeginInit();
+            fraVictims.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numEditVictimID).BeginInit();
+            tabCamera.SuspendLayout();
+            fraFOV.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numFOVPosition).BeginInit();
+            fraFOVFrame.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numFOV).BeginInit();
+            fraNeighbor.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numNeighborPosition).BeginInit();
+            fraNeighborSetting.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numNeighborFlag).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numNeighborLink).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numNeighborCamera).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numNeighborZone).BeginInit();
+            fraAvgDist.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numAvgDist).BeginInit();
+            fraMode.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numMode).BeginInit();
+            fraCameraSubIndex.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numCameraSubIndex).BeginInit();
+            fraCameraIndex.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numCameraIndex).BeginInit();
+            fraSLST.SuspendLayout();
+            tabLoadLists.SuspendLayout();
+            fraLoadListPayload.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numPayloadPosition).BeginInit();
+            fraLoadListB.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numMetavalueLoadB).BeginInit();
+            fraEIDB.SuspendLayout();
+            fraLoadListA.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numMetavalueLoadA).BeginInit();
+            fraEIDA.SuspendLayout();
+            tabDrawLists.SuspendLayout();
+            fraVerifyDrawList.SuspendLayout();
+            fraDrawListB.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numMetavalueDrawB).BeginInit();
+            fraEntityB.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numEntityB).BeginInit();
+            fraDrawListA.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numMetavalueDrawA).BeginInit();
+            fraEntityA.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numEntityA).BeginInit();
+            SuspendLayout();
             // 
             // chkType
             // 
-            this.chkType.AutoSize = true;
-            this.chkType.Location = new System.Drawing.Point(6, 19);
-            this.chkType.Name = "chkType";
-            this.chkType.Size = new System.Drawing.Size(65, 17);
-            this.chkType.TabIndex = 0;
-            this.chkType.Text = "Enabled";
-            this.chkType.UseVisualStyleBackColor = true;
-            this.chkType.CheckedChanged += new System.EventHandler(this.chkType_CheckedChanged);
+            chkType.AutoSize = true;
+            chkType.BackColor = Color.Transparent;
+            chkType.Location = new Point(7, 22);
+            chkType.Margin = new Padding(4, 3, 4, 3);
+            chkType.Name = "chkType";
+            chkType.Size = new Size(68, 19);
+            chkType.TabIndex = 0;
+            chkType.Text = "Enabled";
+            chkType.UseVisualStyleBackColor = false;
+            chkType.CheckedChanged += chkType_CheckedChanged;
             // 
             // numType
             // 
-            this.numType.Location = new System.Drawing.Point(6, 42);
-            this.numType.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numType.Name = "numType";
-            this.numType.Size = new System.Drawing.Size(100, 20);
-            this.numType.TabIndex = 1;
-            this.numType.ValueChanged += new System.EventHandler(this.numType_ValueChanged);
+            numType.Location = new Point(7, 48);
+            numType.Margin = new Padding(4, 3, 4, 3);
+            numType.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numType.Name = "numType";
+            numType.Size = new Size(117, 23);
+            numType.TabIndex = 1;
+            numType.ValueChanged += numType_ValueChanged;
             // 
             // fraType
             // 
-            this.fraType.Controls.Add(this.chkSubtype);
-            this.fraType.Controls.Add(this.numSubtype);
-            this.fraType.Controls.Add(this.chkType);
-            this.fraType.Controls.Add(this.numType);
-            this.fraType.Location = new System.Drawing.Point(209, 81);
-            this.fraType.Name = "fraType";
-            this.fraType.Size = new System.Drawing.Size(217, 72);
-            this.fraType.TabIndex = 4;
-            this.fraType.TabStop = false;
-            this.fraType.Text = "Type && Subtype";
+            fraType.Controls.Add(chkSubtype);
+            fraType.Controls.Add(numSubtype);
+            fraType.Controls.Add(chkType);
+            fraType.Controls.Add(numType);
+            fraType.Location = new Point(384, 3);
+            fraType.Margin = new Padding(4, 3, 4, 3);
+            fraType.Name = "fraType";
+            fraType.Padding = new Padding(4, 3, 4, 3);
+            fraType.Size = new Size(132, 137);
+            fraType.TabIndex = 4;
+            fraType.TabStop = false;
+            fraType.Text = "Type & Subtype";
             // 
             // chkSubtype
             // 
-            this.chkSubtype.AutoSize = true;
-            this.chkSubtype.Location = new System.Drawing.Point(112, 19);
-            this.chkSubtype.Name = "chkSubtype";
-            this.chkSubtype.Size = new System.Drawing.Size(65, 17);
-            this.chkSubtype.TabIndex = 0;
-            this.chkSubtype.Text = "Enabled";
-            this.chkSubtype.UseVisualStyleBackColor = true;
-            this.chkSubtype.CheckedChanged += new System.EventHandler(this.chkSubtype_CheckedChanged);
+            chkSubtype.AutoSize = true;
+            chkSubtype.BackColor = Color.Transparent;
+            chkSubtype.Location = new Point(7, 77);
+            chkSubtype.Margin = new Padding(4, 3, 4, 3);
+            chkSubtype.Name = "chkSubtype";
+            chkSubtype.Size = new Size(68, 19);
+            chkSubtype.TabIndex = 0;
+            chkSubtype.Text = "Enabled";
+            chkSubtype.UseVisualStyleBackColor = false;
+            chkSubtype.CheckedChanged += chkSubtype_CheckedChanged;
             // 
             // numSubtype
             // 
-            this.numSubtype.Location = new System.Drawing.Point(112, 42);
-            this.numSubtype.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
-            this.numSubtype.Minimum = new decimal(new int[] {
-            -2147483648,
-            0,
-            0,
-            -2147483648});
-            this.numSubtype.Name = "numSubtype";
-            this.numSubtype.Size = new System.Drawing.Size(100, 20);
-            this.numSubtype.TabIndex = 1;
-            this.numSubtype.ValueChanged += new System.EventHandler(this.numSubtype_ValueChanged);
+            numSubtype.Location = new Point(7, 102);
+            numSubtype.Margin = new Padding(4, 3, 4, 3);
+            numSubtype.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numSubtype.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numSubtype.Name = "numSubtype";
+            numSubtype.Size = new Size(117, 23);
+            numSubtype.TabIndex = 1;
+            numSubtype.ValueChanged += numSubtype_ValueChanged;
             // 
             // fraPosition
             // 
-            this.fraPosition.Controls.Add(this.cmdInterpolate);
-            this.fraPosition.Controls.Add(this.lblPositionIndex);
-            this.fraPosition.Controls.Add(this.cmdNextPosition);
-            this.fraPosition.Controls.Add(this.cmdPreviousPosition);
-            this.fraPosition.Controls.Add(this.cmdInsertPosition);
-            this.fraPosition.Controls.Add(this.lblZ);
-            this.fraPosition.Controls.Add(this.cmdRemovePosition);
-            this.fraPosition.Controls.Add(this.lblY);
-            this.fraPosition.Controls.Add(this.cmdAppendPosition);
-            this.fraPosition.Controls.Add(this.lblX);
-            this.fraPosition.Controls.Add(this.numZ);
-            this.fraPosition.Controls.Add(this.numY);
-            this.fraPosition.Controls.Add(this.numX);
-            this.fraPosition.Location = new System.Drawing.Point(3, 79);
-            this.fraPosition.Name = "fraPosition";
-            this.fraPosition.Size = new System.Drawing.Size(200, 160);
-            this.fraPosition.TabIndex = 1;
-            this.fraPosition.TabStop = false;
-            this.fraPosition.Text = "Position(s)";
+            fraPosition.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraPosition.Controls.Add(cmdSyncEntities);
+            fraPosition.Controls.Add(chkSyncEntities);
+            fraPosition.Controls.Add(chkSyncPositions);
+            fraPosition.Controls.Add(cmdEditPath);
+            fraPosition.Controls.Add(lblPositionIndex);
+            fraPosition.Controls.Add(cmdNextPosition);
+            fraPosition.Controls.Add(cmdPreviousPosition);
+            fraPosition.Controls.Add(cmdInsertPosition);
+            fraPosition.Controls.Add(lblZ);
+            fraPosition.Controls.Add(cmdRemovePosition);
+            fraPosition.Controls.Add(lblY);
+            fraPosition.Controls.Add(cmdAppendPosition);
+            fraPosition.Controls.Add(lblX);
+            fraPosition.Controls.Add(numZ);
+            fraPosition.Controls.Add(numY);
+            fraPosition.Controls.Add(numX);
+            fraPosition.Location = new Point(4, 91);
+            fraPosition.Margin = new Padding(4, 3, 4, 3);
+            fraPosition.Name = "fraPosition";
+            fraPosition.Padding = new Padding(4, 3, 4, 3);
+            fraPosition.Size = new Size(233, 224);
+            fraPosition.TabIndex = 1;
+            fraPosition.TabStop = false;
+            fraPosition.Text = "Position(s)";
             // 
-            // cmdInterpolate
+            // cmdSyncEntities
             // 
-            this.cmdInterpolate.AutoSize = true;
-            this.cmdInterpolate.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.cmdInterpolate.Location = new System.Drawing.Point(6, 130);
-            this.cmdInterpolate.Name = "cmdInterpolate";
-            this.cmdInterpolate.Size = new System.Drawing.Size(67, 23);
-            this.cmdInterpolate.TabIndex = 8;
-            this.cmdInterpolate.Text = "Interpolate";
-            this.cmdInterpolate.UseVisualStyleBackColor = true;
-            this.cmdInterpolate.Click += new System.EventHandler(this.cmdInterpolate_Click);
+            cmdSyncEntities.BorderColour = Color.Empty;
+            cmdSyncEntities.CustomColour = false;
+            cmdSyncEntities.FlatBottom = false;
+            cmdSyncEntities.FlatTop = false;
+            cmdSyncEntities.Location = new Point(7, 185);
+            cmdSyncEntities.Name = "cmdSyncEntities";
+            cmdSyncEntities.Padding = new Padding(5);
+            cmdSyncEntities.Size = new Size(74, 29);
+            cmdSyncEntities.TabIndex = 10;
+            cmdSyncEntities.Text = "View List";
+            cmdSyncEntities.Click += cmdSyncList_Click;
+            // 
+            // chkSyncEntities
+            // 
+            chkSyncEntities.AutoSize = true;
+            chkSyncEntities.BackColor = Color.Transparent;
+            chkSyncEntities.Location = new Point(88, 191);
+            chkSyncEntities.Name = "chkSyncEntities";
+            chkSyncEntities.Size = new Size(92, 19);
+            chkSyncEntities.TabIndex = 9;
+            chkSyncEntities.Text = "Sync Entities";
+            chkSyncEntities.UseVisualStyleBackColor = false;
+            chkSyncEntities.CheckedChanged += chkSyncEntities_CheckedChanged;
+            // 
+            // chkSyncPositions
+            // 
+            chkSyncPositions.AutoSize = true;
+            chkSyncPositions.BackColor = Color.Transparent;
+            chkSyncPositions.Location = new Point(88, 156);
+            chkSyncPositions.Name = "chkSyncPositions";
+            chkSyncPositions.Size = new Size(102, 19);
+            chkSyncPositions.TabIndex = 9;
+            chkSyncPositions.Text = "Sync Positions";
+            chkSyncPositions.UseVisualStyleBackColor = false;
+            // 
+            // cmdEditPath
+            // 
+            cmdEditPath.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            cmdEditPath.BorderColour = Color.Empty;
+            cmdEditPath.CustomColour = false;
+            cmdEditPath.FlatBottom = false;
+            cmdEditPath.FlatTop = false;
+            cmdEditPath.Location = new Point(7, 150);
+            cmdEditPath.Margin = new Padding(4, 3, 4, 3);
+            cmdEditPath.Name = "cmdEditPath";
+            cmdEditPath.Padding = new Padding(5);
+            cmdEditPath.Size = new Size(74, 29);
+            cmdEditPath.TabIndex = 8;
+            cmdEditPath.Text = "Edit Path";
+            cmdEditPath.Click += cmdInterpolate_Click;
             // 
             // lblPositionIndex
             // 
-            this.lblPositionIndex.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPositionIndex.Location = new System.Drawing.Point(70, 19);
-            this.lblPositionIndex.Name = "lblPositionIndex";
-            this.lblPositionIndex.Size = new System.Drawing.Size(60, 23);
-            this.lblPositionIndex.TabIndex = 5;
-            this.lblPositionIndex.Text = "?? / ??";
-            this.lblPositionIndex.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            lblPositionIndex.BackColor = Color.Transparent;
+            lblPositionIndex.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblPositionIndex.Location = new Point(82, 22);
+            lblPositionIndex.Margin = new Padding(4, 0, 4, 0);
+            lblPositionIndex.Name = "lblPositionIndex";
+            lblPositionIndex.Size = new Size(70, 27);
+            lblPositionIndex.TabIndex = 5;
+            lblPositionIndex.Text = "?? / ??";
+            lblPositionIndex.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // cmdNextPosition
             // 
-            this.cmdNextPosition.Location = new System.Drawing.Point(136, 19);
-            this.cmdNextPosition.Name = "cmdNextPosition";
-            this.cmdNextPosition.Size = new System.Drawing.Size(58, 23);
-            this.cmdNextPosition.TabIndex = 1;
-            this.cmdNextPosition.Text = "Next";
-            this.cmdNextPosition.UseVisualStyleBackColor = true;
-            this.cmdNextPosition.Click += new System.EventHandler(this.cmdNextPosition_Click);
+            cmdNextPosition.BorderColour = Color.Empty;
+            cmdNextPosition.CustomColour = false;
+            cmdNextPosition.FlatBottom = false;
+            cmdNextPosition.FlatTop = false;
+            cmdNextPosition.Location = new Point(159, 22);
+            cmdNextPosition.Margin = new Padding(4, 3, 4, 3);
+            cmdNextPosition.Name = "cmdNextPosition";
+            cmdNextPosition.Padding = new Padding(5);
+            cmdNextPosition.Size = new Size(68, 27);
+            cmdNextPosition.TabIndex = 1;
+            cmdNextPosition.Text = "Next";
+            cmdNextPosition.Click += cmdNextPosition_Click;
             // 
             // cmdPreviousPosition
             // 
-            this.cmdPreviousPosition.Location = new System.Drawing.Point(6, 19);
-            this.cmdPreviousPosition.Name = "cmdPreviousPosition";
-            this.cmdPreviousPosition.Size = new System.Drawing.Size(58, 23);
-            this.cmdPreviousPosition.TabIndex = 0;
-            this.cmdPreviousPosition.Text = "Previous";
-            this.cmdPreviousPosition.UseVisualStyleBackColor = true;
-            this.cmdPreviousPosition.Click += new System.EventHandler(this.cmdPreviousPosition_Click);
+            cmdPreviousPosition.BorderColour = Color.Empty;
+            cmdPreviousPosition.CustomColour = false;
+            cmdPreviousPosition.FlatBottom = false;
+            cmdPreviousPosition.FlatTop = false;
+            cmdPreviousPosition.Location = new Point(7, 22);
+            cmdPreviousPosition.Margin = new Padding(4, 3, 4, 3);
+            cmdPreviousPosition.Name = "cmdPreviousPosition";
+            cmdPreviousPosition.Padding = new Padding(5);
+            cmdPreviousPosition.Size = new Size(68, 27);
+            cmdPreviousPosition.TabIndex = 0;
+            cmdPreviousPosition.Text = "Previous";
+            cmdPreviousPosition.Click += cmdPreviousPosition_Click;
             // 
             // cmdInsertPosition
             // 
-            this.cmdInsertPosition.Location = new System.Drawing.Point(119, 75);
-            this.cmdInsertPosition.Name = "cmdInsertPosition";
-            this.cmdInsertPosition.Size = new System.Drawing.Size(75, 23);
-            this.cmdInsertPosition.TabIndex = 6;
-            this.cmdInsertPosition.Text = "Insert";
-            this.cmdInsertPosition.UseVisualStyleBackColor = true;
-            this.cmdInsertPosition.Click += new System.EventHandler(this.cmdInsertPosition_Click);
+            cmdInsertPosition.BorderColour = Color.Empty;
+            cmdInsertPosition.CustomColour = false;
+            cmdInsertPosition.FlatBottom = false;
+            cmdInsertPosition.FlatTop = false;
+            cmdInsertPosition.Location = new Point(139, 87);
+            cmdInsertPosition.Margin = new Padding(4, 3, 4, 3);
+            cmdInsertPosition.Name = "cmdInsertPosition";
+            cmdInsertPosition.Padding = new Padding(5);
+            cmdInsertPosition.Size = new Size(88, 27);
+            cmdInsertPosition.TabIndex = 6;
+            cmdInsertPosition.Text = "Insert";
+            cmdInsertPosition.Click += cmdInsertPosition_Click;
             // 
             // lblZ
             // 
-            this.lblZ.AutoSize = true;
-            this.lblZ.Location = new System.Drawing.Point(6, 106);
-            this.lblZ.Name = "lblZ";
-            this.lblZ.Size = new System.Drawing.Size(14, 13);
-            this.lblZ.TabIndex = 5;
-            this.lblZ.Text = "Z";
+            lblZ.AutoSize = true;
+            lblZ.BackColor = Color.Transparent;
+            lblZ.Location = new Point(7, 122);
+            lblZ.Margin = new Padding(4, 0, 4, 0);
+            lblZ.Name = "lblZ";
+            lblZ.Size = new Size(14, 15);
+            lblZ.TabIndex = 5;
+            lblZ.Text = "Z";
             // 
             // cmdRemovePosition
             // 
-            this.cmdRemovePosition.Location = new System.Drawing.Point(119, 101);
-            this.cmdRemovePosition.Name = "cmdRemovePosition";
-            this.cmdRemovePosition.Size = new System.Drawing.Size(75, 23);
-            this.cmdRemovePosition.TabIndex = 7;
-            this.cmdRemovePosition.Text = "Remove";
-            this.cmdRemovePosition.UseVisualStyleBackColor = true;
-            this.cmdRemovePosition.Click += new System.EventHandler(this.cmdRemovePosition_Click);
+            cmdRemovePosition.BorderColour = Color.Empty;
+            cmdRemovePosition.CustomColour = false;
+            cmdRemovePosition.FlatBottom = false;
+            cmdRemovePosition.FlatTop = false;
+            cmdRemovePosition.Location = new Point(139, 117);
+            cmdRemovePosition.Margin = new Padding(4, 3, 4, 3);
+            cmdRemovePosition.Name = "cmdRemovePosition";
+            cmdRemovePosition.Padding = new Padding(5);
+            cmdRemovePosition.Size = new Size(88, 27);
+            cmdRemovePosition.TabIndex = 7;
+            cmdRemovePosition.Text = "Remove";
+            cmdRemovePosition.Click += cmdRemovePosition_Click;
             // 
             // lblY
             // 
-            this.lblY.AutoSize = true;
-            this.lblY.Location = new System.Drawing.Point(6, 80);
-            this.lblY.Name = "lblY";
-            this.lblY.Size = new System.Drawing.Size(14, 13);
-            this.lblY.TabIndex = 4;
-            this.lblY.Text = "Y";
+            lblY.AutoSize = true;
+            lblY.BackColor = Color.Transparent;
+            lblY.Location = new Point(7, 92);
+            lblY.Margin = new Padding(4, 0, 4, 0);
+            lblY.Name = "lblY";
+            lblY.Size = new Size(14, 15);
+            lblY.TabIndex = 4;
+            lblY.Text = "Y";
             // 
             // cmdAppendPosition
             // 
-            this.cmdAppendPosition.Location = new System.Drawing.Point(119, 49);
-            this.cmdAppendPosition.Name = "cmdAppendPosition";
-            this.cmdAppendPosition.Size = new System.Drawing.Size(75, 23);
-            this.cmdAppendPosition.TabIndex = 5;
-            this.cmdAppendPosition.Text = "Append";
-            this.cmdAppendPosition.UseVisualStyleBackColor = true;
-            this.cmdAppendPosition.Click += new System.EventHandler(this.cmdAppendPosition_Click);
+            cmdAppendPosition.BorderColour = Color.Empty;
+            cmdAppendPosition.CustomColour = false;
+            cmdAppendPosition.FlatBottom = false;
+            cmdAppendPosition.FlatTop = false;
+            cmdAppendPosition.Location = new Point(139, 57);
+            cmdAppendPosition.Margin = new Padding(4, 3, 4, 3);
+            cmdAppendPosition.Name = "cmdAppendPosition";
+            cmdAppendPosition.Padding = new Padding(5);
+            cmdAppendPosition.Size = new Size(88, 27);
+            cmdAppendPosition.TabIndex = 5;
+            cmdAppendPosition.Text = "Append";
+            cmdAppendPosition.Click += cmdAppendPosition_Click;
             // 
             // lblX
             // 
-            this.lblX.AutoSize = true;
-            this.lblX.Location = new System.Drawing.Point(6, 54);
-            this.lblX.Name = "lblX";
-            this.lblX.Size = new System.Drawing.Size(14, 13);
-            this.lblX.TabIndex = 3;
-            this.lblX.Text = "X";
+            lblX.AutoSize = true;
+            lblX.BackColor = Color.Transparent;
+            lblX.Location = new Point(7, 62);
+            lblX.Margin = new Padding(4, 0, 4, 0);
+            lblX.Name = "lblX";
+            lblX.Size = new Size(14, 15);
+            lblX.TabIndex = 3;
+            lblX.Text = "X";
             // 
             // numZ
             // 
-            this.numZ.Increment = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            this.numZ.Location = new System.Drawing.Point(26, 104);
-            this.numZ.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numZ.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numZ.Name = "numZ";
-            this.numZ.Size = new System.Drawing.Size(86, 20);
-            this.numZ.TabIndex = 4;
-            this.numZ.ValueChanged += new System.EventHandler(this.numZ_ValueChanged);
+            numZ.Increment = new decimal(new int[] { 50, 0, 0, 0 });
+            numZ.Location = new Point(30, 120);
+            numZ.Margin = new Padding(4, 3, 4, 3);
+            numZ.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numZ.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numZ.Name = "numZ";
+            numZ.Size = new Size(100, 23);
+            numZ.TabIndex = 4;
+            numZ.ValueChanged += numZ_ValueChanged;
             // 
             // numY
             // 
-            this.numY.Increment = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            this.numY.Location = new System.Drawing.Point(26, 78);
-            this.numY.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numY.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numY.Name = "numY";
-            this.numY.Size = new System.Drawing.Size(86, 20);
-            this.numY.TabIndex = 3;
-            this.numY.ValueChanged += new System.EventHandler(this.numY_ValueChanged);
+            numY.Increment = new decimal(new int[] { 50, 0, 0, 0 });
+            numY.Location = new Point(30, 90);
+            numY.Margin = new Padding(4, 3, 4, 3);
+            numY.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numY.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numY.Name = "numY";
+            numY.Size = new Size(100, 23);
+            numY.TabIndex = 3;
+            numY.ValueChanged += numY_ValueChanged;
             // 
             // numX
             // 
-            this.numX.Increment = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            this.numX.Location = new System.Drawing.Point(26, 52);
-            this.numX.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numX.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numX.Name = "numX";
-            this.numX.Size = new System.Drawing.Size(86, 20);
-            this.numX.TabIndex = 2;
-            this.numX.ValueChanged += new System.EventHandler(this.numX_ValueChanged);
+            numX.Increment = new decimal(new int[] { 50, 0, 0, 0 });
+            numX.Location = new Point(30, 60);
+            numX.Margin = new Padding(4, 3, 4, 3);
+            numX.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numX.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numX.Name = "numX";
+            numX.Size = new Size(100, 23);
+            numX.TabIndex = 2;
+            numX.ValueChanged += numX_ValueChanged;
             // 
             // cmdInsertVictim
             // 
-            this.cmdInsertVictim.Location = new System.Drawing.Point(68, 96);
-            this.cmdInsertVictim.Name = "cmdInsertVictim";
-            this.cmdInsertVictim.Size = new System.Drawing.Size(58, 23);
-            this.cmdInsertVictim.TabIndex = 6;
-            this.cmdInsertVictim.Text = "Insert";
-            this.cmdInsertVictim.UseVisualStyleBackColor = true;
-            this.cmdInsertVictim.Click += new System.EventHandler(this.cmdInsertVictim_Click);
+            cmdInsertVictim.BorderColour = Color.Empty;
+            cmdInsertVictim.CustomColour = false;
+            cmdInsertVictim.FlatBottom = false;
+            cmdInsertVictim.FlatTop = false;
+            cmdInsertVictim.Location = new Point(79, 49);
+            cmdInsertVictim.Margin = new Padding(4, 3, 4, 3);
+            cmdInsertVictim.Name = "cmdInsertVictim";
+            cmdInsertVictim.Padding = new Padding(5);
+            cmdInsertVictim.Size = new Size(67, 27);
+            cmdInsertVictim.TabIndex = 6;
+            cmdInsertVictim.Text = "Insert";
+            cmdInsertVictim.Click += cmdInsertVictim_Click;
             // 
             // fraID
             // 
-            this.fraID.Controls.Add(this.chkID2);
-            this.fraID.Controls.Add(this.numID2);
-            this.fraID.Controls.Add(this.chkID);
-            this.fraID.Controls.Add(this.numID);
-            this.fraID.Location = new System.Drawing.Point(209, 3);
-            this.fraID.Name = "fraID";
-            this.fraID.Size = new System.Drawing.Size(217, 72);
-            this.fraID.TabIndex = 3;
-            this.fraID.TabStop = false;
-            this.fraID.Text = "ID && Look-up ID";
+            fraID.Controls.Add(chkID2);
+            fraID.Controls.Add(numID2);
+            fraID.Controls.Add(chkID);
+            fraID.Controls.Add(numID);
+            fraID.Location = new Point(244, 3);
+            fraID.Margin = new Padding(4, 3, 4, 3);
+            fraID.Name = "fraID";
+            fraID.Padding = new Padding(4, 3, 4, 3);
+            fraID.Size = new Size(132, 137);
+            fraID.TabIndex = 3;
+            fraID.TabStop = false;
+            fraID.Text = "ID & Look-up ID";
             // 
             // chkID2
             // 
-            this.chkID2.AutoSize = true;
-            this.chkID2.Location = new System.Drawing.Point(112, 19);
-            this.chkID2.Name = "chkID2";
-            this.chkID2.Size = new System.Drawing.Size(65, 17);
-            this.chkID2.TabIndex = 2;
-            this.chkID2.Text = "Enabled";
-            this.chkID2.UseVisualStyleBackColor = true;
-            this.chkID2.CheckedChanged += new System.EventHandler(this.chkID2_CheckedChanged);
+            chkID2.AutoSize = true;
+            chkID2.BackColor = Color.Transparent;
+            chkID2.Location = new Point(7, 77);
+            chkID2.Margin = new Padding(4, 3, 4, 3);
+            chkID2.Name = "chkID2";
+            chkID2.Size = new Size(68, 19);
+            chkID2.TabIndex = 2;
+            chkID2.Text = "Enabled";
+            chkID2.UseVisualStyleBackColor = false;
+            chkID2.CheckedChanged += chkID2_CheckedChanged;
             // 
             // numID2
             // 
-            this.numID2.Location = new System.Drawing.Point(112, 42);
-            this.numID2.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
-            this.numID2.Minimum = new decimal(new int[] {
-            -2147483648,
-            0,
-            0,
-            -2147483648});
-            this.numID2.Name = "numID2";
-            this.numID2.Size = new System.Drawing.Size(100, 20);
-            this.numID2.TabIndex = 3;
-            this.numID2.ValueChanged += new System.EventHandler(this.numID2_ValueChanged);
+            numID2.Location = new Point(7, 102);
+            numID2.Margin = new Padding(4, 3, 4, 3);
+            numID2.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numID2.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numID2.Name = "numID2";
+            numID2.Size = new Size(117, 23);
+            numID2.TabIndex = 3;
+            numID2.ValueChanged += numID2_ValueChanged;
             // 
             // chkID
             // 
-            this.chkID.AutoSize = true;
-            this.chkID.Location = new System.Drawing.Point(6, 19);
-            this.chkID.Name = "chkID";
-            this.chkID.Size = new System.Drawing.Size(65, 17);
-            this.chkID.TabIndex = 0;
-            this.chkID.Text = "Enabled";
-            this.chkID.UseVisualStyleBackColor = true;
-            this.chkID.CheckedChanged += new System.EventHandler(this.chkID_CheckedChanged);
+            chkID.AutoSize = true;
+            chkID.BackColor = Color.Transparent;
+            chkID.Location = new Point(7, 22);
+            chkID.Margin = new Padding(4, 3, 4, 3);
+            chkID.Name = "chkID";
+            chkID.Size = new Size(68, 19);
+            chkID.TabIndex = 0;
+            chkID.Text = "Enabled";
+            chkID.UseVisualStyleBackColor = false;
+            chkID.CheckedChanged += chkID_CheckedChanged;
             // 
             // numID
             // 
-            this.numID.Location = new System.Drawing.Point(6, 42);
-            this.numID.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
-            this.numID.Minimum = new decimal(new int[] {
-            -2147483648,
-            0,
-            0,
-            -2147483648});
-            this.numID.Name = "numID";
-            this.numID.Size = new System.Drawing.Size(100, 20);
-            this.numID.TabIndex = 1;
-            this.numID.ValueChanged += new System.EventHandler(this.numID_ValueChanged);
+            numID.Location = new Point(7, 48);
+            numID.Margin = new Padding(4, 3, 4, 3);
+            numID.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numID.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numID.Name = "numID";
+            numID.Size = new Size(117, 23);
+            numID.TabIndex = 1;
+            numID.ValueChanged += numID_ValueChanged;
             // 
             // fraSettings
             // 
-            this.fraSettings.AutoSize = true;
-            this.fraSettings.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.fraSettings.Controls.Add(this.lblArgAs);
-            this.fraSettings.Controls.Add(this.chkSettingHex);
-            this.fraSettings.Controls.Add(this.numSettingC);
-            this.fraSettings.Controls.Add(this.lblSettingIndex);
-            this.fraSettings.Controls.Add(this.cmdNextSetting);
-            this.fraSettings.Controls.Add(this.cmdPreviousSetting);
-            this.fraSettings.Controls.Add(this.cmdAddSetting);
-            this.fraSettings.Controls.Add(this.cmdRemoveSetting);
-            this.fraSettings.Controls.Add(this.numSettingB);
-            this.fraSettings.Controls.Add(this.numSettingA);
-            this.fraSettings.Location = new System.Drawing.Point(3, 245);
-            this.fraSettings.Name = "fraSettings";
-            this.fraSettings.Size = new System.Drawing.Size(307, 142);
-            this.fraSettings.TabIndex = 2;
-            this.fraSettings.TabStop = false;
-            this.fraSettings.Text = "Argument(s)";
-            // 
-            // chkSettingHex
-            // 
-            this.chkSettingHex.AutoSize = true;
-            this.chkSettingHex.Checked = true;
-            this.chkSettingHex.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkSettingHex.Location = new System.Drawing.Point(137, 49);
-            this.chkSettingHex.Name = "chkSettingHex";
-            this.chkSettingHex.Size = new System.Drawing.Size(45, 17);
-            this.chkSettingHex.TabIndex = 8;
-            this.chkSettingHex.Text = "Hex";
-            this.chkSettingHex.UseVisualStyleBackColor = true;
-            this.chkSettingHex.CheckedChanged += new System.EventHandler(this.chkSettingHex_CheckedChanged);
-            // 
-            // numSettingC
-            // 
-            this.numSettingC.Hexadecimal = true;
-            this.numSettingC.Location = new System.Drawing.Point(6, 48);
-            this.numSettingC.Maximum = new decimal(new int[] {
-            -1,
-            2147483647,
-            0,
-            0});
-            this.numSettingC.Minimum = new decimal(new int[] {
-            0,
-            -2147483648,
-            0,
-            -2147483648});
-            this.numSettingC.Name = "numSettingC";
-            this.numSettingC.Size = new System.Drawing.Size(125, 20);
-            this.numSettingC.TabIndex = 7;
-            this.numSettingC.ValueChanged += new System.EventHandler(this.numSettingC_ValueChanged);
-            // 
-            // lblSettingIndex
-            // 
-            this.lblSettingIndex.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSettingIndex.Location = new System.Drawing.Point(70, 19);
-            this.lblSettingIndex.Name = "lblSettingIndex";
-            this.lblSettingIndex.Size = new System.Drawing.Size(60, 23);
-            this.lblSettingIndex.TabIndex = 5;
-            this.lblSettingIndex.Text = "?? / ??";
-            this.lblSettingIndex.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // cmdNextSetting
-            // 
-            this.cmdNextSetting.Location = new System.Drawing.Point(136, 19);
-            this.cmdNextSetting.Name = "cmdNextSetting";
-            this.cmdNextSetting.Size = new System.Drawing.Size(58, 23);
-            this.cmdNextSetting.TabIndex = 1;
-            this.cmdNextSetting.Text = "Next";
-            this.cmdNextSetting.UseVisualStyleBackColor = true;
-            this.cmdNextSetting.Click += new System.EventHandler(this.cmdNextSetting_Click);
-            // 
-            // cmdPreviousSetting
-            // 
-            this.cmdPreviousSetting.Location = new System.Drawing.Point(6, 19);
-            this.cmdPreviousSetting.Name = "cmdPreviousSetting";
-            this.cmdPreviousSetting.Size = new System.Drawing.Size(58, 23);
-            this.cmdPreviousSetting.TabIndex = 0;
-            this.cmdPreviousSetting.Text = "Previous";
-            this.cmdPreviousSetting.UseVisualStyleBackColor = true;
-            this.cmdPreviousSetting.Click += new System.EventHandler(this.cmdPreviousSetting_Click);
-            // 
-            // cmdAddSetting
-            // 
-            this.cmdAddSetting.Location = new System.Drawing.Point(87, 100);
-            this.cmdAddSetting.Name = "cmdAddSetting";
-            this.cmdAddSetting.Size = new System.Drawing.Size(75, 23);
-            this.cmdAddSetting.TabIndex = 4;
-            this.cmdAddSetting.Text = "Add";
-            this.cmdAddSetting.UseVisualStyleBackColor = true;
-            this.cmdAddSetting.Click += new System.EventHandler(this.cmdAddSetting_Click);
-            // 
-            // cmdRemoveSetting
-            // 
-            this.cmdRemoveSetting.Location = new System.Drawing.Point(6, 100);
-            this.cmdRemoveSetting.Name = "cmdRemoveSetting";
-            this.cmdRemoveSetting.Size = new System.Drawing.Size(75, 23);
-            this.cmdRemoveSetting.TabIndex = 5;
-            this.cmdRemoveSetting.Text = "Remove";
-            this.cmdRemoveSetting.UseVisualStyleBackColor = true;
-            this.cmdRemoveSetting.Click += new System.EventHandler(this.cmdRemoveSetting_Click);
-            // 
-            // numSettingB
-            // 
-            this.numSettingB.Location = new System.Drawing.Point(6, 74);
-            this.numSettingB.Maximum = new decimal(new int[] {
-            8388607,
-            0,
-            0,
-            0});
-            this.numSettingB.Minimum = new decimal(new int[] {
-            8388608,
-            0,
-            0,
-            -2147483648});
-            this.numSettingB.Name = "numSettingB";
-            this.numSettingB.Size = new System.Drawing.Size(67, 20);
-            this.numSettingB.TabIndex = 3;
-            this.numSettingB.ValueChanged += new System.EventHandler(this.numSettingB_ValueChanged);
-            // 
-            // numSettingA
-            // 
-            this.numSettingA.Location = new System.Drawing.Point(79, 74);
-            this.numSettingA.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numSettingA.Name = "numSettingA";
-            this.numSettingA.Size = new System.Drawing.Size(52, 20);
-            this.numSettingA.TabIndex = 2;
-            this.numSettingA.ValueChanged += new System.EventHandler(this.numSettingA_ValueChanged);
-            // 
-            // fraName
-            // 
-            this.fraName.Controls.Add(this.txtName);
-            this.fraName.Controls.Add(this.chkName);
-            this.fraName.Location = new System.Drawing.Point(3, 3);
-            this.fraName.Name = "fraName";
-            this.fraName.Size = new System.Drawing.Size(200, 72);
-            this.fraName.TabIndex = 0;
-            this.fraName.TabStop = false;
-            this.fraName.Text = "Name";
-            // 
-            // txtName
-            // 
-            this.txtName.Location = new System.Drawing.Point(6, 42);
-            this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(188, 20);
-            this.txtName.TabIndex = 1;
-            this.txtName.TextChanged += new System.EventHandler(this.txtName_TextChanged);
-            // 
-            // chkName
-            // 
-            this.chkName.AutoSize = true;
-            this.chkName.Location = new System.Drawing.Point(6, 19);
-            this.chkName.Name = "chkName";
-            this.chkName.Size = new System.Drawing.Size(65, 17);
-            this.chkName.TabIndex = 0;
-            this.chkName.Text = "Enabled";
-            this.chkName.UseVisualStyleBackColor = true;
-            this.chkName.CheckedChanged += new System.EventHandler(this.chkName_CheckedChanged);
-            // 
-            // tbcTabs
-            // 
-            this.tbcTabs.Controls.Add(this.tabGeneral);
-            this.tbcTabs.Controls.Add(this.tabSpecial);
-            this.tbcTabs.Controls.Add(this.tabCamera);
-            this.tbcTabs.Controls.Add(this.tabLoadLists);
-            this.tbcTabs.Controls.Add(this.tabDrawLists);
-            this.tbcTabs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbcTabs.Location = new System.Drawing.Point(0, 0);
-            this.tbcTabs.Name = "tbcTabs";
-            this.tbcTabs.SelectedIndex = 0;
-            this.tbcTabs.Size = new System.Drawing.Size(500, 460);
-            this.tbcTabs.TabIndex = 7;
-            // 
-            // tabGeneral
-            // 
-            this.tabGeneral.AutoScroll = true;
-            this.tabGeneral.Controls.Add(this.fraName);
-            this.tabGeneral.Controls.Add(this.fraType);
-            this.tabGeneral.Controls.Add(this.fraSettings);
-            this.tabGeneral.Controls.Add(this.fraPosition);
-            this.tabGeneral.Controls.Add(this.fraID);
-            this.tabGeneral.Location = new System.Drawing.Point(4, 22);
-            this.tabGeneral.Name = "tabGeneral";
-            this.tabGeneral.Size = new System.Drawing.Size(492, 434);
-            this.tabGeneral.TabIndex = 0;
-            this.tabGeneral.Text = "General";
-            this.tabGeneral.UseVisualStyleBackColor = true;
-            // 
-            // tabSpecial
-            // 
-            this.tabSpecial.AutoScroll = true;
-            this.tabSpecial.Controls.Add(this.fraZMod);
-            this.tabSpecial.Controls.Add(this.fraTTReward);
-            this.tabSpecial.Controls.Add(this.fraOtherSettings);
-            this.tabSpecial.Controls.Add(this.fraScaling);
-            this.tabSpecial.Controls.Add(this.fraDDASection);
-            this.tabSpecial.Controls.Add(this.fraDDASettings);
-            this.tabSpecial.Controls.Add(this.fraBoxCount);
-            this.tabSpecial.Controls.Add(this.fraVictims);
-            this.tabSpecial.Location = new System.Drawing.Point(4, 22);
-            this.tabSpecial.Name = "tabSpecial";
-            this.tabSpecial.Size = new System.Drawing.Size(492, 434);
-            this.tabSpecial.TabIndex = 1;
-            this.tabSpecial.Text = "Special";
-            this.tabSpecial.UseVisualStyleBackColor = true;
-            this.tabSpecial.Enter += new System.EventHandler(this.tabSpecial_Enter);
-            // 
-            // fraZMod
-            // 
-            this.fraZMod.Controls.Add(this.chkZMod);
-            this.fraZMod.Controls.Add(this.numZMod);
-            this.fraZMod.Location = new System.Drawing.Point(3, 239);
-            this.fraZMod.Name = "fraZMod";
-            this.fraZMod.Size = new System.Drawing.Size(120, 70);
-            this.fraZMod.TabIndex = 11;
-            this.fraZMod.TabStop = false;
-            this.fraZMod.Text = "Depth Modifier";
-            // 
-            // chkZMod
-            // 
-            this.chkZMod.AutoSize = true;
-            this.chkZMod.Location = new System.Drawing.Point(6, 19);
-            this.chkZMod.Name = "chkZMod";
-            this.chkZMod.Size = new System.Drawing.Size(65, 17);
-            this.chkZMod.TabIndex = 0;
-            this.chkZMod.Text = "Enabled";
-            this.chkZMod.UseVisualStyleBackColor = true;
-            this.chkZMod.CheckedChanged += new System.EventHandler(this.chkZMod_CheckedChanged);
-            // 
-            // numZMod
-            // 
-            this.numZMod.Location = new System.Drawing.Point(6, 42);
-            this.numZMod.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
-            this.numZMod.Minimum = new decimal(new int[] {
-            -2147483648,
-            0,
-            0,
-            -2147483648});
-            this.numZMod.Name = "numZMod";
-            this.numZMod.Size = new System.Drawing.Size(108, 20);
-            this.numZMod.TabIndex = 1;
-            this.numZMod.ValueChanged += new System.EventHandler(this.numZMod_ValueChanged);
-            // 
-            // fraTTReward
-            // 
-            this.fraTTReward.Controls.Add(this.chkTTReward);
-            this.fraTTReward.Controls.Add(this.numTTReward);
-            this.fraTTReward.Location = new System.Drawing.Point(255, 239);
-            this.fraTTReward.Name = "fraTTReward";
-            this.fraTTReward.Size = new System.Drawing.Size(120, 70);
-            this.fraTTReward.TabIndex = 12;
-            this.fraTTReward.TabStop = false;
-            this.fraTTReward.Text = "Time Trial Reward";
-            // 
-            // chkTTReward
-            // 
-            this.chkTTReward.AutoSize = true;
-            this.chkTTReward.Location = new System.Drawing.Point(6, 19);
-            this.chkTTReward.Name = "chkTTReward";
-            this.chkTTReward.Size = new System.Drawing.Size(65, 17);
-            this.chkTTReward.TabIndex = 0;
-            this.chkTTReward.Text = "Enabled";
-            this.chkTTReward.UseVisualStyleBackColor = true;
-            this.chkTTReward.CheckedChanged += new System.EventHandler(this.chkTTReward_CheckedChanged);
-            // 
-            // numTTReward
-            // 
-            this.numTTReward.Location = new System.Drawing.Point(6, 42);
-            this.numTTReward.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
-            this.numTTReward.Minimum = new decimal(new int[] {
-            -2147483648,
-            0,
-            0,
-            -2147483648});
-            this.numTTReward.Name = "numTTReward";
-            this.numTTReward.Size = new System.Drawing.Size(108, 20);
-            this.numTTReward.TabIndex = 1;
-            this.numTTReward.ValueChanged += new System.EventHandler(this.numTTReward_ValueChanged);
-            // 
-            // fraOtherSettings
-            // 
-            this.fraOtherSettings.Controls.Add(this.chkOtherSettings);
-            this.fraOtherSettings.Controls.Add(this.numOtherSettings);
-            this.fraOtherSettings.Location = new System.Drawing.Point(255, 163);
-            this.fraOtherSettings.Name = "fraOtherSettings";
-            this.fraOtherSettings.Size = new System.Drawing.Size(120, 70);
-            this.fraOtherSettings.TabIndex = 10;
-            this.fraOtherSettings.TabStop = false;
-            this.fraOtherSettings.Text = "Other Settings";
-            // 
-            // chkOtherSettings
-            // 
-            this.chkOtherSettings.AutoSize = true;
-            this.chkOtherSettings.Location = new System.Drawing.Point(6, 19);
-            this.chkOtherSettings.Name = "chkOtherSettings";
-            this.chkOtherSettings.Size = new System.Drawing.Size(65, 17);
-            this.chkOtherSettings.TabIndex = 0;
-            this.chkOtherSettings.Text = "Enabled";
-            this.chkOtherSettings.UseVisualStyleBackColor = true;
-            this.chkOtherSettings.CheckedChanged += new System.EventHandler(this.chkOtherSettings_CheckedChanged);
-            // 
-            // numOtherSettings
-            // 
-            this.numOtherSettings.Location = new System.Drawing.Point(6, 42);
-            this.numOtherSettings.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
-            this.numOtherSettings.Minimum = new decimal(new int[] {
-            -2147483648,
-            0,
-            0,
-            -2147483648});
-            this.numOtherSettings.Name = "numOtherSettings";
-            this.numOtherSettings.Size = new System.Drawing.Size(108, 20);
-            this.numOtherSettings.TabIndex = 1;
-            this.numOtherSettings.ValueChanged += new System.EventHandler(this.numOtherSettings_ValueChanged);
-            // 
-            // fraScaling
-            // 
-            this.fraScaling.Controls.Add(this.chkScaling);
-            this.fraScaling.Controls.Add(this.numScaling);
-            this.fraScaling.Location = new System.Drawing.Point(129, 239);
-            this.fraScaling.Name = "fraScaling";
-            this.fraScaling.Size = new System.Drawing.Size(120, 70);
-            this.fraScaling.TabIndex = 11;
-            this.fraScaling.TabStop = false;
-            this.fraScaling.Text = "Scale Modifier";
-            // 
-            // chkScaling
-            // 
-            this.chkScaling.AutoSize = true;
-            this.chkScaling.Location = new System.Drawing.Point(6, 19);
-            this.chkScaling.Name = "chkScaling";
-            this.chkScaling.Size = new System.Drawing.Size(65, 17);
-            this.chkScaling.TabIndex = 0;
-            this.chkScaling.Text = "Enabled";
-            this.chkScaling.UseVisualStyleBackColor = true;
-            this.chkScaling.CheckedChanged += new System.EventHandler(this.chkScaling_CheckedChanged);
-            // 
-            // numScaling
-            // 
-            this.numScaling.Location = new System.Drawing.Point(6, 42);
-            this.numScaling.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
-            this.numScaling.Minimum = new decimal(new int[] {
-            -2147483648,
-            0,
-            0,
-            -2147483648});
-            this.numScaling.Name = "numScaling";
-            this.numScaling.Size = new System.Drawing.Size(108, 20);
-            this.numScaling.TabIndex = 1;
-            this.numScaling.ValueChanged += new System.EventHandler(this.numScaling_ValueChanged);
-            // 
-            // fraDDASection
-            // 
-            this.fraDDASection.Controls.Add(this.chkDDASection);
-            this.fraDDASection.Controls.Add(this.numDDASection);
-            this.fraDDASection.Location = new System.Drawing.Point(3, 163);
-            this.fraDDASection.Name = "fraDDASection";
-            this.fraDDASection.Size = new System.Drawing.Size(120, 70);
-            this.fraDDASection.TabIndex = 10;
-            this.fraDDASection.TabStop = false;
-            this.fraDDASection.Text = "DDA Section";
-            // 
-            // chkDDASection
-            // 
-            this.chkDDASection.AutoSize = true;
-            this.chkDDASection.Location = new System.Drawing.Point(6, 19);
-            this.chkDDASection.Name = "chkDDASection";
-            this.chkDDASection.Size = new System.Drawing.Size(65, 17);
-            this.chkDDASection.TabIndex = 0;
-            this.chkDDASection.Text = "Enabled";
-            this.chkDDASection.UseVisualStyleBackColor = true;
-            this.chkDDASection.CheckedChanged += new System.EventHandler(this.chkDDASection_CheckedChanged);
-            // 
-            // numDDASection
-            // 
-            this.numDDASection.Location = new System.Drawing.Point(6, 42);
-            this.numDDASection.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
-            this.numDDASection.Minimum = new decimal(new int[] {
-            -2147483648,
-            0,
-            0,
-            -2147483648});
-            this.numDDASection.Name = "numDDASection";
-            this.numDDASection.Size = new System.Drawing.Size(108, 20);
-            this.numDDASection.TabIndex = 1;
-            this.numDDASection.ValueChanged += new System.EventHandler(this.numDDASection_ValueChanged);
-            // 
-            // fraDDASettings
-            // 
-            this.fraDDASettings.Controls.Add(this.chkDDASettings);
-            this.fraDDASettings.Controls.Add(this.numDDASettings);
-            this.fraDDASettings.Location = new System.Drawing.Point(129, 163);
-            this.fraDDASettings.Name = "fraDDASettings";
-            this.fraDDASettings.Size = new System.Drawing.Size(120, 70);
-            this.fraDDASettings.TabIndex = 9;
-            this.fraDDASettings.TabStop = false;
-            this.fraDDASettings.Text = "DDA Death Count";
-            // 
-            // chkDDASettings
-            // 
-            this.chkDDASettings.AutoSize = true;
-            this.chkDDASettings.Location = new System.Drawing.Point(6, 19);
-            this.chkDDASettings.Name = "chkDDASettings";
-            this.chkDDASettings.Size = new System.Drawing.Size(65, 17);
-            this.chkDDASettings.TabIndex = 0;
-            this.chkDDASettings.Text = "Enabled";
-            this.chkDDASettings.UseVisualStyleBackColor = true;
-            this.chkDDASettings.CheckedChanged += new System.EventHandler(this.chkDDASettings_CheckedChanged);
-            // 
-            // numDDASettings
-            // 
-            this.numDDASettings.Location = new System.Drawing.Point(6, 42);
-            this.numDDASettings.Maximum = new decimal(new int[] {
-            8388607,
-            0,
-            0,
-            0});
-            this.numDDASettings.Minimum = new decimal(new int[] {
-            8388608,
-            0,
-            0,
-            -2147483648});
-            this.numDDASettings.Name = "numDDASettings";
-            this.numDDASettings.Size = new System.Drawing.Size(108, 20);
-            this.numDDASettings.TabIndex = 1;
-            this.numDDASettings.ValueChanged += new System.EventHandler(this.numDDASettings_ValueChanged);
-            // 
-            // fraBoxCount
-            // 
-            this.fraBoxCount.Controls.Add(this.chkBonusBoxCount);
-            this.fraBoxCount.Controls.Add(this.numBonusBoxCount);
-            this.fraBoxCount.Controls.Add(this.chkBoxCount);
-            this.fraBoxCount.Controls.Add(this.numBoxCount);
-            this.fraBoxCount.Location = new System.Drawing.Point(141, 3);
-            this.fraBoxCount.Name = "fraBoxCount";
-            this.fraBoxCount.Size = new System.Drawing.Size(132, 119);
-            this.fraBoxCount.TabIndex = 8;
-            this.fraBoxCount.TabStop = false;
-            this.fraBoxCount.Text = "Box Count";
-            // 
-            // chkBonusBoxCount
-            // 
-            this.chkBonusBoxCount.AutoSize = true;
-            this.chkBonusBoxCount.Location = new System.Drawing.Point(6, 68);
-            this.chkBonusBoxCount.Name = "chkBonusBoxCount";
-            this.chkBonusBoxCount.Size = new System.Drawing.Size(104, 17);
-            this.chkBonusBoxCount.TabIndex = 2;
-            this.chkBonusBoxCount.Text = "Enabled (Bonus)";
-            this.chkBonusBoxCount.UseVisualStyleBackColor = true;
-            this.chkBonusBoxCount.CheckedChanged += new System.EventHandler(this.chkBonusBoxCount_CheckedChanged);
-            // 
-            // numBonusBoxCount
-            // 
-            this.numBonusBoxCount.Location = new System.Drawing.Point(6, 91);
-            this.numBonusBoxCount.Maximum = new decimal(new int[] {
-            8388607,
-            0,
-            0,
-            0});
-            this.numBonusBoxCount.Minimum = new decimal(new int[] {
-            8388608,
-            0,
-            0,
-            -2147483648});
-            this.numBonusBoxCount.Name = "numBonusBoxCount";
-            this.numBonusBoxCount.Size = new System.Drawing.Size(120, 20);
-            this.numBonusBoxCount.TabIndex = 3;
-            this.numBonusBoxCount.ValueChanged += new System.EventHandler(this.numBonusBoxCount_ValueChanged);
-            // 
-            // chkBoxCount
-            // 
-            this.chkBoxCount.AutoSize = true;
-            this.chkBoxCount.Location = new System.Drawing.Point(6, 19);
-            this.chkBoxCount.Name = "chkBoxCount";
-            this.chkBoxCount.Size = new System.Drawing.Size(65, 17);
-            this.chkBoxCount.TabIndex = 0;
-            this.chkBoxCount.Text = "Enabled";
-            this.chkBoxCount.UseVisualStyleBackColor = true;
-            this.chkBoxCount.CheckedChanged += new System.EventHandler(this.chkBoxCount_CheckedChanged);
-            // 
-            // numBoxCount
-            // 
-            this.numBoxCount.Location = new System.Drawing.Point(6, 42);
-            this.numBoxCount.Maximum = new decimal(new int[] {
-            8388607,
-            0,
-            0,
-            0});
-            this.numBoxCount.Minimum = new decimal(new int[] {
-            8388608,
-            0,
-            0,
-            -2147483648});
-            this.numBoxCount.Name = "numBoxCount";
-            this.numBoxCount.Size = new System.Drawing.Size(120, 20);
-            this.numBoxCount.TabIndex = 1;
-            this.numBoxCount.ValueChanged += new System.EventHandler(this.numBoxCount_ValueChanged);
-            // 
-            // fraVictims
-            // 
-            this.fraVictims.Controls.Add(this.cmdClearAllVictims);
-            this.fraVictims.Controls.Add(this.numVictimID);
-            this.fraVictims.Controls.Add(this.cmdRemoveVictim);
-            this.fraVictims.Controls.Add(this.cmdInsertVictim);
-            this.fraVictims.Controls.Add(this.cmdNextVictim);
-            this.fraVictims.Controls.Add(this.cmdPreviousVictim);
-            this.fraVictims.Controls.Add(this.lblVictimIndex);
-            this.fraVictims.Location = new System.Drawing.Point(3, 3);
-            this.fraVictims.Name = "fraVictims";
-            this.fraVictims.Size = new System.Drawing.Size(132, 154);
-            this.fraVictims.TabIndex = 7;
-            this.fraVictims.TabStop = false;
-            this.fraVictims.Text = "Victims";
-            // 
-            // cmdClearAllVictims
-            // 
-            this.cmdClearAllVictims.Location = new System.Drawing.Point(6, 125);
-            this.cmdClearAllVictims.Name = "cmdClearAllVictims";
-            this.cmdClearAllVictims.Size = new System.Drawing.Size(120, 23);
-            this.cmdClearAllVictims.TabIndex = 5;
-            this.cmdClearAllVictims.Text = "Clear All";
-            this.cmdClearAllVictims.UseVisualStyleBackColor = true;
-            this.cmdClearAllVictims.Click += new System.EventHandler(this.cmdClearAllVictims_Click);
-            // 
-            // numVictimID
-            // 
-            this.numVictimID.Location = new System.Drawing.Point(6, 71);
-            this.numVictimID.Maximum = new decimal(new int[] {
-            65535,
-            0,
-            0,
-            0});
-            this.numVictimID.Name = "numVictimID";
-            this.numVictimID.Size = new System.Drawing.Size(120, 20);
-            this.numVictimID.TabIndex = 2;
-            this.numVictimID.ValueChanged += new System.EventHandler(this.numVictimID_ValueChanged);
-            // 
-            // cmdRemoveVictim
-            // 
-            this.cmdRemoveVictim.Location = new System.Drawing.Point(6, 96);
-            this.cmdRemoveVictim.Name = "cmdRemoveVictim";
-            this.cmdRemoveVictim.Size = new System.Drawing.Size(58, 23);
-            this.cmdRemoveVictim.TabIndex = 4;
-            this.cmdRemoveVictim.Text = "Remove";
-            this.cmdRemoveVictim.UseVisualStyleBackColor = true;
-            this.cmdRemoveVictim.Click += new System.EventHandler(this.cmdRemoveVictim_Click);
-            // 
-            // cmdNextVictim
-            // 
-            this.cmdNextVictim.Location = new System.Drawing.Point(68, 19);
-            this.cmdNextVictim.Name = "cmdNextVictim";
-            this.cmdNextVictim.Size = new System.Drawing.Size(58, 23);
-            this.cmdNextVictim.TabIndex = 1;
-            this.cmdNextVictim.Text = "Next";
-            this.cmdNextVictim.UseVisualStyleBackColor = true;
-            this.cmdNextVictim.Click += new System.EventHandler(this.cmdNextVictim_Click);
-            // 
-            // cmdPreviousVictim
-            // 
-            this.cmdPreviousVictim.Location = new System.Drawing.Point(6, 19);
-            this.cmdPreviousVictim.Name = "cmdPreviousVictim";
-            this.cmdPreviousVictim.Size = new System.Drawing.Size(58, 23);
-            this.cmdPreviousVictim.TabIndex = 0;
-            this.cmdPreviousVictim.Text = "Previous";
-            this.cmdPreviousVictim.UseVisualStyleBackColor = true;
-            this.cmdPreviousVictim.Click += new System.EventHandler(this.cmdPreviousVictim_Click);
-            // 
-            // lblVictimIndex
-            // 
-            this.lblVictimIndex.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblVictimIndex.Location = new System.Drawing.Point(6, 45);
-            this.lblVictimIndex.Name = "lblVictimIndex";
-            this.lblVictimIndex.Size = new System.Drawing.Size(120, 23);
-            this.lblVictimIndex.TabIndex = 7;
-            this.lblVictimIndex.Text = "?? / ??";
-            this.lblVictimIndex.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // tabCamera
-            // 
-            this.tabCamera.Controls.Add(this.fraFOV);
-            this.tabCamera.Controls.Add(this.fraNeighbor);
-            this.tabCamera.Controls.Add(this.fraAvgDist);
-            this.tabCamera.Controls.Add(this.fraMode);
-            this.tabCamera.Controls.Add(this.fraCameraSubIndex);
-            this.tabCamera.Controls.Add(this.fraCameraIndex);
-            this.tabCamera.Controls.Add(this.fraSLST);
-            this.tabCamera.Location = new System.Drawing.Point(4, 22);
-            this.tabCamera.Name = "tabCamera";
-            this.tabCamera.Padding = new System.Windows.Forms.Padding(3);
-            this.tabCamera.Size = new System.Drawing.Size(492, 434);
-            this.tabCamera.TabIndex = 2;
-            this.tabCamera.Text = "Camera";
-            this.tabCamera.UseVisualStyleBackColor = true;
-            this.tabCamera.Enter += new System.EventHandler(this.tabCamera_Enter);
-            // 
-            // fraFOV
-            // 
-            this.fraFOV.Controls.Add(this.lblFOVPosition);
-            this.fraFOV.Controls.Add(this.cmdRemoveFOVFrame);
-            this.fraFOV.Controls.Add(this.cmdInsertFOVFrame);
-            this.fraFOV.Controls.Add(this.numFOVPosition);
-            this.fraFOV.Controls.Add(this.lblFOVFrame);
-            this.fraFOV.Controls.Add(this.fraFOVFrame);
-            this.fraFOV.Controls.Add(this.cmdPrevFOVFrame);
-            this.fraFOV.Controls.Add(this.cmdNextFOVFrame);
-            this.fraFOV.Location = new System.Drawing.Point(289, 93);
-            this.fraFOV.Name = "fraFOV";
-            this.fraFOV.Size = new System.Drawing.Size(151, 266);
-            this.fraFOV.TabIndex = 21;
-            this.fraFOV.TabStop = false;
-            this.fraFOV.Text = "Field-of-View Timeline";
-            // 
-            // lblFOVPosition
-            // 
-            this.lblFOVPosition.AutoSize = true;
-            this.lblFOVPosition.Location = new System.Drawing.Point(6, 73);
-            this.lblFOVPosition.Name = "lblFOVPosition";
-            this.lblFOVPosition.Size = new System.Drawing.Size(44, 13);
-            this.lblFOVPosition.TabIndex = 20;
-            this.lblFOVPosition.Text = "Position";
-            // 
-            // cmdRemoveFOVFrame
-            // 
-            this.cmdRemoveFOVFrame.Location = new System.Drawing.Point(7, 97);
-            this.cmdRemoveFOVFrame.Name = "cmdRemoveFOVFrame";
-            this.cmdRemoveFOVFrame.Size = new System.Drawing.Size(66, 23);
-            this.cmdRemoveFOVFrame.TabIndex = 16;
-            this.cmdRemoveFOVFrame.Text = "Remove";
-            this.cmdRemoveFOVFrame.UseVisualStyleBackColor = true;
-            this.cmdRemoveFOVFrame.Click += new System.EventHandler(this.cmdRemoveFOVFrame_Click);
-            // 
-            // cmdInsertFOVFrame
-            // 
-            this.cmdInsertFOVFrame.Location = new System.Drawing.Point(79, 97);
-            this.cmdInsertFOVFrame.Name = "cmdInsertFOVFrame";
-            this.cmdInsertFOVFrame.Size = new System.Drawing.Size(66, 23);
-            this.cmdInsertFOVFrame.TabIndex = 17;
-            this.cmdInsertFOVFrame.Text = "Insert";
-            this.cmdInsertFOVFrame.UseVisualStyleBackColor = true;
-            this.cmdInsertFOVFrame.Click += new System.EventHandler(this.cmdInsertFOVFrame_Click);
-            // 
-            // numFOVPosition
-            // 
-            this.numFOVPosition.Location = new System.Drawing.Point(56, 71);
-            this.numFOVPosition.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numFOVPosition.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numFOVPosition.Name = "numFOVPosition";
-            this.numFOVPosition.Size = new System.Drawing.Size(68, 20);
-            this.numFOVPosition.TabIndex = 19;
-            this.numFOVPosition.ValueChanged += new System.EventHandler(this.numFOVPosition_ValueChanged);
-            // 
-            // lblFOVFrame
-            // 
-            this.lblFOVFrame.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFOVFrame.Location = new System.Drawing.Point(6, 45);
-            this.lblFOVFrame.Name = "lblFOVFrame";
-            this.lblFOVFrame.Size = new System.Drawing.Size(139, 23);
-            this.lblFOVFrame.TabIndex = 17;
-            this.lblFOVFrame.Text = "?? / ??";
-            this.lblFOVFrame.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // fraFOVFrame
-            // 
-            this.fraFOVFrame.Controls.Add(this.lblFOVIndex);
-            this.fraFOVFrame.Controls.Add(this.cmdRemoveFOV);
-            this.fraFOVFrame.Controls.Add(this.cmdInsertFOV);
-            this.fraFOVFrame.Controls.Add(this.cmdPrevFOV);
-            this.fraFOVFrame.Controls.Add(this.cmdNextFOV);
-            this.fraFOVFrame.Controls.Add(this.lblFOV);
-            this.fraFOVFrame.Controls.Add(this.numFOV);
-            this.fraFOVFrame.Location = new System.Drawing.Point(6, 126);
-            this.fraFOVFrame.Name = "fraFOVFrame";
-            this.fraFOVFrame.Size = new System.Drawing.Size(139, 128);
-            this.fraFOVFrame.TabIndex = 15;
-            this.fraFOVFrame.TabStop = false;
-            this.fraFOVFrame.Text = "Field-of-View";
-            // 
-            // lblFOVIndex
-            // 
-            this.lblFOVIndex.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFOVIndex.Location = new System.Drawing.Point(6, 45);
-            this.lblFOVIndex.Name = "lblFOVIndex";
-            this.lblFOVIndex.Size = new System.Drawing.Size(127, 23);
-            this.lblFOVIndex.TabIndex = 21;
-            this.lblFOVIndex.Text = "?? / ??";
-            this.lblFOVIndex.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // cmdRemoveFOV
-            // 
-            this.cmdRemoveFOV.Location = new System.Drawing.Point(7, 71);
-            this.cmdRemoveFOV.Name = "cmdRemoveFOV";
-            this.cmdRemoveFOV.Size = new System.Drawing.Size(60, 23);
-            this.cmdRemoveFOV.TabIndex = 46;
-            this.cmdRemoveFOV.Text = "Remove";
-            this.cmdRemoveFOV.UseVisualStyleBackColor = true;
-            this.cmdRemoveFOV.Click += new System.EventHandler(this.cmdRemoveFOV_Click);
-            // 
-            // cmdInsertFOV
-            // 
-            this.cmdInsertFOV.Location = new System.Drawing.Point(73, 71);
-            this.cmdInsertFOV.Name = "cmdInsertFOV";
-            this.cmdInsertFOV.Size = new System.Drawing.Size(60, 23);
-            this.cmdInsertFOV.TabIndex = 47;
-            this.cmdInsertFOV.Text = "Insert";
-            this.cmdInsertFOV.UseVisualStyleBackColor = true;
-            this.cmdInsertFOV.Click += new System.EventHandler(this.cmdInsertFOV_Click);
-            // 
-            // cmdPrevFOV
-            // 
-            this.cmdPrevFOV.Location = new System.Drawing.Point(6, 19);
-            this.cmdPrevFOV.Name = "cmdPrevFOV";
-            this.cmdPrevFOV.Size = new System.Drawing.Size(60, 23);
-            this.cmdPrevFOV.TabIndex = 22;
-            this.cmdPrevFOV.Text = "Previous";
-            this.cmdPrevFOV.UseVisualStyleBackColor = true;
-            this.cmdPrevFOV.Click += new System.EventHandler(this.cmdPrevFOV_Click);
-            // 
-            // cmdNextFOV
-            // 
-            this.cmdNextFOV.Location = new System.Drawing.Point(72, 19);
-            this.cmdNextFOV.Name = "cmdNextFOV";
-            this.cmdNextFOV.Size = new System.Drawing.Size(60, 23);
-            this.cmdNextFOV.TabIndex = 23;
-            this.cmdNextFOV.Text = "Next";
-            this.cmdNextFOV.UseVisualStyleBackColor = true;
-            this.cmdNextFOV.Click += new System.EventHandler(this.cmdNextFOV_Click);
-            // 
-            // lblFOV
-            // 
-            this.lblFOV.AutoSize = true;
-            this.lblFOV.Location = new System.Drawing.Point(6, 101);
-            this.lblFOV.Name = "lblFOV";
-            this.lblFOV.Size = new System.Drawing.Size(28, 13);
-            this.lblFOV.TabIndex = 39;
-            this.lblFOV.Text = "FOV";
-            // 
-            // numFOV
-            // 
-            this.numFOV.Location = new System.Drawing.Point(40, 99);
-            this.numFOV.Maximum = new decimal(new int[] {
-            65535,
-            0,
-            0,
-            0});
-            this.numFOV.Name = "numFOV";
-            this.numFOV.Size = new System.Drawing.Size(93, 20);
-            this.numFOV.TabIndex = 38;
-            this.numFOV.ValueChanged += new System.EventHandler(this.numFOV_ValueChanged);
-            // 
-            // cmdPrevFOVFrame
-            // 
-            this.cmdPrevFOVFrame.Location = new System.Drawing.Point(7, 19);
-            this.cmdPrevFOVFrame.Name = "cmdPrevFOVFrame";
-            this.cmdPrevFOVFrame.Size = new System.Drawing.Size(66, 23);
-            this.cmdPrevFOVFrame.TabIndex = 15;
-            this.cmdPrevFOVFrame.Text = "Previous";
-            this.cmdPrevFOVFrame.UseVisualStyleBackColor = true;
-            this.cmdPrevFOVFrame.Click += new System.EventHandler(this.cmdPrevFOVFrame_Click);
-            // 
-            // cmdNextFOVFrame
-            // 
-            this.cmdNextFOVFrame.Location = new System.Drawing.Point(79, 19);
-            this.cmdNextFOVFrame.Name = "cmdNextFOVFrame";
-            this.cmdNextFOVFrame.Size = new System.Drawing.Size(66, 23);
-            this.cmdNextFOVFrame.TabIndex = 16;
-            this.cmdNextFOVFrame.Text = "Next";
-            this.cmdNextFOVFrame.UseVisualStyleBackColor = true;
-            this.cmdNextFOVFrame.Click += new System.EventHandler(this.cmdNextFOVFrame_Click);
-            // 
-            // fraNeighbor
-            // 
-            this.fraNeighbor.Controls.Add(this.lblNeighborPosition);
-            this.fraNeighbor.Controls.Add(this.cmdRemoveNeighbor);
-            this.fraNeighbor.Controls.Add(this.cmdInsertNeighbor);
-            this.fraNeighbor.Controls.Add(this.numNeighborPosition);
-            this.fraNeighbor.Controls.Add(this.lblNeighbor);
-            this.fraNeighbor.Controls.Add(this.fraNeighborSetting);
-            this.fraNeighbor.Controls.Add(this.cmdPrevNeighbor);
-            this.fraNeighbor.Controls.Add(this.cmdNextNeighbor);
-            this.fraNeighbor.Location = new System.Drawing.Point(132, 93);
-            this.fraNeighbor.Name = "fraNeighbor";
-            this.fraNeighbor.Size = new System.Drawing.Size(151, 335);
-            this.fraNeighbor.TabIndex = 8;
-            this.fraNeighbor.TabStop = false;
-            this.fraNeighbor.Text = "Neighbors";
-            // 
-            // lblNeighborPosition
-            // 
-            this.lblNeighborPosition.AutoSize = true;
-            this.lblNeighborPosition.Location = new System.Drawing.Point(6, 73);
-            this.lblNeighborPosition.Name = "lblNeighborPosition";
-            this.lblNeighborPosition.Size = new System.Drawing.Size(44, 13);
-            this.lblNeighborPosition.TabIndex = 20;
-            this.lblNeighborPosition.Text = "Position";
-            // 
-            // cmdRemoveNeighbor
-            // 
-            this.cmdRemoveNeighbor.Location = new System.Drawing.Point(7, 97);
-            this.cmdRemoveNeighbor.Name = "cmdRemoveNeighbor";
-            this.cmdRemoveNeighbor.Size = new System.Drawing.Size(66, 23);
-            this.cmdRemoveNeighbor.TabIndex = 16;
-            this.cmdRemoveNeighbor.Text = "Remove";
-            this.cmdRemoveNeighbor.UseVisualStyleBackColor = true;
-            this.cmdRemoveNeighbor.Click += new System.EventHandler(this.cmdRemoveNeighbor_Click);
-            // 
-            // cmdInsertNeighbor
-            // 
-            this.cmdInsertNeighbor.Location = new System.Drawing.Point(79, 97);
-            this.cmdInsertNeighbor.Name = "cmdInsertNeighbor";
-            this.cmdInsertNeighbor.Size = new System.Drawing.Size(66, 23);
-            this.cmdInsertNeighbor.TabIndex = 17;
-            this.cmdInsertNeighbor.Text = "Insert";
-            this.cmdInsertNeighbor.UseVisualStyleBackColor = true;
-            this.cmdInsertNeighbor.Click += new System.EventHandler(this.cmdInsertNeighbor_Click);
-            // 
-            // numNeighborPosition
-            // 
-            this.numNeighborPosition.Location = new System.Drawing.Point(56, 71);
-            this.numNeighborPosition.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numNeighborPosition.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numNeighborPosition.Name = "numNeighborPosition";
-            this.numNeighborPosition.Size = new System.Drawing.Size(68, 20);
-            this.numNeighborPosition.TabIndex = 19;
-            this.numNeighborPosition.ValueChanged += new System.EventHandler(this.numNeighborPosition_ValueChanged);
-            // 
-            // lblNeighbor
-            // 
-            this.lblNeighbor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNeighbor.Location = new System.Drawing.Point(6, 45);
-            this.lblNeighbor.Name = "lblNeighbor";
-            this.lblNeighbor.Size = new System.Drawing.Size(139, 23);
-            this.lblNeighbor.TabIndex = 17;
-            this.lblNeighbor.Text = "?? / ??";
-            this.lblNeighbor.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // fraNeighborSetting
-            // 
-            this.fraNeighborSetting.Controls.Add(this.lblNeighborSetting);
-            this.fraNeighborSetting.Controls.Add(this.cmdRemoveNeighborSetting);
-            this.fraNeighborSetting.Controls.Add(this.cmdInsertNeighborSetting);
-            this.fraNeighborSetting.Controls.Add(this.cmdPrevNeighborSetting);
-            this.fraNeighborSetting.Controls.Add(this.cmdNextNeighborSetting);
-            this.fraNeighborSetting.Controls.Add(this.lblNeighborLink);
-            this.fraNeighborSetting.Controls.Add(this.lblNeighborFlag);
-            this.fraNeighborSetting.Controls.Add(this.numNeighborFlag);
-            this.fraNeighborSetting.Controls.Add(this.lblNeighborCamera);
-            this.fraNeighborSetting.Controls.Add(this.lblNeighborZone);
-            this.fraNeighborSetting.Controls.Add(this.numNeighborLink);
-            this.fraNeighborSetting.Controls.Add(this.numNeighborCamera);
-            this.fraNeighborSetting.Controls.Add(this.numNeighborZone);
-            this.fraNeighborSetting.Location = new System.Drawing.Point(6, 126);
-            this.fraNeighborSetting.Name = "fraNeighborSetting";
-            this.fraNeighborSetting.Size = new System.Drawing.Size(139, 203);
-            this.fraNeighborSetting.TabIndex = 15;
-            this.fraNeighborSetting.TabStop = false;
-            this.fraNeighborSetting.Text = "Neighbor";
-            // 
-            // lblNeighborSetting
-            // 
-            this.lblNeighborSetting.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNeighborSetting.Location = new System.Drawing.Point(6, 45);
-            this.lblNeighborSetting.Name = "lblNeighborSetting";
-            this.lblNeighborSetting.Size = new System.Drawing.Size(127, 23);
-            this.lblNeighborSetting.TabIndex = 21;
-            this.lblNeighborSetting.Text = "?? / ??";
-            this.lblNeighborSetting.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // cmdRemoveNeighborSetting
-            // 
-            this.cmdRemoveNeighborSetting.Location = new System.Drawing.Point(7, 71);
-            this.cmdRemoveNeighborSetting.Name = "cmdRemoveNeighborSetting";
-            this.cmdRemoveNeighborSetting.Size = new System.Drawing.Size(60, 23);
-            this.cmdRemoveNeighborSetting.TabIndex = 46;
-            this.cmdRemoveNeighborSetting.Text = "Remove";
-            this.cmdRemoveNeighborSetting.UseVisualStyleBackColor = true;
-            this.cmdRemoveNeighborSetting.Click += new System.EventHandler(this.cmdRemoveNeighborSetting_Click);
-            // 
-            // cmdInsertNeighborSetting
-            // 
-            this.cmdInsertNeighborSetting.Location = new System.Drawing.Point(73, 71);
-            this.cmdInsertNeighborSetting.Name = "cmdInsertNeighborSetting";
-            this.cmdInsertNeighborSetting.Size = new System.Drawing.Size(60, 23);
-            this.cmdInsertNeighborSetting.TabIndex = 47;
-            this.cmdInsertNeighborSetting.Text = "Insert";
-            this.cmdInsertNeighborSetting.UseVisualStyleBackColor = true;
-            this.cmdInsertNeighborSetting.Click += new System.EventHandler(this.cmdInsertNeighborSetting_Click);
-            // 
-            // cmdPrevNeighborSetting
-            // 
-            this.cmdPrevNeighborSetting.Location = new System.Drawing.Point(6, 19);
-            this.cmdPrevNeighborSetting.Name = "cmdPrevNeighborSetting";
-            this.cmdPrevNeighborSetting.Size = new System.Drawing.Size(60, 23);
-            this.cmdPrevNeighborSetting.TabIndex = 22;
-            this.cmdPrevNeighborSetting.Text = "Previous";
-            this.cmdPrevNeighborSetting.UseVisualStyleBackColor = true;
-            this.cmdPrevNeighborSetting.Click += new System.EventHandler(this.cmdPrevNeighborSetting_Click);
-            // 
-            // cmdNextNeighborSetting
-            // 
-            this.cmdNextNeighborSetting.Location = new System.Drawing.Point(72, 19);
-            this.cmdNextNeighborSetting.Name = "cmdNextNeighborSetting";
-            this.cmdNextNeighborSetting.Size = new System.Drawing.Size(60, 23);
-            this.cmdNextNeighborSetting.TabIndex = 23;
-            this.cmdNextNeighborSetting.Text = "Next";
-            this.cmdNextNeighborSetting.UseVisualStyleBackColor = true;
-            this.cmdNextNeighborSetting.Click += new System.EventHandler(this.cmdNextNeighborSetting_Click);
-            // 
-            // lblNeighborLink
-            // 
-            this.lblNeighborLink.AutoSize = true;
-            this.lblNeighborLink.Location = new System.Drawing.Point(6, 179);
-            this.lblNeighborLink.Name = "lblNeighborLink";
-            this.lblNeighborLink.Size = new System.Drawing.Size(54, 13);
-            this.lblNeighborLink.TabIndex = 45;
-            this.lblNeighborLink.Text = "Link Type";
-            // 
-            // lblNeighborFlag
-            // 
-            this.lblNeighborFlag.AutoSize = true;
-            this.lblNeighborFlag.Location = new System.Drawing.Point(6, 101);
-            this.lblNeighborFlag.Name = "lblNeighborFlag";
-            this.lblNeighborFlag.Size = new System.Drawing.Size(27, 13);
-            this.lblNeighborFlag.TabIndex = 39;
-            this.lblNeighborFlag.Text = "Flag";
-            // 
-            // numNeighborFlag
-            // 
-            this.numNeighborFlag.Location = new System.Drawing.Point(73, 99);
-            this.numNeighborFlag.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numNeighborFlag.Name = "numNeighborFlag";
-            this.numNeighborFlag.Size = new System.Drawing.Size(60, 20);
-            this.numNeighborFlag.TabIndex = 38;
-            this.numNeighborFlag.ValueChanged += new System.EventHandler(this.numNeighborFlag_ValueChanged);
-            // 
-            // lblNeighborCamera
-            // 
-            this.lblNeighborCamera.AutoSize = true;
-            this.lblNeighborCamera.Location = new System.Drawing.Point(6, 127);
-            this.lblNeighborCamera.Name = "lblNeighborCamera";
-            this.lblNeighborCamera.Size = new System.Drawing.Size(60, 13);
-            this.lblNeighborCamera.TabIndex = 44;
-            this.lblNeighborCamera.Text = "Cam. Index";
-            // 
-            // lblNeighborZone
-            // 
-            this.lblNeighborZone.AutoSize = true;
-            this.lblNeighborZone.Location = new System.Drawing.Point(6, 153);
-            this.lblNeighborZone.Name = "lblNeighborZone";
-            this.lblNeighborZone.Size = new System.Drawing.Size(61, 13);
-            this.lblNeighborZone.TabIndex = 41;
-            this.lblNeighborZone.Text = "Zone Index";
-            // 
-            // numNeighborLink
-            // 
-            this.numNeighborLink.Location = new System.Drawing.Point(73, 177);
-            this.numNeighborLink.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numNeighborLink.Name = "numNeighborLink";
-            this.numNeighborLink.Size = new System.Drawing.Size(60, 20);
-            this.numNeighborLink.TabIndex = 43;
-            this.numNeighborLink.ValueChanged += new System.EventHandler(this.numNeighborLink_ValueChanged);
-            // 
-            // numNeighborCamera
-            // 
-            this.numNeighborCamera.Location = new System.Drawing.Point(73, 125);
-            this.numNeighborCamera.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numNeighborCamera.Name = "numNeighborCamera";
-            this.numNeighborCamera.Size = new System.Drawing.Size(60, 20);
-            this.numNeighborCamera.TabIndex = 40;
-            this.numNeighborCamera.ValueChanged += new System.EventHandler(this.numNeighborCamera_ValueChanged);
-            // 
-            // numNeighborZone
-            // 
-            this.numNeighborZone.Location = new System.Drawing.Point(73, 151);
-            this.numNeighborZone.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numNeighborZone.Name = "numNeighborZone";
-            this.numNeighborZone.Size = new System.Drawing.Size(60, 20);
-            this.numNeighborZone.TabIndex = 42;
-            this.numNeighborZone.ValueChanged += new System.EventHandler(this.numNeighborZone_ValueChanged);
-            // 
-            // cmdPrevNeighbor
-            // 
-            this.cmdPrevNeighbor.Location = new System.Drawing.Point(7, 19);
-            this.cmdPrevNeighbor.Name = "cmdPrevNeighbor";
-            this.cmdPrevNeighbor.Size = new System.Drawing.Size(66, 23);
-            this.cmdPrevNeighbor.TabIndex = 15;
-            this.cmdPrevNeighbor.Text = "Previous";
-            this.cmdPrevNeighbor.UseVisualStyleBackColor = true;
-            this.cmdPrevNeighbor.Click += new System.EventHandler(this.cmdPrevNeighbor_Click);
-            // 
-            // cmdNextNeighbor
-            // 
-            this.cmdNextNeighbor.Location = new System.Drawing.Point(79, 19);
-            this.cmdNextNeighbor.Name = "cmdNextNeighbor";
-            this.cmdNextNeighbor.Size = new System.Drawing.Size(66, 23);
-            this.cmdNextNeighbor.TabIndex = 16;
-            this.cmdNextNeighbor.Text = "Next";
-            this.cmdNextNeighbor.UseVisualStyleBackColor = true;
-            this.cmdNextNeighbor.Click += new System.EventHandler(this.cmdNextNeighbor_Click);
-            // 
-            // fraAvgDist
-            // 
-            this.fraAvgDist.Controls.Add(this.chkAvgDist);
-            this.fraAvgDist.Controls.Add(this.numAvgDist);
-            this.fraAvgDist.Location = new System.Drawing.Point(6, 171);
-            this.fraAvgDist.Name = "fraAvgDist";
-            this.fraAvgDist.Size = new System.Drawing.Size(120, 72);
-            this.fraAvgDist.TabIndex = 7;
-            this.fraAvgDist.TabStop = false;
-            this.fraAvgDist.Text = "Point Distance";
-            // 
-            // chkAvgDist
-            // 
-            this.chkAvgDist.AutoSize = true;
-            this.chkAvgDist.Location = new System.Drawing.Point(6, 19);
-            this.chkAvgDist.Name = "chkAvgDist";
-            this.chkAvgDist.Size = new System.Drawing.Size(65, 17);
-            this.chkAvgDist.TabIndex = 0;
-            this.chkAvgDist.Text = "Enabled";
-            this.chkAvgDist.UseVisualStyleBackColor = true;
-            this.chkAvgDist.CheckedChanged += new System.EventHandler(this.chkAvgDist_CheckedChanged);
-            // 
-            // numAvgDist
-            // 
-            this.numAvgDist.Location = new System.Drawing.Point(6, 42);
-            this.numAvgDist.Maximum = new decimal(new int[] {
-            8388607,
-            0,
-            0,
-            0});
-            this.numAvgDist.Minimum = new decimal(new int[] {
-            8388608,
-            0,
-            0,
-            -2147483648});
-            this.numAvgDist.Name = "numAvgDist";
-            this.numAvgDist.Size = new System.Drawing.Size(108, 20);
-            this.numAvgDist.TabIndex = 1;
-            this.numAvgDist.ValueChanged += new System.EventHandler(this.numAvgDist_ValueChanged);
-            // 
-            // fraMode
-            // 
-            this.fraMode.Controls.Add(this.chkMode);
-            this.fraMode.Controls.Add(this.numMode);
-            this.fraMode.Enabled = false;
-            this.fraMode.Location = new System.Drawing.Point(6, 93);
-            this.fraMode.Name = "fraMode";
-            this.fraMode.Size = new System.Drawing.Size(120, 72);
-            this.fraMode.TabIndex = 6;
-            this.fraMode.TabStop = false;
-            this.fraMode.Text = "Camera Mode";
-            // 
-            // chkMode
-            // 
-            this.chkMode.AutoSize = true;
-            this.chkMode.Location = new System.Drawing.Point(6, 19);
-            this.chkMode.Name = "chkMode";
-            this.chkMode.Size = new System.Drawing.Size(65, 17);
-            this.chkMode.TabIndex = 0;
-            this.chkMode.Text = "Enabled";
-            this.chkMode.UseVisualStyleBackColor = true;
-            this.chkMode.CheckedChanged += new System.EventHandler(this.chkMode_CheckedChanged);
-            // 
-            // numMode
-            // 
-            this.numMode.Location = new System.Drawing.Point(6, 42);
-            this.numMode.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numMode.Name = "numMode";
-            this.numMode.Size = new System.Drawing.Size(108, 20);
-            this.numMode.TabIndex = 1;
-            this.numMode.ValueChanged += new System.EventHandler(this.numMode_ValueChanged);
-            // 
-            // fraCameraSubIndex
-            // 
-            this.fraCameraSubIndex.Controls.Add(this.chkCameraSubIndex);
-            this.fraCameraSubIndex.Controls.Add(this.numCameraSubIndex);
-            this.fraCameraSubIndex.Location = new System.Drawing.Point(6, 327);
-            this.fraCameraSubIndex.Name = "fraCameraSubIndex";
-            this.fraCameraSubIndex.Size = new System.Drawing.Size(120, 72);
-            this.fraCameraSubIndex.TabIndex = 6;
-            this.fraCameraSubIndex.TabStop = false;
-            this.fraCameraSubIndex.Text = "Camera Subindex";
-            this.fraCameraSubIndex.UseCompatibleTextRendering = true;
-            // 
-            // chkCameraSubIndex
-            // 
-            this.chkCameraSubIndex.AutoSize = true;
-            this.chkCameraSubIndex.Location = new System.Drawing.Point(6, 19);
-            this.chkCameraSubIndex.Name = "chkCameraSubIndex";
-            this.chkCameraSubIndex.Size = new System.Drawing.Size(65, 17);
-            this.chkCameraSubIndex.TabIndex = 0;
-            this.chkCameraSubIndex.Text = "Enabled";
-            this.chkCameraSubIndex.UseVisualStyleBackColor = true;
-            this.chkCameraSubIndex.CheckedChanged += new System.EventHandler(this.chkCameraSubIndex_CheckedChanged);
-            // 
-            // numCameraSubIndex
-            // 
-            this.numCameraSubIndex.Location = new System.Drawing.Point(6, 42);
-            this.numCameraSubIndex.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
-            this.numCameraSubIndex.Minimum = new decimal(new int[] {
-            -2147483648,
-            0,
-            0,
-            -2147483648});
-            this.numCameraSubIndex.Name = "numCameraSubIndex";
-            this.numCameraSubIndex.Size = new System.Drawing.Size(108, 20);
-            this.numCameraSubIndex.TabIndex = 1;
-            this.numCameraSubIndex.ValueChanged += new System.EventHandler(this.numCameraSubIndex_ValueChanged);
-            // 
-            // fraCameraIndex
-            // 
-            this.fraCameraIndex.Controls.Add(this.chkCameraIndex);
-            this.fraCameraIndex.Controls.Add(this.numCameraIndex);
-            this.fraCameraIndex.Location = new System.Drawing.Point(6, 249);
-            this.fraCameraIndex.Name = "fraCameraIndex";
-            this.fraCameraIndex.Size = new System.Drawing.Size(120, 72);
-            this.fraCameraIndex.TabIndex = 5;
-            this.fraCameraIndex.TabStop = false;
-            this.fraCameraIndex.Text = "Camera Index";
-            // 
-            // chkCameraIndex
-            // 
-            this.chkCameraIndex.AutoSize = true;
-            this.chkCameraIndex.Location = new System.Drawing.Point(6, 19);
-            this.chkCameraIndex.Name = "chkCameraIndex";
-            this.chkCameraIndex.Size = new System.Drawing.Size(65, 17);
-            this.chkCameraIndex.TabIndex = 0;
-            this.chkCameraIndex.Text = "Enabled";
-            this.chkCameraIndex.UseVisualStyleBackColor = true;
-            this.chkCameraIndex.CheckedChanged += new System.EventHandler(this.chkCameraIndex_CheckedChanged);
-            // 
-            // numCameraIndex
-            // 
-            this.numCameraIndex.Location = new System.Drawing.Point(6, 42);
-            this.numCameraIndex.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
-            this.numCameraIndex.Minimum = new decimal(new int[] {
-            -2147483648,
-            0,
-            0,
-            -2147483648});
-            this.numCameraIndex.Name = "numCameraIndex";
-            this.numCameraIndex.Size = new System.Drawing.Size(108, 20);
-            this.numCameraIndex.TabIndex = 1;
-            this.numCameraIndex.ValueChanged += new System.EventHandler(this.numCameraIndex_ValueChanged);
-            // 
-            // fraSLST
-            // 
-            this.fraSLST.AutoSize = true;
-            this.fraSLST.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.fraSLST.Controls.Add(this.lblEIDErr1);
-            this.fraSLST.Controls.Add(this.txtSLST);
-            this.fraSLST.Controls.Add(this.chkSLST);
-            this.fraSLST.Location = new System.Drawing.Point(6, 6);
-            this.fraSLST.Name = "fraSLST";
-            this.fraSLST.Size = new System.Drawing.Size(206, 81);
-            this.fraSLST.TabIndex = 1;
-            this.fraSLST.TabStop = false;
-            this.fraSLST.Text = "Sort List";
-            // 
-            // lblEIDErr1
-            // 
-            this.lblEIDErr1.AutoSize = true;
-            this.lblEIDErr1.ForeColor = System.Drawing.Color.Red;
-            this.lblEIDErr1.Location = new System.Drawing.Point(74, 45);
-            this.lblEIDErr1.Name = "lblEIDErr1";
-            this.lblEIDErr1.Size = new System.Drawing.Size(126, 13);
-            this.lblEIDErr1.TabIndex = 2;
-            this.lblEIDErr1.Text = "EID ERROR WARNING!";
-            // 
-            // txtSLST
-            // 
-            this.txtSLST.Location = new System.Drawing.Point(6, 42);
-            this.txtSLST.MaxLength = 5;
-            this.txtSLST.Name = "txtSLST";
-            this.txtSLST.Size = new System.Drawing.Size(62, 20);
-            this.txtSLST.TabIndex = 1;
-            this.txtSLST.Text = "NONE!";
-            this.txtSLST.TextChanged += new System.EventHandler(this.txtSLST_TextChanged);
-            // 
-            // chkSLST
-            // 
-            this.chkSLST.AutoSize = true;
-            this.chkSLST.Location = new System.Drawing.Point(6, 19);
-            this.chkSLST.Name = "chkSLST";
-            this.chkSLST.Size = new System.Drawing.Size(65, 17);
-            this.chkSLST.TabIndex = 0;
-            this.chkSLST.Text = "Enabled";
-            this.chkSLST.UseVisualStyleBackColor = true;
-            this.chkSLST.CheckedChanged += new System.EventHandler(this.chkSLST_CheckedChanged);
-            // 
-            // tabLoadLists
-            // 
-            this.tabLoadLists.Controls.Add(this.lblEIDErrB);
-            this.tabLoadLists.Controls.Add(this.fraLoadListPayload);
-            this.tabLoadLists.Controls.Add(this.fraLoadListB);
-            this.tabLoadLists.Controls.Add(this.lblEIDErrA);
-            this.tabLoadLists.Controls.Add(this.fraLoadListA);
-            this.tabLoadLists.Location = new System.Drawing.Point(4, 22);
-            this.tabLoadLists.Name = "tabLoadLists";
-            this.tabLoadLists.Padding = new System.Windows.Forms.Padding(3);
-            this.tabLoadLists.Size = new System.Drawing.Size(492, 434);
-            this.tabLoadLists.TabIndex = 2;
-            this.tabLoadLists.Text = "Load Lists";
-            this.tabLoadLists.UseVisualStyleBackColor = true;
-            this.tabLoadLists.Enter += new System.EventHandler(this.tabLoadLists_Enter);
-            // 
-            // lblEIDErrB
-            // 
-            this.lblEIDErrB.AutoSize = true;
-            this.lblEIDErrB.ForeColor = System.Drawing.Color.Red;
-            this.lblEIDErrB.Location = new System.Drawing.Point(158, 300);
-            this.lblEIDErrB.Name = "lblEIDErrB";
-            this.lblEIDErrB.Size = new System.Drawing.Size(126, 13);
-            this.lblEIDErrB.TabIndex = 23;
-            this.lblEIDErrB.Text = "EID ERROR WARNING!";
-            // 
-            // fraLoadListPayload
-            // 
-            this.fraLoadListPayload.Controls.Add(this.lblPayload);
-            this.fraLoadListPayload.Controls.Add(this.cmdLoadListVerify);
-            this.fraLoadListPayload.Controls.Add(this.cmdPayload);
-            this.fraLoadListPayload.Controls.Add(this.lblPayloadPosition);
-            this.fraLoadListPayload.Controls.Add(this.numPayloadPosition);
-            this.fraLoadListPayload.Location = new System.Drawing.Point(6, 316);
-            this.fraLoadListPayload.Name = "fraLoadListPayload";
-            this.fraLoadListPayload.Size = new System.Drawing.Size(231, 109);
-            this.fraLoadListPayload.TabIndex = 22;
-            this.fraLoadListPayload.TabStop = false;
-            this.fraLoadListPayload.Text = "Verify Load Lists";
-            // 
-            // lblPayload
-            // 
-            this.lblPayload.AutoSize = true;
-            this.lblPayload.Location = new System.Drawing.Point(6, 80);
-            this.lblPayload.Name = "lblPayload";
-            this.lblPayload.Size = new System.Drawing.Size(142, 13);
-            this.lblPayload.TabIndex = 24;
-            this.lblPayload.Text = "Payload is ?? normal chunks";
-            this.lblPayload.Visible = false;
-            // 
-            // cmdLoadListVerify
-            // 
-            this.cmdLoadListVerify.Location = new System.Drawing.Point(6, 19);
-            this.cmdLoadListVerify.Name = "cmdLoadListVerify";
-            this.cmdLoadListVerify.Size = new System.Drawing.Size(105, 23);
-            this.cmdLoadListVerify.TabIndex = 0;
-            this.cmdLoadListVerify.Text = "Verify List Integrity";
-            this.cmdLoadListVerify.UseVisualStyleBackColor = true;
-            this.cmdLoadListVerify.Click += new System.EventHandler(this.cmdLoadListVerify_Click);
-            // 
-            // cmdPayload
-            // 
-            this.cmdPayload.Location = new System.Drawing.Point(130, 45);
-            this.cmdPayload.Name = "cmdPayload";
-            this.cmdPayload.Size = new System.Drawing.Size(93, 23);
-            this.cmdPayload.TabIndex = 23;
-            this.cmdPayload.Text = "Check Payload";
-            this.cmdPayload.UseVisualStyleBackColor = true;
-            this.cmdPayload.Click += new System.EventHandler(this.cmdPayload_Click);
-            // 
-            // lblPayloadPosition
-            // 
-            this.lblPayloadPosition.AutoSize = true;
-            this.lblPayloadPosition.Location = new System.Drawing.Point(6, 50);
-            this.lblPayloadPosition.Name = "lblPayloadPosition";
-            this.lblPayloadPosition.Size = new System.Drawing.Size(44, 13);
-            this.lblPayloadPosition.TabIndex = 22;
-            this.lblPayloadPosition.Text = "Position";
-            // 
-            // numPayloadPosition
-            // 
-            this.numPayloadPosition.Location = new System.Drawing.Point(56, 48);
-            this.numPayloadPosition.Maximum = new decimal(new int[] {
-            65535,
-            0,
-            0,
-            0});
-            this.numPayloadPosition.Name = "numPayloadPosition";
-            this.numPayloadPosition.Size = new System.Drawing.Size(68, 20);
-            this.numPayloadPosition.TabIndex = 21;
-            // 
-            // fraLoadListB
-            // 
-            this.fraLoadListB.Controls.Add(this.lblMetavalueLoadB);
-            this.fraLoadListB.Controls.Add(this.cmdRemoveRowB);
-            this.fraLoadListB.Controls.Add(this.cmdInsertRowB);
-            this.fraLoadListB.Controls.Add(this.numMetavalueLoadB);
-            this.fraLoadListB.Controls.Add(this.lblLoadListRowIndexB);
-            this.fraLoadListB.Controls.Add(this.fraEIDB);
-            this.fraLoadListB.Controls.Add(this.cmdPrevRowB);
-            this.fraLoadListB.Controls.Add(this.cmdNextRowB);
-            this.fraLoadListB.Location = new System.Drawing.Point(155, 6);
-            this.fraLoadListB.Name = "fraLoadListB";
-            this.fraLoadListB.Size = new System.Drawing.Size(143, 291);
-            this.fraLoadListB.TabIndex = 21;
-            this.fraLoadListB.TabStop = false;
-            this.fraLoadListB.Text = "Load List B";
-            // 
-            // lblMetavalueLoadB
-            // 
-            this.lblMetavalueLoadB.AutoSize = true;
-            this.lblMetavalueLoadB.Location = new System.Drawing.Point(6, 75);
-            this.lblMetavalueLoadB.Name = "lblMetavalueLoadB";
-            this.lblMetavalueLoadB.Size = new System.Drawing.Size(44, 13);
-            this.lblMetavalueLoadB.TabIndex = 20;
-            this.lblMetavalueLoadB.Text = "Position";
-            // 
-            // cmdRemoveRowB
-            // 
-            this.cmdRemoveRowB.Location = new System.Drawing.Point(6, 99);
-            this.cmdRemoveRowB.Name = "cmdRemoveRowB";
-            this.cmdRemoveRowB.Size = new System.Drawing.Size(64, 23);
-            this.cmdRemoveRowB.TabIndex = 16;
-            this.cmdRemoveRowB.Text = "Remove";
-            this.cmdRemoveRowB.UseVisualStyleBackColor = true;
-            this.cmdRemoveRowB.Click += new System.EventHandler(this.cmdRemoveRowB_Click);
-            // 
-            // cmdInsertRowB
-            // 
-            this.cmdInsertRowB.Location = new System.Drawing.Point(74, 99);
-            this.cmdInsertRowB.Name = "cmdInsertRowB";
-            this.cmdInsertRowB.Size = new System.Drawing.Size(63, 23);
-            this.cmdInsertRowB.TabIndex = 17;
-            this.cmdInsertRowB.Text = "Insert";
-            this.cmdInsertRowB.UseVisualStyleBackColor = true;
-            this.cmdInsertRowB.Click += new System.EventHandler(this.cmdInsertRowB_Click);
-            // 
-            // numMetavalueLoadB
-            // 
-            this.numMetavalueLoadB.Location = new System.Drawing.Point(69, 73);
-            this.numMetavalueLoadB.Maximum = new decimal(new int[] {
-            65535,
-            0,
-            0,
-            0});
-            this.numMetavalueLoadB.Name = "numMetavalueLoadB";
-            this.numMetavalueLoadB.Size = new System.Drawing.Size(68, 20);
-            this.numMetavalueLoadB.TabIndex = 19;
-            this.numMetavalueLoadB.ValueChanged += new System.EventHandler(this.numMetavalueLoadB_ValueChanged);
-            // 
-            // lblLoadListRowIndexB
-            // 
-            this.lblLoadListRowIndexB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblLoadListRowIndexB.Location = new System.Drawing.Point(6, 45);
-            this.lblLoadListRowIndexB.Name = "lblLoadListRowIndexB";
-            this.lblLoadListRowIndexB.Size = new System.Drawing.Size(131, 23);
-            this.lblLoadListRowIndexB.TabIndex = 17;
-            this.lblLoadListRowIndexB.Text = "?? / ??";
-            this.lblLoadListRowIndexB.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // fraEIDB
-            // 
-            this.fraEIDB.Controls.Add(this.txtEIDB);
-            this.fraEIDB.Controls.Add(this.lblEIDIndexB);
-            this.fraEIDB.Controls.Add(this.cmdAppendEIDB);
-            this.fraEIDB.Controls.Add(this.cmdRemoveEIDB);
-            this.fraEIDB.Controls.Add(this.cmdPrevEIDB);
-            this.fraEIDB.Controls.Add(this.cmdInsertEIDB);
-            this.fraEIDB.Controls.Add(this.cmdNextEIDB);
-            this.fraEIDB.Location = new System.Drawing.Point(6, 132);
-            this.fraEIDB.Name = "fraEIDB";
-            this.fraEIDB.Size = new System.Drawing.Size(131, 153);
-            this.fraEIDB.TabIndex = 15;
-            this.fraEIDB.TabStop = false;
-            this.fraEIDB.Text = "Entries";
-            // 
-            // txtEIDB
-            // 
-            this.txtEIDB.Location = new System.Drawing.Point(7, 70);
-            this.txtEIDB.MaxLength = 5;
-            this.txtEIDB.Name = "txtEIDB";
-            this.txtEIDB.Size = new System.Drawing.Size(118, 20);
-            this.txtEIDB.TabIndex = 15;
-            this.txtEIDB.TextChanged += new System.EventHandler(this.txtEIDB_TextChanged);
-            this.txtEIDB.LostFocus += new System.EventHandler(this.txtEIDB_LostFocus);
-            // 
-            // lblEIDIndexB
-            // 
-            this.lblEIDIndexB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblEIDIndexB.Location = new System.Drawing.Point(7, 45);
-            this.lblEIDIndexB.Name = "lblEIDIndexB";
-            this.lblEIDIndexB.Size = new System.Drawing.Size(116, 23);
-            this.lblEIDIndexB.TabIndex = 14;
-            this.lblEIDIndexB.Text = "?? / ??";
-            this.lblEIDIndexB.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // cmdAppendEIDB
-            // 
-            this.cmdAppendEIDB.Location = new System.Drawing.Point(6, 125);
-            this.cmdAppendEIDB.Name = "cmdAppendEIDB";
-            this.cmdAppendEIDB.Size = new System.Drawing.Size(120, 23);
-            this.cmdAppendEIDB.TabIndex = 12;
-            this.cmdAppendEIDB.Text = "Append";
-            this.cmdAppendEIDB.UseVisualStyleBackColor = true;
-            this.cmdAppendEIDB.Click += new System.EventHandler(this.cmdAppendEIDB_Click);
-            // 
-            // cmdRemoveEIDB
-            // 
-            this.cmdRemoveEIDB.Location = new System.Drawing.Point(6, 96);
-            this.cmdRemoveEIDB.Name = "cmdRemoveEIDB";
-            this.cmdRemoveEIDB.Size = new System.Drawing.Size(58, 23);
-            this.cmdRemoveEIDB.TabIndex = 11;
-            this.cmdRemoveEIDB.Text = "Remove";
-            this.cmdRemoveEIDB.UseVisualStyleBackColor = true;
-            this.cmdRemoveEIDB.Click += new System.EventHandler(this.cmdRemoveEIDB_Click);
-            // 
-            // cmdPrevEIDB
-            // 
-            this.cmdPrevEIDB.Location = new System.Drawing.Point(6, 19);
-            this.cmdPrevEIDB.Name = "cmdPrevEIDB";
-            this.cmdPrevEIDB.Size = new System.Drawing.Size(58, 23);
-            this.cmdPrevEIDB.TabIndex = 8;
-            this.cmdPrevEIDB.Text = "Previous";
-            this.cmdPrevEIDB.UseVisualStyleBackColor = true;
-            this.cmdPrevEIDB.Click += new System.EventHandler(this.cmdPrevEIDB_Click);
-            // 
-            // cmdInsertEIDB
-            // 
-            this.cmdInsertEIDB.Location = new System.Drawing.Point(68, 96);
-            this.cmdInsertEIDB.Name = "cmdInsertEIDB";
-            this.cmdInsertEIDB.Size = new System.Drawing.Size(58, 23);
-            this.cmdInsertEIDB.TabIndex = 13;
-            this.cmdInsertEIDB.Text = "Insert";
-            this.cmdInsertEIDB.UseVisualStyleBackColor = true;
-            this.cmdInsertEIDB.Click += new System.EventHandler(this.cmdInsertEIDB_Click);
-            // 
-            // cmdNextEIDB
-            // 
-            this.cmdNextEIDB.Location = new System.Drawing.Point(68, 19);
-            this.cmdNextEIDB.Name = "cmdNextEIDB";
-            this.cmdNextEIDB.Size = new System.Drawing.Size(58, 23);
-            this.cmdNextEIDB.TabIndex = 9;
-            this.cmdNextEIDB.Text = "Next";
-            this.cmdNextEIDB.UseVisualStyleBackColor = true;
-            this.cmdNextEIDB.Click += new System.EventHandler(this.cmdNextEIDB_Click);
-            // 
-            // cmdPrevRowB
-            // 
-            this.cmdPrevRowB.Location = new System.Drawing.Point(6, 19);
-            this.cmdPrevRowB.Name = "cmdPrevRowB";
-            this.cmdPrevRowB.Size = new System.Drawing.Size(64, 23);
-            this.cmdPrevRowB.TabIndex = 15;
-            this.cmdPrevRowB.Text = "Previous";
-            this.cmdPrevRowB.UseVisualStyleBackColor = true;
-            this.cmdPrevRowB.Click += new System.EventHandler(this.cmdPrevRowB_Click);
-            // 
-            // cmdNextRowB
-            // 
-            this.cmdNextRowB.Location = new System.Drawing.Point(74, 19);
-            this.cmdNextRowB.Name = "cmdNextRowB";
-            this.cmdNextRowB.Size = new System.Drawing.Size(63, 23);
-            this.cmdNextRowB.TabIndex = 16;
-            this.cmdNextRowB.Text = "Next";
-            this.cmdNextRowB.UseVisualStyleBackColor = true;
-            this.cmdNextRowB.Click += new System.EventHandler(this.cmdNextRowB_Click);
-            // 
-            // lblEIDErrA
-            // 
-            this.lblEIDErrA.AutoSize = true;
-            this.lblEIDErrA.ForeColor = System.Drawing.Color.Red;
-            this.lblEIDErrA.Location = new System.Drawing.Point(9, 300);
-            this.lblEIDErrA.Name = "lblEIDErrA";
-            this.lblEIDErrA.Size = new System.Drawing.Size(126, 13);
-            this.lblEIDErrA.TabIndex = 4;
-            this.lblEIDErrA.Text = "EID ERROR WARNING!";
-            // 
-            // fraLoadListA
-            // 
-            this.fraLoadListA.Controls.Add(this.lblMetavalueLoadA);
-            this.fraLoadListA.Controls.Add(this.cmdRemoveRowA);
-            this.fraLoadListA.Controls.Add(this.cmdInsertRowA);
-            this.fraLoadListA.Controls.Add(this.numMetavalueLoadA);
-            this.fraLoadListA.Controls.Add(this.lblLoadListRowIndexA);
-            this.fraLoadListA.Controls.Add(this.fraEIDA);
-            this.fraLoadListA.Controls.Add(this.cmdPrevRowA);
-            this.fraLoadListA.Controls.Add(this.cmdNextRowA);
-            this.fraLoadListA.Location = new System.Drawing.Point(6, 6);
-            this.fraLoadListA.Name = "fraLoadListA";
-            this.fraLoadListA.Size = new System.Drawing.Size(143, 291);
-            this.fraLoadListA.TabIndex = 0;
-            this.fraLoadListA.TabStop = false;
-            this.fraLoadListA.Text = "Load List A";
-            // 
-            // lblMetavalueLoadA
-            // 
-            this.lblMetavalueLoadA.AutoSize = true;
-            this.lblMetavalueLoadA.Location = new System.Drawing.Point(6, 75);
-            this.lblMetavalueLoadA.Name = "lblMetavalueLoadA";
-            this.lblMetavalueLoadA.Size = new System.Drawing.Size(44, 13);
-            this.lblMetavalueLoadA.TabIndex = 20;
-            this.lblMetavalueLoadA.Text = "Position";
-            // 
-            // cmdRemoveRowA
-            // 
-            this.cmdRemoveRowA.Location = new System.Drawing.Point(6, 99);
-            this.cmdRemoveRowA.Name = "cmdRemoveRowA";
-            this.cmdRemoveRowA.Size = new System.Drawing.Size(64, 23);
-            this.cmdRemoveRowA.TabIndex = 16;
-            this.cmdRemoveRowA.Text = "Remove";
-            this.cmdRemoveRowA.UseVisualStyleBackColor = true;
-            this.cmdRemoveRowA.Click += new System.EventHandler(this.cmdRemoveRowA_Click);
-            // 
-            // cmdInsertRowA
-            // 
-            this.cmdInsertRowA.Location = new System.Drawing.Point(74, 99);
-            this.cmdInsertRowA.Name = "cmdInsertRowA";
-            this.cmdInsertRowA.Size = new System.Drawing.Size(63, 23);
-            this.cmdInsertRowA.TabIndex = 17;
-            this.cmdInsertRowA.Text = "Insert";
-            this.cmdInsertRowA.UseVisualStyleBackColor = true;
-            this.cmdInsertRowA.Click += new System.EventHandler(this.cmdInsertRowA_Click);
-            // 
-            // numMetavalueLoadA
-            // 
-            this.numMetavalueLoadA.Location = new System.Drawing.Point(69, 73);
-            this.numMetavalueLoadA.Maximum = new decimal(new int[] {
-            65535,
-            0,
-            0,
-            0});
-            this.numMetavalueLoadA.Name = "numMetavalueLoadA";
-            this.numMetavalueLoadA.Size = new System.Drawing.Size(68, 20);
-            this.numMetavalueLoadA.TabIndex = 19;
-            this.numMetavalueLoadA.ValueChanged += new System.EventHandler(this.numMetavalueLoadA_ValueChanged);
-            // 
-            // lblLoadListRowIndexA
-            // 
-            this.lblLoadListRowIndexA.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblLoadListRowIndexA.Location = new System.Drawing.Point(6, 45);
-            this.lblLoadListRowIndexA.Name = "lblLoadListRowIndexA";
-            this.lblLoadListRowIndexA.Size = new System.Drawing.Size(131, 23);
-            this.lblLoadListRowIndexA.TabIndex = 17;
-            this.lblLoadListRowIndexA.Text = "?? / ??";
-            this.lblLoadListRowIndexA.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // fraEIDA
-            // 
-            this.fraEIDA.Controls.Add(this.txtEIDA);
-            this.fraEIDA.Controls.Add(this.lblEIDIndexA);
-            this.fraEIDA.Controls.Add(this.cmdAppendEIDA);
-            this.fraEIDA.Controls.Add(this.cmdRemoveEIDA);
-            this.fraEIDA.Controls.Add(this.cmdPrevEIDA);
-            this.fraEIDA.Controls.Add(this.cmdInsertEIDA);
-            this.fraEIDA.Controls.Add(this.cmdNextEIDA);
-            this.fraEIDA.Location = new System.Drawing.Point(6, 132);
-            this.fraEIDA.Name = "fraEIDA";
-            this.fraEIDA.Size = new System.Drawing.Size(131, 153);
-            this.fraEIDA.TabIndex = 15;
-            this.fraEIDA.TabStop = false;
-            this.fraEIDA.Text = "Entries";
-            // 
-            // txtEIDA
-            // 
-            this.txtEIDA.Location = new System.Drawing.Point(7, 70);
-            this.txtEIDA.MaxLength = 5;
-            this.txtEIDA.Name = "txtEIDA";
-            this.txtEIDA.Size = new System.Drawing.Size(118, 20);
-            this.txtEIDA.TabIndex = 15;
-            this.txtEIDA.TextChanged += new System.EventHandler(this.txtEIDA_TextChanged);
-            this.txtEIDA.LostFocus += new System.EventHandler(this.txtEIDA_LostFocus);
-            // 
-            // lblEIDIndexA
-            // 
-            this.lblEIDIndexA.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblEIDIndexA.Location = new System.Drawing.Point(6, 45);
-            this.lblEIDIndexA.Name = "lblEIDIndexA";
-            this.lblEIDIndexA.Size = new System.Drawing.Size(120, 23);
-            this.lblEIDIndexA.TabIndex = 14;
-            this.lblEIDIndexA.Text = "?? / ??";
-            this.lblEIDIndexA.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // cmdAppendEIDA
-            // 
-            this.cmdAppendEIDA.Location = new System.Drawing.Point(6, 125);
-            this.cmdAppendEIDA.Name = "cmdAppendEIDA";
-            this.cmdAppendEIDA.Size = new System.Drawing.Size(120, 23);
-            this.cmdAppendEIDA.TabIndex = 12;
-            this.cmdAppendEIDA.Text = "Append";
-            this.cmdAppendEIDA.UseVisualStyleBackColor = true;
-            this.cmdAppendEIDA.Click += new System.EventHandler(this.cmdAppendEIDA_Click);
-            // 
-            // cmdRemoveEIDA
-            // 
-            this.cmdRemoveEIDA.Location = new System.Drawing.Point(6, 96);
-            this.cmdRemoveEIDA.Name = "cmdRemoveEIDA";
-            this.cmdRemoveEIDA.Size = new System.Drawing.Size(58, 23);
-            this.cmdRemoveEIDA.TabIndex = 11;
-            this.cmdRemoveEIDA.Text = "Remove";
-            this.cmdRemoveEIDA.UseVisualStyleBackColor = true;
-            this.cmdRemoveEIDA.Click += new System.EventHandler(this.cmdRemoveEIDA_Click);
-            // 
-            // cmdPrevEIDA
-            // 
-            this.cmdPrevEIDA.Location = new System.Drawing.Point(6, 19);
-            this.cmdPrevEIDA.Name = "cmdPrevEIDA";
-            this.cmdPrevEIDA.Size = new System.Drawing.Size(58, 23);
-            this.cmdPrevEIDA.TabIndex = 8;
-            this.cmdPrevEIDA.Text = "Previous";
-            this.cmdPrevEIDA.UseVisualStyleBackColor = true;
-            this.cmdPrevEIDA.Click += new System.EventHandler(this.cmdPrevEIDA_Click);
-            // 
-            // cmdInsertEIDA
-            // 
-            this.cmdInsertEIDA.Location = new System.Drawing.Point(68, 96);
-            this.cmdInsertEIDA.Name = "cmdInsertEIDA";
-            this.cmdInsertEIDA.Size = new System.Drawing.Size(58, 23);
-            this.cmdInsertEIDA.TabIndex = 13;
-            this.cmdInsertEIDA.Text = "Insert";
-            this.cmdInsertEIDA.UseVisualStyleBackColor = true;
-            this.cmdInsertEIDA.Click += new System.EventHandler(this.cmdInsertEIDA_Click);
-            // 
-            // cmdNextEIDA
-            // 
-            this.cmdNextEIDA.Location = new System.Drawing.Point(68, 19);
-            this.cmdNextEIDA.Name = "cmdNextEIDA";
-            this.cmdNextEIDA.Size = new System.Drawing.Size(58, 23);
-            this.cmdNextEIDA.TabIndex = 9;
-            this.cmdNextEIDA.Text = "Next";
-            this.cmdNextEIDA.UseVisualStyleBackColor = true;
-            this.cmdNextEIDA.Click += new System.EventHandler(this.cmdNextEIDA_Click);
-            // 
-            // cmdPrevRowA
-            // 
-            this.cmdPrevRowA.Location = new System.Drawing.Point(6, 19);
-            this.cmdPrevRowA.Name = "cmdPrevRowA";
-            this.cmdPrevRowA.Size = new System.Drawing.Size(64, 23);
-            this.cmdPrevRowA.TabIndex = 15;
-            this.cmdPrevRowA.Text = "Previous";
-            this.cmdPrevRowA.UseVisualStyleBackColor = true;
-            this.cmdPrevRowA.Click += new System.EventHandler(this.cmdPrevRowA_Click);
-            // 
-            // cmdNextRowA
-            // 
-            this.cmdNextRowA.Location = new System.Drawing.Point(74, 19);
-            this.cmdNextRowA.Name = "cmdNextRowA";
-            this.cmdNextRowA.Size = new System.Drawing.Size(63, 23);
-            this.cmdNextRowA.TabIndex = 16;
-            this.cmdNextRowA.Text = "Next";
-            this.cmdNextRowA.UseVisualStyleBackColor = true;
-            this.cmdNextRowA.Click += new System.EventHandler(this.cmdNextRowA_Click);
-            // 
-            // tabDrawLists
-            // 
-            this.tabDrawLists.Controls.Add(this.fraDrawListB);
-            this.tabDrawLists.Controls.Add(this.fraDrawListA);
-            this.tabDrawLists.Location = new System.Drawing.Point(4, 22);
-            this.tabDrawLists.Name = "tabDrawLists";
-            this.tabDrawLists.Padding = new System.Windows.Forms.Padding(3);
-            this.tabDrawLists.Size = new System.Drawing.Size(492, 434);
-            this.tabDrawLists.TabIndex = 3;
-            this.tabDrawLists.Text = "Draw Lists";
-            this.tabDrawLists.UseVisualStyleBackColor = true;
-            this.tabDrawLists.Enter += new System.EventHandler(this.tabDrawLists_Enter);
-            // 
-            // fraDrawListB
-            // 
-            this.fraDrawListB.Controls.Add(this.lblMetavalueDrawB);
-            this.fraDrawListB.Controls.Add(this.cmdRemoveRowDrawB);
-            this.fraDrawListB.Controls.Add(this.cmdInsertRowDrawB);
-            this.fraDrawListB.Controls.Add(this.numMetavalueDrawB);
-            this.fraDrawListB.Controls.Add(this.lblDrawListRowIndexB);
-            this.fraDrawListB.Controls.Add(this.fraEntityB);
-            this.fraDrawListB.Controls.Add(this.cmdPrevRowDrawB);
-            this.fraDrawListB.Controls.Add(this.cmdNextRowDrawB);
-            this.fraDrawListB.Location = new System.Drawing.Point(155, 6);
-            this.fraDrawListB.Name = "fraDrawListB";
-            this.fraDrawListB.Size = new System.Drawing.Size(143, 291);
-            this.fraDrawListB.TabIndex = 21;
-            this.fraDrawListB.TabStop = false;
-            this.fraDrawListB.Text = "Draw List B";
-            // 
-            // lblMetavalueDrawB
-            // 
-            this.lblMetavalueDrawB.AutoSize = true;
-            this.lblMetavalueDrawB.Location = new System.Drawing.Point(6, 75);
-            this.lblMetavalueDrawB.Name = "lblMetavalueDrawB";
-            this.lblMetavalueDrawB.Size = new System.Drawing.Size(44, 13);
-            this.lblMetavalueDrawB.TabIndex = 20;
-            this.lblMetavalueDrawB.Text = "Position";
-            // 
-            // cmdRemoveRowDrawB
-            // 
-            this.cmdRemoveRowDrawB.Location = new System.Drawing.Point(6, 99);
-            this.cmdRemoveRowDrawB.Name = "cmdRemoveRowDrawB";
-            this.cmdRemoveRowDrawB.Size = new System.Drawing.Size(64, 23);
-            this.cmdRemoveRowDrawB.TabIndex = 16;
-            this.cmdRemoveRowDrawB.Text = "Remove";
-            this.cmdRemoveRowDrawB.UseVisualStyleBackColor = true;
-            this.cmdRemoveRowDrawB.Click += new System.EventHandler(this.cmdRemoveRowDrawB_Click);
-            // 
-            // cmdInsertRowDrawB
-            // 
-            this.cmdInsertRowDrawB.Location = new System.Drawing.Point(74, 99);
-            this.cmdInsertRowDrawB.Name = "cmdInsertRowDrawB";
-            this.cmdInsertRowDrawB.Size = new System.Drawing.Size(63, 23);
-            this.cmdInsertRowDrawB.TabIndex = 17;
-            this.cmdInsertRowDrawB.Text = "Insert";
-            this.cmdInsertRowDrawB.UseVisualStyleBackColor = true;
-            this.cmdInsertRowDrawB.Click += new System.EventHandler(this.cmdInsertRowDrawB_Click);
-            // 
-            // numMetavalueDrawB
-            // 
-            this.numMetavalueDrawB.Location = new System.Drawing.Point(69, 73);
-            this.numMetavalueDrawB.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numMetavalueDrawB.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numMetavalueDrawB.Name = "numMetavalueDrawB";
-            this.numMetavalueDrawB.Size = new System.Drawing.Size(68, 20);
-            this.numMetavalueDrawB.TabIndex = 19;
-            this.numMetavalueDrawB.ValueChanged += new System.EventHandler(this.numMetavalueDrawB_ValueChanged);
-            // 
-            // lblDrawListRowIndexB
-            // 
-            this.lblDrawListRowIndexB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDrawListRowIndexB.Location = new System.Drawing.Point(6, 45);
-            this.lblDrawListRowIndexB.Name = "lblDrawListRowIndexB";
-            this.lblDrawListRowIndexB.Size = new System.Drawing.Size(131, 23);
-            this.lblDrawListRowIndexB.TabIndex = 17;
-            this.lblDrawListRowIndexB.Text = "?? / ??";
-            this.lblDrawListRowIndexB.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // fraEntityB
-            // 
-            this.fraEntityB.Controls.Add(this.lblEntityB);
-            this.fraEntityB.Controls.Add(this.numEntityB);
-            this.fraEntityB.Controls.Add(this.lblEntityIndexB);
-            this.fraEntityB.Controls.Add(this.cmdAppendEntityB);
-            this.fraEntityB.Controls.Add(this.cmdRemoveEntityB);
-            this.fraEntityB.Controls.Add(this.cmdPrevEntityB);
-            this.fraEntityB.Controls.Add(this.cmdInsertEntityB);
-            this.fraEntityB.Controls.Add(this.cmdNextEntityB);
-            this.fraEntityB.Location = new System.Drawing.Point(6, 132);
-            this.fraEntityB.Name = "fraEntityB";
-            this.fraEntityB.Size = new System.Drawing.Size(131, 153);
-            this.fraEntityB.TabIndex = 15;
-            this.fraEntityB.TabStop = false;
-            this.fraEntityB.Text = "Entities";
-            // 
-            // lblEntityB
-            // 
-            this.lblEntityB.AutoSize = true;
-            this.lblEntityB.Location = new System.Drawing.Point(3, 73);
-            this.lblEntityB.Name = "lblEntityB";
-            this.lblEntityB.Size = new System.Drawing.Size(18, 13);
-            this.lblEntityB.TabIndex = 22;
-            this.lblEntityB.Text = "ID";
-            // 
-            // numEntityB
-            // 
-            this.numEntityB.Location = new System.Drawing.Point(27, 71);
-            this.numEntityB.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numEntityB.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numEntityB.Name = "numEntityB";
-            this.numEntityB.Size = new System.Drawing.Size(99, 20);
-            this.numEntityB.TabIndex = 21;
-            this.numEntityB.ValueChanged += new System.EventHandler(this.numEntityB_ValueChanged);
-            // 
-            // lblEntityIndexB
-            // 
-            this.lblEntityIndexB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblEntityIndexB.Location = new System.Drawing.Point(6, 45);
-            this.lblEntityIndexB.Name = "lblEntityIndexB";
-            this.lblEntityIndexB.Size = new System.Drawing.Size(120, 23);
-            this.lblEntityIndexB.TabIndex = 14;
-            this.lblEntityIndexB.Text = "?? / ??";
-            this.lblEntityIndexB.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // cmdAppendEntityB
-            // 
-            this.cmdAppendEntityB.Location = new System.Drawing.Point(6, 125);
-            this.cmdAppendEntityB.Name = "cmdAppendEntityB";
-            this.cmdAppendEntityB.Size = new System.Drawing.Size(120, 23);
-            this.cmdAppendEntityB.TabIndex = 12;
-            this.cmdAppendEntityB.Text = "Append";
-            this.cmdAppendEntityB.UseVisualStyleBackColor = true;
-            this.cmdAppendEntityB.Click += new System.EventHandler(this.cmdAppendEntityB_Click);
-            // 
-            // cmdRemoveEntityB
-            // 
-            this.cmdRemoveEntityB.Location = new System.Drawing.Point(6, 96);
-            this.cmdRemoveEntityB.Name = "cmdRemoveEntityB";
-            this.cmdRemoveEntityB.Size = new System.Drawing.Size(58, 23);
-            this.cmdRemoveEntityB.TabIndex = 11;
-            this.cmdRemoveEntityB.Text = "Remove";
-            this.cmdRemoveEntityB.UseVisualStyleBackColor = true;
-            this.cmdRemoveEntityB.Click += new System.EventHandler(this.cmdRemoveEntityB_Click);
-            // 
-            // cmdPrevEntityB
-            // 
-            this.cmdPrevEntityB.Location = new System.Drawing.Point(6, 19);
-            this.cmdPrevEntityB.Name = "cmdPrevEntityB";
-            this.cmdPrevEntityB.Size = new System.Drawing.Size(58, 23);
-            this.cmdPrevEntityB.TabIndex = 8;
-            this.cmdPrevEntityB.Text = "Previous";
-            this.cmdPrevEntityB.UseVisualStyleBackColor = true;
-            this.cmdPrevEntityB.Click += new System.EventHandler(this.cmdPrevEntityB_Click);
-            // 
-            // cmdInsertEntityB
-            // 
-            this.cmdInsertEntityB.Location = new System.Drawing.Point(68, 96);
-            this.cmdInsertEntityB.Name = "cmdInsertEntityB";
-            this.cmdInsertEntityB.Size = new System.Drawing.Size(58, 23);
-            this.cmdInsertEntityB.TabIndex = 13;
-            this.cmdInsertEntityB.Text = "Insert";
-            this.cmdInsertEntityB.UseVisualStyleBackColor = true;
-            this.cmdInsertEntityB.Click += new System.EventHandler(this.cmdInsertEntityB_Click);
-            // 
-            // cmdNextEntityB
-            // 
-            this.cmdNextEntityB.Location = new System.Drawing.Point(68, 19);
-            this.cmdNextEntityB.Name = "cmdNextEntityB";
-            this.cmdNextEntityB.Size = new System.Drawing.Size(58, 23);
-            this.cmdNextEntityB.TabIndex = 9;
-            this.cmdNextEntityB.Text = "Next";
-            this.cmdNextEntityB.UseVisualStyleBackColor = true;
-            this.cmdNextEntityB.Click += new System.EventHandler(this.cmdNextEntityB_Click);
-            // 
-            // cmdPrevRowDrawB
-            // 
-            this.cmdPrevRowDrawB.Location = new System.Drawing.Point(6, 19);
-            this.cmdPrevRowDrawB.Name = "cmdPrevRowDrawB";
-            this.cmdPrevRowDrawB.Size = new System.Drawing.Size(64, 23);
-            this.cmdPrevRowDrawB.TabIndex = 15;
-            this.cmdPrevRowDrawB.Text = "Previous";
-            this.cmdPrevRowDrawB.UseVisualStyleBackColor = true;
-            this.cmdPrevRowDrawB.Click += new System.EventHandler(this.cmdPrevRowDrawB_Click);
-            // 
-            // cmdNextRowDrawB
-            // 
-            this.cmdNextRowDrawB.Location = new System.Drawing.Point(74, 19);
-            this.cmdNextRowDrawB.Name = "cmdNextRowDrawB";
-            this.cmdNextRowDrawB.Size = new System.Drawing.Size(63, 23);
-            this.cmdNextRowDrawB.TabIndex = 16;
-            this.cmdNextRowDrawB.Text = "Next";
-            this.cmdNextRowDrawB.UseVisualStyleBackColor = true;
-            this.cmdNextRowDrawB.Click += new System.EventHandler(this.cmdNextRowDrawB_Click);
-            // 
-            // fraDrawListA
-            // 
-            this.fraDrawListA.Controls.Add(this.lblMetavalueDrawA);
-            this.fraDrawListA.Controls.Add(this.cmdRemoveRowDrawA);
-            this.fraDrawListA.Controls.Add(this.cmdInsertRowDrawA);
-            this.fraDrawListA.Controls.Add(this.numMetavalueDrawA);
-            this.fraDrawListA.Controls.Add(this.lblDrawListRowIndexA);
-            this.fraDrawListA.Controls.Add(this.fraEntityA);
-            this.fraDrawListA.Controls.Add(this.cmdPrevRowDrawA);
-            this.fraDrawListA.Controls.Add(this.cmdNextRowDrawA);
-            this.fraDrawListA.Location = new System.Drawing.Point(6, 6);
-            this.fraDrawListA.Name = "fraDrawListA";
-            this.fraDrawListA.Size = new System.Drawing.Size(143, 291);
-            this.fraDrawListA.TabIndex = 1;
-            this.fraDrawListA.TabStop = false;
-            this.fraDrawListA.Text = "Draw List A";
-            // 
-            // lblMetavalueDrawA
-            // 
-            this.lblMetavalueDrawA.AutoSize = true;
-            this.lblMetavalueDrawA.Location = new System.Drawing.Point(6, 75);
-            this.lblMetavalueDrawA.Name = "lblMetavalueDrawA";
-            this.lblMetavalueDrawA.Size = new System.Drawing.Size(44, 13);
-            this.lblMetavalueDrawA.TabIndex = 20;
-            this.lblMetavalueDrawA.Text = "Position";
-            // 
-            // cmdRemoveRowDrawA
-            // 
-            this.cmdRemoveRowDrawA.Location = new System.Drawing.Point(6, 99);
-            this.cmdRemoveRowDrawA.Name = "cmdRemoveRowDrawA";
-            this.cmdRemoveRowDrawA.Size = new System.Drawing.Size(64, 23);
-            this.cmdRemoveRowDrawA.TabIndex = 16;
-            this.cmdRemoveRowDrawA.Text = "Remove";
-            this.cmdRemoveRowDrawA.UseVisualStyleBackColor = true;
-            this.cmdRemoveRowDrawA.Click += new System.EventHandler(this.cmdRemoveRowDrawA_Click);
-            // 
-            // cmdInsertRowDrawA
-            // 
-            this.cmdInsertRowDrawA.Location = new System.Drawing.Point(74, 99);
-            this.cmdInsertRowDrawA.Name = "cmdInsertRowDrawA";
-            this.cmdInsertRowDrawA.Size = new System.Drawing.Size(63, 23);
-            this.cmdInsertRowDrawA.TabIndex = 17;
-            this.cmdInsertRowDrawA.Text = "Insert";
-            this.cmdInsertRowDrawA.UseVisualStyleBackColor = true;
-            this.cmdInsertRowDrawA.Click += new System.EventHandler(this.cmdInsertRowDrawA_Click);
-            // 
-            // numMetavalueDrawA
-            // 
-            this.numMetavalueDrawA.Location = new System.Drawing.Point(69, 73);
-            this.numMetavalueDrawA.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numMetavalueDrawA.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numMetavalueDrawA.Name = "numMetavalueDrawA";
-            this.numMetavalueDrawA.Size = new System.Drawing.Size(68, 20);
-            this.numMetavalueDrawA.TabIndex = 19;
-            this.numMetavalueDrawA.ValueChanged += new System.EventHandler(this.numMetavalueDrawA_ValueChanged);
-            // 
-            // lblDrawListRowIndexA
-            // 
-            this.lblDrawListRowIndexA.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDrawListRowIndexA.Location = new System.Drawing.Point(6, 45);
-            this.lblDrawListRowIndexA.Name = "lblDrawListRowIndexA";
-            this.lblDrawListRowIndexA.Size = new System.Drawing.Size(131, 23);
-            this.lblDrawListRowIndexA.TabIndex = 17;
-            this.lblDrawListRowIndexA.Text = "?? / ??";
-            this.lblDrawListRowIndexA.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // fraEntityA
-            // 
-            this.fraEntityA.Controls.Add(this.lblEntityA);
-            this.fraEntityA.Controls.Add(this.numEntityA);
-            this.fraEntityA.Controls.Add(this.lblEntityIndexA);
-            this.fraEntityA.Controls.Add(this.cmdAppendEntityA);
-            this.fraEntityA.Controls.Add(this.cmdRemoveEntityA);
-            this.fraEntityA.Controls.Add(this.cmdPrevEntityA);
-            this.fraEntityA.Controls.Add(this.cmdInsertEntityA);
-            this.fraEntityA.Controls.Add(this.cmdNextEntityA);
-            this.fraEntityA.Location = new System.Drawing.Point(6, 132);
-            this.fraEntityA.Name = "fraEntityA";
-            this.fraEntityA.Size = new System.Drawing.Size(131, 153);
-            this.fraEntityA.TabIndex = 15;
-            this.fraEntityA.TabStop = false;
-            this.fraEntityA.Text = "Entities";
-            // 
-            // lblEntityA
-            // 
-            this.lblEntityA.AutoSize = true;
-            this.lblEntityA.Location = new System.Drawing.Point(3, 73);
-            this.lblEntityA.Name = "lblEntityA";
-            this.lblEntityA.Size = new System.Drawing.Size(18, 13);
-            this.lblEntityA.TabIndex = 22;
-            this.lblEntityA.Text = "ID";
-            // 
-            // numEntityA
-            // 
-            this.numEntityA.Location = new System.Drawing.Point(27, 71);
-            this.numEntityA.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numEntityA.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.numEntityA.Name = "numEntityA";
-            this.numEntityA.Size = new System.Drawing.Size(99, 20);
-            this.numEntityA.TabIndex = 21;
-            this.numEntityA.ValueChanged += new System.EventHandler(this.numEntityA_ValueChanged);
-            // 
-            // lblEntityIndexA
-            // 
-            this.lblEntityIndexA.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblEntityIndexA.Location = new System.Drawing.Point(6, 45);
-            this.lblEntityIndexA.Name = "lblEntityIndexA";
-            this.lblEntityIndexA.Size = new System.Drawing.Size(120, 23);
-            this.lblEntityIndexA.TabIndex = 14;
-            this.lblEntityIndexA.Text = "?? / ??";
-            this.lblEntityIndexA.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // cmdAppendEntityA
-            // 
-            this.cmdAppendEntityA.Location = new System.Drawing.Point(6, 125);
-            this.cmdAppendEntityA.Name = "cmdAppendEntityA";
-            this.cmdAppendEntityA.Size = new System.Drawing.Size(120, 23);
-            this.cmdAppendEntityA.TabIndex = 12;
-            this.cmdAppendEntityA.Text = "Append";
-            this.cmdAppendEntityA.UseVisualStyleBackColor = true;
-            this.cmdAppendEntityA.Click += new System.EventHandler(this.cmdAppendEntityA_Click);
-            // 
-            // cmdRemoveEntityA
-            // 
-            this.cmdRemoveEntityA.Location = new System.Drawing.Point(6, 96);
-            this.cmdRemoveEntityA.Name = "cmdRemoveEntityA";
-            this.cmdRemoveEntityA.Size = new System.Drawing.Size(58, 23);
-            this.cmdRemoveEntityA.TabIndex = 11;
-            this.cmdRemoveEntityA.Text = "Remove";
-            this.cmdRemoveEntityA.UseVisualStyleBackColor = true;
-            this.cmdRemoveEntityA.Click += new System.EventHandler(this.cmdRemoveEntityA_Click);
-            // 
-            // cmdPrevEntityA
-            // 
-            this.cmdPrevEntityA.Location = new System.Drawing.Point(6, 19);
-            this.cmdPrevEntityA.Name = "cmdPrevEntityA";
-            this.cmdPrevEntityA.Size = new System.Drawing.Size(58, 23);
-            this.cmdPrevEntityA.TabIndex = 8;
-            this.cmdPrevEntityA.Text = "Previous";
-            this.cmdPrevEntityA.UseVisualStyleBackColor = true;
-            this.cmdPrevEntityA.Click += new System.EventHandler(this.cmdPrevEntityA_Click);
-            // 
-            // cmdInsertEntityA
-            // 
-            this.cmdInsertEntityA.Location = new System.Drawing.Point(68, 96);
-            this.cmdInsertEntityA.Name = "cmdInsertEntityA";
-            this.cmdInsertEntityA.Size = new System.Drawing.Size(58, 23);
-            this.cmdInsertEntityA.TabIndex = 13;
-            this.cmdInsertEntityA.Text = "Insert";
-            this.cmdInsertEntityA.UseVisualStyleBackColor = true;
-            this.cmdInsertEntityA.Click += new System.EventHandler(this.cmdInsertEntityA_Click);
-            // 
-            // cmdNextEntityA
-            // 
-            this.cmdNextEntityA.Location = new System.Drawing.Point(68, 19);
-            this.cmdNextEntityA.Name = "cmdNextEntityA";
-            this.cmdNextEntityA.Size = new System.Drawing.Size(58, 23);
-            this.cmdNextEntityA.TabIndex = 9;
-            this.cmdNextEntityA.Text = "Next";
-            this.cmdNextEntityA.UseVisualStyleBackColor = true;
-            this.cmdNextEntityA.Click += new System.EventHandler(this.cmdNextEntityA_Click);
-            // 
-            // cmdPrevRowDrawA
-            // 
-            this.cmdPrevRowDrawA.Location = new System.Drawing.Point(6, 19);
-            this.cmdPrevRowDrawA.Name = "cmdPrevRowDrawA";
-            this.cmdPrevRowDrawA.Size = new System.Drawing.Size(64, 23);
-            this.cmdPrevRowDrawA.TabIndex = 15;
-            this.cmdPrevRowDrawA.Text = "Previous";
-            this.cmdPrevRowDrawA.UseVisualStyleBackColor = true;
-            this.cmdPrevRowDrawA.Click += new System.EventHandler(this.cmdPrevRowDrawA_Click);
-            // 
-            // cmdNextRowDrawA
-            // 
-            this.cmdNextRowDrawA.Location = new System.Drawing.Point(74, 19);
-            this.cmdNextRowDrawA.Name = "cmdNextRowDrawA";
-            this.cmdNextRowDrawA.Size = new System.Drawing.Size(63, 23);
-            this.cmdNextRowDrawA.TabIndex = 16;
-            this.cmdNextRowDrawA.Text = "Next";
-            this.cmdNextRowDrawA.UseVisualStyleBackColor = true;
-            this.cmdNextRowDrawA.Click += new System.EventHandler(this.cmdNextRowDrawA_Click);
+            fraSettings.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraSettings.Controls.Add(cmdPasteSetting);
+            fraSettings.Controls.Add(cmdCopySetting);
+            fraSettings.Controls.Add(lblSettingB);
+            fraSettings.Controls.Add(lblSettingA);
+            fraSettings.Controls.Add(lblArgAs);
+            fraSettings.Controls.Add(chkSettingHex);
+            fraSettings.Controls.Add(numSettingC);
+            fraSettings.Controls.Add(lblSettingIndex);
+            fraSettings.Controls.Add(cmdNextSetting);
+            fraSettings.Controls.Add(cmdPreviousSetting);
+            fraSettings.Controls.Add(cmdAddSetting);
+            fraSettings.Controls.Add(cmdRemoveSetting);
+            fraSettings.Controls.Add(numSettingB);
+            fraSettings.Controls.Add(numSettingA);
+            fraSettings.Location = new Point(4, 321);
+            fraSettings.Margin = new Padding(4, 3, 4, 3);
+            fraSettings.Name = "fraSettings";
+            fraSettings.Padding = new Padding(4, 3, 4, 3);
+            fraSettings.Size = new Size(233, 210);
+            fraSettings.TabIndex = 2;
+            fraSettings.TabStop = false;
+            fraSettings.Text = "Argument(s)";
+            // 
+            // cmdPasteSetting
+            // 
+            cmdPasteSetting.BorderColour = Color.Empty;
+            cmdPasteSetting.CustomColour = false;
+            cmdPasteSetting.FlatBottom = false;
+            cmdPasteSetting.FlatTop = false;
+            cmdPasteSetting.Location = new Point(159, 173);
+            cmdPasteSetting.Name = "cmdPasteSetting";
+            cmdPasteSetting.Padding = new Padding(5);
+            cmdPasteSetting.Size = new Size(67, 27);
+            cmdPasteSetting.TabIndex = 7;
+            cmdPasteSetting.Text = "Paste";
+            cmdPasteSetting.Click += cmdPasteSetting_Click;
+            // 
+            // cmdCopySetting
+            // 
+            cmdCopySetting.BorderColour = Color.Empty;
+            cmdCopySetting.CustomColour = false;
+            cmdCopySetting.FlatBottom = false;
+            cmdCopySetting.FlatTop = false;
+            cmdCopySetting.Location = new Point(159, 144);
+            cmdCopySetting.Name = "cmdCopySetting";
+            cmdCopySetting.Padding = new Padding(5);
+            cmdCopySetting.Size = new Size(67, 27);
+            cmdCopySetting.TabIndex = 7;
+            cmdCopySetting.Text = "Copy";
+            cmdCopySetting.Click += cmdCopySetting_Click;
+            // 
+            // lblSettingB
+            // 
+            lblSettingB.AutoSize = true;
+            lblSettingB.BackColor = Color.Transparent;
+            lblSettingB.Font = new Font("Segoe UI", 9F);
+            lblSettingB.Location = new Point(8, 82);
+            lblSettingB.Margin = new Padding(4, 0, 4, 0);
+            lblSettingB.Name = "lblSettingB";
+            lblSettingB.Size = new Size(14, 15);
+            lblSettingB.TabIndex = 11;
+            lblSettingB.Text = "B";
+            lblSettingB.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // lblSettingA
+            // 
+            lblSettingA.AutoSize = true;
+            lblSettingA.BackColor = Color.Transparent;
+            lblSettingA.Font = new Font("Segoe UI", 9F);
+            lblSettingA.Location = new Point(8, 58);
+            lblSettingA.Margin = new Padding(4, 0, 4, 0);
+            lblSettingA.Name = "lblSettingA";
+            lblSettingA.Size = new Size(15, 15);
+            lblSettingA.TabIndex = 10;
+            lblSettingA.Text = "A";
+            lblSettingA.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // lblArgAs
             // 
-            this.lblArgAs.AutoSize = true;
-            this.lblArgAs.Location = new System.Drawing.Point(194, 45);
-            this.lblArgAs.Name = "lblArgAs";
-            this.lblArgAs.Size = new System.Drawing.Size(107, 52);
-            this.lblArgAs.TabIndex = 9;
-            this.lblArgAs.Text = "<EntityBox_lblArgAs>\r\n<EntityBox_lblArgAs>\r\n<EntityBox_lblArgAs>\r\n<EntityBox_lblA" +
-    "rgAs>";
+            lblArgAs.AutoSize = true;
+            lblArgAs.BackColor = Color.Transparent;
+            lblArgAs.ForeColor = SystemColors.InfoText;
+            lblArgAs.Location = new Point(8, 138);
+            lblArgAs.Margin = new Padding(4, 0, 4, 0);
+            lblArgAs.Name = "lblArgAs";
+            lblArgAs.Size = new Size(123, 60);
+            lblArgAs.TabIndex = 9;
+            lblArgAs.Text = "<EntityBox_lblArgAs>\r\n<EntityBox_lblArgAs>\r\n<EntityBox_lblArgAs>\r\n<EntityBox_lblArgAs>";
+            // 
+            // chkSettingHex
+            // 
+            chkSettingHex.AutoSize = true;
+            chkSettingHex.BackColor = Color.Transparent;
+            chkSettingHex.Checked = true;
+            chkSettingHex.CheckState = CheckState.Checked;
+            chkSettingHex.Location = new Point(139, 110);
+            chkSettingHex.Margin = new Padding(4, 3, 4, 3);
+            chkSettingHex.Name = "chkSettingHex";
+            chkSettingHex.Size = new Size(47, 19);
+            chkSettingHex.TabIndex = 8;
+            chkSettingHex.Text = "Hex";
+            chkSettingHex.UseVisualStyleBackColor = false;
+            chkSettingHex.CheckedChanged += chkSettingHex_CheckedChanged;
+            // 
+            // numSettingC
+            // 
+            numSettingC.Hexadecimal = true;
+            numSettingC.Location = new Point(7, 108);
+            numSettingC.Margin = new Padding(4, 3, 4, 3);
+            numSettingC.Maximum = new decimal(new int[] { -1, int.MaxValue, 0, 0 });
+            numSettingC.Minimum = new decimal(new int[] { 0, int.MinValue, 0, int.MinValue });
+            numSettingC.Name = "numSettingC";
+            numSettingC.Size = new Size(123, 23);
+            numSettingC.TabIndex = 7;
+            numSettingC.ValueChanged += numSettingC_ValueChanged;
+            // 
+            // lblSettingIndex
+            // 
+            lblSettingIndex.BackColor = Color.Transparent;
+            lblSettingIndex.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblSettingIndex.Location = new Point(82, 22);
+            lblSettingIndex.Margin = new Padding(4, 0, 4, 0);
+            lblSettingIndex.Name = "lblSettingIndex";
+            lblSettingIndex.Size = new Size(70, 27);
+            lblSettingIndex.TabIndex = 5;
+            lblSettingIndex.Text = "?? / ??";
+            lblSettingIndex.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // cmdNextSetting
+            // 
+            cmdNextSetting.BorderColour = Color.Empty;
+            cmdNextSetting.CustomColour = false;
+            cmdNextSetting.FlatBottom = false;
+            cmdNextSetting.FlatTop = false;
+            cmdNextSetting.Location = new Point(159, 22);
+            cmdNextSetting.Margin = new Padding(4, 3, 4, 3);
+            cmdNextSetting.Name = "cmdNextSetting";
+            cmdNextSetting.Padding = new Padding(5);
+            cmdNextSetting.Size = new Size(68, 27);
+            cmdNextSetting.TabIndex = 1;
+            cmdNextSetting.Text = "Next";
+            cmdNextSetting.Click += cmdNextSetting_Click;
+            // 
+            // cmdPreviousSetting
+            // 
+            cmdPreviousSetting.BorderColour = Color.Empty;
+            cmdPreviousSetting.CustomColour = false;
+            cmdPreviousSetting.FlatBottom = false;
+            cmdPreviousSetting.FlatTop = false;
+            cmdPreviousSetting.Location = new Point(7, 22);
+            cmdPreviousSetting.Margin = new Padding(4, 3, 4, 3);
+            cmdPreviousSetting.Name = "cmdPreviousSetting";
+            cmdPreviousSetting.Padding = new Padding(5);
+            cmdPreviousSetting.Size = new Size(68, 27);
+            cmdPreviousSetting.TabIndex = 0;
+            cmdPreviousSetting.Text = "Previous";
+            cmdPreviousSetting.Click += cmdPreviousSetting_Click;
+            // 
+            // cmdAddSetting
+            // 
+            cmdAddSetting.BorderColour = Color.Empty;
+            cmdAddSetting.CustomColour = false;
+            cmdAddSetting.FlatBottom = false;
+            cmdAddSetting.FlatTop = false;
+            cmdAddSetting.Location = new Point(139, 52);
+            cmdAddSetting.Margin = new Padding(4, 3, 4, 3);
+            cmdAddSetting.Name = "cmdAddSetting";
+            cmdAddSetting.Padding = new Padding(5);
+            cmdAddSetting.Size = new Size(88, 27);
+            cmdAddSetting.TabIndex = 4;
+            cmdAddSetting.Text = "Add";
+            cmdAddSetting.Click += cmdAddSetting_Click;
+            // 
+            // cmdRemoveSetting
+            // 
+            cmdRemoveSetting.BorderColour = Color.Empty;
+            cmdRemoveSetting.CustomColour = false;
+            cmdRemoveSetting.FlatBottom = false;
+            cmdRemoveSetting.FlatTop = false;
+            cmdRemoveSetting.Location = new Point(139, 80);
+            cmdRemoveSetting.Margin = new Padding(4, 3, 4, 3);
+            cmdRemoveSetting.Name = "cmdRemoveSetting";
+            cmdRemoveSetting.Padding = new Padding(5);
+            cmdRemoveSetting.Size = new Size(88, 27);
+            cmdRemoveSetting.TabIndex = 5;
+            cmdRemoveSetting.Text = "Remove";
+            cmdRemoveSetting.Click += cmdRemoveSetting_Click;
+            // 
+            // numSettingB
+            // 
+            numSettingB.Location = new Point(30, 80);
+            numSettingB.Margin = new Padding(4, 3, 4, 3);
+            numSettingB.Maximum = new decimal(new int[] { 8388607, 0, 0, 0 });
+            numSettingB.Minimum = new decimal(new int[] { 8388608, 0, 0, int.MinValue });
+            numSettingB.Name = "numSettingB";
+            numSettingB.Size = new Size(100, 23);
+            numSettingB.TabIndex = 3;
+            numSettingB.ValueChanged += numSettingB_ValueChanged;
+            // 
+            // numSettingA
+            // 
+            numSettingA.Location = new Point(30, 55);
+            numSettingA.Margin = new Padding(4, 3, 4, 3);
+            numSettingA.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numSettingA.Name = "numSettingA";
+            numSettingA.Size = new Size(100, 23);
+            numSettingA.TabIndex = 2;
+            numSettingA.ValueChanged += numSettingA_ValueChanged;
+            // 
+            // fraName
+            // 
+            fraName.Controls.Add(txtName);
+            fraName.Controls.Add(chkName);
+            fraName.Location = new Point(4, 3);
+            fraName.Margin = new Padding(4, 3, 4, 3);
+            fraName.Name = "fraName";
+            fraName.Padding = new Padding(4, 3, 4, 3);
+            fraName.Size = new Size(233, 83);
+            fraName.TabIndex = 0;
+            fraName.TabStop = false;
+            fraName.Text = "Name";
+            // 
+            // txtName
+            // 
+            txtName.BackColor = Color.FromArgb(26, 26, 28);
+            txtName.BorderStyle = BorderStyle.FixedSingle;
+            txtName.ForeColor = Color.FromArgb(213, 213, 213);
+            txtName.Location = new Point(7, 48);
+            txtName.Margin = new Padding(4, 3, 4, 3);
+            txtName.Name = "txtName";
+            txtName.Size = new Size(219, 23);
+            txtName.TabIndex = 1;
+            txtName.TextChanged += txtName_TextChanged;
+            // 
+            // chkName
+            // 
+            chkName.AutoSize = true;
+            chkName.BackColor = Color.Transparent;
+            chkName.Location = new Point(7, 22);
+            chkName.Margin = new Padding(4, 3, 4, 3);
+            chkName.Name = "chkName";
+            chkName.Size = new Size(68, 19);
+            chkName.TabIndex = 0;
+            chkName.Text = "Enabled";
+            chkName.UseVisualStyleBackColor = false;
+            chkName.CheckedChanged += chkName_CheckedChanged;
+            // 
+            // tbcTabs
+            // 
+            tbcTabs.AnimateEasingType = MetroSet_UI.Enums.EasingType.CubeOut;
+            tbcTabs.AnimateTime = 200;
+            tbcTabs.BackgroundColor = Color.FromArgb(31, 31, 32);
+            tbcTabs.Controls.Add(tabGeneral);
+            tbcTabs.Controls.Add(tabSpecial);
+            tbcTabs.Controls.Add(tabCamera);
+            tbcTabs.Controls.Add(tabLoadLists);
+            tbcTabs.Controls.Add(tabDrawLists);
+            tbcTabs.Dock = DockStyle.Fill;
+            tbcTabs.IsDerivedStyle = false;
+            tbcTabs.ItemSize = new Size(100, 28);
+            tbcTabs.Location = new Point(0, 0);
+            tbcTabs.Margin = new Padding(4, 3, 4, 3);
+            tbcTabs.Name = "tbcTabs";
+            tbcTabs.SelectedIndex = 0;
+            tbcTabs.SelectedTextColor = Color.White;
+            tbcTabs.Size = new Size(600, 600);
+            tbcTabs.SizeMode = TabSizeMode.Fixed;
+            tbcTabs.Speed = 100;
+            tbcTabs.Style = MetroSet_UI.Enums.Style.Dark;
+            tbcTabs.StyleManager = null;
+            tbcTabs.TabIndex = 7;
+            tbcTabs.ThemeAuthor = "Narwin";
+            tbcTabs.ThemeName = "MetroDark";
+            tbcTabs.UnselectedTextColor = Color.Gray;
+            tbcTabs.UseAnimation = false;
+            // 
+            // tabGeneral
+            // 
+            tabGeneral.AutoScroll = true;
+            tabGeneral.BackColor = Color.FromArgb(31, 31, 32);
+            tabGeneral.Controls.Add(fraC2TTSet);
+            tabGeneral.Controls.Add(fraName);
+            tabGeneral.Controls.Add(fraType);
+            tabGeneral.Controls.Add(fraSettings);
+            tabGeneral.Controls.Add(fraPosition);
+            tabGeneral.Controls.Add(fraID);
+            tabGeneral.Controls.Add(fraZMod);
+            tabGeneral.Location = new Point(4, 32);
+            tabGeneral.Margin = new Padding(4, 3, 4, 3);
+            tabGeneral.Name = "tabGeneral";
+            tabGeneral.Padding = new Padding(4, 3, 4, 3);
+            tabGeneral.Size = new Size(592, 564);
+            tabGeneral.TabIndex = 0;
+            tabGeneral.Text = "General";
+            // 
+            // fraC2TTSet
+            // 
+            fraC2TTSet.Controls.Add(fraC2TTGhostTarget);
+            fraC2TTSet.Controls.Add(fraC2TTFlags);
+            fraC2TTSet.Controls.Add(fraC2TTYRot);
+            fraC2TTSet.Controls.Add(fraC2TTType);
+            fraC2TTSet.Location = new Point(245, 146);
+            fraC2TTSet.Margin = new Padding(4, 3, 4, 3);
+            fraC2TTSet.Name = "fraC2TTSet";
+            fraC2TTSet.Padding = new Padding(4, 3, 4, 3);
+            fraC2TTSet.Size = new Size(132, 356);
+            fraC2TTSet.TabIndex = 6;
+            fraC2TTSet.TabStop = false;
+            fraC2TTSet.Text = "C2 Time Trials";
+            fraC2TTSet.Visible = false;
+            // 
+            // fraC2TTGhostTarget
+            // 
+            fraC2TTGhostTarget.BackColor = Color.Transparent;
+            fraC2TTGhostTarget.Controls.Add(numC2TTGhostTarget);
+            fraC2TTGhostTarget.Controls.Add(chkC2TTGhostTarget);
+            fraC2TTGhostTarget.Location = new Point(7, 268);
+            fraC2TTGhostTarget.Name = "fraC2TTGhostTarget";
+            fraC2TTGhostTarget.Size = new Size(116, 76);
+            fraC2TTGhostTarget.TabIndex = 5;
+            fraC2TTGhostTarget.TabStop = false;
+            fraC2TTGhostTarget.Text = "Ghost Target";
+            // 
+            // numC2TTGhostTarget
+            // 
+            numC2TTGhostTarget.Location = new Point(7, 47);
+            numC2TTGhostTarget.Margin = new Padding(4, 3, 4, 3);
+            numC2TTGhostTarget.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numC2TTGhostTarget.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numC2TTGhostTarget.Name = "numC2TTGhostTarget";
+            numC2TTGhostTarget.Size = new Size(102, 23);
+            numC2TTGhostTarget.TabIndex = 1;
+            numC2TTGhostTarget.ValueChanged += numC2TTGhostTarget_ValueChanged;
+            // 
+            // chkC2TTGhostTarget
+            // 
+            chkC2TTGhostTarget.AutoSize = true;
+            chkC2TTGhostTarget.BackColor = Color.Transparent;
+            chkC2TTGhostTarget.Location = new Point(7, 22);
+            chkC2TTGhostTarget.Margin = new Padding(4, 3, 4, 3);
+            chkC2TTGhostTarget.Name = "chkC2TTGhostTarget";
+            chkC2TTGhostTarget.Size = new Size(68, 19);
+            chkC2TTGhostTarget.TabIndex = 0;
+            chkC2TTGhostTarget.Text = "Enabled";
+            chkC2TTGhostTarget.UseVisualStyleBackColor = false;
+            chkC2TTGhostTarget.CheckedChanged += chkC2TTGhostTarget_CheckedChanged;
+            // 
+            // fraC2TTFlags
+            // 
+            fraC2TTFlags.BackColor = Color.Transparent;
+            fraC2TTFlags.Controls.Add(numC2TTFlags);
+            fraC2TTFlags.Controls.Add(chkC2TTFlags);
+            fraC2TTFlags.Location = new Point(7, 186);
+            fraC2TTFlags.Name = "fraC2TTFlags";
+            fraC2TTFlags.Size = new Size(116, 76);
+            fraC2TTFlags.TabIndex = 6;
+            fraC2TTFlags.TabStop = false;
+            fraC2TTFlags.Text = "Flags";
+            // 
+            // numC2TTFlags
+            // 
+            numC2TTFlags.Location = new Point(7, 47);
+            numC2TTFlags.Margin = new Padding(4, 3, 4, 3);
+            numC2TTFlags.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numC2TTFlags.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numC2TTFlags.Name = "numC2TTFlags";
+            numC2TTFlags.Size = new Size(102, 23);
+            numC2TTFlags.TabIndex = 1;
+            numC2TTFlags.ValueChanged += numC2TTFlags_ValueChanged;
+            // 
+            // chkC2TTFlags
+            // 
+            chkC2TTFlags.AutoSize = true;
+            chkC2TTFlags.BackColor = Color.Transparent;
+            chkC2TTFlags.Location = new Point(7, 22);
+            chkC2TTFlags.Margin = new Padding(4, 3, 4, 3);
+            chkC2TTFlags.Name = "chkC2TTFlags";
+            chkC2TTFlags.Size = new Size(68, 19);
+            chkC2TTFlags.TabIndex = 0;
+            chkC2TTFlags.Text = "Enabled";
+            chkC2TTFlags.UseVisualStyleBackColor = false;
+            chkC2TTFlags.CheckedChanged += chkC2TTFlags_CheckedChanged;
+            // 
+            // fraC2TTYRot
+            // 
+            fraC2TTYRot.BackColor = Color.Transparent;
+            fraC2TTYRot.Controls.Add(numC2TTYRot);
+            fraC2TTYRot.Controls.Add(chkC2TTYRot);
+            fraC2TTYRot.Location = new Point(7, 104);
+            fraC2TTYRot.Name = "fraC2TTYRot";
+            fraC2TTYRot.Size = new Size(116, 76);
+            fraC2TTYRot.TabIndex = 5;
+            fraC2TTYRot.TabStop = false;
+            fraC2TTYRot.Text = "RotY";
+            // 
+            // numC2TTYRot
+            // 
+            numC2TTYRot.Location = new Point(7, 47);
+            numC2TTYRot.Margin = new Padding(4, 3, 4, 3);
+            numC2TTYRot.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numC2TTYRot.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numC2TTYRot.Name = "numC2TTYRot";
+            numC2TTYRot.Size = new Size(102, 23);
+            numC2TTYRot.TabIndex = 1;
+            numC2TTYRot.ValueChanged += numC2TTYRot_ValueChanged;
+            // 
+            // chkC2TTYRot
+            // 
+            chkC2TTYRot.AutoSize = true;
+            chkC2TTYRot.BackColor = Color.Transparent;
+            chkC2TTYRot.Location = new Point(7, 22);
+            chkC2TTYRot.Margin = new Padding(4, 3, 4, 3);
+            chkC2TTYRot.Name = "chkC2TTYRot";
+            chkC2TTYRot.Size = new Size(68, 19);
+            chkC2TTYRot.TabIndex = 0;
+            chkC2TTYRot.Text = "Enabled";
+            chkC2TTYRot.UseVisualStyleBackColor = false;
+            chkC2TTYRot.CheckedChanged += chkC2TTYRot_CheckedChanged;
+            // 
+            // fraC2TTType
+            // 
+            fraC2TTType.BackColor = Color.Transparent;
+            fraC2TTType.Controls.Add(numC2TTType);
+            fraC2TTType.Controls.Add(chkC2TTType);
+            fraC2TTType.Location = new Point(7, 22);
+            fraC2TTType.Name = "fraC2TTType";
+            fraC2TTType.Size = new Size(116, 76);
+            fraC2TTType.TabIndex = 4;
+            fraC2TTType.TabStop = false;
+            fraC2TTType.Text = "Type";
+            // 
+            // numC2TTType
+            // 
+            numC2TTType.Location = new Point(7, 47);
+            numC2TTType.Margin = new Padding(4, 3, 4, 3);
+            numC2TTType.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numC2TTType.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numC2TTType.Name = "numC2TTType";
+            numC2TTType.Size = new Size(102, 23);
+            numC2TTType.TabIndex = 1;
+            numC2TTType.ValueChanged += numC2TTType_ValueChanged;
+            // 
+            // chkC2TTType
+            // 
+            chkC2TTType.AutoSize = true;
+            chkC2TTType.BackColor = Color.Transparent;
+            chkC2TTType.Location = new Point(7, 22);
+            chkC2TTType.Margin = new Padding(4, 3, 4, 3);
+            chkC2TTType.Name = "chkC2TTType";
+            chkC2TTType.Size = new Size(68, 19);
+            chkC2TTType.TabIndex = 0;
+            chkC2TTType.Text = "Enabled";
+            chkC2TTType.UseVisualStyleBackColor = false;
+            chkC2TTType.CheckedChanged += chkC2TTType_CheckedChanged;
+            // 
+            // fraZMod
+            // 
+            fraZMod.Controls.Add(chkZMod);
+            fraZMod.Controls.Add(numZMod);
+            fraZMod.Location = new Point(384, 146);
+            fraZMod.Margin = new Padding(4, 3, 4, 3);
+            fraZMod.Name = "fraZMod";
+            fraZMod.Padding = new Padding(4, 3, 4, 3);
+            fraZMod.Size = new Size(132, 81);
+            fraZMod.TabIndex = 6;
+            fraZMod.TabStop = false;
+            fraZMod.Text = "Depth Modifier";
+            // 
+            // chkZMod
+            // 
+            chkZMod.AutoSize = true;
+            chkZMod.BackColor = Color.Transparent;
+            chkZMod.Location = new Point(7, 22);
+            chkZMod.Margin = new Padding(4, 3, 4, 3);
+            chkZMod.Name = "chkZMod";
+            chkZMod.Size = new Size(68, 19);
+            chkZMod.TabIndex = 0;
+            chkZMod.Text = "Enabled";
+            chkZMod.UseVisualStyleBackColor = false;
+            chkZMod.CheckedChanged += chkZMod_CheckedChanged;
+            // 
+            // numZMod
+            // 
+            numZMod.Location = new Point(7, 48);
+            numZMod.Margin = new Padding(4, 3, 4, 3);
+            numZMod.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numZMod.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numZMod.Name = "numZMod";
+            numZMod.Size = new Size(117, 23);
+            numZMod.TabIndex = 1;
+            numZMod.ValueChanged += numZMod_ValueChanged;
+            // 
+            // tabSpecial
+            // 
+            tabSpecial.AutoScroll = true;
+            tabSpecial.BackColor = Color.FromArgb(31, 31, 32);
+            tabSpecial.Controls.Add(fraTTReward);
+            tabSpecial.Controls.Add(fraOtherSettings);
+            tabSpecial.Controls.Add(fraScaling);
+            tabSpecial.Controls.Add(fraDDASection);
+            tabSpecial.Controls.Add(fraDDASettings);
+            tabSpecial.Controls.Add(fraBoxCount);
+            tabSpecial.Controls.Add(fraVictims);
+            tabSpecial.Location = new Point(4, 32);
+            tabSpecial.Margin = new Padding(4, 3, 4, 3);
+            tabSpecial.Name = "tabSpecial";
+            tabSpecial.Padding = new Padding(4, 3, 4, 3);
+            tabSpecial.Size = new Size(592, 564);
+            tabSpecial.TabIndex = 1;
+            tabSpecial.Text = "Special";
+            tabSpecial.Enter += tabSpecial_Enter;
+            // 
+            // fraTTReward
+            // 
+            fraTTReward.Controls.Add(chkTTReward);
+            fraTTReward.Controls.Add(numTTReward);
+            fraTTReward.Location = new Point(312, 146);
+            fraTTReward.Margin = new Padding(4, 3, 4, 3);
+            fraTTReward.Name = "fraTTReward";
+            fraTTReward.Padding = new Padding(4, 3, 4, 3);
+            fraTTReward.Size = new Size(140, 81);
+            fraTTReward.TabIndex = 12;
+            fraTTReward.TabStop = false;
+            fraTTReward.Text = "Time Trial Reward";
+            // 
+            // chkTTReward
+            // 
+            chkTTReward.AutoSize = true;
+            chkTTReward.BackColor = Color.Transparent;
+            chkTTReward.Location = new Point(7, 22);
+            chkTTReward.Margin = new Padding(4, 3, 4, 3);
+            chkTTReward.Name = "chkTTReward";
+            chkTTReward.Size = new Size(68, 19);
+            chkTTReward.TabIndex = 0;
+            chkTTReward.Text = "Enabled";
+            chkTTReward.UseVisualStyleBackColor = false;
+            chkTTReward.CheckedChanged += chkTTReward_CheckedChanged;
+            // 
+            // numTTReward
+            // 
+            numTTReward.Location = new Point(7, 48);
+            numTTReward.Margin = new Padding(4, 3, 4, 3);
+            numTTReward.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numTTReward.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numTTReward.Name = "numTTReward";
+            numTTReward.Size = new Size(126, 23);
+            numTTReward.TabIndex = 1;
+            numTTReward.ValueChanged += numTTReward_ValueChanged;
+            // 
+            // fraOtherSettings
+            // 
+            fraOtherSettings.Controls.Add(chkOtherSettings);
+            fraOtherSettings.Controls.Add(numOtherSettings);
+            fraOtherSettings.Location = new Point(312, 321);
+            fraOtherSettings.Margin = new Padding(4, 3, 4, 3);
+            fraOtherSettings.Name = "fraOtherSettings";
+            fraOtherSettings.Padding = new Padding(4, 3, 4, 3);
+            fraOtherSettings.Size = new Size(140, 81);
+            fraOtherSettings.TabIndex = 10;
+            fraOtherSettings.TabStop = false;
+            fraOtherSettings.Text = "Other Settings";
+            // 
+            // chkOtherSettings
+            // 
+            chkOtherSettings.AutoSize = true;
+            chkOtherSettings.BackColor = Color.Transparent;
+            chkOtherSettings.Location = new Point(7, 22);
+            chkOtherSettings.Margin = new Padding(4, 3, 4, 3);
+            chkOtherSettings.Name = "chkOtherSettings";
+            chkOtherSettings.Size = new Size(68, 19);
+            chkOtherSettings.TabIndex = 0;
+            chkOtherSettings.Text = "Enabled";
+            chkOtherSettings.UseVisualStyleBackColor = false;
+            chkOtherSettings.CheckedChanged += chkOtherSettings_CheckedChanged;
+            // 
+            // numOtherSettings
+            // 
+            numOtherSettings.Location = new Point(7, 48);
+            numOtherSettings.Margin = new Padding(4, 3, 4, 3);
+            numOtherSettings.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numOtherSettings.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numOtherSettings.Name = "numOtherSettings";
+            numOtherSettings.Size = new Size(126, 23);
+            numOtherSettings.TabIndex = 1;
+            numOtherSettings.ValueChanged += numOtherSettings_ValueChanged;
+            // 
+            // fraScaling
+            // 
+            fraScaling.Controls.Add(chkScaling);
+            fraScaling.Controls.Add(numScaling);
+            fraScaling.Location = new Point(312, 234);
+            fraScaling.Margin = new Padding(4, 3, 4, 3);
+            fraScaling.Name = "fraScaling";
+            fraScaling.Padding = new Padding(4, 3, 4, 3);
+            fraScaling.Size = new Size(140, 81);
+            fraScaling.TabIndex = 11;
+            fraScaling.TabStop = false;
+            fraScaling.Text = "Scale Modifier";
+            // 
+            // chkScaling
+            // 
+            chkScaling.AutoSize = true;
+            chkScaling.BackColor = Color.Transparent;
+            chkScaling.Location = new Point(7, 22);
+            chkScaling.Margin = new Padding(4, 3, 4, 3);
+            chkScaling.Name = "chkScaling";
+            chkScaling.Size = new Size(68, 19);
+            chkScaling.TabIndex = 0;
+            chkScaling.Text = "Enabled";
+            chkScaling.UseVisualStyleBackColor = false;
+            chkScaling.CheckedChanged += chkScaling_CheckedChanged;
+            // 
+            // numScaling
+            // 
+            numScaling.Location = new Point(7, 48);
+            numScaling.Margin = new Padding(4, 3, 4, 3);
+            numScaling.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numScaling.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numScaling.Name = "numScaling";
+            numScaling.Size = new Size(126, 23);
+            numScaling.TabIndex = 1;
+            numScaling.ValueChanged += numScaling_ValueChanged;
+            // 
+            // fraDDASection
+            // 
+            fraDDASection.Controls.Add(chkDDASection);
+            fraDDASection.Controls.Add(numDDASection);
+            fraDDASection.Location = new Point(166, 146);
+            fraDDASection.Margin = new Padding(4, 3, 4, 3);
+            fraDDASection.Name = "fraDDASection";
+            fraDDASection.Padding = new Padding(4, 3, 4, 3);
+            fraDDASection.Size = new Size(140, 81);
+            fraDDASection.TabIndex = 10;
+            fraDDASection.TabStop = false;
+            fraDDASection.Text = "DDA Section";
+            // 
+            // chkDDASection
+            // 
+            chkDDASection.AutoSize = true;
+            chkDDASection.BackColor = Color.Transparent;
+            chkDDASection.Location = new Point(7, 22);
+            chkDDASection.Margin = new Padding(4, 3, 4, 3);
+            chkDDASection.Name = "chkDDASection";
+            chkDDASection.Size = new Size(68, 19);
+            chkDDASection.TabIndex = 0;
+            chkDDASection.Text = "Enabled";
+            chkDDASection.UseVisualStyleBackColor = false;
+            chkDDASection.CheckedChanged += chkDDASection_CheckedChanged;
+            // 
+            // numDDASection
+            // 
+            numDDASection.Location = new Point(7, 48);
+            numDDASection.Margin = new Padding(4, 3, 4, 3);
+            numDDASection.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numDDASection.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numDDASection.Name = "numDDASection";
+            numDDASection.Size = new Size(126, 23);
+            numDDASection.TabIndex = 1;
+            numDDASection.ValueChanged += numDDASection_ValueChanged;
+            // 
+            // fraDDASettings
+            // 
+            fraDDASettings.Controls.Add(chkDDASettings);
+            fraDDASettings.Controls.Add(numDDASettings);
+            fraDDASettings.Location = new Point(166, 234);
+            fraDDASettings.Margin = new Padding(4, 3, 4, 3);
+            fraDDASettings.Name = "fraDDASettings";
+            fraDDASettings.Padding = new Padding(4, 3, 4, 3);
+            fraDDASettings.Size = new Size(140, 81);
+            fraDDASettings.TabIndex = 9;
+            fraDDASettings.TabStop = false;
+            fraDDASettings.Text = "DDA Death Count";
+            // 
+            // chkDDASettings
+            // 
+            chkDDASettings.AutoSize = true;
+            chkDDASettings.BackColor = Color.Transparent;
+            chkDDASettings.Location = new Point(7, 22);
+            chkDDASettings.Margin = new Padding(4, 3, 4, 3);
+            chkDDASettings.Name = "chkDDASettings";
+            chkDDASettings.Size = new Size(68, 19);
+            chkDDASettings.TabIndex = 0;
+            chkDDASettings.Text = "Enabled";
+            chkDDASettings.UseVisualStyleBackColor = false;
+            chkDDASettings.CheckedChanged += chkDDASettings_CheckedChanged;
+            // 
+            // numDDASettings
+            // 
+            numDDASettings.Location = new Point(7, 48);
+            numDDASettings.Margin = new Padding(4, 3, 4, 3);
+            numDDASettings.Maximum = new decimal(new int[] { 8388607, 0, 0, 0 });
+            numDDASettings.Minimum = new decimal(new int[] { 8388608, 0, 0, int.MinValue });
+            numDDASettings.Name = "numDDASettings";
+            numDDASettings.Size = new Size(126, 23);
+            numDDASettings.TabIndex = 1;
+            numDDASettings.ValueChanged += numDDASettings_ValueChanged;
+            // 
+            // fraBoxCount
+            // 
+            fraBoxCount.Controls.Add(chkBonusBoxCount);
+            fraBoxCount.Controls.Add(numBonusBoxCount);
+            fraBoxCount.Controls.Add(chkBoxCount);
+            fraBoxCount.Controls.Add(numBoxCount);
+            fraBoxCount.Location = new Point(166, 3);
+            fraBoxCount.Margin = new Padding(4, 3, 4, 3);
+            fraBoxCount.Name = "fraBoxCount";
+            fraBoxCount.Padding = new Padding(4, 3, 4, 3);
+            fraBoxCount.Size = new Size(140, 137);
+            fraBoxCount.TabIndex = 8;
+            fraBoxCount.TabStop = false;
+            fraBoxCount.Text = "Box Count";
+            // 
+            // chkBonusBoxCount
+            // 
+            chkBonusBoxCount.AutoSize = true;
+            chkBonusBoxCount.BackColor = Color.Transparent;
+            chkBonusBoxCount.Location = new Point(7, 78);
+            chkBonusBoxCount.Margin = new Padding(4, 3, 4, 3);
+            chkBonusBoxCount.Name = "chkBonusBoxCount";
+            chkBonusBoxCount.Size = new Size(112, 19);
+            chkBonusBoxCount.TabIndex = 2;
+            chkBonusBoxCount.Text = "Enabled (Bonus)";
+            chkBonusBoxCount.UseVisualStyleBackColor = false;
+            chkBonusBoxCount.CheckedChanged += chkBonusBoxCount_CheckedChanged;
+            // 
+            // numBonusBoxCount
+            // 
+            numBonusBoxCount.Location = new Point(7, 105);
+            numBonusBoxCount.Margin = new Padding(4, 3, 4, 3);
+            numBonusBoxCount.Maximum = new decimal(new int[] { 8388607, 0, 0, 0 });
+            numBonusBoxCount.Minimum = new decimal(new int[] { 8388608, 0, 0, int.MinValue });
+            numBonusBoxCount.Name = "numBonusBoxCount";
+            numBonusBoxCount.Size = new Size(126, 23);
+            numBonusBoxCount.TabIndex = 3;
+            numBonusBoxCount.ValueChanged += numBonusBoxCount_ValueChanged;
+            // 
+            // chkBoxCount
+            // 
+            chkBoxCount.AutoSize = true;
+            chkBoxCount.BackColor = Color.Transparent;
+            chkBoxCount.Location = new Point(7, 22);
+            chkBoxCount.Margin = new Padding(4, 3, 4, 3);
+            chkBoxCount.Name = "chkBoxCount";
+            chkBoxCount.Size = new Size(68, 19);
+            chkBoxCount.TabIndex = 0;
+            chkBoxCount.Text = "Enabled";
+            chkBoxCount.UseVisualStyleBackColor = false;
+            chkBoxCount.CheckedChanged += chkBoxCount_CheckedChanged;
+            // 
+            // numBoxCount
+            // 
+            numBoxCount.Location = new Point(7, 48);
+            numBoxCount.Margin = new Padding(4, 3, 4, 3);
+            numBoxCount.Maximum = new decimal(new int[] { 8388607, 0, 0, 0 });
+            numBoxCount.Minimum = new decimal(new int[] { 8388608, 0, 0, int.MinValue });
+            numBoxCount.Name = "numBoxCount";
+            numBoxCount.Size = new Size(126, 23);
+            numBoxCount.TabIndex = 1;
+            numBoxCount.ValueChanged += numBoxCount_ValueChanged;
+            // 
+            // fraVictims
+            // 
+            fraVictims.Controls.Add(numEditVictimID);
+            fraVictims.Controls.Add(lbVictimID);
+            fraVictims.Controls.Add(cmdClearAllVictims);
+            fraVictims.Controls.Add(cmdRemoveVictim);
+            fraVictims.Controls.Add(cmdInsertVictim);
+            fraVictims.Controls.Add(lblVictimIndex);
+            fraVictims.Location = new Point(4, 3);
+            fraVictims.Margin = new Padding(4, 3, 4, 3);
+            fraVictims.Name = "fraVictims";
+            fraVictims.Padding = new Padding(4, 3, 4, 3);
+            fraVictims.Size = new Size(154, 439);
+            fraVictims.TabIndex = 7;
+            fraVictims.TabStop = false;
+            fraVictims.Text = "Victims";
+            // 
+            // numEditVictimID
+            // 
+            numEditVictimID.Enabled = false;
+            numEditVictimID.Location = new Point(8, 115);
+            numEditVictimID.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numEditVictimID.Name = "numEditVictimID";
+            numEditVictimID.Size = new Size(138, 23);
+            numEditVictimID.TabIndex = 15;
+            // 
+            // lbVictimID
+            // 
+            lbVictimID.BackColor = Color.FromArgb(26, 26, 28);
+            lbVictimID.BorderStyle = BorderStyle.FixedSingle;
+            lbVictimID.ForeColor = Color.FromArgb(213, 213, 213);
+            lbVictimID.Location = new Point(8, 142);
+            lbVictimID.Name = "lbVictimID";
+            lbVictimID.Size = new Size(138, 287);
+            lbVictimID.TabIndex = 14;
+            lbVictimID.SelectedIndexChanged += lbVictimID_SelectedIndexChanged;
+            lbVictimID.DoubleClick += lbVictimID_DoubleClick;
+            lbVictimID.KeyDown += lbVictimID_KeyDown;
+            lbVictimID.KeyPress += lbVictimID_KeyPress;
+            // 
+            // cmdClearAllVictims
+            // 
+            cmdClearAllVictims.BorderColour = Color.Empty;
+            cmdClearAllVictims.CustomColour = false;
+            cmdClearAllVictims.FlatBottom = false;
+            cmdClearAllVictims.FlatTop = false;
+            cmdClearAllVictims.Location = new Point(8, 82);
+            cmdClearAllVictims.Margin = new Padding(4, 3, 4, 3);
+            cmdClearAllVictims.Name = "cmdClearAllVictims";
+            cmdClearAllVictims.Padding = new Padding(5);
+            cmdClearAllVictims.Size = new Size(138, 27);
+            cmdClearAllVictims.TabIndex = 5;
+            cmdClearAllVictims.Text = "Clear All";
+            cmdClearAllVictims.Click += cmdClearAllVictims_Click;
+            // 
+            // cmdRemoveVictim
+            // 
+            cmdRemoveVictim.BorderColour = Color.Empty;
+            cmdRemoveVictim.CustomColour = false;
+            cmdRemoveVictim.FlatBottom = false;
+            cmdRemoveVictim.FlatTop = false;
+            cmdRemoveVictim.Location = new Point(8, 49);
+            cmdRemoveVictim.Margin = new Padding(4, 3, 4, 3);
+            cmdRemoveVictim.Name = "cmdRemoveVictim";
+            cmdRemoveVictim.Padding = new Padding(5);
+            cmdRemoveVictim.Size = new Size(67, 27);
+            cmdRemoveVictim.TabIndex = 4;
+            cmdRemoveVictim.Text = "Remove";
+            cmdRemoveVictim.Click += cmdRemoveVictim_Click;
+            // 
+            // lblVictimIndex
+            // 
+            lblVictimIndex.BackColor = Color.Transparent;
+            lblVictimIndex.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblVictimIndex.Location = new Point(8, 19);
+            lblVictimIndex.Margin = new Padding(4, 0, 4, 0);
+            lblVictimIndex.Name = "lblVictimIndex";
+            lblVictimIndex.Size = new Size(138, 27);
+            lblVictimIndex.TabIndex = 7;
+            lblVictimIndex.Text = "?? / ??";
+            lblVictimIndex.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // tabCamera
+            // 
+            tabCamera.AutoScroll = true;
+            tabCamera.BackColor = Color.FromArgb(31, 31, 32);
+            tabCamera.Controls.Add(fraFOV);
+            tabCamera.Controls.Add(fraNeighbor);
+            tabCamera.Controls.Add(fraAvgDist);
+            tabCamera.Controls.Add(fraMode);
+            tabCamera.Controls.Add(fraCameraSubIndex);
+            tabCamera.Controls.Add(fraCameraIndex);
+            tabCamera.Controls.Add(fraSLST);
+            tabCamera.Location = new Point(4, 32);
+            tabCamera.Margin = new Padding(4, 3, 4, 3);
+            tabCamera.Name = "tabCamera";
+            tabCamera.Padding = new Padding(4, 3, 4, 3);
+            tabCamera.Size = new Size(592, 564);
+            tabCamera.TabIndex = 2;
+            tabCamera.Text = "Camera";
+            tabCamera.Enter += tabCamera_Enter;
+            // 
+            // fraFOV
+            // 
+            fraFOV.Controls.Add(lblFOVPosition);
+            fraFOV.Controls.Add(cmdRemoveFOVFrame);
+            fraFOV.Controls.Add(cmdInsertFOVFrame);
+            fraFOV.Controls.Add(numFOVPosition);
+            fraFOV.Controls.Add(lblFOVFrame);
+            fraFOV.Controls.Add(fraFOVFrame);
+            fraFOV.Controls.Add(cmdPrevFOVFrame);
+            fraFOV.Controls.Add(cmdNextFOVFrame);
+            fraFOV.Location = new Point(337, 107);
+            fraFOV.Margin = new Padding(4, 3, 4, 3);
+            fraFOV.Name = "fraFOV";
+            fraFOV.Padding = new Padding(4, 3, 4, 3);
+            fraFOV.Size = new Size(176, 307);
+            fraFOV.TabIndex = 21;
+            fraFOV.TabStop = false;
+            fraFOV.Text = "Field-of-View Timeline";
+            // 
+            // lblFOVPosition
+            // 
+            lblFOVPosition.AutoSize = true;
+            lblFOVPosition.BackColor = Color.Transparent;
+            lblFOVPosition.Location = new Point(7, 84);
+            lblFOVPosition.Margin = new Padding(4, 0, 4, 0);
+            lblFOVPosition.Name = "lblFOVPosition";
+            lblFOVPosition.Size = new Size(50, 15);
+            lblFOVPosition.TabIndex = 20;
+            lblFOVPosition.Text = "Position";
+            // 
+            // cmdRemoveFOVFrame
+            // 
+            cmdRemoveFOVFrame.BorderColour = Color.Empty;
+            cmdRemoveFOVFrame.CustomColour = false;
+            cmdRemoveFOVFrame.FlatBottom = false;
+            cmdRemoveFOVFrame.FlatTop = false;
+            cmdRemoveFOVFrame.Location = new Point(8, 112);
+            cmdRemoveFOVFrame.Margin = new Padding(4, 3, 4, 3);
+            cmdRemoveFOVFrame.Name = "cmdRemoveFOVFrame";
+            cmdRemoveFOVFrame.Padding = new Padding(5);
+            cmdRemoveFOVFrame.Size = new Size(77, 27);
+            cmdRemoveFOVFrame.TabIndex = 16;
+            cmdRemoveFOVFrame.Text = "Remove";
+            cmdRemoveFOVFrame.Click += cmdRemoveFOVFrame_Click;
+            // 
+            // cmdInsertFOVFrame
+            // 
+            cmdInsertFOVFrame.BorderColour = Color.Empty;
+            cmdInsertFOVFrame.CustomColour = false;
+            cmdInsertFOVFrame.FlatBottom = false;
+            cmdInsertFOVFrame.FlatTop = false;
+            cmdInsertFOVFrame.Location = new Point(92, 112);
+            cmdInsertFOVFrame.Margin = new Padding(4, 3, 4, 3);
+            cmdInsertFOVFrame.Name = "cmdInsertFOVFrame";
+            cmdInsertFOVFrame.Padding = new Padding(5);
+            cmdInsertFOVFrame.Size = new Size(77, 27);
+            cmdInsertFOVFrame.TabIndex = 17;
+            cmdInsertFOVFrame.Text = "Insert";
+            cmdInsertFOVFrame.Click += cmdInsertFOVFrame_Click;
+            // 
+            // numFOVPosition
+            // 
+            numFOVPosition.Location = new Point(65, 82);
+            numFOVPosition.Margin = new Padding(4, 3, 4, 3);
+            numFOVPosition.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numFOVPosition.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numFOVPosition.Name = "numFOVPosition";
+            numFOVPosition.Size = new Size(79, 23);
+            numFOVPosition.TabIndex = 19;
+            numFOVPosition.ValueChanged += numFOVPosition_ValueChanged;
+            // 
+            // lblFOVFrame
+            // 
+            lblFOVFrame.BackColor = Color.Transparent;
+            lblFOVFrame.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblFOVFrame.Location = new Point(7, 52);
+            lblFOVFrame.Margin = new Padding(4, 0, 4, 0);
+            lblFOVFrame.Name = "lblFOVFrame";
+            lblFOVFrame.Size = new Size(162, 27);
+            lblFOVFrame.TabIndex = 17;
+            lblFOVFrame.Text = "?? / ??";
+            lblFOVFrame.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // fraFOVFrame
+            // 
+            fraFOVFrame.Controls.Add(lblFOVIndex);
+            fraFOVFrame.Controls.Add(cmdRemoveFOV);
+            fraFOVFrame.Controls.Add(cmdInsertFOV);
+            fraFOVFrame.Controls.Add(cmdPrevFOV);
+            fraFOVFrame.Controls.Add(cmdNextFOV);
+            fraFOVFrame.Controls.Add(lblFOV);
+            fraFOVFrame.Controls.Add(numFOV);
+            fraFOVFrame.Location = new Point(7, 145);
+            fraFOVFrame.Margin = new Padding(4, 3, 4, 3);
+            fraFOVFrame.Name = "fraFOVFrame";
+            fraFOVFrame.Padding = new Padding(4, 3, 4, 3);
+            fraFOVFrame.Size = new Size(162, 148);
+            fraFOVFrame.TabIndex = 15;
+            fraFOVFrame.TabStop = false;
+            fraFOVFrame.Text = "Field-of-View";
+            // 
+            // lblFOVIndex
+            // 
+            lblFOVIndex.BackColor = Color.Transparent;
+            lblFOVIndex.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblFOVIndex.Location = new Point(7, 52);
+            lblFOVIndex.Margin = new Padding(4, 0, 4, 0);
+            lblFOVIndex.Name = "lblFOVIndex";
+            lblFOVIndex.Size = new Size(148, 27);
+            lblFOVIndex.TabIndex = 21;
+            lblFOVIndex.Text = "?? / ??";
+            lblFOVIndex.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // cmdRemoveFOV
+            // 
+            cmdRemoveFOV.BorderColour = Color.Empty;
+            cmdRemoveFOV.CustomColour = false;
+            cmdRemoveFOV.FlatBottom = false;
+            cmdRemoveFOV.FlatTop = false;
+            cmdRemoveFOV.Location = new Point(8, 82);
+            cmdRemoveFOV.Margin = new Padding(4, 3, 4, 3);
+            cmdRemoveFOV.Name = "cmdRemoveFOV";
+            cmdRemoveFOV.Padding = new Padding(5);
+            cmdRemoveFOV.Size = new Size(70, 27);
+            cmdRemoveFOV.TabIndex = 46;
+            cmdRemoveFOV.Text = "Remove";
+            cmdRemoveFOV.Click += cmdRemoveFOV_Click;
+            // 
+            // cmdInsertFOV
+            // 
+            cmdInsertFOV.BorderColour = Color.Empty;
+            cmdInsertFOV.CustomColour = false;
+            cmdInsertFOV.FlatBottom = false;
+            cmdInsertFOV.FlatTop = false;
+            cmdInsertFOV.Location = new Point(85, 82);
+            cmdInsertFOV.Margin = new Padding(4, 3, 4, 3);
+            cmdInsertFOV.Name = "cmdInsertFOV";
+            cmdInsertFOV.Padding = new Padding(5);
+            cmdInsertFOV.Size = new Size(70, 27);
+            cmdInsertFOV.TabIndex = 47;
+            cmdInsertFOV.Text = "Insert";
+            cmdInsertFOV.Click += cmdInsertFOV_Click;
+            // 
+            // cmdPrevFOV
+            // 
+            cmdPrevFOV.BorderColour = Color.Empty;
+            cmdPrevFOV.CustomColour = false;
+            cmdPrevFOV.FlatBottom = false;
+            cmdPrevFOV.FlatTop = false;
+            cmdPrevFOV.Location = new Point(7, 22);
+            cmdPrevFOV.Margin = new Padding(4, 3, 4, 3);
+            cmdPrevFOV.Name = "cmdPrevFOV";
+            cmdPrevFOV.Padding = new Padding(5);
+            cmdPrevFOV.Size = new Size(70, 27);
+            cmdPrevFOV.TabIndex = 22;
+            cmdPrevFOV.Text = "Previous";
+            cmdPrevFOV.Click += cmdPrevFOV_Click;
+            // 
+            // cmdNextFOV
+            // 
+            cmdNextFOV.BorderColour = Color.Empty;
+            cmdNextFOV.CustomColour = false;
+            cmdNextFOV.FlatBottom = false;
+            cmdNextFOV.FlatTop = false;
+            cmdNextFOV.Location = new Point(84, 22);
+            cmdNextFOV.Margin = new Padding(4, 3, 4, 3);
+            cmdNextFOV.Name = "cmdNextFOV";
+            cmdNextFOV.Padding = new Padding(5);
+            cmdNextFOV.Size = new Size(70, 27);
+            cmdNextFOV.TabIndex = 23;
+            cmdNextFOV.Text = "Next";
+            cmdNextFOV.Click += cmdNextFOV_Click;
+            // 
+            // lblFOV
+            // 
+            lblFOV.AutoSize = true;
+            lblFOV.BackColor = Color.Transparent;
+            lblFOV.Location = new Point(7, 117);
+            lblFOV.Margin = new Padding(4, 0, 4, 0);
+            lblFOV.Name = "lblFOV";
+            lblFOV.Size = new Size(29, 15);
+            lblFOV.TabIndex = 39;
+            lblFOV.Text = "FOV";
+            // 
+            // numFOV
+            // 
+            numFOV.Location = new Point(47, 114);
+            numFOV.Margin = new Padding(4, 3, 4, 3);
+            numFOV.Maximum = new decimal(new int[] { 65535, 0, 0, 0 });
+            numFOV.Name = "numFOV";
+            numFOV.Size = new Size(108, 23);
+            numFOV.TabIndex = 38;
+            numFOV.ValueChanged += numFOV_ValueChanged;
+            // 
+            // cmdPrevFOVFrame
+            // 
+            cmdPrevFOVFrame.BorderColour = Color.Empty;
+            cmdPrevFOVFrame.CustomColour = false;
+            cmdPrevFOVFrame.FlatBottom = false;
+            cmdPrevFOVFrame.FlatTop = false;
+            cmdPrevFOVFrame.Location = new Point(8, 22);
+            cmdPrevFOVFrame.Margin = new Padding(4, 3, 4, 3);
+            cmdPrevFOVFrame.Name = "cmdPrevFOVFrame";
+            cmdPrevFOVFrame.Padding = new Padding(5);
+            cmdPrevFOVFrame.Size = new Size(77, 27);
+            cmdPrevFOVFrame.TabIndex = 15;
+            cmdPrevFOVFrame.Text = "Previous";
+            cmdPrevFOVFrame.Click += cmdPrevFOVFrame_Click;
+            // 
+            // cmdNextFOVFrame
+            // 
+            cmdNextFOVFrame.BorderColour = Color.Empty;
+            cmdNextFOVFrame.CustomColour = false;
+            cmdNextFOVFrame.FlatBottom = false;
+            cmdNextFOVFrame.FlatTop = false;
+            cmdNextFOVFrame.Location = new Point(92, 22);
+            cmdNextFOVFrame.Margin = new Padding(4, 3, 4, 3);
+            cmdNextFOVFrame.Name = "cmdNextFOVFrame";
+            cmdNextFOVFrame.Padding = new Padding(5);
+            cmdNextFOVFrame.Size = new Size(77, 27);
+            cmdNextFOVFrame.TabIndex = 16;
+            cmdNextFOVFrame.Text = "Next";
+            cmdNextFOVFrame.Click += cmdNextFOVFrame_Click;
+            // 
+            // fraNeighbor
+            // 
+            fraNeighbor.Controls.Add(lblNeighborPosition);
+            fraNeighbor.Controls.Add(cmdRemoveNeighbor);
+            fraNeighbor.Controls.Add(cmdInsertNeighbor);
+            fraNeighbor.Controls.Add(numNeighborPosition);
+            fraNeighbor.Controls.Add(lblNeighbor);
+            fraNeighbor.Controls.Add(fraNeighborSetting);
+            fraNeighbor.Controls.Add(cmdPrevNeighbor);
+            fraNeighbor.Controls.Add(cmdNextNeighbor);
+            fraNeighbor.Location = new Point(154, 107);
+            fraNeighbor.Margin = new Padding(4, 3, 4, 3);
+            fraNeighbor.Name = "fraNeighbor";
+            fraNeighbor.Padding = new Padding(4, 3, 4, 3);
+            fraNeighbor.Size = new Size(176, 387);
+            fraNeighbor.TabIndex = 8;
+            fraNeighbor.TabStop = false;
+            fraNeighbor.Text = "Neighbors";
+            // 
+            // lblNeighborPosition
+            // 
+            lblNeighborPosition.AutoSize = true;
+            lblNeighborPosition.BackColor = Color.Transparent;
+            lblNeighborPosition.Location = new Point(7, 84);
+            lblNeighborPosition.Margin = new Padding(4, 0, 4, 0);
+            lblNeighborPosition.Name = "lblNeighborPosition";
+            lblNeighborPosition.Size = new Size(50, 15);
+            lblNeighborPosition.TabIndex = 20;
+            lblNeighborPosition.Text = "Position";
+            // 
+            // cmdRemoveNeighbor
+            // 
+            cmdRemoveNeighbor.BorderColour = Color.Empty;
+            cmdRemoveNeighbor.CustomColour = false;
+            cmdRemoveNeighbor.FlatBottom = false;
+            cmdRemoveNeighbor.FlatTop = false;
+            cmdRemoveNeighbor.Location = new Point(8, 112);
+            cmdRemoveNeighbor.Margin = new Padding(4, 3, 4, 3);
+            cmdRemoveNeighbor.Name = "cmdRemoveNeighbor";
+            cmdRemoveNeighbor.Padding = new Padding(5);
+            cmdRemoveNeighbor.Size = new Size(77, 27);
+            cmdRemoveNeighbor.TabIndex = 16;
+            cmdRemoveNeighbor.Text = "Remove";
+            cmdRemoveNeighbor.Click += cmdRemoveNeighbor_Click;
+            // 
+            // cmdInsertNeighbor
+            // 
+            cmdInsertNeighbor.BorderColour = Color.Empty;
+            cmdInsertNeighbor.CustomColour = false;
+            cmdInsertNeighbor.FlatBottom = false;
+            cmdInsertNeighbor.FlatTop = false;
+            cmdInsertNeighbor.Location = new Point(92, 112);
+            cmdInsertNeighbor.Margin = new Padding(4, 3, 4, 3);
+            cmdInsertNeighbor.Name = "cmdInsertNeighbor";
+            cmdInsertNeighbor.Padding = new Padding(5);
+            cmdInsertNeighbor.Size = new Size(77, 27);
+            cmdInsertNeighbor.TabIndex = 17;
+            cmdInsertNeighbor.Text = "Insert";
+            cmdInsertNeighbor.Click += cmdInsertNeighbor_Click;
+            // 
+            // numNeighborPosition
+            // 
+            numNeighborPosition.Location = new Point(65, 82);
+            numNeighborPosition.Margin = new Padding(4, 3, 4, 3);
+            numNeighborPosition.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numNeighborPosition.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numNeighborPosition.Name = "numNeighborPosition";
+            numNeighborPosition.Size = new Size(79, 23);
+            numNeighborPosition.TabIndex = 19;
+            numNeighborPosition.ValueChanged += numNeighborPosition_ValueChanged;
+            // 
+            // lblNeighbor
+            // 
+            lblNeighbor.BackColor = Color.Transparent;
+            lblNeighbor.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblNeighbor.Location = new Point(7, 52);
+            lblNeighbor.Margin = new Padding(4, 0, 4, 0);
+            lblNeighbor.Name = "lblNeighbor";
+            lblNeighbor.Size = new Size(162, 27);
+            lblNeighbor.TabIndex = 17;
+            lblNeighbor.Text = "?? / ??";
+            lblNeighbor.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // fraNeighborSetting
+            // 
+            fraNeighborSetting.Controls.Add(lblNeighborSetting);
+            fraNeighborSetting.Controls.Add(cmdRemoveNeighborSetting);
+            fraNeighborSetting.Controls.Add(cmdInsertNeighborSetting);
+            fraNeighborSetting.Controls.Add(cmdPrevNeighborSetting);
+            fraNeighborSetting.Controls.Add(cmdNextNeighborSetting);
+            fraNeighborSetting.Controls.Add(lblNeighborLink);
+            fraNeighborSetting.Controls.Add(lblNeighborFlag);
+            fraNeighborSetting.Controls.Add(numNeighborFlag);
+            fraNeighborSetting.Controls.Add(lblNeighborCamera);
+            fraNeighborSetting.Controls.Add(lblNeighborZone);
+            fraNeighborSetting.Controls.Add(numNeighborLink);
+            fraNeighborSetting.Controls.Add(numNeighborCamera);
+            fraNeighborSetting.Controls.Add(numNeighborZone);
+            fraNeighborSetting.Location = new Point(7, 145);
+            fraNeighborSetting.Margin = new Padding(4, 3, 4, 3);
+            fraNeighborSetting.Name = "fraNeighborSetting";
+            fraNeighborSetting.Padding = new Padding(4, 3, 4, 3);
+            fraNeighborSetting.Size = new Size(162, 234);
+            fraNeighborSetting.TabIndex = 15;
+            fraNeighborSetting.TabStop = false;
+            fraNeighborSetting.Text = "Neighbor";
+            // 
+            // lblNeighborSetting
+            // 
+            lblNeighborSetting.BackColor = Color.Transparent;
+            lblNeighborSetting.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblNeighborSetting.Location = new Point(7, 52);
+            lblNeighborSetting.Margin = new Padding(4, 0, 4, 0);
+            lblNeighborSetting.Name = "lblNeighborSetting";
+            lblNeighborSetting.Size = new Size(148, 27);
+            lblNeighborSetting.TabIndex = 21;
+            lblNeighborSetting.Text = "?? / ??";
+            lblNeighborSetting.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // cmdRemoveNeighborSetting
+            // 
+            cmdRemoveNeighborSetting.BorderColour = Color.Empty;
+            cmdRemoveNeighborSetting.CustomColour = false;
+            cmdRemoveNeighborSetting.FlatBottom = false;
+            cmdRemoveNeighborSetting.FlatTop = false;
+            cmdRemoveNeighborSetting.Location = new Point(8, 82);
+            cmdRemoveNeighborSetting.Margin = new Padding(4, 3, 4, 3);
+            cmdRemoveNeighborSetting.Name = "cmdRemoveNeighborSetting";
+            cmdRemoveNeighborSetting.Padding = new Padding(5);
+            cmdRemoveNeighborSetting.Size = new Size(70, 27);
+            cmdRemoveNeighborSetting.TabIndex = 46;
+            cmdRemoveNeighborSetting.Text = "Remove";
+            cmdRemoveNeighborSetting.Click += cmdRemoveNeighborSetting_Click;
+            // 
+            // cmdInsertNeighborSetting
+            // 
+            cmdInsertNeighborSetting.BorderColour = Color.Empty;
+            cmdInsertNeighborSetting.CustomColour = false;
+            cmdInsertNeighborSetting.FlatBottom = false;
+            cmdInsertNeighborSetting.FlatTop = false;
+            cmdInsertNeighborSetting.Location = new Point(85, 82);
+            cmdInsertNeighborSetting.Margin = new Padding(4, 3, 4, 3);
+            cmdInsertNeighborSetting.Name = "cmdInsertNeighborSetting";
+            cmdInsertNeighborSetting.Padding = new Padding(5);
+            cmdInsertNeighborSetting.Size = new Size(70, 27);
+            cmdInsertNeighborSetting.TabIndex = 47;
+            cmdInsertNeighborSetting.Text = "Insert";
+            cmdInsertNeighborSetting.Click += cmdInsertNeighborSetting_Click;
+            // 
+            // cmdPrevNeighborSetting
+            // 
+            cmdPrevNeighborSetting.BorderColour = Color.Empty;
+            cmdPrevNeighborSetting.CustomColour = false;
+            cmdPrevNeighborSetting.FlatBottom = false;
+            cmdPrevNeighborSetting.FlatTop = false;
+            cmdPrevNeighborSetting.Location = new Point(7, 22);
+            cmdPrevNeighborSetting.Margin = new Padding(4, 3, 4, 3);
+            cmdPrevNeighborSetting.Name = "cmdPrevNeighborSetting";
+            cmdPrevNeighborSetting.Padding = new Padding(5);
+            cmdPrevNeighborSetting.Size = new Size(70, 27);
+            cmdPrevNeighborSetting.TabIndex = 22;
+            cmdPrevNeighborSetting.Text = "Previous";
+            cmdPrevNeighborSetting.Click += cmdPrevNeighborSetting_Click;
+            // 
+            // cmdNextNeighborSetting
+            // 
+            cmdNextNeighborSetting.BorderColour = Color.Empty;
+            cmdNextNeighborSetting.CustomColour = false;
+            cmdNextNeighborSetting.FlatBottom = false;
+            cmdNextNeighborSetting.FlatTop = false;
+            cmdNextNeighborSetting.Location = new Point(84, 22);
+            cmdNextNeighborSetting.Margin = new Padding(4, 3, 4, 3);
+            cmdNextNeighborSetting.Name = "cmdNextNeighborSetting";
+            cmdNextNeighborSetting.Padding = new Padding(5);
+            cmdNextNeighborSetting.Size = new Size(70, 27);
+            cmdNextNeighborSetting.TabIndex = 23;
+            cmdNextNeighborSetting.Text = "Next";
+            cmdNextNeighborSetting.Click += cmdNextNeighborSetting_Click;
+            // 
+            // lblNeighborLink
+            // 
+            lblNeighborLink.AutoSize = true;
+            lblNeighborLink.BackColor = Color.Transparent;
+            lblNeighborLink.Location = new Point(7, 207);
+            lblNeighborLink.Margin = new Padding(4, 0, 4, 0);
+            lblNeighborLink.Name = "lblNeighborLink";
+            lblNeighborLink.Size = new Size(56, 15);
+            lblNeighborLink.TabIndex = 45;
+            lblNeighborLink.Text = "Link Type";
+            // 
+            // lblNeighborFlag
+            // 
+            lblNeighborFlag.AutoSize = true;
+            lblNeighborFlag.BackColor = Color.Transparent;
+            lblNeighborFlag.Location = new Point(7, 117);
+            lblNeighborFlag.Margin = new Padding(4, 0, 4, 0);
+            lblNeighborFlag.Name = "lblNeighborFlag";
+            lblNeighborFlag.Size = new Size(29, 15);
+            lblNeighborFlag.TabIndex = 39;
+            lblNeighborFlag.Text = "Flag";
+            // 
+            // numNeighborFlag
+            // 
+            numNeighborFlag.Location = new Point(85, 114);
+            numNeighborFlag.Margin = new Padding(4, 3, 4, 3);
+            numNeighborFlag.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numNeighborFlag.Name = "numNeighborFlag";
+            numNeighborFlag.Size = new Size(70, 23);
+            numNeighborFlag.TabIndex = 38;
+            numNeighborFlag.ValueChanged += numNeighborFlag_ValueChanged;
+            // 
+            // lblNeighborCamera
+            // 
+            lblNeighborCamera.AutoSize = true;
+            lblNeighborCamera.BackColor = Color.Transparent;
+            lblNeighborCamera.Location = new Point(7, 147);
+            lblNeighborCamera.Margin = new Padding(4, 0, 4, 0);
+            lblNeighborCamera.Name = "lblNeighborCamera";
+            lblNeighborCamera.Size = new Size(67, 15);
+            lblNeighborCamera.TabIndex = 44;
+            lblNeighborCamera.Text = "Cam. Index";
+            // 
+            // lblNeighborZone
+            // 
+            lblNeighborZone.AutoSize = true;
+            lblNeighborZone.BackColor = Color.Transparent;
+            lblNeighborZone.Location = new Point(7, 177);
+            lblNeighborZone.Margin = new Padding(4, 0, 4, 0);
+            lblNeighborZone.Name = "lblNeighborZone";
+            lblNeighborZone.Size = new Size(66, 15);
+            lblNeighborZone.TabIndex = 41;
+            lblNeighborZone.Text = "Zone Index";
+            // 
+            // numNeighborLink
+            // 
+            numNeighborLink.Location = new Point(85, 204);
+            numNeighborLink.Margin = new Padding(4, 3, 4, 3);
+            numNeighborLink.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numNeighborLink.Name = "numNeighborLink";
+            numNeighborLink.Size = new Size(70, 23);
+            numNeighborLink.TabIndex = 43;
+            numNeighborLink.ValueChanged += numNeighborLink_ValueChanged;
+            // 
+            // numNeighborCamera
+            // 
+            numNeighborCamera.Location = new Point(85, 144);
+            numNeighborCamera.Margin = new Padding(4, 3, 4, 3);
+            numNeighborCamera.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numNeighborCamera.Name = "numNeighborCamera";
+            numNeighborCamera.Size = new Size(70, 23);
+            numNeighborCamera.TabIndex = 40;
+            numNeighborCamera.ValueChanged += numNeighborCamera_ValueChanged;
+            // 
+            // numNeighborZone
+            // 
+            numNeighborZone.Location = new Point(85, 174);
+            numNeighborZone.Margin = new Padding(4, 3, 4, 3);
+            numNeighborZone.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numNeighborZone.Name = "numNeighborZone";
+            numNeighborZone.Size = new Size(70, 23);
+            numNeighborZone.TabIndex = 42;
+            numNeighborZone.ValueChanged += numNeighborZone_ValueChanged;
+            // 
+            // cmdPrevNeighbor
+            // 
+            cmdPrevNeighbor.BorderColour = Color.Empty;
+            cmdPrevNeighbor.CustomColour = false;
+            cmdPrevNeighbor.FlatBottom = false;
+            cmdPrevNeighbor.FlatTop = false;
+            cmdPrevNeighbor.Location = new Point(8, 22);
+            cmdPrevNeighbor.Margin = new Padding(4, 3, 4, 3);
+            cmdPrevNeighbor.Name = "cmdPrevNeighbor";
+            cmdPrevNeighbor.Padding = new Padding(5);
+            cmdPrevNeighbor.Size = new Size(77, 27);
+            cmdPrevNeighbor.TabIndex = 15;
+            cmdPrevNeighbor.Text = "Previous";
+            cmdPrevNeighbor.Click += cmdPrevNeighbor_Click;
+            // 
+            // cmdNextNeighbor
+            // 
+            cmdNextNeighbor.BorderColour = Color.Empty;
+            cmdNextNeighbor.CustomColour = false;
+            cmdNextNeighbor.FlatBottom = false;
+            cmdNextNeighbor.FlatTop = false;
+            cmdNextNeighbor.Location = new Point(92, 22);
+            cmdNextNeighbor.Margin = new Padding(4, 3, 4, 3);
+            cmdNextNeighbor.Name = "cmdNextNeighbor";
+            cmdNextNeighbor.Padding = new Padding(5);
+            cmdNextNeighbor.Size = new Size(77, 27);
+            cmdNextNeighbor.TabIndex = 16;
+            cmdNextNeighbor.Text = "Next";
+            cmdNextNeighbor.Click += cmdNextNeighbor_Click;
+            // 
+            // fraAvgDist
+            // 
+            fraAvgDist.Controls.Add(chkAvgDist);
+            fraAvgDist.Controls.Add(numAvgDist);
+            fraAvgDist.Location = new Point(7, 197);
+            fraAvgDist.Margin = new Padding(4, 3, 4, 3);
+            fraAvgDist.Name = "fraAvgDist";
+            fraAvgDist.Padding = new Padding(4, 3, 4, 3);
+            fraAvgDist.Size = new Size(140, 83);
+            fraAvgDist.TabIndex = 7;
+            fraAvgDist.TabStop = false;
+            fraAvgDist.Text = "Point Distance";
+            // 
+            // chkAvgDist
+            // 
+            chkAvgDist.AutoSize = true;
+            chkAvgDist.BackColor = Color.Transparent;
+            chkAvgDist.Location = new Point(7, 22);
+            chkAvgDist.Margin = new Padding(4, 3, 4, 3);
+            chkAvgDist.Name = "chkAvgDist";
+            chkAvgDist.Size = new Size(68, 19);
+            chkAvgDist.TabIndex = 0;
+            chkAvgDist.Text = "Enabled";
+            chkAvgDist.UseVisualStyleBackColor = false;
+            chkAvgDist.CheckedChanged += chkAvgDist_CheckedChanged;
+            // 
+            // numAvgDist
+            // 
+            numAvgDist.Location = new Point(7, 48);
+            numAvgDist.Margin = new Padding(4, 3, 4, 3);
+            numAvgDist.Maximum = new decimal(new int[] { 8388607, 0, 0, 0 });
+            numAvgDist.Minimum = new decimal(new int[] { 8388608, 0, 0, int.MinValue });
+            numAvgDist.Name = "numAvgDist";
+            numAvgDist.Size = new Size(126, 23);
+            numAvgDist.TabIndex = 1;
+            numAvgDist.ValueChanged += numAvgDist_ValueChanged;
+            // 
+            // fraMode
+            // 
+            fraMode.Controls.Add(chkMode);
+            fraMode.Controls.Add(numMode);
+            fraMode.Enabled = false;
+            fraMode.Location = new Point(7, 107);
+            fraMode.Margin = new Padding(4, 3, 4, 3);
+            fraMode.Name = "fraMode";
+            fraMode.Padding = new Padding(4, 3, 4, 3);
+            fraMode.Size = new Size(140, 83);
+            fraMode.TabIndex = 6;
+            fraMode.TabStop = false;
+            fraMode.Text = "Camera Mode";
+            // 
+            // chkMode
+            // 
+            chkMode.AutoSize = true;
+            chkMode.BackColor = Color.Transparent;
+            chkMode.Location = new Point(7, 22);
+            chkMode.Margin = new Padding(4, 3, 4, 3);
+            chkMode.Name = "chkMode";
+            chkMode.Size = new Size(68, 19);
+            chkMode.TabIndex = 0;
+            chkMode.Text = "Enabled";
+            chkMode.UseVisualStyleBackColor = false;
+            chkMode.CheckedChanged += chkMode_CheckedChanged;
+            // 
+            // numMode
+            // 
+            numMode.Location = new Point(7, 48);
+            numMode.Margin = new Padding(4, 3, 4, 3);
+            numMode.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
+            numMode.Name = "numMode";
+            numMode.Size = new Size(126, 23);
+            numMode.TabIndex = 1;
+            numMode.ValueChanged += numMode_ValueChanged;
+            // 
+            // fraCameraSubIndex
+            // 
+            fraCameraSubIndex.Controls.Add(chkCameraSubIndex);
+            fraCameraSubIndex.Controls.Add(numCameraSubIndex);
+            fraCameraSubIndex.Location = new Point(7, 377);
+            fraCameraSubIndex.Margin = new Padding(4, 3, 4, 3);
+            fraCameraSubIndex.Name = "fraCameraSubIndex";
+            fraCameraSubIndex.Padding = new Padding(4, 3, 4, 3);
+            fraCameraSubIndex.Size = new Size(140, 83);
+            fraCameraSubIndex.TabIndex = 6;
+            fraCameraSubIndex.TabStop = false;
+            fraCameraSubIndex.Text = "Camera Subindex";
+            fraCameraSubIndex.UseCompatibleTextRendering = true;
+            // 
+            // chkCameraSubIndex
+            // 
+            chkCameraSubIndex.AutoSize = true;
+            chkCameraSubIndex.BackColor = Color.Transparent;
+            chkCameraSubIndex.Location = new Point(7, 22);
+            chkCameraSubIndex.Margin = new Padding(4, 3, 4, 3);
+            chkCameraSubIndex.Name = "chkCameraSubIndex";
+            chkCameraSubIndex.Size = new Size(68, 19);
+            chkCameraSubIndex.TabIndex = 0;
+            chkCameraSubIndex.Text = "Enabled";
+            chkCameraSubIndex.UseVisualStyleBackColor = false;
+            chkCameraSubIndex.CheckedChanged += chkCameraSubIndex_CheckedChanged;
+            // 
+            // numCameraSubIndex
+            // 
+            numCameraSubIndex.Location = new Point(7, 48);
+            numCameraSubIndex.Margin = new Padding(4, 3, 4, 3);
+            numCameraSubIndex.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numCameraSubIndex.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numCameraSubIndex.Name = "numCameraSubIndex";
+            numCameraSubIndex.Size = new Size(126, 23);
+            numCameraSubIndex.TabIndex = 1;
+            numCameraSubIndex.ValueChanged += numCameraSubIndex_ValueChanged;
+            // 
+            // fraCameraIndex
+            // 
+            fraCameraIndex.Controls.Add(chkCameraIndex);
+            fraCameraIndex.Controls.Add(numCameraIndex);
+            fraCameraIndex.Location = new Point(7, 287);
+            fraCameraIndex.Margin = new Padding(4, 3, 4, 3);
+            fraCameraIndex.Name = "fraCameraIndex";
+            fraCameraIndex.Padding = new Padding(4, 3, 4, 3);
+            fraCameraIndex.Size = new Size(140, 83);
+            fraCameraIndex.TabIndex = 5;
+            fraCameraIndex.TabStop = false;
+            fraCameraIndex.Text = "Camera Index";
+            // 
+            // chkCameraIndex
+            // 
+            chkCameraIndex.AutoSize = true;
+            chkCameraIndex.BackColor = Color.Transparent;
+            chkCameraIndex.Location = new Point(7, 22);
+            chkCameraIndex.Margin = new Padding(4, 3, 4, 3);
+            chkCameraIndex.Name = "chkCameraIndex";
+            chkCameraIndex.Size = new Size(68, 19);
+            chkCameraIndex.TabIndex = 0;
+            chkCameraIndex.Text = "Enabled";
+            chkCameraIndex.UseVisualStyleBackColor = false;
+            chkCameraIndex.CheckedChanged += chkCameraIndex_CheckedChanged;
+            // 
+            // numCameraIndex
+            // 
+            numCameraIndex.Location = new Point(7, 48);
+            numCameraIndex.Margin = new Padding(4, 3, 4, 3);
+            numCameraIndex.Maximum = new decimal(new int[] { int.MaxValue, 0, 0, 0 });
+            numCameraIndex.Minimum = new decimal(new int[] { int.MinValue, 0, 0, int.MinValue });
+            numCameraIndex.Name = "numCameraIndex";
+            numCameraIndex.Size = new Size(126, 23);
+            numCameraIndex.TabIndex = 1;
+            numCameraIndex.ValueChanged += numCameraIndex_ValueChanged;
+            // 
+            // fraSLST
+            // 
+            fraSLST.AutoSize = true;
+            fraSLST.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraSLST.Controls.Add(lblEIDErr1);
+            fraSLST.Controls.Add(txtSLST);
+            fraSLST.Controls.Add(chkSLST);
+            fraSLST.Location = new Point(7, 7);
+            fraSLST.Margin = new Padding(4, 3, 4, 3);
+            fraSLST.Name = "fraSLST";
+            fraSLST.Padding = new Padding(4, 3, 4, 3);
+            fraSLST.Size = new Size(218, 93);
+            fraSLST.TabIndex = 1;
+            fraSLST.TabStop = false;
+            fraSLST.Text = "Sort List";
+            // 
+            // lblEIDErr1
+            // 
+            lblEIDErr1.AutoSize = true;
+            lblEIDErr1.BackColor = Color.Transparent;
+            lblEIDErr1.ForeColor = Color.Red;
+            lblEIDErr1.Location = new Point(86, 52);
+            lblEIDErr1.Margin = new Padding(4, 0, 4, 0);
+            lblEIDErr1.Name = "lblEIDErr1";
+            lblEIDErr1.Size = new Size(124, 15);
+            lblEIDErr1.TabIndex = 2;
+            lblEIDErr1.Text = "EID ERROR WARNING!";
+            // 
+            // txtSLST
+            // 
+            txtSLST.BackColor = Color.FromArgb(26, 26, 28);
+            txtSLST.BorderStyle = BorderStyle.FixedSingle;
+            txtSLST.ForeColor = Color.FromArgb(213, 213, 213);
+            txtSLST.Location = new Point(7, 48);
+            txtSLST.Margin = new Padding(4, 3, 4, 3);
+            txtSLST.MaxLength = 5;
+            txtSLST.Name = "txtSLST";
+            txtSLST.Size = new Size(72, 23);
+            txtSLST.TabIndex = 1;
+            txtSLST.Text = "NONE!";
+            txtSLST.TextChanged += txtSLST_TextChanged;
+            // 
+            // chkSLST
+            // 
+            chkSLST.AutoSize = true;
+            chkSLST.BackColor = Color.Transparent;
+            chkSLST.Location = new Point(7, 22);
+            chkSLST.Margin = new Padding(4, 3, 4, 3);
+            chkSLST.Name = "chkSLST";
+            chkSLST.Size = new Size(68, 19);
+            chkSLST.TabIndex = 0;
+            chkSLST.Text = "Enabled";
+            chkSLST.UseVisualStyleBackColor = false;
+            chkSLST.CheckedChanged += chkSLST_CheckedChanged;
+            // 
+            // tabLoadLists
+            // 
+            tabLoadLists.AutoScroll = true;
+            tabLoadLists.BackColor = Color.FromArgb(31, 31, 32);
+            tabLoadLists.Controls.Add(lblEIDErrB);
+            tabLoadLists.Controls.Add(fraLoadListPayload);
+            tabLoadLists.Controls.Add(fraLoadListB);
+            tabLoadLists.Controls.Add(lblEIDErrA);
+            tabLoadLists.Controls.Add(fraLoadListA);
+            tabLoadLists.Location = new Point(4, 32);
+            tabLoadLists.Margin = new Padding(4, 3, 4, 3);
+            tabLoadLists.Name = "tabLoadLists";
+            tabLoadLists.Padding = new Padding(4, 3, 4, 3);
+            tabLoadLists.Size = new Size(592, 564);
+            tabLoadLists.TabIndex = 2;
+            tabLoadLists.Text = "Load Lists";
+            tabLoadLists.Enter += tabLoadLists_Enter;
+            // 
+            // lblEIDErrB
+            // 
+            lblEIDErrB.AutoSize = true;
+            lblEIDErrB.BackColor = Color.Transparent;
+            lblEIDErrB.ForeColor = Color.Red;
+            lblEIDErrB.Location = new Point(184, 524);
+            lblEIDErrB.Margin = new Padding(4, 0, 4, 0);
+            lblEIDErrB.Name = "lblEIDErrB";
+            lblEIDErrB.Size = new Size(124, 15);
+            lblEIDErrB.TabIndex = 23;
+            lblEIDErrB.Text = "EID ERROR WARNING!";
+            // 
+            // fraLoadListPayload
+            // 
+            fraLoadListPayload.Controls.Add(lblPayloadSound);
+            fraLoadListPayload.Controls.Add(lblPayloadTexture);
+            fraLoadListPayload.Controls.Add(lblVerifyLoadLists);
+            fraLoadListPayload.Controls.Add(lblPayload);
+            fraLoadListPayload.Controls.Add(cmdLoadListVerify);
+            fraLoadListPayload.Controls.Add(cmdPayload);
+            fraLoadListPayload.Controls.Add(lblPayloadPosition);
+            fraLoadListPayload.Controls.Add(numPayloadPosition);
+            fraLoadListPayload.Location = new Point(356, 7);
+            fraLoadListPayload.Margin = new Padding(4, 3, 4, 3);
+            fraLoadListPayload.Name = "fraLoadListPayload";
+            fraLoadListPayload.Padding = new Padding(4, 3, 4, 3);
+            fraLoadListPayload.Size = new Size(181, 232);
+            fraLoadListPayload.TabIndex = 22;
+            fraLoadListPayload.TabStop = false;
+            fraLoadListPayload.Text = "Verify Load Lists";
+            // 
+            // lblPayloadSound
+            // 
+            lblPayloadSound.AutoSize = true;
+            lblPayloadSound.BackColor = Color.Transparent;
+            lblPayloadSound.Location = new Point(5, 187);
+            lblPayloadSound.Margin = new Padding(4, 0, 4, 0);
+            lblPayloadSound.Name = "lblPayloadSound";
+            lblPayloadSound.Size = new Size(139, 30);
+            lblPayloadSound.TabIndex = 27;
+            lblPayloadSound.Text = "Payload is ?? - ??\r\nsound/wavebank chunks";
+            lblPayloadSound.Visible = false;
+            // 
+            // lblPayloadTexture
+            // 
+            lblPayloadTexture.AutoSize = true;
+            lblPayloadTexture.BackColor = Color.Transparent;
+            lblPayloadTexture.Location = new Point(5, 171);
+            lblPayloadTexture.Margin = new Padding(4, 0, 4, 0);
+            lblPayloadTexture.Name = "lblPayloadTexture";
+            lblPayloadTexture.Size = new Size(154, 15);
+            lblPayloadTexture.TabIndex = 26;
+            lblPayloadTexture.Text = "Payload is ?? texture chunks";
+            lblPayloadTexture.Visible = false;
+            // 
+            // lblVerifyLoadLists
+            // 
+            lblVerifyLoadLists.AutoSize = true;
+            lblVerifyLoadLists.BackColor = Color.Transparent;
+            lblVerifyLoadLists.ForeColor = Color.MediumTurquoise;
+            lblVerifyLoadLists.Location = new Point(7, 52);
+            lblVerifyLoadLists.Margin = new Padding(4, 0, 4, 0);
+            lblVerifyLoadLists.Name = "lblVerifyLoadLists";
+            lblVerifyLoadLists.Size = new Size(118, 15);
+            lblVerifyLoadLists.TabIndex = 25;
+            lblVerifyLoadLists.Text = "Load lists are correct.";
+            lblVerifyLoadLists.Visible = false;
+            // 
+            // lblPayload
+            // 
+            lblPayload.AutoSize = true;
+            lblPayload.BackColor = Color.Transparent;
+            lblPayload.Location = new Point(5, 155);
+            lblPayload.Margin = new Padding(4, 0, 4, 0);
+            lblPayload.Name = "lblPayload";
+            lblPayload.Size = new Size(155, 15);
+            lblPayload.TabIndex = 24;
+            lblPayload.Text = "Payload is ?? normal chunks";
+            lblPayload.Visible = false;
+            // 
+            // cmdLoadListVerify
+            // 
+            cmdLoadListVerify.BorderColour = Color.Empty;
+            cmdLoadListVerify.CustomColour = false;
+            cmdLoadListVerify.FlatBottom = false;
+            cmdLoadListVerify.FlatTop = false;
+            cmdLoadListVerify.Location = new Point(6, 22);
+            cmdLoadListVerify.Margin = new Padding(4, 3, 4, 3);
+            cmdLoadListVerify.Name = "cmdLoadListVerify";
+            cmdLoadListVerify.Padding = new Padding(5);
+            cmdLoadListVerify.Size = new Size(122, 27);
+            cmdLoadListVerify.TabIndex = 0;
+            cmdLoadListVerify.Text = "Verify List Integrity";
+            cmdLoadListVerify.Click += cmdLoadListVerify_Click;
+            // 
+            // cmdPayload
+            // 
+            cmdPayload.BorderColour = Color.Empty;
+            cmdPayload.CustomColour = false;
+            cmdPayload.FlatBottom = false;
+            cmdPayload.FlatTop = false;
+            cmdPayload.Location = new Point(6, 81);
+            cmdPayload.Margin = new Padding(4, 3, 4, 3);
+            cmdPayload.Name = "cmdPayload";
+            cmdPayload.Padding = new Padding(5);
+            cmdPayload.Size = new Size(108, 27);
+            cmdPayload.TabIndex = 23;
+            cmdPayload.Text = "Check Payload";
+            cmdPayload.Click += cmdPayload_Click;
+            // 
+            // lblPayloadPosition
+            // 
+            lblPayloadPosition.AutoSize = true;
+            lblPayloadPosition.BackColor = Color.Transparent;
+            lblPayloadPosition.Location = new Point(5, 123);
+            lblPayloadPosition.Margin = new Padding(4, 0, 4, 0);
+            lblPayloadPosition.Name = "lblPayloadPosition";
+            lblPayloadPosition.Size = new Size(50, 15);
+            lblPayloadPosition.TabIndex = 22;
+            lblPayloadPosition.Text = "Position";
+            // 
+            // numPayloadPosition
+            // 
+            numPayloadPosition.Location = new Point(63, 120);
+            numPayloadPosition.Margin = new Padding(4, 3, 4, 3);
+            numPayloadPosition.Maximum = new decimal(new int[] { 65535, 0, 0, 0 });
+            numPayloadPosition.Name = "numPayloadPosition";
+            numPayloadPosition.Size = new Size(79, 23);
+            numPayloadPosition.TabIndex = 21;
+            // 
+            // fraLoadListB
+            // 
+            fraLoadListB.Controls.Add(lblMetavalueLoadB);
+            fraLoadListB.Controls.Add(cmdRemoveRowB);
+            fraLoadListB.Controls.Add(cmdInsertRowB);
+            fraLoadListB.Controls.Add(numMetavalueLoadB);
+            fraLoadListB.Controls.Add(lblLoadListRowIndexB);
+            fraLoadListB.Controls.Add(fraEIDB);
+            fraLoadListB.Controls.Add(cmdPrevRowB);
+            fraLoadListB.Controls.Add(cmdNextRowB);
+            fraLoadListB.Location = new Point(181, 7);
+            fraLoadListB.Margin = new Padding(4, 3, 4, 3);
+            fraLoadListB.Name = "fraLoadListB";
+            fraLoadListB.Padding = new Padding(4, 3, 4, 3);
+            fraLoadListB.Size = new Size(167, 514);
+            fraLoadListB.TabIndex = 21;
+            fraLoadListB.TabStop = false;
+            fraLoadListB.Text = "Load List B";
+            // 
+            // lblMetavalueLoadB
+            // 
+            lblMetavalueLoadB.AutoSize = true;
+            lblMetavalueLoadB.BackColor = Color.Transparent;
+            lblMetavalueLoadB.Location = new Point(7, 87);
+            lblMetavalueLoadB.Margin = new Padding(4, 0, 4, 0);
+            lblMetavalueLoadB.Name = "lblMetavalueLoadB";
+            lblMetavalueLoadB.Size = new Size(50, 15);
+            lblMetavalueLoadB.TabIndex = 20;
+            lblMetavalueLoadB.Text = "Position";
+            // 
+            // cmdRemoveRowB
+            // 
+            cmdRemoveRowB.BorderColour = Color.Empty;
+            cmdRemoveRowB.CustomColour = false;
+            cmdRemoveRowB.FlatBottom = false;
+            cmdRemoveRowB.FlatTop = false;
+            cmdRemoveRowB.Location = new Point(7, 114);
+            cmdRemoveRowB.Margin = new Padding(4, 3, 4, 3);
+            cmdRemoveRowB.Name = "cmdRemoveRowB";
+            cmdRemoveRowB.Padding = new Padding(5);
+            cmdRemoveRowB.Size = new Size(75, 27);
+            cmdRemoveRowB.TabIndex = 16;
+            cmdRemoveRowB.Text = "Remove";
+            cmdRemoveRowB.Click += cmdRemoveRowB_Click;
+            // 
+            // cmdInsertRowB
+            // 
+            cmdInsertRowB.BorderColour = Color.Empty;
+            cmdInsertRowB.CustomColour = false;
+            cmdInsertRowB.FlatBottom = false;
+            cmdInsertRowB.FlatTop = false;
+            cmdInsertRowB.Location = new Point(86, 114);
+            cmdInsertRowB.Margin = new Padding(4, 3, 4, 3);
+            cmdInsertRowB.Name = "cmdInsertRowB";
+            cmdInsertRowB.Padding = new Padding(5);
+            cmdInsertRowB.Size = new Size(74, 27);
+            cmdInsertRowB.TabIndex = 17;
+            cmdInsertRowB.Text = "Insert";
+            cmdInsertRowB.Click += cmdInsertRowB_Click;
+            // 
+            // numMetavalueLoadB
+            // 
+            numMetavalueLoadB.Location = new Point(80, 84);
+            numMetavalueLoadB.Margin = new Padding(4, 3, 4, 3);
+            numMetavalueLoadB.Maximum = new decimal(new int[] { 65535, 0, 0, 0 });
+            numMetavalueLoadB.Name = "numMetavalueLoadB";
+            numMetavalueLoadB.Size = new Size(79, 23);
+            numMetavalueLoadB.TabIndex = 19;
+            numMetavalueLoadB.ValueChanged += numMetavalueLoadB_ValueChanged;
+            // 
+            // lblLoadListRowIndexB
+            // 
+            lblLoadListRowIndexB.BackColor = Color.Transparent;
+            lblLoadListRowIndexB.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblLoadListRowIndexB.Location = new Point(7, 52);
+            lblLoadListRowIndexB.Margin = new Padding(4, 0, 4, 0);
+            lblLoadListRowIndexB.Name = "lblLoadListRowIndexB";
+            lblLoadListRowIndexB.Size = new Size(153, 27);
+            lblLoadListRowIndexB.TabIndex = 17;
+            lblLoadListRowIndexB.Text = "?? / ??";
+            lblLoadListRowIndexB.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // fraEIDB
+            // 
+            fraEIDB.Controls.Add(lbEIDB);
+            fraEIDB.Controls.Add(txtEIDB);
+            fraEIDB.Controls.Add(lblEIDIndexB);
+            fraEIDB.Controls.Add(cmdAppendEIDB);
+            fraEIDB.Controls.Add(cmdRemoveEIDB);
+            fraEIDB.Controls.Add(cmdInsertEIDB);
+            fraEIDB.Location = new Point(7, 152);
+            fraEIDB.Margin = new Padding(4, 3, 4, 3);
+            fraEIDB.Name = "fraEIDB";
+            fraEIDB.Padding = new Padding(4, 3, 4, 3);
+            fraEIDB.Size = new Size(153, 356);
+            fraEIDB.TabIndex = 15;
+            fraEIDB.TabStop = false;
+            fraEIDB.Text = "Entries";
+            // 
+            // lbEIDB
+            // 
+            lbEIDB.BackColor = Color.FromArgb(26, 26, 28);
+            lbEIDB.BorderStyle = BorderStyle.FixedSingle;
+            lbEIDB.ForeColor = Color.FromArgb(213, 213, 213);
+            lbEIDB.FormattingEnabled = true;
+            lbEIDB.Location = new Point(7, 123);
+            lbEIDB.Name = "lbEIDB";
+            lbEIDB.Size = new Size(140, 227);
+            lbEIDB.TabIndex = 25;
+            lbEIDB.SelectedIndexChanged += lbEIDB_SelectedIndexChanged;
+            lbEIDB.DoubleClick += lbEIDB_DoubleClick;
+            lbEIDB.KeyDown += lbEIDB_KeyDown;
+            lbEIDB.KeyPress += lbEIDB_KeyPress;
+            // 
+            // txtEIDB
+            // 
+            txtEIDB.BackColor = Color.FromArgb(26, 26, 28);
+            txtEIDB.BorderStyle = BorderStyle.FixedSingle;
+            txtEIDB.Enabled = false;
+            txtEIDB.ForeColor = Color.FromArgb(213, 213, 213);
+            txtEIDB.Location = new Point(7, 100);
+            txtEIDB.Margin = new Padding(4, 3, 4, 3);
+            txtEIDB.MaxLength = 5;
+            txtEIDB.Name = "txtEIDB";
+            txtEIDB.Size = new Size(140, 23);
+            txtEIDB.TabIndex = 15;
+            txtEIDB.TextChanged += txtEIDB_TextChanged;
+            txtEIDB.LostFocus += txtEIDB_LostFocus;
+            // 
+            // lblEIDIndexB
+            // 
+            lblEIDIndexB.BackColor = Color.Transparent;
+            lblEIDIndexB.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblEIDIndexB.Location = new Point(7, 9);
+            lblEIDIndexB.Margin = new Padding(4, 0, 4, 0);
+            lblEIDIndexB.Name = "lblEIDIndexB";
+            lblEIDIndexB.Size = new Size(135, 27);
+            lblEIDIndexB.TabIndex = 14;
+            lblEIDIndexB.Text = "?? / ??";
+            lblEIDIndexB.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // cmdAppendEIDB
+            // 
+            cmdAppendEIDB.BorderColour = Color.Empty;
+            cmdAppendEIDB.CustomColour = false;
+            cmdAppendEIDB.FlatBottom = false;
+            cmdAppendEIDB.FlatTop = false;
+            cmdAppendEIDB.Location = new Point(7, 68);
+            cmdAppendEIDB.Margin = new Padding(4, 3, 4, 3);
+            cmdAppendEIDB.Name = "cmdAppendEIDB";
+            cmdAppendEIDB.Padding = new Padding(5);
+            cmdAppendEIDB.Size = new Size(140, 27);
+            cmdAppendEIDB.TabIndex = 12;
+            cmdAppendEIDB.Text = "Append";
+            cmdAppendEIDB.Click += cmdAppendEIDB_Click;
+            // 
+            // cmdRemoveEIDB
+            // 
+            cmdRemoveEIDB.BorderColour = Color.Empty;
+            cmdRemoveEIDB.CustomColour = false;
+            cmdRemoveEIDB.FlatBottom = false;
+            cmdRemoveEIDB.FlatTop = false;
+            cmdRemoveEIDB.Location = new Point(7, 35);
+            cmdRemoveEIDB.Margin = new Padding(4, 3, 4, 3);
+            cmdRemoveEIDB.Name = "cmdRemoveEIDB";
+            cmdRemoveEIDB.Padding = new Padding(5);
+            cmdRemoveEIDB.Size = new Size(68, 27);
+            cmdRemoveEIDB.TabIndex = 11;
+            cmdRemoveEIDB.Text = "Remove";
+            cmdRemoveEIDB.Click += cmdRemoveEIDB_Click;
+            // 
+            // cmdInsertEIDB
+            // 
+            cmdInsertEIDB.BorderColour = Color.Empty;
+            cmdInsertEIDB.CustomColour = false;
+            cmdInsertEIDB.FlatBottom = false;
+            cmdInsertEIDB.FlatTop = false;
+            cmdInsertEIDB.Location = new Point(79, 35);
+            cmdInsertEIDB.Margin = new Padding(4, 3, 4, 3);
+            cmdInsertEIDB.Name = "cmdInsertEIDB";
+            cmdInsertEIDB.Padding = new Padding(5);
+            cmdInsertEIDB.Size = new Size(68, 27);
+            cmdInsertEIDB.TabIndex = 13;
+            cmdInsertEIDB.Text = "Insert";
+            cmdInsertEIDB.Click += cmdInsertEIDB_Click;
+            // 
+            // cmdPrevRowB
+            // 
+            cmdPrevRowB.BorderColour = Color.Empty;
+            cmdPrevRowB.CustomColour = false;
+            cmdPrevRowB.FlatBottom = false;
+            cmdPrevRowB.FlatTop = false;
+            cmdPrevRowB.Location = new Point(7, 22);
+            cmdPrevRowB.Margin = new Padding(4, 3, 4, 3);
+            cmdPrevRowB.Name = "cmdPrevRowB";
+            cmdPrevRowB.Padding = new Padding(5);
+            cmdPrevRowB.Size = new Size(75, 27);
+            cmdPrevRowB.TabIndex = 15;
+            cmdPrevRowB.Text = "Previous";
+            cmdPrevRowB.Click += cmdPrevRowB_Click;
+            // 
+            // cmdNextRowB
+            // 
+            cmdNextRowB.BorderColour = Color.Empty;
+            cmdNextRowB.CustomColour = false;
+            cmdNextRowB.FlatBottom = false;
+            cmdNextRowB.FlatTop = false;
+            cmdNextRowB.Location = new Point(86, 22);
+            cmdNextRowB.Margin = new Padding(4, 3, 4, 3);
+            cmdNextRowB.Name = "cmdNextRowB";
+            cmdNextRowB.Padding = new Padding(5);
+            cmdNextRowB.Size = new Size(74, 27);
+            cmdNextRowB.TabIndex = 16;
+            cmdNextRowB.Text = "Next";
+            cmdNextRowB.Click += cmdNextRowB_Click;
+            // 
+            // lblEIDErrA
+            // 
+            lblEIDErrA.AutoSize = true;
+            lblEIDErrA.BackColor = Color.Transparent;
+            lblEIDErrA.ForeColor = Color.Red;
+            lblEIDErrA.Location = new Point(10, 524);
+            lblEIDErrA.Margin = new Padding(4, 0, 4, 0);
+            lblEIDErrA.Name = "lblEIDErrA";
+            lblEIDErrA.Size = new Size(124, 15);
+            lblEIDErrA.TabIndex = 4;
+            lblEIDErrA.Text = "EID ERROR WARNING!";
+            // 
+            // fraLoadListA
+            // 
+            fraLoadListA.Controls.Add(lblMetavalueLoadA);
+            fraLoadListA.Controls.Add(cmdRemoveRowA);
+            fraLoadListA.Controls.Add(cmdInsertRowA);
+            fraLoadListA.Controls.Add(numMetavalueLoadA);
+            fraLoadListA.Controls.Add(lblLoadListRowIndexA);
+            fraLoadListA.Controls.Add(fraEIDA);
+            fraLoadListA.Controls.Add(cmdPrevRowA);
+            fraLoadListA.Controls.Add(cmdNextRowA);
+            fraLoadListA.Location = new Point(7, 7);
+            fraLoadListA.Margin = new Padding(4, 3, 4, 3);
+            fraLoadListA.Name = "fraLoadListA";
+            fraLoadListA.Padding = new Padding(4, 3, 4, 3);
+            fraLoadListA.Size = new Size(167, 514);
+            fraLoadListA.TabIndex = 0;
+            fraLoadListA.TabStop = false;
+            fraLoadListA.Text = "Load List A";
+            // 
+            // lblMetavalueLoadA
+            // 
+            lblMetavalueLoadA.AutoSize = true;
+            lblMetavalueLoadA.BackColor = Color.Transparent;
+            lblMetavalueLoadA.Location = new Point(7, 87);
+            lblMetavalueLoadA.Margin = new Padding(4, 0, 4, 0);
+            lblMetavalueLoadA.Name = "lblMetavalueLoadA";
+            lblMetavalueLoadA.Size = new Size(50, 15);
+            lblMetavalueLoadA.TabIndex = 20;
+            lblMetavalueLoadA.Text = "Position";
+            // 
+            // cmdRemoveRowA
+            // 
+            cmdRemoveRowA.BorderColour = Color.Empty;
+            cmdRemoveRowA.CustomColour = false;
+            cmdRemoveRowA.FlatBottom = false;
+            cmdRemoveRowA.FlatTop = false;
+            cmdRemoveRowA.Location = new Point(7, 114);
+            cmdRemoveRowA.Margin = new Padding(4, 3, 4, 3);
+            cmdRemoveRowA.Name = "cmdRemoveRowA";
+            cmdRemoveRowA.Padding = new Padding(5);
+            cmdRemoveRowA.Size = new Size(75, 27);
+            cmdRemoveRowA.TabIndex = 16;
+            cmdRemoveRowA.Text = "Remove";
+            cmdRemoveRowA.Click += cmdRemoveRowA_Click;
+            // 
+            // cmdInsertRowA
+            // 
+            cmdInsertRowA.BorderColour = Color.Empty;
+            cmdInsertRowA.CustomColour = false;
+            cmdInsertRowA.FlatBottom = false;
+            cmdInsertRowA.FlatTop = false;
+            cmdInsertRowA.Location = new Point(86, 114);
+            cmdInsertRowA.Margin = new Padding(4, 3, 4, 3);
+            cmdInsertRowA.Name = "cmdInsertRowA";
+            cmdInsertRowA.Padding = new Padding(5);
+            cmdInsertRowA.Size = new Size(74, 27);
+            cmdInsertRowA.TabIndex = 17;
+            cmdInsertRowA.Text = "Insert";
+            cmdInsertRowA.Click += cmdInsertRowA_Click;
+            // 
+            // numMetavalueLoadA
+            // 
+            numMetavalueLoadA.Location = new Point(80, 84);
+            numMetavalueLoadA.Margin = new Padding(4, 3, 4, 3);
+            numMetavalueLoadA.Maximum = new decimal(new int[] { 65535, 0, 0, 0 });
+            numMetavalueLoadA.Name = "numMetavalueLoadA";
+            numMetavalueLoadA.Size = new Size(79, 23);
+            numMetavalueLoadA.TabIndex = 19;
+            numMetavalueLoadA.ValueChanged += numMetavalueLoadA_ValueChanged;
+            // 
+            // lblLoadListRowIndexA
+            // 
+            lblLoadListRowIndexA.BackColor = Color.Transparent;
+            lblLoadListRowIndexA.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblLoadListRowIndexA.Location = new Point(7, 52);
+            lblLoadListRowIndexA.Margin = new Padding(4, 0, 4, 0);
+            lblLoadListRowIndexA.Name = "lblLoadListRowIndexA";
+            lblLoadListRowIndexA.Size = new Size(153, 27);
+            lblLoadListRowIndexA.TabIndex = 17;
+            lblLoadListRowIndexA.Text = "?? / ??";
+            lblLoadListRowIndexA.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // fraEIDA
+            // 
+            fraEIDA.Controls.Add(lbEIDA);
+            fraEIDA.Controls.Add(txtEIDA);
+            fraEIDA.Controls.Add(lblEIDIndexA);
+            fraEIDA.Controls.Add(cmdAppendEIDA);
+            fraEIDA.Controls.Add(cmdRemoveEIDA);
+            fraEIDA.Controls.Add(cmdInsertEIDA);
+            fraEIDA.Location = new Point(7, 152);
+            fraEIDA.Margin = new Padding(4, 3, 4, 3);
+            fraEIDA.Name = "fraEIDA";
+            fraEIDA.Padding = new Padding(4, 3, 4, 3);
+            fraEIDA.Size = new Size(153, 356);
+            fraEIDA.TabIndex = 15;
+            fraEIDA.TabStop = false;
+            fraEIDA.Text = "Entries";
+            // 
+            // lbEIDA
+            // 
+            lbEIDA.BackColor = Color.FromArgb(26, 26, 28);
+            lbEIDA.BorderStyle = BorderStyle.FixedSingle;
+            lbEIDA.ForeColor = Color.FromArgb(213, 213, 213);
+            lbEIDA.FormattingEnabled = true;
+            lbEIDA.Location = new Point(7, 123);
+            lbEIDA.Name = "lbEIDA";
+            lbEIDA.Size = new Size(140, 227);
+            lbEIDA.TabIndex = 24;
+            lbEIDA.SelectedIndexChanged += lbEIDA_SelectedIndexChanged;
+            lbEIDA.DoubleClick += lbEIDA_DoubleClick;
+            lbEIDA.KeyDown += lbEIDA_KeyDown;
+            lbEIDA.KeyPress += lbEIDA_KeyPress;
+            // 
+            // txtEIDA
+            // 
+            txtEIDA.BackColor = Color.FromArgb(26, 26, 28);
+            txtEIDA.BorderStyle = BorderStyle.FixedSingle;
+            txtEIDA.Enabled = false;
+            txtEIDA.ForeColor = Color.FromArgb(213, 213, 213);
+            txtEIDA.Location = new Point(7, 100);
+            txtEIDA.Margin = new Padding(4, 3, 4, 3);
+            txtEIDA.MaxLength = 5;
+            txtEIDA.Name = "txtEIDA";
+            txtEIDA.Size = new Size(140, 23);
+            txtEIDA.TabIndex = 15;
+            txtEIDA.TextChanged += txtEIDA_TextChanged;
+            txtEIDA.LostFocus += txtEIDA_LostFocus;
+            // 
+            // lblEIDIndexA
+            // 
+            lblEIDIndexA.BackColor = Color.Transparent;
+            lblEIDIndexA.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblEIDIndexA.Location = new Point(7, 9);
+            lblEIDIndexA.Margin = new Padding(4, 0, 4, 0);
+            lblEIDIndexA.Name = "lblEIDIndexA";
+            lblEIDIndexA.Size = new Size(140, 27);
+            lblEIDIndexA.TabIndex = 14;
+            lblEIDIndexA.Text = "?? / ??";
+            lblEIDIndexA.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // cmdAppendEIDA
+            // 
+            cmdAppendEIDA.BorderColour = Color.Empty;
+            cmdAppendEIDA.CustomColour = false;
+            cmdAppendEIDA.FlatBottom = false;
+            cmdAppendEIDA.FlatTop = false;
+            cmdAppendEIDA.Location = new Point(7, 68);
+            cmdAppendEIDA.Margin = new Padding(4, 3, 4, 3);
+            cmdAppendEIDA.Name = "cmdAppendEIDA";
+            cmdAppendEIDA.Padding = new Padding(5);
+            cmdAppendEIDA.Size = new Size(140, 27);
+            cmdAppendEIDA.TabIndex = 12;
+            cmdAppendEIDA.Text = "Append";
+            cmdAppendEIDA.Click += cmdAppendEIDA_Click;
+            // 
+            // cmdRemoveEIDA
+            // 
+            cmdRemoveEIDA.BorderColour = Color.Empty;
+            cmdRemoveEIDA.CustomColour = false;
+            cmdRemoveEIDA.FlatBottom = false;
+            cmdRemoveEIDA.FlatTop = false;
+            cmdRemoveEIDA.Location = new Point(7, 35);
+            cmdRemoveEIDA.Margin = new Padding(4, 3, 4, 3);
+            cmdRemoveEIDA.Name = "cmdRemoveEIDA";
+            cmdRemoveEIDA.Padding = new Padding(5);
+            cmdRemoveEIDA.Size = new Size(68, 27);
+            cmdRemoveEIDA.TabIndex = 11;
+            cmdRemoveEIDA.Text = "Remove";
+            cmdRemoveEIDA.Click += cmdRemoveEIDA_Click;
+            // 
+            // cmdInsertEIDA
+            // 
+            cmdInsertEIDA.BorderColour = Color.Empty;
+            cmdInsertEIDA.CustomColour = false;
+            cmdInsertEIDA.FlatBottom = false;
+            cmdInsertEIDA.FlatTop = false;
+            cmdInsertEIDA.Location = new Point(79, 35);
+            cmdInsertEIDA.Margin = new Padding(4, 3, 4, 3);
+            cmdInsertEIDA.Name = "cmdInsertEIDA";
+            cmdInsertEIDA.Padding = new Padding(5);
+            cmdInsertEIDA.Size = new Size(68, 27);
+            cmdInsertEIDA.TabIndex = 13;
+            cmdInsertEIDA.Text = "Insert";
+            cmdInsertEIDA.Click += cmdInsertEIDA_Click;
+            // 
+            // cmdPrevRowA
+            // 
+            cmdPrevRowA.BorderColour = Color.Empty;
+            cmdPrevRowA.CustomColour = false;
+            cmdPrevRowA.FlatBottom = false;
+            cmdPrevRowA.FlatTop = false;
+            cmdPrevRowA.Location = new Point(7, 22);
+            cmdPrevRowA.Margin = new Padding(4, 3, 4, 3);
+            cmdPrevRowA.Name = "cmdPrevRowA";
+            cmdPrevRowA.Padding = new Padding(5);
+            cmdPrevRowA.Size = new Size(75, 27);
+            cmdPrevRowA.TabIndex = 15;
+            cmdPrevRowA.Text = "Previous";
+            cmdPrevRowA.Click += cmdPrevRowA_Click;
+            // 
+            // cmdNextRowA
+            // 
+            cmdNextRowA.BorderColour = Color.Empty;
+            cmdNextRowA.CustomColour = false;
+            cmdNextRowA.FlatBottom = false;
+            cmdNextRowA.FlatTop = false;
+            cmdNextRowA.Location = new Point(86, 22);
+            cmdNextRowA.Margin = new Padding(4, 3, 4, 3);
+            cmdNextRowA.Name = "cmdNextRowA";
+            cmdNextRowA.Padding = new Padding(5);
+            cmdNextRowA.Size = new Size(74, 27);
+            cmdNextRowA.TabIndex = 16;
+            cmdNextRowA.Text = "Next";
+            cmdNextRowA.Click += cmdNextRowA_Click;
+            // 
+            // tabDrawLists
+            // 
+            tabDrawLists.AutoScroll = true;
+            tabDrawLists.BackColor = Color.FromArgb(31, 31, 32);
+            tabDrawLists.Controls.Add(fraVerifyDrawList);
+            tabDrawLists.Controls.Add(fraDrawListB);
+            tabDrawLists.Controls.Add(fraDrawListA);
+            tabDrawLists.Location = new Point(4, 32);
+            tabDrawLists.Margin = new Padding(4, 3, 4, 3);
+            tabDrawLists.Name = "tabDrawLists";
+            tabDrawLists.Padding = new Padding(4, 3, 4, 3);
+            tabDrawLists.Size = new Size(592, 564);
+            tabDrawLists.TabIndex = 3;
+            tabDrawLists.Text = "Draw Lists";
+            tabDrawLists.Enter += tabDrawLists_Enter;
+            // 
+            // fraVerifyDrawList
+            // 
+            fraVerifyDrawList.Controls.Add(lblVerifyDrawLists);
+            fraVerifyDrawList.Controls.Add(cmdVerifyDrawList);
+            fraVerifyDrawList.Location = new Point(356, 7);
+            fraVerifyDrawList.Name = "fraVerifyDrawList";
+            fraVerifyDrawList.Size = new Size(136, 79);
+            fraVerifyDrawList.TabIndex = 22;
+            fraVerifyDrawList.TabStop = false;
+            fraVerifyDrawList.Text = "Verify Draw Lists";
+            // 
+            // lblVerifyDrawLists
+            // 
+            lblVerifyDrawLists.AutoSize = true;
+            lblVerifyDrawLists.BackColor = Color.Transparent;
+            lblVerifyDrawLists.ForeColor = Color.Turquoise;
+            lblVerifyDrawLists.Location = new Point(7, 52);
+            lblVerifyDrawLists.Margin = new Padding(4, 0, 4, 0);
+            lblVerifyDrawLists.Name = "lblVerifyDrawLists";
+            lblVerifyDrawLists.Size = new Size(119, 15);
+            lblVerifyDrawLists.TabIndex = 21;
+            lblVerifyDrawLists.Text = "Draw lists are correct.";
+            lblVerifyDrawLists.Visible = false;
+            // 
+            // cmdVerifyDrawList
+            // 
+            cmdVerifyDrawList.BorderColour = Color.Empty;
+            cmdVerifyDrawList.CustomColour = false;
+            cmdVerifyDrawList.FlatBottom = false;
+            cmdVerifyDrawList.FlatTop = false;
+            cmdVerifyDrawList.Location = new Point(6, 22);
+            cmdVerifyDrawList.Name = "cmdVerifyDrawList";
+            cmdVerifyDrawList.Padding = new Padding(5);
+            cmdVerifyDrawList.Size = new Size(122, 27);
+            cmdVerifyDrawList.TabIndex = 0;
+            cmdVerifyDrawList.Text = "Verify List Integrity";
+            cmdVerifyDrawList.Click += cmdVerifyDrawList_Click;
+            // 
+            // fraDrawListB
+            // 
+            fraDrawListB.Controls.Add(lblMetavalueDrawB);
+            fraDrawListB.Controls.Add(cmdRemoveRowDrawB);
+            fraDrawListB.Controls.Add(cmdInsertRowDrawB);
+            fraDrawListB.Controls.Add(numMetavalueDrawB);
+            fraDrawListB.Controls.Add(lblDrawListRowIndexB);
+            fraDrawListB.Controls.Add(fraEntityB);
+            fraDrawListB.Controls.Add(cmdPrevRowDrawB);
+            fraDrawListB.Controls.Add(cmdNextRowDrawB);
+            fraDrawListB.Location = new Point(181, 7);
+            fraDrawListB.Margin = new Padding(4, 3, 4, 3);
+            fraDrawListB.Name = "fraDrawListB";
+            fraDrawListB.Padding = new Padding(4, 3, 4, 3);
+            fraDrawListB.Size = new Size(167, 514);
+            fraDrawListB.TabIndex = 21;
+            fraDrawListB.TabStop = false;
+            fraDrawListB.Text = "Draw List B";
+            // 
+            // lblMetavalueDrawB
+            // 
+            lblMetavalueDrawB.AutoSize = true;
+            lblMetavalueDrawB.BackColor = Color.Transparent;
+            lblMetavalueDrawB.Location = new Point(7, 87);
+            lblMetavalueDrawB.Margin = new Padding(4, 0, 4, 0);
+            lblMetavalueDrawB.Name = "lblMetavalueDrawB";
+            lblMetavalueDrawB.Size = new Size(50, 15);
+            lblMetavalueDrawB.TabIndex = 20;
+            lblMetavalueDrawB.Text = "Position";
+            // 
+            // cmdRemoveRowDrawB
+            // 
+            cmdRemoveRowDrawB.BorderColour = Color.Empty;
+            cmdRemoveRowDrawB.CustomColour = false;
+            cmdRemoveRowDrawB.FlatBottom = false;
+            cmdRemoveRowDrawB.FlatTop = false;
+            cmdRemoveRowDrawB.Location = new Point(7, 114);
+            cmdRemoveRowDrawB.Margin = new Padding(4, 3, 4, 3);
+            cmdRemoveRowDrawB.Name = "cmdRemoveRowDrawB";
+            cmdRemoveRowDrawB.Padding = new Padding(5);
+            cmdRemoveRowDrawB.Size = new Size(75, 27);
+            cmdRemoveRowDrawB.TabIndex = 16;
+            cmdRemoveRowDrawB.Text = "Remove";
+            cmdRemoveRowDrawB.Click += cmdRemoveRowDrawB_Click;
+            // 
+            // cmdInsertRowDrawB
+            // 
+            cmdInsertRowDrawB.BorderColour = Color.Empty;
+            cmdInsertRowDrawB.CustomColour = false;
+            cmdInsertRowDrawB.FlatBottom = false;
+            cmdInsertRowDrawB.FlatTop = false;
+            cmdInsertRowDrawB.Location = new Point(86, 114);
+            cmdInsertRowDrawB.Margin = new Padding(4, 3, 4, 3);
+            cmdInsertRowDrawB.Name = "cmdInsertRowDrawB";
+            cmdInsertRowDrawB.Padding = new Padding(5);
+            cmdInsertRowDrawB.Size = new Size(74, 27);
+            cmdInsertRowDrawB.TabIndex = 17;
+            cmdInsertRowDrawB.Text = "Insert";
+            cmdInsertRowDrawB.Click += cmdInsertRowDrawB_Click;
+            // 
+            // numMetavalueDrawB
+            // 
+            numMetavalueDrawB.Location = new Point(80, 84);
+            numMetavalueDrawB.Margin = new Padding(4, 3, 4, 3);
+            numMetavalueDrawB.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numMetavalueDrawB.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numMetavalueDrawB.Name = "numMetavalueDrawB";
+            numMetavalueDrawB.Size = new Size(79, 23);
+            numMetavalueDrawB.TabIndex = 19;
+            numMetavalueDrawB.ValueChanged += numMetavalueDrawB_ValueChanged;
+            // 
+            // lblDrawListRowIndexB
+            // 
+            lblDrawListRowIndexB.BackColor = Color.Transparent;
+            lblDrawListRowIndexB.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblDrawListRowIndexB.Location = new Point(7, 52);
+            lblDrawListRowIndexB.Margin = new Padding(4, 0, 4, 0);
+            lblDrawListRowIndexB.Name = "lblDrawListRowIndexB";
+            lblDrawListRowIndexB.Size = new Size(153, 27);
+            lblDrawListRowIndexB.TabIndex = 17;
+            lblDrawListRowIndexB.Text = "?? / ??";
+            lblDrawListRowIndexB.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // fraEntityB
+            // 
+            fraEntityB.Controls.Add(lbEntityB);
+            fraEntityB.Controls.Add(numEntityB);
+            fraEntityB.Controls.Add(lblEntityIndexB);
+            fraEntityB.Controls.Add(cmdAppendEntityB);
+            fraEntityB.Controls.Add(cmdRemoveEntityB);
+            fraEntityB.Controls.Add(cmdInsertEntityB);
+            fraEntityB.Location = new Point(7, 152);
+            fraEntityB.Margin = new Padding(4, 3, 4, 3);
+            fraEntityB.Name = "fraEntityB";
+            fraEntityB.Padding = new Padding(4, 3, 4, 3);
+            fraEntityB.Size = new Size(153, 356);
+            fraEntityB.TabIndex = 15;
+            fraEntityB.TabStop = false;
+            fraEntityB.Text = "Entities";
+            // 
+            // lbEntityB
+            // 
+            lbEntityB.BackColor = Color.FromArgb(26, 26, 28);
+            lbEntityB.BorderStyle = BorderStyle.FixedSingle;
+            lbEntityB.ForeColor = Color.FromArgb(213, 213, 213);
+            lbEntityB.FormattingEnabled = true;
+            lbEntityB.Location = new Point(7, 123);
+            lbEntityB.Name = "lbEntityB";
+            lbEntityB.Size = new Size(139, 227);
+            lbEntityB.TabIndex = 22;
+            lbEntityB.SelectedIndexChanged += lbEntityB_SelectedIndexChanged;
+            lbEntityB.DoubleClick += lbEntityB_DoubleClick;
+            lbEntityB.KeyDown += lbEntityB_KeyDown;
+            lbEntityB.KeyPress += lbEntityB_KeyPress;
+            // 
+            // numEntityB
+            // 
+            numEntityB.Enabled = false;
+            numEntityB.Location = new Point(7, 100);
+            numEntityB.Margin = new Padding(4, 3, 4, 3);
+            numEntityB.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numEntityB.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numEntityB.Name = "numEntityB";
+            numEntityB.Size = new Size(140, 23);
+            numEntityB.TabIndex = 21;
+            numEntityB.ValueChanged += numEntityB_ValueChanged;
+            // 
+            // lblEntityIndexB
+            // 
+            lblEntityIndexB.BackColor = Color.Transparent;
+            lblEntityIndexB.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblEntityIndexB.Location = new Point(7, 9);
+            lblEntityIndexB.Margin = new Padding(4, 0, 4, 0);
+            lblEntityIndexB.Name = "lblEntityIndexB";
+            lblEntityIndexB.Size = new Size(140, 27);
+            lblEntityIndexB.TabIndex = 14;
+            lblEntityIndexB.Text = "?? / ??";
+            lblEntityIndexB.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // cmdAppendEntityB
+            // 
+            cmdAppendEntityB.BorderColour = Color.Empty;
+            cmdAppendEntityB.CustomColour = false;
+            cmdAppendEntityB.FlatBottom = false;
+            cmdAppendEntityB.FlatTop = false;
+            cmdAppendEntityB.Location = new Point(7, 68);
+            cmdAppendEntityB.Margin = new Padding(4, 3, 4, 3);
+            cmdAppendEntityB.Name = "cmdAppendEntityB";
+            cmdAppendEntityB.Padding = new Padding(5);
+            cmdAppendEntityB.Size = new Size(140, 27);
+            cmdAppendEntityB.TabIndex = 12;
+            cmdAppendEntityB.Text = "Append";
+            cmdAppendEntityB.Click += cmdAppendEntityB_Click;
+            // 
+            // cmdRemoveEntityB
+            // 
+            cmdRemoveEntityB.BorderColour = Color.Empty;
+            cmdRemoveEntityB.CustomColour = false;
+            cmdRemoveEntityB.FlatBottom = false;
+            cmdRemoveEntityB.FlatTop = false;
+            cmdRemoveEntityB.Location = new Point(7, 35);
+            cmdRemoveEntityB.Margin = new Padding(4, 3, 4, 3);
+            cmdRemoveEntityB.Name = "cmdRemoveEntityB";
+            cmdRemoveEntityB.Padding = new Padding(5);
+            cmdRemoveEntityB.Size = new Size(68, 27);
+            cmdRemoveEntityB.TabIndex = 11;
+            cmdRemoveEntityB.Text = "Remove";
+            cmdRemoveEntityB.Click += cmdRemoveEntityB_Click;
+            // 
+            // cmdInsertEntityB
+            // 
+            cmdInsertEntityB.BorderColour = Color.Empty;
+            cmdInsertEntityB.CustomColour = false;
+            cmdInsertEntityB.FlatBottom = false;
+            cmdInsertEntityB.FlatTop = false;
+            cmdInsertEntityB.Location = new Point(79, 35);
+            cmdInsertEntityB.Margin = new Padding(4, 3, 4, 3);
+            cmdInsertEntityB.Name = "cmdInsertEntityB";
+            cmdInsertEntityB.Padding = new Padding(5);
+            cmdInsertEntityB.Size = new Size(68, 27);
+            cmdInsertEntityB.TabIndex = 13;
+            cmdInsertEntityB.Text = "Insert";
+            cmdInsertEntityB.Click += cmdInsertEntityB_Click;
+            // 
+            // cmdPrevRowDrawB
+            // 
+            cmdPrevRowDrawB.BorderColour = Color.Empty;
+            cmdPrevRowDrawB.CustomColour = false;
+            cmdPrevRowDrawB.FlatBottom = false;
+            cmdPrevRowDrawB.FlatTop = false;
+            cmdPrevRowDrawB.Location = new Point(7, 22);
+            cmdPrevRowDrawB.Margin = new Padding(4, 3, 4, 3);
+            cmdPrevRowDrawB.Name = "cmdPrevRowDrawB";
+            cmdPrevRowDrawB.Padding = new Padding(5);
+            cmdPrevRowDrawB.Size = new Size(75, 27);
+            cmdPrevRowDrawB.TabIndex = 15;
+            cmdPrevRowDrawB.Text = "Previous";
+            cmdPrevRowDrawB.Click += cmdPrevRowDrawB_Click;
+            // 
+            // cmdNextRowDrawB
+            // 
+            cmdNextRowDrawB.BorderColour = Color.Empty;
+            cmdNextRowDrawB.CustomColour = false;
+            cmdNextRowDrawB.FlatBottom = false;
+            cmdNextRowDrawB.FlatTop = false;
+            cmdNextRowDrawB.Location = new Point(86, 22);
+            cmdNextRowDrawB.Margin = new Padding(4, 3, 4, 3);
+            cmdNextRowDrawB.Name = "cmdNextRowDrawB";
+            cmdNextRowDrawB.Padding = new Padding(5);
+            cmdNextRowDrawB.Size = new Size(74, 27);
+            cmdNextRowDrawB.TabIndex = 16;
+            cmdNextRowDrawB.Text = "Next";
+            cmdNextRowDrawB.Click += cmdNextRowDrawB_Click;
+            // 
+            // fraDrawListA
+            // 
+            fraDrawListA.Controls.Add(lblMetavalueDrawA);
+            fraDrawListA.Controls.Add(cmdRemoveRowDrawA);
+            fraDrawListA.Controls.Add(cmdInsertRowDrawA);
+            fraDrawListA.Controls.Add(numMetavalueDrawA);
+            fraDrawListA.Controls.Add(lblDrawListRowIndexA);
+            fraDrawListA.Controls.Add(fraEntityA);
+            fraDrawListA.Controls.Add(cmdPrevRowDrawA);
+            fraDrawListA.Controls.Add(cmdNextRowDrawA);
+            fraDrawListA.Location = new Point(7, 7);
+            fraDrawListA.Margin = new Padding(4, 3, 4, 3);
+            fraDrawListA.Name = "fraDrawListA";
+            fraDrawListA.Padding = new Padding(4, 3, 4, 3);
+            fraDrawListA.Size = new Size(167, 514);
+            fraDrawListA.TabIndex = 1;
+            fraDrawListA.TabStop = false;
+            fraDrawListA.Text = "Draw List A";
+            // 
+            // lblMetavalueDrawA
+            // 
+            lblMetavalueDrawA.AutoSize = true;
+            lblMetavalueDrawA.BackColor = Color.Transparent;
+            lblMetavalueDrawA.Location = new Point(7, 87);
+            lblMetavalueDrawA.Margin = new Padding(4, 0, 4, 0);
+            lblMetavalueDrawA.Name = "lblMetavalueDrawA";
+            lblMetavalueDrawA.Size = new Size(50, 15);
+            lblMetavalueDrawA.TabIndex = 20;
+            lblMetavalueDrawA.Text = "Position";
+            // 
+            // cmdRemoveRowDrawA
+            // 
+            cmdRemoveRowDrawA.BorderColour = Color.Empty;
+            cmdRemoveRowDrawA.CustomColour = false;
+            cmdRemoveRowDrawA.FlatBottom = false;
+            cmdRemoveRowDrawA.FlatTop = false;
+            cmdRemoveRowDrawA.Location = new Point(7, 114);
+            cmdRemoveRowDrawA.Margin = new Padding(4, 3, 4, 3);
+            cmdRemoveRowDrawA.Name = "cmdRemoveRowDrawA";
+            cmdRemoveRowDrawA.Padding = new Padding(5);
+            cmdRemoveRowDrawA.Size = new Size(75, 27);
+            cmdRemoveRowDrawA.TabIndex = 16;
+            cmdRemoveRowDrawA.Text = "Remove";
+            cmdRemoveRowDrawA.Click += cmdRemoveRowDrawA_Click;
+            // 
+            // cmdInsertRowDrawA
+            // 
+            cmdInsertRowDrawA.BorderColour = Color.Empty;
+            cmdInsertRowDrawA.CustomColour = false;
+            cmdInsertRowDrawA.FlatBottom = false;
+            cmdInsertRowDrawA.FlatTop = false;
+            cmdInsertRowDrawA.Location = new Point(86, 114);
+            cmdInsertRowDrawA.Margin = new Padding(4, 3, 4, 3);
+            cmdInsertRowDrawA.Name = "cmdInsertRowDrawA";
+            cmdInsertRowDrawA.Padding = new Padding(5);
+            cmdInsertRowDrawA.Size = new Size(74, 27);
+            cmdInsertRowDrawA.TabIndex = 17;
+            cmdInsertRowDrawA.Text = "Insert";
+            cmdInsertRowDrawA.Click += cmdInsertRowDrawA_Click;
+            // 
+            // numMetavalueDrawA
+            // 
+            numMetavalueDrawA.Location = new Point(80, 84);
+            numMetavalueDrawA.Margin = new Padding(4, 3, 4, 3);
+            numMetavalueDrawA.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numMetavalueDrawA.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numMetavalueDrawA.Name = "numMetavalueDrawA";
+            numMetavalueDrawA.Size = new Size(79, 23);
+            numMetavalueDrawA.TabIndex = 19;
+            numMetavalueDrawA.ValueChanged += numMetavalueDrawA_ValueChanged;
+            // 
+            // lblDrawListRowIndexA
+            // 
+            lblDrawListRowIndexA.BackColor = Color.Transparent;
+            lblDrawListRowIndexA.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblDrawListRowIndexA.Location = new Point(7, 52);
+            lblDrawListRowIndexA.Margin = new Padding(4, 0, 4, 0);
+            lblDrawListRowIndexA.Name = "lblDrawListRowIndexA";
+            lblDrawListRowIndexA.Size = new Size(153, 27);
+            lblDrawListRowIndexA.TabIndex = 17;
+            lblDrawListRowIndexA.Text = "?? / ??";
+            lblDrawListRowIndexA.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // fraEntityA
+            // 
+            fraEntityA.Controls.Add(lbEntityA);
+            fraEntityA.Controls.Add(numEntityA);
+            fraEntityA.Controls.Add(lblEntityIndexA);
+            fraEntityA.Controls.Add(cmdAppendEntityA);
+            fraEntityA.Controls.Add(cmdRemoveEntityA);
+            fraEntityA.Controls.Add(cmdInsertEntityA);
+            fraEntityA.Location = new Point(7, 152);
+            fraEntityA.Margin = new Padding(4, 3, 4, 3);
+            fraEntityA.Name = "fraEntityA";
+            fraEntityA.Padding = new Padding(4, 3, 4, 3);
+            fraEntityA.Size = new Size(153, 356);
+            fraEntityA.TabIndex = 15;
+            fraEntityA.TabStop = false;
+            fraEntityA.Text = "Entities";
+            // 
+            // lbEntityA
+            // 
+            lbEntityA.BackColor = Color.FromArgb(26, 26, 28);
+            lbEntityA.BorderStyle = BorderStyle.FixedSingle;
+            lbEntityA.ForeColor = Color.FromArgb(213, 213, 213);
+            lbEntityA.FormattingEnabled = true;
+            lbEntityA.Location = new Point(7, 123);
+            lbEntityA.Name = "lbEntityA";
+            lbEntityA.Size = new Size(139, 227);
+            lbEntityA.TabIndex = 22;
+            lbEntityA.SelectedIndexChanged += lbEntityA_SelectedIndexChanged;
+            lbEntityA.DoubleClick += lbEntityA_DoubleClick;
+            lbEntityA.KeyDown += lbEntityA_KeyDown;
+            lbEntityA.KeyPress += lbEntityA_KeyPress;
+            // 
+            // numEntityA
+            // 
+            numEntityA.Enabled = false;
+            numEntityA.Location = new Point(7, 100);
+            numEntityA.Margin = new Padding(4, 3, 4, 3);
+            numEntityA.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
+            numEntityA.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
+            numEntityA.Name = "numEntityA";
+            numEntityA.Size = new Size(140, 23);
+            numEntityA.TabIndex = 21;
+            numEntityA.ValueChanged += numEntityA_ValueChanged;
+            // 
+            // lblEntityIndexA
+            // 
+            lblEntityIndexA.BackColor = Color.Transparent;
+            lblEntityIndexA.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblEntityIndexA.Location = new Point(7, 9);
+            lblEntityIndexA.Margin = new Padding(4, 0, 4, 0);
+            lblEntityIndexA.Name = "lblEntityIndexA";
+            lblEntityIndexA.Size = new Size(140, 27);
+            lblEntityIndexA.TabIndex = 14;
+            lblEntityIndexA.Text = "?? / ??";
+            lblEntityIndexA.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // cmdAppendEntityA
+            // 
+            cmdAppendEntityA.BorderColour = Color.Empty;
+            cmdAppendEntityA.CustomColour = false;
+            cmdAppendEntityA.FlatBottom = false;
+            cmdAppendEntityA.FlatTop = false;
+            cmdAppendEntityA.Location = new Point(7, 68);
+            cmdAppendEntityA.Margin = new Padding(4, 3, 4, 3);
+            cmdAppendEntityA.Name = "cmdAppendEntityA";
+            cmdAppendEntityA.Padding = new Padding(5);
+            cmdAppendEntityA.Size = new Size(140, 27);
+            cmdAppendEntityA.TabIndex = 12;
+            cmdAppendEntityA.Text = "Append";
+            cmdAppendEntityA.Click += cmdAppendEntityA_Click;
+            // 
+            // cmdRemoveEntityA
+            // 
+            cmdRemoveEntityA.BorderColour = Color.Empty;
+            cmdRemoveEntityA.CustomColour = false;
+            cmdRemoveEntityA.FlatBottom = false;
+            cmdRemoveEntityA.FlatTop = false;
+            cmdRemoveEntityA.Location = new Point(7, 35);
+            cmdRemoveEntityA.Margin = new Padding(4, 3, 4, 3);
+            cmdRemoveEntityA.Name = "cmdRemoveEntityA";
+            cmdRemoveEntityA.Padding = new Padding(5);
+            cmdRemoveEntityA.Size = new Size(68, 27);
+            cmdRemoveEntityA.TabIndex = 11;
+            cmdRemoveEntityA.Text = "Remove";
+            cmdRemoveEntityA.Click += cmdRemoveEntityA_Click;
+            // 
+            // cmdInsertEntityA
+            // 
+            cmdInsertEntityA.BorderColour = Color.Empty;
+            cmdInsertEntityA.CustomColour = false;
+            cmdInsertEntityA.FlatBottom = false;
+            cmdInsertEntityA.FlatTop = false;
+            cmdInsertEntityA.Location = new Point(79, 35);
+            cmdInsertEntityA.Margin = new Padding(4, 3, 4, 3);
+            cmdInsertEntityA.Name = "cmdInsertEntityA";
+            cmdInsertEntityA.Padding = new Padding(5);
+            cmdInsertEntityA.Size = new Size(68, 27);
+            cmdInsertEntityA.TabIndex = 13;
+            cmdInsertEntityA.Text = "Insert";
+            cmdInsertEntityA.Click += cmdInsertEntityA_Click;
+            // 
+            // cmdPrevRowDrawA
+            // 
+            cmdPrevRowDrawA.BorderColour = Color.Empty;
+            cmdPrevRowDrawA.CustomColour = false;
+            cmdPrevRowDrawA.FlatBottom = false;
+            cmdPrevRowDrawA.FlatTop = false;
+            cmdPrevRowDrawA.Location = new Point(7, 22);
+            cmdPrevRowDrawA.Margin = new Padding(4, 3, 4, 3);
+            cmdPrevRowDrawA.Name = "cmdPrevRowDrawA";
+            cmdPrevRowDrawA.Padding = new Padding(5);
+            cmdPrevRowDrawA.Size = new Size(75, 27);
+            cmdPrevRowDrawA.TabIndex = 15;
+            cmdPrevRowDrawA.Text = "Previous";
+            cmdPrevRowDrawA.Click += cmdPrevRowDrawA_Click;
+            // 
+            // cmdNextRowDrawA
+            // 
+            cmdNextRowDrawA.BorderColour = Color.Empty;
+            cmdNextRowDrawA.CustomColour = false;
+            cmdNextRowDrawA.FlatBottom = false;
+            cmdNextRowDrawA.FlatTop = false;
+            cmdNextRowDrawA.Location = new Point(86, 22);
+            cmdNextRowDrawA.Margin = new Padding(4, 3, 4, 3);
+            cmdNextRowDrawA.Name = "cmdNextRowDrawA";
+            cmdNextRowDrawA.Padding = new Padding(5);
+            cmdNextRowDrawA.Size = new Size(74, 27);
+            cmdNextRowDrawA.TabIndex = 16;
+            cmdNextRowDrawA.Text = "Next";
+            cmdNextRowDrawA.Click += cmdNextRowDrawA_Click;
             // 
             // EntityBox
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.tbcTabs);
-            this.Name = "EntityBox";
-            this.Size = new System.Drawing.Size(500, 460);
-            ((System.ComponentModel.ISupportInitialize)(this.numType)).EndInit();
-            this.fraType.ResumeLayout(false);
-            this.fraType.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numSubtype)).EndInit();
-            this.fraPosition.ResumeLayout(false);
-            this.fraPosition.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numZ)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numY)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numX)).EndInit();
-            this.fraID.ResumeLayout(false);
-            this.fraID.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numID2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numID)).EndInit();
-            this.fraSettings.ResumeLayout(false);
-            this.fraSettings.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numSettingC)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numSettingB)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numSettingA)).EndInit();
-            this.fraName.ResumeLayout(false);
-            this.fraName.PerformLayout();
-            this.tbcTabs.ResumeLayout(false);
-            this.tabGeneral.ResumeLayout(false);
-            this.tabGeneral.PerformLayout();
-            this.tabSpecial.ResumeLayout(false);
-            this.fraZMod.ResumeLayout(false);
-            this.fraZMod.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numZMod)).EndInit();
-            this.fraTTReward.ResumeLayout(false);
-            this.fraTTReward.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numTTReward)).EndInit();
-            this.fraOtherSettings.ResumeLayout(false);
-            this.fraOtherSettings.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numOtherSettings)).EndInit();
-            this.fraScaling.ResumeLayout(false);
-            this.fraScaling.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numScaling)).EndInit();
-            this.fraDDASection.ResumeLayout(false);
-            this.fraDDASection.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numDDASection)).EndInit();
-            this.fraDDASettings.ResumeLayout(false);
-            this.fraDDASettings.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numDDASettings)).EndInit();
-            this.fraBoxCount.ResumeLayout(false);
-            this.fraBoxCount.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numBonusBoxCount)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numBoxCount)).EndInit();
-            this.fraVictims.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numVictimID)).EndInit();
-            this.tabCamera.ResumeLayout(false);
-            this.tabCamera.PerformLayout();
-            this.fraFOV.ResumeLayout(false);
-            this.fraFOV.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numFOVPosition)).EndInit();
-            this.fraFOVFrame.ResumeLayout(false);
-            this.fraFOVFrame.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numFOV)).EndInit();
-            this.fraNeighbor.ResumeLayout(false);
-            this.fraNeighbor.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numNeighborPosition)).EndInit();
-            this.fraNeighborSetting.ResumeLayout(false);
-            this.fraNeighborSetting.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numNeighborFlag)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numNeighborLink)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numNeighborCamera)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numNeighborZone)).EndInit();
-            this.fraAvgDist.ResumeLayout(false);
-            this.fraAvgDist.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numAvgDist)).EndInit();
-            this.fraMode.ResumeLayout(false);
-            this.fraMode.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numMode)).EndInit();
-            this.fraCameraSubIndex.ResumeLayout(false);
-            this.fraCameraSubIndex.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numCameraSubIndex)).EndInit();
-            this.fraCameraIndex.ResumeLayout(false);
-            this.fraCameraIndex.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numCameraIndex)).EndInit();
-            this.fraSLST.ResumeLayout(false);
-            this.fraSLST.PerformLayout();
-            this.tabLoadLists.ResumeLayout(false);
-            this.tabLoadLists.PerformLayout();
-            this.fraLoadListPayload.ResumeLayout(false);
-            this.fraLoadListPayload.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numPayloadPosition)).EndInit();
-            this.fraLoadListB.ResumeLayout(false);
-            this.fraLoadListB.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numMetavalueLoadB)).EndInit();
-            this.fraEIDB.ResumeLayout(false);
-            this.fraEIDB.PerformLayout();
-            this.fraLoadListA.ResumeLayout(false);
-            this.fraLoadListA.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numMetavalueLoadA)).EndInit();
-            this.fraEIDA.ResumeLayout(false);
-            this.fraEIDA.PerformLayout();
-            this.tabDrawLists.ResumeLayout(false);
-            this.fraDrawListB.ResumeLayout(false);
-            this.fraDrawListB.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numMetavalueDrawB)).EndInit();
-            this.fraEntityB.ResumeLayout(false);
-            this.fraEntityB.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numEntityB)).EndInit();
-            this.fraDrawListA.ResumeLayout(false);
-            this.fraDrawListA.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numMetavalueDrawA)).EndInit();
-            this.fraEntityA.ResumeLayout(false);
-            this.fraEntityA.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numEntityA)).EndInit();
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(tbcTabs);
+            Margin = new Padding(4, 3, 4, 3);
+            Name = "EntityBox";
+            Size = new Size(600, 600);
+            ((System.ComponentModel.ISupportInitialize)numType).EndInit();
+            fraType.ResumeLayout(false);
+            fraType.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numSubtype).EndInit();
+            fraPosition.ResumeLayout(false);
+            fraPosition.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numZ).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numY).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numX).EndInit();
+            fraID.ResumeLayout(false);
+            fraID.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numID2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numID).EndInit();
+            fraSettings.ResumeLayout(false);
+            fraSettings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numSettingC).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numSettingB).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numSettingA).EndInit();
+            fraName.ResumeLayout(false);
+            fraName.PerformLayout();
+            tbcTabs.ResumeLayout(false);
+            tabGeneral.ResumeLayout(false);
+            fraC2TTSet.ResumeLayout(false);
+            fraC2TTGhostTarget.ResumeLayout(false);
+            fraC2TTGhostTarget.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numC2TTGhostTarget).EndInit();
+            fraC2TTFlags.ResumeLayout(false);
+            fraC2TTFlags.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numC2TTFlags).EndInit();
+            fraC2TTYRot.ResumeLayout(false);
+            fraC2TTYRot.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numC2TTYRot).EndInit();
+            fraC2TTType.ResumeLayout(false);
+            fraC2TTType.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numC2TTType).EndInit();
+            fraZMod.ResumeLayout(false);
+            fraZMod.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numZMod).EndInit();
+            tabSpecial.ResumeLayout(false);
+            fraTTReward.ResumeLayout(false);
+            fraTTReward.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numTTReward).EndInit();
+            fraOtherSettings.ResumeLayout(false);
+            fraOtherSettings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numOtherSettings).EndInit();
+            fraScaling.ResumeLayout(false);
+            fraScaling.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numScaling).EndInit();
+            fraDDASection.ResumeLayout(false);
+            fraDDASection.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numDDASection).EndInit();
+            fraDDASettings.ResumeLayout(false);
+            fraDDASettings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numDDASettings).EndInit();
+            fraBoxCount.ResumeLayout(false);
+            fraBoxCount.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numBonusBoxCount).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numBoxCount).EndInit();
+            fraVictims.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)numEditVictimID).EndInit();
+            tabCamera.ResumeLayout(false);
+            tabCamera.PerformLayout();
+            fraFOV.ResumeLayout(false);
+            fraFOV.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numFOVPosition).EndInit();
+            fraFOVFrame.ResumeLayout(false);
+            fraFOVFrame.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numFOV).EndInit();
+            fraNeighbor.ResumeLayout(false);
+            fraNeighbor.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numNeighborPosition).EndInit();
+            fraNeighborSetting.ResumeLayout(false);
+            fraNeighborSetting.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numNeighborFlag).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numNeighborLink).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numNeighborCamera).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numNeighborZone).EndInit();
+            fraAvgDist.ResumeLayout(false);
+            fraAvgDist.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numAvgDist).EndInit();
+            fraMode.ResumeLayout(false);
+            fraMode.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numMode).EndInit();
+            fraCameraSubIndex.ResumeLayout(false);
+            fraCameraSubIndex.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numCameraSubIndex).EndInit();
+            fraCameraIndex.ResumeLayout(false);
+            fraCameraIndex.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numCameraIndex).EndInit();
+            fraSLST.ResumeLayout(false);
+            fraSLST.PerformLayout();
+            tabLoadLists.ResumeLayout(false);
+            tabLoadLists.PerformLayout();
+            fraLoadListPayload.ResumeLayout(false);
+            fraLoadListPayload.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numPayloadPosition).EndInit();
+            fraLoadListB.ResumeLayout(false);
+            fraLoadListB.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numMetavalueLoadB).EndInit();
+            fraEIDB.ResumeLayout(false);
+            fraEIDB.PerformLayout();
+            fraLoadListA.ResumeLayout(false);
+            fraLoadListA.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numMetavalueLoadA).EndInit();
+            fraEIDA.ResumeLayout(false);
+            fraEIDA.PerformLayout();
+            tabDrawLists.ResumeLayout(false);
+            fraVerifyDrawList.ResumeLayout(false);
+            fraVerifyDrawList.PerformLayout();
+            fraDrawListB.ResumeLayout(false);
+            fraDrawListB.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numMetavalueDrawB).EndInit();
+            fraEntityB.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)numEntityB).EndInit();
+            fraDrawListA.ResumeLayout(false);
+            fraDrawListA.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numMetavalueDrawA).EndInit();
+            fraEntityA.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)numEntityA).EndInit();
+            ResumeLayout(false);
+        }
 
+        private void DgvpropertyValues_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void LbProperties_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
 
         private System.Windows.Forms.CheckBox chkType;
-        private System.Windows.Forms.NumericUpDown numType;
-        private System.Windows.Forms.GroupBox fraType;
+        private DarkNumericUpDown numType;
+        private DarkGroupBox fraType;
         private System.Windows.Forms.CheckBox chkSubtype;
-        private System.Windows.Forms.NumericUpDown numSubtype;
-        private System.Windows.Forms.GroupBox fraPosition;
+        private DarkNumericUpDown numSubtype;
+        private DarkGroupBox fraPosition;
         private System.Windows.Forms.Label lblZ;
         private System.Windows.Forms.Label lblY;
         private System.Windows.Forms.Label lblX;
-        private System.Windows.Forms.NumericUpDown numZ;
-        private System.Windows.Forms.NumericUpDown numY;
-        private System.Windows.Forms.NumericUpDown numX;
-        private System.Windows.Forms.Button cmdInsertPosition;
-        private System.Windows.Forms.Button cmdInsertVictim;
-        private System.Windows.Forms.Button cmdRemovePosition;
-        private System.Windows.Forms.Button cmdAppendPosition;
-        private System.Windows.Forms.Button cmdNextPosition;
-        private System.Windows.Forms.Button cmdPreviousPosition;
+        private DarkNumericUpDown numZ;
+        private DarkNumericUpDown numY;
+        private DarkNumericUpDown numX;
+        private DarkButton cmdInsertPosition;
+        private DarkButton cmdInsertVictim;
+        private DarkButton cmdRemovePosition;
+        private DarkButton cmdAppendPosition;
+        private DarkButton cmdNextPosition;
+        private DarkButton cmdPreviousPosition;
         private System.Windows.Forms.Label lblPositionIndex;
         private System.Windows.Forms.Label lblVictimIndex;
-        private System.Windows.Forms.GroupBox fraID;
+        private DarkGroupBox fraID;
         private System.Windows.Forms.CheckBox chkID2;
-        private System.Windows.Forms.NumericUpDown numID2;
+        private DarkNumericUpDown numID2;
         private System.Windows.Forms.CheckBox chkID;
-        private System.Windows.Forms.NumericUpDown numID;
-        private System.Windows.Forms.GroupBox fraSettings;
+        private DarkNumericUpDown numID;
+        private DarkGroupBox fraSettings;
         private System.Windows.Forms.Label lblSettingIndex;
-        private System.Windows.Forms.Button cmdNextSetting;
-        private System.Windows.Forms.Button cmdPreviousSetting;
-        private System.Windows.Forms.Button cmdAddSetting;
-        private System.Windows.Forms.Button cmdRemoveSetting;
-        private System.Windows.Forms.NumericUpDown numSettingB;
-        private System.Windows.Forms.NumericUpDown numSettingA;
-        private System.Windows.Forms.GroupBox fraName;
-        private System.Windows.Forms.TextBox txtName;
+        private DarkButton cmdNextSetting;
+        private DarkButton cmdPreviousSetting;
+        private DarkButton cmdAddSetting;
+        private DarkButton cmdRemoveSetting;
+        private DarkNumericUpDown numSettingB;
+        private DarkNumericUpDown numSettingA;
+        private DarkGroupBox fraName;
+        private DarkTextBox txtName;
         private System.Windows.Forms.CheckBox chkName;
-        private System.Windows.Forms.TabControl tbcTabs;
+        private MetroSetTabControl tbcTabs;
         private System.Windows.Forms.TabPage tabGeneral;
         private System.Windows.Forms.TabPage tabSpecial;
-        private System.Windows.Forms.GroupBox fraVictims;
-        private System.Windows.Forms.NumericUpDown numVictimID;
-        private System.Windows.Forms.Button cmdRemoveVictim;
-        private System.Windows.Forms.Button cmdNextVictim;
-        private System.Windows.Forms.Button cmdPreviousVictim;
-        private System.Windows.Forms.GroupBox fraBoxCount;
+        private DarkGroupBox fraVictims;
+        private DarkButton cmdRemoveVictim;
+        private DarkGroupBox fraBoxCount;
         private System.Windows.Forms.CheckBox chkBoxCount;
-        private System.Windows.Forms.NumericUpDown numBoxCount;
-        private System.Windows.Forms.Button cmdClearAllVictims;
-        private System.Windows.Forms.GroupBox fraDDASettings;
+        private DarkNumericUpDown numBoxCount;
+        private DarkButton cmdClearAllVictims;
+        private DarkGroupBox fraDDASettings;
         private System.Windows.Forms.CheckBox chkDDASettings;
-        private System.Windows.Forms.NumericUpDown numDDASettings;
-        private System.Windows.Forms.GroupBox fraDDASection;
+        private DarkNumericUpDown numDDASettings;
+        private DarkGroupBox fraDDASection;
         private System.Windows.Forms.CheckBox chkDDASection;
-        private System.Windows.Forms.NumericUpDown numDDASection;
+        private DarkNumericUpDown numDDASection;
         private System.Windows.Forms.TabPage tabLoadLists;
-        private System.Windows.Forms.GroupBox fraLoadListA;
-        private System.Windows.Forms.Button cmdRemoveEIDA;
-        private System.Windows.Forms.Button cmdInsertEIDA;
-        private System.Windows.Forms.Button cmdNextEIDA;
-        private System.Windows.Forms.Button cmdPrevEIDA;
+        private DarkGroupBox fraLoadListA;
+        private DarkButton cmdRemoveEIDA;
+        private DarkButton cmdInsertEIDA;
         private System.Windows.Forms.Label lblEIDIndexA;
-        private System.Windows.Forms.Button cmdAppendEIDA;
+        private DarkButton cmdAppendEIDA;
         private System.Windows.Forms.Label lblLoadListRowIndexA;
-        private System.Windows.Forms.GroupBox fraEIDA;
-        private System.Windows.Forms.Button cmdPrevRowA;
-        private System.Windows.Forms.Button cmdNextRowA;
-        private System.Windows.Forms.TextBox txtEIDA;
-        private System.Windows.Forms.Button cmdRemoveRowA;
-        private System.Windows.Forms.Button cmdInsertRowA;
-        private System.Windows.Forms.NumericUpDown numMetavalueLoadA;
+        private DarkGroupBox fraEIDA;
+        private DarkButton cmdPrevRowA;
+        private DarkButton cmdNextRowA;
+        private DarkTextBox txtEIDA;
+        private DarkButton cmdRemoveRowA;
+        private DarkButton cmdInsertRowA;
+        private DarkNumericUpDown numMetavalueLoadA;
         private System.Windows.Forms.Label lblMetavalueLoadA;
-        private System.Windows.Forms.GroupBox fraScaling;
+        private DarkGroupBox fraScaling;
         private System.Windows.Forms.CheckBox chkScaling;
-        private System.Windows.Forms.NumericUpDown numScaling;
+        private DarkNumericUpDown numScaling;
         private System.Windows.Forms.CheckBox chkBonusBoxCount;
-        private System.Windows.Forms.NumericUpDown numBonusBoxCount;
-        private System.Windows.Forms.GroupBox fraOtherSettings;
+        private DarkNumericUpDown numBonusBoxCount;
+        private DarkGroupBox fraOtherSettings;
         private System.Windows.Forms.CheckBox chkOtherSettings;
-        private System.Windows.Forms.NumericUpDown numOtherSettings;
-        private System.Windows.Forms.GroupBox fraSLST;
-        private System.Windows.Forms.TextBox txtSLST;
+        private DarkNumericUpDown numOtherSettings;
+        private DarkGroupBox fraSLST;
+        private DarkTextBox txtSLST;
         private System.Windows.Forms.CheckBox chkSLST;
         private System.Windows.Forms.TabPage tabCamera;
         private System.Windows.Forms.Label lblEIDErr1;
         private System.Windows.Forms.Label lblEIDErrA;
-        private System.Windows.Forms.GroupBox fraLoadListB;
+        private DarkGroupBox fraLoadListB;
         private System.Windows.Forms.Label lblMetavalueLoadB;
-        private System.Windows.Forms.Button cmdRemoveRowB;
-        private System.Windows.Forms.Button cmdInsertRowB;
-        private System.Windows.Forms.NumericUpDown numMetavalueLoadB;
+        private DarkButton cmdRemoveRowB;
+        private DarkButton cmdInsertRowB;
+        private DarkNumericUpDown numMetavalueLoadB;
         private System.Windows.Forms.Label lblLoadListRowIndexB;
-        private System.Windows.Forms.GroupBox fraEIDB;
-        private System.Windows.Forms.TextBox txtEIDB;
+        private DarkGroupBox fraEIDB;
+        private DarkTextBox txtEIDB;
         private System.Windows.Forms.Label lblEIDIndexB;
-        private System.Windows.Forms.Button cmdAppendEIDB;
-        private System.Windows.Forms.Button cmdRemoveEIDB;
-        private System.Windows.Forms.Button cmdPrevEIDB;
-        private System.Windows.Forms.Button cmdInsertEIDB;
-        private System.Windows.Forms.Button cmdNextEIDB;
-        private System.Windows.Forms.Button cmdPrevRowB;
-        private System.Windows.Forms.Button cmdNextRowB;
+        private DarkButton cmdAppendEIDB;
+        private DarkButton cmdRemoveEIDB;
+        private DarkButton cmdInsertEIDB;
+        private DarkButton cmdPrevRowB;
+        private DarkButton cmdNextRowB;
         private System.Windows.Forms.TabPage tabDrawLists;
-        private System.Windows.Forms.GroupBox fraDrawListA;
+        private DarkGroupBox fraDrawListA;
         private System.Windows.Forms.Label lblMetavalueDrawA;
-        private System.Windows.Forms.Button cmdRemoveRowDrawA;
-        private System.Windows.Forms.Button cmdInsertRowDrawA;
-        private System.Windows.Forms.NumericUpDown numMetavalueDrawA;
+        private DarkButton cmdRemoveRowDrawA;
+        private DarkButton cmdInsertRowDrawA;
+        private DarkNumericUpDown numMetavalueDrawA;
         private System.Windows.Forms.Label lblDrawListRowIndexA;
-        private System.Windows.Forms.GroupBox fraEntityA;
+        private DarkGroupBox fraEntityA;
         private System.Windows.Forms.Label lblEntityIndexA;
-        private System.Windows.Forms.Button cmdAppendEntityA;
-        private System.Windows.Forms.Button cmdRemoveEntityA;
-        private System.Windows.Forms.Button cmdPrevEntityA;
-        private System.Windows.Forms.Button cmdInsertEntityA;
-        private System.Windows.Forms.Button cmdNextEntityA;
-        private System.Windows.Forms.Button cmdPrevRowDrawA;
-        private System.Windows.Forms.Button cmdNextRowDrawA;
-        private System.Windows.Forms.Label lblEntityA;
-        private System.Windows.Forms.NumericUpDown numEntityA;
-        private System.Windows.Forms.GroupBox fraDrawListB;
+        private DarkButton cmdAppendEntityA;
+        private DarkButton cmdRemoveEntityA;
+        private DarkButton cmdInsertEntityA;
+        private DarkButton cmdPrevRowDrawA;
+        private DarkButton cmdNextRowDrawA;
+        private DarkNumericUpDown numEntityA;
+        private DarkGroupBox fraDrawListB;
         private System.Windows.Forms.Label lblMetavalueDrawB;
-        private System.Windows.Forms.Button cmdRemoveRowDrawB;
-        private System.Windows.Forms.Button cmdInsertRowDrawB;
-        private System.Windows.Forms.NumericUpDown numMetavalueDrawB;
+        private DarkButton cmdRemoveRowDrawB;
+        private DarkButton cmdInsertRowDrawB;
+        private DarkNumericUpDown numMetavalueDrawB;
         private System.Windows.Forms.Label lblDrawListRowIndexB;
-        private System.Windows.Forms.GroupBox fraEntityB;
-        private System.Windows.Forms.Label lblEntityB;
-        private System.Windows.Forms.NumericUpDown numEntityB;
+        private DarkGroupBox fraEntityB;
+        private DarkNumericUpDown numEntityB;
         private System.Windows.Forms.Label lblEntityIndexB;
-        private System.Windows.Forms.Button cmdAppendEntityB;
-        private System.Windows.Forms.Button cmdRemoveEntityB;
-        private System.Windows.Forms.Button cmdPrevEntityB;
-        private System.Windows.Forms.Button cmdInsertEntityB;
-        private System.Windows.Forms.Button cmdNextEntityB;
-        private System.Windows.Forms.Button cmdPrevRowDrawB;
-        private System.Windows.Forms.Button cmdNextRowDrawB;
-        private System.Windows.Forms.Button cmdLoadListVerify;
-        private System.Windows.Forms.GroupBox fraLoadListPayload;
-        private System.Windows.Forms.Button cmdPayload;
+        private DarkButton cmdAppendEntityB;
+        private DarkButton cmdRemoveEntityB;
+        private DarkButton cmdInsertEntityB;
+        private DarkButton cmdPrevRowDrawB;
+        private DarkButton cmdNextRowDrawB;
+        private DarkButton cmdLoadListVerify;
+        private DarkGroupBox fraLoadListPayload;
+        private DarkButton cmdPayload;
         private System.Windows.Forms.Label lblPayloadPosition;
-        private System.Windows.Forms.NumericUpDown numPayloadPosition;
+        private DarkNumericUpDown numPayloadPosition;
         private System.Windows.Forms.Label lblPayload;
-        private System.Windows.Forms.NumericUpDown numSettingC;
+        private DarkNumericUpDown numSettingC;
         private System.Windows.Forms.CheckBox chkSettingHex;
         private System.Windows.Forms.Label lblEIDErrB;
-        private System.Windows.Forms.Button cmdInterpolate;
-        private System.Windows.Forms.GroupBox fraTTReward;
+        private DarkButton cmdEditPath;
+        private DarkGroupBox fraTTReward;
         private System.Windows.Forms.CheckBox chkTTReward;
-        private System.Windows.Forms.NumericUpDown numTTReward;
-        private System.Windows.Forms.GroupBox fraCameraSubIndex;
+        private DarkNumericUpDown numTTReward;
+        private DarkGroupBox fraCameraSubIndex;
         private System.Windows.Forms.CheckBox chkCameraSubIndex;
-        private System.Windows.Forms.NumericUpDown numCameraSubIndex;
-        private System.Windows.Forms.GroupBox fraCameraIndex;
+        private DarkNumericUpDown numCameraSubIndex;
+        private DarkGroupBox fraCameraIndex;
         private System.Windows.Forms.CheckBox chkCameraIndex;
-        private System.Windows.Forms.NumericUpDown numCameraIndex;
-        private System.Windows.Forms.GroupBox fraMode;
+        private DarkNumericUpDown numCameraIndex;
+        private DarkGroupBox fraMode;
         private System.Windows.Forms.CheckBox chkMode;
-        private System.Windows.Forms.NumericUpDown numMode;
-        private System.Windows.Forms.GroupBox fraAvgDist;
+        private DarkNumericUpDown numMode;
+        private DarkGroupBox fraAvgDist;
         private System.Windows.Forms.CheckBox chkAvgDist;
-        private System.Windows.Forms.NumericUpDown numAvgDist;
-        private System.Windows.Forms.GroupBox fraNeighbor;
+        private DarkNumericUpDown numAvgDist;
+        private DarkGroupBox fraNeighbor;
         private System.Windows.Forms.Label lblNeighborPosition;
-        private System.Windows.Forms.Button cmdRemoveNeighbor;
-        private System.Windows.Forms.Button cmdInsertNeighbor;
-        private System.Windows.Forms.NumericUpDown numNeighborPosition;
+        private DarkButton cmdRemoveNeighbor;
+        private DarkButton cmdInsertNeighbor;
+        private DarkNumericUpDown numNeighborPosition;
         private System.Windows.Forms.Label lblNeighbor;
-        private System.Windows.Forms.GroupBox fraNeighborSetting;
-        private System.Windows.Forms.Button cmdPrevNeighbor;
-        private System.Windows.Forms.Button cmdNextNeighbor;
+        private DarkGroupBox fraNeighborSetting;
+        private DarkButton cmdPrevNeighbor;
+        private DarkButton cmdNextNeighbor;
         private System.Windows.Forms.Label lblNeighborLink;
         private System.Windows.Forms.Label lblNeighborFlag;
-        private System.Windows.Forms.NumericUpDown numNeighborFlag;
+        private DarkNumericUpDown numNeighborFlag;
         private System.Windows.Forms.Label lblNeighborCamera;
         private System.Windows.Forms.Label lblNeighborZone;
-        private System.Windows.Forms.NumericUpDown numNeighborLink;
-        private System.Windows.Forms.NumericUpDown numNeighborCamera;
-        private System.Windows.Forms.NumericUpDown numNeighborZone;
+        private DarkNumericUpDown numNeighborLink;
+        private DarkNumericUpDown numNeighborCamera;
+        private DarkNumericUpDown numNeighborZone;
         private System.Windows.Forms.Label lblNeighborSetting;
-        private System.Windows.Forms.Button cmdRemoveNeighborSetting;
-        private System.Windows.Forms.Button cmdInsertNeighborSetting;
-        private System.Windows.Forms.Button cmdPrevNeighborSetting;
-        private System.Windows.Forms.Button cmdNextNeighborSetting;
-        private System.Windows.Forms.GroupBox fraZMod;
+        private DarkButton cmdRemoveNeighborSetting;
+        private DarkButton cmdInsertNeighborSetting;
+        private DarkButton cmdPrevNeighborSetting;
+        private DarkButton cmdNextNeighborSetting;
+        private DarkGroupBox fraZMod;
         private System.Windows.Forms.CheckBox chkZMod;
-        private System.Windows.Forms.NumericUpDown numZMod;
-        private System.Windows.Forms.GroupBox fraFOV;
+        private DarkNumericUpDown numZMod;
+        private DarkGroupBox fraFOV;
         private System.Windows.Forms.Label lblFOVPosition;
-        private System.Windows.Forms.Button cmdRemoveFOVFrame;
-        private System.Windows.Forms.Button cmdInsertFOVFrame;
-        private System.Windows.Forms.NumericUpDown numFOVPosition;
+        private DarkButton cmdRemoveFOVFrame;
+        private DarkButton cmdInsertFOVFrame;
+        private DarkNumericUpDown numFOVPosition;
         private System.Windows.Forms.Label lblFOVFrame;
-        private System.Windows.Forms.GroupBox fraFOVFrame;
+        private DarkGroupBox fraFOVFrame;
         private System.Windows.Forms.Label lblFOVIndex;
-        private System.Windows.Forms.Button cmdRemoveFOV;
-        private System.Windows.Forms.Button cmdInsertFOV;
-        private System.Windows.Forms.Button cmdPrevFOV;
-        private System.Windows.Forms.Button cmdNextFOV;
+        private DarkButton cmdRemoveFOV;
+        private DarkButton cmdInsertFOV;
+        private DarkButton cmdPrevFOV;
+        private DarkButton cmdNextFOV;
         private System.Windows.Forms.Label lblFOV;
-        private System.Windows.Forms.NumericUpDown numFOV;
-        private System.Windows.Forms.Button cmdPrevFOVFrame;
-        private System.Windows.Forms.Button cmdNextFOVFrame;
+        private DarkNumericUpDown numFOV;
+        private DarkButton cmdPrevFOVFrame;
+        private DarkButton cmdNextFOVFrame;
         private System.Windows.Forms.Label lblArgAs;
+        private Label lblVerifyLoadLists;
+        private Label lblPayloadSound;
+        private Label lblPayloadTexture;
+        private DarkGroupBox fraC2TTSet;
+        private CheckBox chkC2TTType;
+        private DarkNumericUpDown numC2TTYrot;
+        private DarkNumericUpDown numC2TTType;
+        private DarkGroupBox fraC2TTType;
+        private DarkGroupBox fraC2TTGhostTarget;
+        private DarkNumericUpDown numC2TTGhostTarget;
+        private CheckBox chkC2TTGhostTarget;
+        private DarkGroupBox fraC2TTFlags;
+        private DarkGroupBox fraC2TTYRot;
+        private DarkNumericUpDown numC2TTYRot;
+        private CheckBox chkC2TTYRot;
+        private Label lblSettingB;
+        private Label lblSettingA;
+        private DarkNumericUpDown numC2TTFlags;
+        private CheckBox chkC2TTFlags;
+        private DarkListBox lbVictimID;
+        private DarkNumericUpDown numEditVictimID;
+        private DarkListBox lbEIDA;
+        private DarkListBox lbEIDB;
+        private DarkGroupBox fraVerifyDrawList;
+        private Label lblVerifyDrawLists;
+        private DarkButton cmdVerifyDrawList;
+        private DarkListBox lbEntityA;
+        private DarkListBox lbEntityB;
+        private DarkButton cmdCopySetting;
+        private DarkButton cmdPasteSetting;
+        private CheckBox chkSyncPositions;
+        private DarkButton cmdSyncEntities;
+        private CheckBox chkSyncEntities;
     }
 }

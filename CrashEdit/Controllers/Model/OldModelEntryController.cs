@@ -14,7 +14,7 @@ namespace CrashEdit.CE
 
         public override Control CreateEditor()
         {
-            return new Label { Text = string.Format("Polygon count: {0}", BitConv.FromInt32(OldModelEntry.Info, 0)), TextAlign = ContentAlignment.MiddleCenter };
+            return new OldModelBox(this);
         }
 
         public OldModelEntry OldModelEntry { get; }

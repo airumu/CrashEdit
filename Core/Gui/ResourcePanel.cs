@@ -1,5 +1,7 @@
 using System.Drawing;
+using System.Runtime;
 using System.Windows.Forms;
+using MetroSet_UI.Controls;
 
 namespace CrashEdit
 {
@@ -13,9 +15,14 @@ namespace CrashEdit
 
             Controller = ctlr;
 
-            TabControl = new TabControl
+            TabControl = new MetroSetTabControl
             {
-                Dock = DockStyle.Fill
+                BackgroundColor = Color.FromArgb(31, 31, 32),
+                Dock = DockStyle.Fill,
+                IsDerivedStyle = false,
+                ItemSize = new Size(100, 28),
+                Style = MetroSet_UI.Enums.Style.Dark,
+                TabStyle = MetroSet_UI.Enums.TabStyle.Style2,
             };
             Controls.Add(TabControl);
 
@@ -31,6 +38,7 @@ namespace CrashEdit
                 TabControl.TabPages[0].Controls.Add(new Label
                 {
                     Dock = DockStyle.Fill,
+                    BackColor = Color.FromArgb(31, 31, 32),
                     TextAlign = ContentAlignment.MiddleCenter,
                     Text = "No editors are available for this resource."
                 });
@@ -56,7 +64,7 @@ namespace CrashEdit
 
         public List<Editor> Editors { get; }
 
-        public TabControl TabControl { get; }
+        public MetroSetTabControl TabControl { get; }
 
         protected override void Dispose(bool disposing)
         {

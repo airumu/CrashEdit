@@ -8,7 +8,7 @@ namespace CrashEdit
 
         public override string Text => "Find Next";
 
-        public override string ImageKey => "RecordNext";
+        public override string ImageKey => "Next";
 
         public override bool Ready =>
             WsHost?.SearchPredicate != null &&
@@ -39,7 +39,7 @@ namespace CrashEdit
             }
 
             // No match.
-            Host.ShowError("No results after the current selection.");
+            Host.ShowInformation("No results after the current selection.", "Find");
             return false;
         }
 

@@ -8,10 +8,10 @@ namespace CrashEdit.CE
         public EntryController(Entry entry, SubcontrollerGroup parentGroup) : base(parentGroup, entry)
         {
             Entry = entry;
-            AddMenu(string.Format(CrashUI.Properties.Resources.EntryController_AcRename, entry.EName), Menu_Rename_Entry);
+            AddMenu(string.Format(CrashUI.Properties.Resources.EntryController_AcRename, entry.EName), "Modify", Menu_Rename_Entry);
             if (this is not UnprocessedEntryController)
             {
-                AddMenu(string.Format(CrashUI.Properties.Resources.EntryController_AcDeprocess, entry.EName), Menu_Unprocess_Entry);
+                AddMenu(string.Format(CrashUI.Properties.Resources.EntryController_AcDeprocess, entry.EName), "Pinion", Menu_Unprocess_Entry);
             }
         }
 
