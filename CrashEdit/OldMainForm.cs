@@ -638,9 +638,93 @@ namespace CrashEdit.CE
 
         public void PatchNSD(NSD nsd, NSF nsf, string path, bool ignore_warnings)
         {
-            if (!Settings.Default.UseOldPatchNSD)
+            nsd.ChunkCount = nsf.Chunks.Count;
+            if (Settings.Default.UseOldPatchNSD)
             {
-                nsd.ChunkCount = nsf.Chunks.Count;
+                Dictionary<int, int> newindex = new Dictionary<int, int>();
+                List<int> _eids = new List<int>();
+                for (int i = 0; i < nsf.Chunks.Count; i++)
+                {
+                    if (nsf.Chunks[i] is IEntry ientry)
+                    {
+                        newindex.Add(ientry.EID, i * 2 + 1);
+                    }
+                    if (nsf.Chunks[i] is EntryChunk chunk)
+                    {
+                        foreach (Entry entry in chunk.Entries)
+                        {
+                            newindex.Add(entry.EID, i * 2 + 1);
+                        }
+                    }
+                }
+                HashSet<NSDLink> unused = new HashSet<NSDLink>();
+                foreach (NSDLink link in nsd.Index)
+                {
+                    _eids.Add(link.EntryID);
+                    if (newindex.ContainsKey(link.EntryID))
+                    {
+                        link.ChunkID = newindex[link.EntryID];
+                        newindex.Remove(link.EntryID);
+                    }
+                    else // NSD contains nonexistant entry
+                    {
+                        unused.Add(link);
+                    }
+                }
+                if (unused.Count > 0)
+                {
+                    foreach (NSDLink link in unused)
+                    {
+                        nsd.Index.Remove(link);
+                    }
+                    for (int i = 0; i < 256; ++i)
+                    {
+                        nsd.HashKeyMap[i] = Math.Min(nsd.HashKeyMap[i], nsd.Index.Count - 1);
+                    }
+                }
+                if (newindex.Count > 0)
+                {
+                    List<string> neweids = new List<string>();
+                    foreach (KeyValuePair<int, int> kvp in newindex)
+                    {
+                        neweids.Add(Entry.EIDToEName(kvp.Key));
+                    }
+                    foreach (KeyValuePair<int, int> kvp in newindex)
+                    {
+                        nsd.Index.Add(new NSDLink(kvp.Value, kvp.Key));
+                    }
+                }
+
+                // check list
+                for (int i = 0; i < nsf.Chunks.Count; i++)
+                {
+                    if (nsf.Chunks[i] is EntryChunk chunk)
+                    {
+                        List<int> nsdchunkentries = new List<int>();
+                        for (int j = 0; j < nsd.Index.Count; ++j)
+                        {
+                            NSDLink link = nsd.Index[j];
+                            if (i * 2 + 1 == link.ChunkID)
+                            {
+                                nsdchunkentries.Add(j);
+                            }
+                        }
+                        for (int j = 0; j < chunk.Entries.Count; ++j)
+                        {
+                            Entry entry = chunk.Entries[j];
+                            if (entry.EID != nsd.Index[nsdchunkentries[j]].EntryID)
+                            {
+                                int k = j;
+                                for (; k < nsdchunkentries.Count; ++k)
+                                    if (entry.EID == nsd.Index[nsdchunkentries[k]].EntryID) break;
+                                nsd.Index.Swap(nsdchunkentries[j], nsdchunkentries[k]);
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
                 var indexdata = nsf.MakeNSDIndex();
                 nsd.HashKeyMap = indexdata.Item1;
                 nsd.Index = indexdata.Item2;
