@@ -334,6 +334,8 @@ namespace CrashEdit.CE
                 case 0x1F9: entity.Field0x1F9 = null!; break;
                 case 0x1DE: entity.FogDistance = null!; break;
                 case 0x1FA: entity.Backgrounds = null!; break;
+                case 0x252: entity.Field0x252 = null!; break;
+                case 0x254: entity.Field0x254 = null!; break;
                 case 0x27F: entity.SceneryUpdates = null!; break;
                 case 0x297: entity.Mirrors = null!; break;
                 case 0x2AA: entity.Stars = null!; break;
@@ -414,6 +416,12 @@ namespace CrashEdit.CE
                 case 0x1FA:
                     entity.Backgrounds = InitializeProperty<EntityUInt32Property, uint>();
                     return entity.Backgrounds;
+                case 0x252:
+                    entity.Field0x252 = InitializeProperty<EntityUInt32Property, uint>();
+                    return entity.Field0x252;
+                case 0x254:
+                    entity.Field0x254 = InitializeProperty<EntityVictimProperty, EntityVictim>();
+                    return entity.Field0x254;
                 case 0x27F:
                     entity.SceneryUpdates = InitializeProperty<EntityUInt8Property, byte>();
                     return entity.SceneryUpdates;
@@ -492,6 +500,12 @@ namespace CrashEdit.CE
                 case 0x1FA:
                     entity.Backgrounds = field;
                     return;
+                case 0x252:
+                    entity.Field0x252 = field;
+                    return;
+                case 0x254:
+                    entity.Field0x254 = field;
+                    return;
                 case 0x27F:
                     entity.SceneryUpdates = field;
                     return;
@@ -529,11 +543,13 @@ namespace CrashEdit.CE
         private const short FogDistance = 0x1DE;
         private const short Field0x1F9 = 0x1F9;     // ?
         private const short Backgrounds = 0x1FA;
+        private const short Field0x252 = 0x252;     // Camer free movement related?
+        private const short Field0x254 = 0x254;     // Camer free movement related
         private const short Mirrors = 0x297;        // Mirror related [{Y coord}, {objects z-index}, {reflections z-index}]
         private const short Stars = 0x2AA;
 
         private readonly HashSet<short> validFields = new HashSet<short> { Panning, Field0x131, CameraDistance, Field0x162, Field0x16D, Field0x16E, PathLinks, Field0x183,
-            Flags, Water, EventSender, Transitions, Field0x1AA, Particles1, Particles2, Field0x1B7, FXControl, FogDistance, Field0x1F9, Backgrounds, SceneryUpdates, Mirrors, Stars };
+            Flags, Water, EventSender, Transitions, Field0x1AA, Particles1, Particles2, Field0x1B7, FXControl, FogDistance, Field0x1F9, Backgrounds, Field0x252, Field0x254, SceneryUpdates, Mirrors, Stars };
 
         private object GetField(short id)
         {
@@ -559,6 +575,8 @@ namespace CrashEdit.CE
                 FogDistance => entity.FogDistance,
                 Field0x1F9 => entity.Field0x1F9,
                 Backgrounds => entity.Backgrounds,
+                Field0x252 => entity.Field0x252,
+                Field0x254 => entity.Field0x254,
                 SceneryUpdates => entity.SceneryUpdates,
                 Mirrors => entity.Mirrors,
                 Stars => entity.Stars,

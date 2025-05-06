@@ -173,6 +173,10 @@ namespace CrashEdit.Crash
         private EntityVictimProperty field0x1F9 = null;
         [EntityPropertyField(0x1FA)]
         private EntityUInt32Property backgrounds = null;
+        [EntityPropertyField(0x252)]
+        private EntityUInt32Property field0x252 = null;
+        [EntityPropertyField(0x254)]
+        private EntityVictimProperty field0x254 = null;
         [EntityPropertyField(0x297)]
         private EntityUInt32Property mirrors = null;
         [EntityPropertyField(0x2AA)]
@@ -514,6 +518,16 @@ namespace CrashEdit.Crash
         {
             get => backgrounds;
             set => backgrounds = value;
+        }
+        public EntityUInt32Property Field0x252
+        {
+            get => field0x252;
+            set => field0x252 = value;
+        }
+        public EntityVictimProperty Field0x254
+        {
+            get => field0x254;
+            set => field0x254 = value;
         }
         public EntityUInt32Property Mirrors
         {
