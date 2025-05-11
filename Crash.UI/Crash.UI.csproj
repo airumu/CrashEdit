@@ -16,4 +16,8 @@
     <PackageReference Include="AltUI" Version="1.0.4" />
   </ItemGroup>
 
+	<PropertyGroup>
+		<NoWarn>WFO1000; WFO5001</NoWarn>		
+	</PropertyGroup>
+
 </Project>

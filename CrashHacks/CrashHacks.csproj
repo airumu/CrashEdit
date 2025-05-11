@@ -38,4 +38,8 @@
     <Using Include="CrashEdit.Crash" />
   </ItemGroup>
 
+	<PropertyGroup>
+		<NoWarn>WFO1000; WFO5001</NoWarn>
+	</PropertyGroup>
+
 </Project>

@@ -120,5 +120,9 @@
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="if '$(Platform)' == 'AnyCPU' (&#xD;&#xA;  rmdir &quot;$(TargetDir)Win32&quot;&#xD;&#xA;  rmdir &quot;$(TargetDir)Win64&quot;&#xD;&#xA;  mkdir &quot;$(TargetDir)Win32&quot;&#xD;&#xA;  mkdir &quot;$(TargetDir)Win64&quot;&#xD;&#xA;  copy /Y &quot;$(ProjectDir)freetype6-win32.dll&quot; &quot;$(TargetDir)Win32/freetype6.dll&quot;&#xD;&#xA;  copy /Y &quot;$(ProjectDir)freetype6-win64.dll&quot; &quot;$(TargetDir)Win64/freetype6.dll&quot;&#xD;&#xA;)" />
   </Target>
+	
+	<PropertyGroup>
+		<NoWarn>WFO1000; WFO5001</NoWarn>
+	</PropertyGroup>
 
 </Project>
