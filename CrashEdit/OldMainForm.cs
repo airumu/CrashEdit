@@ -525,7 +525,7 @@ namespace CrashEdit.CE
             }
         }
 
-        public void PatchNSD()
+        public void PatchNSD(bool ignore_warnings = false)
         {
             if (tbcTabs.SelectedTab != null)
             {
@@ -552,7 +552,7 @@ namespace CrashEdit.CE
                     return;
                 }
                 NSFBox nsfbox = (NSFBox)tbcTabs.SelectedTab.Tag;
-                PatchNSD(filename, exists, nsfbox, nsfbox.NSFController, false);
+                PatchNSD(filename, exists, nsfbox, nsfbox.NSFController, ignore_warnings);
                 nsfbox.Sync();
                 OnResyncSuggested(EventArgs.Empty);
             }

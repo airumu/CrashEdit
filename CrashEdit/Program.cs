@@ -1,3 +1,4 @@
+using CrashEdit.Crash;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -19,6 +20,16 @@ namespace CrashEdit.CE
         {
 
             AllocConsole();
+
+            string nsdSavePath = null;
+            foreach (var arg in args)
+            {
+                if (arg.StartsWith("/c2_nsd_patch=", StringComparison.OrdinalIgnoreCase))
+                {
+                    nsdSavePath = arg.Substring("/c2_nsd_patch=".Length).Trim('"');
+                    break;
+                }
+            }            
 
             PlatformID pid = Environment.OSVersion.Platform;
 #if __MonoCS__
@@ -69,8 +80,30 @@ namespace CrashEdit.CE
                 TopLevelGLViewer = new GLViewerLoader();
                 mainform.Controls.Add(TopLevelGLViewer);
                 Application.SetColorMode(SystemColorMode.Dark);
+
+
+                if (!string.IsNullOrEmpty(nsdSavePath))
+                {
+                    Console.WriteLine($"!!! nsd save: {nsdSavePath}");
+                    try
+                    {
+                        byte[] nsfdata = File.ReadAllBytes(nsdSavePath);                        
+                        NSF nsf = NSF.LoadAndProcess(nsfdata, GameVersion.Crash2);
+                        mainform.OpenNSF(nsdSavePath, nsf, GameVersion.Crash2);                        
+                        mainform.PatchNSD(true);
+                        mainform.SaveNSF(true);
+                        Console.WriteLine("!!! nsd resave done");
+                        return;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.Error.WriteLine("!!!", ex.Message);
+                        return;
+                    }
+                }
+
                 Application.Run(mainform);
-            }
+            }            
 
             FreeConsole();
         }
