@@ -102,14 +102,15 @@ namespace CrashEdit.CE
             UpdateWorlds();
             UpdateMusic();
             UpdateZoneFlags();
-            if (Settings.Default.EnableC2TTEditor)
-            {
-                UpdateSPLoadLists();
-            }
-            else
-            {
-                fraSpecialLoadList.Visible = false;
-            }
+            //if (Settings.Default.EnableC2TTEditor)
+            //{
+            //    UpdateSPLoadLists();
+            //}
+            //else
+            //{
+            //    fraSpecialLoadList.Visible = false;
+            //}
+            UpdateSPLoadLists();
         }
 
         private void HexInit()

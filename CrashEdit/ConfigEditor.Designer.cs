@@ -79,7 +79,7 @@ namespace CrashEdit.CE
             darkGroupBox1 = new DarkGroupBox();
             chkShowEntityParams = new CheckBox();
             tbpPatchNSD = new TabPage();
-            tbpMisc = new TabPage();
+            tbpExtra = new TabPage();
             chkIgnoreDuplicatedEntryError = new CheckBox();
             fraMiscDebug = new DarkGroupBox();
             chkOutputCopyTextureResult = new CheckBox();
@@ -115,7 +115,7 @@ namespace CrashEdit.CE
             darkGroupBox2.SuspendLayout();
             darkGroupBox1.SuspendLayout();
             tbpPatchNSD.SuspendLayout();
-            tbpMisc.SuspendLayout();
+            tbpExtra.SuspendLayout();
             fraMiscDebug.SuspendLayout();
             fraExtra.SuspendLayout();
             SuspendLayout();
@@ -527,7 +527,7 @@ namespace CrashEdit.CE
             tbcSettings.Controls.Add(tbp3D);
             tbcSettings.Controls.Add(tbpDebugDisplay);
             tbcSettings.Controls.Add(tbpPatchNSD);
-            tbcSettings.Controls.Add(tbpMisc);
+            tbcSettings.Controls.Add(tbpExtra);
             tbcSettings.Dock = DockStyle.Fill;
             tbcSettings.IsDerivedStyle = false;
             tbcSettings.ItemSize = new Size(100, 28);
@@ -779,22 +779,22 @@ namespace CrashEdit.CE
             tbpPatchNSD.TabIndex = 2;
             tbpPatchNSD.Text = "Patch NSD";
             // 
-            // tbpMisc
+            // tbpExtra
             // 
-            tbpMisc.BackColor = Color.FromArgb(31, 31, 32);
-            tbpMisc.Controls.Add(chkIgnoreDuplicatedEntryError);
-            tbpMisc.Controls.Add(fraMiscDebug);
-            tbpMisc.Controls.Add(chkEnableLegacyEntityBox);
-            tbpMisc.Controls.Add(fraExtra);
-            tbpMisc.Controls.Add(chkSplitViewerPanels);
-            tbpMisc.Controls.Add(chkLiteralCollisionTypes);
-            tbpMisc.Controls.Add(chkPatchGOOLC3toC2);
-            tbpMisc.Location = new Point(4, 32);
-            tbpMisc.Name = "tbpMisc";
-            tbpMisc.Padding = new Padding(3);
-            tbpMisc.Size = new Size(417, 381);
-            tbpMisc.TabIndex = 2;
-            tbpMisc.Text = "Misc";
+            tbpExtra.BackColor = Color.FromArgb(31, 31, 32);
+            tbpExtra.Controls.Add(chkIgnoreDuplicatedEntryError);
+            tbpExtra.Controls.Add(fraMiscDebug);
+            tbpExtra.Controls.Add(chkEnableLegacyEntityBox);
+            tbpExtra.Controls.Add(fraExtra);
+            tbpExtra.Controls.Add(chkSplitViewerPanels);
+            tbpExtra.Controls.Add(chkLiteralCollisionTypes);
+            tbpExtra.Controls.Add(chkPatchGOOLC3toC2);
+            tbpExtra.Location = new Point(4, 32);
+            tbpExtra.Name = "tbpExtra";
+            tbpExtra.Padding = new Padding(3);
+            tbpExtra.Size = new Size(417, 381);
+            tbpExtra.TabIndex = 2;
+            tbpExtra.Text = "Extra";
             // 
             // chkIgnoreDuplicatedEntryError
             // 
@@ -879,7 +879,7 @@ namespace CrashEdit.CE
             fraExtra.Size = new Size(417, 100);
             fraExtra.TabIndex = 18;
             fraExtra.TabStop = false;
-            fraExtra.Text = "CE-tweaked";
+            fraExtra.Text = "CrashEdit-tweaked feature";
             // 
             // chkEnableCustomCrates
             // 
@@ -995,8 +995,8 @@ namespace CrashEdit.CE
             darkGroupBox1.PerformLayout();
             tbpPatchNSD.ResumeLayout(false);
             tbpPatchNSD.PerformLayout();
-            tbpMisc.ResumeLayout(false);
-            tbpMisc.PerformLayout();
+            tbpExtra.ResumeLayout(false);
+            tbpExtra.PerformLayout();
             fraMiscDebug.ResumeLayout(false);
             fraMiscDebug.PerformLayout();
             fraExtra.ResumeLayout(false);
@@ -1038,7 +1038,7 @@ namespace CrashEdit.CE
         private TabPage tbp3D;
         private TabPage tbpPatchNSD;
         private TabPage tbpDebugDisplay;
-        private TabPage tbpMisc;
+        private TabPage tbpExtra;
         private CheckBox chkViewZoneBox;
         private CheckBox chkViewCameraAngle;
         private CheckBox chkViewZoneName;
