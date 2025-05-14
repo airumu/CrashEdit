@@ -158,7 +158,7 @@ namespace CrashEdit.CE
             // Height = Settings.Default.DefaultFormH;
             Load += new EventHandler(OldMainForm_Load);
             FormClosing += new FormClosingEventHandler(OldMainForm_FormClosing);
-            Text = $"CrashEdit v{Assembly.GetExecutingAssembly().GetName().Version}";
+            Text = $"CrashEdit:Re v{Assembly.GetExecutingAssembly().GetName().Version}";
 
             if (Settings.Default.ApplyMica)
             {
