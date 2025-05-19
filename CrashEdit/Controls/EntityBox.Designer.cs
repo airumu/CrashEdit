@@ -1241,7 +1241,7 @@ namespace CrashEdit.CE
             fraTTReward.Margin = new Padding(4, 3, 4, 3);
             fraTTReward.Name = "fraTTReward";
             fraTTReward.Padding = new Padding(4, 3, 4, 3);
-            fraTTReward.Size = new Size(140, 81);
+            fraTTReward.Size = new Size(150, 81);
             fraTTReward.TabIndex = 12;
             fraTTReward.TabStop = false;
             fraTTReward.Text = "Time Trial Reward";
@@ -1278,7 +1278,7 @@ namespace CrashEdit.CE
             fraOtherSettings.Margin = new Padding(4, 3, 4, 3);
             fraOtherSettings.Name = "fraOtherSettings";
             fraOtherSettings.Padding = new Padding(4, 3, 4, 3);
-            fraOtherSettings.Size = new Size(140, 81);
+            fraOtherSettings.Size = new Size(150, 81);
             fraOtherSettings.TabIndex = 10;
             fraOtherSettings.TabStop = false;
             fraOtherSettings.Text = "Other Settings";
@@ -1315,7 +1315,7 @@ namespace CrashEdit.CE
             fraScaling.Margin = new Padding(4, 3, 4, 3);
             fraScaling.Name = "fraScaling";
             fraScaling.Padding = new Padding(4, 3, 4, 3);
-            fraScaling.Size = new Size(140, 81);
+            fraScaling.Size = new Size(150, 81);
             fraScaling.TabIndex = 11;
             fraScaling.TabStop = false;
             fraScaling.Text = "Scale Modifier";
@@ -1352,7 +1352,7 @@ namespace CrashEdit.CE
             fraDDASection.Margin = new Padding(4, 3, 4, 3);
             fraDDASection.Name = "fraDDASection";
             fraDDASection.Padding = new Padding(4, 3, 4, 3);
-            fraDDASection.Size = new Size(140, 81);
+            fraDDASection.Size = new Size(150, 81);
             fraDDASection.TabIndex = 10;
             fraDDASection.TabStop = false;
             fraDDASection.Text = "DDA Section";
@@ -1389,7 +1389,7 @@ namespace CrashEdit.CE
             fraDDASettings.Margin = new Padding(4, 3, 4, 3);
             fraDDASettings.Name = "fraDDASettings";
             fraDDASettings.Padding = new Padding(4, 3, 4, 3);
-            fraDDASettings.Size = new Size(140, 81);
+            fraDDASettings.Size = new Size(150, 81);
             fraDDASettings.TabIndex = 9;
             fraDDASettings.TabStop = false;
             fraDDASettings.Text = "DDA Death Count";
@@ -1428,7 +1428,7 @@ namespace CrashEdit.CE
             fraBoxCount.Margin = new Padding(4, 3, 4, 3);
             fraBoxCount.Name = "fraBoxCount";
             fraBoxCount.Padding = new Padding(4, 3, 4, 3);
-            fraBoxCount.Size = new Size(140, 137);
+            fraBoxCount.Size = new Size(150, 137);
             fraBoxCount.TabIndex = 8;
             fraBoxCount.TabStop = false;
             fraBoxCount.Text = "Box Count";
@@ -2108,7 +2108,7 @@ namespace CrashEdit.CE
             fraAvgDist.Margin = new Padding(4, 3, 4, 3);
             fraAvgDist.Name = "fraAvgDist";
             fraAvgDist.Padding = new Padding(4, 3, 4, 3);
-            fraAvgDist.Size = new Size(140, 83);
+            fraAvgDist.Size = new Size(150, 83);
             fraAvgDist.TabIndex = 7;
             fraAvgDist.TabStop = false;
             fraAvgDist.Text = "Point Distance";
@@ -2146,7 +2146,7 @@ namespace CrashEdit.CE
             fraMode.Margin = new Padding(4, 3, 4, 3);
             fraMode.Name = "fraMode";
             fraMode.Padding = new Padding(4, 3, 4, 3);
-            fraMode.Size = new Size(140, 83);
+            fraMode.Size = new Size(150, 83);
             fraMode.TabIndex = 6;
             fraMode.TabStop = false;
             fraMode.Text = "Camera Mode";
@@ -2182,7 +2182,7 @@ namespace CrashEdit.CE
             fraCameraSubIndex.Margin = new Padding(4, 3, 4, 3);
             fraCameraSubIndex.Name = "fraCameraSubIndex";
             fraCameraSubIndex.Padding = new Padding(4, 3, 4, 3);
-            fraCameraSubIndex.Size = new Size(140, 83);
+            fraCameraSubIndex.Size = new Size(150, 83);
             fraCameraSubIndex.TabIndex = 6;
             fraCameraSubIndex.TabStop = false;
             fraCameraSubIndex.Text = "Camera Subindex";
@@ -2220,7 +2220,7 @@ namespace CrashEdit.CE
             fraCameraIndex.Margin = new Padding(4, 3, 4, 3);
             fraCameraIndex.Name = "fraCameraIndex";
             fraCameraIndex.Padding = new Padding(4, 3, 4, 3);
-            fraCameraIndex.Size = new Size(140, 83);
+            fraCameraIndex.Size = new Size(150, 83);
             fraCameraIndex.TabIndex = 5;
             fraCameraIndex.TabStop = false;
             fraCameraIndex.Text = "Camera Index";
@@ -2559,7 +2559,7 @@ namespace CrashEdit.CE
             lbEIDB.FormattingEnabled = true;
             lbEIDB.Location = new Point(7, 123);
             lbEIDB.Name = "lbEIDB";
-            lbEIDB.Size = new Size(140, 227);
+            lbEIDB.Size = new Size(150, 227);
             lbEIDB.TabIndex = 25;
             lbEIDB.SelectedIndexChanged += lbEIDB_SelectedIndexChanged;
             lbEIDB.DoubleClick += lbEIDB_DoubleClick;
@@ -2576,7 +2576,7 @@ namespace CrashEdit.CE
             txtEIDB.Margin = new Padding(4, 3, 4, 3);
             txtEIDB.MaxLength = 5;
             txtEIDB.Name = "txtEIDB";
-            txtEIDB.Size = new Size(140, 23);
+            txtEIDB.Size = new Size(150, 23);
             txtEIDB.TabIndex = 15;
             txtEIDB.TextChanged += txtEIDB_TextChanged;
             txtEIDB.LostFocus += txtEIDB_LostFocus;
@@ -2603,7 +2603,7 @@ namespace CrashEdit.CE
             cmdAppendEIDB.Margin = new Padding(4, 3, 4, 3);
             cmdAppendEIDB.Name = "cmdAppendEIDB";
             cmdAppendEIDB.Padding = new Padding(5);
-            cmdAppendEIDB.Size = new Size(140, 27);
+            cmdAppendEIDB.Size = new Size(150, 27);
             cmdAppendEIDB.TabIndex = 12;
             cmdAppendEIDB.Text = "Append";
             cmdAppendEIDB.Click += cmdAppendEIDB_Click;
@@ -2787,7 +2787,7 @@ namespace CrashEdit.CE
             lbEIDA.FormattingEnabled = true;
             lbEIDA.Location = new Point(7, 123);
             lbEIDA.Name = "lbEIDA";
-            lbEIDA.Size = new Size(140, 227);
+            lbEIDA.Size = new Size(150, 227);
             lbEIDA.TabIndex = 24;
             lbEIDA.SelectedIndexChanged += lbEIDA_SelectedIndexChanged;
             lbEIDA.DoubleClick += lbEIDA_DoubleClick;
@@ -2804,7 +2804,7 @@ namespace CrashEdit.CE
             txtEIDA.Margin = new Padding(4, 3, 4, 3);
             txtEIDA.MaxLength = 5;
             txtEIDA.Name = "txtEIDA";
-            txtEIDA.Size = new Size(140, 23);
+            txtEIDA.Size = new Size(150, 23);
             txtEIDA.TabIndex = 15;
             txtEIDA.TextChanged += txtEIDA_TextChanged;
             txtEIDA.LostFocus += txtEIDA_LostFocus;
@@ -2816,7 +2816,7 @@ namespace CrashEdit.CE
             lblEIDIndexA.Location = new Point(7, 9);
             lblEIDIndexA.Margin = new Padding(4, 0, 4, 0);
             lblEIDIndexA.Name = "lblEIDIndexA";
-            lblEIDIndexA.Size = new Size(140, 27);
+            lblEIDIndexA.Size = new Size(150, 27);
             lblEIDIndexA.TabIndex = 14;
             lblEIDIndexA.Text = "?? / ??";
             lblEIDIndexA.TextAlign = ContentAlignment.MiddleCenter;
@@ -2831,7 +2831,7 @@ namespace CrashEdit.CE
             cmdAppendEIDA.Margin = new Padding(4, 3, 4, 3);
             cmdAppendEIDA.Name = "cmdAppendEIDA";
             cmdAppendEIDA.Padding = new Padding(5);
-            cmdAppendEIDA.Size = new Size(140, 27);
+            cmdAppendEIDA.Size = new Size(150, 27);
             cmdAppendEIDA.TabIndex = 12;
             cmdAppendEIDA.Text = "Append";
             cmdAppendEIDA.Click += cmdAppendEIDA_Click;
@@ -3073,7 +3073,7 @@ namespace CrashEdit.CE
             numEntityB.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
             numEntityB.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
             numEntityB.Name = "numEntityB";
-            numEntityB.Size = new Size(140, 23);
+            numEntityB.Size = new Size(150, 23);
             numEntityB.TabIndex = 21;
             numEntityB.ValueChanged += numEntityB_ValueChanged;
             // 
@@ -3084,7 +3084,7 @@ namespace CrashEdit.CE
             lblEntityIndexB.Location = new Point(7, 9);
             lblEntityIndexB.Margin = new Padding(4, 0, 4, 0);
             lblEntityIndexB.Name = "lblEntityIndexB";
-            lblEntityIndexB.Size = new Size(140, 27);
+            lblEntityIndexB.Size = new Size(150, 27);
             lblEntityIndexB.TabIndex = 14;
             lblEntityIndexB.Text = "?? / ??";
             lblEntityIndexB.TextAlign = ContentAlignment.MiddleCenter;
@@ -3099,7 +3099,7 @@ namespace CrashEdit.CE
             cmdAppendEntityB.Margin = new Padding(4, 3, 4, 3);
             cmdAppendEntityB.Name = "cmdAppendEntityB";
             cmdAppendEntityB.Padding = new Padding(5);
-            cmdAppendEntityB.Size = new Size(140, 27);
+            cmdAppendEntityB.Size = new Size(150, 27);
             cmdAppendEntityB.TabIndex = 12;
             cmdAppendEntityB.Text = "Append";
             cmdAppendEntityB.Click += cmdAppendEntityB_Click;
@@ -3287,7 +3287,7 @@ namespace CrashEdit.CE
             numEntityA.Maximum = new decimal(new int[] { 32767, 0, 0, 0 });
             numEntityA.Minimum = new decimal(new int[] { 32768, 0, 0, int.MinValue });
             numEntityA.Name = "numEntityA";
-            numEntityA.Size = new Size(140, 23);
+            numEntityA.Size = new Size(150, 23);
             numEntityA.TabIndex = 21;
             numEntityA.ValueChanged += numEntityA_ValueChanged;
             // 
@@ -3298,7 +3298,7 @@ namespace CrashEdit.CE
             lblEntityIndexA.Location = new Point(7, 9);
             lblEntityIndexA.Margin = new Padding(4, 0, 4, 0);
             lblEntityIndexA.Name = "lblEntityIndexA";
-            lblEntityIndexA.Size = new Size(140, 27);
+            lblEntityIndexA.Size = new Size(150, 27);
             lblEntityIndexA.TabIndex = 14;
             lblEntityIndexA.Text = "?? / ??";
             lblEntityIndexA.TextAlign = ContentAlignment.MiddleCenter;
@@ -3313,7 +3313,7 @@ namespace CrashEdit.CE
             cmdAppendEntityA.Margin = new Padding(4, 3, 4, 3);
             cmdAppendEntityA.Name = "cmdAppendEntityA";
             cmdAppendEntityA.Padding = new Padding(5);
-            cmdAppendEntityA.Size = new Size(140, 27);
+            cmdAppendEntityA.Size = new Size(150, 27);
             cmdAppendEntityA.TabIndex = 12;
             cmdAppendEntityA.Text = "Append";
             cmdAppendEntityA.Click += cmdAppendEntityA_Click;

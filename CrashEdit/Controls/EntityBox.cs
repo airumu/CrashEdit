@@ -44,6 +44,11 @@ namespace CrashEdit.CE
         private DarkToolTip tipEntityA;
         private DarkToolTip tipEntityB;
 
+        private Label lblHelpBoxCount;
+        private Label lblHelpBonusBoxCount;
+        private DarkToolTip tipBoxCount;
+        private DarkToolTip tipBonusBoxCount;
+
         internal Stack<bool> dirty = new Stack<bool>();
         internal bool Dirty => dirty.Count > 0 && dirty.Peek();
 
@@ -259,6 +264,26 @@ namespace CrashEdit.CE
                 }
             };
             tbcTabs.SelectedIndexChanged += tabChangedHandler;
+
+            tipBoxCount = new DarkToolTip();
+            tipBonusBoxCount = new DarkToolTip();
+
+            lblHelpBoxCount = new Label();
+            lblHelpBoxCount.Text = "(?)";
+            lblHelpBoxCount.AutoSize = true;
+            lblHelpBoxCount.Location = new Point(chkBoxCount.Right + 4, chkBoxCount.Top);
+            lblHelpBoxCount.Cursor = Cursors.Help;
+            fraBoxCount.Controls.Add(lblHelpBoxCount);
+
+            lblHelpBonusBoxCount = new Label();
+            lblHelpBonusBoxCount.Text = "(?)";
+            lblHelpBonusBoxCount.AutoSize = true;
+            lblHelpBonusBoxCount.Location = new Point(chkBonusBoxCount.Right + 4, chkBonusBoxCount.Top);
+            lblHelpBonusBoxCount.Cursor = Cursors.Help;
+            fraBoxCount.Controls.Add(lblHelpBonusBoxCount);
+
+            tipBoxCount.SetToolTip(lblHelpBoxCount, "c2export rebuild_dl: \nposition override ID\nWhen making draw lists,\nuses position of other entity\n(must be from same zone).");
+            tipBonusBoxCount.SetToolTip(lblHelpBonusBoxCount, "c2export rebuild_dl: \ndistance multiplier\nWhen making draw lists,\nallowed distance is\nmultipled by this / 100.");
         }
 
         public EntityBox(EntityController controller)
