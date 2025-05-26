@@ -111,6 +111,9 @@ namespace CrashEdit.CE
             chkApplyMica.Checked = Settings.Default.ApplyMica;
             chkIgnoreDuplicatedEntryError.Checked = Settings.Default.IgnoreDuplicatedEntryError;
             chkShowRenderingErrors.Checked = Settings.Default.ShowRenderingErrors;
+            chkShowUndockButton.Checked = Settings.Default.ShowUndockButton;
+            chkShowRefresh.Checked = Settings.Default.ShowRefreshButton;
+            chkShowRebuild.Checked = Settings.Default.ShowRebuildUI;
 
             // chk.Enabled
             chkViewCameraAngle.Enabled = chkViewCamera.Checked;
@@ -358,6 +361,27 @@ namespace CrashEdit.CE
         {
             Settings.Default.EnableCustomCrates = chkEnableCustomCrates.Checked;
             Settings.Default.Save();
+        }
+
+        private void chkShowRefresh_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.ShowRefreshButton = chkShowRefresh.Checked;
+            Settings.Default.Save();
+            ((OldMainForm)TopLevelControl)?.UpdateToolbarButtonsVisibility();
+        }
+
+        private void chkEnableC2Rebuild_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.ShowRebuildUI = chkShowRebuild.Checked;
+            Settings.Default.Save();
+            ((OldMainForm)TopLevelControl)?.UpdateToolbarButtonsVisibility();
+        }
+
+        private void chkShowUndockButton_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.ShowUndockButton = chkShowUndockButton.Checked;            
+            Settings.Default.Save();
+            ((OldMainForm)TopLevelControl)?.UpdateToolbarButtonsVisibility();
         }
 
         private void chkEnableC2TT_CheckedChanged(object sender, EventArgs e)

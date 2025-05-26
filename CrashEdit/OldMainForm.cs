@@ -17,6 +17,9 @@ namespace CrashEdit.CE
         private ToolStripButton tbbSave = new();
         private ToolStripButton tbbPatchNSD = new();
         private ToolStripButton tbbClose = new();
+        private ToolStripButton tbbUndock = new();
+        private ToolStripButton tbbReload = new();
+        private ToolStripButton tbbRebuild = new();
         private ToolStripButton tbbPlay = new();
         private ToolStripButton tbbBIN = new();
         private ToolStripButton tbbPAL = new();
@@ -37,6 +40,7 @@ namespace CrashEdit.CE
 
         private EntryConverterForm? frmEntryConverter;
         private MakeBin? frmMakebin;
+        private RebuildForm? frmRebuild;
         private VABTool? frmVABTool;
         private DarkForm? frmGenerateEID;
 
@@ -57,6 +61,15 @@ namespace CrashEdit.CE
 
             ToolStripButtonInit(tbbClose, "Folder", Resources.Toolbar_Close, $"{Resources.Toolbar_Close} (Ctrl + W)");
             tbbClose.Click += new EventHandler(tbbClose_Click);
+
+            ToolStripButtonInit(tbbUndock, "Anchor", Resources.Toolbar_Undock, $"{Resources.Toolbar_Undock} (Ctrl + D)");
+            tbbUndock.Click += new EventHandler(tbbUndock_Click);
+
+            ToolStripButtonInit(tbbReload, "ArrowRefresh", Resources.Toolbar_Reload, $"{Resources.Toolbar_Reload} NSF (Ctrl + R)");
+            tbbReload.Click += new EventHandler(tbbReload_Click);            
+
+            ToolStripButtonInit(tbbRebuild, "Wrench", Resources.Toolbar_Rebuild, $"{Resources.Toolbar_Rebuild} NSF using c2export");
+            tbbRebuild.Click += new EventHandler(tbbRebuild_Click);
 
             ToolStripButtonInit(tbbPAL, "Earth", Resources.Toolbar_PAL, Resources.Toolbar_PAL);
             tbbPAL.CheckOnClick = true;
@@ -95,6 +108,7 @@ namespace CrashEdit.CE
             tbxVABTool.Click += new EventHandler(tbxVABTool_Click);
 
             tbbExtra.Text = Resources.OldMainForm_tbbExtra;
+            tbbExtra.ToolTipText = "Extra features";
             tbbExtra.ImageKey = "Dropdown";
             tbbExtra.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText;
             tbbExtra.TextImageRelation = TextImageRelation.TextBeforeImage;
@@ -110,7 +124,7 @@ namespace CrashEdit.CE
             tbbExtra.DropDown.Items.Add(tbxVABTool);
             tbbExtra.DropDown.Items.Add("-");
             tbbExtra.DropDown.Items.Add(tbxGenerateEID);
-
+          
             ToolStrip.Items.Insert(0, tbbOpen);
             ToolStrip.Items.Insert(1, tbbSave);
             ToolStrip.Items.Insert(2, tbbPatchNSD);
@@ -121,6 +135,9 @@ namespace CrashEdit.CE
             ToolStrip.Items.Insert(7, new ToolStripSeparator());
             ToolStrip.Items.Insert(8, tbbBIN);
             ToolStrip.Items.Insert(9, new ToolStripSeparator());
+            ToolStrip.Items.Insert(10, tbbUndock);
+            ToolStrip.Items.Insert(11, tbbReload);
+            ToolStrip.Items.Add(tbbRebuild);
             ToolStrip.Items.Add(tbbExtra);
 
             tbcTabs = TabControl;
@@ -133,6 +150,8 @@ namespace CrashEdit.CE
             configtab.Controls.Add((ConfigEditor)configtab.Tag);
 
             tbcTabs.TabPages.Add(configtab);
+
+            UpdateToolbarButtonsVisibility();
 
             tbcTabs_SelectedIndexChanged(null, null);
 
@@ -150,6 +169,7 @@ namespace CrashEdit.CE
 
             frmEntryConverter = null;
             frmMakebin = null;
+            frmRebuild = null;
             frmVABTool = null;
             frmGenerateEID = null;
 
@@ -169,6 +189,13 @@ namespace CrashEdit.CE
                 // This must be a color that never used in the other controls
                 BackColor = Color.FromArgb(29, 30, 31);
             }
+        }
+        
+        public void UpdateToolbarButtonsVisibility()
+        {   
+            tbbReload.Visible = Settings.Default.ShowRefreshButton;
+            tbbUndock.Visible = Settings.Default.ShowUndockButton;
+            tbbRebuild.Visible = Settings.Default.ShowRebuildUI;
         }
 
         public void ToolStripButtonInit(ToolStripButton tbb, string imageKey, string text, string tooltip)
@@ -204,6 +231,10 @@ namespace CrashEdit.CE
                 case (Keys.F1):
                     ToolStrip.Items[6].PerformClick();
                     break;
+                // Reload NSF
+                case (Keys.Control | Keys.R):
+                    ToolStrip.Items[11].PerformClick();
+                    break;
             }
 
             return base.ProcessCmdKey(ref msg, keyData);
@@ -215,6 +246,9 @@ namespace CrashEdit.CE
             tbbSave.Enabled =
             tbbPatchNSD.Enabled =
             tbbClose.Enabled =
+            tbbUndock.Enabled =
+            tbbReload.Enabled =
+            tbbRebuild.Enabled =            
             tbbPlay.Enabled = tab != null && tab.Tag is NSFBox;
         }
 
@@ -366,6 +400,34 @@ namespace CrashEdit.CE
         void tbbClose_Click(object sender, EventArgs e)
         {
             CloseNSF();
+        }
+
+        void tbbUndock_Click(object sender, EventArgs e)
+        {
+            var undock_command = new UndockCommand(this);
+            undock_command.Execute();
+        }
+        void tbbReload_Click(object sender, EventArgs e)
+        {
+            bool canReopen = false;
+            string filename = "";
+
+            if (tbcTabs.SelectedTab != null)
+            {
+                filename = tbcTabs.SelectedTab.Text;
+                canReopen = true;
+            }
+
+            bool did_close = CloseNSF();
+            if (canReopen && did_close)
+            {
+                OpenNSF(filename);                
+            }
+        }
+
+        void tbbRebuild_Click(object sender, EventArgs e)
+        {
+            ShowRebuildForm();
         }
 
         public void OpenNSF()
@@ -830,7 +892,7 @@ namespace CrashEdit.CE
             }
         }
 
-        public void CloseNSF()
+        public bool CloseNSF()
         {
             string filename = tbcTabs.SelectedTab.Text;
             NSFBox nsfbox = (NSFBox)tbcTabs.SelectedTab.Tag;
@@ -853,8 +915,10 @@ namespace CrashEdit.CE
                     tab.Tag = null;
                     tbcTabs.TabPages.Remove(tab);
                     tab.Dispose();
+                    return true;
                 }
             }
+            return false;
         }
 
         private void bgwMakeBIN_DoWork(object sender, DoWorkEventArgs e)
@@ -906,6 +970,17 @@ namespace CrashEdit.CE
                 frmMakebin.Show();
             else
                 frmMakebin.Activate();
+        }
+
+        void ShowRebuildForm()
+        {
+            if (frmRebuild == null || frmRebuild.IsDisposed)
+                frmRebuild = new RebuildForm(this);
+
+            if (!frmRebuild.Visible)
+                frmRebuild.Show();
+            else
+                frmRebuild.Activate();
         }
 
         void tbbBIN_Click(object sender, EventArgs e)

@@ -562,5 +562,66 @@ namespace CrashEdit.CE.Properties {
                 this["ShowRenderingErrors"] = value;
             }
         }
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("c2export.exe")]
+
+        public string C2ExportPath
+        {
+            get
+            {
+                return ((string)(this["C2ExportPath"]));
+            }
+            set
+            {
+                this["C2ExportPath"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+
+        public bool ShowRebuildUI
+        {
+            get {
+                return ((bool)(this["ShowRebuildUI"]));
+            }
+            set {
+                this["ShowRebuildUI"] = value;
+            }
+        }       
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+
+        public bool ShowUndockButton
+        {
+            get
+            {
+                return ((bool)(this["ShowUndockButton"]));
+            }
+            set
+            {
+                this["ShowUndockButton"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+
+        public bool ShowRefreshButton
+        {
+            get
+            {
+                return ((bool)(this["ShowRefreshButton"]));
+            }
+            set
+            {
+                this["ShowRefreshButton"] = value;
+            }
+        }
     }
 }

@@ -87,9 +87,13 @@ namespace CrashEdit.CE
             chkOutputModelTextureInfo = new CheckBox();
             chkEnableLegacyEntityBox = new CheckBox();
             fraExtra = new DarkGroupBox();
+            fraUICtrls = new DarkGroupBox();
             chkEnableCustomCrates = new CheckBox();
             chkLagacyPatchNSD = new CheckBox();
             chkEnableC2TT = new CheckBox();
+            chkShowRebuild = new CheckBox();
+            chkShowUndockButton = new CheckBox();
+            chkShowRefresh = new CheckBox();
             chkSplitViewerPanels = new CheckBox();
             chkLiteralCollisionTypes = new CheckBox();
             chkPatchGOOLC3toC2 = new CheckBox();
@@ -118,6 +122,7 @@ namespace CrashEdit.CE
             tbpExtra.SuspendLayout();
             fraMiscDebug.SuspendLayout();
             fraExtra.SuspendLayout();
+            fraUICtrls.SuspendLayout();
             SuspendLayout();
             // 
             // tableLayoutPanel4
@@ -786,6 +791,7 @@ namespace CrashEdit.CE
             tbpExtra.Controls.Add(fraMiscDebug);
             tbpExtra.Controls.Add(chkEnableLegacyEntityBox);
             tbpExtra.Controls.Add(fraExtra);
+            tbpExtra.Controls.Add(fraUICtrls);
             tbpExtra.Controls.Add(chkSplitViewerPanels);
             tbpExtra.Controls.Add(chkLiteralCollisionTypes);
             tbpExtra.Controls.Add(chkPatchGOOLC3toC2);
@@ -879,7 +885,7 @@ namespace CrashEdit.CE
             fraExtra.Size = new Size(417, 100);
             fraExtra.TabIndex = 18;
             fraExtra.TabStop = false;
-            fraExtra.Text = "CrashEdit-tweaked feature";
+            fraExtra.Text = "CrashEdit-tweaked features";
             // 
             // chkEnableCustomCrates
             // 
@@ -914,6 +920,54 @@ namespace CrashEdit.CE
             chkEnableC2TT.Text = "Enable Crash 2 time trial editor";
             chkEnableC2TT.UseVisualStyleBackColor = true;
             chkEnableC2TT.CheckedChanged += chkEnableC2TT_CheckedChanged;
+
+            //
+            // fraUICtrls
+            //
+            fraUICtrls.BackColor = Color.Transparent;
+            fraUICtrls.Controls.Add(chkShowRebuild);
+            fraUICtrls.Controls.Add(chkShowUndockButton);
+            fraUICtrls.Controls.Add(chkShowRefresh);
+            fraUICtrls.Location = new Point(0, 345);
+            fraUICtrls.Name = "fraUICtrls";
+            fraUICtrls.Size = new Size(417, 100);
+            fraUICtrls.TabIndex = 25;
+            fraUICtrls.TabStop = false;
+            fraUICtrls.Text = "Toolbar UI customization";
+            //
+            // chkShowUndockButton
+            //
+            chkShowUndockButton.AutoSize = true;
+            chkShowUndockButton.Location = new Point(6, 22);
+            chkShowUndockButton.Name = "chkShowUndockButton";
+            chkShowUndockButton.Size = new Size(380, 19);
+            chkShowUndockButton.TabIndex = 22;
+            chkShowUndockButton.Text = "Show Undock button in toolbar";
+            chkShowUndockButton.UseVisualStyleBackColor = true;
+            chkShowUndockButton.CheckedChanged += chkShowUndockButton_CheckedChanged;
+            // 
+            // chkShowRefresh
+            //
+            chkShowRefresh.AutoSize = true;
+            chkShowRefresh.Location = new Point(6, 47);
+            chkShowRefresh.Name = "chkShowRefresh";
+            chkShowRefresh.Size = new Size(380, 19);
+            chkShowRefresh.TabIndex = 23;
+            chkShowRefresh.Text = "Show Reload button in toolbar";
+            chkShowRefresh.UseVisualStyleBackColor = true;
+            chkShowRefresh.CheckedChanged += chkShowRefresh_CheckedChanged;
+            //
+            // chkEnableC2Rebuild
+            //
+            chkShowRebuild.AutoSize = true;
+            chkShowRebuild.Location = new Point(6, 72);
+            chkShowRebuild.Name = "chkEnableC2Rebuild";
+            chkShowRebuild.Size = new Size(380, 19);
+            chkShowRebuild.TabIndex = 24;
+            chkShowRebuild.Text = "Show Rebuild (c2export) buttons in toolbar";
+            chkShowRebuild.UseVisualStyleBackColor = true;
+            chkShowRebuild.CheckedChanged += chkEnableC2Rebuild_CheckedChanged;
+
             // 
             // chkSplitViewerPanels
             // 
@@ -1049,9 +1103,13 @@ namespace CrashEdit.CE
         private CheckBox chkLiteralCollisionTypes;
         private CheckBox chkEnableCustomCrates;
         private CheckBox chkEnableC2TT;
+        private CheckBox chkShowRebuild;
+        private CheckBox chkShowUndockButton;
+        private CheckBox chkShowRefresh;
         private CheckBox chkPatchGOOLC3toC2;
         private CheckBox chkSplitViewerPanels;
         private DarkGroupBox fraExtra;
+        private DarkGroupBox fraUICtrls;
         private DarkButton cmdHelp;
         private DarkGroupBox darkGroupBox2;
         private DarkGroupBox darkGroupBox1;

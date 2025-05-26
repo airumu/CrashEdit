@@ -36,16 +36,7 @@ namespace CrashEdit
             {
                 ImageList = Embeds.ImageList
             };
-            Controls.Add(ToolStrip);
-
-            // Toolbar -> Undock
-            ToolStrip.Items.Add(new ToolStripCommandButton
-            {
-                ToolTipText = "Undock (Ctrl + D)",
-                DisplayStyle = ToolStripItemDisplayStyle.ImageAndText,
-                TextImageRelation = TextImageRelation.ImageAboveText,
-                Command = new UndockCommand(this)
-            });
+            Controls.Add(ToolStrip);            
 
             // Right-side toolbar items below -- they must be added in
             // reverse order (i.e. right to left) !
