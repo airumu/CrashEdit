@@ -97,6 +97,8 @@ namespace CrashEdit.CE
             chkSplitViewerPanels = new CheckBox();
             chkLiteralCollisionTypes = new CheckBox();
             chkPatchGOOLC3toC2 = new CheckBox();
+            boxRecentNSF = new DarkGroupBox();
+            lstRecentNSF = new System.Windows.Forms.ListBox();
             tableLayoutPanel4 = new TableLayoutPanel();
             tableLayoutPanel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numFontSize).BeginInit();
@@ -118,6 +120,7 @@ namespace CrashEdit.CE
             darkGroupBox3.SuspendLayout();
             darkGroupBox2.SuspendLayout();
             darkGroupBox1.SuspendLayout();
+            boxRecentNSF.SuspendLayout();
             tbpPatchNSD.SuspendLayout();
             tbpExtra.SuspendLayout();
             fraMiscDebug.SuspendLayout();
@@ -551,6 +554,18 @@ namespace CrashEdit.CE
             tbcSettings.UnselectedTextColor = Color.Gray;
             tbcSettings.UseAnimation = false;
             // 
+            // chkAllowMultiopenNSF
+            // 
+            chkAllowMultiopenNSF = new CheckBox();
+            chkAllowMultiopenNSF.AutoSize = true;
+            chkAllowMultiopenNSF.Location = new Point(3, 175); // Adjust Y as needed to fit above boxRecentNSF
+            chkAllowMultiopenNSF.Name = "chkAllowMultiopenNSF";
+            chkAllowMultiopenNSF.Size = new Size(220, 19);
+            chkAllowMultiopenNSF.TabIndex = 30;
+            chkAllowMultiopenNSF.Text = "Allow opening the same NSF multiple times";
+            chkAllowMultiopenNSF.UseVisualStyleBackColor = true;
+            chkAllowMultiopenNSF.CheckedChanged += chkAllowMultiopenNSF_CheckedChanged;
+            // 
             // tbpGeneral
             // 
             tbpGeneral.BackColor = Color.FromArgb(31, 31, 32);
@@ -560,12 +575,39 @@ namespace CrashEdit.CE
             tbpGeneral.Controls.Add(fraLang);
             tbpGeneral.Controls.Add(cmdReset);
             tbpGeneral.Controls.Add(fraSize);
+            tbpGeneral.Controls.Add(chkAllowMultiopenNSF);
             tbpGeneral.Location = new Point(4, 32);
             tbpGeneral.Name = "tbpGeneral";
             tbpGeneral.Padding = new Padding(3);
-            tbpGeneral.Size = new Size(417, 381);
+            tbpGeneral.Size = new Size(717, 381);
             tbpGeneral.TabIndex = 0;
             tbpGeneral.Text = "General";
+            // 
+            // lstRecentNSF
+            //
+            lstRecentNSF.BorderStyle = BorderStyle.None;
+            lstRecentNSF.BackColor = Color.FromArgb(31, 31, 32);
+            lstRecentNSF.Name = "lstRecentNSF";
+            lstRecentNSF.Width = boxRecentNSF.Width - 16;
+            lstRecentNSF.Height = 160;
+            lstRecentNSF.Cursor = Cursors.Hand;
+            lstRecentNSF.Location = new Point(8, 15);
+            lstRecentNSF.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            lstRecentNSF.Click += lstRecentNSF_Click;
+            lstRecentNSF.DrawMode = DrawMode.OwnerDrawFixed;
+            lstRecentNSF.DrawItem += lstRecentNSF_DrawItem;
+            // 
+            // boxRecentNSF
+            //
+            boxRecentNSF = new DarkGroupBox();
+            boxRecentNSF.BackColor = Color.Transparent;
+            boxRecentNSF.Controls.Add(lstRecentNSF);
+            boxRecentNSF.Location = new Point(3, 200);
+            boxRecentNSF.Name = "boxRecentNSF";
+            boxRecentNSF.Size = new Size(tbpGeneral.Width - 6, 180);
+            boxRecentNSF.TabStop = false;
+            boxRecentNSF.Text = "Recent files";
+            tbpGeneral.Controls.Add(boxRecentNSF);
             // 
             // fraHexView
             // 
@@ -964,7 +1006,7 @@ namespace CrashEdit.CE
             chkShowRebuild.Name = "chkEnableC2Rebuild";
             chkShowRebuild.Size = new Size(380, 19);
             chkShowRebuild.TabIndex = 24;
-            chkShowRebuild.Text = "Show Rebuild (c2export) buttons in toolbar";
+            chkShowRebuild.Text = "Show Rebuild (c2export) button in toolbar";
             chkShowRebuild.UseVisualStyleBackColor = true;
             chkShowRebuild.CheckedChanged += chkEnableC2Rebuild_CheckedChanged;
 
@@ -1124,5 +1166,8 @@ namespace CrashEdit.CE
         private DarkComboBox dpdHexView;
         private DarkGroupBox fraHexView;
         private CheckBox chkShowRenderingErrors;
+        private System.Windows.Forms.ListBox lstRecentNSF;
+        private DarkGroupBox boxRecentNSF;
+        private CheckBox chkAllowMultiopenNSF;
     }
 }

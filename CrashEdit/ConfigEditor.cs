@@ -12,6 +12,8 @@ namespace CrashEdit.CE
         private static readonly List<string> FontExtensions = new() { ".ttf", ".otf" };
 
         public HelpWindow? frmhelp = null;
+        private OldMainForm owner = null;
+        private System.Windows.Forms.Timer recentNSFTimer;
 
         private void MakeFontsList()
         {
@@ -49,9 +51,23 @@ namespace CrashEdit.CE
             }
         }
 
-        public ConfigEditor()
+        public void UpdateRecentNSFList()
         {
+            lstRecentNSF.Items.Clear();
+            foreach (string file in Settings.Default.RecentNSFFiles)
+                lstRecentNSF.Items.Add(file);
+        }
+
+        public ConfigEditor(OldMainForm ow)
+        {
+            owner = ow;
             InitializeComponent();
+            UpdateRecentNSFList();
+            recentNSFTimer = new System.Windows.Forms.Timer();
+            recentNSFTimer.Interval = 5000;
+            recentNSFTimer.Tick += (s, e) => RecentNSFTimer_Tick();
+            recentNSFTimer.Start();
+
             // note: if language data is not found, this will just grab the english name. TODO fix this
             foreach (string lang in Languages)
             {
@@ -114,6 +130,7 @@ namespace CrashEdit.CE
             chkShowUndockButton.Checked = Settings.Default.ShowUndockButton;
             chkShowRefresh.Checked = Settings.Default.ShowRefreshButton;
             chkShowRebuild.Checked = Settings.Default.ShowRebuildUI;
+            chkAllowMultiopenNSF.Checked = Settings.Default.AllowMultiopenNSF;
 
             // chk.Enabled
             chkViewCameraAngle.Enabled = chkViewCamera.Checked;
@@ -379,7 +396,7 @@ namespace CrashEdit.CE
 
         private void chkShowUndockButton_CheckedChanged(object sender, EventArgs e)
         {
-            Settings.Default.ShowUndockButton = chkShowUndockButton.Checked;            
+            Settings.Default.ShowUndockButton = chkShowUndockButton.Checked;
             Settings.Default.Save();
             ((OldMainForm)TopLevelControl)?.UpdateToolbarButtonsVisibility();
         }
@@ -456,5 +473,84 @@ namespace CrashEdit.CE
             Settings.Default.ShowRenderingErrors = chkShowRenderingErrors.Checked;
             Settings.Default.Save();
         }
+
+        private void lstRecentNSF_Click(object sender, EventArgs e)
+        {
+            if (lstRecentNSF.SelectedItem is string filename && File.Exists(filename))
+            {
+                ((OldMainForm)owner).OpenNSF(filename);
+            }
+        }
+        private void lstRecentNSF_DrawItem(object? sender, DrawItemEventArgs e)
+        {
+            if (e.Index < 0 || e.Index >= lstRecentNSF.Items.Count)
+                return;
+
+            string? path = lstRecentNSF.Items[e.Index] as string;
+            bool exists = path != null && File.Exists(path);
+
+            // Determine colors and font
+            Color foreColor;
+            Color backColor;
+            Font font = e.Font;
+
+            if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
+            {
+                backColor = SystemColors.Highlight;
+                if (exists)
+                {
+                    foreColor = Color.White;
+                    font = new Font(e.Font, FontStyle.Underline);
+                }
+                else
+                {
+                    foreColor = SystemColors.GrayText;
+                }
+            }
+            else
+            {
+                backColor = lstRecentNSF.BackColor;
+                if (exists)
+                {
+                    foreColor = Color.DeepSkyBlue; // Lighter blue for dark backgrounds
+                    font = new Font(e.Font, FontStyle.Underline);
+                }
+                else
+                {
+                    foreColor = SystemColors.GrayText;
+                }
+            }
+
+            using (SolidBrush backgroundBrush = new SolidBrush(backColor))
+            {
+                e.Graphics.FillRectangle(backgroundBrush, e.Bounds);
+            }
+            using (Brush brush = new SolidBrush(foreColor))
+            {
+                e.Graphics.DrawString(
+                    path ?? string.Empty,
+                    font,
+                    brush,
+                    e.Bounds
+                );
+            }
+            e.DrawFocusRectangle();
+
+            // Dispose the custom font if created
+            if (!ReferenceEquals(font, e.Font))
+                font.Dispose();
+        }
+
+        private void RecentNSFTimer_Tick()
+        {
+            lstRecentNSF.Refresh();
+        }
+
+        private void chkAllowMultiopenNSF_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.AllowMultiopenNSF = chkAllowMultiopenNSF.Checked;
+            Settings.Default.Save();
+        }
+
     }
 }

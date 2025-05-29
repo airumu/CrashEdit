@@ -598,12 +598,10 @@ namespace CrashEdit.CE.Properties {
 
         public bool ShowUndockButton
         {
-            get
-            {
+            get {
                 return ((bool)(this["ShowUndockButton"]));
             }
-            set
-            {
+            set {
                 this["ShowUndockButton"] = value;
             }
         }
@@ -614,13 +612,38 @@ namespace CrashEdit.CE.Properties {
 
         public bool ShowRefreshButton
         {
-            get
-            {
+            get {
                 return ((bool)(this["ShowRefreshButton"]));
             }
-            set
-            {
+            set {
                 this["ShowRefreshButton"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SettingsSerializeAs(global::System.Configuration.SettingsSerializeAs.Xml)]
+        public global::System.Collections.Specialized.StringCollection RecentNSFFiles
+        {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["RecentNSFFiles"]));
+            }
+            set {
+                this["RecentNSFFiles"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+
+        public bool AllowMultiopenNSF
+        {
+            get {
+                return ((bool)(this["AllowMultiopenNSF"]));
+            }
+            set {
+                this["AllowMultiopenNSF"] = value;
             }
         }
     }

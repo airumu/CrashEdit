@@ -1,21 +1,21 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
-using System.Media;
 using System.Text;
 using System.Text.RegularExpressions;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
-using DiscUtils.Iso9660;
 
 namespace CrashEdit.CE.Forms
 {
     public partial class RebuildForm : DarkForm
     {
         private OldMainForm owner;
-        private string configFilePath = string.Empty;
+        public string configFilePath { get; set; }
 
         private OpenFileDialog dlgOpenFileCfg = new OpenFileDialog();
         private OpenFileDialog dlgOpenFileExe = new OpenFileDialog();
+        private FolderBrowserDialog dlgWorkingDir = new FolderBrowserDialog();
+        private string workingDirectory = string.Empty;
 
         private System.Windows.Forms.Timer checkArgsTimer;
 
@@ -39,7 +39,7 @@ namespace CrashEdit.CE.Forms
 
             // Timer to check arguments every second
             checkArgsTimer = new System.Windows.Forms.Timer();
-            checkArgsTimer.Interval = 1000; // 1 second
+            checkArgsTimer.Interval = 2000;
             checkArgsTimer.Tick += (s, e) => CheckArgsValid();
             checkArgsTimer.Start();
 
@@ -52,20 +52,39 @@ namespace CrashEdit.CE.Forms
             warningLabel.Text = txt;
         }
 
+        public void UpdateConfigPath(string new_path)
+        {
+            configFilePath = new_path;
+            labelPathCfgValue.Text = configFilePath;
+            labelPathCfgValue.ForeColor = Color.White;
+            CheckArgsValid();
+        }
+
         private void CheckArgsValid()
         {
+            btnEditConfig.Enabled = !(string.IsNullOrEmpty(configFilePath) ||
+                                        !File.Exists(configFilePath));
+
             // make sure both c2export path and config file path are existing files
-            if (string.IsNullOrEmpty(Settings.Default.C2ExportPath) || !System.IO.File.Exists(Settings.Default.C2ExportPath))
+            if (string.IsNullOrEmpty(Settings.Default.C2ExportPath) || !File.Exists(Settings.Default.C2ExportPath))
             {
                 btnRebuild.Enabled = false;
-                ShowWarning("c2export path is not valid");
+                ShowWarning("Path to c2export exe is not valid");
                 return;
             }
 
-            if (string.IsNullOrEmpty(configFilePath) || !System.IO.File.Exists(configFilePath))
+            if (string.IsNullOrEmpty(configFilePath) || !File.Exists(configFilePath))
             {
                 btnRebuild.Enabled = false;
-                ShowWarning("Config file path is not valid");
+                ShowWarning("Path to rebuild arguments is not valid");
+                return;
+            }
+
+            // make sure working directory is either valid or empty
+            if (!string.IsNullOrEmpty(workingDirectory) && !Directory.Exists(workingDirectory))
+            {
+                btnRebuild.Enabled = false;
+                ShowWarning("Working directory is not valid");
                 return;
             }
 
@@ -77,21 +96,23 @@ namespace CrashEdit.CE.Forms
         {
             var filename = owner.TabControl.SelectedTab?.Text;
             labelPathCfgValue.Text = "No config file autodetected";
+            labelPathCfgValue.ForeColor = Color.Yellow;
             if (string.IsNullOrEmpty(filename))
                 return;
 
-            var parentPath = System.IO.Path.GetDirectoryName(filename);
+            var parentPath = Path.GetDirectoryName(filename);
             if (string.IsNullOrEmpty(parentPath))
                 return;
 
-            var files = System.IO.Directory.GetFiles(parentPath, "*.txt", System.IO.SearchOption.TopDirectoryOnly)
-                .Where(f => Regex.IsMatch(System.IO.Path.GetFileName(f), @"(args|rebuild|rebuilt)", RegexOptions.IgnoreCase))
-                .ToList();
+            var file = Directory.GetFiles(parentPath, "*.txt", SearchOption.TopDirectoryOnly)
+                .Where(f => Regex.IsMatch(Path.GetFileName(f), @"(args|rebuild|rebuilt)", RegexOptions.IgnoreCase))
+                .FirstOrDefault<string>();
 
-            if (files.Count > 0)
+            if (!string.IsNullOrEmpty(file))
             {
-                configFilePath = files[0];
+                configFilePath = file;
                 labelPathCfgValue.Text = configFilePath;
+                labelPathCfgValue.ForeColor = Color.White;
             }
         }
 
@@ -101,6 +122,7 @@ namespace CrashEdit.CE.Forms
             {
                 configFilePath = dlgOpenFileCfg.FileName;
                 labelPathCfgValue.Text = configFilePath;
+                labelPathCfgValue.ForeColor = Color.White;
             }
             CheckArgsValid();
         }
@@ -126,7 +148,7 @@ namespace CrashEdit.CE.Forms
             string fileContent;
             try
             {
-                fileContent = System.IO.File.ReadAllText(configFilePath, Encoding.UTF8);
+                fileContent = File.ReadAllText(configFilePath, Encoding.UTF8);
             }
             catch (Exception)
             {
@@ -141,8 +163,9 @@ namespace CrashEdit.CE.Forms
                 return;
             }
 
-            fileContent += "\n";
-            fileContent += "kill\n";
+            fileContent += Environment.NewLine;
+            fileContent += "kill";
+            fileContent += Environment.NewLine;
 
             var process = new Process
             {
@@ -153,14 +176,17 @@ namespace CrashEdit.CE.Forms
                     RedirectStandardOutput = true,
                     UseShellExecute = false,
                     CreateNoWindow = true,
-                    WorkingDirectory = System.IO.Path.GetDirectoryName(Settings.Default.C2ExportPath)
+                    WorkingDirectory = !string.IsNullOrEmpty(workingDirectory)
+                                            ? workingDirectory
+                                            : Path.GetDirectoryName(Settings.Default.C2ExportPath)
                 },
                 EnableRaisingEvents = true
             };
 
-            outputLog.Text += "Running c2export with config file:";
-            outputLog.Text += Environment.NewLine + configFilePath + Environment.NewLine + Environment.NewLine;
-            outputLog.Text += fileContent + Environment.NewLine + Environment.NewLine + Environment.NewLine;
+            outputLog.Text += "Running c2export with config file:" + Environment.NewLine;
+            outputLog.Text += configFilePath + Environment.NewLine + Environment.NewLine;
+            outputLog.Text += "File content:" + Environment.NewLine;
+            outputLog.Text += fileContent + Environment.NewLine + Environment.NewLine;
             outputLog.Text += "Program output:" + Environment.NewLine + Environment.NewLine;
 
             process.OutputDataReceived += (s, ea) =>
@@ -184,13 +210,15 @@ namespace CrashEdit.CE.Forms
                 }));
 
                 if (process.ExitCode != 0)
-                    Console.WriteLine($"!!! c2export exited with EC {process.ExitCode}");
+                {
+                    Console.WriteLine($"!!! c2export exited with code {process.ExitCode}");
+                    ShowWarning($"!!! c2export exited with code {process.ExitCode}");
+                }
                 else
                     Console.WriteLine("rebuild done :)");
 
                 process.Dispose();
             };
-
 
             // run
             try
@@ -201,11 +229,63 @@ namespace CrashEdit.CE.Forms
                     writer.Write(fileContent);
                 }
                 process.BeginOutputReadLine();
+                process.WaitForExitAsync();
             }
             catch (Exception ex)
             {
-                outputLog.Text = $"Running process failed {ex.Message}";
+                outputLog.Text += $"Running process failed {ex.Message}";
             }
+        }
+
+        private void btnWorkingDir_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(labelWorkingDirValue.Text))
+                dlgWorkingDir.SelectedPath = labelWorkingDirValue.Text;
+            else if (!string.IsNullOrEmpty(Settings.Default.C2ExportPath))
+                dlgWorkingDir.SelectedPath = Path.GetDirectoryName(Settings.Default.C2ExportPath);
+
+            if (dlgWorkingDir.ShowDialog() == DialogResult.OK)
+            {
+                workingDirectory = dlgWorkingDir.SelectedPath;
+                labelWorkingDirValue.Text = workingDirectory;
+            }
+            else if (string.IsNullOrEmpty(labelWorkingDirValue.Text))
+            {
+                workingDirectory = string.Empty;
+                labelWorkingDirValue.Text = "";
+            }
+
+            CheckArgsValid();
+        }
+
+        private void btnClearWorkingDir_Click(object sender, EventArgs e)
+        {
+            workingDirectory = string.Empty;
+            labelWorkingDirValue.Text = "";
+            CheckArgsValid();
+        }
+
+        private void btnMakeNewConfig_Click(object sender, EventArgs e)
+        {
+            var form = new RebuildConfig(this, null);
+            form.ShowDialog(this);
+        }
+
+        private void btnEditConfig_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(configFilePath) || !File.Exists(configFilePath))
+                return;
+
+            var form = new RebuildConfig(this, configFilePath);
+            if (form.Cancelled)
+                form.Close();
+            else
+                form.ShowDialog(this);
+        }
+
+        private void InitializeComponent()
+        {
+
         }
     }
 }

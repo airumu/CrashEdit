@@ -48,6 +48,22 @@ namespace CrashEdit.CE
         private const int RateNTSC = 30;
         private const int RatePAL = 25;
 
+        enum ToolstripButtons : int
+        {
+            Open,
+            Save,
+            PatchNSD,
+            Close,
+            Separator1,
+            PAL,
+            Play,
+            Separator2,
+            BIN,
+            Separator3,
+            Undock,
+            Reload,
+        };
+
         public OldMainForm()
         {
             ToolStripButtonInit(tbbOpen, "FolderOpen", Resources.Toolbar_Open, $"{Resources.Toolbar_Open} (Ctrl + O)");
@@ -59,16 +75,16 @@ namespace CrashEdit.CE
             ToolStripButtonInit(tbbPatchNSD, "Floppy2", Resources.Toolbar_Patch, $"{Resources.Toolbar_PatchNSD} (Ctrl + Shift + S)");
             tbbPatchNSD.Click += new EventHandler(tbbPatchNSD_Click);
 
-            ToolStripButtonInit(tbbClose, "Folder", Resources.Toolbar_Close, $"{Resources.Toolbar_Close} (Ctrl + W)");
+            ToolStripButtonInit(tbbClose, "Folder", Resources.Toolbar_Close, $"{Resources.Toolbar_Close} (Ctrl + W)\nClose all (Ctrl + Shift + W)");
             tbbClose.Click += new EventHandler(tbbClose_Click);
 
             ToolStripButtonInit(tbbUndock, "Anchor", Resources.Toolbar_Undock, $"{Resources.Toolbar_Undock} (Ctrl + D)");
             tbbUndock.Click += new EventHandler(tbbUndock_Click);
 
-            ToolStripButtonInit(tbbReload, "ArrowRefresh", Resources.Toolbar_Reload, $"{Resources.Toolbar_Reload} NSF (Ctrl + R)");
-            tbbReload.Click += new EventHandler(tbbReload_Click);            
+            ToolStripButtonInit(tbbReload, "ArrowRefresh", Resources.Toolbar_Reload, $"{Resources.Toolbar_Reload} NSF");
+            tbbReload.Click += new EventHandler(tbbReload_Click);
 
-            ToolStripButtonInit(tbbRebuild, "Wrench", Resources.Toolbar_Rebuild, $"{Resources.Toolbar_Rebuild} NSF using c2export");
+            ToolStripButtonInit(tbbRebuild, "Wrench", Resources.Toolbar_Rebuild, "(C2) Rebuild NSF using c2export");
             tbbRebuild.Click += new EventHandler(tbbRebuild_Click);
 
             ToolStripButtonInit(tbbPAL, "Earth", Resources.Toolbar_PAL, Resources.Toolbar_PAL);
@@ -124,7 +140,7 @@ namespace CrashEdit.CE
             tbbExtra.DropDown.Items.Add(tbxVABTool);
             tbbExtra.DropDown.Items.Add("-");
             tbbExtra.DropDown.Items.Add(tbxGenerateEID);
-          
+
             ToolStrip.Items.Insert(0, tbbOpen);
             ToolStrip.Items.Insert(1, tbbSave);
             ToolStrip.Items.Insert(2, tbbPatchNSD);
@@ -145,7 +161,7 @@ namespace CrashEdit.CE
 
             TabPage configtab = new TabPage("CrashEdit")
             {
-                Tag = new ConfigEditor() { Dock = DockStyle.Fill }
+                Tag = new ConfigEditor(this) { Dock = DockStyle.Fill }
             };
             configtab.Controls.Add((ConfigEditor)configtab.Tag);
 
@@ -190,9 +206,9 @@ namespace CrashEdit.CE
                 BackColor = Color.FromArgb(29, 30, 31);
             }
         }
-        
+
         public void UpdateToolbarButtonsVisibility()
-        {   
+        {
             tbbReload.Visible = Settings.Default.ShowRefreshButton;
             tbbUndock.Visible = Settings.Default.ShowUndockButton;
             tbbRebuild.Visible = Settings.Default.ShowRebuildUI;
@@ -211,29 +227,29 @@ namespace CrashEdit.CE
         {
             switch (keyData)
             {
-                // Open NSF
+                // Open NSF  
                 case (Keys.Control | Keys.O):
-                    ToolStrip.Items[0].PerformClick();
+                    ToolStrip.Items[(int)ToolstripButtons.Open].PerformClick();
                     break;
-                // Save NSF
+                // Save NSF  
                 case (Keys.Control | Keys.S):
-                    ToolStrip.Items[1].PerformClick();
+                    ToolStrip.Items[(int)ToolstripButtons.Save].PerformClick();
                     break;
-                // Patch NSD
+                // Patch NSD  
                 case (Keys.Control | Keys.Shift | Keys.S):
-                    ToolStrip.Items[2].PerformClick();
+                    ToolStrip.Items[(int)ToolstripButtons.PatchNSD].PerformClick();
                     break;
-                // Close NSF
+                // Close NSF  
                 case (Keys.Control | Keys.W):
-                    ToolStrip.Items[3].PerformClick();
+                    ToolStrip.Items[(int)ToolstripButtons.Close].PerformClick();
                     break;
-                // Play
+                // Play  
                 case (Keys.F1):
-                    ToolStrip.Items[6].PerformClick();
+                    ToolStrip.Items[(int)ToolstripButtons.Play].PerformClick();
                     break;
-                // Reload NSF
-                case (Keys.Control | Keys.R):
-                    ToolStrip.Items[11].PerformClick();
+                // Close all  
+                case (Keys.Control | Keys.Shift | Keys.W):
+                    CloseAllNSF();
                     break;
             }
 
@@ -248,7 +264,7 @@ namespace CrashEdit.CE
             tbbClose.Enabled =
             tbbUndock.Enabled =
             tbbReload.Enabled =
-            tbbRebuild.Enabled =            
+            // tbbRebuild.Enabled =
             tbbPlay.Enabled = tab != null && tab.Tag is NSFBox;
         }
 
@@ -402,6 +418,15 @@ namespace CrashEdit.CE
             CloseNSF();
         }
 
+        void CloseAllNSF()
+        {
+            for (int i = tbcTabs.TabPages.Count - 1; i > 0; i--)
+            {
+                tbcTabs.SelectedIndex = i;
+                CloseNSF();
+            }
+        }
+
         void tbbUndock_Click(object sender, EventArgs e)
         {
             var undock_command = new UndockCommand(this);
@@ -421,7 +446,7 @@ namespace CrashEdit.CE
             bool did_close = CloseNSF();
             if (canReopen && did_close)
             {
-                OpenNSF(filename);                
+                OpenNSF(filename);
             }
         }
 
@@ -445,9 +470,32 @@ namespace CrashEdit.CE
                 }
             }
         }
+        private void AddRecentNSF(string filename)
+        {
+            var recent = Settings.Default.RecentNSFFiles;
+            if (recent.Contains(filename))
+                recent.Remove(filename);
+            recent.Insert(0, filename);
+            while (recent.Count > 10)
+                recent.RemoveAt(recent.Count - 1);
+            Settings.Default.Save();
+            ConfigEditor configEditor = (ConfigEditor)tbcTabs.TabPages[0].Tag;
+            configEditor?.UpdateRecentNSFList();
+        }
 
         public void OpenNSF(string filename)
         {
+            // if multiopen is disallowed, switch to existing tab if the file is already open
+            if (!Settings.Default.AllowMultiopenNSF)
+            {                
+                if (tbcTabs.TabPages.Cast<TabPage>().Any(tab => tab.Text == filename))
+                {
+                    tbcTabs.SelectedTab = tbcTabs.TabPages.Cast<TabPage>().First(tab => tab.Text == filename);
+                    AddRecentNSF(filename);
+                    return;
+                }
+            }
+
             try
             {
                 byte[] nsfdata = File.ReadAllBytes(filename);
@@ -461,6 +509,7 @@ namespace CrashEdit.CE
                 {
                     NSF nsf = NSF.LoadAndProcess(nsfdata, dlgGameVersion.SelectedVersion);
                     OpenNSF(filename, nsf, dlgGameVersion.SelectedVersion);
+                    AddRecentNSF(filename);
                 }
             }
             catch (LoadAbortedException)
@@ -892,7 +941,7 @@ namespace CrashEdit.CE
             }
         }
 
-        public bool CloseNSF()
+        public bool CloseNSF(bool skip_dialog = false)
         {
             string filename = tbcTabs.SelectedTab.Text;
             NSFBox nsfbox = (NSFBox)tbcTabs.SelectedTab.Tag;
@@ -906,7 +955,7 @@ namespace CrashEdit.CE
                 nsfdata = null;
             }
             byte[] olddata = File.Exists(filename) ? File.ReadAllBytes(filename) : null;
-            if ((olddata != null && (nsfdata == null || (nsfdata.Length == olddata.Length && nsfdata.SequenceEqual(olddata)))) || DarkMessageBox.ShowWarning(Resources.CloseNSF, Resources.Close_ConfirmationPrompt, DarkDialogButton.YesNo) == DialogResult.Yes)
+            if ((olddata != null && (nsfdata == null || (nsfdata.Length == olddata.Length && nsfdata.SequenceEqual(olddata)))) || skip_dialog || DarkMessageBox.ShowWarning(Resources.CloseNSF, Resources.Close_ConfirmationPrompt, DarkDialogButton.YesNo) == DialogResult.Yes)
             {
                 TabPage tab = tbcTabs.SelectedTab;
                 if (tab != null)
@@ -1243,7 +1292,7 @@ namespace CrashEdit.CE
             if (configtab.Tag is ConfigEditor)
             {
                 configtab.Controls.Clear();
-                configtab.Tag = new ConfigEditor() { Dock = DockStyle.Fill };
+                configtab.Tag = new ConfigEditor(this) { Dock = DockStyle.Fill };
                 configtab.Controls.Add((ConfigEditor)configtab.Tag);
             }
         }
