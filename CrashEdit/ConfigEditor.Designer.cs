@@ -87,13 +87,20 @@ namespace CrashEdit.CE
             chkOutputModelTextureInfo = new CheckBox();
             chkEnableLegacyEntityBox = new CheckBox();
             fraExtra = new DarkGroupBox();
+            fraUICtrls = new DarkGroupBox();
             chkEnableCustomCrates = new CheckBox();
             chkLagacyPatchNSD = new CheckBox();
             chkEnableC2TT = new CheckBox();
+            chkShowRebuild = new CheckBox();
+            chkShowUndockButton = new CheckBox();
+            chkShowRefresh = new CheckBox();
             chkSplitViewerPanels = new CheckBox();
             chkLiteralCollisionTypes = new CheckBox();
             chkPatchGOOLC3toC2 = new CheckBox();
+            boxRecentNSF = new DarkGroupBox();
+            lstRecentNSF = new System.Windows.Forms.ListBox();
             tableLayoutPanel4 = new TableLayoutPanel();
+            cmdClearRecentFiles = new DarkButton();
             tableLayoutPanel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numFontSize).BeginInit();
             fraAnimGrid.SuspendLayout();
@@ -114,10 +121,12 @@ namespace CrashEdit.CE
             darkGroupBox3.SuspendLayout();
             darkGroupBox2.SuspendLayout();
             darkGroupBox1.SuspendLayout();
+            boxRecentNSF.SuspendLayout();
             tbpPatchNSD.SuspendLayout();
             tbpExtra.SuspendLayout();
             fraMiscDebug.SuspendLayout();
             fraExtra.SuspendLayout();
+            fraUICtrls.SuspendLayout();
             SuspendLayout();
             // 
             // tableLayoutPanel4
@@ -546,6 +555,18 @@ namespace CrashEdit.CE
             tbcSettings.UnselectedTextColor = Color.Gray;
             tbcSettings.UseAnimation = false;
             // 
+            // chkAllowMultiopenNSF
+            // 
+            chkAllowMultiopenNSF = new CheckBox();
+            chkAllowMultiopenNSF.AutoSize = true;
+            chkAllowMultiopenNSF.Location = new Point(3, 175); // Adjust Y as needed to fit above boxRecentNSF
+            chkAllowMultiopenNSF.Name = "chkAllowMultiopenNSF";
+            chkAllowMultiopenNSF.Size = new Size(220, 19);
+            chkAllowMultiopenNSF.TabIndex = 30;
+            chkAllowMultiopenNSF.Text = "Allow opening the same NSF multiple times";
+            chkAllowMultiopenNSF.UseVisualStyleBackColor = true;
+            chkAllowMultiopenNSF.CheckedChanged += chkAllowMultiopenNSF_CheckedChanged;
+            // 
             // tbpGeneral
             // 
             tbpGeneral.BackColor = Color.FromArgb(31, 31, 32);
@@ -555,12 +576,52 @@ namespace CrashEdit.CE
             tbpGeneral.Controls.Add(fraLang);
             tbpGeneral.Controls.Add(cmdReset);
             tbpGeneral.Controls.Add(fraSize);
+            tbpGeneral.Controls.Add(chkAllowMultiopenNSF);
             tbpGeneral.Location = new Point(4, 32);
             tbpGeneral.Name = "tbpGeneral";
             tbpGeneral.Padding = new Padding(3);
-            tbpGeneral.Size = new Size(417, 381);
+            tbpGeneral.Size = new Size(717, 381);
             tbpGeneral.TabIndex = 0;
             tbpGeneral.Text = "General";
+            // 
+            // lstRecentNSF
+            //
+            lstRecentNSF.BorderStyle = BorderStyle.None;
+            lstRecentNSF.BackColor = Color.FromArgb(31, 31, 32);
+            lstRecentNSF.Name = "lstRecentNSF";
+            lstRecentNSF.Width = boxRecentNSF.Width - 16;
+            lstRecentNSF.Height = 160;
+            lstRecentNSF.Cursor = Cursors.Hand;
+            lstRecentNSF.Location = new Point(8, 15);
+            lstRecentNSF.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            lstRecentNSF.Click += lstRecentNSF_Click;
+            lstRecentNSF.DrawMode = DrawMode.OwnerDrawFixed;
+            lstRecentNSF.DrawItem += lstRecentNSF_DrawItem;
+            // 
+            // boxRecentNSF
+            //
+            boxRecentNSF = new DarkGroupBox();
+            boxRecentNSF.BackColor = Color.Transparent;
+            boxRecentNSF.Controls.Add(lstRecentNSF);
+            boxRecentNSF.Location = new Point(3, 200);
+            boxRecentNSF.Name = "boxRecentNSF";
+            boxRecentNSF.Size = new Size(tbpGeneral.Width - 6, 180);
+            boxRecentNSF.TabStop = false;
+            boxRecentNSF.Text = "Recent files";
+            tbpGeneral.Controls.Add(boxRecentNSF);
+            // 
+            // cmdClearRecentFiles
+            // 
+            cmdClearRecentFiles = new DarkButton();
+            cmdClearRecentFiles.FlatBottom = false;
+            cmdClearRecentFiles.FlatTop = false;
+            cmdClearRecentFiles.Location = new Point(tbpGeneral.Width - 20, 380);
+            cmdClearRecentFiles.Name = "cmdClearRecentFiles";
+            cmdClearRecentFiles.Size = new Size(20, 20);
+            cmdClearRecentFiles.TabIndex = 31;
+            cmdClearRecentFiles.Image = Embeds.Bitmaps["Erase"];
+            cmdClearRecentFiles.Click += cmdClearRecentFiles_Click;
+            tbpGeneral.Controls.Add(cmdClearRecentFiles);            
             // 
             // fraHexView
             // 
@@ -786,6 +847,7 @@ namespace CrashEdit.CE
             tbpExtra.Controls.Add(fraMiscDebug);
             tbpExtra.Controls.Add(chkEnableLegacyEntityBox);
             tbpExtra.Controls.Add(fraExtra);
+            tbpExtra.Controls.Add(fraUICtrls);
             tbpExtra.Controls.Add(chkSplitViewerPanels);
             tbpExtra.Controls.Add(chkLiteralCollisionTypes);
             tbpExtra.Controls.Add(chkPatchGOOLC3toC2);
@@ -879,7 +941,7 @@ namespace CrashEdit.CE
             fraExtra.Size = new Size(417, 100);
             fraExtra.TabIndex = 18;
             fraExtra.TabStop = false;
-            fraExtra.Text = "CrashEdit-tweaked feature";
+            fraExtra.Text = "CrashEdit-tweaked features";
             // 
             // chkEnableCustomCrates
             // 
@@ -914,6 +976,54 @@ namespace CrashEdit.CE
             chkEnableC2TT.Text = "Enable Crash 2 time trial editor";
             chkEnableC2TT.UseVisualStyleBackColor = true;
             chkEnableC2TT.CheckedChanged += chkEnableC2TT_CheckedChanged;
+
+            //
+            // fraUICtrls
+            //
+            fraUICtrls.BackColor = Color.Transparent;
+            fraUICtrls.Controls.Add(chkShowRebuild);
+            fraUICtrls.Controls.Add(chkShowUndockButton);
+            fraUICtrls.Controls.Add(chkShowRefresh);
+            fraUICtrls.Location = new Point(0, 345);
+            fraUICtrls.Name = "fraUICtrls";
+            fraUICtrls.Size = new Size(417, 100);
+            fraUICtrls.TabIndex = 25;
+            fraUICtrls.TabStop = false;
+            fraUICtrls.Text = "Toolbar UI customization";
+            //
+            // chkShowUndockButton
+            //
+            chkShowUndockButton.AutoSize = true;
+            chkShowUndockButton.Location = new Point(6, 22);
+            chkShowUndockButton.Name = "chkShowUndockButton";
+            chkShowUndockButton.Size = new Size(380, 19);
+            chkShowUndockButton.TabIndex = 22;
+            chkShowUndockButton.Text = "Show Undock button in toolbar";
+            chkShowUndockButton.UseVisualStyleBackColor = true;
+            chkShowUndockButton.CheckedChanged += chkShowUndockButton_CheckedChanged;
+            // 
+            // chkShowRefresh
+            //
+            chkShowRefresh.AutoSize = true;
+            chkShowRefresh.Location = new Point(6, 47);
+            chkShowRefresh.Name = "chkShowRefresh";
+            chkShowRefresh.Size = new Size(380, 19);
+            chkShowRefresh.TabIndex = 23;
+            chkShowRefresh.Text = "Show Reload button in toolbar";
+            chkShowRefresh.UseVisualStyleBackColor = true;
+            chkShowRefresh.CheckedChanged += chkShowRefresh_CheckedChanged;
+            //
+            // chkEnableC2Rebuild
+            //
+            chkShowRebuild.AutoSize = true;
+            chkShowRebuild.Location = new Point(6, 72);
+            chkShowRebuild.Name = "chkEnableC2Rebuild";
+            chkShowRebuild.Size = new Size(380, 19);
+            chkShowRebuild.TabIndex = 24;
+            chkShowRebuild.Text = "Show Rebuild (c2export) button in toolbar";
+            chkShowRebuild.UseVisualStyleBackColor = true;
+            chkShowRebuild.CheckedChanged += chkEnableC2Rebuild_CheckedChanged;
+
             // 
             // chkSplitViewerPanels
             // 
@@ -1049,9 +1159,13 @@ namespace CrashEdit.CE
         private CheckBox chkLiteralCollisionTypes;
         private CheckBox chkEnableCustomCrates;
         private CheckBox chkEnableC2TT;
+        private CheckBox chkShowRebuild;
+        private CheckBox chkShowUndockButton;
+        private CheckBox chkShowRefresh;
         private CheckBox chkPatchGOOLC3toC2;
         private CheckBox chkSplitViewerPanels;
         private DarkGroupBox fraExtra;
+        private DarkGroupBox fraUICtrls;
         private DarkButton cmdHelp;
         private DarkGroupBox darkGroupBox2;
         private DarkGroupBox darkGroupBox1;
@@ -1066,5 +1180,9 @@ namespace CrashEdit.CE
         private DarkComboBox dpdHexView;
         private DarkGroupBox fraHexView;
         private CheckBox chkShowRenderingErrors;
+        private System.Windows.Forms.ListBox lstRecentNSF;
+        private DarkGroupBox boxRecentNSF;
+        private CheckBox chkAllowMultiopenNSF;
+        private DarkButton cmdClearRecentFiles;
     }
 }

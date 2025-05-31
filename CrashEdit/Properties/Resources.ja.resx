@@ -180,6 +180,12 @@
   <data name="Toolbar_Close" xml:space="preserve">
     <value>閉じる</value>
   </data>
+  <data name="Toolbar_Reload" xml:space="preserve">
+    <value>TBDJP Reload</value>
+  </data>
+  <data name="Toolbar_Rebuild" xml:space="preserve">
+	  <value>TBDJP Rebuild</value>	
+  </data> 
   <data name="Toolbar_Find" xml:space="preserve">
     <value>検索</value>
   </data>

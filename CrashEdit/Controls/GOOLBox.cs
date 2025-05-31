@@ -1,8 +1,11 @@
+Ôªøusing System;
+using System.Net;
 using System.Text.RegularExpressions;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 using MetroSet_UI.Controls;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CrashEdit.CE
 {
@@ -13,12 +16,11 @@ namespace CrashEdit.CE
 
         private readonly DataGridView dgvCode;
 
-        List<int> indentEndIndexes;
+        List<int> indents;
         List<int> processedRows;
 
         private int headerCount;
         private int addressIndex;
-        private string indent;
 
         public GOOLBox(GOOLEntryController controller, GOOLEntry goolentry)
         {
@@ -63,11 +65,9 @@ namespace CrashEdit.CE
             contextMenuStrip.Opening += ContextMenuStrip_Opening;
             dgvCode.ContextMenuStrip = contextMenuStrip;
 
-            indentEndIndexes = new();
             processedRows = new();
             headerCount = 0;
             addressIndex = 0;
-            indent = string.Empty;
 
             PopulateData(goolentry);
             CreateTabs();
@@ -116,7 +116,7 @@ namespace CrashEdit.CE
             {
                 Controls.Add(dgvCode);
             }
-            
+
         }
 
         private void PopulateData(GOOLEntry goolentry)
@@ -139,7 +139,7 @@ namespace CrashEdit.CE
             if (goolentry.Format == 1)
             {
                 rows.Add("");
-                headerCount ++;
+                headerCount++;
                 bool addedInterrupts = false;
 
                 // Process interrupts
@@ -168,7 +168,7 @@ namespace CrashEdit.CE
                             dgvCode.Rows[addressIndex].Tag = $"State_{goolentry.StateMap[i]}";
                             ++addressIndex;
                         }
-                        
+
                         ++headerCount;
                     }
                 }
@@ -196,7 +196,7 @@ namespace CrashEdit.CE
                     short tpc = (short)(goolentry.StateDescriptors[i].TransHook & 0x3FFF);
                     short cpc = (short)(goolentry.StateDescriptors[i].CodeHook & 0x3FFF);
                     int stategooleid = goolentry.Data[goolentry.StateDescriptors[i].GOOLIndex];
-                    
+
                     rows.Add($"State_{i} [{Entry.EIDToEName(stategooleid)}] State Flags: {string.Format("0x{0:X}", goolentry.StateDescriptors[i].StateFlags)} | Block Flags: {string.Format("0x{0:X}", goolentry.StateDescriptors[i].BlockFlags)}");
                     if (epc != 0x3FFF)
                     {
@@ -259,6 +259,46 @@ namespace CrashEdit.CE
             bool returned = true;
             int mipscount = 0;
             int goolcount = 0;
+
+            indents = new List<int>();
+            indents.Capacity = goolentry.Instructions.Count;
+            for (int i = 0; i < goolentry.Instructions.Count; ++i)
+                indents.Add(0);
+
+            for (int i = 0; i < goolentry.Instructions.Count; ++i)
+            {
+                GOOLInstruction ins = goolentry.Instructions[i];
+                string insComment = ins.GetComment();
+                int instIndex = i;
+
+                if (!string.IsNullOrWhiteSpace(ins.GetComment()))
+                {
+
+                    if (insComment.Contains("if") && insComment.Contains("move"))
+                    {
+                        string pattern = @"-?\d+";
+                        Match match = Regex.Match(insComment, pattern);
+                        if (match.Success)
+                        {
+                            int number = int.Parse(match.Value);
+                            int indentEndIndex = instIndex + number;
+                            if (indentEndIndex < instIndex)
+                            {
+                                var t = instIndex;
+                                instIndex = indentEndIndex;
+                                indentEndIndex = t; // swap values
+                            }
+
+                            for (int j = instIndex; j < indentEndIndex; j++)
+                            {
+                                if (j >= -1)
+                                    indents[j + 1]++;
+                            }
+                        }
+                    }
+                }
+            }
+
             // Process instructions
             for (int i = 0; i < goolentry.Instructions.Count; ++i)
             {
@@ -289,59 +329,23 @@ namespace CrashEdit.CE
 
                 string insName = ins.GetName();
 
-                int instIndex = dgvCode.Rows.Add($"{i,-6} {insName,-6} {ins.Arguments,-32} {(!string.IsNullOrWhiteSpace(ins.GetComment()) ? $"# {indent}{ins.GetComment()}" : "")}");
+                int instIndex = dgvCode.Rows.Add($"{i,-6} {insName,-6} {ins.Arguments,-32} {(!string.IsNullOrWhiteSpace(ins.GetComment()) ? $"# {ins.GetComment()}" : "")}");
                 dgvCode.Rows[instIndex].Tag = i;
                 processedRows.Add(instIndex);
-                ++instIndex;
 
-                // Calculate the indent
-                int number = 0;
-                if (!string.IsNullOrWhiteSpace(ins.GetComment()))
+                if (indents[i] > 0)
                 {
-                    string insComment = ins.GetComment();
-                    if (insComment.Contains("if") && insComment.Contains("move"))
+                    string indent_str = " ";
+                    for (int j = 0; j < indents[i]; j++)
+                        indent_str += "Õ∞";
+
+                    DataGridViewRow row = dgvCode.Rows[instIndex];
+                    string lineText = row.Cells[0].Value.ToString();
+                    int hashIndex = lineText.IndexOf('#');
+                    if (hashIndex != -1)
                     {
-                        string pattern = @"-?\d+";
-                        Match match = Regex.Match(insComment, pattern);
-                        if (match.Success)
-                        {
-                            number = int.Parse(match.Value);
-                            int indentEndIndex = instIndex + number;
-                            indentEndIndexes.Add(indentEndIndex);
-                            indent += "Åb ";
-
-                            // If it moves negatively, modify the indents of the previous row
-                            if (indentEndIndex < instIndex)
-                            {
-                                int rowsToModify = Math.Abs(number) - 1;
-                                for (int j = processedRows.Count - 1; j >= 0 && rowsToModify > 0; j--)
-                                {
-                                    int previousRowIndex = processedRows[j];
-                                    if (previousRowIndex < instIndex - 1)
-                                    {
-                                        DataGridViewRow row = dgvCode.Rows[previousRowIndex];
-                                        string lineText = row.Cells[0].Value.ToString();
-                                        int hashIndex = lineText.IndexOf('#');
-                                        if (hashIndex != -1)
-                                        {
-                                            lineText = lineText.Insert(hashIndex + 1, " Åb");
-                                        }
-                                        row.Cells[0].Value = lineText;
-
-                                        rowsToModify--;
-                                    }
-                                }
-                                indent = indent.Substring(2);
-                            }
-                        }
-                    }
-                }
-
-                foreach (int indentEndIndex in indentEndIndexes)
-                {
-                    if (instIndex == indentEndIndex)
-                    {
-                        indent = indent.Substring(2);
+                        lineText = lineText.Insert(hashIndex + 1, indent_str);
+                        row.Cells[0].Value = lineText;
                     }
                 }
             }
@@ -635,7 +639,7 @@ namespace CrashEdit.CE
 
         private readonly string numberPattern = @"^(-?(?:\(\s*-?\d+(?:\.\d+)?\s*\)|\(\s*-?0x[0-9a-fA-F]+\s*\)|-?\d+(?:\.\d+)?|-?0x[0-9a-fA-F]+))$";
         private readonly string statePattern = @"^(State_\d+_.*:|Sub_\d+:)$";
-        private readonly string disabledPattern = @"\(no\s*.*\s*hook\)";
+        private readonly string disabledPattern = @"(\(no\s*.*\s*hook\)|Õ∞)";
         private readonly string insPattern = @"(ins|ext)\[[^\]]+\]";
         private readonly string animPattern = @"(&anim\[\(?0x[0-9A-Fa-f]+\)?\]|&\d+)";
         private readonly string EIDPattern = @"\((?!(0x))[a-zA-Z0-9_!]{4}(G|V|T|A|O|I)\)";
@@ -647,7 +651,7 @@ namespace CrashEdit.CE
 
         private readonly Dictionary<Color, string[]> wordGroups = new()
         {
-            { comments,   new[] { "#", "Åb" } },
+            { comments,   new[] { "#", "¬Åb" } },
             { commands,   new[] { "move", "go", "change", "call", "to", "at" } },
             { states,     new[] { "state", "instructions","subroutine" } },
             { logicals,   new[] { "true", "false", "accept", "reject", "invalid" } },
