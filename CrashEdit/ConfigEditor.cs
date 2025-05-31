@@ -481,6 +481,14 @@ namespace CrashEdit.CE
                 ((OldMainForm)owner).OpenNSF(filename);
             }
         }
+
+        private void cmdClearRecentFiles_Click(object sender, EventArgs e)
+        {
+            Settings.Default.RecentNSFFiles.Clear();
+            Settings.Default.Save();
+            lstRecentNSF.Items.Clear();
+        }
+
         private void lstRecentNSF_DrawItem(object? sender, DrawItemEventArgs e)
         {
             if (e.Index < 0 || e.Index >= lstRecentNSF.Items.Count)

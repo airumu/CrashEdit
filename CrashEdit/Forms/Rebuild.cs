@@ -62,8 +62,8 @@ namespace CrashEdit.CE.Forms
 
         private void CheckArgsValid()
         {
-            btnEditConfig.Enabled = !(string.IsNullOrEmpty(configFilePath) ||
-                                        !File.Exists(configFilePath));
+            //btnEditConfig.Enabled = !(string.IsNullOrEmpty(configFilePath) ||
+            //                            !File.Exists(configFilePath));
 
             // make sure both c2export path and config file path are existing files
             if (string.IsNullOrEmpty(Settings.Default.C2ExportPath) || !File.Exists(Settings.Default.C2ExportPath))
@@ -116,7 +116,7 @@ namespace CrashEdit.CE.Forms
             }
         }
 
-        private void btnPathCfg_Click(object sender, EventArgs e)
+        private void DoCfgPathDialog()
         {
             if (dlgOpenFileCfg.ShowDialog() == DialogResult.OK)
             {
@@ -124,6 +124,11 @@ namespace CrashEdit.CE.Forms
                 labelPathCfgValue.Text = configFilePath;
                 labelPathCfgValue.ForeColor = Color.White;
             }
+        }
+
+        private void btnPathCfg_Click(object sender, EventArgs e)
+        {
+            DoCfgPathDialog();
             CheckArgsValid();
         }
 
@@ -274,18 +279,17 @@ namespace CrashEdit.CE.Forms
         private void btnEditConfig_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(configFilePath) || !File.Exists(configFilePath))
-                return;
+            {
+                DoCfgPathDialog();
+                if (string.IsNullOrEmpty(configFilePath) || !File.Exists(configFilePath))
+                    return;
+            }                
 
             var form = new RebuildConfig(this, configFilePath);
             if (form.Cancelled)
                 form.Close();
             else
                 form.ShowDialog(this);
-        }
-
-        private void InitializeComponent()
-        {
-
         }
     }
 }

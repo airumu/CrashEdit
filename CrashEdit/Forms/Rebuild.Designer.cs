@@ -39,6 +39,8 @@ namespace CrashEdit.CE.Forms
             labelPathCfgInfo = new Label();
             btnMakeNewConfig = new DarkButton();
             btnEditConfig = new DarkButton();
+            btnClearConfig = new DarkButton();
+            btnRecheckConfig = new DarkButton();
             btnPathCfg = new DarkButton();
             labelPathCfgValue = new Label();
             tooltip = new ToolTip();
@@ -82,7 +84,7 @@ namespace CrashEdit.CE.Forms
             labelPathExeValue.BackColor = Color.Transparent;
             labelPathExeValue.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             labelPathExeValue.ForeColor = SystemColors.MenuText;
-            labelPathExeValue.Location = new Point(67, 38);
+            labelPathExeValue.Location = new Point(100, 38);
             labelPathExeValue.Name = "labelPathExeValue";
             labelPathExeValue.Size = new Size(1000, 27);
             labelPathExeValue.Text = "exe path";
@@ -145,7 +147,7 @@ namespace CrashEdit.CE.Forms
             };
 
             btnMakeNewConfig.Size = new Size(20, 20);
-            btnMakeNewConfig.Location = new Point(16, 90);
+            btnMakeNewConfig.Location = new Point(12, 90);
             btnMakeNewConfig.Name = "btnMakeNewConfig";
             btnMakeNewConfig.Image = new Bitmap(Embeds.Bitmaps["Add"], new Size(16, 16));
             btnMakeNewConfig.TabIndex = 5;
@@ -160,24 +162,63 @@ namespace CrashEdit.CE.Forms
             };
 
             btnEditConfig.Size = new Size(20, 20);
-            btnEditConfig.Location = new Point(40, 90);
+            btnEditConfig.Location = new Point(34, 90);
             btnEditConfig.Name = "btnEditConfig";
             btnEditConfig.Image = new Bitmap(Embeds.Bitmaps["Modify"], new Size(16, 16));
             btnEditConfig.TabIndex = 6;
             btnEditConfig.Click += btnEditConfig_Click;
             btnEditConfig.MouseHover += (s, e) =>
             {
-                tooltip.Show("Edit the config file", btnEditConfig, btnEditConfig.Width + 5, btnEditConfig.Height / 2);
+                tooltip.Show("Edit config file", btnEditConfig, btnEditConfig.Width + 5, btnEditConfig.Height / 2);
             };
             btnEditConfig.MouseLeave += (s, e) =>
             {
                 tooltip.Hide(btnEditConfig);
             };
 
+            btnClearConfig.Size = new Size(20, 20);
+            btnClearConfig.Location = new Point(56, 90);
+            btnClearConfig.Name = "btnClearConfig";
+            btnClearConfig.Image = new Bitmap(Embeds.Bitmaps["Erase"], new Size(16, 16));
+            btnClearConfig.TabIndex = 7;
+            btnClearConfig.Click += (s, e) =>
+            {
+                configFilePath = "<no config path selected>";
+                labelPathCfgValue.Text = configFilePath;
+                labelPathCfgValue.ForeColor = Color.Yellow;
+                CheckArgsValid();
+            };
+            btnClearConfig.MouseHover += (s, e) =>
+            {
+                tooltip.Show("Clear config path", btnClearConfig, btnClearConfig.Width + 5, btnClearConfig.Height / 2);
+            };
+            btnClearConfig.MouseLeave += (s, e) =>
+            {
+                tooltip.Hide(btnClearConfig);
+            };
+
+            btnRecheckConfig.Size = new Size(20, 20);
+            btnRecheckConfig.Location = new Point(78, 90);
+            btnRecheckConfig.Name = "btnClearConfig";
+            btnRecheckConfig.Image = new Bitmap(Embeds.Bitmaps["ArrowRefresh"], new Size(16, 16));
+            btnRecheckConfig.TabIndex = 7;
+            btnRecheckConfig.Click += (s, e) =>
+            {
+                SearchForConfigFile();
+            };
+            btnRecheckConfig.MouseHover += (s, e) =>
+            {
+                tooltip.Show("Re-detect config path for current NSF", btnRecheckConfig, btnRecheckConfig.Width + 5, btnRecheckConfig.Height / 2);
+            };
+            btnRecheckConfig.MouseLeave += (s, e) =>
+            {
+                tooltip.Hide(btnRecheckConfig);
+            };
+
             labelPathCfgValue.BackColor = Color.Transparent;
             labelPathCfgValue.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             labelPathCfgValue.ForeColor = SystemColors.MenuText;
-            labelPathCfgValue.Location = new Point(67, 94);
+            labelPathCfgValue.Location = new Point(100, 94);
             labelPathCfgValue.Name = "labelPathCfgValue";
             labelPathCfgValue.Size = new Size(1000, 27);
             labelPathCfgValue.Text = "config path";
@@ -295,7 +336,7 @@ namespace CrashEdit.CE.Forms
             labelWorkingDirValue.BackColor = Color.Transparent;
             labelWorkingDirValue.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             labelWorkingDirValue.ForeColor = SystemColors.MenuText;
-            labelWorkingDirValue.Location = new Point(67, 150);
+            labelWorkingDirValue.Location = new Point(100, 150);
             labelWorkingDirValue.Name = "labelWorkingDirValue";
             labelWorkingDirValue.Size = new Size(1000, 27);
             labelWorkingDirValue.Text = "";
@@ -312,7 +353,7 @@ namespace CrashEdit.CE.Forms
             btnClearWorkingDir.Location = new Point(19, 146);
             btnClearWorkingDir.Name = "btnClearWorkingDir";
             btnClearWorkingDir.Image = new Bitmap(Embeds.Bitmaps["Erase"], new Size(16, 16)); // Use a suitable icon key
-            btnClearWorkingDir.TabIndex = 7;
+            btnClearWorkingDir.TabIndex = 8;
             btnClearWorkingDir.Click += btnClearWorkingDir_Click;
 
             btnClearWorkingDir.MouseHover += (s, e) =>
@@ -330,6 +371,8 @@ namespace CrashEdit.CE.Forms
             pnOptions.Controls.Add(btnRebuild);
             pnOptions.Controls.Add(btnMakeNewConfig);
             pnOptions.Controls.Add(btnEditConfig);
+            pnOptions.Controls.Add(btnClearConfig);
+            pnOptions.Controls.Add(btnRecheckConfig);
             pnOptions.Controls.Add(btnPathCfg);
             pnOptions.Controls.Add(labelPathCfgInfo);
             pnOptions.Controls.Add(btnPathExe);
@@ -376,6 +419,8 @@ namespace CrashEdit.CE.Forms
         private Label labelPathCfg;
         private DarkButton btnMakeNewConfig;
         private DarkButton btnEditConfig;
+        private DarkButton btnClearConfig;
+        private DarkButton btnRecheckConfig;
         private Label labelPathCfgInfo;
         private DarkButton btnPathCfg;
         private Label labelPathCfgValue;

@@ -100,6 +100,7 @@ namespace CrashEdit.CE
             boxRecentNSF = new DarkGroupBox();
             lstRecentNSF = new System.Windows.Forms.ListBox();
             tableLayoutPanel4 = new TableLayoutPanel();
+            cmdClearRecentFiles = new DarkButton();
             tableLayoutPanel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numFontSize).BeginInit();
             fraAnimGrid.SuspendLayout();
@@ -608,6 +609,19 @@ namespace CrashEdit.CE
             boxRecentNSF.TabStop = false;
             boxRecentNSF.Text = "Recent files";
             tbpGeneral.Controls.Add(boxRecentNSF);
+            // 
+            // cmdClearRecentFiles
+            // 
+            cmdClearRecentFiles = new DarkButton();
+            cmdClearRecentFiles.FlatBottom = false;
+            cmdClearRecentFiles.FlatTop = false;
+            cmdClearRecentFiles.Location = new Point(tbpGeneral.Width - 20, 380);
+            cmdClearRecentFiles.Name = "cmdClearRecentFiles";
+            cmdClearRecentFiles.Size = new Size(20, 20);
+            cmdClearRecentFiles.TabIndex = 31;
+            cmdClearRecentFiles.Image = Embeds.Bitmaps["Erase"];
+            cmdClearRecentFiles.Click += cmdClearRecentFiles_Click;
+            tbpGeneral.Controls.Add(cmdClearRecentFiles);            
             // 
             // fraHexView
             // 
@@ -1169,5 +1183,6 @@ namespace CrashEdit.CE
         private System.Windows.Forms.ListBox lstRecentNSF;
         private DarkGroupBox boxRecentNSF;
         private CheckBox chkAllowMultiopenNSF;
+        private DarkButton cmdClearRecentFiles;
     }
 }

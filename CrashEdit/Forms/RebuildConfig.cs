@@ -1,5 +1,6 @@
 using AltUI.Controls;
 using AltUI.Forms;
+using System.Text;
 
 namespace CrashEdit.CE.Forms
 {
@@ -103,7 +104,15 @@ namespace CrashEdit.CE.Forms
         private DarkButton btnSaveOver;
         private DarkButton btnCancel;
 
-        private RebuildForm Parent;
+        private bool PathHadQuotesNSF = false;
+        private bool PathHadQuotesAltSave = false;
+        private bool PathHadQuotesPerma = false;
+        private bool PathHadQuotesDeps = false;
+        private bool PathHadQuotesCollDeps = false;
+        private bool PathHadQuotesMusicDeps = false;
+        private bool KeepPathQuotes = false;
+
+        private RebuildForm rbldForm;
         private bool IsNewConfig = true;
         private string OriginalConfigPath { get; set; }
         private string OriginalContent { get; set; }
@@ -111,7 +120,7 @@ namespace CrashEdit.CE.Forms
 
         public RebuildConfig(RebuildForm par, string configFilePath)
         {
-            Parent = par;
+            rbldForm = par;
             OriginalConfigPath = configFilePath;
             if (!string.IsNullOrEmpty(configFilePath) && File.Exists(configFilePath))
             {
@@ -148,6 +157,8 @@ namespace CrashEdit.CE.Forms
             if (IsNewConfig)
                 return;
 
+            KeepPathQuotes = true;
+
             // Load existing config content            
             // remove empty lines and lines that are just 'wipe' or 'kill'
             var lines = OriginalContent.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
@@ -168,25 +179,29 @@ namespace CrashEdit.CE.Forms
                     Console.WriteLine($"Invalid rebuild type: {rbld_type}");
 
                 // check for " on start/end, remove if yes
-                var path_fix_rem_quotes = (string path) =>
+                var path_fix_rem_quotes = (string path, out bool had_quotes) =>
                 {
+                    had_quotes = false;
                     if (path.StartsWith("\"") && path.EndsWith("\""))
+                    {
+                        had_quotes = true;
                         path = path[1..^1].Trim();
+                    }
 
                     return path;
                 };
 
                 var nsf_path = lines[curr_idx++].Trim();
-                txtPathNSF.Text = path_fix_rem_quotes(nsf_path);
+                txtPathNSF.Text = path_fix_rem_quotes(nsf_path, out PathHadQuotesNSF);
 
                 var levelID = lines[curr_idx++].Trim();
                 if (int.TryParse(levelID, System.Globalization.NumberStyles.HexNumber, null, out int idValue) && idValue >= 0 && idValue <= MAX_LEVEL_ID)
-                    txtId.Text = idValue.ToString("X2");
+                    txtId.Text = idValue.ToString("X");
                 else
                     Console.WriteLine($"Invalid level ID in config: {levelID}");
 
                 var alt_save_path = lines[curr_idx++].Trim();
-                txtAltSave.Text = path_fix_rem_quotes(alt_save_path);
+                txtAltSave.Text = path_fix_rem_quotes(alt_save_path, out PathHadQuotesAltSave);
 
                 var remake_ll = lines[curr_idx++].Trim();
                 if (remake_ll == "0" || remake_ll == "1")
@@ -207,16 +222,16 @@ namespace CrashEdit.CE.Forms
                     Console.WriteLine("$Invalid spawn index in config: {spawn_index}");
 
                 var path_perma = lines[curr_idx++].Trim();
-                txtPathPerma.Text = path_fix_rem_quotes(path_perma);
+                txtPathPerma.Text = path_fix_rem_quotes(path_perma, out PathHadQuotesPerma);
 
                 var path_deps = lines[curr_idx++].Trim();
-                txtPathDeps.Text = path_fix_rem_quotes(path_deps);
+                txtPathDeps.Text = path_fix_rem_quotes(path_deps, out PathHadQuotesDeps);
 
                 var path_coll_deps = lines[curr_idx++].Trim();
-                txtPathCollDeps.Text = path_fix_rem_quotes(path_coll_deps);
+                txtPathCollDeps.Text = path_fix_rem_quotes(path_coll_deps, out PathHadQuotesCollDeps);
 
                 var path_music_deps = lines[curr_idx++].Trim();
-                txtPathMusicDeps.Text = path_fix_rem_quotes(path_music_deps);
+                txtPathMusicDeps.Text = path_fix_rem_quotes(path_music_deps, out PathHadQuotesMusicDeps);
 
                 // rebuild_dl
                 if (cmbType.SelectedIndex == 1)
@@ -304,6 +319,7 @@ namespace CrashEdit.CE.Forms
             }
 
             UpdateOutputConfig();
+            KeepPathQuotes = false;
             string original_content;
             original_content = File.ReadAllText(OriginalConfigPath);
 
@@ -312,7 +328,7 @@ namespace CrashEdit.CE.Forms
                 Cancelled = true;
                 var diffForm = new DarkForm
                 {
-                    Text = "⚠ Config Mismatch",
+                    Text = $"⚠ Config Mismatch {OriginalConfigPath}",
                     StartPosition = FormStartPosition.CenterParent,
                     Size = new Size(800, 600),
                     FormBorderStyle = FormBorderStyle.FixedDialog,
@@ -761,19 +777,19 @@ namespace CrashEdit.CE.Forms
             AddTooltip(lblPathDeps, "Path to file containing entity type/subtype dependencies");
             AddTooltip(lblPathCollDeps, "[Optional] Path to file containing collision dependencies");
             AddTooltip(lblPathMusicDeps, "[Optional] Path to file containing music dependencies");
-            
+
             AddTooltip(lblDL_Dist_XDist, "Draw list gen - Maximum X distance between camera and object");
             AddTooltip(lblDL_Dist_YDist, "Draw list gen - Maximum Y distance between camera and object");
             AddTooltip(lblDL_Dist_XZDist, "Draw list gen - Maximum XZ distance between camera and object");
             AddTooltip(lblDL_Dist_Angle3D, "Draw list gen, 3D only \nMaximum angle (deg.) difference between camera dir. and object");
-            
+
             AddTooltip(lblLL_Dist_SLST, "How far in advance to load SLST entries in load lists");
             AddTooltip(lblLL_Dist_Neigh, "How far in advance to load neighbour entries in load lists");
             AddTooltip(lblLL_Dist_Draw, "How far in advance to load drawn entity dependencies in load lists");
             AddTooltip(lblLL_TransPreload, "Type of entries to preload during segment transitions");
             AddTooltip(lblBackwPenalty, "[Not recommended] Penalty multiplier for loading things 'backwards' (0.0-0.5, 0 means no effect)");
             AddTooltip(lblOmitUnused, "[Not recommended] Select whether to omit unused entries from the final NSF\nRecommended option: no");
-            
+
             AddTooltip(lblMaxPayload, "Maximal normal chunk payload allowed (how many normal chunks at most can be loaded)");
             AddTooltip(lblIterCount, "Maximum number of iterations for merge algorithm (set to 0 for limitless)");
             AddTooltip(lblRandomMult, "Random multiplier for merge algorithm costs (use 1.5 if unsure)\nDefines how 'chaotic' merging is");
@@ -878,24 +894,34 @@ namespace CrashEdit.CE.Forms
             string cfgText = "";
             cfgText += cmbType.SelectedItem + "\r\n";
 
-            var path_fix_add_quote = (string path) =>
+            if (!KeepPathQuotes)
+            {
+                PathHadQuotesNSF = false;
+                PathHadQuotesAltSave = false;
+                PathHadQuotesPerma = false;
+                PathHadQuotesDeps = false;
+                PathHadQuotesCollDeps = false;
+                PathHadQuotesMusicDeps = false;
+            }
+
+            var path_fix_add_quote = (string path, bool had_quotes) =>
             {
                 path = path.Trim();
-                if (path.Contains(" "))
+                if (path.Contains(" ") || had_quotes)
                     return "\"" + path + "\"";
                 return path;
             };
 
-            cfgText += path_fix_add_quote(txtPathNSF.Text) + "\r\n";
+            cfgText += path_fix_add_quote(txtPathNSF.Text, PathHadQuotesNSF) + "\r\n";
             cfgText += txtId.Text + "\r\n";
-            cfgText += path_fix_add_quote(txtAltSave.Text) + "\r\n";
+            cfgText += path_fix_add_quote(txtAltSave.Text, PathHadQuotesAltSave) + "\r\n";
             cfgText += cmbRemakeLL.SelectedIndex + "\r\n";
             cfgText += cmbMergeType.SelectedIndex + "\r\n";
             cfgText += txtSpawnIndex.Text + "\r\n";
-            cfgText += path_fix_add_quote(txtPathPerma.Text) + "\r\n";
-            cfgText += path_fix_add_quote(txtPathDeps.Text) + "\r\n";
-            cfgText += path_fix_add_quote(txtPathCollDeps.Text) + "\r\n";
-            cfgText += path_fix_add_quote(txtPathMusicDeps.Text) + "\r\n";
+            cfgText += path_fix_add_quote(txtPathPerma.Text, PathHadQuotesPerma) + "\r\n";
+            cfgText += path_fix_add_quote(txtPathDeps.Text, PathHadQuotesDeps) + "\r\n";
+            cfgText += path_fix_add_quote(txtPathCollDeps.Text, PathHadQuotesCollDeps) + "\r\n";
+            cfgText += path_fix_add_quote(txtPathMusicDeps.Text, PathHadQuotesMusicDeps) + "\r\n";
             if (is_rebuild_dl)
             {
                 cfgText += txtDL_Dist_XDist.Text + "\r\n";
@@ -935,6 +961,7 @@ namespace CrashEdit.CE.Forms
         private void btnSaveOver_Click()
         {
             File.WriteAllText(OriginalConfigPath, ConfigContent);
+            Close();
         }
 
         private void btnSaveNew_Click()
@@ -951,7 +978,7 @@ namespace CrashEdit.CE.Forms
                     try
                     {
                         File.WriteAllText(saveFileDialog.FileName, ConfigContent);
-                        Parent.UpdateConfigPath(saveFileDialog.FileName);
+                        rbldForm.UpdateConfigPath(saveFileDialog.FileName);
                         Close();
                     }
                     catch (Exception ex)
