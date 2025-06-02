@@ -205,6 +205,7 @@ namespace CrashEdit.CE.Forms
             btnRecheckConfig.Click += (s, e) =>
             {
                 SearchForConfigFile();
+                CheckArgsValid();
             };
             btnRecheckConfig.MouseHover += (s, e) =>
             {

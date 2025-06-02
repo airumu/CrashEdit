@@ -195,6 +195,9 @@ namespace CrashEdit.CE
             Load += new EventHandler(OldMainForm_Load);
             FormClosing += new FormClosingEventHandler(OldMainForm_FormClosing);
             Text = $"CrashEdit: Re v{Assembly.GetExecutingAssembly().GetName().Version}";
+            AllowDrop = true;
+            DragEnter += OldMainForm_DragEnter;
+            DragDrop += OldMainForm_DragDrop;
 
             if (Settings.Default.ApplyMica)
             {
@@ -1320,6 +1323,42 @@ namespace CrashEdit.CE
         public static void NotifyListUpdated()
         {
             ListUpdated?.Invoke(null, EventArgs.Empty);
+        }
+
+        private void OldMainForm_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                // Only accept .nsf files
+                if (files.Any(f => Path.GetExtension(f).ToLower() == ".nsf"))
+                {
+                    e.Effect = DragDropEffects.Copy;
+                }
+                else
+                {
+                    e.Effect = DragDropEffects.None;
+                }
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+
+        private void OldMainForm_DragDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                foreach (string file in files)
+                {
+                    if (Path.GetExtension(file).ToLower() == ".nsf")
+                    {
+                        OpenNSF(file);
+                    }
+                }
+            }
         }
     }
 

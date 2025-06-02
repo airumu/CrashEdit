@@ -769,7 +769,7 @@ namespace CrashEdit.CE.Forms
             AddTooltip(lblType, "Select whether to do regular rebuild, or rebuild with draw lists");
             AddTooltip(lblPathNSF, "Path to the input (source) NSF file");
             AddTooltip(lblId, "Hexadecimal level ID (0-3F) - can overwrite existing files!");
-            AddTooltip(lblAltSave, "[Optional] alternate save path for the rebuilt NSF");
+            AddTooltip(lblAltSave, "[Optional] alternate secondary save path (dir) for the rebuilt NSF");
             AddTooltip(lblRemakeLL, "Select whether to regenerate load lists or keep the existing ones");
             AddTooltip(lblMergeType, "Algorithm to use for merging entries into chunks\nObsolete methods 0-3 are disabled");
             AddTooltip(lblSpawnIndex, "Starting spawn point index (starting from 1)");

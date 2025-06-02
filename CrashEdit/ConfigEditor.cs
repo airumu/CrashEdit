@@ -520,7 +520,7 @@ namespace CrashEdit.CE
                 backColor = lstRecentNSF.BackColor;
                 if (exists)
                 {
-                    foreColor = Color.DeepSkyBlue; // Lighter blue for dark backgrounds
+                    foreColor = Color.DeepSkyBlue;
                     font = new Font(e.Font, FontStyle.Underline);
                 }
                 else

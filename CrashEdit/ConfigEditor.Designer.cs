@@ -597,6 +597,9 @@ namespace CrashEdit.CE
             lstRecentNSF.Click += lstRecentNSF_Click;
             lstRecentNSF.DrawMode = DrawMode.OwnerDrawFixed;
             lstRecentNSF.DrawItem += lstRecentNSF_DrawItem;
+            lstRecentNSF.KeyPress += (e, a) => { a.Handled = true; };
+            lstRecentNSF.KeyDown += (e, a) => { a.Handled = true; };
+            lstRecentNSF.KeyUp += (e, a) => { a.Handled = true; };
             // 
             // boxRecentNSF
             //
@@ -621,7 +624,7 @@ namespace CrashEdit.CE
             cmdClearRecentFiles.TabIndex = 31;
             cmdClearRecentFiles.Image = Embeds.Bitmaps["Erase"];
             cmdClearRecentFiles.Click += cmdClearRecentFiles_Click;
-            tbpGeneral.Controls.Add(cmdClearRecentFiles);            
+            tbpGeneral.Controls.Add(cmdClearRecentFiles);
             // 
             // fraHexView
             // 

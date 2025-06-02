@@ -17,6 +17,8 @@ namespace CrashEdit.CE.Forms
         private FolderBrowserDialog dlgWorkingDir = new FolderBrowserDialog();
         private string workingDirectory = string.Empty;
 
+        private bool RebuildRunning = false;
+
         private System.Windows.Forms.Timer checkArgsTimer;
 
         public RebuildForm(OldMainForm ow)
@@ -88,7 +90,9 @@ namespace CrashEdit.CE.Forms
                 return;
             }
 
-            btnRebuild.Enabled = true;
+            if (!RebuildRunning)
+                btnRebuild.Enabled = true;
+
             warningLabel.Visible = false;
         }
 
@@ -212,6 +216,7 @@ namespace CrashEdit.CE.Forms
                 outputLog.BeginInvoke(new Action(() =>
                 {
                     btnRebuild.Enabled = true;
+                    RebuildRunning = false;
                 }));
 
                 if (process.ExitCode != 0)
@@ -229,6 +234,7 @@ namespace CrashEdit.CE.Forms
             try
             {
                 process.Start();
+                RebuildRunning = true;
                 using (var writer = process.StandardInput)
                 {
                     writer.Write(fileContent);
@@ -239,6 +245,7 @@ namespace CrashEdit.CE.Forms
             catch (Exception ex)
             {
                 outputLog.Text += $"Running process failed {ex.Message}";
+                RebuildRunning = false;
             }
         }
 
@@ -283,7 +290,7 @@ namespace CrashEdit.CE.Forms
                 DoCfgPathDialog();
                 if (string.IsNullOrEmpty(configFilePath) || !File.Exists(configFilePath))
                     return;
-            }                
+            }
 
             var form = new RebuildConfig(this, configFilePath);
             if (form.Cancelled)
