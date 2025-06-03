@@ -18,8 +18,20 @@ namespace CrashEdit.CE.Forms
         private string workingDirectory = string.Empty;
 
         private bool RebuildRunning = false;
+        private Process Process;
 
         private System.Windows.Forms.Timer checkArgsTimer;
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            if (RebuildRunning)
+            {
+                e.Cancel = true;
+                MessageBox.Show("Please wait for the rebuild process to complete or click Cancel.", "Rebuild in Progress", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            base.OnFormClosing(e);
+        }
 
         public RebuildForm(OldMainForm ow)
         {
@@ -147,10 +159,19 @@ namespace CrashEdit.CE.Forms
             CheckArgsValid();
         }
 
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            if (RebuildRunning)
+            {
+                Process?.Kill();
+                outputLog.Text += "Rebuild cancelled by user." + Environment.NewLine;
+                RebuildRunning = false;
+            }
+        }
+
         private void btnRebuild_Click(object sender, EventArgs e)
         {
             // run c2export with the config file
-            btnRebuild.Enabled = false;
             outputLog.Text = string.Empty;
 
             bool did_err = false;
@@ -168,7 +189,6 @@ namespace CrashEdit.CE.Forms
             if (string.IsNullOrEmpty(fileContent) || did_err)
             {
                 ShowWarning("Error reading config file");
-                btnRebuild.Enabled = false;
                 return;
             }
 
@@ -176,7 +196,7 @@ namespace CrashEdit.CE.Forms
             fileContent += "kill";
             fileContent += Environment.NewLine;
 
-            var process = new Process
+            Process = new Process
             {
                 StartInfo = new ProcessStartInfo
                 {
@@ -198,7 +218,7 @@ namespace CrashEdit.CE.Forms
             outputLog.Text += fileContent + Environment.NewLine + Environment.NewLine;
             outputLog.Text += "Program output:" + Environment.NewLine + Environment.NewLine;
 
-            process.OutputDataReceived += (s, ea) =>
+            Process.OutputDataReceived += (s, ea) =>
             {
                 if (ea.Data != null)
                 {
@@ -210,37 +230,40 @@ namespace CrashEdit.CE.Forms
                 }
             };
 
-            process.Exited += (s, ea) =>
+            Process.Exited += (s, ea) =>
             {
                 // Re-enable the button on process exit
                 outputLog.BeginInvoke(new Action(() =>
                 {
                     btnRebuild.Enabled = true;
+                    btnCancel.Enabled = false;
                     RebuildRunning = false;
                 }));
 
-                if (process.ExitCode != 0)
+                if (Process.ExitCode != 0)
                 {
-                    Console.WriteLine($"!!! c2export exited with code {process.ExitCode}");
-                    ShowWarning($"!!! c2export exited with code {process.ExitCode}");
+                    Console.WriteLine($"!!! c2export exited with code {Process.ExitCode}");
+                    ShowWarning($"!!! c2export exited with code {Process.ExitCode}");
                 }
                 else
                     Console.WriteLine("rebuild done :)");
 
-                process.Dispose();
+                Process.Dispose();
             };
 
             // run
             try
             {
-                process.Start();
+                Process.Start();
+                btnRebuild.Enabled = false;
+                btnCancel.Enabled = true;
                 RebuildRunning = true;
-                using (var writer = process.StandardInput)
+                using (var writer = Process.StandardInput)
                 {
                     writer.Write(fileContent);
                 }
-                process.BeginOutputReadLine();
-                process.WaitForExitAsync();
+                Process.BeginOutputReadLine();
+                Process.WaitForExitAsync();
             }
             catch (Exception ex)
             {

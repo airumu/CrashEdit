@@ -46,6 +46,7 @@ namespace CrashEdit.CE.Forms
             tooltip = new ToolTip();
             warningLabel = new Label();
             btnRebuild = new DarkButton();
+            btnCancel = new DarkButton();
             labelLog = new Label();
             outputLog = new DarkTextBox();
             pnOptions = new Panel();
@@ -150,7 +151,7 @@ namespace CrashEdit.CE.Forms
             btnMakeNewConfig.Location = new Point(12, 90);
             btnMakeNewConfig.Name = "btnMakeNewConfig";
             btnMakeNewConfig.Image = new Bitmap(Embeds.Bitmaps["Add"], new Size(16, 16));
-            btnMakeNewConfig.TabIndex = 5;
+            btnMakeNewConfig.TabIndex = 6;
             btnMakeNewConfig.Click += btnMakeNewConfig_Click;
             btnMakeNewConfig.MouseHover += (s, e) =>
             {
@@ -165,7 +166,7 @@ namespace CrashEdit.CE.Forms
             btnEditConfig.Location = new Point(34, 90);
             btnEditConfig.Name = "btnEditConfig";
             btnEditConfig.Image = new Bitmap(Embeds.Bitmaps["Modify"], new Size(16, 16));
-            btnEditConfig.TabIndex = 6;
+            btnEditConfig.TabIndex = 7;
             btnEditConfig.Click += btnEditConfig_Click;
             btnEditConfig.MouseHover += (s, e) =>
             {
@@ -180,7 +181,7 @@ namespace CrashEdit.CE.Forms
             btnClearConfig.Location = new Point(56, 90);
             btnClearConfig.Name = "btnClearConfig";
             btnClearConfig.Image = new Bitmap(Embeds.Bitmaps["Erase"], new Size(16, 16));
-            btnClearConfig.TabIndex = 7;
+            btnClearConfig.TabIndex = 8;
             btnClearConfig.Click += (s, e) =>
             {
                 configFilePath = "<no config path selected>";
@@ -201,7 +202,7 @@ namespace CrashEdit.CE.Forms
             btnRecheckConfig.Location = new Point(78, 90);
             btnRecheckConfig.Name = "btnClearConfig";
             btnRecheckConfig.Image = new Bitmap(Embeds.Bitmaps["ArrowRefresh"], new Size(16, 16));
-            btnRecheckConfig.TabIndex = 7;
+            btnRecheckConfig.TabIndex = 9;
             btnRecheckConfig.Click += (s, e) =>
             {
                 SearchForConfigFile();
@@ -254,7 +255,7 @@ namespace CrashEdit.CE.Forms
             btnRebuild.Padding = new Padding(5);
             btnRebuild.Size = new Size(100, 30);
             btnRebuild.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnRebuild.TabIndex = 4;
+            btnRebuild.TabIndex = 5;
             btnRebuild.Text = "Rebuild";
             btnRebuild.Click += btnRebuild_Click;
             btnRebuild.MouseHover += (e, a) =>
@@ -264,6 +265,28 @@ namespace CrashEdit.CE.Forms
             btnRebuild.MouseLeave += (e, a) =>
             {
                 tooltip.Hide(btnRebuild);
+            };
+
+            btnCancel.BorderColour = Color.Empty;
+            btnCancel.CustomColour = false;
+            btnCancel.Enabled = false;
+            btnCancel.FlatBottom = false;
+            btnCancel.FlatTop = false;
+            btnCancel.Location = new Point(470, BASE_HEIGHT - 220);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Padding = new Padding(5);
+            btnCancel.Size = new Size(100, 30);
+            btnCancel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnCancel.TabIndex = 4;
+            btnCancel.Text = "Cancel";
+            btnCancel.Click += btnCancel_Click;
+            btnCancel.MouseHover += (e, a) =>
+            {
+                tooltip.Show("Cancel rebuild", btnCancel, btnCancel.Width + 5, btnCancel.Height);
+            };
+            btnCancel.MouseLeave += (e, a) =>
+            {
+                tooltip.Hide(btnCancel);
             };
 
             outputLog.Multiline = true;
@@ -354,7 +377,7 @@ namespace CrashEdit.CE.Forms
             btnClearWorkingDir.Location = new Point(19, 146);
             btnClearWorkingDir.Name = "btnClearWorkingDir";
             btnClearWorkingDir.Image = new Bitmap(Embeds.Bitmaps["Erase"], new Size(16, 16)); // Use a suitable icon key
-            btnClearWorkingDir.TabIndex = 8;
+            btnClearWorkingDir.TabIndex = 10;
             btnClearWorkingDir.Click += btnClearWorkingDir_Click;
 
             btnClearWorkingDir.MouseHover += (s, e) =>
@@ -370,6 +393,7 @@ namespace CrashEdit.CE.Forms
             pnOptions.Controls.Add(labelPathCfgValue);
             pnOptions.Controls.Add(labelPathExeValue);
             pnOptions.Controls.Add(btnRebuild);
+            pnOptions.Controls.Add(btnCancel);
             pnOptions.Controls.Add(btnMakeNewConfig);
             pnOptions.Controls.Add(btnEditConfig);
             pnOptions.Controls.Add(btnClearConfig);
@@ -437,6 +461,7 @@ namespace CrashEdit.CE.Forms
         private Panel pnOptions;
         private ToolTip tooltip;
         private DarkButton btnRebuild;
+        private DarkButton btnCancel;
 
         private Label labelLog;
         private DarkTextBox outputLog;
