@@ -163,10 +163,21 @@ namespace CrashEdit.CE.Forms
         {
             if (RebuildRunning)
             {
-                Process?.Kill();
+                Process?.Close();
                 outputLog.Text += "Rebuild cancelled by user." + Environment.NewLine;
                 RebuildRunning = false;
             }
+        }
+
+        public string GetWD()
+        {
+            string ret =
+                !string.IsNullOrEmpty(workingDirectory)
+                            ? workingDirectory
+                            : Path.GetDirectoryName(Settings.Default.C2ExportPath);
+            if (string.IsNullOrEmpty(ret))
+                return "";
+            return ret;
         }
 
         private void btnRebuild_Click(object sender, EventArgs e)
@@ -205,9 +216,7 @@ namespace CrashEdit.CE.Forms
                     RedirectStandardOutput = true,
                     UseShellExecute = false,
                     CreateNoWindow = true,
-                    WorkingDirectory = !string.IsNullOrEmpty(workingDirectory)
-                                            ? workingDirectory
-                                            : Path.GetDirectoryName(Settings.Default.C2ExportPath)
+                    WorkingDirectory = GetWD()
                 },
                 EnableRaisingEvents = true
             };

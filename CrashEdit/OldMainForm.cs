@@ -1026,13 +1026,27 @@ namespace CrashEdit.CE
 
         void ShowRebuildForm()
         {
-            if (frmRebuild == null || frmRebuild.IsDisposed)
-                frmRebuild = new RebuildForm(this);
+            if (frmRebuild?.IsDisposed == true)
+            {
+                frmRebuild = null;
+            }
 
+            // Create new form if needed
+            if (frmRebuild == null)
+            {
+                frmRebuild = new RebuildForm(this);
+                frmRebuild.FormClosed += (s, e) => {
+                    frmRebuild?.Dispose();
+                    frmRebuild = null;
+                };
+            }
+
+            // Show and activate
             if (!frmRebuild.Visible)
-                frmRebuild.Show();
-            else
-                frmRebuild.Activate();
+            {
+                frmRebuild.Show(this); // Show as child of main form
+            }
+            frmRebuild.Activate();
         }
 
         void tbbBIN_Click(object sender, EventArgs e)

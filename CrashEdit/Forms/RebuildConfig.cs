@@ -1,5 +1,6 @@
 using AltUI.Controls;
 using AltUI.Forms;
+using System.Diagnostics;
 using System.Text;
 
 namespace CrashEdit.CE.Forms
@@ -47,7 +48,7 @@ namespace CrashEdit.CE.Forms
         private DarkComboBox cmbMergeType;
         private Label lblSpawnIndex;
         private DarkTextBox txtSpawnIndex;
-        private Label lblPathPerma;
+        private Label lblPathPerma;        
         private DarkTextBox txtPathPerma;
         private DarkButton btnBrowsePerma;
         private Label lblPathDeps;
@@ -104,6 +105,11 @@ namespace CrashEdit.CE.Forms
         private DarkButton btnSaveOver;
         private DarkButton btnCancel;
 
+        private DarkButton btnOpenPathPerma;
+        private DarkButton btnOpenPathDeps;
+        private DarkButton btnOpenPathCollDeps;
+        private DarkButton btnOpenPathMusicDeps;
+
         private bool PathHadQuotesNSF = false;
         private bool PathHadQuotesAltSave = false;
         private bool PathHadQuotesPerma = false;
@@ -132,7 +138,7 @@ namespace CrashEdit.CE.Forms
             InitializeComponent();
         }
 
-        private void AddTooltip(Label lbl, string txt)
+        private void AddTooltip(Control lbl, string txt)
         {
             lbl.MouseHover += (s, e) =>
             {
@@ -143,6 +149,7 @@ namespace CrashEdit.CE.Forms
                 tooltip.Hide(lbl);
             };
         }
+
         private void IntegerOnly_KeyPress(object sender, KeyPressEventArgs e)
         {
             // Allow control keys (e.g., backspace), and digits only
@@ -486,7 +493,11 @@ namespace CrashEdit.CE.Forms
             lblRandomSeed = new Label();
             txtRandomSeed = new DarkTextBox();
             lblThreadCount = new Label();
-            txtThreadCount = new DarkTextBox();
+            txtThreadCount = new DarkTextBox();            
+            btnOpenPathPerma = new DarkButton();
+            btnOpenPathDeps = new DarkButton();
+            btnOpenPathCollDeps = new DarkButton();
+            btnOpenPathMusicDeps = new DarkButton();
             SuspendLayout();
 
             // Form properties
@@ -583,6 +594,9 @@ namespace CrashEdit.CE.Forms
             btnBrowsePerma.Click += (e, a) => btnBrowsePerma_Click();
             txtPathPerma.Text = "permalist.txt";
             txtPathPerma.TextChanged += (s, e) => UpdateOutputConfig();
+            btnOpenPathPerma.Size = new Size(20, 20);
+            btnOpenPathPerma.Image = Embeds.Bitmaps["Folder"];
+            btnOpenPathPerma.Click += (e, a) => OpenTxtFileDefault(txtPathPerma.Text);
 
             // dependency file            
             lblPathDeps.AutoSize = true;
@@ -591,6 +605,9 @@ namespace CrashEdit.CE.Forms
             btnBrowseDeps.Click += (e, a) => btnBrowseDeps_Click();
             txtPathDeps.Text = "entity dependencies.txt";
             txtPathDeps.TextChanged += (s, e) => UpdateOutputConfig();
+            btnOpenPathDeps.Size = new Size(20, 20);
+            btnOpenPathDeps.Image = Embeds.Bitmaps["Folder"];
+            btnOpenPathDeps.Click += (e, a) => OpenTxtFileDefault(txtPathDeps.Text);
 
             // collision dependency file            
             lblPathCollDeps.AutoSize = true;
@@ -600,6 +617,9 @@ namespace CrashEdit.CE.Forms
             txtPathCollDeps.Text = "-";
             txtPathCollDeps.Leave += (s, e) => { if (txtPathCollDeps.Text.Trim().Length <= 1) txtPathCollDeps.Text = "-"; };
             txtPathCollDeps.TextChanged += (s, e) => UpdateOutputConfig();
+            btnOpenPathCollDeps.Size = new Size(20, 20);
+            btnOpenPathCollDeps.Image = Embeds.Bitmaps["Folder"];
+            btnOpenPathCollDeps.Click += (e, a) => OpenTxtFileDefault(txtPathCollDeps.Text);
 
             // music dependency file            
             lblPathMusicDeps.AutoSize = true;
@@ -609,6 +629,9 @@ namespace CrashEdit.CE.Forms
             txtPathMusicDeps.Text = "-";
             txtPathMusicDeps.Leave += (s, e) => { if (txtPathMusicDeps.Text.Trim().Length <= 1) txtPathMusicDeps.Text = "-"; };
             txtPathMusicDeps.TextChanged += (s, e) => UpdateOutputConfig();
+            btnOpenPathMusicDeps.Size = new Size(20, 20);
+            btnOpenPathMusicDeps.Image = Embeds.Bitmaps["Folder"];
+            btnOpenPathMusicDeps.Click += (e, a) => OpenTxtFileDefault(txtPathMusicDeps.Text);
 
             // Distance settings
             lblDL_Dist_XDist.AutoSize = true;
@@ -796,6 +819,11 @@ namespace CrashEdit.CE.Forms
             AddTooltip(lblRandomSeed, "Random seed for merge algorithm (use 0 for random seed)");
             AddTooltip(lblThreadCount, "[Merge method 5] Number of parallel threads");
 
+            AddTooltip(btnOpenPathPerma, "Open the perma file in the default text editor");
+            AddTooltip(btnOpenPathDeps, "Open the entity dependencies file in the default text editor");
+            AddTooltip(btnOpenPathCollDeps, "Open the collision dependencies file in the default text editor");
+            AddTooltip(btnOpenPathMusicDeps, "Open the music dependencies file in the default text editor");
+
             // Add controls to form
             Controls.AddRange([
                 lblType,
@@ -817,15 +845,19 @@ namespace CrashEdit.CE.Forms
                 lblPathPerma,
                 btnBrowsePerma,
                 txtPathPerma,
+                btnOpenPathPerma,
                 lblPathDeps,
                 btnBrowseDeps,
                 txtPathDeps,
+                btnOpenPathDeps,
                 lblPathCollDeps,
                 btnBrowseCollDeps,
                 txtPathCollDeps,
+                btnOpenPathCollDeps,
                 lblPathMusicDeps,
                 btnBrowseMusicDeps,
                 txtPathMusicDeps,
+                btnOpenPathMusicDeps,
                 lblDL_Dist_XDist,
                 txtDL_Dist_XDist,
                 lblDL_Dist_YDist,
@@ -992,6 +1024,25 @@ namespace CrashEdit.CE.Forms
         private void BtnCancel_Click()
         {
             Close();
+        }
+
+        private void OpenTxtFileDefault(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+                return;
+
+            if (!Path.IsPathFullyQualified(path))
+            {
+                path = Path.Combine(rbldForm.GetWD(), path);
+            }
+
+            if (string.IsNullOrEmpty(path) || !File.Exists(path))
+                return;
+
+            using Process fileopener = new Process();
+            fileopener.StartInfo.FileName = "explorer";
+            fileopener.StartInfo.Arguments = "\"" + path + "\"";
+            fileopener.Start();
         }
 
         private void btnBrowseNSF_Click()
@@ -1206,26 +1257,30 @@ namespace CrashEdit.CE.Forms
             lblPathPerma.Location = new Point(PADDING, ROW_HEIGHT / 2 + PADDING_LBL + ROW_HEIGHT * 7);
             btnBrowsePerma.Size = new Size(32, 23);
             btnBrowsePerma.Location = new Point(90, ROW_HEIGHT / 2 + PADDING + ROW_HEIGHT * 7);
-            txtPathPerma.Size = new Size(ClientSize.Width / 2 - 125 - PADDING, 23);
+            txtPathPerma.Size = new Size(ClientSize.Width / 2 - 150 - PADDING, 23);
             txtPathPerma.Location = new Point(125, ROW_HEIGHT / 2 + PADDING + ROW_HEIGHT * 7);
+            btnOpenPathPerma.Location = new Point(ClientSize.Width / 2 - 20 - PADDING, ROW_HEIGHT / 2 + PADDING + ROW_HEIGHT * 7);
 
             lblPathDeps.Location = new Point(PADDING, ROW_HEIGHT / 2 + PADDING_LBL + ROW_HEIGHT * 8);
             btnBrowseDeps.Size = new Size(32, 23);
             btnBrowseDeps.Location = new Point(90, ROW_HEIGHT / 2 + PADDING + ROW_HEIGHT * 8);
-            txtPathDeps.Size = new Size(ClientSize.Width / 2 - 125 - PADDING, 23);
+            txtPathDeps.Size = new Size(ClientSize.Width / 2 - 150 - PADDING, 23);
             txtPathDeps.Location = new Point(125, ROW_HEIGHT / 2 + PADDING + ROW_HEIGHT * 8);
+            btnOpenPathDeps.Location = new Point(ClientSize.Width / 2 - 20 - PADDING, ROW_HEIGHT / 2 + PADDING + ROW_HEIGHT * 8);
 
             lblPathCollDeps.Location = new Point(PADDING, ROW_HEIGHT / 2 + PADDING_LBL + ROW_HEIGHT * 9);
             btnBrowseCollDeps.Size = new Size(32, 23);
             btnBrowseCollDeps.Location = new Point(90, ROW_HEIGHT / 2 + PADDING + ROW_HEIGHT * 9);
-            txtPathCollDeps.Size = new Size(ClientSize.Width / 2 - 125 - PADDING, 23);
+            txtPathCollDeps.Size = new Size(ClientSize.Width / 2 - 150 - PADDING, 23);
             txtPathCollDeps.Location = new Point(125, ROW_HEIGHT / 2 + PADDING + ROW_HEIGHT * 9);
+            btnOpenPathCollDeps.Location = new Point(ClientSize.Width / 2 - 20 - PADDING, ROW_HEIGHT / 2 + PADDING + ROW_HEIGHT * 9);
 
             lblPathMusicDeps.Location = new Point(PADDING, ROW_HEIGHT / 2 + PADDING_LBL + ROW_HEIGHT * 10);
             btnBrowseMusicDeps.Size = new Size(32, 23);
             btnBrowseMusicDeps.Location = new Point(90, ROW_HEIGHT / 2 + PADDING + ROW_HEIGHT * 10);
-            txtPathMusicDeps.Size = new Size(ClientSize.Width / 2 - 125 - PADDING, 23);
+            txtPathMusicDeps.Size = new Size(ClientSize.Width / 2 - 150 - PADDING, 23);
             txtPathMusicDeps.Location = new Point(125, ROW_HEIGHT / 2 + PADDING + ROW_HEIGHT * 10);
+            btnOpenPathMusicDeps.Location = new Point(ClientSize.Width / 2 - 20 - PADDING, ROW_HEIGHT / 2 + PADDING + ROW_HEIGHT * 10);
 
             // Horizontal separator 2
             separatorLineH2.Size = new Size(ClientSize.Width / 2 - PADDING * 2, 1);
