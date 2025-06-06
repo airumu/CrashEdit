@@ -1030,8 +1030,7 @@ namespace CrashEdit.CE
             {
                 frmRebuild = null;
             }
-
-            // Create new form if needed
+            
             if (frmRebuild == null)
             {
                 frmRebuild = new RebuildForm(this);
@@ -1043,9 +1042,9 @@ namespace CrashEdit.CE
 
             // Show and activate
             if (!frmRebuild.Visible)
-            {
-                frmRebuild.Show(this); // Show as child of main form
-            }
+                frmRebuild.Show(this);
+            
+            frmRebuild.BringToFront();
             frmRebuild.Activate();
         }
 
