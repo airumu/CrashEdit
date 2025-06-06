@@ -45,6 +45,7 @@ namespace CrashEdit.CE.Forms
             labelPathCfgValue = new Label();
             tooltip = new ToolTip();
             warningLabel = new Label();
+            warningLabel2 = new Label();
             btnRebuild = new DarkButton();
             btnCancel = new DarkButton();
             labelLog = new Label();
@@ -237,13 +238,21 @@ namespace CrashEdit.CE.Forms
 
             warningLabel.BackColor = Color.Transparent;
             warningLabel.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            warningLabel.BackColor = Color.Transparent;
-            warningLabel.ForeColor = Color.Red;
-            warningLabel.Location = new Point(8, BASE_HEIGHT - 215);
+            warningLabel.ForeColor = Color.Orange;
+            warningLabel.Location = new Point(30, BASE_HEIGHT - 230);
             warningLabel.Name = "warningLabel";
             warningLabel.Size = new Size(384, 30);
             warningLabel.Text = "";
             warningLabel.Visible = false;
+
+            warningLabel2.BackColor = Color.Transparent;
+            warningLabel2.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            warningLabel2.ForeColor = Color.Red;
+            warningLabel2.Location = new Point(30, BASE_HEIGHT - 205);
+            warningLabel2.Name = "warningLabel2";
+            warningLabel2.Size = new Size(384, 25);
+            warningLabel2.Text = "";
+            warningLabel2.Visible = false;
 
             btnRebuild.BorderColour = Color.Empty;
             btnRebuild.CustomColour = false;
@@ -362,7 +371,7 @@ namespace CrashEdit.CE.Forms
             labelWorkingDirValue.ForeColor = SystemColors.MenuText;
             labelWorkingDirValue.Location = new Point(100, 150);
             labelWorkingDirValue.Name = "labelWorkingDirValue";
-            labelWorkingDirValue.Size = new Size(1000, 27);
+            labelWorkingDirValue.Size = new Size(1000, 20);
             labelWorkingDirValue.Text = "";
             labelWorkingDirValue.MouseHover += (s, e) =>
             {
@@ -408,6 +417,7 @@ namespace CrashEdit.CE.Forms
             pnOptions.Controls.Add(labelWorkingDirValue);
             pnOptions.Controls.Add(btnWorkingDir);
             pnOptions.Controls.Add(warningLabel);
+            pnOptions.Controls.Add(warningLabel2);
             pnOptions.Controls.Add(btnClearWorkingDir);
             pnOptions.Controls.Add(labelLog);
             pnOptions.Controls.Add(outputLog);
@@ -451,6 +461,7 @@ namespace CrashEdit.CE.Forms
         private Label labelPathCfgValue;
 
         private Label warningLabel;
+        private Label warningLabel2;
 
         private Label labelWorkingDir;
         private Label labelWorkingDirInfo;

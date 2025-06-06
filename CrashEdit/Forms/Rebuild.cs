@@ -249,15 +249,39 @@ namespace CrashEdit.CE.Forms
                     RebuildRunning = false;
                 }));
 
+                string warning = "";
+
                 if (Process.ExitCode != 0)
                 {
                     Console.WriteLine($"!!! c2export exited with code {Process.ExitCode}");
-                    ShowWarning($"!!! c2export exited with code {Process.ExitCode}");
+                    warning += $"!!! c2export exited with code {Process.ExitCode}";
                 }
                 else
                     Console.WriteLine("rebuild done :)");
 
                 Process.Dispose();
+
+                bool success = !outputLog.Text.Contains("[ERROR]") &&
+                               outputLog.Text.Contains("Done. It is recommended to save") &&
+                               outputLog.Text.Contains("Build/rebuild took");
+                if (!success)
+                    warning += "Did not complete successfully. Check the output log.";
+
+                if (!string.IsNullOrEmpty(warning))
+                {
+                    warningLabel2.BeginInvoke(new Action(() =>
+                    {
+                        warningLabel2.Visible = true;
+                        warningLabel2.Text = warning;
+                    }));
+                }
+                else
+                {
+                    warningLabel2.BeginInvoke(new Action(() =>
+                    {
+                        warningLabel2.Visible = false;
+                    }));
+                }
             };
 
             // run
