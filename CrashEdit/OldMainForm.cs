@@ -1040,10 +1040,13 @@ namespace CrashEdit.CE
                 };
             }
 
-            // Show and activate
             if (!frmRebuild.Visible)
                 frmRebuild.Show(this);
-            
+
+            if (frmRebuild.WindowState == FormWindowState.Minimized)
+                frmRebuild.WindowState = FormWindowState.Normal;            
+
+            frmRebuild.Focus();
             frmRebuild.BringToFront();
             frmRebuild.Activate();
         }
