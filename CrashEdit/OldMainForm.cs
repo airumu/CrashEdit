@@ -1367,6 +1367,8 @@ namespace CrashEdit.CE
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                BringToFront();
+                Activate();
                 foreach (string file in files)
                 {
                     if (Path.GetExtension(file).ToLower() == ".nsf")
