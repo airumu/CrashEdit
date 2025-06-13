@@ -163,9 +163,11 @@ namespace CrashEdit.CE.Forms
         {
             if (RebuildRunning)
             {
+                Process?.Kill();
                 Process?.Close();
                 outputLog.Text += "Rebuild cancelled by user." + Environment.NewLine;
                 RebuildRunning = false;
+                btnCancel.Enabled = false;
             }
         }
 
