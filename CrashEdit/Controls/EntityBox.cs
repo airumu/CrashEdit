@@ -44,10 +44,10 @@ namespace CrashEdit.CE
         private DarkToolTip tipEntityA;
         private DarkToolTip tipEntityB;
 
-        private Label lblHelpBoxCount;
-        private Label lblHelpBonusBoxCount;
-        private DarkToolTip tipBoxCount;
-        private DarkToolTip tipBonusBoxCount;
+        private Label lblHelpOverrideId;
+        private Label lblHelpOverrideMult;
+        private DarkToolTip tipOverrideId;
+        private DarkToolTip tipOverrideMult;
 
         internal Stack<bool> dirty = new Stack<bool>();
         internal bool Dirty => dirty.Count > 0 && dirty.Peek();
@@ -265,25 +265,25 @@ namespace CrashEdit.CE
             };
             tbcTabs.SelectedIndexChanged += tabChangedHandler;
 
-            tipBoxCount = new DarkToolTip();
-            tipBonusBoxCount = new DarkToolTip();
+            tipOverrideId = new DarkToolTip();
+            tipOverrideMult = new DarkToolTip();
 
-            lblHelpBoxCount = new Label();
-            lblHelpBoxCount.Text = "(?)";
-            lblHelpBoxCount.AutoSize = true;
-            lblHelpBoxCount.Location = new Point(chkBoxCount.Right + 4, chkBoxCount.Top);
-            lblHelpBoxCount.Cursor = Cursors.Help;
-            fraBoxCount.Controls.Add(lblHelpBoxCount);
+            lblHelpOverrideId = new Label();
+            lblHelpOverrideId.Text = "(?)";
+            lblHelpOverrideId.AutoSize = true;
+            lblHelpOverrideId.Location = new Point(110, chkDrawOverrideId.Top);
+            lblHelpOverrideId.Cursor = Cursors.Help;
+            fraDrawOverrides.Controls.Add(lblHelpOverrideId);
 
-            lblHelpBonusBoxCount = new Label();
-            lblHelpBonusBoxCount.Text = "(?)";
-            lblHelpBonusBoxCount.AutoSize = true;
-            lblHelpBonusBoxCount.Location = new Point(chkBonusBoxCount.Right + 4, chkBonusBoxCount.Top);
-            lblHelpBonusBoxCount.Cursor = Cursors.Help;
-            fraBoxCount.Controls.Add(lblHelpBonusBoxCount);
+            lblHelpOverrideMult = new Label();
+            lblHelpOverrideMult.Text = "(?)";
+            lblHelpOverrideMult.AutoSize = true;
+            lblHelpOverrideMult.Location = new Point(110, chkDrawOverrideMult.Top);
+            lblHelpOverrideMult.Cursor = Cursors.Help;
+            fraDrawOverrides.Controls.Add(lblHelpOverrideMult);
 
-            tipBoxCount.SetToolTip(lblHelpBoxCount, "c2export rebuild_dl: \nposition override ID\nWhen making draw lists,\nuses position of other entity\n(must be from same zone).");
-            tipBonusBoxCount.SetToolTip(lblHelpBonusBoxCount, "c2export rebuild_dl: \ndistance multiplier\nWhen making draw lists,\nallowed distance is\nmultipled by this / 100.");
+            tipOverrideId.SetToolTip(lblHelpOverrideId, "c2export rebuild_dl: \nposition override ID\nWhen making draw lists,\nuses position of other entity\n(must be from same zone).");
+            tipOverrideMult.SetToolTip(lblHelpOverrideMult, "c2export rebuild_dl: \ndistance multiplier\nWhen making draw lists,\nallowed distance is\nmultipled by this / 100.");
         }
 
         public EntityBox(EntityController controller)
@@ -2391,6 +2391,23 @@ namespace CrashEdit.CE
             chkDDASettings.Checked = entity.DDASettings.HasValue;
         }
 
+        private void UpdateDrawOverride()
+        {
+            if (entity.DrawOverrideID.HasValue)
+            {
+                numDrawOverrideId.Value = entity.DrawOverrideID.Value.ValueB;
+            }
+            numDrawOverrideId.Enabled = entity.DrawOverrideID.HasValue;
+            chkDrawOverrideId.Checked = entity.DrawOverrideID.HasValue;
+
+            if (entity.DrawOverrideMult.HasValue)
+            {
+                numDrawOverrideMult.Value = entity.DrawOverrideMult.Value.ValueB;
+            }
+            numDrawOverrideMult.Enabled = entity.DrawOverrideMult.HasValue;
+            chkDrawOverrideMult.Checked = entity.DrawOverrideMult.HasValue;
+        }
+
         private void chkDDASettings_CheckedChanged(object sender, EventArgs e)
         {
             numDDASettings.Enabled = chkDDASettings.Checked;
@@ -2435,6 +2452,41 @@ namespace CrashEdit.CE
         private void numDDASection_ValueChanged(object sender, EventArgs e)
         {
             entity.DDASection = (int)numDDASection.Value;
+        }
+
+        private void chkDrawOverrideId_Changed(object sender, EventArgs e)
+        {
+            numDrawOverrideId.Enabled = chkDrawOverrideId.Checked;
+            if (chkDrawOverrideId.Checked)
+            {
+                entity.DrawOverrideID = new EntitySetting(0, (int)numDrawOverrideId.Value);
+            }
+            else
+            {
+                entity.DrawOverrideID = null;
+            }
+        }
+
+        private void numDrawOverrideId_Changed(object sender, EventArgs e)
+        {
+            entity.DrawOverrideID = new EntitySetting(0, (int)numDrawOverrideId.Value);
+        }
+        private void chkDrawOverrideMult_Changed(object sender, EventArgs e)
+        {
+            numDrawOverrideMult.Enabled = chkDrawOverrideMult.Checked;
+            if (chkDrawOverrideMult.Checked)
+            {
+                entity.DrawOverrideMult = new EntitySetting(0, (int) numDrawOverrideMult.Value);
+            }
+            else
+            {
+                entity.DrawOverrideMult = null;
+            }
+        }
+
+        private void numDrawOverrideMult_Changed(object sender, EventArgs e)
+        {
+            entity.DrawOverrideMult = new EntitySetting(0, (int) numDrawOverrideMult.Value);
         }
 
         private void UpdateScaling()
@@ -2544,6 +2596,7 @@ namespace CrashEdit.CE
             UpdateBoxCount();
             UpdateDDASection();
             UpdateDDASettings();
+            UpdateDrawOverride();
             if (controller.GetNSF().Version == GameVersion.Crash3)
             {
                 UpdateScaling();

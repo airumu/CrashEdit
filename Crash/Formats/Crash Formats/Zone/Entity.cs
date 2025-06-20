@@ -128,6 +128,10 @@ namespace CrashEdit.Crash
         private int? timetrialreward = null;
         [EntityPropertyField(0x337)]
         private EntitySetting? bonusboxcount = null;
+        [EntityPropertyField(0x3FE)]
+        private EntitySetting? drawOverrideId = null;
+        [EntityPropertyField(0x3FF)]
+        private EntitySetting? drawOverrideMult = null;
 
         // Camera 1
         [EntityPropertyField(0x162)]
@@ -386,6 +390,18 @@ namespace CrashEdit.Crash
         {
             get => ddasection;
             set => ddasection = value;
+        }
+
+        public EntitySetting? DrawOverrideID
+        {
+            get => drawOverrideId;
+            set => drawOverrideId = value;
+        }
+
+        public EntitySetting? DrawOverrideMult
+        {
+            get => drawOverrideMult;
+            set => drawOverrideMult = value;
         }
 
         public EntitySetting? BoxCount
