@@ -48,7 +48,7 @@ namespace CrashEdit.CE.Forms
         private DarkComboBox cmbMergeType;
         private Label lblSpawnIndex;
         private DarkTextBox txtSpawnIndex;
-        private Label lblPathPerma;        
+        private Label lblPathPerma;
         private DarkTextBox txtPathPerma;
         private DarkButton btnBrowsePerma;
         private Label lblPathDeps;
@@ -231,57 +231,60 @@ namespace CrashEdit.CE.Forms
                 var path_perma = lines[curr_idx++].Trim();
                 txtPathPerma.Text = path_fix_rem_quotes(path_perma, out PathHadQuotesPerma);
 
-                var path_deps = lines[curr_idx++].Trim();
-                txtPathDeps.Text = path_fix_rem_quotes(path_deps, out PathHadQuotesDeps);
-
-                var path_coll_deps = lines[curr_idx++].Trim();
-                txtPathCollDeps.Text = path_fix_rem_quotes(path_coll_deps, out PathHadQuotesCollDeps);
-
-                var path_music_deps = lines[curr_idx++].Trim();
-                txtPathMusicDeps.Text = path_fix_rem_quotes(path_music_deps, out PathHadQuotesMusicDeps);
-
-                // rebuild_dl
-                if (cmbType.SelectedIndex == 1)
+                if (cmbRemakeLL.SelectedIndex == 1)
                 {
-                    var dl_dist_x = lines[curr_idx++].Trim();
-                    txtDL_Dist_XDist.Text = dl_dist_x;
-                    var dl_dist_y = lines[curr_idx++].Trim();
-                    txtDL_Dist_YDist.Text = dl_dist_y;
-                    var dl_dist_xz = lines[curr_idx++].Trim();
-                    txtDL_Dist_XZDist.Text = dl_dist_xz;
-                    var dl_angle_3d = lines[curr_idx++].Trim();
-                    txtDL_Dist_Angle3D.Text = dl_angle_3d;
+                    var path_deps = lines[curr_idx++].Trim();
+                    txtPathDeps.Text = path_fix_rem_quotes(path_deps, out PathHadQuotesDeps);
+
+                    var path_coll_deps = lines[curr_idx++].Trim();
+                    txtPathCollDeps.Text = path_fix_rem_quotes(path_coll_deps, out PathHadQuotesCollDeps);
+
+                    var path_music_deps = lines[curr_idx++].Trim();
+                    txtPathMusicDeps.Text = path_fix_rem_quotes(path_music_deps, out PathHadQuotesMusicDeps);
+
+                    // rebuild_dl
+                    if (cmbType.SelectedIndex == 1)
+                    {
+                        var dl_dist_x = lines[curr_idx++].Trim();
+                        txtDL_Dist_XDist.Text = dl_dist_x;
+                        var dl_dist_y = lines[curr_idx++].Trim();
+                        txtDL_Dist_YDist.Text = dl_dist_y;
+                        var dl_dist_xz = lines[curr_idx++].Trim();
+                        txtDL_Dist_XZDist.Text = dl_dist_xz;
+                        var dl_angle_3d = lines[curr_idx++].Trim();
+                        txtDL_Dist_Angle3D.Text = dl_angle_3d;
+                    }
+
+                    var slst_dist = lines[curr_idx++].Trim();
+                    if (int.TryParse(slst_dist, out int slstValue) && slstValue >= 0 && slstValue <= MAX_LL_DISTANCE)
+                        txtLL_Dist_SLST.Text = slstValue.ToString();
+                    else
+                        Console.WriteLine($"Invalid LL SLST Dist in config: {slst_dist}");
+
+                    var neigh_dist = lines[curr_idx++].Trim();
+                    if (int.TryParse(neigh_dist, out int neighValue) && neighValue >= 0 && neighValue <= MAX_LL_DISTANCE)
+                        txtLL_Dist_Neigh.Text = neighValue.ToString();
+                    else
+                        Console.WriteLine($"Invalid LL Neighbour Dist in config: {neigh_dist}");
+
+                    var draw_dist = lines[curr_idx++].Trim();
+                    if (int.TryParse(draw_dist, out int drawValue) && drawValue >= 0 && drawValue <= MAX_LL_DISTANCE)
+                        txtLL_Dist_Draw.Text = drawValue.ToString();
+                    else
+                        Console.WriteLine($"Invalid LL DrawList Dist in config: {draw_dist}");
+
+                    var trans_preload = lines[curr_idx++].Trim();
+                    if (int.TryParse(trans_preload, out int trnsLoadValue) && trnsLoadValue >= 0 && trnsLoadValue <= MAX_TRANS_PREL_TYPE)
+                        cmbLL_TransPreload.SelectedIndex = trnsLoadValue;
+                    else
+                        Console.WriteLine($"Invalid LL Trans Preloading in config: {trans_preload}");
+
+                    var backw_penalty = lines[curr_idx++].Trim();
+                    if (float.TryParse(backw_penalty, out float backwPenValue) && backwPenValue >= 0 && backwPenValue <= MAX_BACKW_PENTALTY)
+                        txtBackWPenalty.Text = backw_penalty;
+                    else
+                        Console.WriteLine($"Invalid backwards penalty: {backw_penalty}");
                 }
-
-                var slst_dist = lines[curr_idx++].Trim();
-                if (int.TryParse(slst_dist, out int slstValue) && slstValue >= 0 && slstValue <= MAX_LL_DISTANCE)
-                    txtLL_Dist_SLST.Text = slstValue.ToString();
-                else
-                    Console.WriteLine($"Invalid LL SLST Dist in config: {slst_dist}");
-
-                var neigh_dist = lines[curr_idx++].Trim();
-                if (int.TryParse(neigh_dist, out int neighValue) && neighValue >= 0 && neighValue <= MAX_LL_DISTANCE)
-                    txtLL_Dist_Neigh.Text = neighValue.ToString();
-                else
-                    Console.WriteLine($"Invalid LL Neighbour Dist in config: {neigh_dist}");
-
-                var draw_dist = lines[curr_idx++].Trim();
-                if (int.TryParse(draw_dist, out int drawValue) && drawValue >= 0 && drawValue <= MAX_LL_DISTANCE)
-                    txtLL_Dist_Draw.Text = drawValue.ToString();
-                else
-                    Console.WriteLine($"Invalid LL DrawList Dist in config: {draw_dist}");
-
-                var trans_preload = lines[curr_idx++].Trim();
-                if (int.TryParse(trans_preload, out int trnsLoadValue) && trnsLoadValue >= 0 && trnsLoadValue <= MAX_TRANS_PREL_TYPE)
-                    cmbLL_TransPreload.SelectedIndex = trnsLoadValue;
-                else
-                    Console.WriteLine($"Invalid LL Trans Preloading in config: {trans_preload}");
-
-                var backw_penalty = lines[curr_idx++].Trim();
-                if (float.TryParse(backw_penalty, out float backwPenValue) && backwPenValue >= 0 && backwPenValue <= MAX_BACKW_PENTALTY)
-                    txtBackWPenalty.Text = backw_penalty;
-                else
-                    Console.WriteLine($"Invalid backwards penalty: {backw_penalty}");
 
                 var omit_entries = lines[curr_idx++].Trim();
                 if (omit_entries == "0" || omit_entries == "1")
@@ -493,7 +496,7 @@ namespace CrashEdit.CE.Forms
             lblRandomSeed = new Label();
             txtRandomSeed = new DarkTextBox();
             lblThreadCount = new Label();
-            txtThreadCount = new DarkTextBox();            
+            txtThreadCount = new DarkTextBox();
             btnOpenPathPerma = new DarkButton();
             btnOpenPathDeps = new DarkButton();
             btnOpenPathCollDeps = new DarkButton();
@@ -555,7 +558,7 @@ namespace CrashEdit.CE.Forms
             cmbRemakeLL.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbRemakeLL.Items.AddRange(["[0] No", "[1] Yes"]);
             cmbRemakeLL.SelectedIndex = 1;
-            cmbRemakeLL.Enabled = false;
+            cmbRemakeLL.Enabled = true;
             cmbRemakeLL.SelectedIndexChanged += (s, e) => UpdateOutputConfig();
 
             // Spawn index            
@@ -922,6 +925,24 @@ namespace CrashEdit.CE.Forms
             txtThreadCount.Enabled = is_method_5;
             lblThreadCount.Enabled = is_method_5;
 
+            bool is_remake_load_lists = (cmbRemakeLL.SelectedIndex == 1);
+            lblPathDeps.Enabled = is_remake_load_lists;
+            txtPathDeps.Enabled = is_remake_load_lists;
+            lblPathCollDeps.Enabled = is_remake_load_lists;
+            txtPathCollDeps.Enabled = is_remake_load_lists;
+            lblPathMusicDeps.Enabled = is_remake_load_lists;
+            txtPathMusicDeps.Enabled = is_remake_load_lists;
+            lblLL_Dist_Draw.Enabled = is_remake_load_lists;
+            txtLL_Dist_Draw.Enabled = is_remake_load_lists;
+            lblLL_Dist_Neigh.Enabled = is_remake_load_lists;
+            txtLL_Dist_Neigh.Enabled = is_remake_load_lists;
+            lblLL_Dist_SLST.Enabled = is_remake_load_lists;
+            txtLL_Dist_SLST.Enabled = is_remake_load_lists;
+            lblLL_TransPreload.Enabled = is_remake_load_lists;
+            cmbLL_TransPreload.Enabled = is_remake_load_lists;
+            lblBackwPenalty.Enabled = is_remake_load_lists;
+            txtBackWPenalty.Enabled = is_remake_load_lists;
+
             // maybe handle case without remaking load lists?
             string cfgText = "";
             cfgText += cmbType.SelectedItem + "\r\n";
@@ -951,21 +972,24 @@ namespace CrashEdit.CE.Forms
             cfgText += cmbMergeType.SelectedIndex + "\r\n";
             cfgText += txtSpawnIndex.Text + "\r\n";
             cfgText += path_fix_add_quote(txtPathPerma.Text, PathHadQuotesPerma) + "\r\n";
-            cfgText += path_fix_add_quote(txtPathDeps.Text, PathHadQuotesDeps) + "\r\n";
-            cfgText += path_fix_add_quote(txtPathCollDeps.Text, PathHadQuotesCollDeps) + "\r\n";
-            cfgText += path_fix_add_quote(txtPathMusicDeps.Text, PathHadQuotesMusicDeps) + "\r\n";
-            if (is_rebuild_dl)
+            if (is_remake_load_lists)
             {
-                cfgText += txtDL_Dist_XDist.Text + "\r\n";
-                cfgText += txtDL_Dist_YDist.Text + "\r\n";
-                cfgText += txtDL_Dist_XZDist.Text + "\r\n";
-                cfgText += txtDL_Dist_Angle3D.Text + "\r\n";
+                cfgText += path_fix_add_quote(txtPathDeps.Text, PathHadQuotesDeps) + "\r\n";
+                cfgText += path_fix_add_quote(txtPathCollDeps.Text, PathHadQuotesCollDeps) + "\r\n";
+                cfgText += path_fix_add_quote(txtPathMusicDeps.Text, PathHadQuotesMusicDeps) + "\r\n";
+                if (is_rebuild_dl)
+                {
+                    cfgText += txtDL_Dist_XDist.Text + "\r\n";
+                    cfgText += txtDL_Dist_YDist.Text + "\r\n";
+                    cfgText += txtDL_Dist_XZDist.Text + "\r\n";
+                    cfgText += txtDL_Dist_Angle3D.Text + "\r\n";
+                }
+                cfgText += txtLL_Dist_SLST.Text + "\r\n";
+                cfgText += txtLL_Dist_Neigh.Text + "\r\n";
+                cfgText += txtLL_Dist_Draw.Text + "\r\n";
+                cfgText += cmbLL_TransPreload.SelectedIndex + "\r\n";
+                cfgText += txtBackWPenalty.Text + "\r\n";
             }
-            cfgText += txtLL_Dist_SLST.Text + "\r\n";
-            cfgText += txtLL_Dist_Neigh.Text + "\r\n";
-            cfgText += txtLL_Dist_Draw.Text + "\r\n";
-            cfgText += cmbLL_TransPreload.SelectedIndex + "\r\n";
-            cfgText += txtBackWPenalty.Text + "\r\n";
             cfgText += cmbOmitUnused.SelectedIndex + "\r\n";
             cfgText += txtMaxPayload.Text + "\r\n";
             cfgText += txtIterCount.Text + "\r\n";
