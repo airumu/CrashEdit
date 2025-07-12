@@ -243,6 +243,10 @@ namespace CrashEdit.CE.Forms
 
             Process.Exited += (s, ea) =>
             {
+                // Wait for all output to be read
+                Process.WaitForExit();
+                Process.CancelOutputRead();
+
                 // Re-enable the button on process exit
                 outputLog.BeginInvoke(new Action(() =>
                 {
