@@ -50,6 +50,8 @@ namespace CrashEdit.CE
             cmdAppendSP = new AltUI.Controls.DarkButton();
             fraZoneFlags = new AltUI.Controls.DarkGroupBox();
             txtZoneFlags = new AltUI.Controls.DarkTextBox();
+            fraDrawGenFlag = new AltUI.Controls.DarkGroupBox();
+            chkDrawGenFlag = new AltUI.Controls.DarkCheckBox();
             pnHeader = new Panel();
             pnMisc = new Panel();
             ((System.ComponentModel.ISupportInitialize)dgvZones).BeginInit();
@@ -332,6 +334,25 @@ namespace CrashEdit.CE
             txtZoneFlags.TextChanged += txtZoneFlags_TextChanged;
             txtZoneFlags.KeyPress += txtZoneFlags_KeyPress;
             // 
+            // fraDrawGenFlag
+            //
+            fraDrawGenFlag.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraDrawGenFlag.Location = new Point(3, 60);
+            fraDrawGenFlag.Name = "fraDrawGenFlag";
+            fraDrawGenFlag.Size = new Size(176, 52);
+            fraDrawGenFlag.TabIndex = 3;
+            fraDrawGenFlag.TabStop = false;
+            fraDrawGenFlag.Text = "Draw list gen (c2export)";
+            //
+            // chkDrawGenFlag
+            //
+            chkDrawGenFlag.Location = new Point(10, 22);
+            chkDrawGenFlag.Text = "Skip for this zone";
+            chkDrawGenFlag.AutoSize = true;
+            chkDrawGenFlag.Checked = false;
+            chkDrawGenFlag.CheckedChanged += chkDrawGen_Changed;
+            fraDrawGenFlag.Controls.Add(chkDrawGenFlag);
+            // 
             // pnHeader
             // 
             pnHeader.BackColor = Color.Transparent;
@@ -349,6 +370,7 @@ namespace CrashEdit.CE
             // 
             pnMisc.Controls.Add(fraMusic);
             pnMisc.Controls.Add(fraZoneFlags);
+            pnMisc.Controls.Add(fraDrawGenFlag);
             pnMisc.Controls.Add(lblEIDError);
             pnMisc.Location = new Point(3, 293);
             pnMisc.Name = "pnMisc";
@@ -389,6 +411,8 @@ namespace CrashEdit.CE
         private DataGridView dgvWorlds;
         private AltUI.Controls.DarkGroupBox fraMusic;
         private AltUI.Controls.DarkTextBox txtMusic;
+        private AltUI.Controls.DarkGroupBox fraDrawGenFlag;
+        private AltUI.Controls.DarkCheckBox chkDrawGenFlag;
         private Label lblEIDError;
         private AltUI.Controls.DarkGroupBox fraSpecialLoadList;
         private AltUI.Controls.DarkButton cmdRemoveSP;

@@ -19,6 +19,7 @@ namespace CrashEdit.CE
         private TabPage tbpHeader;
         private TabPage tbpHex;
 
+        private bool spDrawGenFlag;
         private int spLoadListCount;
         private BindingList<string> spLoadList;
         private DarkToolTip tipSPLoadList;
@@ -202,7 +203,8 @@ namespace CrashEdit.CE
 
         private void UpdateSPLoadLists()
         {
-            spLoadListCount = BitConv.FromInt32(header.Chunk1, 0x8);
+            spDrawGenFlag = (BitConv.FromInt32(header.Chunk1, 0x8) & 0xFF000000) != 0;
+            spLoadListCount = BitConv.FromInt32(header.Chunk1, 0x8) & 0xFF;
             spLoadList = new BindingList<string>();
             for (int i = 0; i < spLoadListCount; ++i)
             {
@@ -218,6 +220,7 @@ namespace CrashEdit.CE
                 cmdRemoveSP.Enabled = false;
                 txtSPLoadList.Enabled = false;
             }
+            chkDrawGenFlag.Checked = spDrawGenFlag;
         }
 
         private void DataGridView_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
@@ -454,7 +457,7 @@ namespace CrashEdit.CE
 
         private void UpdateSPLoadListsCount()
         {
-            byte[] bytes = BitConverter.GetBytes(spLoadListCount);
+            byte[] bytes = BitConverter.GetBytes(spLoadListCount | (spDrawGenFlag ? (1 << 24) : 0));
             Array.Copy(bytes, 0, header.Chunk1, 0x8, 0x4);
         }
 
@@ -652,6 +655,12 @@ namespace CrashEdit.CE
             if (spLoadList.Count <= 0) return;
             txtSPLoadList.Focus();
             txtSPLoadList.SelectAll();
+        }
+
+        public void chkDrawGen_Changed(object sender, EventArgs e)
+        {
+            spDrawGenFlag = chkDrawGenFlag.Enabled;
+            UpdateSPLoadListsCount();
         }
 
         public static string CheckEname(string ename)
