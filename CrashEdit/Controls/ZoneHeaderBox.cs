@@ -659,7 +659,7 @@ namespace CrashEdit.CE
 
         public void chkDrawGen_Changed(object sender, EventArgs e)
         {
-            spDrawGenFlag = chkDrawGenFlag.Enabled;
+            spDrawGenFlag = chkDrawGenFlag.Checked;
             UpdateSPLoadListsCount();
         }
 
