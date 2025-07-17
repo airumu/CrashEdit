@@ -237,6 +237,8 @@ namespace CrashEdit.CE.Forms
                     outputLog.BeginInvoke(new Action(() =>
                     {
                         outputLog.AppendText(ea.Data + Environment.NewLine);
+                        outputLog.SelectionStart = outputLog.TextLength;
+                        outputLog.ScrollToCaret();
                     }));
                 }
             };
@@ -267,27 +269,24 @@ namespace CrashEdit.CE.Forms
 
                 Process.Dispose();
 
-                bool success = !outputLog.Text.Contains("[ERROR]") &&
-                               outputLog.Text.Contains("Done. It is recommended to save") &&
-                               outputLog.Text.Contains("Build/rebuild took");
-                if (!success)
-                    warning += "Did not complete successfully. Check the output log.";
-
-                if (!string.IsNullOrEmpty(warning))
+                outputLog.BeginInvoke(new Action(() =>
                 {
-                    warningLabel2.BeginInvoke(new Action(() =>
+                    bool success = !outputLog.Text.Contains("[ERROR]") &&
+                                   outputLog.Text.Contains("Done. It is recommended to save") &&
+                                   outputLog.Text.Contains("Build/rebuild took");
+                    if (!success)
+                        warning += "Did not complete successfully. Check the output log.";
+
+                    if (!string.IsNullOrEmpty(warning))
                     {
                         warningLabel2.Visible = true;
                         warningLabel2.Text = warning;
-                    }));
-                }
-                else
-                {
-                    warningLabel2.BeginInvoke(new Action(() =>
+                    }
+                    else
                     {
                         warningLabel2.Visible = false;
-                    }));
-                }
+                    }
+                }));
             };
 
             // run

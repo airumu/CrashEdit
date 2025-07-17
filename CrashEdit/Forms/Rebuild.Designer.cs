@@ -49,8 +49,9 @@ namespace CrashEdit.CE.Forms
             btnRebuild = new DarkButton();
             btnCancel = new DarkButton();
             labelLog = new Label();
-            outputLog = new DarkTextBox();
+            outputLog = new DarkRichTextBox();
             pnOptions = new Panel();
+            txtSearch = new TextBox();
             pnOptions.SuspendLayout();
             SuspendLayout();
 
@@ -299,7 +300,7 @@ namespace CrashEdit.CE.Forms
             };
 
             outputLog.Multiline = true;
-            outputLog.ScrollBars = ScrollBars.Vertical;
+            outputLog.ScrollBars = RichTextBoxScrollBars.Vertical;
             outputLog.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             outputLog.Location = new Point(8, btnRebuild.Bottom + 12);
             outputLog.Size = new Size(700 - 16, this.Height - 150);
@@ -398,6 +399,74 @@ namespace CrashEdit.CE.Forms
                 tooltip.Hide(btnClearWorkingDir);
             };
 
+            // Search log controls
+            txtSearch.Size = new Size(120, 30);
+            txtSearch.Location = new Point(btnCancel.Left - 150, btnCancel.Top);
+            txtSearch.Name = "txtSearch";
+            txtSearch.PlaceholderText = "Search log...";
+            txtSearch.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+
+            txtSearch.TextChanged += (s, e) =>
+            {
+                string search = txtSearch.Text;
+                int selStart = outputLog.SelectionStart;
+                int selLength = outputLog.SelectionLength;
+
+                // Remove previous highlights
+                outputLog.SelectAll();
+                outputLog.SelectionBackColor = outputLog.BackColor;
+
+                if (!string.IsNullOrEmpty(search))
+                {
+                    int idx = 0;
+                    while ((idx = outputLog.Text.IndexOf(search, idx, StringComparison.OrdinalIgnoreCase)) != -1)
+                    {
+                        outputLog.Select(idx, search.Length);
+                        outputLog.SelectionBackColor = Color.Gray;
+                        idx += search.Length;
+                    }
+                }
+
+                // Restore original selection
+                outputLog.Select(selStart, selLength);
+                outputLog.SelectionBackColor = Color.White; // Or your preferred selection color
+            };
+
+            // Ctrl+F on outputLog focuses txtSearch
+            outputLog.KeyDown += (s, e) =>
+            {
+                if (e.Control && e.KeyCode == Keys.F)
+                {
+                    txtSearch.Focus();
+                    txtSearch.SelectAll();
+                    e.SuppressKeyPress = true;
+                }
+                else if (e.KeyCode == Keys.F3 && !e.Shift)
+                {
+                    ScrollToNextSearchResult();
+                    e.SuppressKeyPress = true;
+                }
+                else if (e.KeyCode == Keys.F3 && e.Shift)
+                {
+                    ScrollToPreviousSearchResult();
+                    e.SuppressKeyPress = true;
+                }
+            };
+
+            // F3 on txtSearch also scrolls to next result
+            txtSearch.KeyDown += (s, e) =>
+            {
+                if (e.KeyCode == Keys.F3 && !e.Shift)
+                {
+                    ScrollToNextSearchResult();
+                    e.SuppressKeyPress = true;
+                }
+                else if (e.KeyCode == Keys.F3 && e.Shift)
+                {
+                    ScrollToPreviousSearchResult();
+                    e.SuppressKeyPress = true;
+                }
+            };
 
             pnOptions.Controls.Add(labelPathCfgValue);
             pnOptions.Controls.Add(labelPathExeValue);
@@ -421,6 +490,7 @@ namespace CrashEdit.CE.Forms
             pnOptions.Controls.Add(btnClearWorkingDir);
             pnOptions.Controls.Add(labelLog);
             pnOptions.Controls.Add(outputLog);
+            pnOptions.Controls.Add(txtSearch);
             pnOptions.Location = new Point(0, 0);
             pnOptions.Name = "pnOptions";
             pnOptions.Size = new Size(700, BASE_HEIGHT);
@@ -443,6 +513,77 @@ namespace CrashEdit.CE.Forms
             pnOptions.ResumeLayout(false);
             pnOptions.PerformLayout();
             ResumeLayout(false);
+        }
+
+        private void ScrollToNextSearchResult()
+        {
+            string search = txtSearch.Text;
+            if (string.IsNullOrEmpty(search))
+                return;
+
+            string text = outputLog.Text;
+            int start = outputLog.SelectionStart + outputLog.SelectionLength;
+            int idx = text.IndexOf(search, start, StringComparison.OrdinalIgnoreCase);
+
+            if (idx == -1 && start > 0)
+            {
+                // Loop to start
+                idx = text.IndexOf(search, 0, StringComparison.OrdinalIgnoreCase);
+            }
+
+            if (idx != -1)
+            {
+                outputLog.Select(idx, search.Length);
+                outputLog.ScrollToCaret();
+                lastSearchIndex = idx;
+            }
+        }
+
+        private void ScrollToPreviousSearchResult()
+        {
+            string search = txtSearch.Text;
+            if (string.IsNullOrEmpty(search))
+                return;
+
+            string text = outputLog.Text;
+            int start = outputLog.SelectionStart;
+
+            // Search backwards from just before the current selection
+            int idx = -1;
+            int lastIdx = -1;
+            int searchLen = search.Length;
+            int searchStart = 0;
+
+            while (true)
+            {
+                idx = text.IndexOf(search, searchStart, StringComparison.OrdinalIgnoreCase);
+                if (idx == -1 || idx >= start - 1)
+                    break;
+                lastIdx = idx;
+                searchStart = idx + 1;
+            }
+
+            // If not found, wrap to the last occurrence
+            if (lastIdx == -1)
+            {
+                // Find the last occurrence in the text
+                searchStart = 0;
+                while (true)
+                {
+                    idx = text.IndexOf(search, searchStart, StringComparison.OrdinalIgnoreCase);
+                    if (idx == -1)
+                        break;
+                    lastIdx = idx;
+                    searchStart = idx + 1;
+                }
+            }
+
+            if (lastIdx != -1)
+            {
+                outputLog.Select(lastIdx, searchLen);
+                outputLog.ScrollToCaret();
+                lastSearchIndex = lastIdx;
+            }
         }
 
         #endregion
@@ -475,7 +616,9 @@ namespace CrashEdit.CE.Forms
         private DarkButton btnCancel;
 
         private Label labelLog;
-        private DarkTextBox outputLog;
+        private DarkRichTextBox outputLog;
 
+        private TextBox txtSearch;
+        private int lastSearchIndex = -1;
     }
 }
