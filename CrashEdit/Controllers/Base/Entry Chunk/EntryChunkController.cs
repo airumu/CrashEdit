@@ -21,7 +21,7 @@ namespace CrashEdit.CE
 
         private void Menu_Import_Entry()
         {
-            byte[][] datas = FileUtil.OpenFiles(FileFilters.NSEntry, FileFilters.Any);
+            byte[][] datas = FileUtil.OpenFiles(FileFilters.NSEntryExt, FileFilters.Any);
             if (datas == null)
                 return;
             bool process = DarkMessageBox.ShowMessage("Do you want to process the imported entries?", "Import Entry", DarkDialogButton.YesNo) == DialogResult.Yes;

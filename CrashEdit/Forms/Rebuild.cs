@@ -21,6 +21,7 @@ namespace CrashEdit.CE.Forms
         private Process Process;
 
         private System.Windows.Forms.Timer checkArgsTimer;
+        private System.Windows.Forms.Timer outputLogRefreshTimer;
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
@@ -57,6 +58,15 @@ namespace CrashEdit.CE.Forms
             checkArgsTimer.Tick += (s, e) => CheckArgsValid();
             checkArgsTimer.Start();
 
+            outputLogRefreshTimer = new System.Windows.Forms.Timer();
+            outputLogRefreshTimer.Interval = 2500;
+            outputLogRefreshTimer.Tick += (s, e) =>
+            {
+                if (outputLog.IsHandleCreated && !outputLog.IsDisposed)
+                    outputLog.Invalidate(); // or outputLog.Refresh();
+            };
+            outputLogRefreshTimer.Start();
+
             CheckArgsValid();
         }
 
@@ -90,7 +100,7 @@ namespace CrashEdit.CE.Forms
             if (string.IsNullOrEmpty(configFilePath) || !File.Exists(configFilePath))
             {
                 btnRebuild.Enabled = false;
-                ShowWarning("Path to rebuild arguments is not valid");
+                ShowWarning("Rebuild args path is not valid");
                 return;
             }
 

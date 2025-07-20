@@ -52,6 +52,7 @@ namespace CrashEdit.CE.Forms
             outputLog = new DarkRichTextBox();
             pnOptions = new Panel();
             txtSearch = new TextBox();
+            labelSearchCount = new Label();
             pnOptions.SuspendLayout();
             SuspendLayout();
 
@@ -240,9 +241,9 @@ namespace CrashEdit.CE.Forms
             warningLabel.BackColor = Color.Transparent;
             warningLabel.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             warningLabel.ForeColor = Color.Orange;
-            warningLabel.Location = new Point(30, BASE_HEIGHT - 230);
+            warningLabel.Location = new Point(20, BASE_HEIGHT - 230);
             warningLabel.Name = "warningLabel";
-            warningLabel.Size = new Size(384, 30);
+            warningLabel.Size = new Size(200, 30);
             warningLabel.Text = "";
             warningLabel.Visible = false;
 
@@ -400,8 +401,8 @@ namespace CrashEdit.CE.Forms
             };
 
             // Search log controls
-            txtSearch.Size = new Size(120, 30);
-            txtSearch.Location = new Point(btnCancel.Left - 150, btnCancel.Top);
+            txtSearch.Size = new Size(100, 30);
+            txtSearch.Location = new Point(btnCancel.Left - 110, btnCancel.Top + 5);
             txtSearch.Name = "txtSearch";
             txtSearch.PlaceholderText = "Search log...";
             txtSearch.Anchor = AnchorStyles.Top | AnchorStyles.Right;
@@ -416,21 +417,38 @@ namespace CrashEdit.CE.Forms
                 outputLog.SelectAll();
                 outputLog.SelectionBackColor = outputLog.BackColor;
 
-                if (!string.IsNullOrEmpty(search))
+                if (search.Trim().Length >= 3)
                 {
+                    int count = 0;
                     int idx = 0;
                     while ((idx = outputLog.Text.IndexOf(search, idx, StringComparison.OrdinalIgnoreCase)) != -1)
                     {
                         outputLog.Select(idx, search.Length);
                         outputLog.SelectionBackColor = Color.Gray;
                         idx += search.Length;
+                        count++;
                     }
+
+                    labelSearchCount.Text = $"{count} result(s) found";
+                } else
+                {
+                    labelSearchCount.Text = "";
                 }
 
-                // Restore original selection
+                // restore original selection
                 outputLog.Select(selStart, selLength);
-                outputLog.SelectionBackColor = Color.White; // Or your preferred selection color
             };
+
+            labelSearchCount.AutoSize = true;
+            labelSearchCount.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            labelSearchCount.TextAlign = ContentAlignment.MiddleLeft;
+            labelSearchCount.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            labelSearchCount.ForeColor = SystemColors.GrayText;
+            labelSearchCount.BackColor = Color.Transparent;
+            labelSearchCount.Location = new Point(txtSearch.Left, txtSearch.Top - 18);
+            labelSearchCount.Name = "labelSearchCount";
+            labelSearchCount.Size = new Size(120, 15);
+            labelSearchCount.Text = ""; // Initially empty
 
             // Ctrl+F on outputLog focuses txtSearch
             outputLog.KeyDown += (s, e) =>
@@ -468,6 +486,15 @@ namespace CrashEdit.CE.Forms
                 }
             };
 
+            txtSearch.MouseHover += (s, e) =>
+            {
+                tooltip.Show("Use F3 or Shift+F3 for navigating search results", txtSearch, txtSearch.Width + 5, txtSearch.Height / 2);
+            };
+            txtSearch.MouseLeave += (s, e) =>
+            {
+                tooltip.Hide(txtSearch);
+            };
+
             pnOptions.Controls.Add(labelPathCfgValue);
             pnOptions.Controls.Add(labelPathExeValue);
             pnOptions.Controls.Add(btnRebuild);
@@ -491,6 +518,7 @@ namespace CrashEdit.CE.Forms
             pnOptions.Controls.Add(labelLog);
             pnOptions.Controls.Add(outputLog);
             pnOptions.Controls.Add(txtSearch);
+            pnOptions.Controls.Add(labelSearchCount);
             pnOptions.Location = new Point(0, 0);
             pnOptions.Name = "pnOptions";
             pnOptions.Size = new Size(700, BASE_HEIGHT);
@@ -509,7 +537,7 @@ namespace CrashEdit.CE.Forms
             Name = "Rebuild (c2export)";
             Text = "Rebuild (c2export)";
             TransparencyKey = Color.FromArgb(31, 31, 32);
-            MinimumSize = new Size(500, BASE_HEIGHT - 50);
+            MinimumSize = new Size(600, BASE_HEIGHT - 50);
             pnOptions.ResumeLayout(false);
             pnOptions.PerformLayout();
             ResumeLayout(false);
@@ -619,6 +647,7 @@ namespace CrashEdit.CE.Forms
         private DarkRichTextBox outputLog;
 
         private TextBox txtSearch;
+        private Label labelSearchCount;
         private int lastSearchIndex = -1;
     }
 }
