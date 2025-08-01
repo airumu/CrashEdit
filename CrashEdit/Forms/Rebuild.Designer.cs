@@ -537,7 +537,7 @@ namespace CrashEdit.CE.Forms
             Name = "Rebuild (c2export)";
             Text = "Rebuild (c2export)";
             TransparencyKey = Color.FromArgb(31, 31, 32);
-            MinimumSize = new Size(800, BASE_HEIGHT - 50);
+            MinimumSize = new Size(700, BASE_HEIGHT - 50);
             pnOptions.ResumeLayout(false);
             pnOptions.PerformLayout();
             ResumeLayout(false);
