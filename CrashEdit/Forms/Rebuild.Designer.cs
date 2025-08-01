@@ -241,7 +241,7 @@ namespace CrashEdit.CE.Forms
             warningLabel.BackColor = Color.Transparent;
             warningLabel.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             warningLabel.ForeColor = Color.Orange;
-            warningLabel.Location = new Point(20, BASE_HEIGHT - 230);
+            warningLabel.Location = new Point(35, BASE_HEIGHT - 230);
             warningLabel.Name = "warningLabel";
             warningLabel.Size = new Size(200, 30);
             warningLabel.Text = "";
@@ -250,9 +250,9 @@ namespace CrashEdit.CE.Forms
             warningLabel2.BackColor = Color.Transparent;
             warningLabel2.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             warningLabel2.ForeColor = Color.Red;
-            warningLabel2.Location = new Point(30, BASE_HEIGHT - 205);
+            warningLabel2.Location = new Point(35, BASE_HEIGHT - 210);
             warningLabel2.Name = "warningLabel2";
-            warningLabel2.Size = new Size(384, 25);
+            warningLabel2.Size = new Size(380, 25);
             warningLabel2.Text = "";
             warningLabel2.Visible = false;
 
@@ -283,7 +283,7 @@ namespace CrashEdit.CE.Forms
             btnCancel.Enabled = false;
             btnCancel.FlatBottom = false;
             btnCancel.FlatTop = false;
-            btnCancel.Location = new Point(470, BASE_HEIGHT - 220);
+            btnCancel.Location = new Point(480, BASE_HEIGHT - 220);
             btnCancel.Name = "btnCancel";
             btnCancel.Padding = new Padding(5);
             btnCancel.Size = new Size(100, 30);
@@ -537,7 +537,7 @@ namespace CrashEdit.CE.Forms
             Name = "Rebuild (c2export)";
             Text = "Rebuild (c2export)";
             TransparencyKey = Color.FromArgb(31, 31, 32);
-            MinimumSize = new Size(600, BASE_HEIGHT - 50);
+            MinimumSize = new Size(800, BASE_HEIGHT - 50);
             pnOptions.ResumeLayout(false);
             pnOptions.PerformLayout();
             ResumeLayout(false);

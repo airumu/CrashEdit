@@ -68,6 +68,12 @@ namespace CrashEdit.CE.Forms
             outputLogRefreshTimer.Start();
 
             CheckArgsValid();
+
+            txtSearch.TextChanged += (s, e) =>
+            {
+                if (!RebuildRunning)
+                    UpdateLogSearchHighlight();
+            };
         }
 
         private void ShowWarning(string txt)
@@ -86,9 +92,6 @@ namespace CrashEdit.CE.Forms
 
         private void CheckArgsValid()
         {
-            //btnEditConfig.Enabled = !(string.IsNullOrEmpty(configFilePath) ||
-            //                            !File.Exists(configFilePath));
-
             // make sure both c2export path and config file path are existing files
             if (string.IsNullOrEmpty(Settings.Default.C2ExportPath) || !File.Exists(Settings.Default.C2ExportPath))
             {
@@ -178,6 +181,10 @@ namespace CrashEdit.CE.Forms
                 outputLog.Text += "Rebuild cancelled by user." + Environment.NewLine;
                 RebuildRunning = false;
                 btnCancel.Enabled = false;
+
+                // Re-enable and update search count label
+                labelSearchCount.Visible = true;
+                UpdateLogSearchHighlight();
             }
         }
 
@@ -194,6 +201,8 @@ namespace CrashEdit.CE.Forms
 
         private void btnRebuild_Click(object sender, EventArgs e)
         {
+            warningLabel2.Text = "";
+
             // run c2export with the config file
             outputLog.Text = string.Empty;
 
@@ -265,6 +274,8 @@ namespace CrashEdit.CE.Forms
                     btnRebuild.Enabled = true;
                     btnCancel.Enabled = false;
                     RebuildRunning = false;
+                    labelSearchCount.Visible = true;
+                    UpdateLogSearchHighlight();
                 }));
 
                 string warning = "";
@@ -285,7 +296,11 @@ namespace CrashEdit.CE.Forms
                                    outputLog.Text.Contains("Done. It is recommended to save") &&
                                    outputLog.Text.Contains("Build/rebuild took");
                     if (!success)
+                    {
+                        if (warning.Length > 0)
+                            warning += Environment.NewLine;
                         warning += "Did not complete successfully. Check the output log.";
+                    }
 
                     if (!string.IsNullOrEmpty(warning))
                     {
@@ -306,6 +321,7 @@ namespace CrashEdit.CE.Forms
                 btnRebuild.Enabled = false;
                 btnCancel.Enabled = true;
                 RebuildRunning = true;
+                labelSearchCount.Visible = false; // <-- Hide search count during rebuild
                 using (var writer = Process.StandardInput)
                 {
                     writer.Write(fileContent);
@@ -368,6 +384,33 @@ namespace CrashEdit.CE.Forms
                 form.Close();
             else
                 form.ShowDialog(this);
+        }
+
+        private void UpdateLogSearchHighlight()
+        {
+            string search = txtSearch.Text.Trim();            
+
+            // Remove previous highlights
+            outputLog.SelectAll();
+            outputLog.SelectionBackColor = outputLog.BackColor;
+
+            if (search.Length >= 3)
+            {
+                int count = 0;
+                int idx = 0;
+                while ((idx = outputLog.Text.IndexOf(search, idx, StringComparison.OrdinalIgnoreCase)) != -1)
+                {
+                    outputLog.Select(idx, search.Length);
+                    outputLog.SelectionBackColor = Color.Gray;
+                    idx += search.Length;
+                    count++;
+                }
+                labelSearchCount.Text = $"{count} result(s) found";
+            }
+            else
+            {
+                labelSearchCount.Text = "";
+            }
         }
     }
 }
