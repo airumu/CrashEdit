@@ -302,7 +302,7 @@ namespace CrashEdit.CE.Forms
 
             outputLog.Multiline = true;
             outputLog.ScrollBars = RichTextBoxScrollBars.Vertical;
-            outputLog.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            outputLog.Font = new Font("Consolas", 8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             outputLog.Location = new Point(8, btnRebuild.Bottom + 12);
             outputLog.Size = new Size(700 - 16, this.Height - 150);
             outputLog.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
