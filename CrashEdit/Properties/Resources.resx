@@ -182,10 +182,10 @@
   </data>
   <data name="Toolbar_Reload" xml:space="preserve">
     <value>Reload</value>
-  </data>  
+  </data>
   <data name="Toolbar_Rebuild" xml:space="preserve">
     <value>Rebuild</value>
-  </data>  
+  </data>
   <data name="Toolbar_Find" xml:space="preserve">
     <value>Find</value>
   </data>
@@ -715,7 +715,7 @@ as Meters: {3:F3}m</value>
     <value>Toggle octree wireframe ({0})</value>
   </data>
   <data name="Config_fraNodeShadeAmt" xml:space="preserve">
-    <value>Collision Node Contrast</value>
+    <value>Contrast</value>
   </data>
   <data name="ViewerControls_EnterZoneAnchor" xml:space="preserve">
     <value>Enter camera rail view</value>
@@ -989,5 +989,11 @@ as Meters: {3:F3}m</value>
   </data>
   <data name="Toolbar_SaveAs" xml:space="preserve">
     <value>Save As</value>
+  </data>
+  <data name="Config_fraNode" xml:space="preserve">
+    <value>Collision Node</value>
+  </data>
+  <data name="Config_chkUseNeighborZoneTransparency" xml:space="preserve">
+    <value>Use transparency for neighbor zones</value>
   </data>
 </root>

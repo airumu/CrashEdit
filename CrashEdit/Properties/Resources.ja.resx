@@ -184,8 +184,8 @@
     <value>TBDJP Reload</value>
   </data>
   <data name="Toolbar_Rebuild" xml:space="preserve">
-	  <value>TBDJP Rebuild</value>	
-  </data> 
+    <value>TBDJP Rebuild</value>
+  </data>
   <data name="Toolbar_Find" xml:space="preserve">
     <value>検索</value>
   </data>
@@ -715,7 +715,7 @@
     <value>オクツリーのワイヤーフレーム化 ({0})</value>
   </data>
   <data name="Config_fraNodeShadeAmt" xml:space="preserve">
-    <value>コリジョンノードのコントラスト</value>
+    <value>コントラスト</value>
   </data>
   <data name="ViewerControls_EnterZoneAnchor" xml:space="preserve">
     <value>カメラレール ビュー</value>
@@ -974,5 +974,11 @@
   </data>
   <data name="Toolbar_SaveAs" xml:space="preserve">
     <value>名前を付けて保存</value>
+  </data>
+  <data name="Config_fraNode" xml:space="preserve">
+    <value>コリジョン</value>
+  </data>
+  <data name="Config_chkUseNeighborZoneTransparency" xml:space="preserve">
+    <value>隣接ゾーンを透過する</value>
   </data>
 </root>

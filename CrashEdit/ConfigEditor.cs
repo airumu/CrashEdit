@@ -12,8 +12,8 @@ namespace CrashEdit.CE
         private static readonly List<string> FontExtensions = new() { ".ttf", ".otf" };
 
         public HelpWindow? frmhelp = null;
-        private OldMainForm owner = null;
-        private System.Windows.Forms.Timer recentNSFTimer;
+        private OldMainForm? owner = null;
+        //private System.Windows.Forms.Timer recentNSFTimer;
 
         private void MakeFontsList()
         {
@@ -63,10 +63,10 @@ namespace CrashEdit.CE
             owner = ow;
             InitializeComponent();
             UpdateRecentNSFList();
-            recentNSFTimer = new System.Windows.Forms.Timer();
-            recentNSFTimer.Interval = 5000;
-            recentNSFTimer.Tick += (s, e) => RecentNSFTimer_Tick();
-            recentNSFTimer.Start();
+            //recentNSFTimer = new System.Windows.Forms.Timer();
+            //recentNSFTimer.Interval = 5000;
+            //recentNSFTimer.Tick += (s, e) => RecentNSFTimer_Tick();
+            //recentNSFTimer.Start();
 
             // note: if language data is not found, this will just grab the english name. TODO fix this
             foreach (string lang in Languages)
@@ -131,6 +131,7 @@ namespace CrashEdit.CE
             chkShowRefresh.Checked = Settings.Default.ShowRefreshButton;
             chkShowRebuild.Checked = Settings.Default.ShowRebuildUI;
             chkAllowMultiopenNSF.Checked = Settings.Default.AllowMultiopenNSF;
+            chkUseNeighborZoneTransparency.Checked = Settings.Default.UseNeighborZoneTransparency;
 
             // chk.Enabled
             chkViewCameraAngle.Enabled = chkViewCamera.Checked;
@@ -139,6 +140,7 @@ namespace CrashEdit.CE
             fraSize.Text = Resources.Config_fraSize;
             fraClearCol.Text = Resources.Config_fraClearCol;
             fraFont.Text = Resources.Config_fraFont;
+            fraCollisionNode.Text = Resources.Config_fraNode;
             fraNodeShadeAmt.Text = Resources.Config_fraNodeShadeAmt;
             fraLang.Text = Resources.Config_lblLang;
             lblAnimGrid.Text = Resources.Config_lblAnimGrid;
@@ -161,6 +163,7 @@ namespace CrashEdit.CE
             chkShowEntityParams.Text = Resources.Config_chkShowEntityParams;
             lblNodeShadeAmt.Text = string.Format("{0:F0}%", sldNodeShadeAmt.Value);
             cmdReset.Text = Resources.Config_cmdReset;
+            chkUseNeighborZoneTransparency.Text = Resources.Config_chkUseNeighborZoneTransparency;
 
             chkLagacyPatchNSD.Text = Resources.Config_chkLegacyPatchNSD;
             chkLiteralCollisionTypes.Text = Resources.Config_chkLiteralCollisionTypes;
@@ -560,5 +563,10 @@ namespace CrashEdit.CE
             Settings.Default.Save();
         }
 
+        private void chkUseNeighborZoneTransparency_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.UseNeighborZoneTransparency = chkUseNeighborZoneTransparency.Checked;
+            Settings.Default.Save();
+        }
     }
 }

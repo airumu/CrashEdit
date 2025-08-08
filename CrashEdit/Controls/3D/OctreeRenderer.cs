@@ -336,7 +336,10 @@ namespace CrashEdit.CE
                 viewer.OctreeSetNodeShadeMax(Settings.Default.NodeShadeMax);
             }
 
-            viewer.OctreeSetNodeAlpha(alpha / 255f);
+            if (Settings.Default.UseNeighborZoneTransparency)
+                viewer.OctreeSetNodeAlpha(alpha / 255f);
+            else
+                viewer.OctreeSetNodeAlpha(1f);
             viewer.OctreeSetOutline(outline);
 
             viewer.RenderOctree();

@@ -67,7 +67,13 @@ namespace CrashEdit.CE
             chkApplyMica = new CheckBox();
             cmdHelp = new DarkButton();
             fraLang = new DarkGroupBox();
+            chkAllowMultiopenNSF = new CheckBox();
+            fraRecentNSF = new DarkGroupBox();
+            lstRecentNSF = new ListBox();
+            cmdClearRecentFiles = new DarkButton();
             tbp3D = new TabPage();
+            fraCollisionNode = new DarkGroupBox();
+            chkUseNeighborZoneTransparency = new CheckBox();
             tbpDebugDisplay = new TabPage();
             chkShowRenderingErrors = new CheckBox();
             darkGroupBox3 = new DarkGroupBox();
@@ -87,20 +93,17 @@ namespace CrashEdit.CE
             chkOutputModelTextureInfo = new CheckBox();
             chkEnableLegacyEntityBox = new CheckBox();
             fraExtra = new DarkGroupBox();
-            fraUICtrls = new DarkGroupBox();
             chkEnableCustomCrates = new CheckBox();
             chkLagacyPatchNSD = new CheckBox();
             chkEnableC2TT = new CheckBox();
+            fraUICtrls = new DarkGroupBox();
             chkShowRebuild = new CheckBox();
             chkShowUndockButton = new CheckBox();
             chkShowRefresh = new CheckBox();
             chkSplitViewerPanels = new CheckBox();
             chkLiteralCollisionTypes = new CheckBox();
             chkPatchGOOLC3toC2 = new CheckBox();
-            boxRecentNSF = new DarkGroupBox();
-            lstRecentNSF = new System.Windows.Forms.ListBox();
             tableLayoutPanel4 = new TableLayoutPanel();
-            cmdClearRecentFiles = new DarkButton();
             tableLayoutPanel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numFontSize).BeginInit();
             fraAnimGrid.SuspendLayout();
@@ -116,12 +119,13 @@ namespace CrashEdit.CE
             tbpGeneral.SuspendLayout();
             fraHexView.SuspendLayout();
             fraLang.SuspendLayout();
+            fraRecentNSF.SuspendLayout();
             tbp3D.SuspendLayout();
+            fraCollisionNode.SuspendLayout();
             tbpDebugDisplay.SuspendLayout();
             darkGroupBox3.SuspendLayout();
             darkGroupBox2.SuspendLayout();
             darkGroupBox1.SuspendLayout();
-            boxRecentNSF.SuspendLayout();
             tbpPatchNSD.SuspendLayout();
             tbpExtra.SuspendLayout();
             fraMiscDebug.SuspendLayout();
@@ -131,7 +135,6 @@ namespace CrashEdit.CE
             // 
             // tableLayoutPanel4
             // 
-            tableLayoutPanel4.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             tableLayoutPanel4.AutoSize = true;
             tableLayoutPanel4.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             tableLayoutPanel4.ColumnCount = 2;
@@ -141,13 +144,14 @@ namespace CrashEdit.CE
             tableLayoutPanel4.Controls.Add(lblFontSize, 0, 1);
             tableLayoutPanel4.Controls.Add(dpdFont, 1, 0);
             tableLayoutPanel4.Controls.Add(numFontSize, 1, 1);
-            tableLayoutPanel4.Location = new Point(7, 18);
+            tableLayoutPanel4.Dock = DockStyle.Fill;
+            tableLayoutPanel4.Location = new Point(4, 19);
             tableLayoutPanel4.Margin = new Padding(4, 3, 4, 3);
             tableLayoutPanel4.Name = "tableLayoutPanel4";
             tableLayoutPanel4.RowCount = 2;
             tableLayoutPanel4.RowStyles.Add(new RowStyle());
             tableLayoutPanel4.RowStyles.Add(new RowStyle());
-            tableLayoutPanel4.Size = new Size(191, 59);
+            tableLayoutPanel4.Size = new Size(282, 59);
             tableLayoutPanel4.TabIndex = 5;
             // 
             // lblFontName
@@ -182,7 +186,7 @@ namespace CrashEdit.CE
             dpdFont.Location = new Point(66, 3);
             dpdFont.Margin = new Padding(4, 3, 4, 3);
             dpdFont.Name = "dpdFont";
-            dpdFont.Size = new Size(121, 24);
+            dpdFont.Size = new Size(212, 24);
             dpdFont.TabIndex = 1;
             // 
             // numFontSize
@@ -351,8 +355,8 @@ namespace CrashEdit.CE
             fraFont.Location = new Point(7, 105);
             fraFont.Margin = new Padding(4, 3, 4, 3);
             fraFont.Name = "fraFont";
-            fraFont.Padding = new Padding(4, 3, 4, 3);
-            fraFont.Size = new Size(206, 79);
+            fraFont.Padding = new Padding(4, 3, 4, 13);
+            fraFont.Size = new Size(290, 91);
             fraFont.TabIndex = 8;
             fraFont.TabStop = false;
             fraFont.Text = "3D Text";
@@ -441,7 +445,7 @@ namespace CrashEdit.CE
             cmdReset.CustomColour = false;
             cmdReset.FlatBottom = false;
             cmdReset.FlatTop = false;
-            cmdReset.Location = new Point(7, 101);
+            cmdReset.Location = new Point(7, 382);
             cmdReset.Margin = new Padding(4, 3, 4, 3);
             cmdReset.Name = "cmdReset";
             cmdReset.Padding = new Padding(5);
@@ -458,7 +462,7 @@ namespace CrashEdit.CE
             fraSize.Controls.Add(numW);
             fraSize.Controls.Add(numH);
             fraSize.Controls.Add(lblWH);
-            fraSize.Location = new Point(4, 308);
+            fraSize.Location = new Point(7, 485);
             fraSize.Margin = new Padding(4, 3, 4, 3);
             fraSize.Name = "fraSize";
             fraSize.Padding = new Padding(4, 3, 4, 3);
@@ -480,14 +484,14 @@ namespace CrashEdit.CE
             fraNodeShadeAmt.BackColor = Color.Transparent;
             fraNodeShadeAmt.Controls.Add(lblNodeShadeAmt);
             fraNodeShadeAmt.Controls.Add(sldNodeShadeAmt);
-            fraNodeShadeAmt.Location = new Point(7, 203);
+            fraNodeShadeAmt.Location = new Point(7, 47);
             fraNodeShadeAmt.Margin = new Padding(4, 3, 4, 3);
             fraNodeShadeAmt.Name = "fraNodeShadeAmt";
             fraNodeShadeAmt.Padding = new Padding(4, 3, 4, 3);
             fraNodeShadeAmt.Size = new Size(276, 61);
             fraNodeShadeAmt.TabIndex = 10;
             fraNodeShadeAmt.TabStop = false;
-            fraNodeShadeAmt.Text = "Collision Node Shade Amount";
+            fraNodeShadeAmt.Text = "Shade Amount";
             // 
             // lblNodeShadeAmt
             // 
@@ -544,7 +548,7 @@ namespace CrashEdit.CE
             tbcSettings.Name = "tbcSettings";
             tbcSettings.SelectedIndex = 0;
             tbcSettings.SelectedTextColor = Color.White;
-            tbcSettings.Size = new Size(425, 417);
+            tbcSettings.Size = new Size(792, 594);
             tbcSettings.SizeMode = TabSizeMode.Fixed;
             tbcSettings.Speed = 100;
             tbcSettings.Style = MetroSet_UI.Enums.Style.Dark;
@@ -554,18 +558,6 @@ namespace CrashEdit.CE
             tbcSettings.ThemeName = "MetroDark";
             tbcSettings.UnselectedTextColor = Color.Gray;
             tbcSettings.UseAnimation = false;
-            // 
-            // chkAllowMultiopenNSF
-            // 
-            chkAllowMultiopenNSF = new CheckBox();
-            chkAllowMultiopenNSF.AutoSize = true;
-            chkAllowMultiopenNSF.Location = new Point(3, 175); // Adjust Y as needed to fit above boxRecentNSF
-            chkAllowMultiopenNSF.Name = "chkAllowMultiopenNSF";
-            chkAllowMultiopenNSF.Size = new Size(220, 19);
-            chkAllowMultiopenNSF.TabIndex = 30;
-            chkAllowMultiopenNSF.Text = "Allow opening the same NSF multiple times";
-            chkAllowMultiopenNSF.UseVisualStyleBackColor = true;
-            chkAllowMultiopenNSF.CheckedChanged += chkAllowMultiopenNSF_CheckedChanged;
             // 
             // tbpGeneral
             // 
@@ -577,54 +569,14 @@ namespace CrashEdit.CE
             tbpGeneral.Controls.Add(cmdReset);
             tbpGeneral.Controls.Add(fraSize);
             tbpGeneral.Controls.Add(chkAllowMultiopenNSF);
+            tbpGeneral.Controls.Add(fraRecentNSF);
+            tbpGeneral.Controls.Add(cmdClearRecentFiles);
             tbpGeneral.Location = new Point(4, 32);
             tbpGeneral.Name = "tbpGeneral";
             tbpGeneral.Padding = new Padding(3);
-            tbpGeneral.Size = new Size(717, 381);
+            tbpGeneral.Size = new Size(784, 558);
             tbpGeneral.TabIndex = 0;
             tbpGeneral.Text = "General";
-            // 
-            // lstRecentNSF
-            //
-            lstRecentNSF.BorderStyle = BorderStyle.None;
-            lstRecentNSF.BackColor = Color.FromArgb(31, 31, 32);
-            lstRecentNSF.Name = "lstRecentNSF";
-            lstRecentNSF.Width = boxRecentNSF.Width - 16;
-            lstRecentNSF.Height = 160;
-            lstRecentNSF.Cursor = Cursors.Hand;
-            lstRecentNSF.Location = new Point(8, 15);
-            lstRecentNSF.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            lstRecentNSF.Click += lstRecentNSF_Click;
-            lstRecentNSF.DrawMode = DrawMode.OwnerDrawFixed;
-            lstRecentNSF.DrawItem += lstRecentNSF_DrawItem;
-            lstRecentNSF.KeyPress += (e, a) => { a.Handled = true; };
-            lstRecentNSF.KeyDown += (e, a) => { a.Handled = true; };
-            lstRecentNSF.KeyUp += (e, a) => { a.Handled = true; };
-            // 
-            // boxRecentNSF
-            //
-            boxRecentNSF = new DarkGroupBox();
-            boxRecentNSF.BackColor = Color.Transparent;
-            boxRecentNSF.Controls.Add(lstRecentNSF);
-            boxRecentNSF.Location = new Point(3, 200);
-            boxRecentNSF.Name = "boxRecentNSF";
-            boxRecentNSF.Size = new Size(tbpGeneral.Width - 6, 180);
-            boxRecentNSF.TabStop = false;
-            boxRecentNSF.Text = "Recent files";
-            tbpGeneral.Controls.Add(boxRecentNSF);
-            // 
-            // cmdClearRecentFiles
-            // 
-            cmdClearRecentFiles = new DarkButton();
-            cmdClearRecentFiles.FlatBottom = false;
-            cmdClearRecentFiles.FlatTop = false;
-            cmdClearRecentFiles.Location = new Point(tbpGeneral.Width - 20, 380);
-            cmdClearRecentFiles.Name = "cmdClearRecentFiles";
-            cmdClearRecentFiles.Size = new Size(20, 20);
-            cmdClearRecentFiles.TabIndex = 31;
-            cmdClearRecentFiles.Image = Embeds.Bitmaps["Erase"];
-            cmdClearRecentFiles.Click += cmdClearRecentFiles_Click;
-            tbpGeneral.Controls.Add(cmdClearRecentFiles);
             // 
             // fraHexView
             // 
@@ -664,13 +616,13 @@ namespace CrashEdit.CE
             cmdHelp.CustomColour = false;
             cmdHelp.FlatBottom = false;
             cmdHelp.FlatTop = false;
-            cmdHelp.Location = new Point(7, 135);
+            cmdHelp.Location = new Point(7, 348);
             cmdHelp.Margin = new Padding(4, 3, 4, 3);
             cmdHelp.Name = "cmdHelp";
             cmdHelp.Padding = new Padding(5);
             cmdHelp.Size = new Size(98, 28);
             cmdHelp.TabIndex = 3;
-            cmdHelp.Text = "Help";
+            cmdHelp.Text = "Show Help";
             cmdHelp.Click += cmdHelp_Click;
             // 
             // fraLang
@@ -684,19 +636,97 @@ namespace CrashEdit.CE
             fraLang.TabStop = false;
             fraLang.Text = "Language (requires restart)";
             // 
+            // chkAllowMultiopenNSF
+            // 
+            chkAllowMultiopenNSF.AutoSize = true;
+            chkAllowMultiopenNSF.Location = new Point(7, 101);
+            chkAllowMultiopenNSF.Name = "chkAllowMultiopenNSF";
+            chkAllowMultiopenNSF.Size = new Size(257, 19);
+            chkAllowMultiopenNSF.TabIndex = 30;
+            chkAllowMultiopenNSF.Text = "Allow opening the same NSF multiple times";
+            chkAllowMultiopenNSF.UseVisualStyleBackColor = true;
+            chkAllowMultiopenNSF.CheckedChanged += chkAllowMultiopenNSF_CheckedChanged;
+            // 
+            // fraRecentNSF
+            // 
+            fraRecentNSF.BackColor = Color.Transparent;
+            fraRecentNSF.Controls.Add(lstRecentNSF);
+            fraRecentNSF.Location = new Point(7, 126);
+            fraRecentNSF.Name = "fraRecentNSF";
+            fraRecentNSF.Size = new Size(717, 190);
+            fraRecentNSF.TabIndex = 31;
+            fraRecentNSF.TabStop = false;
+            fraRecentNSF.Text = "Recent files";
+            // 
+            // lstRecentNSF
+            // 
+            lstRecentNSF.BackColor = Color.FromArgb(31, 31, 32);
+            lstRecentNSF.BorderStyle = BorderStyle.None;
+            lstRecentNSF.Cursor = Cursors.Hand;
+            lstRecentNSF.Dock = DockStyle.Fill;
+            lstRecentNSF.DrawMode = DrawMode.OwnerDrawFixed;
+            lstRecentNSF.Location = new Point(3, 19);
+            lstRecentNSF.Name = "lstRecentNSF";
+            lstRecentNSF.Size = new Size(711, 168);
+            lstRecentNSF.TabIndex = 0;
+            lstRecentNSF.Click += lstRecentNSF_Click;
+            lstRecentNSF.DrawItem += lstRecentNSF_DrawItem;
+            // 
+            // cmdClearRecentFiles
+            // 
+            cmdClearRecentFiles.BorderColour = Color.Empty;
+            cmdClearRecentFiles.CustomColour = false;
+            cmdClearRecentFiles.FlatBottom = false;
+            cmdClearRecentFiles.FlatTop = false;
+            cmdClearRecentFiles.Location = new Point(682, 322);
+            cmdClearRecentFiles.Name = "cmdClearRecentFiles";
+            cmdClearRecentFiles.Padding = new Padding(5);
+            cmdClearRecentFiles.Size = new Size(42, 24);
+            cmdClearRecentFiles.TabIndex = 31;
+            cmdClearRecentFiles.Text = "Clear";
+            cmdClearRecentFiles.Click += cmdClearRecentFiles_Click;
+            // 
             // tbp3D
             // 
             tbp3D.BackColor = Color.FromArgb(31, 31, 32);
-            tbp3D.Controls.Add(fraNodeShadeAmt);
+            tbp3D.Controls.Add(fraCollisionNode);
             tbp3D.Controls.Add(fraFont);
             tbp3D.Controls.Add(fraClearCol);
             tbp3D.Controls.Add(fraAnimGrid);
             tbp3D.Location = new Point(4, 32);
             tbp3D.Name = "tbp3D";
             tbp3D.Padding = new Padding(3);
-            tbp3D.Size = new Size(417, 381);
+            tbp3D.Size = new Size(784, 558);
             tbp3D.TabIndex = 1;
             tbp3D.Text = "3D Viewer";
+            // 
+            // fraCollisionNode
+            // 
+            fraCollisionNode.AutoSize = true;
+            fraCollisionNode.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraCollisionNode.BackColor = Color.Transparent;
+            fraCollisionNode.Controls.Add(fraNodeShadeAmt);
+            fraCollisionNode.Controls.Add(chkUseNeighborZoneTransparency);
+            fraCollisionNode.Location = new Point(7, 202);
+            fraCollisionNode.Name = "fraCollisionNode";
+            fraCollisionNode.Size = new Size(290, 130);
+            fraCollisionNode.TabIndex = 11;
+            fraCollisionNode.TabStop = false;
+            fraCollisionNode.Text = "Collision Node";
+            // 
+            // chkUseNeighborZoneTransparency
+            // 
+            chkUseNeighborZoneTransparency.AutoSize = true;
+            chkUseNeighborZoneTransparency.Checked = true;
+            chkUseNeighborZoneTransparency.CheckState = CheckState.Checked;
+            chkUseNeighborZoneTransparency.Location = new Point(7, 22);
+            chkUseNeighborZoneTransparency.Margin = new Padding(4, 3, 4, 3);
+            chkUseNeighborZoneTransparency.Name = "chkUseNeighborZoneTransparency";
+            chkUseNeighborZoneTransparency.Size = new Size(218, 19);
+            chkUseNeighborZoneTransparency.TabIndex = 0;
+            chkUseNeighborZoneTransparency.Text = "Use transparency for neighbor zones";
+            chkUseNeighborZoneTransparency.UseVisualStyleBackColor = true;
+            chkUseNeighborZoneTransparency.CheckedChanged += chkUseNeighborZoneTransparency_CheckedChanged;
             // 
             // tbpDebugDisplay
             // 
@@ -712,7 +742,7 @@ namespace CrashEdit.CE
             tbpDebugDisplay.Location = new Point(4, 32);
             tbpDebugDisplay.Name = "tbpDebugDisplay";
             tbpDebugDisplay.Padding = new Padding(3);
-            tbpDebugDisplay.Size = new Size(417, 381);
+            tbpDebugDisplay.Size = new Size(784, 558);
             tbpDebugDisplay.TabIndex = 3;
             tbpDebugDisplay.Text = "Debug Displays";
             // 
@@ -839,7 +869,7 @@ namespace CrashEdit.CE
             tbpPatchNSD.Location = new Point(4, 32);
             tbpPatchNSD.Name = "tbpPatchNSD";
             tbpPatchNSD.Padding = new Padding(3);
-            tbpPatchNSD.Size = new Size(417, 381);
+            tbpPatchNSD.Size = new Size(784, 558);
             tbpPatchNSD.TabIndex = 2;
             tbpPatchNSD.Text = "Patch NSD";
             // 
@@ -857,7 +887,7 @@ namespace CrashEdit.CE
             tbpExtra.Location = new Point(4, 32);
             tbpExtra.Name = "tbpExtra";
             tbpExtra.Padding = new Padding(3);
-            tbpExtra.Size = new Size(417, 381);
+            tbpExtra.Size = new Size(784, 558);
             tbpExtra.TabIndex = 2;
             tbpExtra.Text = "Extra";
             // 
@@ -979,10 +1009,9 @@ namespace CrashEdit.CE
             chkEnableC2TT.Text = "Enable Crash 2 time trial editor";
             chkEnableC2TT.UseVisualStyleBackColor = true;
             chkEnableC2TT.CheckedChanged += chkEnableC2TT_CheckedChanged;
-
-            //
+            // 
             // fraUICtrls
-            //
+            // 
             fraUICtrls.BackColor = Color.Transparent;
             fraUICtrls.Controls.Add(chkShowRebuild);
             fraUICtrls.Controls.Add(chkShowUndockButton);
@@ -993,40 +1022,39 @@ namespace CrashEdit.CE
             fraUICtrls.TabIndex = 25;
             fraUICtrls.TabStop = false;
             fraUICtrls.Text = "Toolbar UI customization";
-            //
+            // 
+            // chkShowRebuild
+            // 
+            chkShowRebuild.AutoSize = true;
+            chkShowRebuild.Location = new Point(6, 72);
+            chkShowRebuild.Name = "chkShowRebuild";
+            chkShowRebuild.Size = new Size(248, 19);
+            chkShowRebuild.TabIndex = 24;
+            chkShowRebuild.Text = "Show Rebuild (c2export) button in toolbar";
+            chkShowRebuild.UseVisualStyleBackColor = true;
+            chkShowRebuild.CheckedChanged += chkEnableC2Rebuild_CheckedChanged;
+            // 
             // chkShowUndockButton
-            //
+            // 
             chkShowUndockButton.AutoSize = true;
             chkShowUndockButton.Location = new Point(6, 22);
             chkShowUndockButton.Name = "chkShowUndockButton";
-            chkShowUndockButton.Size = new Size(380, 19);
+            chkShowUndockButton.Size = new Size(192, 19);
             chkShowUndockButton.TabIndex = 22;
             chkShowUndockButton.Text = "Show Undock button in toolbar";
             chkShowUndockButton.UseVisualStyleBackColor = true;
             chkShowUndockButton.CheckedChanged += chkShowUndockButton_CheckedChanged;
             // 
             // chkShowRefresh
-            //
+            // 
             chkShowRefresh.AutoSize = true;
             chkShowRefresh.Location = new Point(6, 47);
             chkShowRefresh.Name = "chkShowRefresh";
-            chkShowRefresh.Size = new Size(380, 19);
+            chkShowRefresh.Size = new Size(187, 19);
             chkShowRefresh.TabIndex = 23;
             chkShowRefresh.Text = "Show Reload button in toolbar";
             chkShowRefresh.UseVisualStyleBackColor = true;
             chkShowRefresh.CheckedChanged += chkShowRefresh_CheckedChanged;
-            //
-            // chkEnableC2Rebuild
-            //
-            chkShowRebuild.AutoSize = true;
-            chkShowRebuild.Location = new Point(6, 72);
-            chkShowRebuild.Name = "chkEnableC2Rebuild";
-            chkShowRebuild.Size = new Size(380, 19);
-            chkShowRebuild.TabIndex = 24;
-            chkShowRebuild.Text = "Show Rebuild (c2export) button in toolbar";
-            chkShowRebuild.UseVisualStyleBackColor = true;
-            chkShowRebuild.CheckedChanged += chkEnableC2Rebuild_CheckedChanged;
-
             // 
             // chkSplitViewerPanels
             // 
@@ -1075,7 +1103,7 @@ namespace CrashEdit.CE
             Margin = new Padding(4, 3, 4, 3);
             Name = "ConfigEditor";
             Padding = new Padding(4, 3, 4, 3);
-            Size = new Size(433, 423);
+            Size = new Size(800, 600);
             tableLayoutPanel4.ResumeLayout(false);
             tableLayoutPanel4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numFontSize).EndInit();
@@ -1096,8 +1124,11 @@ namespace CrashEdit.CE
             tbpGeneral.PerformLayout();
             fraHexView.ResumeLayout(false);
             fraLang.ResumeLayout(false);
+            fraRecentNSF.ResumeLayout(false);
             tbp3D.ResumeLayout(false);
             tbp3D.PerformLayout();
+            fraCollisionNode.ResumeLayout(false);
+            fraCollisionNode.PerformLayout();
             tbpDebugDisplay.ResumeLayout(false);
             tbpDebugDisplay.PerformLayout();
             darkGroupBox3.ResumeLayout(false);
@@ -1114,6 +1145,8 @@ namespace CrashEdit.CE
             fraMiscDebug.PerformLayout();
             fraExtra.ResumeLayout(false);
             fraExtra.PerformLayout();
+            fraUICtrls.ResumeLayout(false);
+            fraUICtrls.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -1184,8 +1217,10 @@ namespace CrashEdit.CE
         private DarkGroupBox fraHexView;
         private CheckBox chkShowRenderingErrors;
         private System.Windows.Forms.ListBox lstRecentNSF;
-        private DarkGroupBox boxRecentNSF;
+        private DarkGroupBox fraRecentNSF;
         private CheckBox chkAllowMultiopenNSF;
         private DarkButton cmdClearRecentFiles;
+        private CheckBox chkUseNeighborZoneTransparency;
+        private DarkGroupBox fraCollisionNode;
     }
 }
