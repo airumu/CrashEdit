@@ -68,6 +68,9 @@ namespace CrashEdit.CE
             darkGroupBox1 = new DarkGroupBox();
             C2Size32 = new DarkButton();
             C2SizeMax = new DarkButton();
+            C2Size8 = new DarkButton();
+            C2Size4 = new DarkButton();
+            lblSelectionSize = new Label();
             C2Size16 = new DarkButton();
             C2Size64 = new DarkButton();
             groupBox6 = new DarkGroupBox();
@@ -157,8 +160,8 @@ namespace CrashEdit.CE
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.Controls.Add(tabControl1);
-            splitContainer1.Size = new Size(916, 359);
-            splitContainer1.SplitterDistance = 136;
+            splitContainer1.Size = new Size(900, 363);
+            splitContainer1.SplitterDistance = 137;
             splitContainer1.SplitterWidth = 5;
             splitContainer1.TabIndex = 0;
             splitContainer1.TabStop = false;
@@ -188,7 +191,7 @@ namespace CrashEdit.CE
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 1;
             tabControl1.SelectedTextColor = Color.White;
-            tabControl1.Size = new Size(916, 218);
+            tabControl1.Size = new Size(900, 221);
             tabControl1.SizeMode = TabSizeMode.Fixed;
             tabControl1.Speed = 100;
             tabControl1.Style = Style.Dark;
@@ -498,7 +501,7 @@ namespace CrashEdit.CE
             tabC2.Margin = new Padding(4);
             tabC2.Name = "tabC2";
             tabC2.Padding = new Padding(4);
-            tabC2.Size = new Size(908, 182);
+            tabC2.Size = new Size(892, 185);
             tabC2.TabIndex = 1;
             tabC2.Text = "Crash 2";
             // 
@@ -507,7 +510,7 @@ namespace CrashEdit.CE
             darkGroupBox2.Controls.Add(chkBGRA);
             darkGroupBox2.Controls.Add(chkReplaceCLUT);
             darkGroupBox2.Controls.Add(cmdReplace);
-            darkGroupBox2.Location = new Point(663, 8);
+            darkGroupBox2.Location = new Point(715, 8);
             darkGroupBox2.Name = "darkGroupBox2";
             darkGroupBox2.Size = new Size(113, 102);
             darkGroupBox2.TabIndex = 17;
@@ -558,11 +561,14 @@ namespace CrashEdit.CE
             // 
             darkGroupBox1.Controls.Add(C2Size32);
             darkGroupBox1.Controls.Add(C2SizeMax);
+            darkGroupBox1.Controls.Add(C2Size8);
+            darkGroupBox1.Controls.Add(C2Size4);
+            darkGroupBox1.Controls.Add(lblSelectionSize);
             darkGroupBox1.Controls.Add(C2Size16);
             darkGroupBox1.Controls.Add(C2Size64);
             darkGroupBox1.Location = new Point(450, 8);
             darkGroupBox1.Name = "darkGroupBox1";
-            darkGroupBox1.Size = new Size(96, 169);
+            darkGroupBox1.Size = new Size(148, 160);
             darkGroupBox1.TabIndex = 16;
             darkGroupBox1.TabStop = false;
             darkGroupBox1.Text = "Selection";
@@ -573,11 +579,11 @@ namespace CrashEdit.CE
             C2Size32.CustomColour = false;
             C2Size32.FlatBottom = false;
             C2Size32.FlatTop = false;
-            C2Size32.Location = new Point(7, 56);
+            C2Size32.Location = new Point(77, 20);
             C2Size32.Margin = new Padding(4);
             C2Size32.Name = "C2Size32";
             C2Size32.Padding = new Padding(6);
-            C2Size32.Size = new Size(82, 31);
+            C2Size32.Size = new Size(64, 31);
             C2Size32.TabIndex = 11;
             C2Size32.Text = "32 × 32";
             C2Size32.Click += C2Size32_Click;
@@ -588,14 +594,56 @@ namespace CrashEdit.CE
             C2SizeMax.CustomColour = false;
             C2SizeMax.FlatBottom = false;
             C2SizeMax.FlatTop = false;
-            C2SizeMax.Location = new Point(7, 134);
+            C2SizeMax.Location = new Point(77, 98);
             C2SizeMax.Margin = new Padding(4);
             C2SizeMax.Name = "C2SizeMax";
             C2SizeMax.Padding = new Padding(6);
-            C2SizeMax.Size = new Size(82, 31);
+            C2SizeMax.Size = new Size(64, 31);
             C2SizeMax.TabIndex = 0;
-            C2SizeMax.Text = "Maximize";
+            C2SizeMax.Text = "Max";
             C2SizeMax.Click += C2SizeMax_Click;
+            // 
+            // C2Size8
+            // 
+            C2Size8.BorderColour = Color.Empty;
+            C2Size8.CustomColour = false;
+            C2Size8.FlatBottom = false;
+            C2Size8.FlatTop = false;
+            C2Size8.Location = new Point(7, 59);
+            C2Size8.Margin = new Padding(4);
+            C2Size8.Name = "C2Size8";
+            C2Size8.Padding = new Padding(6);
+            C2Size8.Size = new Size(64, 31);
+            C2Size8.TabIndex = 10;
+            C2Size8.Text = "8 × 8";
+            C2Size8.Click += C2Size8_Click;
+            // 
+            // C2Size4
+            // 
+            C2Size4.BorderColour = Color.Empty;
+            C2Size4.CustomColour = false;
+            C2Size4.FlatBottom = false;
+            C2Size4.FlatTop = false;
+            C2Size4.Location = new Point(7, 20);
+            C2Size4.Margin = new Padding(4);
+            C2Size4.Name = "C2Size4";
+            C2Size4.Padding = new Padding(6);
+            C2Size4.Size = new Size(64, 31);
+            C2Size4.TabIndex = 10;
+            C2Size4.Text = "4 × 4";
+            C2Size4.Click += C2Size4_Click;
+            // 
+            // lblSelectionSize
+            // 
+            lblSelectionSize.Font = new Font("Cascadia Code SemiLight", 8F);
+            lblSelectionSize.ImeMode = ImeMode.NoControl;
+            lblSelectionSize.Location = new Point(7, 133);
+            lblSelectionSize.Margin = new Padding(4, 0, 4, 0);
+            lblSelectionSize.Name = "lblSelectionSize";
+            lblSelectionSize.RightToLeft = RightToLeft.No;
+            lblSelectionSize.Size = new Size(134, 16);
+            lblSelectionSize.TabIndex = 4;
+            lblSelectionSize.Text = "Current: 32 x 32";
             // 
             // C2Size16
             // 
@@ -603,11 +651,11 @@ namespace CrashEdit.CE
             C2Size16.CustomColour = false;
             C2Size16.FlatBottom = false;
             C2Size16.FlatTop = false;
-            C2Size16.Location = new Point(7, 17);
+            C2Size16.Location = new Point(7, 98);
             C2Size16.Margin = new Padding(4);
             C2Size16.Name = "C2Size16";
             C2Size16.Padding = new Padding(6);
-            C2Size16.Size = new Size(82, 31);
+            C2Size16.Size = new Size(64, 31);
             C2Size16.TabIndex = 10;
             C2Size16.Text = "16 × 16";
             C2Size16.Click += C2Size16_Click;
@@ -618,11 +666,11 @@ namespace CrashEdit.CE
             C2Size64.CustomColour = false;
             C2Size64.FlatBottom = false;
             C2Size64.FlatTop = false;
-            C2Size64.Location = new Point(7, 95);
+            C2Size64.Location = new Point(77, 59);
             C2Size64.Margin = new Padding(4);
             C2Size64.Name = "C2Size64";
             C2Size64.Padding = new Padding(6);
-            C2Size64.Size = new Size(82, 31);
+            C2Size64.Size = new Size(64, 31);
             C2Size64.TabIndex = 12;
             C2Size64.Text = "64 × 64";
             C2Size64.Click += C2Size64_Click;
@@ -802,7 +850,7 @@ namespace CrashEdit.CE
             groupBox8.Margin = new Padding(4);
             groupBox8.Name = "groupBox8";
             groupBox8.Padding = new Padding(4);
-            groupBox8.Size = new Size(107, 131);
+            groupBox8.Size = new Size(107, 128);
             groupBox8.TabIndex = 7;
             groupBox8.TabStop = false;
             groupBox8.Text = "CLUT";
@@ -917,7 +965,7 @@ namespace CrashEdit.CE
             groupBox11.Controls.Add(C2numShiftX);
             groupBox11.Controls.Add(C2btnShiftX1);
             groupBox11.Controls.Add(C2btnShiftX2);
-            groupBox11.Location = new Point(553, 8);
+            groupBox11.Location = new Point(605, 8);
             groupBox11.Margin = new Padding(4);
             groupBox11.Name = "groupBox11";
             groupBox11.Padding = new Padding(4);
@@ -972,7 +1020,7 @@ namespace CrashEdit.CE
             groupBox12.Controls.Add(C2numShiftY);
             groupBox12.Controls.Add(C2btnShiftY1);
             groupBox12.Controls.Add(C2btnShiftY2);
-            groupBox12.Location = new Point(553, 93);
+            groupBox12.Location = new Point(605, 93);
             groupBox12.Margin = new Padding(4);
             groupBox12.Name = "groupBox12";
             groupBox12.Padding = new Padding(4);
@@ -1025,12 +1073,13 @@ namespace CrashEdit.CE
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(916, 359);
+            ClientSize = new Size(1024, 360);
             Controls.Add(splitContainer1);
             CornerStyle = CornerPreference.Default;
             DoubleBuffered = true;
-            FormBorderStyle = FormBorderStyle.FixedDialog;
             Margin = new Padding(4);
+            MaximizeBox = false;
+            MinimumSize = new Size(300, 400);
             Name = "TextureViewer";
             TransparencyKey = Color.FromArgb(31, 31, 32);
             splitContainer1.Panel1.ResumeLayout(false);
@@ -1149,5 +1198,8 @@ namespace CrashEdit.CE
         private DarkButton cmdReplace;
         private CheckBox chkReplaceCLUT;
         private CheckBox chkBGRA;
+        private DarkButton C2Size4;
+        private DarkButton C2Size8;
+        private Label lblSelectionSize;
     }
 }

@@ -3,6 +3,7 @@ using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 
 namespace CrashEdit.CE
 {
@@ -310,6 +311,11 @@ namespace CrashEdit.CE
                 int w = TexW;
                 int h = TexH;
 
+                selectedregion.X = x;
+                selectedregion.Y = y;
+                selectedregion.Width = w;
+                selectedregion.Height = h;
+
                 using (var brush = new SolidBrush(Color.FromArgb(127, 0, 0, 0)))
                 using (var pen = new Pen(Color.Black))
                 {
@@ -343,15 +349,29 @@ namespace CrashEdit.CE
                         g.DrawRectangle(pen, new Rectangle(selectedregion.X - 2, selectedregion.Y - 2, selectedregion.Width + 3, selectedregion.Height + 3));
                     }
                 }
-                selectedregion.X = x;
-                selectedregion.Y = y;
-                selectedregion.Width = w;
-                selectedregion.Height = h;
             }
 
             pictureBox1.Image = bitmap;
             pictureBox1.Size = bitmap.Size;
-            Width = 1024 + 32;
+            //Width = 1024 + 32;
+        }
+
+        private void C2Size4_Click(object sender, EventArgs e)
+        {
+            C2numW.Value = 4;
+            C2numH.Value = 4;
+            selectionSize = 4;
+            lblSelectionSize.Text = "Current: 4 x 4";
+            UpdatePicture();
+        }
+
+        private void C2Size8_Click(object sender, EventArgs e)
+        {
+            C2numW.Value = 8;
+            C2numH.Value = 8;
+            selectionSize = 8;
+            lblSelectionSize.Text = "Current: 8 x 8";
+            UpdatePicture();
         }
 
         private void C2Size16_Click(object sender, EventArgs e)
@@ -359,6 +379,7 @@ namespace CrashEdit.CE
             C2numW.Value = 16;
             C2numH.Value = 16;
             selectionSize = 16;
+            lblSelectionSize.Text = "Current: 16 x 16";
             UpdatePicture();
         }
 
@@ -367,6 +388,7 @@ namespace CrashEdit.CE
             C2numW.Value = 32;
             C2numH.Value = 32;
             selectionSize = 32;
+            lblSelectionSize.Text = "Current: 32 x 32";
             UpdatePicture();
         }
 
@@ -375,6 +397,7 @@ namespace CrashEdit.CE
             C2numW.Value = 64;
             C2numH.Value = 64;
             selectionSize = 64;
+            lblSelectionSize.Text = "Current: 64 x 64";
             UpdatePicture();
         }
 

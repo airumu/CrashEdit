@@ -197,7 +197,7 @@ namespace CrashEdit.CE
                 {
                     frmViewer = null;
                 };
-                frmViewer.Show(this);
+                frmViewer.Show();
             }
             else
                 frmViewer.Select();
