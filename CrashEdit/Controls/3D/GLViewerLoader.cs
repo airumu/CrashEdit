@@ -23,7 +23,7 @@ namespace CrashEdit.CE
             if (default_graphics_settings.SharedContext == null)
             {
                 default_graphics_settings.SharedContext = Context as IGLFWGraphicsContext;
-                bool success = default_graphics_settings.SharedContext != null;
+                bool success = default_graphics_settings.SharedContext != null;               
                 Console.WriteLine($"Created GLViewer loader: {success}");
 
                 if (success)
@@ -39,6 +39,8 @@ namespace CrashEdit.CE
         private void InitGL()
         {
             // version print
+            Console.WriteLine($"OpenGL Renderer: {GL.GetString(StringName.Renderer)}");
+            Console.WriteLine($"OpenGL Vendor: {GL.GetString(StringName.Vendor)}");         
             Console.WriteLine($"OpenGL version: {GL.GetString(StringName.Version)}");
 
             int max_tex_size = GL.GetInteger(GetPName.MaxTextureSize);

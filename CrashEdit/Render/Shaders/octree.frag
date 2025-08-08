@@ -12,7 +12,7 @@ out vec4 fColor;
 
 void main()
 {
-    int node = texelFetch(tNodes, ivec3(pNode), 0).r;
+    int node = texelFetch(tNodes, ivec3(floor(pNode + vec3(0.001))), 0).r;
     if (node == 0) {
         discard;
     } else {
@@ -22,7 +22,7 @@ void main()
         // we got the color, now we add a bit of shading to help with depth perception
         // this 'packs' nodes such that they will accurately represent their layer in the octree
         vec3 packed_node = pNode / vec3(1 << ((node >> 16) & 0x1F), 1 << ((node >> 21) & 0x1F), 1 << ((node >> 26) & 0x1F));
-        vec3 packed_fracs = vec3(packed_node.x - trunc(packed_node.x), packed_node.y - trunc(packed_node.y), packed_node.z - trunc(packed_node.z));
+        vec3 packed_fracs = fract(packed_node + vec3(1e-6));
         // because the nodes are rendered on axis-aligned quads, only 2 axes can be non-integers, so we divide by 2 and not 3
         float shade = (packed_fracs.x + packed_fracs.y + packed_fracs.z) / 2 * uNodeShadeMax;
         fColor.rgb *= 1 - shade;
