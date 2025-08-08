@@ -114,7 +114,7 @@ namespace CrashEdit.CE.Controls
             // numLoadClut
             // 
             numLoadClut.Location = new Point(6, 22);
-            numLoadClut.Maximum = new decimal(new int[] { 32, 0, 0, 0 });
+            numLoadClut.Maximum = new decimal(new int[] { 128, 0, 0, 0 });
             numLoadClut.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numLoadClut.Name = "numLoadClut";
             numLoadClut.Size = new Size(75, 23);
