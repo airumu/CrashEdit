@@ -336,7 +336,7 @@ namespace CrashEdit.Crash
             rgba5551 |= (ushort)((r >> 3) << 10);  // Red: 5 bits
             rgba5551 |= (ushort)((g >> 3) << 5);   // Green: 5 bits
             rgba5551 |= (ushort)((b >> 3));        // Blue: 5 bits
-            rgba5551 |= (ushort)((a == 0 ? 0 : 1) << 15);  // Alpha: 1 bit
+            rgba5551 |= (ushort)((a >= 128 ? 0 : 1) << 15);  // Alpha: 1 bit
 
             return rgba5551;
         }
