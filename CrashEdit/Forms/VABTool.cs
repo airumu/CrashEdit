@@ -716,7 +716,7 @@ namespace CrashEdit.CE
                     DataGridViewRow row = new DataGridViewRow();
                     VHTone tone = vhProgram.Tones[i];
                     int maxmumNote = tone.MaximumNote > 127 ? 127 : tone.MaximumNote;
-                    row.CreateCells(dgvTones, i, tone.Priority, tone.Mode, tone.Volume, tone.Panning, tone.CenterNote, tone.PitchShift,
+                    row.CreateCells(dgvTones, i, tone.Priority, tone.Mode, tone.Volume, tone.Panning, tone.CenterNote, Math.Clamp((int)tone.PitchShift, 0, 99),
                         tone.MinimumNote, maxmumNote, tone.PitchBendMinimum, tone.PitchBendMaximum,
                         tone.ADSR1.ToString("X"), tone.ADSR2.ToString("X"), tone.Wave);
                     dgvTones.Rows.Add(row);
@@ -816,7 +816,7 @@ namespace CrashEdit.CE
             trkVolume.Value = Convert.ToInt32(selectedRow.Cells[ColToneVolume].Value);
             trkPan.Value = Convert.ToInt32(selectedRow.Cells[ColTonePan].Value);
             trkCenter.Value = Convert.ToInt32(selectedRow.Cells[ColToneCenter].Value);
-            trkPitch.Value = Convert.ToInt32(selectedRow.Cells[ColTonePitch].Value);
+            trkPitch.Value = Math.Clamp(Convert.ToInt32(selectedRow.Cells[ColTonePitch].Value), 0, 99);
             trkMinNote.Value = Convert.ToInt32(selectedRow.Cells[ColToneMinNote].Value);
             trkMaxNote.Value = Convert.ToInt32(selectedRow.Cells[ColToneMaxNote].Value);
             trkPBmin.Value = Convert.ToInt32(selectedRow.Cells[ColTonePBmin].Value);
@@ -1254,7 +1254,22 @@ namespace CrashEdit.CE
 
             if (Convert.ToInt32(selectedProgRow.Cells[ColProgToneCount].Value) == 0) return;
 
-            VHProgram newProgram = vh.Programs[programIndex];
+            byte[] programdata = vh.Programs[programIndex].Save();
+            byte[] tonedata = new byte[32 * 16];
+            for (int i = 0; i < 16; ++i)
+            {
+                if (vh.Programs[programIndex].Tones.Count > i)
+                {
+                    byte[] toneBytes = vh.Programs[programIndex].Tones[i].Save(programIndex);
+                    Array.Copy(toneBytes, 0, tonedata, i * 32, 32);
+                }
+                else
+                {
+                    byte[] bytes = CreateNullTone((ushort)programIndex, 0);
+                    Array.Copy(bytes, 0, tonedata, i * 32, 32);
+                }
+            }
+            VHProgram newProgram = VHProgram.Load(programdata, tonedata, vh.IsOldVersion);
 
             // Shift the program indexes.
             var keysToShift = new List<int>();
@@ -1421,7 +1436,8 @@ namespace CrashEdit.CE
             if (selectedProgRow == null) return;
 
             // Insert a new tone and update the tone count.
-            vh.Programs[progRowIdx].Tones.Insert(toneIndex, vh.Programs[progRowIdx].Tones[toneIndex]);
+            byte[] bytes = vh.Programs[progRowIdx].Tones[toneIndex].Save(progRowIdx);
+            vh.Programs[progRowIdx].Tones.Insert(toneIndex, VHTone.Load(bytes));
 
             // Insert a row.
             DataGridViewRow clonedRow = (DataGridViewRow)dgvTones.Rows[toneIndex].Clone();
@@ -1429,7 +1445,7 @@ namespace CrashEdit.CE
             {
                 clonedRow.Cells[i].Value = dgvTones.Rows[toneIndex].Cells[i].Value;
             }
-            dgvTones.Rows.Insert(toneIndex, clonedRow);
+            dgvTones.Rows.Insert(toneIndex + 1, clonedRow);
 
             // Update the tone count in the program.
             selectedProgRow.Cells[ColProgToneCount].Value = dgvTones.Rows.Count;
