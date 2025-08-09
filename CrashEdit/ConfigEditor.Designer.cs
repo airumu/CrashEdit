@@ -678,12 +678,12 @@ namespace CrashEdit.CE
             cmdClearRecentFiles.CustomColour = false;
             cmdClearRecentFiles.FlatBottom = false;
             cmdClearRecentFiles.FlatTop = false;
-            cmdClearRecentFiles.Location = new Point(682, 322);
+            cmdClearRecentFiles.Location = new Point(700, 322);
             cmdClearRecentFiles.Name = "cmdClearRecentFiles";
             cmdClearRecentFiles.Padding = new Padding(5);
-            cmdClearRecentFiles.Size = new Size(42, 24);
+            cmdClearRecentFiles.Size = new Size(24, 24);
             cmdClearRecentFiles.TabIndex = 31;
-            cmdClearRecentFiles.Text = "Clear";
+            cmdClearRecentFiles.Image = new Bitmap(Embeds.Bitmaps["Erase"], new Size(16, 16));
             cmdClearRecentFiles.Click += cmdClearRecentFiles_Click;
             // 
             // tbp3D
