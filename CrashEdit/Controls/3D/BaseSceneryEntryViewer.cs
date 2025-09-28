@@ -10,10 +10,13 @@ namespace CrashEdit.CE
 
         private static VBO vboWorld;
         private static VBO vboSky;
+        private static VBO vboMarkers;
         protected VAO _vao;
         protected VAO _vao2;
+        protected VAO _vao3;
         private VAO vaoWorld;
         private VAO vaoSky;
+        private VAO vaoMarkers;
         protected Vector3 world_offset;
 
         public BaseSceneryEntryViewer(NSF nsf, int world) : base(nsf)
@@ -30,6 +33,7 @@ namespace CrashEdit.CE
         {
             vboWorld = new VBO();
             vboSky = new VBO();
+            vboMarkers = new VBO();
         }
 
         protected override void LoadGL()
@@ -42,9 +46,11 @@ namespace CrashEdit.CE
                 vaoSky = new(shaders.GetShader("crash1"), PrimitiveType.Triangles, vboSky);
                 vaoSky.ZBufDisableWrite = true;
             }
+            vaoMarkers = new(shaders.GetShader("marker"), PrimitiveType.Points, vboMarkers);
 
             _vao = vaoWorld;
             _vao2 = vaoSky;
+            _vao3 = vaoMarkers;
         }
 
         protected void SetWorlds(IEnumerable<int> worlds)
@@ -68,6 +74,11 @@ namespace CrashEdit.CE
 
         protected abstract void SetWorldOffset(T world);
 
+        protected override void PrintHelp()
+        {
+            base.PrintHelp();
+            con_help += KeyboardControls.ToggleVerticesVisible.Print(OnOffName(render.ShowVertices));
+        }
         protected override void Render()
         {
             base.Render();
@@ -80,7 +91,7 @@ namespace CrashEdit.CE
             for (int i = HasSky ? 0 : 1; i < 2; ++i)
             {
                 bool sky = i == 0;
-                _vao = sky ? vaoSky : vaoWorld;
+                _vao = sky ? vaoSky : vaoWorld;                
                 RenderWorlds(sky);
             }
 
@@ -107,6 +118,8 @@ namespace CrashEdit.CE
             // dump all verts, we rendered them!
             _vao.DiscardVerts();
             _vao.BlendModes = BlendMode.None;
+            _vao3.DiscardVerts();
+            _vao3.BlendModes = BlendMode.None;
         }
 
         protected void RenderWorldPass(BlendMode pass)
@@ -116,6 +129,8 @@ namespace CrashEdit.CE
                 SetBlendMode(pass);
                 _vao.BlendMask = BlendModeIndex(pass);
                 _vao.Render(render);
+                if (render.ShowVertices)
+                    _vao3.Render(render);
             }
         }
 
@@ -125,6 +140,7 @@ namespace CrashEdit.CE
 
             vaoWorld?.Dispose();
             vaoSky?.Dispose();
+            vaoMarkers?.Dispose();
         }
     }
 }

@@ -25,6 +25,8 @@ namespace CrashEdit.CE.Controls
             ForeColor = Color.Gray
         };
 
+        private bool disable_inp_change = false;
+        private int PrevSelectedVertex = -1;
         private dynamic controller;
         private dynamic model;
         private TextureChunk chunk { get; set; }
@@ -125,6 +127,7 @@ namespace CrashEdit.CE.Controls
         private readonly Color clrSelectionBackground = Color.FromArgb(70, 70, 70);
         private readonly Color clrText = Color.Gainsboro;
 
+        private System.Windows.Forms.Timer vertexCheckTimer;
         internal Stack<bool> dirty = new Stack<bool>();
         internal bool Dirty => dirty.Count > 0 && dirty.Peek();
 
@@ -180,6 +183,20 @@ namespace CrashEdit.CE.Controls
                     tabModel.Controls.Remove(tbpPositions);
                     tbpPositions.Dispose();
                 }
+            }
+
+            if (!isScenery)
+            {
+                tabModel.Controls.Remove(tbpVertices);
+                tbpVertices.Dispose();
+            } else
+            {
+                inpVertexX.Minimum = model.IsC3 ? 0 : -2048;
+                inpVertexX.Maximum = model.IsC3 ? 4095 : 2047;
+                inpVertexY.Minimum = model.IsC3 ? 0 : -2048;
+                inpVertexY.Maximum = model.IsC3 ? 4095 : 2047;
+                inpVertexZ.Minimum = model.IsC3 ? 0 : -2048;
+                inpVertexZ.Maximum = model.IsC3 ? 4095 : 2047;
             }
 
             if (!(model.Textures.Count > 0))
@@ -326,6 +343,34 @@ namespace CrashEdit.CE.Controls
             tbpPolygons.Enter -= tbpPolygons_Enter;
         }
 
+        private void VertexCheckTimer_Tick(object sender, EventArgs e)
+        {
+            if (model.SelectedVertex != PrevSelectedVertex)
+            {
+                PrevSelectedVertex = model.SelectedVertex;
+                SelectedVertexChanged(model.SelectedVertex);
+            }
+        }
+
+        private void tbpVertices_Enter(object sender, EventArgs e)
+        {
+            numVertexIndex.Maximum = model.Vertices.Count - 1;
+            lblVertices.Text = "Vertices: " + model.Vertices.Count;
+            SelectedVertexChanged(model.SelectedVertex == -1 ? 0 : model.SelectedVertex);
+
+            // Timer setup
+            if (vertexCheckTimer == null)
+            {
+                vertexCheckTimer = new System.Windows.Forms.Timer();
+                vertexCheckTimer.Interval = 100;
+                vertexCheckTimer.Tick += VertexCheckTimer_Tick;
+            }
+            PrevSelectedVertex = model.SelectedVertex;
+            vertexCheckTimer.Start();
+
+            tbpVertices.Enter -= tbpVertices_Enter;
+        }
+
         private void UpdateStructs()
         {
             dgvStructs.ColumnHeadersHeight = 36;
@@ -369,7 +414,7 @@ namespace CrashEdit.CE.Controls
                 column.Width = 60;
                 column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft;
             }
-        }
+        }       
 
         private void UpdatePolygons()
         {

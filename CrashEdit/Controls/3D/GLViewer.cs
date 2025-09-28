@@ -119,7 +119,7 @@ namespace CrashEdit.CE
         protected VAO vaoLinesThick;
         protected VAO vaoSprites;
         protected VAO vaoText;
-        protected VAO vaoOctree;
+        protected VAO vaoOctree;        
 
         protected readonly RenderInfo render;
 
@@ -222,6 +222,7 @@ namespace CrashEdit.CE
             public static readonly ControlsKeyboardInfo ToggleModelCycle = new(Keys.Y, Resources.ViewerControls_ToggleModelCycle);
             public static readonly ControlsKeyboardInfo ToggleAlignedMovement = new(Keys.Z, Resources.ViewerControls_MoveAligned);
             public static readonly ControlsKeyboardInfo ToggleEntityVisual = new(Keys.G, Resources.ViewerControls_ToggleEntityVisual);
+            public static readonly ControlsKeyboardInfo ToggleVerticesVisible = new(Keys.B, Resources.ViewerControls_ToggleVerticesVisible);
         }
         #endregion
 
@@ -435,6 +436,7 @@ namespace CrashEdit.CE
                 ResetCamera();
             }
             if (KPress(KeyboardControls.ToggleTextures)) render.EnableTexture = !render.EnableTexture;
+            if (KPress(KeyboardControls.ToggleVerticesVisible)) render.ShowVertices = !render.ShowVertices;
             if (KPress(KeyboardControls.ToggleHelp)) showHelp = !showHelp;
             if (KPress(KeyboardControls.ToggleAlignedMovement))
             {

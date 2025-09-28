@@ -11,6 +11,7 @@ namespace CrashEdit.CE
         public ProjectionInfo Projection;
         public RendererMoveMode MoveMode;
         public bool EnableTexture = true;
+        public bool ShowVertices = false;
 
         public const float BaseRot = 0;
         public const float MinRot = BaseRot - MathHelper.PiOver2;

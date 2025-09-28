@@ -6,10 +6,11 @@ namespace CrashEdit.CE
     public class SceneryEntryViewer : BaseSceneryEntryViewer<SceneryEntry>
     {
         private List<SLSTPolygonID>? sortlist;
+        private readonly bool is_single_view = false;
 
-        public SceneryEntryViewer(NSF nsf, int world) : base(nsf, world) { }
+        public SceneryEntryViewer(NSF nsf, int world) : base(nsf, world) { is_single_view = true; }
 
-        public SceneryEntryViewer(NSF nsf, IEnumerable<int> worlds) : base(nsf, worlds) { }
+        public SceneryEntryViewer(NSF nsf, IEnumerable<int> worlds) : base(nsf, worlds) { is_single_view = false; }
 
         protected override void SetWorldOffset(SceneryEntry world)
         {
@@ -62,11 +63,108 @@ namespace CrashEdit.CE
             }
         }
 
+        public int PickVertex(int mouseX, int mouseY)
+        {
+            float threshold = 0.25f;
+
+            int viewportWidth = this.Width;
+            int viewportHeight = this.Height;
+
+            Matrix4 projection = render.Projection.Perspective;
+            Matrix4 view = render.Projection.View;
+
+            // Convert screen coordinates to normalized device coordinates (-1 to 1)
+            float ndcX = (2.0f * mouseX) / viewportWidth - 1.0f;
+            float ndcY = 1.0f - (2.0f * mouseY) / viewportHeight;
+
+            // Unproject to get the ray in world space
+            Vector4 rayStartNDC = new Vector4(ndcX, ndcY, -1.0f, 1.0f);
+            Vector4 rayEndNDC = new Vector4(ndcX, ndcY, 1.0f, 1.0f);
+
+            Matrix4 invViewProj = Matrix4.Invert(view * projection);
+
+            Vector4 rayStartWorld = Vector4.TransformRow(rayStartNDC, invViewProj);
+            Vector4 rayEndWorld = Vector4.TransformRow(rayEndNDC, invViewProj);
+
+            rayStartWorld /= rayStartWorld.W;
+            rayEndWorld /= rayEndWorld.W;
+
+            Vector3 rayOrigin = rayStartWorld.Xyz;
+            Vector3 rayDirection = (rayEndWorld.Xyz - rayOrigin).Normalized();
+
+            // only pick from the first world in single view mode
+            var worlds = GetWorlds();
+            var firstWorld = worlds?.FirstOrDefault();
+            if (firstWorld == null)
+                return -1;
+
+            for (int i = 0; i < firstWorld.Vertices.Count; i++)
+            {
+                var vert = firstWorld.Vertices[i];
+                Vector3 vertWorld = (new Vector3(vert.X, vert.Y, vert.Z) * 16 + world_offset) / GameScales.WorldC1;
+
+                // check whether its behind the camera
+                Vector3 toVertex = vertWorld - rayOrigin;
+                float t = Vector3.Dot(toVertex, rayDirection);
+                if (t < 0)
+                    continue;
+
+                Vector3 closestPoint = rayOrigin + rayDirection * t;
+                float distance = (vertWorld - closestPoint).Length;
+
+                if (distance <= threshold)                                    
+                    return i;                
+            }
+
+            return -1;
+        }
+
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            base.OnMouseDown(e);
+
+            if (!is_single_view)
+                return;
+
+            if (!render.ShowVertices)
+                return;
+
+            var worlds = GetWorlds();
+            var firstWorld = worlds?.FirstOrDefault();
+            if (firstWorld == null)
+                return;
+
+            int vertex = PickVertex(e.X, e.Y);
+            if (vertex == -1)
+                return;
+
+            firstWorld.SelectedVertex = vertex;
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+
+            if (!is_single_view)
+                return;
+
+            if (!render.ShowVertices)
+                return;
+
+            var worlds = GetWorlds();
+            var firstWorld = worlds?.FirstOrDefault();
+            if (firstWorld == null)
+                return;
+
+            firstWorld.HoveredVertex = PickVertex(e.X, e.Y);
+        }
+
         protected override void RenderWorlds(bool sky)
         {
             // collect valid worlds
             var all_worlds = GetWorlds();
             _vao.TestReallocExtra(all_worlds.Sum(x => x?.IsSky == sky ? (x.Triangles.Count + x.Quads.Count * 2) * 3 : 0));
+            _vao3.TestReallocExtra(all_worlds.Sum(x => x?.IsSky == sky ? (x.Triangles.Count + x.Quads.Count * 2) * 3 : 0));
 
 
             // render stuff
@@ -115,6 +213,36 @@ namespace CrashEdit.CE
             {
                 RenderQuad(world, i, 3);
             }
+            for (int i = 0; i < world.Vertices.Count; ++i)
+            {
+                RenderMarker(world, i);
+            }
+        }
+
+        private void RenderMarker(SceneryEntry world, int index)
+        {
+            Rgba color = new(255, 255, 255, 128);
+            float size = 6f;
+
+            if (is_single_view)
+            {
+                if (world.HoveredVertex == index)
+                {
+                    color = new(255, 20, 100, 160);
+                    size = 12f;
+                }
+                if (index == world.SelectedVertex)
+                {
+                    color = new(255, 0, 0, 255);
+                    size = 16f;
+                }                
+            }
+
+            SceneryVertex vert = world.Vertices[index];
+            _vao3.Verts[_vao3.CurVert].trans = (new Vector3(vert.X, vert.Y, vert.Z) * 16 + world_offset) / GameScales.WorldC1;
+            _vao3.Verts[_vao3.CurVert].rgba = color;
+            _vao3.Verts[_vao3.CurVert].misc.X = size;
+            _vao3.CurVert++;
         }
 
         private void RenderTriangle(SceneryEntry world, int index)

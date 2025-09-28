@@ -59,6 +59,8 @@
     <EmbeddedResource Include="Render\Shaders\default4.frag" />
     <EmbeddedResource Include="Render\Shaders\generic.vert" />
     <EmbeddedResource Include="Render\Shaders\line-static.vert" />
+    <EmbeddedResource Include="Render\Shaders\marker.frag" />
+    <EmbeddedResource Include="Render\Shaders\marker.vert" />
     <EmbeddedResource Include="Render\Shaders\octree.frag" />
     <EmbeddedResource Include="Render\Shaders\octree.vert" />
     <EmbeddedResource Include="Render\Shaders\screen.frag" />

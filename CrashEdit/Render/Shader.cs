@@ -14,6 +14,7 @@ namespace CrashEdit.CE
             { "generic",    new ShaderInfo("generic.vert", "sprite.frag") },
             { "screen",     new ShaderInfo("screen.vert", "screen.frag") },
             { "octree",     new ShaderInfo("octree.vert", "octree.frag", func: RenderOctree) },
+            { "marker",     new ShaderInfo("marker.vert", "marker.frag") },
         };
 
         public string VertShaderName { get; }

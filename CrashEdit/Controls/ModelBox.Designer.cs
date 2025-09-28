@@ -1,4 +1,6 @@
 ﻿using AltUI.Controls;
+using AltUI.Forms;
+using CrashEdit.Crash;
 using MetroSet_UI.Controls;
 
 namespace CrashEdit.CE.Controls
@@ -53,7 +55,18 @@ namespace CrashEdit.CE.Controls
             lblOffsetX = new Label();
             lblModelInfo = new Label();
             tbpPolygons = new TabPage();
+            tbpVertices = new TabPage();
             lblStruct = new Label();
+            lblVertices = new Label();
+            numVertexIndex = new DarkNumericUpDown();
+            inpVertexX = new DarkNumericUpDown();
+            inpVertexY = new DarkNumericUpDown();
+            inpVertexZ = new DarkNumericUpDown();
+            lblVertexIndex = new DarkLabel();
+            lblVertX = new DarkLabel();
+            lblVertY = new DarkLabel();
+            lblVertZ = new DarkLabel();
+            fraVertices = new DarkGroupBox();
             label3 = new Label();
             label2 = new Label();
             dgvStructs = new DataGridView();
@@ -119,6 +132,8 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)numOffsetY).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numOffsetX).BeginInit();
             tbpPolygons.SuspendLayout();
+            tbpVertices.SuspendLayout();
+            fraVertices.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvStructs).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvPolygons).BeginInit();
             tbpColors.SuspendLayout();
@@ -156,6 +171,7 @@ namespace CrashEdit.CE.Controls
             tabModel.BackgroundColor = Color.FromArgb(31, 31, 32);
             tabModel.Controls.Add(tbpGeneral);
             tabModel.Controls.Add(tbpPolygons);
+            tabModel.Controls.Add(tbpVertices);
             tabModel.Controls.Add(tbpColors);
             tabModel.Controls.Add(tbpTextures);
             tabModel.Controls.Add(tbpExtendedTextures);
@@ -413,7 +429,7 @@ namespace CrashEdit.CE.Controls
             tbpPolygons.Size = new Size(1032, 764);
             tbpPolygons.TabIndex = 1;
             tbpPolygons.Text = "Polygons";
-            tbpPolygons.Enter += tbpPolygons_Enter;
+            tbpPolygons.Enter += tbpPolygons_Enter;            
             // 
             // lblStruct
             // 
@@ -483,6 +499,124 @@ namespace CrashEdit.CE.Controls
             dgvPolygons.CellValidating += dgvPolygons_CellValidating;
             dgvPolygons.CellValueChanged += dgvPolygons_CellValueChanged;
             dgvPolygons.KeyDown += dgvPolygons_KeyDown;
+            // 
+            // tbpVertices
+            // 
+            tbpVertices.AutoScroll = true;
+            tbpVertices.BackColor = Color.FromArgb(31, 31, 32);
+            tbpVertices.Controls.Add(lblVertices);
+            tbpVertices.Controls.Add(fraVertices);
+            tbpVertices.Location = new Point(4, 32);
+            tbpVertices.Name = "tbpVertices";
+            tbpVertices.Size = new Size(1032, 764);
+            tbpVertices.TabIndex = 1;
+            tbpVertices.Text = "Vertices";
+            tbpVertices.Enter += tbpVertices_Enter;
+            // 
+            // fraVertices
+            // 
+            fraVertices.Controls.Add(numVertexIndex);
+            fraVertices.Controls.Add(inpVertexX);
+            fraVertices.Controls.Add(inpVertexY);
+            fraVertices.Controls.Add(inpVertexZ);
+            fraVertices.Controls.Add(lblVertexIndex);
+            fraVertices.Controls.Add(lblVertX);
+            fraVertices.Controls.Add(lblVertY);
+            fraVertices.Controls.Add(lblVertZ);
+            fraVertices.Location = new Point(10, 18);
+            fraVertices.Margin = new Padding(4, 3, 4, 3);
+            fraVertices.Name = "fraVertices";
+            fraVertices.Padding = new Padding(4, 3, 4, 3);
+            fraVertices.Size = new Size(155, 155);
+            fraVertices.TabIndex = 9;
+            fraVertices.TabStop = false;
+            fraVertices.Text = "";
+            // 
+            // lblVertices
+            // 
+            lblVertices.AutoSize = true;
+            lblVertices.BackColor = Color.Transparent;
+            lblVertices.Location = new Point(15, 15);
+            lblVertices.Name = "lblVertices";
+            lblVertices.Size = new Size(46, 15);
+            lblVertices.TabIndex = 3;
+            lblVertices.Font = new Font("Microsoft Sans Serif", 10f);
+            lblVertices.Text = "{Vertices}";
+            //
+            // numVertexIndex
+            //
+            numVertexIndex.AutoSize = true;
+            numVertexIndex.BackColor = Color.Transparent;
+            numVertexIndex.Location = new Point(80, 20);
+            numVertexIndex.Name = "numVertexIndex";
+            numVertexIndex.Size = new Size(65, 15);
+            numVertexIndex.TabIndex = 4;
+            numVertexIndex.Minimum = 0;
+            numVertexIndex.ValueChanged += NumVertexIndex_ValueChanged;            
+            //
+            // inpVertexX
+            //
+            inpVertexX.Name = "inpVertexX";
+            inpVertexX.Location = new Point(80, 60);
+            inpVertexX.Size = new Size(65, 15);
+            inpVertexX.TabIndex = 5;
+            inpVertexX.ValueChanged += VertexPosX_ValueChanged;
+            //
+            // inpVertexY
+            //
+            inpVertexY.Name = "inpVertexY";
+            inpVertexY.Location = new Point(80, 90);
+            inpVertexY.Size = new Size(65, 15);
+            inpVertexY.TabIndex = 6;
+            inpVertexY.ValueChanged += VertexPosY_ValueChanged;
+            //
+            // inpVertexZ
+            //
+            inpVertexZ.Name = "inpVertexZ";
+            inpVertexZ.Location = new Point(80, 120);
+            inpVertexZ.Size = new Size(65, 15);
+            inpVertexZ.TabIndex = 7;
+            inpVertexZ.ValueChanged += VertexPosZ_ValueChanged;
+            //
+            // lblVertexIndex
+            // 
+            lblVertexIndex.AutoSize = true;
+            lblVertexIndex.BackColor = Color.Transparent;
+            lblVertexIndex.Location = new Point(10, 20);
+            lblVertexIndex.Name = "lblVertexIndex";
+            lblVertexIndex.Size = new Size(10, 15);
+            lblVertexIndex.TabIndex = 3;
+            lblVertexIndex.Text = "Index:";
+            //
+            // lblVertX
+            // 
+            lblVertX.AutoSize = true;
+            lblVertX.BackColor = Color.Transparent;
+            lblVertX.Location = new Point(10, 60);
+            lblVertX.Name = "lblVertX";
+            lblVertX.Size = new Size(10, 15);
+            lblVertX.TabIndex = 3;
+            lblVertX.Text = "vertX:";
+            //
+            // lblVertY
+            // 
+            lblVertY.AutoSize = true;
+            lblVertY.BackColor = Color.Transparent;
+            lblVertY.Location = new Point(10, 90);
+            lblVertY.Name = "lblVertY";
+            lblVertY.Size = new Size(10, 15);
+            lblVertY.TabIndex = 3;
+            lblVertY.Text = "vertY:";
+            //
+            // lblVertZ
+            // 
+            lblVertZ.AutoSize = true;
+            lblVertZ.BackColor = Color.Transparent;
+            lblVertZ.Location = new Point(10, 120);
+            lblVertZ.Name = "lblVertZ";
+            lblVertZ.Size = new Size(10, 15);
+            lblVertZ.TabIndex = 3;
+            lblVertZ.Text = "vertZ:";
             // 
             // tbpColors
             // 
@@ -1199,6 +1333,8 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)numOffsetX).EndInit();
             tbpPolygons.ResumeLayout(false);
             tbpPolygons.PerformLayout();
+            tbpVertices.ResumeLayout(false);
+            tbpVertices.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvStructs).EndInit();
             ((System.ComponentModel.ISupportInitialize)dgvPolygons).EndInit();
             tbpColors.ResumeLayout(false);
@@ -1237,11 +1373,57 @@ namespace CrashEdit.CE.Controls
             ResumeLayout(false);
         }
 
+        private void SelectedVertexChanged(int new_val)
+        {
+            disable_inp_change = true;
+            model.SelectedVertex = new_val;            
+            inpVertexX.Value = (decimal)model.Vertices[new_val].X;
+            inpVertexY.Value = (decimal)model.Vertices[new_val].Y;
+            inpVertexZ.Value = (decimal)model.Vertices[new_val].Z;
+            numVertexIndex.Value = (decimal)new_val;
+            disable_inp_change = false;
+        }
+
+        private void NumVertexIndex_ValueChanged(object sender, EventArgs e)
+        {
+            SelectedVertexChanged((int)numVertexIndex.Value);
+        }        
+
+        private void VertexPosChangedCommon()
+        {
+            SceneryVertex vtx = model.Vertices[model.SelectedVertex];
+            model.Vertices[model.SelectedVertex] = new SceneryVertex(
+                (int)inpVertexX.Value,
+                (int)inpVertexY.Value,
+                (int)inpVertexZ.Value,
+                vtx.UnknownX,
+                vtx.UnknownY,
+                vtx.UnknownZ,
+                vtx.IsC3);
+        }
+
+        private void VertexPosX_ValueChanged(object sender, EventArgs e) 
+        {            
+            if (!disable_inp_change)
+                VertexPosChangedCommon();
+        }
+        private void VertexPosY_ValueChanged(object sender, EventArgs e) 
+        {
+            if (!disable_inp_change)
+                VertexPosChangedCommon();
+        }
+        private void VertexPosZ_ValueChanged(object sender, EventArgs e)
+        {
+            if (!disable_inp_change)
+                VertexPosChangedCommon();
+        }
+
         #endregion
 
         private MetroSet_UI.Controls.MetroSetTabControl tabModel;
         private TabPage tbpGeneral;
         private TabPage tbpPolygons;
+        private TabPage tbpVertices;
         private TabPage tbpPositions;
         private TabPage tbpColors;
         private TabPage tbpTextures;
@@ -1310,9 +1492,19 @@ namespace CrashEdit.CE.Controls
         private DataGridView dgvPositions;
         private Label lblColorIndex;
         private Label lblStruct;
+        private Label lblVertices;
         private DarkNumericUpDown numLowestBrightness;
         private CheckBox chkLowestBrightness;
         private DarkButton cmdClearSelection;
         private PictureBox pictureBox2;
+        private DarkNumericUpDown numVertexIndex;
+        private DarkNumericUpDown inpVertexX;
+        private DarkNumericUpDown inpVertexY;
+        private DarkNumericUpDown inpVertexZ;
+        private DarkLabel lblVertexIndex;
+        private DarkLabel lblVertX;
+        private DarkLabel lblVertY;
+        private DarkLabel lblVertZ;
+        private DarkGroupBox fraVertices;
     }
 }
