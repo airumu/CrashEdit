@@ -70,6 +70,7 @@ namespace CrashEdit.CE.Controls
             lblVertZ = new DarkLabel();
             lblVertFX = new DarkLabel();
             lblVertColor = new DarkLabel();
+            lblVertsSimilar = new DarkLabel();
             fraVertices = new DarkGroupBox();
             label3 = new Label();
             label2 = new Label();
@@ -510,6 +511,7 @@ namespace CrashEdit.CE.Controls
             tbpVertices.BackColor = Color.FromArgb(31, 31, 32);
             tbpVertices.Controls.Add(lblVertices);
             tbpVertices.Controls.Add(fraVertices);
+            tbpVertices.Controls.Add(lblVertsSimilar);
             tbpVertices.Location = new Point(4, 32);
             tbpVertices.Name = "tbpVertices";
             tbpVertices.Size = new Size(1032, 764);
@@ -661,6 +663,15 @@ namespace CrashEdit.CE.Controls
             lblVertColor.Name = "lblVertColor";
             lblVertColor.Size = new Size(10, 15);
             lblVertColor.Text = "ColorID:";
+            //
+            // lblVertsSimilar
+            //            
+            lblVertsSimilar.AutoSize = true;
+            lblVertsSimilar.BackColor = Color.Transparent;
+            lblVertsSimilar.Location = new Point(200, 15);
+            lblVertsSimilar.Name = "lblVertsSimilar";
+            lblVertsSimilar.Size = new Size(300, 800);
+            lblVertsSimilar.Text = "-";
             // 
             // tbpColors
             // 
@@ -1550,6 +1561,7 @@ namespace CrashEdit.CE.Controls
         private DarkLabel lblVertZ;
         private DarkLabel lblVertFX;
         private DarkLabel lblVertColor;
+        private DarkLabel lblVertsSimilar;
         private DarkGroupBox fraVertices;
     }
 }

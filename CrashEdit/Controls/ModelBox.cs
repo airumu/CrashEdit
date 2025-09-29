@@ -351,6 +351,33 @@ namespace CrashEdit.CE.Controls
                 PrevSelectedVertex = model.SelectedVertex;
                 SelectedVertexChanged(model.SelectedVertex);
             }
+
+            List<int> same_coord_verts = [];
+            for (int i = 0; i < model.Vertices.Count; i++)
+            {
+                if (model.Vertices[i].X == model.Vertices[model.SelectedVertex].X &&
+                    model.Vertices[i].Y == model.Vertices[model.SelectedVertex].Y &&
+                    model.Vertices[i].Z == model.Vertices[model.SelectedVertex].Z)
+                {
+                    same_coord_verts.Add(i);
+                }
+            }
+
+            // the positioning is a bit silly
+            string txt = string.Format("\nVerts with the same position [{0}]:\n", same_coord_verts.Count);
+            for (int i = 0; i < same_coord_verts.Count; i++)
+            {
+                int vid = same_coord_verts[i];
+                if (vid == model.SelectedVertex)
+                    txt += vid + " <------\n";
+                else
+                    txt += vid + string.Format("   [FX: {0}, ColorID: {1}]\n", model.Vertices[vid].FX, model.Vertices[vid].Color);
+            }
+
+            for (int i = 0; i < (8 - same_coord_verts.Count); i++)
+                txt += " \n";
+
+            lblVertsSimilar.Text = txt;
         }
 
         private void tbpVertices_Enter(object sender, EventArgs e)
