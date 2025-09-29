@@ -197,6 +197,7 @@ namespace CrashEdit.CE.Controls
                 inpVertexY.Maximum = model.IsC3 ? 4095 : 2047;
                 inpVertexZ.Minimum = model.IsC3 ? 0 : -2048;
                 inpVertexZ.Maximum = model.IsC3 ? 4095 : 2047;
+                inpVertexColor.Maximum = model.Colors.Count - 1;
             }
 
             if (!(model.Textures.Count > 0))

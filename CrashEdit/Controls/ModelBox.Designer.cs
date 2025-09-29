@@ -62,10 +62,14 @@ namespace CrashEdit.CE.Controls
             inpVertexX = new DarkNumericUpDown();
             inpVertexY = new DarkNumericUpDown();
             inpVertexZ = new DarkNumericUpDown();
+            inpVertexFX = new DarkNumericUpDown();
+            inpVertexColor = new DarkNumericUpDown();
             lblVertexIndex = new DarkLabel();
             lblVertX = new DarkLabel();
             lblVertY = new DarkLabel();
             lblVertZ = new DarkLabel();
+            lblVertFX = new DarkLabel();
+            lblVertColor = new DarkLabel();
             fraVertices = new DarkGroupBox();
             label3 = new Label();
             label2 = new Label();
@@ -429,7 +433,7 @@ namespace CrashEdit.CE.Controls
             tbpPolygons.Size = new Size(1032, 764);
             tbpPolygons.TabIndex = 1;
             tbpPolygons.Text = "Polygons";
-            tbpPolygons.Enter += tbpPolygons_Enter;            
+            tbpPolygons.Enter += tbpPolygons_Enter;
             // 
             // lblStruct
             // 
@@ -519,15 +523,19 @@ namespace CrashEdit.CE.Controls
             fraVertices.Controls.Add(inpVertexX);
             fraVertices.Controls.Add(inpVertexY);
             fraVertices.Controls.Add(inpVertexZ);
+            fraVertices.Controls.Add(inpVertexFX);
+            fraVertices.Controls.Add(inpVertexColor);
             fraVertices.Controls.Add(lblVertexIndex);
             fraVertices.Controls.Add(lblVertX);
             fraVertices.Controls.Add(lblVertY);
             fraVertices.Controls.Add(lblVertZ);
+            fraVertices.Controls.Add(lblVertFX);
+            fraVertices.Controls.Add(lblVertColor);
             fraVertices.Location = new Point(10, 18);
             fraVertices.Margin = new Padding(4, 3, 4, 3);
             fraVertices.Name = "fraVertices";
             fraVertices.Padding = new Padding(4, 3, 4, 3);
-            fraVertices.Size = new Size(155, 155);
+            fraVertices.Size = new Size(155, 210);
             fraVertices.TabIndex = 9;
             fraVertices.TabStop = false;
             fraVertices.Text = "";
@@ -552,7 +560,7 @@ namespace CrashEdit.CE.Controls
             numVertexIndex.Size = new Size(65, 15);
             numVertexIndex.TabIndex = 4;
             numVertexIndex.Minimum = 0;
-            numVertexIndex.ValueChanged += NumVertexIndex_ValueChanged;            
+            numVertexIndex.ValueChanged += NumVertexIndex_ValueChanged;
             //
             // inpVertexX
             //
@@ -560,7 +568,7 @@ namespace CrashEdit.CE.Controls
             inpVertexX.Location = new Point(80, 60);
             inpVertexX.Size = new Size(65, 15);
             inpVertexX.TabIndex = 5;
-            inpVertexX.ValueChanged += VertexPosX_ValueChanged;
+            inpVertexX.ValueChanged += Vertex_ValueChanged;
             //
             // inpVertexY
             //
@@ -568,7 +576,7 @@ namespace CrashEdit.CE.Controls
             inpVertexY.Location = new Point(80, 90);
             inpVertexY.Size = new Size(65, 15);
             inpVertexY.TabIndex = 6;
-            inpVertexY.ValueChanged += VertexPosY_ValueChanged;
+            inpVertexY.ValueChanged += Vertex_ValueChanged;
             //
             // inpVertexZ
             //
@@ -576,7 +584,28 @@ namespace CrashEdit.CE.Controls
             inpVertexZ.Location = new Point(80, 120);
             inpVertexZ.Size = new Size(65, 15);
             inpVertexZ.TabIndex = 7;
-            inpVertexZ.ValueChanged += VertexPosZ_ValueChanged;
+            inpVertexZ.ValueChanged += Vertex_ValueChanged;
+            //
+            // inpVertexFX
+            //
+            inpVertexFX.Name = "inpVertexFX";
+            inpVertexFX.Location = new Point(80, 150);
+            inpVertexFX.Size = new Size(65, 15);
+            inpVertexFX.TabIndex = 8;
+            inpVertexFX.Minimum = 0;
+            inpVertexFX.Maximum = 3;
+            inpVertexFX.ValueChanged += Vertex_ValueChanged;
+            // todo change
+            //
+            // inpVertexColor
+            //
+            inpVertexColor.Name = "inpVertexColor";
+            inpVertexColor.Location = new Point(80, 180);
+            inpVertexColor.Size = new Size(65, 15);
+            inpVertexColor.TabIndex = 9;
+            inpVertexColor.Minimum = 0;
+            inpVertexColor.ValueChanged += Vertex_ValueChanged;
+            // todo change
             //
             // lblVertexIndex
             // 
@@ -595,7 +624,6 @@ namespace CrashEdit.CE.Controls
             lblVertX.Location = new Point(10, 60);
             lblVertX.Name = "lblVertX";
             lblVertX.Size = new Size(10, 15);
-            lblVertX.TabIndex = 3;
             lblVertX.Text = "vertX:";
             //
             // lblVertY
@@ -605,7 +633,6 @@ namespace CrashEdit.CE.Controls
             lblVertY.Location = new Point(10, 90);
             lblVertY.Name = "lblVertY";
             lblVertY.Size = new Size(10, 15);
-            lblVertY.TabIndex = 3;
             lblVertY.Text = "vertY:";
             //
             // lblVertZ
@@ -615,8 +642,25 @@ namespace CrashEdit.CE.Controls
             lblVertZ.Location = new Point(10, 120);
             lblVertZ.Name = "lblVertZ";
             lblVertZ.Size = new Size(10, 15);
-            lblVertZ.TabIndex = 3;
             lblVertZ.Text = "vertZ:";
+            //
+            // lblVertFX
+            // 
+            lblVertFX.AutoSize = true;
+            lblVertFX.BackColor = Color.Transparent;
+            lblVertFX.Location = new Point(10, 150);
+            lblVertFX.Name = "lblVertFX";
+            lblVertFX.Size = new Size(10, 15);
+            lblVertFX.Text = "FX:";
+            //
+            // lblVertColor
+            // 
+            lblVertColor.AutoSize = true;
+            lblVertColor.BackColor = Color.Transparent;
+            lblVertColor.Location = new Point(10, 180);
+            lblVertColor.Name = "lblVertColor";
+            lblVertColor.Size = new Size(10, 15);
+            lblVertColor.Text = "ColorID:";
             // 
             // tbpColors
             // 
@@ -1376,10 +1420,12 @@ namespace CrashEdit.CE.Controls
         private void SelectedVertexChanged(int new_val)
         {
             disable_inp_change = true;
-            model.SelectedVertex = new_val;            
+            model.SelectedVertex = new_val;
             inpVertexX.Value = (decimal)model.Vertices[new_val].X;
             inpVertexY.Value = (decimal)model.Vertices[new_val].Y;
             inpVertexZ.Value = (decimal)model.Vertices[new_val].Z;
+            inpVertexFX.Value = model.Vertices[new_val].FX;
+            inpVertexColor.Value = model.Vertices[new_val].Color;
             numVertexIndex.Value = (decimal)new_val;
             disable_inp_change = false;
         }
@@ -1387,35 +1433,30 @@ namespace CrashEdit.CE.Controls
         private void NumVertexIndex_ValueChanged(object sender, EventArgs e)
         {
             SelectedVertexChanged((int)numVertexIndex.Value);
-        }        
+        }
 
-        private void VertexPosChangedCommon()
+        private void Vertex_ValueChanged(object sender, EventArgs e)
         {
+            if (disable_inp_change)
+                return;
+
+            // inverse of             
+            // public int FX => (UnknownY & (3 << 2)) >> 2;
+            // public int Color => (UnknownY & 0x3) << 8 | UnknownX << 4 | UnknownZ;
+
+            int unkX_new = (((int)inpVertexColor.Value) >> 4) & 0xF;
+            int unkY_new = ((int)inpVertexFX.Value << 2) | (((int)inpVertexColor.Value >> 8) & 0x3);
+            int unkZ_new = ((int)inpVertexColor.Value) & 0xF;
+
             SceneryVertex vtx = model.Vertices[model.SelectedVertex];
             model.Vertices[model.SelectedVertex] = new SceneryVertex(
                 (int)inpVertexX.Value,
                 (int)inpVertexY.Value,
                 (int)inpVertexZ.Value,
-                vtx.UnknownX,
-                vtx.UnknownY,
-                vtx.UnknownZ,
+                unkX_new,
+                unkY_new,
+                unkZ_new,
                 vtx.IsC3);
-        }
-
-        private void VertexPosX_ValueChanged(object sender, EventArgs e) 
-        {            
-            if (!disable_inp_change)
-                VertexPosChangedCommon();
-        }
-        private void VertexPosY_ValueChanged(object sender, EventArgs e) 
-        {
-            if (!disable_inp_change)
-                VertexPosChangedCommon();
-        }
-        private void VertexPosZ_ValueChanged(object sender, EventArgs e)
-        {
-            if (!disable_inp_change)
-                VertexPosChangedCommon();
         }
 
         #endregion
@@ -1501,10 +1542,14 @@ namespace CrashEdit.CE.Controls
         private DarkNumericUpDown inpVertexX;
         private DarkNumericUpDown inpVertexY;
         private DarkNumericUpDown inpVertexZ;
+        private DarkNumericUpDown inpVertexFX;
+        private DarkNumericUpDown inpVertexColor;
         private DarkLabel lblVertexIndex;
         private DarkLabel lblVertX;
         private DarkLabel lblVertY;
         private DarkLabel lblVertZ;
+        private DarkLabel lblVertFX;
+        private DarkLabel lblVertColor;
         private DarkGroupBox fraVertices;
     }
 }

@@ -51,9 +51,13 @@ namespace CrashEdit.Crash
         public int X { get; }
         public int Y { get; }
         public int Z { get; }
+
+        // top 4 bits of each vertex short, color and fx is packed into them
         public int UnknownX { get; }
         public int UnknownY { get; }
         public int UnknownZ { get; }
+
+        public int FX => (UnknownY & (3 << 2)) >> 2;
         public int Color => (UnknownY & 0x3) << 8 | UnknownX << 4 | UnknownZ;
         public bool IsC3 { get; }
 

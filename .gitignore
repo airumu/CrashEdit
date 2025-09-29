@@ -4,5 +4,4 @@
 bin
 obj
 .vs
-packages/*
 .idea/*
