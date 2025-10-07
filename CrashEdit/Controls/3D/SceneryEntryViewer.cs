@@ -98,6 +98,8 @@ namespace CrashEdit.CE
             if (firstWorld == null)
                 return -1;
 
+            int ret = -1;
+            float smallest_dist = threshold;
             for (int i = 0; i < firstWorld.Vertices.Count; i++)
             {
                 var vert = firstWorld.Vertices[i];
@@ -112,11 +114,14 @@ namespace CrashEdit.CE
                 Vector3 closestPoint = rayOrigin + rayDirection * t;
                 float distance = (vertWorld - closestPoint).Length;
 
-                if (distance <= threshold)                                    
-                    return i;                
+                if (distance <= smallest_dist)
+                {
+                    smallest_dist = distance;
+                    ret = i;
+                }
             }
 
-            return -1;
+            return ret;
         }
 
         protected override void OnMouseDown(MouseEventArgs e)

@@ -189,7 +189,8 @@ namespace CrashEdit.CE.Controls
             {
                 tabModel.Controls.Remove(tbpVertices);
                 tbpVertices.Dispose();
-            } else
+            }
+            else
             {
                 inpVertexX.Minimum = model.IsC3 ? 0 : -2048;
                 inpVertexX.Maximum = model.IsC3 ? 4095 : 2047;
@@ -368,10 +369,10 @@ namespace CrashEdit.CE.Controls
             for (int i = 0; i < same_coord_verts.Count; i++)
             {
                 int vid = same_coord_verts[i];
-                if (vid == model.SelectedVertex)
-                    txt += vid + " <------\n";
-                else
-                    txt += vid + string.Format("   [FX: {0}, ColorID: {1}]\n", model.Vertices[vid].FX, model.Vertices[vid].Color);
+                txt += vid + string.Format("   [FX: {0}, ColorID: {1}] {2}\n",
+                    model.Vertices[vid].FX,
+                    model.Vertices[vid].Color,
+                    vid == model.SelectedVertex ? " <------" : "");
             }
 
             for (int i = 0; i < (8 - same_coord_verts.Count); i++)
@@ -442,7 +443,7 @@ namespace CrashEdit.CE.Controls
                 column.Width = 60;
                 column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft;
             }
-        }       
+        }
 
         private void UpdatePolygons()
         {

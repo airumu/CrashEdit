@@ -241,7 +241,7 @@ namespace CrashEdit.Crash
                 WriteStringSubChunk(bwSub, "isng", "EMU8000");
                 WriteStringSubChunk(bwSub, "INAM", "SynthFile");
                 WriteStringSubChunk(bwSub, "ICRD", DateTime.Now.ToString("yyyy-MM-dd"));
-                WriteStringSubChunk(bwSub, "ISFT", $"CrashEdit v0.4.0.3");
+                WriteStringSubChunk(bwSub, "ISFT", $"CrashEdit v0.4.0.4");
                 byte[] infoData = msSub.ToArray();
 
                 using (MemoryStream msList = new MemoryStream())
