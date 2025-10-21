@@ -21,6 +21,7 @@ namespace CrashEdit.CE
             AddMenu(CrashUI.Properties.Resources.NSFController_AcAddSpeechChunk, "JournalWhite", Menu_Add_SpeechChunk);
             AddMenu(CrashUI.Properties.Resources.NSFController_AcAddTextureChunk, "Painting", Menu_Add_TextureChunk);
             AddMenu(CrashUI.Properties.Resources.NSFController_AcImportChunk, "Import", Menu_Import_Chunk);
+            AddMenu(CrashUI.Properties.Resources.NSFController_AcImportEntriesIntoChunks, "", Menu_Import_Entries_Into_New_Chunks);
             if (GameVersion == GameVersion.Crash2 || GameVersion == GameVersion.Crash3)
             {
                 AddMenuSeparator();
@@ -732,6 +733,69 @@ namespace CrashEdit.CE
                 {
                 }
             }
+        }
+
+        private void Menu_Import_Entries_Into_New_Chunks()
+        {
+            byte[][] datas = FileUtil.OpenFiles(FileFilters.NSEntryExt, FileFilters.Any);
+            if (datas == null)
+                return;
+            bool process = DarkMessageBox.ShowMessage("Do you want to process the imported entries?", "Import Entry", DarkDialogButton.YesNo) == DialogResult.Yes;
+
+            NormalChunk? currentChunk = null;
+            int currentChunkSize = 0;
+
+            foreach (var data in datas)
+            {
+                if (data.Length < 4 || data.Length >= 65536)
+                    continue;
+                try
+                {
+                    UnprocessedEntry new_entry = Entry.Load(data);
+
+                    bool already_exists = false;
+                    foreach (var ch in NSF.Chunks)
+                    {
+                        if (ch is EntryChunk ec)
+                        {
+                            foreach (var entry2 in ec.Entries)
+                            {
+                                if (entry2.EID == new_entry.EID)
+                                {
+                                    already_exists = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if (already_exists)
+                    {
+                        ErrorManager.SignalIgnorableError($"Entry with EID {Entry.EIDToEName(new_entry.EID)} already exists. Skipping import.");
+                        continue;
+                    }
+
+                    Entry entryToAdd = process ? new_entry.Process(GameVersion) : new_entry;                    
+                    int entrySize = entryToAdd.Save().Length + 4;
+
+                    if (currentChunk == null || currentChunkSize + entrySize > 65536)
+                    {
+                        currentChunk = new NormalChunk();
+                        currentChunk.Entries.Add(entryToAdd);
+                        NSF.Chunks.Add(currentChunk);
+                        currentChunkSize = 0x14 + entrySize;
+                    }
+                    else
+                    {                                                
+                        currentChunk.Entries.Add(entryToAdd);
+                        currentChunkSize += entrySize;                        
+                    }
+                }
+                catch (LoadAbortedException)
+                {
+                }
+            }
+            NeedsNewEditor = true;
         }
     }
 }

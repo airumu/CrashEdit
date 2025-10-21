@@ -381,4 +381,7 @@
   <data name="NSFController_AcEditScenery" xml:space="preserve">
     <value>背景を編集</value>
   </data>
+  <data name="NSFController_AcImportEntriesIntoChunks" xml:space="preserve">
+    <value>todo</value>
+  </data>
 </root>

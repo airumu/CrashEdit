@@ -485,7 +485,13 @@ namespace CrashEdit.CrashUI.Properties {
                 return ResourceManager.GetString("NSFController_AcImportChunk", resourceCulture);
             }
         }
-        
+
+        public static string NSFController_AcImportEntriesIntoChunks {
+            get {
+                return ResourceManager.GetString("NSFController_AcImportEntriesIntoChunks", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Show All Level Scenery.
         /// </summary>
