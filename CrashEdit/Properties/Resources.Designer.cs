@@ -2491,7 +2491,7 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Toggle scenery vertex display ({0}).
+        ///   Looks up a localized string similar to Toggle vertex display ({0}).
         /// </summary>
         internal static string ViewerControls_ToggleVerticesVisible {
             get {

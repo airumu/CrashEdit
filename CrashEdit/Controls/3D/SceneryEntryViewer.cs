@@ -169,8 +169,6 @@ namespace CrashEdit.CE
             // collect valid worlds
             var all_worlds = GetWorlds();
             _vao.TestReallocExtra(all_worlds.Sum(x => x?.IsSky == sky ? (x.Triangles.Count + x.Quads.Count * 2) * 3 : 0));
-            _vao3.TestReallocExtra(all_worlds.Sum(x => x?.IsSky == sky ? (x.Triangles.Count + x.Quads.Count * 2) * 3 : 0));
-
 
             // render stuff
             if (sortlist == null)
@@ -226,28 +224,29 @@ namespace CrashEdit.CE
 
         private void RenderMarker(SceneryEntry world, int index)
         {
+            if (!render.ShowVertices)
+                return;
+
             Rgba color = new(255, 255, 255, 128);
-            float size = 6f;
+            float size = 0.666f;
 
             if (is_single_view)
             {
-                if (world.HoveredVertex == index)
+                if (index == world.HoveredVertex)
                 {
                     color = new(255, 20, 100, 160);
-                    size = 12f;
+                    size = 1f;
                 }
                 if (index == world.SelectedVertex)
                 {
                     color = new(255, 0, 0, 255);
-                    size = 16f;
-                }                
+                    size = 1.333f;
+                }
             }
 
             SceneryVertex vert = world.Vertices[index];
-            _vao3.Verts[_vao3.CurVert].trans = (new Vector3(vert.X, vert.Y, vert.Z) * 16 + world_offset) / GameScales.WorldC1;
-            _vao3.Verts[_vao3.CurVert].rgba = color;
-            _vao3.Verts[_vao3.CurVert].misc.X = size;
-            _vao3.CurVert++;
+            var trans = (new Vector3(vert.X, vert.Y, vert.Z) * 16 + world_offset) / GameScales.WorldC1;
+            AddSprite(trans, new Vector2(size), color, OldResources.PointTexture);
         }
 
         private void RenderTriangle(SceneryEntry world, int index)

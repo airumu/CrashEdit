@@ -61,7 +61,6 @@ namespace CrashEdit.CE
             // collect valid worlds
             var all_worlds = GetWorlds();
             _vao.TestReallocExtra(all_worlds.Sum(x => sky == x?.IsSky ? x.Polygons.Count : 0) * 3);
-            _vao3.TestReallocExtra(all_worlds.Sum(x => sky == x?.IsSky ? x.Polygons.Count : 0) * 3);
 
             // render stuff
             if (sortlist == null)

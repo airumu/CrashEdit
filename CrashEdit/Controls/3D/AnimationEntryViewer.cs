@@ -1,6 +1,7 @@
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 using OpenTK.Mathematics;
+using System;
 
 namespace CrashEdit.CE
 {
@@ -99,6 +100,62 @@ namespace CrashEdit.CE
             return frame.ModelEID;
         }
 
+        private void RenderVertices()
+        {
+            var anim = nsf.GetEntry<AnimationEntry>(animId);
+            if (anim == null)
+                return;
+
+            var uncompressed_verts = animation_renderer.GetUncompressedVerts();
+            var all_verts = animation_renderer.GetAllVerts();
+            var normalverts_start = 0;
+
+            if (uncompressed_verts != null)
+            {
+                normalverts_start = uncompressed_verts.Length;
+                for (int i = 0; i < uncompressed_verts.Length; ++i)
+                {
+                    var size = 0.24f;
+                    var color = (Rgba)Color4.Magenta;
+
+                    if (i == anim.HoveredVertex)
+                    {
+                        color = new(255, 20, 100, 160);
+                        size = 0.36f;
+                    }
+                    if (i == anim.SelectedVertex)
+                    {
+                        color = new(255, 0, 0, 255);
+                        size = 0.48f;
+                    }
+
+                    AddSprite(uncompressed_verts[i], new Vector2(size), color, OldResources.PointTexture);
+                }
+            }
+
+            if (all_verts != null)
+            {
+                for (int i = normalverts_start; i < all_verts.Length; ++i)
+                {
+                    var size = 0.24f;
+                    var color = (Rgba)Color4.White;
+
+                    if (i == anim.HoveredVertex)
+                    {
+                        color = new(255, 20, 100, 160);
+                        size = 0.36f;
+                    }
+                    if (i == anim.SelectedVertex)
+                    {
+                        color = new(255, 0, 0, 255);
+                        size = 0.48f;
+                    }
+
+                    AddSprite(all_verts[i], new Vector2(size), color, OldResources.PointTexture);
+                }
+            }
+        }
+
         protected override void Render()
         {
             base.Render();
@@ -110,14 +167,8 @@ namespace CrashEdit.CE
             {
                 UploadTPAGs();
 
-                var uncompressed_verts = animation_renderer.GetUncompressedVerts();
-                if (uncompressed_verts != null)
-                {
-                    for (int i = 0; i < uncompressed_verts.Length; ++i)
-                    {
-                        AddSprite(uncompressed_verts[i], new Vector2(0.32f), (Rgba)Color4.Magenta, OldResources.PointTexture);
-                    }
-                }
+                if (render.ShowVertices)
+                    RenderVertices();
 
                 vaoModel[0].BlendModes |= animation_renderer.BlendMask;
 
@@ -134,6 +185,117 @@ namespace CrashEdit.CE
                         var size = c2 - c1;
                         AddBox(pos, size, new Rgba(0, 255, 0, 255 / 5), false);
                         AddBox(pos, size, new Rgba(0, 255, 0, 255), true);
+                    }
+                }
+            }
+        }
+
+        public int PickVertex(int mouseX, int mouseY)
+        {
+            int ret = -1;
+            var vertices = animation_renderer.GetAllVerts();
+            if (vertices == null)
+                return ret;
+
+            float threshold = 0.25f;
+
+            int viewportWidth = this.Width;
+            int viewportHeight = this.Height;
+
+            Matrix4 projection = render.Projection.Perspective;
+            Matrix4 view = render.Projection.View;
+
+            // Convert screen coordinates to normalized device coordinates (-1 to 1)
+            float ndcX = (2.0f * mouseX) / viewportWidth - 1.0f;
+            float ndcY = 1.0f - (2.0f * mouseY) / viewportHeight;
+
+            // Unproject to get the ray in world space
+            Vector4 rayStartNDC = new Vector4(ndcX, ndcY, -1.0f, 1.0f);
+            Vector4 rayEndNDC = new Vector4(ndcX, ndcY, 1.0f, 1.0f);
+
+            Matrix4 invViewProj = Matrix4.Invert(view * projection);
+
+            Vector4 rayStartWorld = Vector4.TransformRow(rayStartNDC, invViewProj);
+            Vector4 rayEndWorld = Vector4.TransformRow(rayEndNDC, invViewProj);
+
+            rayStartWorld /= rayStartWorld.W;
+            rayEndWorld /= rayEndWorld.W;
+
+            Vector3 rayOrigin = rayStartWorld.Xyz;
+            Vector3 rayDirection = (rayEndWorld.Xyz - rayOrigin).Normalized();
+
+            float smallest_dist = threshold;
+
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                Vector3 vertWorld = vertices[i];
+
+                // check whether its behind the camera
+                Vector3 toVertex = vertWorld - rayOrigin;
+                float t = Vector3.Dot(toVertex, rayDirection);
+                if (t < 0)
+                    continue;
+
+                Vector3 closestPoint = rayOrigin + rayDirection * t;
+                float distance = (vertWorld - closestPoint).Length;
+
+                if (distance <= smallest_dist)
+                {
+                    smallest_dist = distance;
+                    ret = i;
+                }
+            }
+
+            return ret;
+        }
+
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            base.OnMouseDown(e);
+
+            if (!render.ShowVertices)
+                return;
+
+            int vertex = PickVertex(e.X, e.Y);
+            if (vertex == -1)
+                return;
+
+            var anim = nsf.GetEntry<AnimationEntry>(animId);
+            if (anim != null)
+                anim.SelectedVertex = vertex;
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+
+            if (!render.ShowVertices)
+                return;
+
+            var anim = nsf.GetEntry<AnimationEntry>(animId);
+            if (anim != null)
+                anim.HoveredVertex = PickVertex(e.X, e.Y);
+        }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+
+            var anim = nsf.GetEntry<AnimationEntry>(animId);
+            if (anim != null && render.ShowVertices)
+            {
+                if (KDown(Keys.Left))
+                {
+                    anim.SelectedVertex = Math.Max(-1, anim.SelectedVertex - 1);
+                    e.Handled = true;
+                }
+                else if (KDown(Keys.Right))
+                {
+                    var vertices = animation_renderer.GetAllVerts();
+                    if (vertices != null)
+                    {
+                        anim.SelectedVertex = Math.Min(vertices.Length - 1, anim.SelectedVertex + 1);
+                        e.Handled = true;
                     }
                 }
             }
@@ -159,6 +321,15 @@ namespace CrashEdit.CE
         {
             base.PrintHelp();
             con_help += KeyboardControls.ToggleSlowAnim.Print(OnOffName(_halfspeed));
+            con_help += KeyboardControls.ToggleVerticesVisible.Print(OnOffName(render.ShowVertices));
+
+            var animm = nsf.GetEntry<AnimationEntry>(animId);
+            if (render.ShowVertices && animm != null)
+            {
+                con_help += "\nLeft/Right to change highlighted vertex\n";
+                con_help += string.Format("Highlighted vertex: {0}", animm.SelectedVertex);
+            }
+
             var anim = nsf.GetEntry<AnimationEntry>(animId);
             if (anim != null && anim.IsNew)
             {

@@ -11,6 +11,9 @@ namespace CrashEdit.Crash
         public override string Title => $"Animation ({EName})";
         public override string ImageKey => "ThingLime";
 
+        public int SelectedVertex = -1;
+        public int HoveredVertex = -1;
+
         public override int Type => 1;
 
         [SubresourceList]

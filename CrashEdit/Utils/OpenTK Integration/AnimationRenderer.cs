@@ -19,12 +19,18 @@ namespace CrashEdit.CE
         private Matrix3 _globalrot;
         private Func<Frame, ModelEntry?> _getmodelfunc;
 
+        private Vector3[]?[] _verts = new Vector3[2][];
         private Vector3[]?[] _uncompressedverts = new Vector3[2][];
         private int _uncompressedvertcount;
 
         public Vector3[]? GetUncompressedVerts()
         {
             return _uncompressedverts[0]?.Take(new Range(0, _uncompressedvertcount)).ToArray();
+        }
+
+        public Vector3[]? GetAllVerts()
+        {
+            return _verts[0]?.Take(new Range(0, _verts[0].Length)).ToArray();
         }
 
         public void Setup(bool interpolate, bool halfspeed)
@@ -88,6 +94,10 @@ namespace CrashEdit.CE
                 {
                     MathExt.Lerp(ref _uncompressedverts[0][i], _uncompressedverts[1][i], interp);
                 }
+                for (int i = 0; i < frame1.Vertices.Count; i++)
+                {
+                    MathExt.Lerp(ref _verts[0][i], _verts[1][i], interp);
+                }
                 for (int i = 0; i < (vaos[0].CurVert - startvert1); ++i)
                 {
                     MathExt.Lerp(ref vaos[0].Verts[i + startvert1].trans, vaos[1].Verts[i + startvert2].trans, interp);
@@ -135,6 +145,15 @@ namespace CrashEdit.CE
                 Array.Resize(ref _uncompressedverts[buf], frame.SpecialVertexCount);
             }
 
+            if (_verts[buf] == null)
+            {
+                _verts[buf] = new Vector3[frame.Vertices.Count];
+            }
+            else if (_verts[buf].Length < frame.Vertices.Count)
+            {
+                Array.Resize(ref _verts[buf], frame.Vertices.Count);
+            }
+
             // decompress vertices, on the fly right now
             var verts = frame.Positions ?? frame.MakeVertices(model);
             var trans = new Vector3(frame.XOffset, frame.YOffset, frame.ZOffset) / 4;
@@ -144,6 +163,10 @@ namespace CrashEdit.CE
             for (int i = 0; i < frame.SpecialVertexCount; ++i)
             {
                 _uncompressedverts[buf][i] = (new Vector3(verts[i].X, verts[i].Z, verts[i].Y) + trans) * scale;
+            }
+            for (int i = 0; i < frame.Vertices.Count; i++)
+            {
+                _verts[buf][i] = (new Vector3(verts[i].X, verts[i].Z, verts[i].Y) + trans) * scale;
             }
             foreach (var tri in model.Triangles)
             {
