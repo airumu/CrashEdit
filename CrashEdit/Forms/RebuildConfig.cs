@@ -211,8 +211,8 @@ namespace CrashEdit.CE.Forms
                 txtAltSave.Text = path_fix_rem_quotes(alt_save_path, out PathHadQuotesAltSave);
 
                 var remake_ll = lines[curr_idx++].Trim();
-                if (remake_ll == "0" || remake_ll == "1")
-                    cmbRemakeLL.SelectedIndex = remake_ll == "1" ? 1 : 0;
+                if (remake_ll == "0" || remake_ll == "1" || remake_ll == "2")
+                    cmbRemakeLL.SelectedIndex = remake_ll[0] - '0';
                 else
                     Console.WriteLine($"Invalid remake LL value in config: {remake_ll}");
 
@@ -231,7 +231,7 @@ namespace CrashEdit.CE.Forms
                 var path_perma = lines[curr_idx++].Trim();
                 txtPathPerma.Text = path_fix_rem_quotes(path_perma, out PathHadQuotesPerma);
 
-                if (cmbRemakeLL.SelectedIndex == 1)
+                if (cmbRemakeLL.SelectedIndex >= 1)
                 {
                     var path_deps = lines[curr_idx++].Trim();
                     txtPathDeps.Text = path_fix_rem_quotes(path_deps, out PathHadQuotesDeps);
@@ -556,7 +556,7 @@ namespace CrashEdit.CE.Forms
             lblRemakeLL.AutoSize = true;
             lblRemakeLL.Text = "Remake load lists:";
             cmbRemakeLL.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbRemakeLL.Items.AddRange(["[0] No", "[1] Yes"]);
+            cmbRemakeLL.Items.AddRange(["[0] No", "[1] Yes", "[2] Yes + log"]);
             cmbRemakeLL.SelectedIndex = 1;
             cmbRemakeLL.Enabled = true;
             cmbRemakeLL.SelectedIndexChanged += (s, e) => UpdateOutputConfig();
@@ -925,7 +925,7 @@ namespace CrashEdit.CE.Forms
             txtThreadCount.Enabled = is_method_5;
             lblThreadCount.Enabled = is_method_5;
 
-            bool is_remake_load_lists = (cmbRemakeLL.SelectedIndex == 1);
+            bool is_remake_load_lists = (cmbRemakeLL.SelectedIndex >= 1);
             lblPathDeps.Enabled = is_remake_load_lists;
             txtPathDeps.Enabled = is_remake_load_lists;
             lblPathCollDeps.Enabled = is_remake_load_lists;
