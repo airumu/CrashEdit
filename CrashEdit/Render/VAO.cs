@@ -227,8 +227,6 @@ namespace CrashEdit.CE
                 GL.LineWidth(glLineWidth);
             }
 
-            GL.Enable(EnableCap.ProgramPointSize);
-
             GLViewer.dbgContextDir.RemoveLast();
 
             ri.DebugRenderMs += watch.StopAndElapsedMillisecondsFull();

@@ -119,7 +119,7 @@ namespace CrashEdit.CE
         protected VAO vaoLinesThick;
         protected VAO vaoSprites;
         protected VAO vaoText;
-        protected VAO vaoOctree;        
+        protected VAO vaoOctree;
 
         protected readonly RenderInfo render;
 

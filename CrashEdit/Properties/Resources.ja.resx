@@ -856,7 +856,7 @@
     <value>3Dエンティティの表示({0})</value>
   </data>
   <data name="ViewerControls_ToggleVerticesVisible" xml:space="preserve">
-    <value>({0}) </value>
+    <value>Toggle vertex display ({0})</value>
   </data>
   <data name="Delete_ConfirmationPrompt" xml:space="preserve">
     <value>削除の確認</value>

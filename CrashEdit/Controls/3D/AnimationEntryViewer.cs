@@ -1,7 +1,6 @@
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 using OpenTK.Mathematics;
-using System;
 
 namespace CrashEdit.CE
 {
