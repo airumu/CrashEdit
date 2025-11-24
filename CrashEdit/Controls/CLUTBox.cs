@@ -276,11 +276,11 @@ namespace CrashEdit.CE.Controls
             if (STPbit >= 0) // set STPbit
             {
                 tags[1] = STPbit;
-                rgba5551 = TextureConv.ConvertToRGBA5551(currentColor.B, currentColor.G, currentColor.R, Convert.ToByte(tags[1]));
+                rgba5551 = GetRGBA5551(currentColor.B, currentColor.G, currentColor.R, Convert.ToByte(tags[1]));
             }
             else // change color
             {
-                rgba5551 = TextureConv.ConvertToRGBA5551(newColor.B, newColor.G, newColor.R, Convert.ToByte(tags[1]));
+                rgba5551 = GetRGBA5551(newColor.B, newColor.G, newColor.R, Convert.ToByte(tags[1]));
                 cell.Style.BackColor = newColor;
             }
 
@@ -298,7 +298,7 @@ namespace CrashEdit.CE.Controls
                 cell[0].Style.BackColor = color;
                 var tags = cell[0].Tag as List<object>;
 
-                ushort rgba5551 = TextureConv.ConvertToRGBA5551(color.B, color.G, color.R, Convert.ToByte(tags[1]));
+                ushort rgba5551 = GetRGBA5551(color.B, color.G, color.R, Convert.ToByte(tags[1]));
                 byte[] convertedPalette = BitConverter.GetBytes(rgba5551);
 
                 int offset = (int)tags[0];
@@ -412,6 +412,12 @@ namespace CrashEdit.CE.Controls
             {
                 var tags = dgvCLUT.SelectedCells[0].Tag as List<object>;
                 tags[1] = chkSTPbit.Checked ? 1 : 0;
+
+                Color currentColor = LoadColorFromValue(dgvCLUT.SelectedCells[0]);
+                ushort rgba5551 = GetRGBA5551(currentColor.B, currentColor.G, currentColor.R, Convert.ToByte(tags[1]));
+                byte[] convertedPalette = BitConverter.GetBytes(rgba5551);
+                int offset = (int)tags[0];
+                Array.Copy(convertedPalette, 0, chunk.Data, offset, 2);
             }
         }
 
@@ -499,7 +505,7 @@ namespace CrashEdit.CE.Controls
 
                     Color oldColor = LoadColorFromValue(cell);
 
-                    ushort rgba5551 = TextureConv.ConvertToRGBA5551(oldColor.B, oldColor.G, oldColor.R, Convert.ToByte(tags[1]));
+                    ushort rgba5551 = GetRGBA5551(oldColor.B, oldColor.G, oldColor.R, Convert.ToByte(tags[1]));
                     byte[] convertedPalette = BitConverter.GetBytes(rgba5551);
 
                     int offset = (int)tags[0];
@@ -580,6 +586,18 @@ namespace CrashEdit.CE.Controls
         private void chkHighlightSTPbit_CheckedChanged(object sender, EventArgs e)
         {
             dgvCLUT.Refresh();
+        }
+
+        private ushort GetRGBA5551(byte r, byte g, byte b, byte a)
+        {
+            ushort rgba5551 = 0;
+
+            rgba5551 |= (ushort)((r >> 3) << 10);  // Red: 5 bits
+            rgba5551 |= (ushort)((g >> 3) << 5);   // Green: 5 bits
+            rgba5551 |= (ushort)(b >> 3);          // Blue: 5 bits
+            rgba5551 |= (ushort)(a << 15);         // Alpha: 1 bit
+
+            return rgba5551;
         }
 
         internal static HslColor ChangeHue(HslColor color, double increment)
