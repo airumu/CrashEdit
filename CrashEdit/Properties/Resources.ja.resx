@@ -984,4 +984,7 @@
   <data name="Config_chkUseNeighborZoneTransparency" xml:space="preserve">
     <value>隣接ゾーンを透過する</value>
   </data>
+  <data name="T21_tipViewer" xml:space="preserve">
+    <value>[右クリック] 画像を保存</value>
+  </data>
 </root>
