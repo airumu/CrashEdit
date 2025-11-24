@@ -1,8 +1,8 @@
-﻿using System.Drawing.Imaging;
-using System.Drawing;
-using CrashEdit.CE.Properties;
-using AltUI.Forms;
+﻿using System.Drawing;
+using System.Drawing.Imaging;
 using System.Windows.Forms;
+using AltUI.Forms;
+using CrashEdit.CE.Properties;
 
 namespace CrashEdit.Crash
 {
@@ -65,8 +65,12 @@ namespace CrashEdit.Crash
 
             if (bpp != oldBpp)
             {
-                DarkMessageBox.ShowError("The color depth of the selected image differs from the current one.", TitleTextureReplacement);
-                return currentData;
+                //DarkMessageBox.ShowError("The color depth of the selected image differs from the current one.", TitleTextureReplacement);
+                if (DarkMessageBox.ShowWarning("The color depth of the selected image differs from the current one. Do you want to process anyway?", TitleTextureReplacement, DarkDialogButton.YesNo) != DialogResult.Yes)
+                {
+                    Console.WriteLine("Texture replacement cancelled.");
+                    return currentData;
+                }   
             }
 
             byte[] newTextureData = ReplaceTexture(rawImageData, currentData, width, height, bpp, 0, 0, width, height, destX / (bpp == 8 ? 2 : 1), destY, true);
@@ -345,6 +349,12 @@ namespace CrashEdit.Crash
         {
             Console.WriteLine();
             Bitmap bitmap = new Bitmap(filePath);
+            if (oldBpp == 4 && bitmap.PixelFormat == PixelFormat.Format8bppIndexed)
+            {
+                Console.WriteLine($"Input pixel format: {bitmap.PixelFormat}; start quantization...");
+                OctreeQuantizer quantizer = new OctreeQuantizer(16);
+                bitmap = quantizer.Quantize4bpp(bitmap);
+            }
             if (bitmap.PixelFormat != PixelFormat.Format4bppIndexed &&
                 bitmap.PixelFormat != PixelFormat.Format8bppIndexed)
             {
