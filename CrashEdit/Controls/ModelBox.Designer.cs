@@ -132,8 +132,9 @@ namespace CrashEdit.CE.Controls
             numReplace = new DarkNumericUpDown();
             cmdReplace = new DarkButton();
             fraTPage = new DarkGroupBox();
+            lblEIDError = new Label();
             rbtReloadTPage = new MetroSetRadioButton();
-            dpdTPage = new DarkComboBox();
+            dpdTPages = new DarkComboBox();
             cmdRemoveTPage = new DarkButton();
             cmdAppendTPage = new DarkButton();
             lstTPages = new DoubleBufferedListView();
@@ -1408,17 +1409,29 @@ namespace CrashEdit.CE.Controls
             // 
             // fraTPage
             // 
+            fraTPage.Controls.Add(lblEIDError);
             fraTPage.Controls.Add(rbtReloadTPage);
-            fraTPage.Controls.Add(dpdTPage);
+            fraTPage.Controls.Add(dpdTPages);
             fraTPage.Controls.Add(cmdRemoveTPage);
             fraTPage.Controls.Add(cmdAppendTPage);
             fraTPage.Controls.Add(lstTPages);
             fraTPage.Location = new Point(3, 3);
             fraTPage.Name = "fraTPage";
-            fraTPage.Size = new Size(132, 301);
+            fraTPage.Size = new Size(132, 333);
             fraTPage.TabIndex = 0;
             fraTPage.TabStop = false;
             fraTPage.Text = "Texture Pages";
+            // 
+            // lblEIDError
+            // 
+            lblEIDError.AutoSize = true;
+            lblEIDError.ForeColor = Color.Red;
+            lblEIDError.Location = new Point(1, 298);
+            lblEIDError.Name = "lblEIDError";
+            lblEIDError.Size = new Size(102, 30);
+            lblEIDError.TabIndex = 11;
+            lblEIDError.Text = "Texture page does\r\nnot exist!";
+            lblEIDError.Visible = false;
             // 
             // rbtReloadTPage
             // 
@@ -1442,16 +1455,16 @@ namespace CrashEdit.CE.Controls
             rbtReloadTPage.ThemeName = "MetroDark";
             rbtReloadTPage.Click += rbtReloadTPage_Click;
             // 
-            // dpdTPage
+            // dpdTPages
             // 
-            dpdTPage.DrawMode = DrawMode.OwnerDrawVariable;
-            dpdTPage.Enabled = false;
-            dpdTPage.Location = new Point(6, 208);
-            dpdTPage.MaxLength = 5;
-            dpdTPage.Name = "dpdTPage";
-            dpdTPage.Size = new Size(120, 24);
-            dpdTPage.TabIndex = 2;
-            dpdTPage.SelectedIndexChanged += dpdTPage_SelectedIndexChanged;
+            dpdTPages.DrawMode = DrawMode.OwnerDrawVariable;
+            dpdTPages.Enabled = false;
+            dpdTPages.Location = new Point(6, 208);
+            dpdTPages.MaxLength = 5;
+            dpdTPages.Name = "dpdTPages";
+            dpdTPages.Size = new Size(120, 24);
+            dpdTPages.TabIndex = 2;
+            dpdTPages.SelectedIndexChanged += dpdTPages_SelectedIndexChanged;
             // 
             // cmdRemoveTPage
             // 
@@ -1699,6 +1712,7 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)numReplaceTo).EndInit();
             ((System.ComponentModel.ISupportInitialize)numReplace).EndInit();
             fraTPage.ResumeLayout(false);
+            fraTPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvTextures).EndInit();
             tbpExtendedTextures.ResumeLayout(false);
             tbpExtendedTextures.PerformLayout();
@@ -1787,7 +1801,7 @@ namespace CrashEdit.CE.Controls
         private AltUI.Controls.DarkButton cmdReplaceTexture;
         private AltUI.Controls.DarkButton cmdRemoveTPage;
         private AltUI.Controls.DarkButton cmdAppendTPage;
-        private DarkComboBox dpdTPage;
+        private DarkComboBox dpdTPages;
         private CheckBox chkReplaceCLUT;
         private Label lblModelInfo;
         private MetroSetRadioButton rbtReloadTPage;
@@ -1866,5 +1880,6 @@ namespace CrashEdit.CE.Controls
         private Label label4;
         private DarkNumericUpDown numSelectionSize;
         private Label label5;
+        private Label lblEIDError;
     }
 }

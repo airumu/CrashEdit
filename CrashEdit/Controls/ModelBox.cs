@@ -2,10 +2,12 @@
 using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Globalization;
+using System.Security.Cryptography;
 using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
+using CrashEdit.Crash.GOOLIns;
 using static CrashEdit.CE.TextureViewer;
 using HslColor = Cyotek.Windows.Forms.HslColor;
 
@@ -1341,14 +1343,14 @@ namespace CrashEdit.CE.Controls
             if (lstTPages.Items.Count > 0)
             {
                 rbtReloadTPage.Enabled = true;
-                dpdTPage.Enabled = true;
+                dpdTPages.Enabled = true;
                 List<Chunk> chunks = null;
                 chunks = controller.GetNSF().Chunks;
                 foreach (Chunk chunk in chunks)
                 {
                     if (chunk is TextureChunk t)
                     {
-                        dpdTPage.Items.Add(Entry.EIDToEName(t.EID));
+                        dpdTPages.Items.Add(Entry.EIDToEName(t.EID));
                     }
                 }
             }
@@ -1385,7 +1387,7 @@ namespace CrashEdit.CE.Controls
                 if (lstTPages.Items.Count > 0)
                 {
                     lstTPages.Items[0].Selected = true;
-                    dpdTPage.Text = lstTPages.SelectedItems[0].SubItems[1].Text;
+                    dpdTPages.Text = lstTPages.SelectedItems[0].SubItems[1].Text;
                 }
                 cmdAppendTPage.Enabled = false;
                 cmdRemoveTPage.Enabled = false;
@@ -1564,7 +1566,21 @@ namespace CrashEdit.CE.Controls
                 var pageIndex = Convert.ToInt32(row.Cells[ColPage].Value);
                 string cid = lstTPages.Items[pageIndex].SubItems[1].Text;
 
-                UpdatePicture();
+                if (dpdTPages.Items.Contains(cid))
+                {
+                    lblEIDError.Visible = false;
+                    pnPicture.Visible =
+                    chkEnableGuides.Visible =
+                    fraTextureGuides.Visible = true;
+                    UpdatePicture();
+                }
+                else
+                {
+                    lblEIDError.Visible = true;
+                    pnPicture.Visible =
+                    chkEnableGuides.Visible =
+                    fraTextureGuides.Visible = false;
+                }
 
                 numReplace.Value = Convert.ToInt32(dgvTextures.CurrentCell.Value);
                 numReplaceTo.Value = numReplace.Value;
@@ -2267,7 +2283,7 @@ namespace CrashEdit.CE.Controls
         private void lstTPages_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (lstTPages.Items.Count > 0 && lstTPages.SelectedItems.Count > 0)
-                dpdTPage.Text = lstTPages.SelectedItems[0].SubItems[1].Text;
+                dpdTPages.Text = lstTPages.SelectedItems[0].SubItems[1].Text;
         }
 
         private void chkReplaceCLUT_CheckedChanged(object sender, EventArgs e)
@@ -2275,12 +2291,20 @@ namespace CrashEdit.CE.Controls
             replaceCLUT = chkReplaceCLUT.Checked;
         }
 
-        private void dpdTPage_SelectedIndexChanged(object sender, EventArgs e)
+        private void dpdTPages_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string text = dpdTPage.Text;
+            string text = dpdTPages.Text;
             if (lstTPages.SelectedItems.Count > 0)
                 lstTPages.SelectedItems[0].SubItems[1].Text = text;
             model.SetTPAG(lstTPages.SelectedIndices[0], Entry.ENameToEID(text));
+
+            if (lblEIDError.Visible)
+            {
+                lblEIDError.Visible = false;
+                pnPicture.Visible =
+                chkEnableGuides.Visible =
+                fraTextureGuides.Visible = true;
+            }
             UpdatePicture();
         }
 
@@ -2288,18 +2312,18 @@ namespace CrashEdit.CE.Controls
         {
             if (lstTPages.Items.Count > 0)
             {
-                dpdTPage.Items.Clear();
+                dpdTPages.Items.Clear();
                 List<Chunk> chunks = null;
                 chunks = controller.GetNSF().Chunks;
                 foreach (Chunk chunk in chunks)
                 {
                     if (chunk is TextureChunk t)
                     {
-                        dpdTPage.Items.Add(Entry.EIDToEName(t.EID));
+                        dpdTPages.Items.Add(Entry.EIDToEName(t.EID));
                     }
                 }
                 if (lstTPages.Items.Count > 0 && lstTPages.SelectedItems.Count > 0)
-                    dpdTPage.Text = lstTPages.SelectedItems[0].SubItems[1].Text;
+                    dpdTPages.Text = lstTPages.SelectedItems[0].SubItems[1].Text;
             }
             rbtReloadTPage.Checked = false;
         }
