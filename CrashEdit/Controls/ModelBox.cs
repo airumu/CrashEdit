@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Globalization;
@@ -836,11 +837,13 @@ namespace CrashEdit.CE.Controls
             dgvColor.RowTemplate.Height = 32;
             dgvColor.ScrollBars = ScrollBars.Vertical;
 
+            dgvColor.MultiSelect = true;
+
             pictureBox2.Image = Embeds.GetIcon("Hint")!.ToBitmap();
             tipGlobalColor = new DarkToolTip();
             tipGlobalColor.SetToolTip(pictureBox2, "If multiple cells are selected,\nchanges are applied only to those cells.\nIf no cell is selected, changes are applied to all cells.");
 
-            ResetColorSliders();
+            ResetGlobalColorSliders();
             UpdateColorList();
             tbpColors.Enter -= tbpColors_Enter;
         }
@@ -1062,24 +1065,37 @@ namespace CrashEdit.CE.Controls
                 pnGlobalControl.Enabled =
                 cmdApply.Enabled =
                 cmdCancel.Enabled = true;
-                dgvColor.ClearSelection();
-                dgvColor.MultiSelect = true;
+                //dgvColor.ClearSelection();
+                //dgvColor.MultiSelect = true;
+                pnSliders.Enabled = false;
             }
             else
             {
+                if (dgvColor.SelectedCells.Count <= 0)
+                {
+                    dgvColor.Rows[0].Cells[0].Selected = true;
+                }
                 pnGlobalControl.Enabled =
                 cmdApply.Enabled =
                 cmdCancel.Enabled = false;
                 ResetColorListAsync();
+                ResetGlobalColorSliders();
                 ResetColorSliders();
-                dgvColor.ClearSelection();
-                dgvColor.MultiSelect = false;
+                //dgvColor.ClearSelection();
+                //dgvColor.MultiSelect = false;
+                pnSliders.Enabled = true;
             }
-            lblColorIndex.Text = "Index: -";
-            pnSliders.Enabled = false;
+            //lblColorIndex.Text = "Index: -";
+            //pnSliders.Enabled = false;
         }
 
         private void ResetColorSliders()
+        {
+            Color color = GetSelectedItemColor();
+            colorEditor.Color = color;
+        }
+
+        private void ResetGlobalColorSliders()
         {
             var hslColor = colorEditorGlobal.HslColor;
             hslColor.H = hueDefault;
@@ -1111,7 +1127,11 @@ namespace CrashEdit.CE.Controls
                 lblColorIndex.Text = "Index: -";
                 return;
             }
-            pnSliders.Enabled = true;
+            if (!globalControlMode)
+            {
+                pnSliders.Enabled = true;
+            }
+            
             Color color = GetSelectedItemColor();
             colorEditor.Color = color;
 
