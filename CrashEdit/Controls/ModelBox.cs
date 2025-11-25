@@ -6,7 +6,7 @@ using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
-using static System.Net.Mime.MediaTypeNames;
+using static CrashEdit.CE.TextureViewer;
 using HslColor = Cyotek.Windows.Forms.HslColor;
 
 namespace CrashEdit.CE.Controls
@@ -34,7 +34,9 @@ namespace CrashEdit.CE.Controls
 
         private readonly List<dynamic> structs = new List<dynamic>();
 
+        private TextureType textype;
         private Rectangle selectedregion;
+        private Rectangle guideSelectedregion;
 
         private DarkToolTip tipReloadTPage;
         private DarkToolTip tipGlobalColor;
@@ -45,13 +47,21 @@ namespace CrashEdit.CE.Controls
         private bool isScenery;
         private bool globalControlMode;
 
+        private bool isDragging = false;
+        private Point dragStartPoint;
+        private Point initialSelectedRegionPosition;
+        private Rectangle selectionSize;
+
         private bool simpleMode;
         private bool BGRAMode;
         private bool replaceCLUT;
-        private int selectedRegionX;
-        private int selectedRegionY;
         private int currentColorMode;
         private List<string> colorCopy;
+
+        private bool enableGuides => chkEnableGuides.Checked;
+
+        internal int TexW => (int)C2numW.Value;
+        internal int TexH => (int)C2numH.Value;
 
         private readonly int ColTexture = 0;
         private readonly int ColColor = 1;
@@ -1212,8 +1222,107 @@ namespace CrashEdit.CE.Controls
             BGRAMode =
             replaceCLUT = true;
 
+            selectionSize.Width = 32;
+            selectionSize.Height = 32;
+
+            pictureBox1.MouseClick += delegate (object? sender, MouseEventArgs e)
+            {
+                if (e.Button == MouseButtons.Right && pictureBox1.Image != null && pictureBox1.Image is Bitmap bmp)
+                {
+                    using (MemoryStream w = new MemoryStream())
+                    {
+                        var cell = dgvTextures.Rows[dgvTextures.SelectedCells[0].RowIndex];
+                        int TexCX = Convert.ToInt32(cell.Cells[ColClutX].Value);
+                        int TexCY = Convert.ToInt32(cell.Cells[ColClutY].Value);
+                        bmp.Clone(selectedregion, PixelFormat.Format32bppArgb).Save(w, ImageFormat.Png);
+                        FileUtil.SaveFile($"{chunk.EName}_{TexCY}_{TexCX}", w.ToArray(), FileFilters.PNG);
+                    }
+                }
+            };
+
+            pictureBox1.MouseDown += (sender, e) =>
+            {
+                if (!enableGuides) return;
+                if (e.Button == MouseButtons.Left)
+                {
+                    C2numW.Value = (int)numSelectionSize.Value;
+                    C2numH.Value = (int)numSelectionSize.Value;
+                    guideSelectedregion.Width = (int)numSelectionSize.Value;
+                    guideSelectedregion.Height = (int)numSelectionSize.Value;
+
+
+                    dragStartPoint = e.Location;
+                    guideSelectedregion = new Rectangle(dragStartPoint.X, dragStartPoint.Y, TexW, TexH);
+                    isDragging = true;
+
+                    int clickX = e.X;
+                    int clickY = e.Y;
+                    int offsetX = clickX / TexW * TexW;
+                    int offsetY = clickY / TexH * TexH;
+                    guideSelectedregion.X = offsetX;
+                    guideSelectedregion.Y = offsetY;
+                    C2numX.Value = offsetX;
+                    C2numY.Value = offsetY;
+                    UpdatePicture();
+                }
+            };
+
+            pictureBox1.MouseMove += (sender, e) =>
+            {
+                if (!enableGuides) return;
+                if (isDragging)
+                {
+                    int size = (int)numSelectionSize.Value;
+                    int deltaX = e.X - dragStartPoint.X + size;
+                    int deltaY = e.Y - dragStartPoint.Y + size;
+                    guideSelectedregion.Width = deltaX;
+                    guideSelectedregion.Height = deltaY;
+                    guideSelectedregion.Width = (guideSelectedregion.Width / size) * size;
+                    guideSelectedregion.Height = (guideSelectedregion.Height / size) * size;
+
+                    if (guideSelectedregion.Width < size)
+                        guideSelectedregion.Width = size;
+                    else if (guideSelectedregion.Width > 1024)
+                        guideSelectedregion.Width = 1024;
+
+                    if (guideSelectedregion.Height < size)
+                        guideSelectedregion.Height = size;
+                    else if (guideSelectedregion.Height > 128)
+                        guideSelectedregion.Height = 128;
+
+                    C2numW.Value = guideSelectedregion.Width;
+                    C2numH.Value = guideSelectedregion.Height;
+                    UpdatePicture();
+                }
+            };
+
+            pictureBox1.MouseUp += (sender, e) =>
+            {
+                if (!enableGuides) return;
+                if (e.Button == MouseButtons.Left)
+                {
+                    isDragging = false;
+                }
+            };
+
             numReplaceTo.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
             numLowestBrightness.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
+
+            C2numX.ValueChanged += new EventHandler(Control_UpdatePicture_1);
+            C2numY.ValueChanged += new EventHandler(Control_UpdatePicture_1);
+            C2numX2.ValueChanged += new EventHandler(Control_UpdatePicture_2);
+            C2numY2.ValueChanged += new EventHandler(Control_UpdatePicture_2);
+            C2numW.ValueChanged += new EventHandler(Control_UpdatePicture);
+            C2numH.ValueChanged += new EventHandler(Control_UpdatePicture);
+            numSelectionSize.ValueChanged += new EventHandler(Control_UpdatePicture_3);
+
+            C2numX.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
+            C2numY.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
+            C2numX2.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
+            C2numY2.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
+            C2numW.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
+            C2numH.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
+            numSelectionSize.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
 
             tbpTextures.Enter -= tbpTextures_Enter;
         }
@@ -1540,7 +1649,7 @@ namespace CrashEdit.CE.Controls
 
         private void cmdReplaceTexture_Click(object sender, EventArgs e)
         {
-            if (selectedRegionX < 32 && selectedRegionY == 0)
+            if (selectedregion.X < 32 && selectedregion.Y == 0)
             {
                 DarkMessageBox.ShowError("Textures cannot be replaced on the header.", Resources.Title_TextureReplacement);
                 return;
@@ -1553,8 +1662,8 @@ namespace CrashEdit.CE.Controls
                     string filePath = openFileDialog.FileName;
                     string extension = Path.GetExtension(filePath).ToLower();
 
-                    int destX = selectedRegionX;
-                    int destY = selectedRegionY;
+                    int destX = selectedregion.X;
+                    int destY = selectedregion.Y;
                     if (dgvTextures.SelectedCells.Count > 0)
                     {
                         var row = dgvTextures.Rows[dgvTextures.SelectedCells[0].RowIndex];
@@ -2098,6 +2207,7 @@ namespace CrashEdit.CE.Controls
 
         private void trkPictureSize_ValueChanged(object sender, EventArgs e)
         {
+            if (enableGuides) return;
             if (pictureBox1.Image != null)
             {
                 float zoom = trkPictureSize.Value / 100f;
@@ -2199,6 +2309,24 @@ namespace CrashEdit.CE.Controls
             numReplaceTo.Select(0, numReplaceTo.Text.Length);
         }
 
+        private void chkEnableGuides_CheckedChanged(object sender, EventArgs e)
+        {
+            fraTextureGuides.Enabled = chkEnableGuides.Checked;
+            fraTextureGuides.Visible = chkEnableGuides.Checked;
+
+            trkPictureSize.Enabled = !chkEnableGuides.Checked;
+            if (pictureBox1.Image != null)
+            {
+                trkPictureSize.Value = 100;
+                float zoom = trkPictureSize.Value / 100f;
+                pictureBox1.Width = (int)(pictureBox1.Image.Width * zoom);
+                pictureBox1.Height = (int)(pictureBox1.Image.Height * zoom);
+                pictureBox1.Invalidate();
+            }
+
+            UpdatePicture();
+        }
+
         private void ScrollHandlerFunction(object? sender, MouseEventArgs e)
         {
             if (sender is NumericUpDown numericUpDown)
@@ -2216,6 +2344,59 @@ namespace CrashEdit.CE.Controls
 
                 numericUpDown.Value = newValue;
             }
+        }
+
+        private void ScrollHandlerFunction2(object sender, MouseEventArgs e)
+        {
+            if (sender is NumericUpDown numericUpDown)
+            {
+                HandledMouseEventArgs handledArgs = e as HandledMouseEventArgs;
+                if (handledArgs != null)
+                    handledArgs.Handled = true;
+
+                decimal newValue = numericUpDown.Value;
+                if (e.Delta > 0 && newValue + 8 < numericUpDown.Maximum)
+                    newValue += 8;
+
+                else if (e.Delta < 0 && newValue - 8 >= numericUpDown.Minimum)
+                    newValue -= 8;
+
+                numericUpDown.Value = newValue;
+                UpdatePicture();
+            }
+        }
+
+        private void Control_UpdatePicture(object sender, EventArgs e)
+        {
+            selectionSize.Width = (int)C2numW.Value;
+            selectionSize.Height = (int)C2numH.Value;
+            guideSelectedregion.Width = (int)C2numW.Value;
+            guideSelectedregion.Height = (int)C2numH.Value;
+            UpdatePicture();
+        }
+
+        private void Control_UpdatePicture_1(object sender, EventArgs e)
+        {
+            C2numY2.Value = (int)C2numY.Value;
+            C2numX2.Value = (int)C2numX.Value;
+            guideSelectedregion.X = (int)C2numX.Value;
+            guideSelectedregion.Y = (int)C2numY.Value;
+            UpdatePicture();
+        }
+
+        private void Control_UpdatePicture_2(object sender, EventArgs e)
+        {
+            C2numY.Value = (int)C2numY2.Value;
+            C2numX.Value = (int)C2numX2.Value;
+            guideSelectedregion.X = (int)C2numX.Value;
+            guideSelectedregion.Y = (int)C2numY.Value;
+            UpdatePicture();
+        }
+
+        private void Control_UpdatePicture_3(object sender, EventArgs e)
+        {
+            selectionSize.Width = (int)numSelectionSize.Value;
+            selectionSize.Height = (int)numSelectionSize.Value;
         }
 
         private void UpdatePicture()
@@ -2267,9 +2448,9 @@ namespace CrashEdit.CE.Controls
                     for (int x = 0; x < pw; x++)
                     {
                         int pixel = colormode == 0 ? palette[chunk.Data[x / 2 + y * 512] >> ((x & 1) == 0 ? 0 : 4) & 0xF] :
-                        colormode == 1 ? palette[chunk.Data[x + y * 512]] :
-                                    colormode == 2 ? PixelConv.Convert5551_8888(BitConv.FromInt16(chunk.Data, x * 2 + y * 512), blendmode)
-                                    : throw new Exception("invalid colormode");
+                            colormode == 1 ? palette[chunk.Data[x + y * 512]] :
+                            colormode == 2 ? PixelConv.Convert5551_8888(BitConv.FromInt16(chunk.Data, x * 2 + y * 512), blendmode) :
+                            throw new Exception("invalid colormode");
                         System.Runtime.InteropServices.Marshal.WriteInt32(bdata.Scan0, x * 4 + y * bdata.Stride, pixel);
                     }
                 }
@@ -2280,35 +2461,48 @@ namespace CrashEdit.CE.Controls
             }
             using (Graphics g = Graphics.FromImage(bitmap))
             {
-                int x = TexX;
-                int y = TexY;
-                int w = TexW;
-                int h = TexH;
+                selectedregion.X = TexX;
+                selectedregion.Y = TexY;
+                selectedregion.Width = TexW;
+                selectedregion.Height = TexH;
+
+                int x = selectedregion.X;
+                int y = selectedregion.Y;
+                int w = selectedregion.Width;
+                int h = selectedregion.Height;
+
                 using (var brush = new SolidBrush(Color.FromArgb(127, 0, 0, 0)))
                 using (var pen = new Pen(Color.Black))
                 {
+                    // darken outside selected region
                     int minh = Math.Min(h, ph - y);
-                    g.FillRectangles(brush, new Rectangle[4]
-                    {
+                    g.FillRectangles(brush,
+                    [
                         new Rectangle(0, 0, pw, y),
                         new Rectangle(0, y, x, minh),
-                        new Rectangle(x+w, y, Math.Max(pw-(x+w),0), minh),
-                        new Rectangle(0, y+h, pw, Math.Max(ph-(y+h),0))
-                    });
-                    g.DrawRectangles(pen, new Rectangle[2]
-                    {
-                        new Rectangle(x-1,y-1,w+1,h+1),
-                        new Rectangle(x-3,y-3,w+5,h+5)
-                    });
+                        new Rectangle(x + w, y, Math.Max(pw - (x + w), 0), minh),
+                        new Rectangle(0, y + h, pw, Math.Max(ph - (y + h), 0))
+                    ]);
+                    // black border
+                    g.DrawRectangles(pen,
+                    [
+                        new Rectangle(x - 1, y - 1, w + 1, h + 1),
+                        new Rectangle(x - 3, y - 3, w + 5, h + 5)
+                    ]);
+                    // white border
                     pen.Color = Color.White;
                     g.DrawRectangle(pen, new Rectangle(x - 2, y - 2, w + 3, h + 3));
+
+                    if (enableGuides)
+                    {
+                        x = guideSelectedregion.X;
+                        y = guideSelectedregion.Y;
+                        w = guideSelectedregion.Width;
+                        h = guideSelectedregion.Height;
+                        pen.Color = Color.Cyan;
+                        g.DrawRectangle(pen, new Rectangle(x - 2, y - 2, w + 3, h + 3));
+                    }
                 }
-                selectedregion.X = x;
-                selectedregion.Y = y;
-                selectedregion.Width = w;
-                selectedregion.Height = h;
-                selectedRegionX = x;
-                selectedRegionY = y;
             }
             pictureBox1.Image = bitmap;
 

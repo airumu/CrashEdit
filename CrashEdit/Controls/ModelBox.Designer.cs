@@ -55,9 +55,14 @@ namespace CrashEdit.CE.Controls
             lblOffsetX = new Label();
             lblModelInfo = new Label();
             tbpPolygons = new TabPage();
-            tbpVertices = new TabPage();
             lblStruct = new Label();
+            label3 = new Label();
+            label2 = new Label();
+            dgvStructs = new DataGridView();
+            dgvPolygons = new DataGridView();
+            tbpVertices = new TabPage();
             lblVertices = new Label();
+            fraVertices = new DarkGroupBox();
             numVertexIndex = new DarkNumericUpDown();
             inpVertexX = new DarkNumericUpDown();
             inpVertexY = new DarkNumericUpDown();
@@ -71,17 +76,13 @@ namespace CrashEdit.CE.Controls
             lblVertFX = new DarkLabel();
             lblVertColor = new DarkLabel();
             lblVertsSimilar = new DarkLabel();
-            fraVertices = new DarkGroupBox();
-            label3 = new Label();
-            label2 = new Label();
-            dgvStructs = new DataGridView();
-            dgvPolygons = new DataGridView();
             tbpColors = new TabPage();
             lblColorIndex = new Label();
             fraGlobalControl = new DarkGroupBox();
             cmdCancel = new DarkButton();
             cmdApply = new DarkButton();
             pnGlobalControl = new Panel();
+            pictureBox2 = new PictureBox();
             cmdClearSelection = new DarkButton();
             numLowestBrightness = new DarkNumericUpDown();
             colorEditorGlobal = new Cyotek.Windows.Forms.ColorEditor();
@@ -93,6 +94,25 @@ namespace CrashEdit.CE.Controls
             colorWheel = new Cyotek.Windows.Forms.ColorWheel();
             dgvColor = new DataGridView();
             tbpTextures = new TabPage();
+            pnTextureSelect = new Panel();
+            fraTextureGuides = new DarkGroupBox();
+            groupBox6 = new DarkGroupBox();
+            label14 = new Label();
+            label13 = new Label();
+            C2numY = new DarkNumericUpDown();
+            C2numX = new DarkNumericUpDown();
+            label7 = new Label();
+            label8 = new Label();
+            C2numY2 = new DarkNumericUpDown();
+            C2numX2 = new DarkNumericUpDown();
+            darkGroupBox1 = new DarkGroupBox();
+            numSelectionSize = new DarkNumericUpDown();
+            groupBox7 = new DarkGroupBox();
+            C2numH = new DarkNumericUpDown();
+            label9 = new Label();
+            C2numW = new DarkNumericUpDown();
+            label10 = new Label();
+            chkEnableGuides = new CheckBox();
             pnPicture = new Panel();
             pictureBox1 = new PictureBox();
             panel2 = new Panel();
@@ -124,7 +144,6 @@ namespace CrashEdit.CE.Controls
             dgvExtendedTextures = new DataGridView();
             tbpPositions = new TabPage();
             dgvPositions = new DataGridView();
-            pictureBox2 = new PictureBox();
             tabModel.SuspendLayout();
             tbpGeneral.SuspendLayout();
             panel1.SuspendLayout();
@@ -137,18 +156,37 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)numOffsetY).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numOffsetX).BeginInit();
             tbpPolygons.SuspendLayout();
-            tbpVertices.SuspendLayout();
-            fraVertices.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvStructs).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvPolygons).BeginInit();
+            tbpVertices.SuspendLayout();
+            fraVertices.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numVertexIndex).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)inpVertexX).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)inpVertexY).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)inpVertexZ).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)inpVertexFX).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)inpVertexColor).BeginInit();
             tbpColors.SuspendLayout();
             fraGlobalControl.SuspendLayout();
             pnGlobalControl.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numLowestBrightness).BeginInit();
             pnSliders.SuspendLayout();
             fraColorSlider.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvColor).BeginInit();
             tbpTextures.SuspendLayout();
+            pnTextureSelect.SuspendLayout();
+            fraTextureGuides.SuspendLayout();
+            groupBox6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)C2numY).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)C2numX).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)C2numY2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)C2numX2).BeginInit();
+            darkGroupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numSelectionSize).BeginInit();
+            groupBox7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)C2numH).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)C2numW).BeginInit();
             pnPicture.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel2.SuspendLayout();
@@ -166,7 +204,6 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)dgvExtendedTextures).BeginInit();
             tbpPositions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvPositions).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             SuspendLayout();
             // 
             // tabModel
@@ -189,7 +226,7 @@ namespace CrashEdit.CE.Controls
             tabModel.Name = "tabModel";
             tabModel.SelectedIndex = 0;
             tabModel.SelectedTextColor = Color.White;
-            tabModel.Size = new Size(1040, 800);
+            tabModel.Size = new Size(1040, 1040);
             tabModel.SizeMode = TabSizeMode.Fixed;
             tabModel.Speed = 100;
             tabModel.Style = MetroSet_UI.Enums.Style.Dark;
@@ -208,7 +245,7 @@ namespace CrashEdit.CE.Controls
             tbpGeneral.Controls.Add(lblModelInfo);
             tbpGeneral.Location = new Point(4, 32);
             tbpGeneral.Name = "tbpGeneral";
-            tbpGeneral.Size = new Size(1032, 764);
+            tbpGeneral.Size = new Size(1032, 1004);
             tbpGeneral.TabIndex = 0;
             tbpGeneral.Text = "General";
             // 
@@ -431,7 +468,7 @@ namespace CrashEdit.CE.Controls
             tbpPolygons.Controls.Add(dgvPolygons);
             tbpPolygons.Location = new Point(4, 32);
             tbpPolygons.Name = "tbpPolygons";
-            tbpPolygons.Size = new Size(1032, 764);
+            tbpPolygons.Size = new Size(1032, 1004);
             tbpPolygons.TabIndex = 1;
             tbpPolygons.Text = "Polygons";
             tbpPolygons.Enter += tbpPolygons_Enter;
@@ -514,10 +551,21 @@ namespace CrashEdit.CE.Controls
             tbpVertices.Controls.Add(lblVertsSimilar);
             tbpVertices.Location = new Point(4, 32);
             tbpVertices.Name = "tbpVertices";
-            tbpVertices.Size = new Size(1032, 764);
+            tbpVertices.Size = new Size(1032, 1004);
             tbpVertices.TabIndex = 1;
             tbpVertices.Text = "Vertices";
             tbpVertices.Enter += tbpVertices_Enter;
+            // 
+            // lblVertices
+            // 
+            lblVertices.AutoSize = true;
+            lblVertices.BackColor = Color.Transparent;
+            lblVertices.Font = new Font("Microsoft Sans Serif", 10F);
+            lblVertices.Location = new Point(15, 15);
+            lblVertices.Name = "lblVertices";
+            lblVertices.Size = new Size(69, 17);
+            lblVertices.TabIndex = 3;
+            lblVertices.Text = "{Vertices}";
             // 
             // fraVertices
             // 
@@ -540,142 +588,129 @@ namespace CrashEdit.CE.Controls
             fraVertices.Size = new Size(155, 210);
             fraVertices.TabIndex = 9;
             fraVertices.TabStop = false;
-            fraVertices.Text = "";
             // 
-            // lblVertices
-            // 
-            lblVertices.AutoSize = true;
-            lblVertices.BackColor = Color.Transparent;
-            lblVertices.Location = new Point(15, 15);
-            lblVertices.Name = "lblVertices";
-            lblVertices.Size = new Size(46, 15);
-            lblVertices.TabIndex = 3;
-            lblVertices.Font = new Font("Microsoft Sans Serif", 10f);
-            lblVertices.Text = "{Vertices}";
-            //
             // numVertexIndex
-            //
+            // 
             numVertexIndex.AutoSize = true;
-            numVertexIndex.BackColor = Color.Transparent;
             numVertexIndex.Location = new Point(80, 20);
             numVertexIndex.Name = "numVertexIndex";
-            numVertexIndex.Size = new Size(65, 15);
+            numVertexIndex.Size = new Size(65, 23);
             numVertexIndex.TabIndex = 4;
-            numVertexIndex.Minimum = 0;
             numVertexIndex.ValueChanged += NumVertexIndex_ValueChanged;
-            //
+            // 
             // inpVertexX
-            //
-            inpVertexX.Name = "inpVertexX";
+            // 
             inpVertexX.Location = new Point(80, 60);
-            inpVertexX.Size = new Size(65, 15);
+            inpVertexX.Name = "inpVertexX";
+            inpVertexX.Size = new Size(65, 23);
             inpVertexX.TabIndex = 5;
             inpVertexX.ValueChanged += Vertex_ValueChanged;
-            //
+            // 
             // inpVertexY
-            //
-            inpVertexY.Name = "inpVertexY";
+            // 
             inpVertexY.Location = new Point(80, 90);
-            inpVertexY.Size = new Size(65, 15);
+            inpVertexY.Name = "inpVertexY";
+            inpVertexY.Size = new Size(65, 23);
             inpVertexY.TabIndex = 6;
             inpVertexY.ValueChanged += Vertex_ValueChanged;
-            //
+            // 
             // inpVertexZ
-            //
-            inpVertexZ.Name = "inpVertexZ";
+            // 
             inpVertexZ.Location = new Point(80, 120);
-            inpVertexZ.Size = new Size(65, 15);
+            inpVertexZ.Name = "inpVertexZ";
+            inpVertexZ.Size = new Size(65, 23);
             inpVertexZ.TabIndex = 7;
             inpVertexZ.ValueChanged += Vertex_ValueChanged;
-            //
+            // 
             // inpVertexFX
-            //
-            inpVertexFX.Name = "inpVertexFX";
+            // 
             inpVertexFX.Location = new Point(80, 150);
-            inpVertexFX.Size = new Size(65, 15);
+            inpVertexFX.Maximum = new decimal(new int[] { 3, 0, 0, 0 });
+            inpVertexFX.Name = "inpVertexFX";
+            inpVertexFX.Size = new Size(65, 23);
             inpVertexFX.TabIndex = 8;
-            inpVertexFX.Minimum = 0;
-            inpVertexFX.Maximum = 3;
             inpVertexFX.ValueChanged += Vertex_ValueChanged;
-            // todo change
-            //
+            // 
             // inpVertexColor
-            //
-            inpVertexColor.Name = "inpVertexColor";
+            // 
             inpVertexColor.Location = new Point(80, 180);
-            inpVertexColor.Size = new Size(65, 15);
+            inpVertexColor.Name = "inpVertexColor";
+            inpVertexColor.Size = new Size(65, 23);
             inpVertexColor.TabIndex = 9;
-            inpVertexColor.Minimum = 0;
             inpVertexColor.ValueChanged += Vertex_ValueChanged;
-            // todo change
-            //
+            // 
             // lblVertexIndex
             // 
             lblVertexIndex.AutoSize = true;
             lblVertexIndex.BackColor = Color.Transparent;
             lblVertexIndex.Location = new Point(10, 20);
             lblVertexIndex.Name = "lblVertexIndex";
-            lblVertexIndex.Size = new Size(10, 15);
+            lblVertexIndex.Size = new Size(39, 15);
             lblVertexIndex.TabIndex = 3;
             lblVertexIndex.Text = "Index:";
-            //
+            // 
             // lblVertX
             // 
             lblVertX.AutoSize = true;
             lblVertX.BackColor = Color.Transparent;
             lblVertX.Location = new Point(10, 60);
             lblVertX.Name = "lblVertX";
-            lblVertX.Size = new Size(10, 15);
+            lblVertX.Size = new Size(37, 15);
+            lblVertX.TabIndex = 10;
             lblVertX.Text = "vertX:";
-            //
+            // 
             // lblVertY
             // 
             lblVertY.AutoSize = true;
             lblVertY.BackColor = Color.Transparent;
             lblVertY.Location = new Point(10, 90);
             lblVertY.Name = "lblVertY";
-            lblVertY.Size = new Size(10, 15);
+            lblVertY.Size = new Size(37, 15);
+            lblVertY.TabIndex = 11;
             lblVertY.Text = "vertY:";
-            //
+            // 
             // lblVertZ
             // 
             lblVertZ.AutoSize = true;
             lblVertZ.BackColor = Color.Transparent;
             lblVertZ.Location = new Point(10, 120);
             lblVertZ.Name = "lblVertZ";
-            lblVertZ.Size = new Size(10, 15);
+            lblVertZ.Size = new Size(37, 15);
+            lblVertZ.TabIndex = 12;
             lblVertZ.Text = "vertZ:";
-            //
+            // 
             // lblVertFX
             // 
             lblVertFX.AutoSize = true;
             lblVertFX.BackColor = Color.Transparent;
             lblVertFX.Location = new Point(10, 150);
             lblVertFX.Name = "lblVertFX";
-            lblVertFX.Size = new Size(10, 15);
+            lblVertFX.Size = new Size(23, 15);
+            lblVertFX.TabIndex = 13;
             lblVertFX.Text = "FX:";
-            //
+            // 
             // lblVertColor
             // 
             lblVertColor.AutoSize = true;
             lblVertColor.BackColor = Color.Transparent;
             lblVertColor.Location = new Point(10, 180);
             lblVertColor.Name = "lblVertColor";
-            lblVertColor.Size = new Size(10, 15);
+            lblVertColor.Size = new Size(50, 15);
+            lblVertColor.TabIndex = 14;
             lblVertColor.Text = "ColorID:";
-            //
+            // 
             // lblVertsSimilar
-            //            
+            // 
             lblVertsSimilar.AutoSize = true;
             lblVertsSimilar.BackColor = Color.Transparent;
             lblVertsSimilar.Location = new Point(200, 15);
             lblVertsSimilar.Name = "lblVertsSimilar";
-            lblVertsSimilar.Size = new Size(300, 800);
+            lblVertsSimilar.Size = new Size(12, 15);
+            lblVertsSimilar.TabIndex = 10;
             lblVertsSimilar.Text = "-";
             // 
             // tbpColors
             // 
-            tbpColors.AutoScroll = false;
             tbpColors.BackColor = Color.FromArgb(31, 31, 32);
             tbpColors.Controls.Add(lblColorIndex);
             tbpColors.Controls.Add(fraGlobalControl);
@@ -683,7 +718,7 @@ namespace CrashEdit.CE.Controls
             tbpColors.Controls.Add(dgvColor);
             tbpColors.Location = new Point(4, 32);
             tbpColors.Name = "tbpColors";
-            tbpColors.Size = new Size(1032, 764);
+            tbpColors.Size = new Size(1032, 1004);
             tbpColors.TabIndex = 1;
             tbpColors.Text = "Colors";
             tbpColors.Enter += tbpColors_Enter;
@@ -754,6 +789,14 @@ namespace CrashEdit.CE.Controls
             pnGlobalControl.Name = "pnGlobalControl";
             pnGlobalControl.Size = new Size(292, 160);
             pnGlobalControl.TabIndex = 4;
+            // 
+            // pictureBox2
+            // 
+            pictureBox2.Location = new Point(111, 134);
+            pictureBox2.Name = "pictureBox2";
+            pictureBox2.Size = new Size(16, 16);
+            pictureBox2.TabIndex = 9;
+            pictureBox2.TabStop = false;
             // 
             // cmdClearSelection
             // 
@@ -897,16 +940,239 @@ namespace CrashEdit.CE.Controls
             // 
             // tbpTextures
             // 
-            tbpTextures.AutoScroll = false;
             tbpTextures.BackColor = Color.FromArgb(31, 31, 32);
+            tbpTextures.Controls.Add(pnTextureSelect);
             tbpTextures.Controls.Add(pnPicture);
             tbpTextures.Controls.Add(panel2);
             tbpTextures.Location = new Point(4, 32);
             tbpTextures.Name = "tbpTextures";
-            tbpTextures.Size = new Size(1032, 764);
+            tbpTextures.Size = new Size(1032, 1004);
             tbpTextures.TabIndex = 2;
             tbpTextures.Text = "Textures";
             tbpTextures.Enter += tbpTextures_Enter;
+            // 
+            // pnTextureSelect
+            // 
+            pnTextureSelect.Controls.Add(fraTextureGuides);
+            pnTextureSelect.Controls.Add(chkEnableGuides);
+            pnTextureSelect.Location = new Point(4, 548);
+            pnTextureSelect.Name = "pnTextureSelect";
+            pnTextureSelect.Size = new Size(1024, 262);
+            pnTextureSelect.TabIndex = 15;
+            // 
+            // fraTextureGuides
+            // 
+            fraTextureGuides.AutoSize = true;
+            fraTextureGuides.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraTextureGuides.Controls.Add(groupBox6);
+            fraTextureGuides.Controls.Add(darkGroupBox1);
+            fraTextureGuides.Controls.Add(groupBox7);
+            fraTextureGuides.Enabled = false;
+            fraTextureGuides.Location = new Point(3, 25);
+            fraTextureGuides.Name = "fraTextureGuides";
+            fraTextureGuides.Size = new Size(426, 143);
+            fraTextureGuides.TabIndex = 25;
+            fraTextureGuides.TabStop = false;
+            fraTextureGuides.Text = "Guide";
+            fraTextureGuides.Visible = false;
+            // 
+            // groupBox6
+            // 
+            groupBox6.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            groupBox6.Controls.Add(label14);
+            groupBox6.Controls.Add(label13);
+            groupBox6.Controls.Add(C2numY);
+            groupBox6.Controls.Add(C2numX);
+            groupBox6.Controls.Add(label7);
+            groupBox6.Controls.Add(label8);
+            groupBox6.Controls.Add(C2numY2);
+            groupBox6.Controls.Add(C2numX2);
+            groupBox6.Location = new Point(7, 22);
+            groupBox6.Margin = new Padding(4);
+            groupBox6.Name = "groupBox6";
+            groupBox6.Padding = new Padding(4);
+            groupBox6.Size = new Size(206, 98);
+            groupBox6.TabIndex = 20;
+            groupBox6.TabStop = false;
+            groupBox6.Text = "Offset";
+            // 
+            // label14
+            // 
+            label14.AutoSize = true;
+            label14.ImeMode = ImeMode.NoControl;
+            label14.Location = new Point(109, 65);
+            label14.Margin = new Padding(4, 0, 4, 0);
+            label14.Name = "label14";
+            label14.Size = new Size(19, 15);
+            label14.TabIndex = 5;
+            label14.Text = "0x";
+            // 
+            // label13
+            // 
+            label13.AutoSize = true;
+            label13.ImeMode = ImeMode.NoControl;
+            label13.Location = new Point(109, 29);
+            label13.Margin = new Padding(4, 0, 4, 0);
+            label13.Name = "label13";
+            label13.Size = new Size(19, 15);
+            label13.TabIndex = 4;
+            label13.Text = "0x";
+            // 
+            // C2numY
+            // 
+            C2numY.Location = new Point(30, 61);
+            C2numY.Margin = new Padding(4);
+            C2numY.Maximum = new decimal(new int[] { 127, 0, 0, 0 });
+            C2numY.Name = "C2numY";
+            C2numY.Size = new Size(70, 23);
+            C2numY.TabIndex = 3;
+            // 
+            // C2numX
+            // 
+            C2numX.Location = new Point(30, 25);
+            C2numX.Margin = new Padding(4);
+            C2numX.Maximum = new decimal(new int[] { 1023, 0, 0, 0 });
+            C2numX.Name = "C2numX";
+            C2numX.Size = new Size(70, 23);
+            C2numX.TabIndex = 2;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.ImeMode = ImeMode.NoControl;
+            label7.Location = new Point(8, 65);
+            label7.Margin = new Padding(4, 0, 4, 0);
+            label7.Name = "label7";
+            label7.Size = new Size(14, 15);
+            label7.TabIndex = 1;
+            label7.Text = "Y";
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.ImeMode = ImeMode.NoControl;
+            label8.Location = new Point(8, 29);
+            label8.Margin = new Padding(4, 0, 4, 0);
+            label8.Name = "label8";
+            label8.Size = new Size(14, 15);
+            label8.TabIndex = 0;
+            label8.Text = "X";
+            // 
+            // C2numY2
+            // 
+            C2numY2.Hexadecimal = true;
+            C2numY2.Location = new Point(128, 61);
+            C2numY2.Margin = new Padding(4);
+            C2numY2.Maximum = new decimal(new int[] { 127, 0, 0, 0 });
+            C2numY2.Name = "C2numY2";
+            C2numY2.Size = new Size(70, 23);
+            C2numY2.TabIndex = 3;
+            // 
+            // C2numX2
+            // 
+            C2numX2.Hexadecimal = true;
+            C2numX2.Location = new Point(128, 25);
+            C2numX2.Margin = new Padding(4);
+            C2numX2.Maximum = new decimal(new int[] { 1023, 0, 0, 0 });
+            C2numX2.Name = "C2numX2";
+            C2numX2.Size = new Size(70, 23);
+            C2numX2.TabIndex = 2;
+            // 
+            // darkGroupBox1
+            // 
+            darkGroupBox1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            darkGroupBox1.Controls.Add(numSelectionSize);
+            darkGroupBox1.Location = new Point(335, 22);
+            darkGroupBox1.Margin = new Padding(4);
+            darkGroupBox1.Name = "darkGroupBox1";
+            darkGroupBox1.Padding = new Padding(4);
+            darkGroupBox1.Size = new Size(84, 56);
+            darkGroupBox1.TabIndex = 21;
+            darkGroupBox1.TabStop = false;
+            darkGroupBox1.Text = "Selection";
+            // 
+            // numSelectionSize
+            // 
+            numSelectionSize.Location = new Point(8, 25);
+            numSelectionSize.Margin = new Padding(4);
+            numSelectionSize.Maximum = new decimal(new int[] { 1024, 0, 0, 0 });
+            numSelectionSize.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numSelectionSize.Name = "numSelectionSize";
+            numSelectionSize.Size = new Size(70, 23);
+            numSelectionSize.TabIndex = 4;
+            numSelectionSize.Value = new decimal(new int[] { 32, 0, 0, 0 });
+            // 
+            // groupBox7
+            // 
+            groupBox7.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            groupBox7.Controls.Add(C2numH);
+            groupBox7.Controls.Add(label9);
+            groupBox7.Controls.Add(C2numW);
+            groupBox7.Controls.Add(label10);
+            groupBox7.Location = new Point(220, 22);
+            groupBox7.Margin = new Padding(4);
+            groupBox7.Name = "groupBox7";
+            groupBox7.Padding = new Padding(4);
+            groupBox7.Size = new Size(107, 98);
+            groupBox7.TabIndex = 21;
+            groupBox7.TabStop = false;
+            groupBox7.Text = "Size";
+            // 
+            // C2numH
+            // 
+            C2numH.Location = new Point(30, 61);
+            C2numH.Margin = new Padding(4);
+            C2numH.Maximum = new decimal(new int[] { 128, 0, 0, 0 });
+            C2numH.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            C2numH.Name = "C2numH";
+            C2numH.Size = new Size(70, 23);
+            C2numH.TabIndex = 5;
+            C2numH.Value = new decimal(new int[] { 32, 0, 0, 0 });
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.ImeMode = ImeMode.NoControl;
+            label9.Location = new Point(8, 65);
+            label9.Margin = new Padding(4, 0, 4, 0);
+            label9.Name = "label9";
+            label9.Size = new Size(16, 15);
+            label9.TabIndex = 1;
+            label9.Text = "H";
+            // 
+            // C2numW
+            // 
+            C2numW.Location = new Point(30, 25);
+            C2numW.Margin = new Padding(4);
+            C2numW.Maximum = new decimal(new int[] { 1024, 0, 0, 0 });
+            C2numW.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            C2numW.Name = "C2numW";
+            C2numW.Size = new Size(70, 23);
+            C2numW.TabIndex = 4;
+            C2numW.Value = new decimal(new int[] { 32, 0, 0, 0 });
+            // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.ImeMode = ImeMode.NoControl;
+            label10.Location = new Point(8, 29);
+            label10.Margin = new Padding(4, 0, 4, 0);
+            label10.Name = "label10";
+            label10.Size = new Size(18, 15);
+            label10.TabIndex = 0;
+            label10.Text = "W";
+            // 
+            // chkEnableGuides
+            // 
+            chkEnableGuides.AutoSize = true;
+            chkEnableGuides.BackColor = Color.Transparent;
+            chkEnableGuides.Location = new Point(3, 3);
+            chkEnableGuides.Name = "chkEnableGuides";
+            chkEnableGuides.Size = new Size(94, 19);
+            chkEnableGuides.TabIndex = 8;
+            chkEnableGuides.Text = "Enable guide";
+            chkEnableGuides.UseVisualStyleBackColor = false;
+            chkEnableGuides.CheckedChanged += chkEnableGuides_CheckedChanged;
             // 
             // pnPicture
             // 
@@ -1286,7 +1552,7 @@ namespace CrashEdit.CE.Controls
             tbpExtendedTextures.Controls.Add(panel3);
             tbpExtendedTextures.Location = new Point(4, 32);
             tbpExtendedTextures.Name = "tbpExtendedTextures";
-            tbpExtendedTextures.Size = new Size(1032, 764);
+            tbpExtendedTextures.Size = new Size(1032, 1004);
             tbpExtendedTextures.TabIndex = 3;
             tbpExtendedTextures.Text = "Extended Textures";
             tbpExtendedTextures.Enter += tbpExtendedTextures_Enter;
@@ -1331,7 +1597,7 @@ namespace CrashEdit.CE.Controls
             tbpPositions.Controls.Add(dgvPositions);
             tbpPositions.Location = new Point(4, 32);
             tbpPositions.Name = "tbpPositions";
-            tbpPositions.Size = new Size(1032, 764);
+            tbpPositions.Size = new Size(1032, 1004);
             tbpPositions.TabIndex = 1;
             tbpPositions.Text = "Positions";
             tbpPositions.Enter += tbpPositions_Enter;
@@ -1357,21 +1623,13 @@ namespace CrashEdit.CE.Controls
             dgvPositions.CellValueChanged += dgvPositions_CellValueChanged;
             dgvPositions.EditingControlShowing += dgvPositions_EditingControlShowing;
             // 
-            // pictureBox2
-            // 
-            pictureBox2.Location = new Point(111, 134);
-            pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(16, 16);
-            pictureBox2.TabIndex = 9;
-            pictureBox2.TabStop = false;
-            // 
             // ModelBox
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(tabModel);
             Name = "ModelBox";
-            Size = new Size(1040, 800);
+            Size = new Size(1040, 1040);
             tabModel.ResumeLayout(false);
             tbpGeneral.ResumeLayout(false);
             tbpGeneral.PerformLayout();
@@ -1388,21 +1646,45 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)numOffsetX).EndInit();
             tbpPolygons.ResumeLayout(false);
             tbpPolygons.PerformLayout();
-            tbpVertices.ResumeLayout(false);
-            tbpVertices.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvStructs).EndInit();
             ((System.ComponentModel.ISupportInitialize)dgvPolygons).EndInit();
+            tbpVertices.ResumeLayout(false);
+            tbpVertices.PerformLayout();
+            fraVertices.ResumeLayout(false);
+            fraVertices.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numVertexIndex).EndInit();
+            ((System.ComponentModel.ISupportInitialize)inpVertexX).EndInit();
+            ((System.ComponentModel.ISupportInitialize)inpVertexY).EndInit();
+            ((System.ComponentModel.ISupportInitialize)inpVertexZ).EndInit();
+            ((System.ComponentModel.ISupportInitialize)inpVertexFX).EndInit();
+            ((System.ComponentModel.ISupportInitialize)inpVertexColor).EndInit();
             tbpColors.ResumeLayout(false);
             tbpColors.PerformLayout();
             fraGlobalControl.ResumeLayout(false);
             pnGlobalControl.ResumeLayout(false);
             pnGlobalControl.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)numLowestBrightness).EndInit();
             pnSliders.ResumeLayout(false);
             fraColorSlider.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvColor).EndInit();
             tbpTextures.ResumeLayout(false);
             tbpTextures.PerformLayout();
+            pnTextureSelect.ResumeLayout(false);
+            pnTextureSelect.PerformLayout();
+            fraTextureGuides.ResumeLayout(false);
+            groupBox6.ResumeLayout(false);
+            groupBox6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)C2numY).EndInit();
+            ((System.ComponentModel.ISupportInitialize)C2numX).EndInit();
+            ((System.ComponentModel.ISupportInitialize)C2numY2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)C2numX2).EndInit();
+            darkGroupBox1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)numSelectionSize).EndInit();
+            groupBox7.ResumeLayout(false);
+            groupBox7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)C2numH).EndInit();
+            ((System.ComponentModel.ISupportInitialize)C2numW).EndInit();
             pnPicture.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             panel2.ResumeLayout(false);
@@ -1424,7 +1706,6 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)dgvExtendedTextures).EndInit();
             tbpPositions.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvPositions).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ResumeLayout(false);
         }
 
@@ -1563,5 +1844,27 @@ namespace CrashEdit.CE.Controls
         private DarkLabel lblVertColor;
         private DarkLabel lblVertsSimilar;
         private DarkGroupBox fraVertices;
+        private Panel pnTextureSelect;
+        private DarkGroupBox groupBox6;
+        private Label label14;
+        private Label label13;
+        private DarkNumericUpDown C2numY;
+        private DarkNumericUpDown C2numX;
+        private Label label7;
+        private Label label8;
+        private DarkNumericUpDown C2numY2;
+        private DarkNumericUpDown C2numX2;
+        private DarkGroupBox groupBox7;
+        private DarkNumericUpDown C2numH;
+        private Label label9;
+        private DarkNumericUpDown C2numW;
+        private Label label10;
+        private DarkGroupBox fraTextureGuides;
+        private CheckBox chkEnableGuides;
+        private DarkGroupBox darkGroupBox1;
+        private DarkNumericUpDown darkNumericUpDown1;
+        private Label label4;
+        private DarkNumericUpDown numSelectionSize;
+        private Label label5;
     }
 }
