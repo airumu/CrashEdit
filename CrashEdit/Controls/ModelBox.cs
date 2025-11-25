@@ -2011,6 +2011,12 @@ namespace CrashEdit.CE.Controls
                     og.Segment = (byte)segment;
                 }
 
+                // Wrap around so that U values stay within segment
+                if (newU >= xoffUnit)
+                {
+                    newU = 0;
+                }
+
                 if (e.ColumnIndex == ColX1) og.U1 = (byte)newU;
                 else if (e.ColumnIndex == ColX2) og.U2 = (byte)newU;
                 else if (e.ColumnIndex == ColX3) og.U3 = (byte)newU;
