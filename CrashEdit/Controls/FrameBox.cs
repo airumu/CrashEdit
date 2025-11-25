@@ -2,6 +2,7 @@ using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 using MetroSet_UI.Controls;
+using Timer = System.Windows.Forms.Timer;
 
 namespace CrashEdit.CE
 {
@@ -21,9 +22,13 @@ namespace CrashEdit.CE
         private int vertexindex = 0;
         private int collisionindex = 0;
 
+        private int PrevSelectedVertex = -1;
+
         private const int XOffset = 0;
         private const int YOffset = 1;
         private const int ZOffset = 2;
+
+        private Timer vertexCheckTimer;
 
         public FrameBox(FrameController controller)
         {
@@ -103,7 +108,27 @@ namespace CrashEdit.CE
             UpdateSPVertex();
             UpdateModel();
 
+            if (vertexCheckTimer == null)
+            {
+                vertexCheckTimer = new Timer
+                {
+                    Interval = 100
+                };
+                vertexCheckTimer.Tick += VertexCheckTimer_Tick;
+                vertexCheckTimer.Start();
+            }
+
             fraVertice.Text = isCompresed ? "Vertice(s) (read-only)" : "Vertice(s)";
+        }
+
+        private void VertexCheckTimer_Tick(object sender, EventArgs e)
+        {
+            if (animationEntry.SelectedVertex != PrevSelectedVertex)
+            {
+                PrevSelectedVertex = animationEntry.SelectedVertex;
+                vertexindex = animationEntry.SelectedVertex;
+                UpdateVertice();
+            }
         }
 
         private void UpdateVertice()
