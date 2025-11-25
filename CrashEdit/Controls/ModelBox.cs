@@ -1570,8 +1570,11 @@ namespace CrashEdit.CE.Controls
                 {
                     lblEIDError.Visible = false;
                     pnPicture.Visible =
-                    chkEnableGuides.Visible =
-                    fraTextureGuides.Visible = true;
+                    chkEnableGuides.Visible = true;
+                    if (chkEnableGuides.Checked)
+                        fraTextureGuides.Visible = true;
+                    else
+                        fraTextureGuides.Visible = false;
                     UpdatePicture();
                 }
                 else
