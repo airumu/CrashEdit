@@ -6,6 +6,7 @@ using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
+using static System.Net.Mime.MediaTypeNames;
 using HslColor = Cyotek.Windows.Forms.HslColor;
 
 namespace CrashEdit.CE.Controls
@@ -524,6 +525,42 @@ namespace CrashEdit.CE.Controls
             }
         }
 
+        private string NormalizeColTypeText(string str)
+        {
+            str = str.Trim().ToLower();
+
+            if (str == "0" || str == "o" || str == "original")
+            {
+                return "Original";
+            }
+            else if (str == "1" || str == "d" || str == "duplicate")
+            {
+                return "Duplicate";
+            }
+            else
+            {
+                return str;
+            }
+        }
+
+        private string NormalizeBoolText(string text)
+        {
+            text = text.Trim().ToLower();
+
+            if (text == "0" || text == "f" || text == "false")
+            {
+                return "False";
+            }
+            else if (text == "1" || text == "t" || text == "true")
+            {
+                return "True";
+            }
+            else
+            {
+                return text;
+            }
+        }
+
         private void dgvStructs_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
             if (!(dgvStructs.SelectedCells.Count > 0)) return;
@@ -532,17 +569,19 @@ namespace CrashEdit.CE.Controls
 
             if (e.ColumnIndex == ColType)
             {
-                if (!(inputValue == "0" || inputValue == "1" || inputValue.Equals("Original", StringComparison.InvariantCultureIgnoreCase) || inputValue.Equals("Duplicate", StringComparison.InvariantCultureIgnoreCase)))
+                inputValue = NormalizeColTypeText(inputValue);
+                if (!(inputValue == "Original" || inputValue == "Duplicate"))
                 {
-                    DarkMessageBox.ShowError("The value must be 'Original' or 'Duplicate'.", Resources.Title_InputError);
+                    DarkMessageBox.ShowError("Invalid input.", Resources.Title_InputError);
                     e.Cancel = true;
                 }
             }
             else if (e.ColumnIndex == ColAnimated || e.ColumnIndex == ColFlag)
             {
-                if (!(inputValue.Equals("True", StringComparison.InvariantCultureIgnoreCase) || inputValue.Equals("False", StringComparison.InvariantCultureIgnoreCase)))
+                inputValue = NormalizeBoolText(inputValue);
+                if (!(inputValue == "True" || inputValue == "False"))
                 {
-                    DarkMessageBox.ShowError("The value must be 'True' or 'False'.", Resources.Title_InputError);
+                    DarkMessageBox.ShowError("Invalid input.", Resources.Title_InputError);
                     e.Cancel = true;
                 }
             }
@@ -597,6 +636,8 @@ namespace CrashEdit.CE.Controls
             {
                 ModelTriangle str = structs[e.RowIndex];
 
+                string text = cell.ToString();
+
                 switch (e.ColumnIndex)
                 {
                     case 0: // TextureIndex
@@ -606,7 +647,7 @@ namespace CrashEdit.CE.Controls
                         str.ColorIndex = Convert.ToByte(cell);
                         break;
                     case 2: // Animated
-                        str.Animated = Convert.ToBoolean(cell);
+                        str.Animated = Convert.ToBoolean(NormalizeBoolText(text));
                         break;
                     case 3: // PositionKey
                         str.PositionKey = Convert.ToByte(cell);
@@ -621,10 +662,10 @@ namespace CrashEdit.CE.Controls
                         str.Unknown = Convert.ToByte(cell);
                         break;
                     case 7: // Flag
-                        str.Flag = Convert.ToBoolean(cell);
+                        str.Flag = Convert.ToBoolean(NormalizeBoolText(text));
                         break;
                     case 8: // Type
-                        if (cell.ToString() == "0" || cell.ToString().Equals("Original", StringComparison.InvariantCultureIgnoreCase))
+                        if (NormalizeColTypeText(text) == "Original")
                         {
                             cell = 0;
                         }
@@ -1576,7 +1617,7 @@ namespace CrashEdit.CE.Controls
                 GetXOff(currentColorMode, value, out int xoffUnit, out int segment, out int xoff);
 
                 maxValue = xoffUnit - (value - xoff);
-                minValue = 4;
+                minValue = 1;
                 if (Settings.Default.OutputModelTextureInfo)
                     Console.WriteLine($"Segment {segment}, maxValue {maxValue}");
             }
@@ -1584,7 +1625,7 @@ namespace CrashEdit.CE.Controls
             else if (columnIndex == ColHeight)
             {
                 maxValue = 128 - (int)dgvTextures.Rows[rowIndex].Cells[ColTop].Value;
-                minValue = 4;
+                minValue = 1;
             }
             // Blend Mode
             else if (columnIndex == ColBlendMode)
@@ -2413,7 +2454,8 @@ namespace CrashEdit.CE.Controls
             {
                 if (dgvExtendedTextures.SelectedCells[0].Value.ToString() == "-") return;
 
-                if (!(inputValue == "True" || inputValue == "False" || inputValue == "true" || inputValue == "false"))
+                inputValue = NormalizeBoolText(inputValue);
+                if (!(inputValue == "True" || inputValue == "False"))
                 {
                     DarkMessageBox.ShowError($"Invalid string: {inputValue}", Resources.Title_InputError);
                     e.Cancel = true;
@@ -2457,7 +2499,7 @@ namespace CrashEdit.CE.Controls
                     og.Offset = Convert.ToInt32(item.Cells[ColOffset].Value);
                     break;
                 case 1: // ColIsLOD
-                    if (bool.TryParse(item.Cells[ColIsLOD].Value.ToString(), out bool islod))
+                    if (bool.TryParse(NormalizeBoolText(item.Cells[ColIsLOD].Value.ToString()), out bool islod))
                     {
                         og.IsLOD = islod;
                     }
@@ -2472,7 +2514,7 @@ namespace CrashEdit.CE.Controls
                     og.Latency = Convert.ToInt32(item.Cells[ColLatency].Value);
                     break;
                 case 5: // ColLeap
-                    if (bool.TryParse(item.Cells[ColLeap].Value.ToString(), out bool leap))
+                    if (bool.TryParse(NormalizeBoolText(item.Cells[ColLeap].Value.ToString()), out bool leap))
                     {
                         og.Leap = leap;
                     }
