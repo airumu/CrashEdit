@@ -196,8 +196,9 @@ namespace CrashEdit.CE
             C2numY2.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
             C2numW.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
             C2numH.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
-            C2numShiftX.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
-            C2numShiftY.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
+            C2numShiftX.MouseWheel += new MouseEventHandler(ScrollHandlerFunction3);
+            C2numShiftY.MouseWheel += new MouseEventHandler(ScrollHandlerFunction3);
+            C2numSelectionSize.MouseWheel += new MouseEventHandler(ScrollHandlerFunction3);
 
             UpdatePicture();
 
@@ -224,11 +225,12 @@ namespace CrashEdit.CE
 
         private void MakeArgAsText()
         {
-            int clut_offset = ((int)C2numCX.Value * 0x20) + ((int)C2numCY.Value * 0x200);
-            int clut_val = (int)C2numCX.Value + ((int)C2numCY.Value * 0x40);
-            string clut_offset_hex = clut_offset.ToString("X");
-            string clut_val_hex = clut_val.ToString("X");
-            lblCLUT.Text = string.Format("Hex    0x{0}\r\nOffset 0x{1}", clut_val_hex, clut_offset_hex);
+            //int clut_offset = ((int)C2numCX.Value * 0x20) + ((int)C2numCY.Value * 0x200);
+            //int clut_val = (int)C2numCX.Value + ((int)C2numCY.Value * 0x40);
+            //string clut_offset_hex = clut_offset.ToString("X");
+            //string clut_val_hex = clut_val.ToString("X");
+            //lblCLUT.Text = string.Format("Hex    0x{0}\r\nOffset 0x{1}", clut_val_hex, clut_offset_hex);
+            lblCLUT.Text = $"Offset 0x{(((int)C2numCX.Value * 0x20) + ((int)C2numCY.Value * 0x200)).ToString("X")}";
         }
 
         private void Control_UpdatePicture(object sender, EventArgs e)
@@ -356,76 +358,21 @@ namespace CrashEdit.CE
             //Width = 1024 + 32;
         }
 
-        private void C2Size4_Click(object sender, EventArgs e)
+        private void C2numSelectionSize_ValueChanged(object sender, EventArgs e)
         {
-            C2numW.Value = 4;
-            C2numH.Value = 4;
-            selectionSize = 4;
-            lblSelectionSize.Text = "Current: 4 x 4";
-            UpdatePicture();
-        }
-
-        private void C2Size8_Click(object sender, EventArgs e)
-        {
-            C2numW.Value = 8;
-            C2numH.Value = 8;
-            selectionSize = 8;
-            lblSelectionSize.Text = "Current: 8 x 8";
-            UpdatePicture();
-        }
-
-        private void C2Size16_Click(object sender, EventArgs e)
-        {
-            C2numW.Value = 16;
-            C2numH.Value = 16;
-            selectionSize = 16;
-            lblSelectionSize.Text = "Current: 16 x 16";
-            UpdatePicture();
-        }
-
-        private void C2Size32_Click(object sender, EventArgs e)
-        {
-            C2numW.Value = 32;
-            C2numH.Value = 32;
-            selectionSize = 32;
-            lblSelectionSize.Text = "Current: 32 x 32";
-            UpdatePicture();
-        }
-
-        private void C2Size64_Click(object sender, EventArgs e)
-        {
-            C2numW.Value = 64;
-            C2numH.Value = 64;
-            selectionSize = 64;
-            lblSelectionSize.Text = "Current: 64 x 64";
+            int size = (int)C2numSelectionSize.Value;
+            C2numW.Value = size;
+            C2numH.Value = size;
+            selectionSize = size;
             UpdatePicture();
         }
 
         private void C2SizeMax_Click(object sender, EventArgs e)
         {
+            C2numX.Value = 0;
+            C2numY.Value = 0;
             C2numW.Value = 256 << (2 - TexColorMode);
             C2numH.Value = 128;
-            UpdatePicture();
-        }
-
-        private void C1Size16_Click(object sender, EventArgs e)
-        {
-            C1dpdW.SelectedItem = "16";
-            C1dpdH.SelectedItem = "16";
-            UpdatePicture();
-        }
-
-        private void C1Size32_Click(object sender, EventArgs e)
-        {
-            C1dpdW.SelectedItem = "32";
-            C1dpdH.SelectedItem = "32";
-            UpdatePicture();
-        }
-
-        private void C1Size64_Click(object sender, EventArgs e)
-        {
-            C1dpdW.SelectedItem = "64";
-            C1dpdH.SelectedItem = "64";
             UpdatePicture();
         }
 
@@ -660,8 +607,7 @@ namespace CrashEdit.CE
             if (sender is NumericUpDown numericUpDown)
             {
                 HandledMouseEventArgs handledArgs = e as HandledMouseEventArgs;
-                if (handledArgs != null)
-                    handledArgs.Handled = true;
+                if (handledArgs != null) handledArgs.Handled = true;
 
                 decimal newValue = numericUpDown.Value;
                 if (e.Delta > 0 && newValue < numericUpDown.Maximum)
@@ -679,8 +625,7 @@ namespace CrashEdit.CE
             if (sender is NumericUpDown numericUpDown)
             {
                 HandledMouseEventArgs handledArgs = e as HandledMouseEventArgs;
-                if (handledArgs != null)
-                    handledArgs.Handled = true;
+                if (handledArgs != null) handledArgs.Handled = true;
 
                 decimal newValue = numericUpDown.Value;
                 if (e.Delta > 0 && newValue + 8 < numericUpDown.Maximum)
@@ -688,6 +633,26 @@ namespace CrashEdit.CE
 
                 else if (e.Delta < 0 && newValue - 8 >= numericUpDown.Minimum)
                     newValue -= 8;
+
+                numericUpDown.Value = newValue;
+                UpdatePicture();
+            }
+        }
+
+        private void ScrollHandlerFunction3(object sender, MouseEventArgs e)
+        {
+            if (sender is NumericUpDown numericUpDown)
+            {
+                HandledMouseEventArgs handledArgs = e as HandledMouseEventArgs;
+                if (handledArgs != null) handledArgs.Handled = true;
+
+                decimal newValue = numericUpDown.Value;
+                int unit = newValue < 16 ? 4 : 8;
+                if (e.Delta > 0 && newValue + unit < numericUpDown.Maximum)
+                    newValue += unit;
+
+                else if (e.Delta < 0 && newValue - unit >= numericUpDown.Minimum)
+                    newValue -= unit;
 
                 numericUpDown.Value = newValue;
                 UpdatePicture();
