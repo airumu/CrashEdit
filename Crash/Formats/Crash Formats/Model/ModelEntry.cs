@@ -215,6 +215,12 @@ namespace CrashEdit.Crash
         }
         public int PolyCount => BitConv.FromInt32(Info, 0x44);
 
+        public int AnimatedTextureCount
+        {
+            get => BitConv.FromInt32(Info, 0x48);
+            set => BitConv.ToInt32(Info, 0x48, value);
+        }
+
         public override UnprocessedEntry Unprocess()
         {
             byte itemcount = 5;

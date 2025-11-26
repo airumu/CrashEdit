@@ -95,6 +95,7 @@ namespace CrashEdit.CE.Controls
             dgvColor = new DataGridView();
             tbpTextures = new TabPage();
             pnTextureSelect = new Panel();
+            lbTextureInfos = new DarkLabel();
             fraTextureGuides = new DarkGroupBox();
             groupBox6 = new DarkGroupBox();
             label14 = new Label();
@@ -141,6 +142,10 @@ namespace CrashEdit.CE.Controls
             trkPictureSize = new MetroSetTrackBar();
             dgvTextures = new DataGridView();
             tbpExtendedTextures = new TabPage();
+            fraExTexControls = new DarkGroupBox();
+            lbExTextureInfos = new DarkLabel();
+            cmdAppendExTex = new DarkButton();
+            cmdRemoveExTex = new DarkButton();
             panel3 = new Panel();
             dgvExtendedTextures = new DataGridView();
             tbpPositions = new TabPage();
@@ -201,6 +206,7 @@ namespace CrashEdit.CE.Controls
             fraTPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvTextures).BeginInit();
             tbpExtendedTextures.SuspendLayout();
+            fraExTexControls.SuspendLayout();
             panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvExtendedTextures).BeginInit();
             tbpPositions.SuspendLayout();
@@ -954,12 +960,22 @@ namespace CrashEdit.CE.Controls
             // 
             // pnTextureSelect
             // 
+            pnTextureSelect.Controls.Add(lbTextureInfos);
             pnTextureSelect.Controls.Add(fraTextureGuides);
             pnTextureSelect.Controls.Add(chkEnableGuides);
             pnTextureSelect.Location = new Point(4, 548);
             pnTextureSelect.Name = "pnTextureSelect";
             pnTextureSelect.Size = new Size(1024, 262);
             pnTextureSelect.TabIndex = 15;
+            // 
+            // lbTextureInfos
+            // 
+            lbTextureInfos.AutoSize = true;
+            lbTextureInfos.Location = new Point(103, 5);
+            lbTextureInfos.Name = "lbTextureInfos";
+            lbTextureInfos.Size = new Size(50, 15);
+            lbTextureInfos.TabIndex = 26;
+            lbTextureInfos.Text = "Offset: -";
             // 
             // fraTextureGuides
             // 
@@ -971,7 +987,7 @@ namespace CrashEdit.CE.Controls
             fraTextureGuides.Enabled = false;
             fraTextureGuides.Location = new Point(3, 25);
             fraTextureGuides.Name = "fraTextureGuides";
-            fraTextureGuides.Size = new Size(426, 143);
+            fraTextureGuides.Size = new Size(450, 143);
             fraTextureGuides.TabIndex = 25;
             fraTextureGuides.TabStop = false;
             fraTextureGuides.Text = "Guide";
@@ -1087,10 +1103,10 @@ namespace CrashEdit.CE.Controls
             darkGroupBox1.Margin = new Padding(4);
             darkGroupBox1.Name = "darkGroupBox1";
             darkGroupBox1.Padding = new Padding(4);
-            darkGroupBox1.Size = new Size(84, 56);
+            darkGroupBox1.Size = new Size(108, 56);
             darkGroupBox1.TabIndex = 21;
             darkGroupBox1.TabStop = false;
-            darkGroupBox1.Text = "Selection";
+            darkGroupBox1.Text = "Selection Size";
             // 
             // numSelectionSize
             // 
@@ -1445,7 +1461,7 @@ namespace CrashEdit.CE.Controls
             rbtReloadTPage.Font = new Font("Microsoft Sans Serif", 10F);
             rbtReloadTPage.Group = 0;
             rbtReloadTPage.IsDerivedStyle = true;
-            rbtReloadTPage.Location = new Point(107, 278);
+            rbtReloadTPage.Location = new Point(107, 308);
             rbtReloadTPage.Name = "rbtReloadTPage";
             rbtReloadTPage.Size = new Size(19, 17);
             rbtReloadTPage.Style = MetroSet_UI.Enums.Style.Dark;
@@ -1562,6 +1578,7 @@ namespace CrashEdit.CE.Controls
             // 
             tbpExtendedTextures.AutoScroll = true;
             tbpExtendedTextures.BackColor = Color.FromArgb(31, 31, 32);
+            tbpExtendedTextures.Controls.Add(fraExTexControls);
             tbpExtendedTextures.Controls.Add(panel3);
             tbpExtendedTextures.Location = new Point(4, 32);
             tbpExtendedTextures.Name = "tbpExtendedTextures";
@@ -1569,6 +1586,55 @@ namespace CrashEdit.CE.Controls
             tbpExtendedTextures.TabIndex = 3;
             tbpExtendedTextures.Text = "Extended Textures";
             tbpExtendedTextures.Enter += tbpExtendedTextures_Enter;
+            // 
+            // fraExTexControls
+            // 
+            fraExTexControls.BackColor = Color.Transparent;
+            fraExTexControls.Controls.Add(lbExTextureInfos);
+            fraExTexControls.Controls.Add(cmdAppendExTex);
+            fraExTexControls.Controls.Add(cmdRemoveExTex);
+            fraExTexControls.Location = new Point(3, 403);
+            fraExTexControls.Name = "fraExTexControls";
+            fraExTexControls.Size = new Size(203, 78);
+            fraExTexControls.TabIndex = 3;
+            fraExTexControls.TabStop = false;
+            // 
+            // lbExTextureInfos
+            // 
+            lbExTextureInfos.AutoSize = true;
+            lbExTextureInfos.Location = new Point(87, 8);
+            lbExTextureInfos.Name = "lbExTextureInfos";
+            lbExTextureInfos.Size = new Size(51, 30);
+            lbExTextureInfos.TabIndex = 3;
+            lbExTextureInfos.Text = "Count: -\r\nOffset: -";
+            // 
+            // cmdAppendExTex
+            // 
+            cmdAppendExTex.BorderColour = Color.Empty;
+            cmdAppendExTex.CustomColour = false;
+            cmdAppendExTex.FlatBottom = false;
+            cmdAppendExTex.FlatTop = false;
+            cmdAppendExTex.Location = new Point(6, 8);
+            cmdAppendExTex.Name = "cmdAppendExTex";
+            cmdAppendExTex.Padding = new Padding(5);
+            cmdAppendExTex.Size = new Size(75, 28);
+            cmdAppendExTex.TabIndex = 2;
+            cmdAppendExTex.Text = "Append";
+            cmdAppendExTex.Click += cmdAppendExTex_Click;
+            // 
+            // cmdRemoveExTex
+            // 
+            cmdRemoveExTex.BorderColour = Color.Empty;
+            cmdRemoveExTex.CustomColour = false;
+            cmdRemoveExTex.FlatBottom = false;
+            cmdRemoveExTex.FlatTop = false;
+            cmdRemoveExTex.Location = new Point(6, 42);
+            cmdRemoveExTex.Name = "cmdRemoveExTex";
+            cmdRemoveExTex.Padding = new Padding(5);
+            cmdRemoveExTex.Size = new Size(75, 28);
+            cmdRemoveExTex.TabIndex = 2;
+            cmdRemoveExTex.Text = "Remove";
+            cmdRemoveExTex.Click += cmdRemoveExTex_Click;
             // 
             // panel3
             // 
@@ -1602,6 +1668,7 @@ namespace CrashEdit.CE.Controls
             dgvExtendedTextures.CellValidating += dgvExtendedTextures_CellValidating;
             dgvExtendedTextures.CellValueChanged += dgvExtendedTextures_CellValueChanged;
             dgvExtendedTextures.EditingControlShowing += dgvExtendedTextures_EditingControlShowing;
+            dgvExtendedTextures.SelectionChanged += dgvExtendedTextures_SelectionChanged;
             // 
             // tbpPositions
             // 
@@ -1716,6 +1783,8 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)dgvTextures).EndInit();
             tbpExtendedTextures.ResumeLayout(false);
             tbpExtendedTextures.PerformLayout();
+            fraExTexControls.ResumeLayout(false);
+            fraExTexControls.PerformLayout();
             panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvExtendedTextures).EndInit();
             tbpPositions.ResumeLayout(false);
@@ -1881,5 +1950,10 @@ namespace CrashEdit.CE.Controls
         private DarkNumericUpDown numSelectionSize;
         private Label label5;
         private Label lblEIDError;
+        private DarkButton cmdAppendExTex;
+        private DarkButton cmdRemoveExTex;
+        private DarkGroupBox fraExTexControls;
+        private DarkLabel lbExTextureInfos;
+        private DarkLabel lbTextureInfos;
     }
 }

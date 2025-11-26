@@ -225,11 +225,11 @@ namespace CrashEdit.CE.Controls
                 tbpTextures.Dispose();
 
             }
-            if (!(model.AnimatedTextures.Count > 0))
-            {
-                tabModel.Controls.Remove(tbpExtendedTextures);
-                tbpExtendedTextures.Dispose();
-            }
+            //if (!(model.AnimatedTextures.Count > 0))
+            //{
+            //    tabModel.Controls.Remove(tbpExtendedTextures);
+            //    tbpExtendedTextures.Dispose();
+            //}
             dirty.Pop();
         }
 
@@ -1725,6 +1725,7 @@ namespace CrashEdit.CE.Controls
                 lstTPages.Items[pageIndex].Selected = true;
                 //lstPages.EnsureVisible(pageIndex);
 
+                UpdateTextureInfos();
                 if (Settings.Default.OutputModelTextureInfo && dgvTextures.CurrentCell.Tag is string tags)
                 {
                     Console.WriteLine($"Row {dgvTextures.CurrentCell.RowIndex} Tags: {string.Join(", ", tags)}");
@@ -2493,6 +2494,12 @@ namespace CrashEdit.CE.Controls
             UpdatePicture();
         }
 
+        private void UpdateTextureInfos()
+        {
+            string offset = dgvTextures.SelectedCells.Count > 0 ? (dgvTextures.SelectedCells[0].RowIndex + 1).ToString() : "-";
+            lbTextureInfos.Text = $"Offset: {offset}";
+        }
+
         private void ScrollHandlerFunction(object? sender, MouseEventArgs e)
         {
             if (sender is NumericUpDown numericUpDown)
@@ -2687,6 +2694,12 @@ namespace CrashEdit.CE.Controls
             DoubleBufferedDataGridView.Initialize(dgvExtendedTextures);
             CreateExtendedTextureColumns();
             await UpdateExtendedTextureAsync();
+
+            if (!(model.AnimatedTextures.Count > 0))
+            {
+                cmdRemoveExTex.Enabled = false;
+            }
+            UpdateExTextureInfos();
 
             tbpExtendedTextures.Enter -= tbpExtendedTextures_Enter;
         }
@@ -2925,6 +2938,63 @@ namespace CrashEdit.CE.Controls
                 }
             }
         }
+
+        private void UpdateExTextureInfos()
+        {
+            string offset = dgvExtendedTextures.SelectedCells.Count > 0 ? dgvExtendedTextures.SelectedCells[0].RowIndex.ToString() : "-";
+            lbExTextureInfos.Text = $"Count: {model.AnimatedTextureCount}\r\nOffset: {offset}";
+        }
+
+        private void cmdAppendExTex_Click(object sender, EventArgs e)
+        {
+            if (model.AnimatedTextures.Count > 0)
+            {
+                DataGridViewRow row = (DataGridViewRow)dgvExtendedTextures.Rows[^1].Clone();
+                for (int i = 0; i < dgvExtendedTextures.ColumnCount; i++)
+                {
+                    row.Cells[i].Value = dgvExtendedTextures.Rows[^1].Cells[i].Value;
+                }
+                dgvExtendedTextures.Rows.Add(row);
+                model.AnimatedTextures.Add(new ModelExtendedTexture(model.AnimatedTextures[model.AnimatedTextures.Count - 1].Data));
+            }
+            else
+            {
+                DataGridViewRow row = new();
+                row.CreateCells(dgvExtendedTextures, 0, false, 0, 0, 0, false, "-", "-", "-", "-", "-", "-", "-", "-");
+                dgvExtendedTextures.Rows.Add(row);
+                model.AnimatedTextures.Add(new ModelExtendedTexture(0));
+            }
+            model.AnimatedTextureCount++;
+
+            if (cmdRemoveExTex.Enabled == false)
+            {
+                cmdRemoveExTex.Enabled = true;
+            }
+            UpdateExTextureInfos();
+        }
+
+        private void cmdRemoveExTex_Click(object sender, EventArgs e)
+        {
+            if (dgvExtendedTextures.SelectedCells.Count > 0)
+            {
+                int rowIndex = dgvExtendedTextures.SelectedCells[0].RowIndex;
+                dgvExtendedTextures.Rows.RemoveAt(rowIndex);
+                model.AnimatedTextures.RemoveAt(rowIndex);
+                model.AnimatedTextureCount--;
+
+                if (!(model.AnimatedTextures.Count > 0))
+                {
+                    cmdRemoveExTex.Enabled = false;
+                }
+                UpdateExTextureInfos();
+            }
+        }
+
+        private void dgvExtendedTextures_SelectionChanged(object sender, EventArgs e)
+        {
+            UpdateExTextureInfos();
+        }
+
         #endregion
 
         #region Positions
@@ -3076,5 +3146,7 @@ namespace CrashEdit.CE.Controls
             }
         }
         #endregion
+
+       
     }
 }
