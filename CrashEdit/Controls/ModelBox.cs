@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Globalization;
-using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
-using CrashEdit.Crash.GOOLIns;
 using static CrashEdit.CE.TextureViewer;
 using HslColor = Cyotek.Windows.Forms.HslColor;
+using Timer = System.Windows.Forms.Timer;
 
 namespace CrashEdit.CE.Controls
 {
@@ -54,6 +53,11 @@ namespace CrashEdit.CE.Controls
         private Point dragStartPoint;
         private Point initialSelectedRegionPosition;
         private Rectangle selectionSize;
+
+        private Rectangle animRect;
+        private int animStep = 0;
+        private int animDirection = 1;
+        private Timer animTimer;
 
         private bool simpleMode;
         private bool BGRAMode;
@@ -836,9 +840,17 @@ namespace CrashEdit.CE.Controls
             }
             dgvColor.RowTemplate.Height = 32;
             dgvColor.ScrollBars = ScrollBars.Vertical;
-
             dgvColor.MultiSelect = true;
+            dgvColor.SelectionMode = DataGridViewSelectionMode.CellSelect;
 
+            dgvColor.KeyDown += dgvColor_KeyDown;
+
+            // Animation Timer
+            animTimer = new Timer();
+            animTimer.Interval = 30;
+            animTimer.Tick += AnimTimer_Tick;
+
+            // Tooltips
             pictureBox2.Image = Embeds.GetIcon("Hint")!.ToBitmap();
             tipGlobalColor = new DarkToolTip();
             tipGlobalColor.SetToolTip(pictureBox2, "If multiple cells are selected,\nchanges are applied only to those cells.\nIf no cell is selected, changes are applied to all cells.");
@@ -846,6 +858,123 @@ namespace CrashEdit.CE.Controls
             ResetGlobalColorSliders();
             UpdateColorList();
             tbpColors.Enter -= tbpColors_Enter;
+        }
+
+        private void dgvColor_KeyDown(object? sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
+            {
+                if (dgvColor.SelectedCells.Count == 0) return;
+                string clipboardText = Clipboard.GetText().Trim();
+                if (string.IsNullOrEmpty(clipboardText)) return;
+
+                MatchCollection matches = Regex.Matches(clipboardText, @"#?[0-9A-Fa-f]{6}\b");
+                List<string> hexColors = matches.Cast<Match>().Select(m => m.Value).ToList();
+                if (hexColors.Count == 0) return;
+
+                var sortedCells = dgvColor.SelectedCells
+                    .Cast<DataGridViewCell>()
+                    .OrderBy(c => c.RowIndex)
+                    .ThenBy(c => c.ColumnIndex)
+                    .ToList();
+                for (int i = 0; i < hexColors.Count && i < sortedCells.Count; i++)
+                {
+                    try
+                    {
+                        var cell = sortedCells[i];
+                        if (cell.Style.ForeColor == Color.FromArgb(31, 31, 32)) return; // transparent key, do nothing
+
+                        int index = (int)cell.Tag;
+                        string hex = hexColors[i];
+                        hex = hex.Trim();
+                        if (hex.StartsWith("#"))
+                            hex = hex.Substring(1);
+                        Color color = HexToColor(hex);
+
+                        cell.Value = hex;
+                        cell.Style.BackColor = color;
+                        cell.Style.ForeColor = getBrightness(color) >= 0.5 ? Color.Black : Color.White;
+                        UpdateModelColor(color, index);
+                        colorCopy[index] = hex;
+                    }
+                    catch (FormatException)
+                    {
+                    }
+                }
+            }
+            if (e.KeyCode == Keys.Z)
+            {
+                if (tglGlobalControl.Switched)
+                    tglGlobalControl.Switched = false;
+                else
+                    tglGlobalControl.Switched = true;
+            }
+        }
+
+        private Color HexToColor(string hex)
+        {
+            if (hex.Length == 6)
+            {
+                int r = int.Parse(hex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
+                int g = int.Parse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
+                int b = int.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
+                return Color.FromArgb(r, g, b);
+            }
+            else
+            {
+                throw new FormatException("Invalid hex color format.");
+            }
+        }
+
+        private void AnimTimer_Tick(object sender, EventArgs e)
+        {
+            animStep += animDirection;
+            if (animStep >= 10) animDirection = -1;
+            if (animStep <= 0) animDirection = 1;
+
+            dgvColor.Invalidate(animRect);
+        }
+
+        private void dgvColor_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+
+            var cell = dgvColor.Rows[e.RowIndex].Cells[e.ColumnIndex];
+            cell.Style.SelectionBackColor = cell.Style.BackColor;
+            cell.Style.SelectionForeColor = cell.Style.ForeColor;
+
+            bool isSelected = cell.Selected;
+            bool isCurrent = (dgvColor.CurrentCell != null &&
+                              dgvColor.CurrentCell.RowIndex == e.RowIndex &&
+                              dgvColor.CurrentCell.ColumnIndex == e.ColumnIndex);
+            if (!isSelected) return;
+
+            e.PaintBackground(e.ClipBounds, true);
+            e.PaintContent(e.ClipBounds);
+
+            if (isCurrent)
+            {
+                Rectangle cellRect = dgvColor.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, true);
+                int thickness = 1 + animStep / 2;
+                int alpha = 100 + animStep * 15;
+                alpha = Math.Min(alpha, 255);
+
+                using Pen p = new(Color.FromArgb(alpha, Color.Gainsboro), thickness);
+                Rectangle r = e.CellBounds;
+                r.Width -= 1;
+                r.Height -= 1;
+                e.Graphics.DrawRectangle(p, r);
+            }
+            else
+            {
+                using Pen p = new(Color.Gainsboro, 1);
+                Rectangle r = e.CellBounds;
+                r.Width -= 1;
+                r.Height -= 1;
+                e.Graphics.DrawRectangle(p, r);
+            }
+
+            e.Handled = true;
         }
 
         private void UpdateColorList()
@@ -1117,6 +1246,14 @@ namespace CrashEdit.CE.Controls
         {
             if (dgvColor.SelectedCells.Count <= 0) return;
 
+            // Start animation
+            int rowIndex = dgvColor.SelectedCells[0].RowIndex;
+            int columnIndex = dgvColor.SelectedCells[0].ColumnIndex;
+            animRect = dgvColor.GetCellDisplayRectangle(columnIndex, rowIndex, true);
+            animStep = 0;
+            animDirection = 1;
+            animTimer.Start();
+
             dgvColor.Invalidate();
 
             string index = dgvColor.SelectedCells[0].Tag.ToString();
@@ -1131,7 +1268,7 @@ namespace CrashEdit.CE.Controls
             {
                 pnSliders.Enabled = true;
             }
-            
+
             Color color = GetSelectedItemColor();
             colorEditor.Color = color;
 
@@ -1144,30 +1281,6 @@ namespace CrashEdit.CE.Controls
 
             //colorWheel.Color = color;
             lblColorIndex.Text = $"Index: {index}";
-        }
-
-        private void dgvColor_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
-        {
-            if (e.RowIndex < 0 || e.ColumnIndex < 0)
-                return;
-
-            DataGridViewCell cell = dgvColor.Rows[e.RowIndex].Cells[e.ColumnIndex];
-            cell.Style.SelectionBackColor = cell.Style.BackColor;
-            cell.Style.SelectionForeColor = cell.Style.ForeColor;
-
-            if ((e.State & DataGridViewElementStates.Selected) != 0)
-            {
-                e.PaintBackground(e.ClipBounds, true);
-                e.PaintContent(e.ClipBounds);
-
-                Color color = Color.White;
-                using (Pen pen = new Pen(color, 1))
-                {
-                    Rectangle rect = new Rectangle(e.CellBounds.X, e.CellBounds.Y, e.CellBounds.Width - 1, e.CellBounds.Height - 1);
-                    e.Graphics.DrawRectangle(pen, rect);
-                }
-                e.Handled = true;
-            }
         }
 
         private void colorWheel_ColorChanged(object sender, EventArgs e)
