@@ -31,9 +31,13 @@ namespace CrashEdit.CE
         private void InitializeComponent()
         {
             fraVertice = new DarkGroupBox();
+            fraNearbyVertices = new DarkGroupBox();
+            lbDistance = new DarkLabel();
+            lstNearbyVertices = new DarkListBox();
+            chkEditNearbyVertices = new CheckBox();
+            numDistance = new DarkNumericUpDown();
             pnVertexControls = new Panel();
             cmdAppendVertice = new DarkButton();
-            cmdInsertVertice = new DarkButton();
             cmdRemoveVertice = new DarkButton();
             lblSPVertex = new Label();
             cmdNext10Vertice = new DarkButton();
@@ -49,6 +53,7 @@ namespace CrashEdit.CE
             numZ = new DarkNumericUpDown();
             numY = new DarkNumericUpDown();
             numX = new DarkNumericUpDown();
+            cmdInsertVertice = new DarkButton();
             fraGG = new DarkGroupBox();
             lblZG = new Label();
             lblYG = new Label();
@@ -98,6 +103,8 @@ namespace CrashEdit.CE
             cmdCopyOffset = new DarkButton();
             pnFrameBox = new Panel();
             fraVertice.SuspendLayout();
+            fraNearbyVertices.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numDistance).BeginInit();
             pnVertexControls.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numZ).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numY).BeginInit();
@@ -132,6 +139,7 @@ namespace CrashEdit.CE
             // 
             fraVertice.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             fraVertice.BackColor = Color.Transparent;
+            fraVertice.Controls.Add(fraNearbyVertices);
             fraVertice.Controls.Add(pnVertexControls);
             fraVertice.Controls.Add(lblSPVertex);
             fraVertice.Controls.Add(cmdNext10Vertice);
@@ -153,16 +161,73 @@ namespace CrashEdit.CE
             fraVertice.Margin = new Padding(3, 4, 3, 4);
             fraVertice.Name = "fraVertice";
             fraVertice.Padding = new Padding(3, 4, 3, 4);
-            fraVertice.Size = new Size(398, 175);
+            fraVertice.Size = new Size(612, 175);
             fraVertice.TabIndex = 1;
             fraVertice.TabStop = false;
             fraVertice.Text = "Vertice(s)";
+            // 
+            // fraNearbyVertices
+            // 
+            fraNearbyVertices.Controls.Add(lbDistance);
+            fraNearbyVertices.Controls.Add(lstNearbyVertices);
+            fraNearbyVertices.Controls.Add(chkEditNearbyVertices);
+            fraNearbyVertices.Controls.Add(numDistance);
+            fraNearbyVertices.Location = new Point(302, 19);
+            fraNearbyVertices.Name = "fraNearbyVertices";
+            fraNearbyVertices.Size = new Size(200, 149);
+            fraNearbyVertices.TabIndex = 23;
+            fraNearbyVertices.TabStop = false;
+            fraNearbyVertices.Text = "Edit Nearby Vertices";
+            // 
+            // lbDistance
+            // 
+            lbDistance.AutoSize = true;
+            lbDistance.Location = new Point(98, 84);
+            lbDistance.Name = "lbDistance";
+            lbDistance.Size = new Size(59, 15);
+            lbDistance.TabIndex = 23;
+            lbDistance.Text = "Threshold";
+            // 
+            // lstNearbyVertices
+            // 
+            lstNearbyVertices.BackColor = Color.FromArgb(26, 26, 28);
+            lstNearbyVertices.BorderStyle = BorderStyle.FixedSingle;
+            lstNearbyVertices.ForeColor = Color.FromArgb(213, 213, 213);
+            lstNearbyVertices.FormattingEnabled = true;
+            lstNearbyVertices.Location = new Point(6, 22);
+            lstNearbyVertices.Name = "lstNearbyVertices";
+            lstNearbyVertices.Size = new Size(86, 122);
+            lstNearbyVertices.TabIndex = 22;
+            lstNearbyVertices.SelectedIndexChanged += lstNearbyVertices_SelectedIndexChanged;
+            // 
+            // chkEditNearbyVertices
+            // 
+            chkEditNearbyVertices.AutoSize = true;
+            chkEditNearbyVertices.BackColor = Color.Transparent;
+            chkEditNearbyVertices.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            chkEditNearbyVertices.ForeColor = SystemColors.ControlText;
+            chkEditNearbyVertices.Location = new Point(98, 21);
+            chkEditNearbyVertices.Name = "chkEditNearbyVertices";
+            chkEditNearbyVertices.Size = new Size(68, 19);
+            chkEditNearbyVertices.TabIndex = 18;
+            chkEditNearbyVertices.Text = "Enabled";
+            chkEditNearbyVertices.UseVisualStyleBackColor = false;
+            // 
+            // numDistance
+            // 
+            numDistance.Location = new Point(98, 103);
+            numDistance.Margin = new Padding(3, 4, 3, 4);
+            numDistance.Maximum = new decimal(new int[] { 512, 0, 0, 0 });
+            numDistance.Name = "numDistance";
+            numDistance.Size = new Size(85, 23);
+            numDistance.TabIndex = 2;
+            numDistance.ValueChanged += numDistance_ValueChanged;
             // 
             // pnVertexControls
             // 
             pnVertexControls.Controls.Add(cmdAppendVertice);
             pnVertexControls.Controls.Add(cmdRemoveVertice);
-            pnVertexControls.Location = new Point(302, 19);
+            pnVertexControls.Location = new Point(514, 19);
             pnVertexControls.Name = "pnVertexControls";
             pnVertexControls.Size = new Size(92, 102);
             pnVertexControls.TabIndex = 21;
@@ -183,24 +248,6 @@ namespace CrashEdit.CE
             cmdAppendVertice.TabIndex = 5;
             cmdAppendVertice.Text = "Append";
             cmdAppendVertice.Click += cmdAppendVertice_Click;
-            // 
-            // cmdInsertVertice
-            // 
-            cmdInsertVertice.BorderColour = Color.Empty;
-            cmdInsertVertice.CustomColour = false;
-            cmdInsertVertice.FlatBottom = false;
-            cmdInsertVertice.FlatTop = false;
-            cmdInsertVertice.Font = new Font("Segoe UI", 9F);
-            cmdInsertVertice.ForeColor = SystemColors.ControlText;
-            cmdInsertVertice.Location = new Point(621, 4);
-            cmdInsertVertice.Margin = new Padding(3, 4, 3, 4);
-            cmdInsertVertice.Name = "cmdInsertVertice";
-            cmdInsertVertice.Padding = new Padding(5);
-            cmdInsertVertice.Size = new Size(86, 26);
-            cmdInsertVertice.TabIndex = 6;
-            cmdInsertVertice.Text = "Insert";
-            cmdInsertVertice.Visible = false;
-            cmdInsertVertice.Click += cmdInsertVertice_Click;
             // 
             // cmdRemoveVertice
             // 
@@ -403,6 +450,24 @@ namespace CrashEdit.CE
             numX.Size = new Size(85, 23);
             numX.TabIndex = 2;
             numX.ValueChanged += numX_ValueChanged;
+            // 
+            // cmdInsertVertice
+            // 
+            cmdInsertVertice.BorderColour = Color.Empty;
+            cmdInsertVertice.CustomColour = false;
+            cmdInsertVertice.FlatBottom = false;
+            cmdInsertVertice.FlatTop = false;
+            cmdInsertVertice.Font = new Font("Segoe UI", 9F);
+            cmdInsertVertice.ForeColor = SystemColors.ControlText;
+            cmdInsertVertice.Location = new Point(621, 4);
+            cmdInsertVertice.Margin = new Padding(3, 4, 3, 4);
+            cmdInsertVertice.Name = "cmdInsertVertice";
+            cmdInsertVertice.Padding = new Padding(5);
+            cmdInsertVertice.Size = new Size(86, 26);
+            cmdInsertVertice.TabIndex = 6;
+            cmdInsertVertice.Text = "Insert";
+            cmdInsertVertice.Visible = false;
+            cmdInsertVertice.Click += cmdInsertVertice_Click;
             // 
             // fraGG
             // 
@@ -951,11 +1016,11 @@ namespace CrashEdit.CE
             chkSyncFrames.BackColor = Color.Transparent;
             chkSyncFrames.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             chkSyncFrames.ForeColor = SystemColors.ControlText;
-            chkSyncFrames.Location = new Point(407, 92);
+            chkSyncFrames.Location = new Point(468, 274);
             chkSyncFrames.Name = "chkSyncFrames";
-            chkSyncFrames.Size = new Size(147, 19);
+            chkSyncFrames.Size = new Size(92, 19);
             chkSyncFrames.TabIndex = 18;
-            chkSyncFrames.Text = "Sync with other frames";
+            chkSyncFrames.Text = "Sync Frames";
             chkSyncFrames.UseVisualStyleBackColor = false;
             chkSyncFrames.CheckedChanged += chkSyncFrames_CheckedChanged;
             // 
@@ -979,7 +1044,7 @@ namespace CrashEdit.CE
             fraCopy.Controls.Add(cmdCopyOffset);
             fraCopy.Controls.Add(cmdCopyCollision);
             fraCopy.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            fraCopy.Location = new Point(407, 4);
+            fraCopy.Location = new Point(468, 186);
             fraCopy.Name = "fraCopy";
             fraCopy.Size = new Size(147, 82);
             fraCopy.TabIndex = 20;
@@ -1022,9 +1087,9 @@ namespace CrashEdit.CE
             // 
             // FrameBox
             // 
-            AutoScroll = true;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            AutoScroll = true;
             BackColor = Color.FromArgb(31, 31, 32);
             Controls.Add(pnFrameBox);
             Font = new Font("Microsoft Sans Serif", 9F);
@@ -1034,6 +1099,9 @@ namespace CrashEdit.CE
             Size = new Size(710, 524);
             fraVertice.ResumeLayout(false);
             fraVertice.PerformLayout();
+            fraNearbyVertices.ResumeLayout(false);
+            fraNearbyVertices.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numDistance).EndInit();
             pnVertexControls.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)numZ).EndInit();
             ((System.ComponentModel.ISupportInitialize)numY).EndInit();
@@ -1140,5 +1208,10 @@ namespace CrashEdit.CE
         private DarkButton cmdCopyOffset;
         private Panel pnFrameBox;
         private Panel pnVertexControls;
+        private DarkListBox lstNearbyVertices;
+        private CheckBox chkEditNearbyVertices;
+        private DarkGroupBox fraNearbyVertices;
+        private DarkNumericUpDown numDistance;
+        private DarkLabel lbDistance;
     }
 }

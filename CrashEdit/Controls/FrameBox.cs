@@ -24,6 +24,8 @@ namespace CrashEdit.CE
 
         private int PrevSelectedVertex = -1;
 
+        private bool editNearbyVertices => chkEditNearbyVertices.Checked;
+
         private const int XOffset = 0;
         private const int YOffset = 1;
         private const int ZOffset = 2;
@@ -101,7 +103,7 @@ namespace CrashEdit.CE
         private void MainInit()
         {
             frame.MakeVertices(model);
-            UpdateVertice();
+            UpdateVertices();
             UpdateCollision();
             UpdateOffset();
             UpdateHeaderSize();
@@ -127,11 +129,11 @@ namespace CrashEdit.CE
             {
                 PrevSelectedVertex = animationEntry.SelectedVertex;
                 vertexindex = animationEntry.SelectedVertex;
-                UpdateVertice();
+                UpdateVertices();
             }
         }
 
-        private void UpdateVertice()
+        private void UpdateVertices()
         {
             vertexdirty = true;
             if (vertexindex >= frame.Vertices.Count)
@@ -185,51 +187,87 @@ namespace CrashEdit.CE
                     lblSPVertex.Visible = false;
                 }
             }
+            UpdateNearbyVertices();
+
             vertexdirty = false;
+        }
+
+        private void UpdateNearbyVertices()
+        {
+            lstNearbyVertices.BeginUpdate();
+            lstNearbyVertices.Items.Clear();
+
+            float threshold = (float)numDistance.Value;
+            float thresholdSq = threshold * threshold;
+
+            var positions = frame.Positions;
+            int vertexCount = frame.Vertices.Count;
+            var v1 = positions[vertexindex];
+
+            for (int i = 0; i < vertexCount; ++i)
+            {
+                if (i == vertexindex)
+                    continue;
+
+                var v2 = positions[i];
+
+                float dx = v1.X - v2.X;
+                float dy = v1.Y - v2.Y;
+                float dz = v1.Z - v2.Z;
+
+                float distSq = dx * dx + dy * dy + dz * dz;
+
+                if (distSq <= thresholdSq)
+                {
+                    lstNearbyVertices.Items.Add(i);
+                }
+            }
+
+            lstNearbyVertices.EndUpdate();
         }
 
         private void cmdPreviousVertice_Click(object sender, EventArgs e)
         {
             vertexindex--;
-            UpdateVertice();
+            UpdateVertices();
         }
 
         private void cmdNextVertice_Click(object sender, EventArgs e)
         {
             vertexindex++;
-            UpdateVertice();
+            UpdateVertices();
         }
 
         private void CmdPrevious10Vertice_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < 10; ++i)
                 vertexindex--;
-            UpdateVertice();
+            UpdateVertices();
         }
 
         private void CmdNext10Vertice_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < 10; ++i)
                 vertexindex++;
-            UpdateVertice();
+            UpdateVertices();
         }
 
         private void cmdFirstVertice_Click(object sender, EventArgs e)
         {
             vertexindex = 0;
-            UpdateVertice();
+            UpdateVertices();
         }
 
         private void cmdLastVertice_Click(object sender, EventArgs e)
         {
             vertexindex = frame.Vertices.Count;
-            UpdateVertice();
+            UpdateVertices();
         }
 
         private void cmdInsertVertice_Click(object sender, EventArgs e)
         {
             //frame.Vertices.Insert(vertexindex, frame.Vertices[vertexindex]);
-            //UpdateVertice();
+            //UpdateVertices();
         }
 
         private void cmdRemoveVertice_Click(object sender, EventArgs e)
@@ -241,7 +279,7 @@ namespace CrashEdit.CE
                 frame.Vertices.RemoveAt(vertexindex - 1);
                 frame.Positions.RemoveAt(vertexindex - 1);
             }
-            UpdateVertice();
+            UpdateVertices();
         }
 
         private void cmdAppendVertice_Click(object sender, EventArgs e)
@@ -263,7 +301,7 @@ namespace CrashEdit.CE
                     frame.Positions[vertexindex] = new Position(0, 0, 0);
                 }
             }
-            UpdateVertice();
+            UpdateVertices();
         }
 
         private void UpdateCollision()
@@ -490,12 +528,17 @@ namespace CrashEdit.CE
 
         public void UpdateTemporals(Frame frame, int offset, float newV)
         {
+            UpdateTemporals(frame, offset, newV, vertexindex);
+        }
+
+        public void UpdateTemporals(Frame frame, int offset, float newV, int index)
+        {
             if (isCompresed) return;
 
             byte[] convertTemporals = BoolArrayToByteArray(frame.Temporals);
             byte[] reversedTemporals = ReverseBytesIn4ByteBlocks(convertTemporals);
 
-            int byteIndex = vertexindex * 3 + offset;
+            int byteIndex = index * 3 + offset;
             reversedTemporals[byteIndex] = ReverseBits(Convert.ToByte(newV));
 
             byte[] convertBackTemporals = ReverseBytesIn4ByteBlocks(reversedTemporals);
@@ -602,18 +645,41 @@ namespace CrashEdit.CE
                 {
                     foreach (Frame frame in animationEntry.Frames)
                     {
-                        var f = frame.Positions[vertexindex];
-                        float result = ValidateVertexValue(f.X, dif);
-                        frame.Positions[vertexindex] = new Position(result, f.Y, f.Z);
-                        UpdateTemporals(frame, XOffset, result);
+                        if (editNearbyVertices)
+                        {
+                            foreach (var v in lstNearbyVertices.Items)
+                            {
+                                int vi = int.Parse(v.ToString()!);
+                                var f = frame.Positions[vi];
+                                float result = ValidateVertexValue(f.X, dif);
+                                frame.Positions[vi] = new Position(result, f.Y, f.Z);
+                                UpdateTemporals(frame, XOffset, result, vi);
+                            }
+                        }
+                        var _f = frame.Positions[vertexindex];
+                        float _result = ValidateVertexValue(_f.X, dif);
+                        frame.Positions[vertexindex] = new Position(_result, _f.Y, _f.Z);
+                        UpdateTemporals(frame, XOffset, _result);
                     }
                 }
                 else
                 {
+                    if (editNearbyVertices)
+                    {
+                        foreach (var v in lstNearbyVertices.Items)
+                        {
+                            int vi = int.Parse(v.ToString()!);
+                            var f = frame.Positions[vi];
+                            float result = ValidateVertexValue(f.X, dif);
+                            frame.Positions[vi] = new Position(result, f.Y, f.Z);
+                            UpdateTemporals(frame, XOffset, result, vi);
+                        }
+                    }
                     Position pos = frame.Positions[vertexindex];
                     frame.Positions[vertexindex] = new Position(newV, pos.Y, pos.Z);
                     UpdateTemporals(frame, XOffset, newV);
                 }
+                UpdateNearbyVertices();
             }
         }
 
@@ -631,18 +697,41 @@ namespace CrashEdit.CE
                 {
                     foreach (Frame frame in animationEntry.Frames)
                     {
-                        var f = frame.Positions[vertexindex];
-                        float result = ValidateVertexValue(f.Y, dif);
-                        frame.Positions[vertexindex] = new Position(f.X, result, f.Z);
-                        UpdateTemporals(frame, YOffset, result);
+                        if (editNearbyVertices)
+                        {
+                            foreach (var v in lstNearbyVertices.Items)
+                            {
+                                int vi = int.Parse(v.ToString()!);
+                                var f = frame.Positions[vi];
+                                float result = ValidateVertexValue(f.Y, dif);
+                                frame.Positions[vi] = new Position(f.X, result, f.Z);
+                                UpdateTemporals(frame, YOffset, result, vi);
+                            }
+                        }
+                        var _f = frame.Positions[vertexindex];
+                        float _result = ValidateVertexValue(_f.Y, dif);
+                        frame.Positions[vertexindex] = new Position(_f.X, _result, _f.Z);
+                        UpdateTemporals(frame, YOffset, _result);
                     }
                 }
                 else
                 {
+                    if (editNearbyVertices)
+                    {
+                        foreach (var v in lstNearbyVertices.Items)
+                        {
+                            int vi = int.Parse(v.ToString()!);
+                            var f = frame.Positions[vi];
+                            float result = ValidateVertexValue(f.Y, dif);
+                            frame.Positions[vi] = new Position(f.X, result, f.Z);
+                            UpdateTemporals(frame, YOffset, result, vi);
+                        }
+                    }
                     Position pos = frame.Positions[vertexindex];
                     frame.Positions[vertexindex] = new Position(pos.X, newV, pos.Z);
                     UpdateTemporals(frame, YOffset, newV);
                 }
+                UpdateNearbyVertices();
             }
         }
 
@@ -660,18 +749,41 @@ namespace CrashEdit.CE
                 {
                     foreach (Frame frame in animationEntry.Frames)
                     {
-                        var f = frame.Positions[vertexindex];
-                        float result = ValidateVertexValue(f.Z, dif);
-                        frame.Positions[vertexindex] = new Position(f.X, f.Y, result);
-                        UpdateTemporals(frame, ZOffset, result);
+                        if (editNearbyVertices)
+                        {
+                            foreach (var v in lstNearbyVertices.Items)
+                            {
+                                int vi = int.Parse(v.ToString()!);
+                                var f = frame.Positions[vi];
+                                float result = ValidateVertexValue(f.Z, dif);
+                                frame.Positions[vi] = new Position(f.X, f.Y, result);
+                                UpdateTemporals(frame, ZOffset, result, vi);
+                            }
+                        }
+                        var _f = frame.Positions[vertexindex];
+                        float _result = ValidateVertexValue(_f.Z, dif);
+                        frame.Positions[vertexindex] = new Position(_f.X, _f.Y, _result);
+                        UpdateTemporals(frame, ZOffset, _result);
                     }
                 }
                 else
                 {
+                    if (editNearbyVertices)
+                    {
+                        foreach (var v in lstNearbyVertices.Items)
+                        {
+                            int vi = int.Parse(v.ToString()!);
+                            var f = frame.Positions[vi];
+                            float result = ValidateVertexValue(f.Z, dif);
+                            frame.Positions[vi] = new Position(f.X, f.Y, result);
+                            UpdateTemporals(frame, ZOffset, result, vi);
+                        }
+                    }
                     Position pos = frame.Positions[vertexindex];
                     frame.Positions[vertexindex] = new Position(pos.X, pos.Y, newV);
                     UpdateTemporals(frame, ZOffset, newV);
                 }
+                UpdateNearbyVertices();
             }
         }
 
@@ -690,7 +802,6 @@ namespace CrashEdit.CE
             }
             else
                 frame.XOffset = newV;
-
         }
 
         private void numYOffset_ValueChanged(object sender, EventArgs e)
@@ -989,6 +1100,20 @@ namespace CrashEdit.CE
                     frame.YOffset = (short)numYOffset.Value;
                     frame.ZOffset = (short)numZOffset.Value;
                 }
+            }
+        }
+
+        private void numDistance_ValueChanged(object sender, EventArgs e)
+        {
+            UpdateNearbyVertices();
+        }
+
+        private void lstNearbyVertices_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lstNearbyVertices.SelectedItem != null)
+            {
+                vertexindex = int.Parse(lstNearbyVertices.SelectedItem.ToString()!);
+                UpdateVertices();
             }
         }
     }
