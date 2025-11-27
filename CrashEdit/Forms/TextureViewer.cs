@@ -21,7 +21,6 @@ namespace CrashEdit.CE
 
         private bool isDragging = false;
         private Point dragStartPoint;
-        private Point initialSelectedRegionPosition;
         private int selectionSize;
         private byte[] tempTexture;
         private int tempWidth;
@@ -31,6 +30,8 @@ namespace CrashEdit.CE
 
         private bool isBGRA;
         private bool replaceCLUT;
+
+        private bool clearCLUT => chkClearCLUT.Checked;
 
         private DarkToolTip tipViewer;
 
@@ -70,6 +71,11 @@ namespace CrashEdit.CE
             {
                 if (e.Button == MouseButtons.Right && pictureBox1.Image != null && pictureBox1.Image is Bitmap bmp)
                 {
+                    if (TexX + TexW > (256 << (2 - TexColorMode)) || TexY + TexH > 128)
+                    {
+                        DarkMessageBox.ShowError("The selected region is out of bounds and cannot be exported.", "Texture Export");
+                        return;
+                    }
                     using (MemoryStream w = new MemoryStream())
                     {
                         bmp.Clone(selectedregion, PixelFormat.Format32bppArgb).Save(w, ImageFormat.Png);
@@ -132,20 +138,6 @@ namespace CrashEdit.CE
                     C2numH.Value = selectedregion.Height;
                     UpdatePicture();
                 }
-                //if (isDragging)
-                //{
-                //    int deltaX = e.X - dragStartPoint.X;
-                //    int deltaY = e.Y - dragStartPoint.Y;
-                //    int newX = initialSelectedRegionPosition.X + deltaX;
-                //    int newY = initialSelectedRegionPosition.Y + deltaY;
-                //    newX = (newX / TexW) * TexW;
-                //    newY = (newY / TexH) * TexH;
-                //    C2numX.Value = newX;
-                //    C2numY.Value = newY;
-                //    selectedregion.X = newX;
-                //    selectedregion.Y = newY;
-                //    UpdatePicture();
-                //}
             };
 
             pictureBox1.MouseUp += (sender, e) =>
@@ -296,9 +288,9 @@ namespace CrashEdit.CE
                     {
                         int pixel = colormode == 0 ? palette[chunk.Data[x / 2 + y * 512] >> ((x & 1) == 0 ? 0 : 4) & 0xF] :
                                     colormode == 1 ? palette[chunk.Data[x + y * 512]] :
-                                    colormode == 2 ? PixelConv.Convert5551_8888(BitConv.FromInt16(chunk.Data, x * 2 + y * 512), blendmode)
-                                    : throw new Exception("invalid colormode");
-                        System.Runtime.InteropServices.Marshal.WriteInt32(bdata.Scan0, x * 4 + y * bdata.Stride, pixel);
+                                    colormode == 2 ? PixelConv.Convert5551_8888(BitConv.FromInt16(chunk.Data, x * 2 + y * 512), blendmode) :
+                                    throw new Exception("invalid colormode");
+                        Marshal.WriteInt32(bdata.Scan0, x * 4 + y * bdata.Stride, pixel);
                     }
                 }
             }
@@ -427,7 +419,7 @@ namespace CrashEdit.CE
             }
             if ((int)C2numX.Value < 32 && (int)C2numY.Value == 0)
             {
-                DarkMessageBox.ShowError("Textures cannot be replaced on the header.", Resources.Title_TextureReplacement);
+                DarkMessageBox.ShowError("Textures cannot be replaced in the header.", Resources.Title_TextureReplacement);
                 return;
             }
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
@@ -515,16 +507,33 @@ namespace CrashEdit.CE
                 Array.Copy(chunk.Data, offset, tempCLUT, 0, length);
                 File.WriteAllBytes(Path.Combine(basePath, "tempCLUT"), tempCLUT);
 
-                if (e.KeyCode == Keys.X) // clear
+                if (e.KeyCode == Keys.X) // cut
                 {
                     if ((int)C2numX.Value < 32 && (int)C2numY.Value == 0)
                     {
-                        DarkMessageBox.ShowError("Textures cannot be replaced on the header.", Resources.Title_TextureReplacement);
+                        DarkMessageBox.ShowError("Textures cannot be removed in the header.", Resources.Title_TextureReplacement);
+                        Console.WriteLine("Failed to cut texture.");
+                        return;
                     }
                     else
                     {
-                        byte[] emptyChunk = new byte[65536];
+                        byte[] emptyChunk = new byte[0x10000];
                         TextureConv.ReplaceTexture(emptyChunk, chunk.Data, tempWidth, tempHeight, tempBpp, 0, 0, tempWidth, tempHeight, (int)C2numX.Value, (int)C2numY.Value, false);
+
+                        if (clearCLUT)
+                        {
+                            if ((TexColorMode == 0 && (int)C2numCX.Value == 0 && (int)C2numCY.Value == 0) || (TexColorMode == 1 && (int)C2numCY.Value == 0))
+                            {
+                                DarkMessageBox.ShowError("CLUT cannot be cleared in the header.", Resources.Title_TextureReplacement);
+                                Console.WriteLine("Failed to clear CLUT.");
+                            }
+                            else
+                            {
+                                byte[] clearCLUTData = new byte[length];
+                                Array.Copy(clearCLUTData, 0, chunk.Data, offset, length);
+                                Console.WriteLine("Cleared CLUT successfully.");
+                            }
+                        }
 
                         BitConv.ToInt32(chunk.Data, 12, Chunk.CalculateChecksum(chunk.Data));
                     }
@@ -565,7 +574,7 @@ namespace CrashEdit.CE
                 bool failed = false;
                 if ((int)C2numX.Value < 32 && (int)C2numY.Value == 0)
                 {
-                    DarkMessageBox.ShowError("Textures cannot be replaced on the header.", Resources.Title_TextureReplacement);
+                    DarkMessageBox.ShowError("Textures cannot be replaced in the header.", Resources.Title_TextureReplacement);
                     failed = true;
                 }
                 else if ((int)C2numX.Value + tempWidth > (256 << (2 - TexColorMode)) || (int)C2numY.Value + tempHeight > 128)

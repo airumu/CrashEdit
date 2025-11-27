@@ -58,6 +58,7 @@ namespace CrashEdit.CE
             groupBox1 = new DarkGroupBox();
             C1dpdColor = new DarkComboBox();
             tabC2 = new TabPage();
+            chkClearCLUT = new CheckBox();
             darkGroupBox2 = new DarkGroupBox();
             chkBGRA = new CheckBox();
             chkReplaceCLUT = new CheckBox();
@@ -433,6 +434,7 @@ namespace CrashEdit.CE
             // tabC2
             // 
             tabC2.BackColor = Color.Transparent;
+            tabC2.Controls.Add(chkClearCLUT);
             tabC2.Controls.Add(darkGroupBox2);
             tabC2.Controls.Add(darkGroupBox1);
             tabC2.Controls.Add(groupBox6);
@@ -448,6 +450,16 @@ namespace CrashEdit.CE
             tabC2.Size = new Size(1016, 185);
             tabC2.TabIndex = 1;
             tabC2.Text = "Crash 2";
+            // 
+            // chkClearCLUT
+            // 
+            chkClearCLUT.AutoSize = true;
+            chkClearCLUT.Location = new Point(691, 124);
+            chkClearCLUT.Name = "chkClearCLUT";
+            chkClearCLUT.Size = new Size(161, 19);
+            chkClearCLUT.TabIndex = 18;
+            chkClearCLUT.Text = "Clear CLUT When Cutting";
+            chkClearCLUT.UseVisualStyleBackColor = true;
             // 
             // darkGroupBox2
             // 
@@ -982,6 +994,7 @@ namespace CrashEdit.CE
             groupBox2.ResumeLayout(false);
             groupBox1.ResumeLayout(false);
             tabC2.ResumeLayout(false);
+            tabC2.PerformLayout();
             darkGroupBox2.ResumeLayout(false);
             darkGroupBox2.PerformLayout();
             darkGroupBox1.ResumeLayout(false);
@@ -1075,5 +1088,6 @@ namespace CrashEdit.CE
         private DarkNumericUpDown C2numSelectionSize;
         private Label label15;
         private Label label16;
+        private CheckBox chkClearCLUT;
     }
 }
