@@ -24,6 +24,7 @@ Images and their sources are listed below. Some have been modified or adapted.
 |FolderOpen     |![img](FolderOpen.png)     |Aha-Soft      |
 |HardDisk       |![img](HardDisk.png)       |Aha-Soft      |
 |Import         |![img](Import.png)         |Aha-Soft      |
+|ImportPlus     |![img](Import.png)         |Aha-Soft      |
 |JournalBlue    |![img](JournalBlue.gif)    |Free Icons Web|
 |JournalCode    |![img](JournalCode.gif)    |Free Icons Web|
 |JournalCyan    |![img](JournalCyan.gif)    |Free Icons Web|

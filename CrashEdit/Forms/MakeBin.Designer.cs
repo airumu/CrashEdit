@@ -210,6 +210,7 @@ namespace CrashEdit.CE.Forms
             MinimizeBox = false;
             Name = "MakeBin";
             Text = "Make BIN";
+            Icon = Embeds.GetIcon("CD");
             TransparencyKey = Color.FromArgb(31, 31, 32);
             pnOptions.ResumeLayout(false);
             pnOptions.PerformLayout();

@@ -21,7 +21,7 @@ namespace CrashEdit.CE
             AddMenu(CrashUI.Properties.Resources.NSFController_AcAddSpeechChunk, "JournalWhite", Menu_Add_SpeechChunk);
             AddMenu(CrashUI.Properties.Resources.NSFController_AcAddTextureChunk, "Painting", Menu_Add_TextureChunk);
             AddMenu(CrashUI.Properties.Resources.NSFController_AcImportChunk, "Import", Menu_Import_Chunk);
-            AddMenu(CrashUI.Properties.Resources.NSFController_AcImportEntriesIntoChunks, "", Menu_Import_Entries_Into_New_Chunks);
+            AddMenu(CrashUI.Properties.Resources.NSFController_AcImportEntriesIntoChunks, "ImportPlus", Menu_Import_Entries_Into_New_Chunks);
             if (GameVersion == GameVersion.Crash2 || GameVersion == GameVersion.Crash3)
             {
                 AddMenuSeparator();
