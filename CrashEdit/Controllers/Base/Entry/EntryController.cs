@@ -68,10 +68,11 @@ namespace CrashEdit.CE
                     Entry.EID = newentrywindow.EID;
                     EntryChunkController.NeedsNewEditor = true;
                     LegacyVerbs[0]._text = string.Format(CrashUI.Properties.Resources.EntryController_AcRename, Entry.EName);
+                    LegacyVerbs[1]._text = string.Format(CrashUI.Properties.Resources.EntryController_AcClone, Entry.EName);
                     if (this is not UnprocessedEntryController)
-                        LegacyVerbs[1]._text = string.Format(CrashUI.Properties.Resources.EntryController_AcDeprocess, Entry.EName);
+                        LegacyVerbs[2]._text = string.Format(CrashUI.Properties.Resources.EntryController_AcDeprocess, Entry.EName);
                     else
-                        LegacyVerbs[1]._text = string.Format(CrashUI.Properties.Resources.UnprocessedEntryController_AcProcess, Entry.EName);
+                        LegacyVerbs[2]._text = string.Format(CrashUI.Properties.Resources.UnprocessedEntryController_AcProcess, Entry.EName);
                 }
             }
         }
