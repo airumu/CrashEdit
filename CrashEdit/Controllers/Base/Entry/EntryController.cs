@@ -9,9 +9,11 @@ namespace CrashEdit.CE
         {
             Entry = entry;
             AddMenu(string.Format(CrashUI.Properties.Resources.EntryController_AcRename, entry.EName), "Modify", Menu_Rename_Entry);
+            AddMenu(string.Format(CrashUI.Properties.Resources.EntryController_AcClone, entry.EName), "Copy", Menu_Clone_Entry);
             if (this is not UnprocessedEntryController)
             {
                 AddMenu(string.Format(CrashUI.Properties.Resources.EntryController_AcDeprocess, entry.EName), "Pinion", Menu_Unprocess_Entry);
+                AddMenu(string.Format(CrashUI.Properties.Resources.EntryController_AcReload, entry.EName), "ArrowRefresh", Menu_Reload_Entry);
             }
         }
 
@@ -72,6 +74,52 @@ namespace CrashEdit.CE
                         LegacyVerbs[1]._text = string.Format(CrashUI.Properties.Resources.UnprocessedEntryController_AcProcess, Entry.EName);
                 }
             }
+        }
+
+        private void Menu_Clone_Entry()
+        {
+            using (NewEntryForm newentrywindow = new NewEntryForm(GetNSF(), GameVersion))
+            {
+                newentrywindow.Text = "Clone Entry";
+                newentrywindow.SetRenameMode(Entry.EName);
+                if (newentrywindow.ShowDialog() == DialogResult.OK)
+                {
+                    // create a clone by unprocessing and then reloading
+                    UnprocessedEntry unprocessed = Entry.Unprocess();
+                    UnprocessedEntry clonedUnprocessed = new UnprocessedEntry(
+                        unprocessed.Items, 
+                        newentrywindow.EID, 
+                        unprocessed.Type
+                    );
+
+                    Entry clonedProcessed;
+                    try
+                    {
+                        clonedProcessed = clonedUnprocessed.Process(GameVersion);
+                    }
+                    catch (LoadAbortedException)
+                    {
+                        return;
+                    }
+                    EntryChunkController.EntryChunk.Entries.Add(clonedProcessed);
+                }
+            }
+        }
+
+        private void Menu_Reload_Entry()
+        {
+            int index = EntryChunkController.EntryChunk.Entries.IndexOf(Entry);
+            UnprocessedEntry unprocessedentry = Entry.Unprocess();
+            Entry reloadedentry;
+            try
+            {
+                reloadedentry = unprocessedentry.Process(GameVersion);
+            }
+            catch (LoadAbortedException)
+            {
+                return;
+            }
+            EntryChunkController.EntryChunk.Entries[index] = reloadedentry;
         }
     }
 }

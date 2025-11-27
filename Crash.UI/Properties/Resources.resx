@@ -384,4 +384,10 @@
   <data name="NSFController_AcImportEntriesIntoChunks" xml:space="preserve">
     <value>Import Entries Into New Chunks</value>
   </data>
+  <data name="EntryController_AcClone" xml:space="preserve">
+    <value>Clone Entry "{0}"</value>
+  </data>
+  <data name="EntryController_AcReload" xml:space="preserve">
+    <value>Reload</value>
+  </data>
 </root>

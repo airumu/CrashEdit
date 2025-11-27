@@ -214,7 +214,29 @@ namespace CrashEdit.CrashUI.Properties {
                 return ResourceManager.GetString("EntryController_AcRename", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Rename Entry &quot;{0}&quot;.
+        /// </summary>
+        public static string EntryController_AcClone
+        {
+            get
+            {
+                return ResourceManager.GetString("EntryController_AcClone", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Rename Entry &quot;{0}&quot;.
+        /// </summary>
+        public static string EntryController_AcReload
+        {
+            get
+            {
+                return ResourceManager.GetString("EntryController_AcReload", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Frame.
         /// </summary>
