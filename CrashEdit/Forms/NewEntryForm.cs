@@ -8,11 +8,13 @@ namespace CrashEdit.CE
         private const string EntryTypeUnprocessed = "Unprocessed";
         private const string EntryTypeZone = "Zone (T7 ZDAT)";
         private const string EntryTypeGOOL = "GOOL (T11 GOOL)";
+        private const string EntryTypeSound = "Sound (T12 ADIO)";
 
         private readonly Dictionary<string, int> EntryTypes = new Dictionary<string, int>() {
             { EntryTypeUnprocessed, -1 },
             { EntryTypeZone, 7 },
-            { EntryTypeGOOL, 11 }
+            { EntryTypeGOOL, 11 },
+            { EntryTypeSound, 12 }
         };
 
         private NSF nsf;
@@ -35,6 +37,7 @@ namespace CrashEdit.CE
                 case GameVersion.Crash2:
                 case GameVersion.Crash3:
                     dpdType.Items.Add(EntryTypeGOOL);
+                    dpdType.Items.Add(EntryTypeSound);
                     break;
             }
             dpdType.SelectedIndex = 0;

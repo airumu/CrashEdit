@@ -125,6 +125,18 @@ namespace CrashEdit.CE
                                 new List<GOOLFrameGroupBase>(),
                                 newentrywindow.EID);
                             break;
+                        case 12: // sound
+                            items[0] = new byte[]
+                            {
+                                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                0x0C, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                0x00, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+                            };
+                            newentry = new SoundEntry(SampleSet.Load(items[0]), newentrywindow.EID);
+                            break;
                     }
                     if (newentry == null)
                         throw new Exception("An error occurred making a new entry.");
