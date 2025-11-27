@@ -458,7 +458,7 @@ namespace CrashEdit.CE
             chkClearCLUT.Name = "chkClearCLUT";
             chkClearCLUT.Size = new Size(161, 19);
             chkClearCLUT.TabIndex = 18;
-            chkClearCLUT.Text = "Clear CLUT When Cutting";
+            chkClearCLUT.Text = "Clear CLUT when cutting";
             chkClearCLUT.UseVisualStyleBackColor = true;
             // 
             // darkGroupBox2
