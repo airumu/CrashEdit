@@ -65,6 +65,7 @@ namespace CrashEdit.CE.Controls
         private int currentColorMode;
         private List<string> colorCopy;
 
+        private bool editNearbyVertices => chkEditNearbyVertices.Checked;
         private bool enableGuides => chkEnableGuides.Checked;
 
         internal int TexW => (int)C2numW.Value;
@@ -352,15 +353,35 @@ namespace CrashEdit.CE.Controls
         }
         #endregion
 
-        #region Structs
+        #region Vertices
 
-        private void tbpPolygons_Enter(object sender, EventArgs e)
+        private void tbpVertices_Enter(object sender, EventArgs e)
         {
-            DoubleBufferedDataGridView.Initialize(dgvStructs);
-            DoubleBufferedDataGridView.Initialize(dgvPolygons);
-            UpdateStructs();
-            UpdatePolygons();
-            tbpPolygons.Enter -= tbpPolygons_Enter;
+            DoubleBufferedDataGridView.Initialize(dgvNearbyVertices);
+            CreateNearbyVerticesColumns();
+
+            numVertexIndex.Maximum = model.Vertices.Count - 1;
+            lblVertices.Text = "Vertices: " + model.Vertices.Count;
+            SelectedVertexChanged(model.SelectedVertex == -1 ? 0 : model.SelectedVertex);
+         
+            // Timer setup
+            if (vertexCheckTimer == null)
+            {
+                vertexCheckTimer = new Timer();
+                vertexCheckTimer.Interval = 100;
+                vertexCheckTimer.Tick += VertexCheckTimer_Tick;
+            }
+            PrevSelectedVertex = model.SelectedVertex;
+            vertexCheckTimer.Start();
+
+            numVertexIndex.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
+            inpVertexX.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
+            inpVertexY.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
+            inpVertexZ.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
+            inpVertexFX.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
+            inpVertexColor.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
+
+            tbpVertices.Enter -= tbpVertices_Enter;
         }
 
         private void VertexCheckTimer_Tick(object sender, EventArgs e)
@@ -370,52 +391,226 @@ namespace CrashEdit.CE.Controls
                 PrevSelectedVertex = model.SelectedVertex;
                 SelectedVertexChanged(model.SelectedVertex);
             }
+        }
 
-            List<int> same_coord_verts = [];
+        private void CreateNearbyVerticesColumns()
+        {
+            dgvNearbyVertices.Columns.Add("Index", "Index");
+            dgvNearbyVertices.Columns.Add("FX", "FX");
+            dgvNearbyVertices.Columns.Add("ColorID", "ColorID");
+            
+            foreach (DataGridViewColumn column in dgvNearbyVertices.Columns)
+            {
+                column.SortMode = DataGridViewColumnSortMode.NotSortable;
+                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                column.Width = 64;
+                column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            }
+        }
+
+        private void UpdateNearbyVerticesGrid(int newVal)
+        {
+            dgvNearbyVertices.SuspendLayout();
+
+            dgvNearbyVertices.ClearSelection();
+            dgvNearbyVertices.CurrentCell = null;
+            dgvNearbyVertices.Rows.Clear();
+
+            int selectedRowIndex = -1;
             for (int i = 0; i < model.Vertices.Count; i++)
             {
-                if (model.Vertices[i].X == model.Vertices[model.SelectedVertex].X &&
-                    model.Vertices[i].Y == model.Vertices[model.SelectedVertex].Y &&
-                    model.Vertices[i].Z == model.Vertices[model.SelectedVertex].Z)
+                if (model.Vertices[i].X == model.Vertices[newVal].X &&
+                    model.Vertices[i].Y == model.Vertices[newVal].Y &&
+                    model.Vertices[i].Z == model.Vertices[newVal].Z)
                 {
-                    same_coord_verts.Add(i);
+                    int rowIndex = dgvNearbyVertices.Rows.Add(
+                        i,
+                        model.Vertices[i].FX,
+                        model.Vertices[i].Color
+                    );
+                    if (i == newVal)
+                        selectedRowIndex = rowIndex;
+                }
+            }
+            if (selectedRowIndex >= 0)
+            {
+                var row = dgvNearbyVertices.Rows[selectedRowIndex];
+                row.Selected = true;
+
+                if (!row.Displayed)
+                    dgvNearbyVertices.FirstDisplayedScrollingRowIndex = selectedRowIndex;
+
+                dgvNearbyVertices.CurrentCell = row.Cells[0];
+            }
+
+            dgvNearbyVertices.ResumeLayout();
+        }
+
+        private void SelectedVertexChanged(int newVal)
+        {
+            disable_inp_change = true;
+
+            model.SelectedVertex = newVal;
+            inpVertexX.Value = (decimal)model.Vertices[newVal].X;
+            inpVertexY.Value = (decimal)model.Vertices[newVal].Y;
+            inpVertexZ.Value = (decimal)model.Vertices[newVal].Z;
+            inpVertexFX.Value = model.Vertices[newVal].FX;
+            inpVertexColor.Value = model.Vertices[newVal].Color;
+            numVertexIndex.Value = (decimal)newVal;
+
+            UpdateNearbyVerticesGrid(newVal);
+
+            disable_inp_change = false;
+        }
+
+        private void ApplyNumericUpDownEdit(NumericUpDown nud)
+        {
+            var method = typeof(NumericUpDown).GetMethod(
+                "ParseEditText",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance
+            );
+            method?.Invoke(nud, null);
+        }
+
+        private void numVertexIndex_MouseWheel(object sender, MouseEventArgs e)
+        {
+            foreach (Control c in fraVertices.Controls)
+            {
+                if (c is NumericUpDown nud)
+                {
+                    ApplyNumericUpDownEdit(nud);
+                }
+            }
+        }
+
+        private void numVertexIndex_ValueChanged(object sender, EventArgs e)
+        {
+            if (disable_inp_change) return;
+
+            SelectedVertexChanged((int)numVertexIndex.Value);
+        }
+
+        private void UpdateSceneryVertex(int vi, int vx, int vy, int vz, int fx, int color)
+        {
+            var vert = model.Vertices[vi];
+            int unkX_new = (color >> 4) & 0xF;
+            int unkY_new = (fx << 2) | ((color >> 8) & 0x3);
+            int unkZ_new = color & 0xF;
+            model.Vertices[vi] = new SceneryVertex(
+                vx,
+                vy,
+                vz,
+                unkX_new,
+                unkY_new,
+                unkZ_new,
+                vert.IsC3);
+        }
+
+        private void ApplyVertexChange(
+            NumericUpDown sourceControl,
+            int dgvColumnIndex,               // 0 = index, 1 = FX, 2 = Color
+            Action<int, dynamic> applyModel)  // Update sceneray vertex
+        {
+            if (disable_inp_change) return;
+
+            int newVal = (int)sourceControl.Value;
+
+            // inverse of             
+            // public int FX => (UnknownY & (3 << 2)) >> 2;
+            // public int Color => (UnknownY & 0x3) << 8 | UnknownX << 4 | UnknownZ;
+
+            UpdateSceneryVertex(model.SelectedVertex, (int)inpVertexX.Value, (int)inpVertexY.Value, (int)inpVertexZ.Value, (int)inpVertexFX.Value, (int)inpVertexColor.Value);
+            if (dgvColumnIndex > 0)
+            {
+                if (dgvNearbyVertices.SelectedCells.Count > 0)
+                {
+                    int rowIndex = dgvNearbyVertices.SelectedCells[0].RowIndex;
+                    dgvNearbyVertices.Rows[rowIndex].Cells[dgvColumnIndex].Value = newVal;
                 }
             }
 
-            // the positioning is a bit silly
-            string txt = string.Format("\nVerts with the same position [{0}]:\n", same_coord_verts.Count);
-            for (int i = 0; i < same_coord_verts.Count; i++)
+            if (editNearbyVertices)
             {
-                int vid = same_coord_verts[i];
-                txt += vid + string.Format("   [FX: {0}, ColorID: {1}] {2}\n",
-                    model.Vertices[vid].FX,
-                    model.Vertices[vid].Color,
-                    vid == model.SelectedVertex ? " <------" : "");
+                foreach (DataGridViewRow row in dgvNearbyVertices.Rows)
+                {
+                    if (dgvColumnIndex > 0)
+                    {
+                        row.Cells[dgvColumnIndex].Value = newVal;
+                    }
+
+                    int vi = Convert.ToInt32(row.Cells[0].Value);
+                    if (vi == model.SelectedVertex) continue;
+
+                    var vert = model.Vertices[vi];
+                    applyModel(vi, vert);
+                }
             }
-
-            for (int i = 0; i < (8 - same_coord_verts.Count); i++)
-                txt += " \n";
-
-            lblVertsSimilar.Text = txt;
         }
 
-        private void tbpVertices_Enter(object sender, EventArgs e)
+        private void Vertex_ValueChanged(object sender, EventArgs e)
         {
-            numVertexIndex.Maximum = model.Vertices.Count - 1;
-            lblVertices.Text = "Vertices: " + model.Vertices.Count;
-            SelectedVertexChanged(model.SelectedVertex == -1 ? 0 : model.SelectedVertex);
+            ApplyVertexChange(
+                (NumericUpDown)sender,
+                0,
+                (vi, vert) =>
+                {
+                    UpdateSceneryVertex(vi, (int)inpVertexX.Value, (int)inpVertexY.Value, (int)inpVertexZ.Value, vert.FX, vert.Color);
+                }
+            );
+        }
 
-            // Timer setup
-            if (vertexCheckTimer == null)
+        private void VertexFX_ValueChanged(object sender, EventArgs e)
+        {
+            ApplyVertexChange(
+                inpVertexFX,
+                1,
+                (vi, vert) =>
+                {
+                    UpdateSceneryVertex(vi, vert.X, vert.Y, vert.Z, (int)inpVertexFX.Value, vert.Color);
+                }
+            );
+        }
+
+        private void VertexColor_ValueChanged(object sender, EventArgs e)
+        {
+            ApplyVertexChange(
+                inpVertexColor,
+                2,
+                (vi, vert) =>
+                {
+                    UpdateSceneryVertex(vi, vert.X, vert.Y, vert.Z, vert.FX, (int)inpVertexColor.Value);
+                }
+            );
+        }
+
+        private void dgvNearbyVertices_SelectionChanged(object sender, EventArgs e)
+        {
+            if (disable_inp_change) return;
+
+            if (dgvNearbyVertices.SelectedCells.Count > 0)
             {
-                vertexCheckTimer = new System.Windows.Forms.Timer();
-                vertexCheckTimer.Interval = 100;
-                vertexCheckTimer.Tick += VertexCheckTimer_Tick;
+                int rowIndex = dgvNearbyVertices.SelectedCells[0].RowIndex;
+                int vertexIndex = Convert.ToInt32(dgvNearbyVertices.Rows[rowIndex].Cells[0].Value);
+                SelectedVertexChanged(vertexIndex);
             }
-            PrevSelectedVertex = model.SelectedVertex;
-            vertexCheckTimer.Start();
+        }
 
-            tbpVertices.Enter -= tbpVertices_Enter;
+        private void dgvNearbyVertices_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            e.Cancel = true;
+        }
+
+        #endregion
+
+        #region Structs
+
+        private void tbpPolygons_Enter(object sender, EventArgs e)
+        {
+            DoubleBufferedDataGridView.Initialize(dgvStructs);
+            DoubleBufferedDataGridView.Initialize(dgvPolygons);
+            UpdateStructs();
+            UpdatePolygons();
+            tbpPolygons.Enter -= tbpPolygons_Enter;
         }
 
         private void UpdateStructs()

@@ -61,21 +61,23 @@ namespace CrashEdit.CE.Controls
             dgvStructs = new DataGridView();
             dgvPolygons = new DataGridView();
             tbpVertices = new TabPage();
-            lblVertices = new Label();
+            lblVertices = new DarkLabel();
+            fraNearbyVertices = new DarkGroupBox();
+            dgvNearbyVertices = new DataGridView();
             fraVertices = new DarkGroupBox();
+            lblVertColor = new Label();
+            lblVertFX = new Label();
+            lblVertZ = new Label();
+            lblVertY = new Label();
+            lblVertX = new Label();
+            lblVertexIndex = new Label();
+            chkEditNearbyVertices = new CheckBox();
             numVertexIndex = new DarkNumericUpDown();
             inpVertexX = new DarkNumericUpDown();
             inpVertexY = new DarkNumericUpDown();
             inpVertexZ = new DarkNumericUpDown();
             inpVertexFX = new DarkNumericUpDown();
             inpVertexColor = new DarkNumericUpDown();
-            lblVertexIndex = new DarkLabel();
-            lblVertX = new DarkLabel();
-            lblVertY = new DarkLabel();
-            lblVertZ = new DarkLabel();
-            lblVertFX = new DarkLabel();
-            lblVertColor = new DarkLabel();
-            lblVertsSimilar = new DarkLabel();
             tbpColors = new TabPage();
             lblColorIndex = new Label();
             fraGlobalControl = new DarkGroupBox();
@@ -165,6 +167,8 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)dgvStructs).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvPolygons).BeginInit();
             tbpVertices.SuspendLayout();
+            fraNearbyVertices.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvNearbyVertices).BeginInit();
             fraVertices.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numVertexIndex).BeginInit();
             ((System.ComponentModel.ISupportInitialize)inpVertexX).BeginInit();
@@ -554,8 +558,8 @@ namespace CrashEdit.CE.Controls
             tbpVertices.AutoScroll = true;
             tbpVertices.BackColor = Color.FromArgb(31, 31, 32);
             tbpVertices.Controls.Add(lblVertices);
+            tbpVertices.Controls.Add(fraNearbyVertices);
             tbpVertices.Controls.Add(fraVertices);
-            tbpVertices.Controls.Add(lblVertsSimilar);
             tbpVertices.Location = new Point(4, 32);
             tbpVertices.Name = "tbpVertices";
             tbpVertices.Size = new Size(1032, 1004);
@@ -566,35 +570,136 @@ namespace CrashEdit.CE.Controls
             // lblVertices
             // 
             lblVertices.AutoSize = true;
-            lblVertices.BackColor = Color.Transparent;
-            lblVertices.Font = new Font("Microsoft Sans Serif", 10F);
-            lblVertices.Location = new Point(15, 15);
+            lblVertices.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblVertices.Location = new Point(15, 12);
             lblVertices.Name = "lblVertices";
-            lblVertices.Size = new Size(69, 17);
-            lblVertices.TabIndex = 3;
+            lblVertices.Size = new Size(61, 17);
+            lblVertices.TabIndex = 14;
             lblVertices.Text = "{Vertices}";
+            // 
+            // fraNearbyVertices
+            // 
+            fraNearbyVertices.AutoSize = true;
+            fraNearbyVertices.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraNearbyVertices.BackColor = Color.Transparent;
+            fraNearbyVertices.Controls.Add(dgvNearbyVertices);
+            fraNearbyVertices.Location = new Point(192, 10);
+            fraNearbyVertices.Name = "fraNearbyVertices";
+            fraNearbyVertices.Size = new Size(232, 368);
+            fraNearbyVertices.TabIndex = 13;
+            fraNearbyVertices.TabStop = false;
+            fraNearbyVertices.Text = "Co-Located Vertices";
+            // 
+            // dgvNearbyVertices
+            // 
+            dgvNearbyVertices.AllowUserToAddRows = false;
+            dgvNearbyVertices.AllowUserToResizeColumns = false;
+            dgvNearbyVertices.AllowUserToResizeRows = false;
+            dgvNearbyVertices.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dgvNearbyVertices.ColumnHeadersHeight = 24;
+            dgvNearbyVertices.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvNearbyVertices.Location = new Point(6, 22);
+            dgvNearbyVertices.MultiSelect = false;
+            dgvNearbyVertices.Name = "dgvNearbyVertices";
+            dgvNearbyVertices.ReadOnly = true;
+            dgvNearbyVertices.RowHeadersWidth = 24;
+            dgvNearbyVertices.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dgvNearbyVertices.ScrollBars = ScrollBars.Vertical;
+            dgvNearbyVertices.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvNearbyVertices.ShowCellToolTips = false;
+            dgvNearbyVertices.Size = new Size(220, 324);
+            dgvNearbyVertices.TabIndex = 12;
+            dgvNearbyVertices.CellBeginEdit += dgvNearbyVertices_CellBeginEdit;
+            dgvNearbyVertices.SelectionChanged += dgvNearbyVertices_SelectionChanged;
             // 
             // fraVertices
             // 
+            fraVertices.BackColor = Color.Transparent;
+            fraVertices.Controls.Add(lblVertColor);
+            fraVertices.Controls.Add(lblVertFX);
+            fraVertices.Controls.Add(lblVertZ);
+            fraVertices.Controls.Add(lblVertY);
+            fraVertices.Controls.Add(lblVertX);
+            fraVertices.Controls.Add(lblVertexIndex);
+            fraVertices.Controls.Add(chkEditNearbyVertices);
             fraVertices.Controls.Add(numVertexIndex);
             fraVertices.Controls.Add(inpVertexX);
             fraVertices.Controls.Add(inpVertexY);
             fraVertices.Controls.Add(inpVertexZ);
             fraVertices.Controls.Add(inpVertexFX);
             fraVertices.Controls.Add(inpVertexColor);
-            fraVertices.Controls.Add(lblVertexIndex);
-            fraVertices.Controls.Add(lblVertX);
-            fraVertices.Controls.Add(lblVertY);
-            fraVertices.Controls.Add(lblVertZ);
-            fraVertices.Controls.Add(lblVertFX);
-            fraVertices.Controls.Add(lblVertColor);
             fraVertices.Location = new Point(10, 18);
             fraVertices.Margin = new Padding(4, 3, 4, 3);
             fraVertices.Name = "fraVertices";
             fraVertices.Padding = new Padding(4, 3, 4, 3);
-            fraVertices.Size = new Size(155, 210);
+            fraVertices.Size = new Size(172, 251);
             fraVertices.TabIndex = 9;
             fraVertices.TabStop = false;
+            // 
+            // lblVertColor
+            // 
+            lblVertColor.AutoSize = true;
+            lblVertColor.Location = new Point(10, 182);
+            lblVertColor.Name = "lblVertColor";
+            lblVertColor.Size = new Size(50, 15);
+            lblVertColor.TabIndex = 14;
+            lblVertColor.Text = "Color ID";
+            // 
+            // lblVertFX
+            // 
+            lblVertFX.AutoSize = true;
+            lblVertFX.Location = new Point(10, 152);
+            lblVertFX.Name = "lblVertFX";
+            lblVertFX.Size = new Size(20, 15);
+            lblVertFX.TabIndex = 14;
+            lblVertFX.Text = "FX";
+            // 
+            // lblVertZ
+            // 
+            lblVertZ.AutoSize = true;
+            lblVertZ.Location = new Point(10, 122);
+            lblVertZ.Name = "lblVertZ";
+            lblVertZ.Size = new Size(14, 15);
+            lblVertZ.TabIndex = 14;
+            lblVertZ.Text = "Z";
+            // 
+            // lblVertY
+            // 
+            lblVertY.AutoSize = true;
+            lblVertY.Location = new Point(10, 92);
+            lblVertY.Name = "lblVertY";
+            lblVertY.Size = new Size(14, 15);
+            lblVertY.TabIndex = 14;
+            lblVertY.Text = "Y";
+            // 
+            // lblVertX
+            // 
+            lblVertX.AutoSize = true;
+            lblVertX.Location = new Point(10, 62);
+            lblVertX.Name = "lblVertX";
+            lblVertX.Size = new Size(14, 15);
+            lblVertX.TabIndex = 14;
+            lblVertX.Text = "X";
+            // 
+            // lblVertexIndex
+            // 
+            lblVertexIndex.AutoSize = true;
+            lblVertexIndex.Location = new Point(10, 22);
+            lblVertexIndex.Name = "lblVertexIndex";
+            lblVertexIndex.Size = new Size(36, 15);
+            lblVertexIndex.TabIndex = 14;
+            lblVertexIndex.Text = "Index";
+            // 
+            // chkEditNearbyVertices
+            // 
+            chkEditNearbyVertices.AutoSize = true;
+            chkEditNearbyVertices.BackColor = Color.Transparent;
+            chkEditNearbyVertices.Location = new Point(5, 218);
+            chkEditNearbyVertices.Name = "chkEditNearbyVertices";
+            chkEditNearbyVertices.Size = new Size(166, 19);
+            chkEditNearbyVertices.TabIndex = 14;
+            chkEditNearbyVertices.Text = "Affect Co-Located Vertices";
+            chkEditNearbyVertices.UseVisualStyleBackColor = false;
             // 
             // numVertexIndex
             // 
@@ -603,7 +708,8 @@ namespace CrashEdit.CE.Controls
             numVertexIndex.Name = "numVertexIndex";
             numVertexIndex.Size = new Size(65, 23);
             numVertexIndex.TabIndex = 4;
-            numVertexIndex.ValueChanged += NumVertexIndex_ValueChanged;
+            numVertexIndex.MouseWheel += numVertexIndex_MouseWheel;
+            numVertexIndex.ValueChanged += numVertexIndex_ValueChanged;
             // 
             // inpVertexX
             // 
@@ -636,7 +742,7 @@ namespace CrashEdit.CE.Controls
             inpVertexFX.Name = "inpVertexFX";
             inpVertexFX.Size = new Size(65, 23);
             inpVertexFX.TabIndex = 8;
-            inpVertexFX.ValueChanged += Vertex_ValueChanged;
+            inpVertexFX.ValueChanged += VertexFX_ValueChanged;
             // 
             // inpVertexColor
             // 
@@ -644,77 +750,7 @@ namespace CrashEdit.CE.Controls
             inpVertexColor.Name = "inpVertexColor";
             inpVertexColor.Size = new Size(65, 23);
             inpVertexColor.TabIndex = 9;
-            inpVertexColor.ValueChanged += Vertex_ValueChanged;
-            // 
-            // lblVertexIndex
-            // 
-            lblVertexIndex.AutoSize = true;
-            lblVertexIndex.BackColor = Color.Transparent;
-            lblVertexIndex.Location = new Point(10, 20);
-            lblVertexIndex.Name = "lblVertexIndex";
-            lblVertexIndex.Size = new Size(39, 15);
-            lblVertexIndex.TabIndex = 3;
-            lblVertexIndex.Text = "Index:";
-            // 
-            // lblVertX
-            // 
-            lblVertX.AutoSize = true;
-            lblVertX.BackColor = Color.Transparent;
-            lblVertX.Location = new Point(10, 60);
-            lblVertX.Name = "lblVertX";
-            lblVertX.Size = new Size(37, 15);
-            lblVertX.TabIndex = 10;
-            lblVertX.Text = "vertX:";
-            // 
-            // lblVertY
-            // 
-            lblVertY.AutoSize = true;
-            lblVertY.BackColor = Color.Transparent;
-            lblVertY.Location = new Point(10, 90);
-            lblVertY.Name = "lblVertY";
-            lblVertY.Size = new Size(37, 15);
-            lblVertY.TabIndex = 11;
-            lblVertY.Text = "vertY:";
-            // 
-            // lblVertZ
-            // 
-            lblVertZ.AutoSize = true;
-            lblVertZ.BackColor = Color.Transparent;
-            lblVertZ.Location = new Point(10, 120);
-            lblVertZ.Name = "lblVertZ";
-            lblVertZ.Size = new Size(37, 15);
-            lblVertZ.TabIndex = 12;
-            lblVertZ.Text = "vertZ:";
-            // 
-            // lblVertFX
-            // 
-            lblVertFX.AutoSize = true;
-            lblVertFX.BackColor = Color.Transparent;
-            lblVertFX.Location = new Point(10, 150);
-            lblVertFX.Name = "lblVertFX";
-            lblVertFX.Size = new Size(23, 15);
-            lblVertFX.TabIndex = 13;
-            lblVertFX.Text = "FX:";
-            // 
-            // lblVertColor
-            // 
-            lblVertColor.AutoSize = true;
-            lblVertColor.BackColor = Color.Transparent;
-            lblVertColor.Location = new Point(10, 180);
-            lblVertColor.Name = "lblVertColor";
-            lblVertColor.Size = new Size(50, 15);
-            lblVertColor.TabIndex = 14;
-            lblVertColor.Text = "ColorID:";
-            // 
-            // lblVertsSimilar
-            // 
-            lblVertsSimilar.AutoSize = true;
-            lblVertsSimilar.BackColor = Color.Transparent;
-            lblVertsSimilar.Location = new Point(200, 15);
-            lblVertsSimilar.Name = "lblVertsSimilar";
-            lblVertsSimilar.Size = new Size(12, 15);
-            lblVertsSimilar.TabIndex = 10;
-            lblVertsSimilar.Text = "-";
+            inpVertexColor.ValueChanged += VertexColor_ValueChanged;
             // 
             // tbpColors
             // 
@@ -1730,6 +1766,8 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)dgvPolygons).EndInit();
             tbpVertices.ResumeLayout(false);
             tbpVertices.PerformLayout();
+            fraNearbyVertices.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvNearbyVertices).EndInit();
             fraVertices.ResumeLayout(false);
             fraVertices.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numVertexIndex).EndInit();
@@ -1790,48 +1828,6 @@ namespace CrashEdit.CE.Controls
             tbpPositions.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvPositions).EndInit();
             ResumeLayout(false);
-        }
-
-        private void SelectedVertexChanged(int new_val)
-        {
-            disable_inp_change = true;
-            model.SelectedVertex = new_val;
-            inpVertexX.Value = (decimal)model.Vertices[new_val].X;
-            inpVertexY.Value = (decimal)model.Vertices[new_val].Y;
-            inpVertexZ.Value = (decimal)model.Vertices[new_val].Z;
-            inpVertexFX.Value = model.Vertices[new_val].FX;
-            inpVertexColor.Value = model.Vertices[new_val].Color;
-            numVertexIndex.Value = (decimal)new_val;
-            disable_inp_change = false;
-        }
-
-        private void NumVertexIndex_ValueChanged(object sender, EventArgs e)
-        {
-            SelectedVertexChanged((int)numVertexIndex.Value);
-        }
-
-        private void Vertex_ValueChanged(object sender, EventArgs e)
-        {
-            if (disable_inp_change)
-                return;
-
-            // inverse of             
-            // public int FX => (UnknownY & (3 << 2)) >> 2;
-            // public int Color => (UnknownY & 0x3) << 8 | UnknownX << 4 | UnknownZ;
-
-            int unkX_new = (((int)inpVertexColor.Value) >> 4) & 0xF;
-            int unkY_new = ((int)inpVertexFX.Value << 2) | (((int)inpVertexColor.Value >> 8) & 0x3);
-            int unkZ_new = ((int)inpVertexColor.Value) & 0xF;
-
-            SceneryVertex vtx = model.Vertices[model.SelectedVertex];
-            model.Vertices[model.SelectedVertex] = new SceneryVertex(
-                (int)inpVertexX.Value,
-                (int)inpVertexY.Value,
-                (int)inpVertexZ.Value,
-                unkX_new,
-                unkY_new,
-                unkZ_new,
-                vtx.IsC3);
         }
 
         #endregion
@@ -1908,7 +1904,6 @@ namespace CrashEdit.CE.Controls
         private DataGridView dgvPositions;
         private Label lblColorIndex;
         private Label lblStruct;
-        private Label lblVertices;
         private DarkNumericUpDown numLowestBrightness;
         private CheckBox chkLowestBrightness;
         private DarkButton cmdClearSelection;
@@ -1919,13 +1914,6 @@ namespace CrashEdit.CE.Controls
         private DarkNumericUpDown inpVertexZ;
         private DarkNumericUpDown inpVertexFX;
         private DarkNumericUpDown inpVertexColor;
-        private DarkLabel lblVertexIndex;
-        private DarkLabel lblVertX;
-        private DarkLabel lblVertY;
-        private DarkLabel lblVertZ;
-        private DarkLabel lblVertFX;
-        private DarkLabel lblVertColor;
-        private DarkLabel lblVertsSimilar;
         private DarkGroupBox fraVertices;
         private Panel pnTextureSelect;
         private DarkGroupBox groupBox6;
@@ -1946,7 +1934,7 @@ namespace CrashEdit.CE.Controls
         private CheckBox chkEnableGuides;
         private DarkGroupBox darkGroupBox1;
         private DarkNumericUpDown darkNumericUpDown1;
-        private Label label4;
+        private Label lblVertexIndex;
         private DarkNumericUpDown numSelectionSize;
         private Label label5;
         private Label lblEIDError;
@@ -1955,5 +1943,14 @@ namespace CrashEdit.CE.Controls
         private DarkGroupBox fraExTexControls;
         private DarkLabel lbExTextureInfos;
         private DarkLabel lbTextureInfos;
+        private DataGridView dgvNearbyVertices;
+        private DarkGroupBox fraNearbyVertices;
+        private CheckBox chkEditNearbyVertices;
+        private Label lblVertX;
+        private Label lblVertColor;
+        private Label lblVertFX;
+        private Label lblVertZ;
+        private Label lblVertY;
+        private DarkLabel lblVertices;
     }
 }
