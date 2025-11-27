@@ -2419,6 +2419,15 @@ namespace CrashEdit.CE.Properties {
         }
         
         /// <summary>
+        ///   Toggle animation ({0}) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string ViewerControls_ToggleAnimation {
+            get {
+                return ResourceManager.GetString("ViewerControls_ToggleAnimation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Toggle collision boxes ({0}) に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string ViewerControls_ToggleCollisionAnim {

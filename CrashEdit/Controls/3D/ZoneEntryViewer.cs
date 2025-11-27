@@ -239,7 +239,8 @@ namespace CrashEdit.CE
                 else
                     animation_renderer.Setup(true, false);
             }
-            return animation_renderer.RenderAnimFrame(trans, _vaolist, anim, framenum, x => nsf.GetEntry<ModelEntry>(x.ModelEID), scale: scale, rot: rot);
+            return animation_renderer.RenderAnimFrame(trans, _vaolist, anim, framenum, true, 0,
+                                                      x => nsf.GetEntry<ModelEntry>(x.ModelEID), scale: scale, rot: rot);
         }
 
         private bool RenderEntityVisual(Entity entity, Vector3 trans)
