@@ -42,6 +42,7 @@ namespace CrashEdit.CE.Controls
 
         private DarkToolTip tipReloadTPage;
         private DarkToolTip tipGlobalColor;
+        private DarkToolTip tipTempVerts;
 
         private CancellationTokenSource _debounceTokenSource;
         private readonly int DebounceDelay = 50;
@@ -65,6 +66,8 @@ namespace CrashEdit.CE.Controls
         private int currentColorMode;
         private List<string> colorCopy;
 
+        private bool enableTempVertices => chkTempVertices.Checked;
+        private bool editTempVertices => chkEditTempVertices.Checked;
         private bool editNearbyVertices => chkEditNearbyVertices.Checked;
         private bool enableGuides => chkEnableGuides.Checked;
 
@@ -358,12 +361,19 @@ namespace CrashEdit.CE.Controls
         private void tbpVertices_Enter(object sender, EventArgs e)
         {
             DoubleBufferedDataGridView.Initialize(dgvNearbyVertices);
+            DoubleBufferedDataGridView.Initialize(dgvTempVertices);
             CreateNearbyVerticesColumns();
+            CreateTempVerticesColumns();
 
             numVertexIndex.Maximum = model.Vertices.Count - 1;
             lblVertices.Text = "Vertices: " + model.Vertices.Count;
             SelectedVertexChanged(model.SelectedVertex == -1 ? 0 : model.SelectedVertex);
-         
+
+            // Tooltips
+            picTempVertsHint.Image = Embeds.GetIcon("Hint")!.ToBitmap();
+            tipTempVerts = new DarkToolTip();
+            tipTempVerts.SetToolTip(picTempVertsHint, "Select a vertex to add it to the list for batch editing.");
+
             // Timer setup
             if (vertexCheckTimer == null)
             {
@@ -388,7 +398,6 @@ namespace CrashEdit.CE.Controls
         {
             if (model.SelectedVertex != PrevSelectedVertex)
             {
-                PrevSelectedVertex = model.SelectedVertex;
                 SelectedVertexChanged(model.SelectedVertex);
             }
         }
@@ -398,8 +407,23 @@ namespace CrashEdit.CE.Controls
             dgvNearbyVertices.Columns.Add("Index", "Index");
             dgvNearbyVertices.Columns.Add("FX", "FX");
             dgvNearbyVertices.Columns.Add("ColorID", "ColorID");
-            
+
             foreach (DataGridViewColumn column in dgvNearbyVertices.Columns)
+            {
+                column.SortMode = DataGridViewColumnSortMode.NotSortable;
+                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                column.Width = 64;
+                column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            }
+        }
+
+        private void CreateTempVerticesColumns()
+        {
+            dgvTempVertices.Columns.Add("Index", "Index");
+            dgvTempVertices.Columns.Add("FX", "FX");
+            dgvTempVertices.Columns.Add("ColorID", "ColorID");
+
+            foreach (DataGridViewColumn column in dgvTempVertices.Columns)
             {
                 column.SortMode = DataGridViewColumnSortMode.NotSortable;
                 column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
@@ -430,6 +454,32 @@ namespace CrashEdit.CE.Controls
                     );
                     if (i == newVal)
                         selectedRowIndex = rowIndex;
+
+                    if (enableTempVertices)
+                    {
+                        if (chkTempAddCoVerts.Checked || (!chkTempAddCoVerts.Checked && i == newVal))
+                        {
+                            bool skip = false;
+                            foreach (DataGridViewRow row in dgvTempVertices.Rows)
+                            {
+                                if (Convert.ToInt32(row.Cells[0].Value) == i)
+                                    skip = true;
+                            }
+                            if (!skip)
+                            {
+                                dgvTempVertices.Rows.Add(
+                                    i,
+                                    model.Vertices[i].FX,
+                                    model.Vertices[i].Color
+                                );
+                                if (!cmdRemoveTempVerts.Enabled)
+                                {
+                                    cmdRemoveTempVerts.Enabled =
+                                    cmdClearTempVerts.Enabled = true;
+                                }
+                            }
+                        }
+                    }
                 }
             }
             if (selectedRowIndex >= 0)
@@ -451,6 +501,7 @@ namespace CrashEdit.CE.Controls
             disable_inp_change = true;
 
             model.SelectedVertex = newVal;
+            PrevSelectedVertex = newVal;
             inpVertexX.Value = (decimal)model.Vertices[newVal].X;
             inpVertexY.Value = (decimal)model.Vertices[newVal].Y;
             inpVertexZ.Value = (decimal)model.Vertices[newVal].Z;
@@ -506,10 +557,23 @@ namespace CrashEdit.CE.Controls
                 vert.IsC3);
         }
 
+        private void UpdateValueInGrid(DataGridView dgv, int selectedVertex, int columnIndex, int newVal)
+        {
+            foreach (DataGridViewRow row in dgv.Rows)
+            {
+                int vi = Convert.ToInt32(row.Cells[0].Value);
+                if (vi == selectedVertex)
+                {
+                    row.Cells[columnIndex].Value = newVal;
+                    break;
+                }
+            }
+        }
+
         private void ApplyVertexChange(
             NumericUpDown sourceControl,
-            int dgvColumnIndex,               // 0 = index, 1 = FX, 2 = Color
-            Action<int, dynamic> applyModel)  // Update sceneray vertex
+            int dgvColumnIndex,                              // 0 = index, 1 = FX, 2 = Color
+            Action<int, dynamic, int, int, int> applyModel)  // apply sceneray vertex
         {
             if (disable_inp_change) return;
 
@@ -519,31 +583,47 @@ namespace CrashEdit.CE.Controls
             // public int FX => (UnknownY & (3 << 2)) >> 2;
             // public int Color => (UnknownY & 0x3) << 8 | UnknownX << 4 | UnknownZ;
 
+            int difX = (int)inpVertexX.Value - model.Vertices[model.SelectedVertex].X;
+            int difY = (int)inpVertexY.Value - model.Vertices[model.SelectedVertex].Y;
+            int difZ = (int)inpVertexZ.Value - model.Vertices[model.SelectedVertex].Z;
+
             UpdateSceneryVertex(model.SelectedVertex, (int)inpVertexX.Value, (int)inpVertexY.Value, (int)inpVertexZ.Value, (int)inpVertexFX.Value, (int)inpVertexColor.Value);
             if (dgvColumnIndex > 0)
             {
-                if (dgvNearbyVertices.SelectedCells.Count > 0)
-                {
-                    int rowIndex = dgvNearbyVertices.SelectedCells[0].RowIndex;
-                    dgvNearbyVertices.Rows[rowIndex].Cells[dgvColumnIndex].Value = newVal;
-                }
+                UpdateValueInGrid(dgvNearbyVertices, model.SelectedVertex, dgvColumnIndex, newVal);
+                UpdateValueInGrid(dgvTempVertices, model.SelectedVertex, dgvColumnIndex, newVal);
             }
 
-            if (editNearbyVertices)
+            DataGridView dgv;
+            DataGridView dgv_other;
+            if (editTempVertices)
             {
-                foreach (DataGridViewRow row in dgvNearbyVertices.Rows)
+                dgv = dgvTempVertices;
+                dgv_other = dgvNearbyVertices;
+            }
+            else if (editNearbyVertices)
+            {
+                dgv = dgvNearbyVertices;
+                dgv_other = dgvTempVertices;
+            }
+            else
+            {
+                return;
+            }
+
+            foreach (DataGridViewRow row in dgv.Rows)
+            {
+                int vi = Convert.ToInt32(row.Cells[0].Value);
+                if (dgvColumnIndex > 0)
                 {
-                    if (dgvColumnIndex > 0)
-                    {
-                        row.Cells[dgvColumnIndex].Value = newVal;
-                    }
-
-                    int vi = Convert.ToInt32(row.Cells[0].Value);
-                    if (vi == model.SelectedVertex) continue;
-
-                    var vert = model.Vertices[vi];
-                    applyModel(vi, vert);
+                    row.Cells[dgvColumnIndex].Value = newVal;
+                    UpdateValueInGrid(dgv_other, vi, dgvColumnIndex, newVal);
                 }
+
+                if (vi == model.SelectedVertex) continue;
+
+                var vert = model.Vertices[vi];
+                applyModel(vi, vert, difX, difY, difZ);
             }
         }
 
@@ -552,9 +632,19 @@ namespace CrashEdit.CE.Controls
             ApplyVertexChange(
                 (NumericUpDown)sender,
                 0,
-                (vi, vert) =>
+                (vi, vert, difX, difY, difZ) =>
                 {
-                    UpdateSceneryVertex(vi, (int)inpVertexX.Value, (int)inpVertexY.Value, (int)inpVertexZ.Value, vert.FX, vert.Color);
+                    if (editTempVertices)
+                    {
+                        int vx = Math.Clamp(vert.X + difX, (int)inpVertexX.Minimum, (int)inpVertexX.Maximum);
+                        int vy = Math.Clamp(vert.Y + difY, (int)inpVertexY.Minimum, (int)inpVertexY.Maximum);
+                        int vz = Math.Clamp(vert.Z + difZ, (int)inpVertexZ.Minimum, (int)inpVertexZ.Maximum);
+                        UpdateSceneryVertex(vi, vx, vy, vz, vert.FX, vert.Color);
+                    }
+                    else
+                    {
+                        UpdateSceneryVertex(vi, (int)inpVertexX.Value, (int)inpVertexY.Value, (int)inpVertexZ.Value, vert.FX, vert.Color);
+                    }
                 }
             );
         }
@@ -564,7 +654,7 @@ namespace CrashEdit.CE.Controls
             ApplyVertexChange(
                 inpVertexFX,
                 1,
-                (vi, vert) =>
+                (vi, vert, difX, difY, difZ) =>
                 {
                     UpdateSceneryVertex(vi, vert.X, vert.Y, vert.Z, (int)inpVertexFX.Value, vert.Color);
                 }
@@ -576,7 +666,7 @@ namespace CrashEdit.CE.Controls
             ApplyVertexChange(
                 inpVertexColor,
                 2,
-                (vi, vert) =>
+                (vi, vert, difX, difY, difZ) =>
                 {
                     UpdateSceneryVertex(vi, vert.X, vert.Y, vert.Z, vert.FX, (int)inpVertexColor.Value);
                 }
@@ -595,9 +685,80 @@ namespace CrashEdit.CE.Controls
             }
         }
 
-        private void dgvNearbyVertices_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        private void dgvTempVertices_SelectionChanged(object sender, EventArgs e)
+        {
+            if (disable_inp_change) return;
+
+            if (dgvTempVertices.SelectedCells.Count > 0)
+            {
+                int rowIndex = dgvTempVertices.SelectedCells[0].RowIndex;
+                int vertexIndex = Convert.ToInt32(dgvTempVertices.Rows[rowIndex].Cells[0].Value);
+                SelectedVertexChanged(vertexIndex);
+            }
+        }
+
+        private void dgvVertices_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
             e.Cancel = true;
+        }
+
+        private void cmdRemoveTempVerts_Click(object sender, EventArgs e)
+        {
+            if (dgvTempVertices.SelectedCells.Count > 0)
+            {
+                List<int> rowsToRemove = new List<int>();
+                foreach (DataGridViewCell cell in dgvTempVertices.SelectedCells)
+                {
+                    if (!rowsToRemove.Contains(cell.RowIndex))
+                    {
+                        rowsToRemove.Add(cell.RowIndex);
+                    }
+                }
+                rowsToRemove.Sort();
+                rowsToRemove.Reverse();
+                foreach (int rowIndex in rowsToRemove)
+                {
+                    dgvTempVertices.Rows.RemoveAt(rowIndex);
+                }
+
+                if (dgvTempVertices.Rows.Count == 0)
+                {
+                    dgvTempVertices.ClearSelection();
+                    dgvTempVertices.CurrentCell = null;
+                    cmdRemoveTempVerts.Enabled =
+                    cmdClearTempVerts.Enabled = false;
+                }
+            }
+        }
+
+        private void cmdClearTempVerts_Click(object sender, EventArgs e)
+        {
+            dgvTempVertices.ClearSelection();
+            dgvTempVertices.CurrentCell = null;
+            dgvTempVertices.Rows.Clear();
+            cmdRemoveTempVerts.Enabled =
+            cmdClearTempVerts.Enabled = false;
+        }
+
+        private void chkEditNearbyVertices_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkEditNearbyVertices.Checked)
+            {
+                chkEditTempVertices.Checked = false;
+            }
+        }
+
+        private void chkEditTempVertices_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkEditTempVertices.Checked)
+            {
+                chkEditNearbyVertices.Checked = false;
+            }
+        }
+
+        private void chkTempVertices_CheckedChanged(object sender, EventArgs e)
+        {
+            chkTempAddCoVerts.Enabled = chkTempVertices.Checked;
         }
 
         #endregion
@@ -3342,6 +3503,6 @@ namespace CrashEdit.CE.Controls
         }
         #endregion
 
-       
+
     }
 }

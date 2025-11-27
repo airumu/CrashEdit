@@ -61,7 +61,14 @@ namespace CrashEdit.CE.Controls
             dgvStructs = new DataGridView();
             dgvPolygons = new DataGridView();
             tbpVertices = new TabPage();
+            picTempVertsHint = new PictureBox();
             lblVertices = new DarkLabel();
+            fraTempVertices = new DarkGroupBox();
+            cmdClearTempVerts = new DarkButton();
+            cmdRemoveTempVerts = new DarkButton();
+            dgvTempVertices = new DataGridView();
+            chkTempAddCoVerts = new CheckBox();
+            chkTempVertices = new CheckBox();
             fraNearbyVertices = new DarkGroupBox();
             dgvNearbyVertices = new DataGridView();
             fraVertices = new DarkGroupBox();
@@ -71,6 +78,7 @@ namespace CrashEdit.CE.Controls
             lblVertY = new Label();
             lblVertX = new Label();
             lblVertexIndex = new Label();
+            chkEditTempVertices = new CheckBox();
             chkEditNearbyVertices = new CheckBox();
             numVertexIndex = new DarkNumericUpDown();
             inpVertexX = new DarkNumericUpDown();
@@ -152,6 +160,7 @@ namespace CrashEdit.CE.Controls
             dgvExtendedTextures = new DataGridView();
             tbpPositions = new TabPage();
             dgvPositions = new DataGridView();
+            panel4 = new Panel();
             tabModel.SuspendLayout();
             tbpGeneral.SuspendLayout();
             panel1.SuspendLayout();
@@ -167,6 +176,9 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)dgvStructs).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvPolygons).BeginInit();
             tbpVertices.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)picTempVertsHint).BeginInit();
+            fraTempVertices.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvTempVertices).BeginInit();
             fraNearbyVertices.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvNearbyVertices).BeginInit();
             fraVertices.SuspendLayout();
@@ -215,6 +227,7 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)dgvExtendedTextures).BeginInit();
             tbpPositions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvPositions).BeginInit();
+            panel4.SuspendLayout();
             SuspendLayout();
             // 
             // tabModel
@@ -558,6 +571,7 @@ namespace CrashEdit.CE.Controls
             tbpVertices.AutoScroll = true;
             tbpVertices.BackColor = Color.FromArgb(31, 31, 32);
             tbpVertices.Controls.Add(lblVertices);
+            tbpVertices.Controls.Add(fraTempVertices);
             tbpVertices.Controls.Add(fraNearbyVertices);
             tbpVertices.Controls.Add(fraVertices);
             tbpVertices.Location = new Point(4, 32);
@@ -566,6 +580,14 @@ namespace CrashEdit.CE.Controls
             tbpVertices.TabIndex = 1;
             tbpVertices.Text = "Vertices";
             tbpVertices.Enter += tbpVertices_Enter;
+            // 
+            // picTempVertsHint
+            // 
+            picTempVertsHint.Location = new Point(120, 2);
+            picTempVertsHint.Name = "picTempVertsHint";
+            picTempVertsHint.Size = new Size(16, 16);
+            picTempVertsHint.TabIndex = 15;
+            picTempVertsHint.TabStop = false;
             // 
             // lblVertices
             // 
@@ -577,15 +599,106 @@ namespace CrashEdit.CE.Controls
             lblVertices.TabIndex = 14;
             lblVertices.Text = "{Vertices}";
             // 
+            // fraTempVertices
+            // 
+            fraTempVertices.AutoSize = true;
+            fraTempVertices.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraTempVertices.BackColor = Color.Transparent;
+            fraTempVertices.Controls.Add(panel4);
+            fraTempVertices.Controls.Add(picTempVertsHint);
+            fraTempVertices.Controls.Add(dgvTempVertices);
+            fraTempVertices.Location = new Point(433, 10);
+            fraTempVertices.Name = "fraTempVertices";
+            fraTempVertices.Size = new Size(248, 560);
+            fraTempVertices.TabIndex = 13;
+            fraTempVertices.TabStop = false;
+            fraTempVertices.Text = "Temporary Vertices";
+            // 
+            // cmdClearTempVerts
+            // 
+            cmdClearTempVerts.BorderColour = Color.Empty;
+            cmdClearTempVerts.CustomColour = false;
+            cmdClearTempVerts.Enabled = false;
+            cmdClearTempVerts.FlatBottom = false;
+            cmdClearTempVerts.FlatTop = false;
+            cmdClearTempVerts.Location = new Point(3, 57);
+            cmdClearTempVerts.Name = "cmdClearTempVerts";
+            cmdClearTempVerts.Padding = new Padding(5);
+            cmdClearTempVerts.Size = new Size(75, 26);
+            cmdClearTempVerts.TabIndex = 15;
+            cmdClearTempVerts.Text = "Clear";
+            cmdClearTempVerts.Click += cmdClearTempVerts_Click;
+            // 
+            // cmdRemoveTempVerts
+            // 
+            cmdRemoveTempVerts.BorderColour = Color.Empty;
+            cmdRemoveTempVerts.CustomColour = false;
+            cmdRemoveTempVerts.Enabled = false;
+            cmdRemoveTempVerts.FlatBottom = false;
+            cmdRemoveTempVerts.FlatTop = false;
+            cmdRemoveTempVerts.Location = new Point(3, 25);
+            cmdRemoveTempVerts.Name = "cmdRemoveTempVerts";
+            cmdRemoveTempVerts.Padding = new Padding(5);
+            cmdRemoveTempVerts.Size = new Size(75, 26);
+            cmdRemoveTempVerts.TabIndex = 15;
+            cmdRemoveTempVerts.Text = "Remove";
+            cmdRemoveTempVerts.Click += cmdRemoveTempVerts_Click;
+            // 
+            // dgvTempVertices
+            // 
+            dgvTempVertices.AllowUserToAddRows = false;
+            dgvTempVertices.AllowUserToResizeColumns = false;
+            dgvTempVertices.AllowUserToResizeRows = false;
+            dgvTempVertices.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dgvTempVertices.ColumnHeadersHeight = 24;
+            dgvTempVertices.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvTempVertices.Location = new Point(6, 22);
+            dgvTempVertices.MultiSelect = false;
+            dgvTempVertices.Name = "dgvTempVertices";
+            dgvTempVertices.ReadOnly = true;
+            dgvTempVertices.RowHeadersWidth = 24;
+            dgvTempVertices.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dgvTempVertices.ScrollBars = ScrollBars.Vertical;
+            dgvTempVertices.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvTempVertices.ShowCellToolTips = false;
+            dgvTempVertices.Size = new Size(220, 424);
+            dgvTempVertices.TabIndex = 12;
+            dgvTempVertices.CellBeginEdit += dgvVertices_CellBeginEdit;
+            dgvTempVertices.SelectionChanged += dgvTempVertices_SelectionChanged;
+            // 
+            // chkTempAddCoVerts
+            // 
+            chkTempAddCoVerts.AutoSize = true;
+            chkTempAddCoVerts.BackColor = Color.Transparent;
+            chkTempAddCoVerts.Enabled = false;
+            chkTempAddCoVerts.Location = new Point(77, 3);
+            chkTempAddCoVerts.Name = "chkTempAddCoVerts";
+            chkTempAddCoVerts.Size = new Size(156, 19);
+            chkTempAddCoVerts.TabIndex = 14;
+            chkTempAddCoVerts.Text = "Add Co-Located Vertices";
+            chkTempAddCoVerts.UseVisualStyleBackColor = false;
+            // 
+            // chkTempVertices
+            // 
+            chkTempVertices.AutoSize = true;
+            chkTempVertices.BackColor = Color.Transparent;
+            chkTempVertices.Location = new Point(3, 3);
+            chkTempVertices.Name = "chkTempVertices";
+            chkTempVertices.Size = new Size(68, 19);
+            chkTempVertices.TabIndex = 14;
+            chkTempVertices.Text = "Enabled";
+            chkTempVertices.UseVisualStyleBackColor = false;
+            chkTempVertices.CheckedChanged += chkTempVertices_CheckedChanged;
+            // 
             // fraNearbyVertices
             // 
             fraNearbyVertices.AutoSize = true;
             fraNearbyVertices.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             fraNearbyVertices.BackColor = Color.Transparent;
             fraNearbyVertices.Controls.Add(dgvNearbyVertices);
-            fraNearbyVertices.Location = new Point(192, 10);
+            fraNearbyVertices.Location = new Point(195, 10);
             fraNearbyVertices.Name = "fraNearbyVertices";
-            fraNearbyVertices.Size = new Size(232, 368);
+            fraNearbyVertices.Size = new Size(232, 468);
             fraNearbyVertices.TabIndex = 13;
             fraNearbyVertices.TabStop = false;
             fraNearbyVertices.Text = "Co-Located Vertices";
@@ -607,13 +720,15 @@ namespace CrashEdit.CE.Controls
             dgvNearbyVertices.ScrollBars = ScrollBars.Vertical;
             dgvNearbyVertices.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvNearbyVertices.ShowCellToolTips = false;
-            dgvNearbyVertices.Size = new Size(220, 324);
+            dgvNearbyVertices.Size = new Size(220, 424);
             dgvNearbyVertices.TabIndex = 12;
-            dgvNearbyVertices.CellBeginEdit += dgvNearbyVertices_CellBeginEdit;
+            dgvNearbyVertices.CellBeginEdit += dgvVertices_CellBeginEdit;
             dgvNearbyVertices.SelectionChanged += dgvNearbyVertices_SelectionChanged;
             // 
             // fraVertices
             // 
+            fraVertices.AutoSize = true;
+            fraVertices.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             fraVertices.BackColor = Color.Transparent;
             fraVertices.Controls.Add(lblVertColor);
             fraVertices.Controls.Add(lblVertFX);
@@ -621,6 +736,7 @@ namespace CrashEdit.CE.Controls
             fraVertices.Controls.Add(lblVertY);
             fraVertices.Controls.Add(lblVertX);
             fraVertices.Controls.Add(lblVertexIndex);
+            fraVertices.Controls.Add(chkEditTempVertices);
             fraVertices.Controls.Add(chkEditNearbyVertices);
             fraVertices.Controls.Add(numVertexIndex);
             fraVertices.Controls.Add(inpVertexX);
@@ -632,7 +748,7 @@ namespace CrashEdit.CE.Controls
             fraVertices.Margin = new Padding(4, 3, 4, 3);
             fraVertices.Name = "fraVertices";
             fraVertices.Padding = new Padding(4, 3, 4, 3);
-            fraVertices.Size = new Size(172, 251);
+            fraVertices.Size = new Size(178, 284);
             fraVertices.TabIndex = 9;
             fraVertices.TabStop = false;
             // 
@@ -690,6 +806,18 @@ namespace CrashEdit.CE.Controls
             lblVertexIndex.TabIndex = 14;
             lblVertexIndex.Text = "Index";
             // 
+            // chkEditTempVertices
+            // 
+            chkEditTempVertices.AutoSize = true;
+            chkEditTempVertices.BackColor = Color.Transparent;
+            chkEditTempVertices.Location = new Point(5, 243);
+            chkEditTempVertices.Name = "chkEditTempVertices";
+            chkEditTempVertices.Size = new Size(160, 19);
+            chkEditTempVertices.TabIndex = 14;
+            chkEditTempVertices.Text = "Affect Temporary Vertices";
+            chkEditTempVertices.UseVisualStyleBackColor = false;
+            chkEditTempVertices.CheckedChanged += chkEditTempVertices_CheckedChanged;
+            // 
             // chkEditNearbyVertices
             // 
             chkEditNearbyVertices.AutoSize = true;
@@ -700,6 +828,7 @@ namespace CrashEdit.CE.Controls
             chkEditNearbyVertices.TabIndex = 14;
             chkEditNearbyVertices.Text = "Affect Co-Located Vertices";
             chkEditNearbyVertices.UseVisualStyleBackColor = false;
+            chkEditNearbyVertices.CheckedChanged += chkEditNearbyVertices_CheckedChanged;
             // 
             // numVertexIndex
             // 
@@ -708,8 +837,8 @@ namespace CrashEdit.CE.Controls
             numVertexIndex.Name = "numVertexIndex";
             numVertexIndex.Size = new Size(65, 23);
             numVertexIndex.TabIndex = 4;
-            numVertexIndex.MouseWheel += numVertexIndex_MouseWheel;
             numVertexIndex.ValueChanged += numVertexIndex_ValueChanged;
+            numVertexIndex.MouseWheel += numVertexIndex_MouseWheel;
             // 
             // inpVertexX
             // 
@@ -1739,6 +1868,19 @@ namespace CrashEdit.CE.Controls
             dgvPositions.CellValueChanged += dgvPositions_CellValueChanged;
             dgvPositions.EditingControlShowing += dgvPositions_EditingControlShowing;
             // 
+            // panel4
+            // 
+            panel4.AutoSize = true;
+            panel4.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panel4.Controls.Add(chkTempVertices);
+            panel4.Controls.Add(chkTempAddCoVerts);
+            panel4.Controls.Add(cmdClearTempVerts);
+            panel4.Controls.Add(cmdRemoveTempVerts);
+            panel4.Location = new Point(6, 452);
+            panel4.Name = "panel4";
+            panel4.Size = new Size(236, 86);
+            panel4.TabIndex = 16;
+            // 
             // ModelBox
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -1766,6 +1908,10 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)dgvPolygons).EndInit();
             tbpVertices.ResumeLayout(false);
             tbpVertices.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)picTempVertsHint).EndInit();
+            fraTempVertices.ResumeLayout(false);
+            fraTempVertices.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvTempVertices).EndInit();
             fraNearbyVertices.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvNearbyVertices).EndInit();
             fraVertices.ResumeLayout(false);
@@ -1827,6 +1973,8 @@ namespace CrashEdit.CE.Controls
             ((System.ComponentModel.ISupportInitialize)dgvExtendedTextures).EndInit();
             tbpPositions.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvPositions).EndInit();
+            panel4.ResumeLayout(false);
+            panel4.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -1952,5 +2100,14 @@ namespace CrashEdit.CE.Controls
         private Label lblVertZ;
         private Label lblVertY;
         private DarkLabel lblVertices;
+        private DarkGroupBox fraTempVertices;
+        private DataGridView dgvTempVertices;
+        private CheckBox chkTempVertices;
+        private DarkButton cmdClearTempVerts;
+        private DarkButton cmdRemoveTempVerts;
+        private CheckBox chkEditTempVertices;
+        private CheckBox chkTempAddCoVerts;
+        private PictureBox picTempVertsHint;
+        private Panel panel4;
     }
 }
