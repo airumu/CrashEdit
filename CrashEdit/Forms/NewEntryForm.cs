@@ -46,6 +46,9 @@ namespace CrashEdit.CE
             Text = Properties.Resources.NewEntryForm;
             fraName.Text = Properties.Resources.NewEntryForm_fraName;
             fraType.Text = Properties.Resources.NewEntryForm_fraType;
+
+            AcceptButton = cmdOK;
+            CancelButton = cmdCancel;
         }
 
         public int Type => EntryTypes[(string)dpdType.SelectedItem];
