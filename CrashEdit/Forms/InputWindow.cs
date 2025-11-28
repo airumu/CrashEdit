@@ -1,3 +1,4 @@
+using AltUI.Controls;
 using AltUI.Forms;
 
 namespace CrashEdit.CE
@@ -20,7 +21,7 @@ namespace CrashEdit.CE
 
             lblInput1.Text = labelText;
             txtInput1.Text = curText;
-            if (maxLength > 0 ) txtInput1.MaxLength = maxLength;
+            if (maxLength > 0) txtInput1.MaxLength = maxLength;
         }
 
         public InputWindow(string caption, string icon, string labelText, string curText, int maxLength, string labelText2, string curText2, int maxLength2) : this(caption, icon, labelText, curText, maxLength)
@@ -32,6 +33,15 @@ namespace CrashEdit.CE
             lblInput2.Text = labelText2;
             txtInput2.Text = curText2;
             if (maxLength2 > 0) txtInput2.MaxLength = maxLength2;
+        }
+
+        public InputWindow(string caption, string icon, string labelText, string curText, int maxLength, string hintText) : this(caption, icon, labelText, curText, maxLength)
+        {
+            pictureBox1.Visible = true;
+            pictureBox1.Image = Embeds.GetIcon("Hint")!.ToBitmap();
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            DarkToolTip toolTip = new();
+            toolTip.SetToolTip(pictureBox1, hintText);
         }
 
         public string Input => txtInput1.Text;

@@ -561,40 +561,51 @@ namespace CrashEdit.CE
         {
             if (e.KeyCode == Keys.G && e.Modifiers == Keys.Control)
             {
-                using (InputWindow inputWindow = new InputWindow(Resources.GOOLBox_Goto, "", "Enter a line address:", string.Empty, -1))
+                using (InputWindow inputWindow = new(Resources.GOOLBox_Goto, "Arrow", "Enter a line address or state code:",
+                                                     string.Empty, -1,
+                                                     "Jump to a state by typing “s<number>”.\r\nUse “c”, “t”, or “e” to jump to code, trans, or event.\r\nExample: s0, s0c, s0t, s0e"))
                 {
                     if (inputWindow.ShowDialog() == DialogResult.OK)
                     {
                         string input = inputWindow.Input;
 
-                        if (input.Contains("state"))
+                        // Serach for State_xxx_c/t/e
+                        if (input.StartsWith("s", StringComparison.OrdinalIgnoreCase))
                         {
-                            string target = "state";
-                            string numberPattern = $@"(?<={Regex.Escape(target)}\s*)[-+]?\d+";
-                            var match = Regex.Match(input, numberPattern);
+                            var m = Regex.Match(input, @"^s(?<num>\d+)(?<type>[cte]?)$", RegexOptions.IgnoreCase);
 
-                            if (match.Success)
+                            if (m.Success)
                             {
-                                int number = int.Parse(match.Value);
-                                string pattern = $@"State_{number}_code:";
+                                int number = int.Parse(m.Groups["num"].Value);
+                                string type = m.Groups["type"].Value.ToLower();
+
+                                string suffix = type switch
+                                {
+                                    "t" => "trans",
+                                    "e" => "event",
+                                    _ => "code"
+                                };
+
+                                string pattern = $"State_{number}_{suffix}";
 
                                 foreach (DataGridViewRow row in dgvCode.Rows)
                                 {
-                                    string targetCellText = row.Cells[0].Value?.ToString() ?? "";
-
-                                    if (Regex.IsMatch(targetCellText, pattern))
+                                    string text = row.Cells[0].Value?.ToString() ?? "";
+                                    if (text.Contains(pattern))
                                     {
-                                        int targetRowIndex = row.Index;
-                                        dgvCode.FirstDisplayedScrollingRowIndex = targetRowIndex;
+                                        int idx = row.Index;
+                                        dgvCode.FirstDisplayedScrollingRowIndex = idx;
                                         dgvCode.ClearSelection();
-                                        dgvCode.Rows[targetRowIndex].Selected = true;
+                                        dgvCode.Rows[idx].Selected = true;
                                         return;
                                     }
                                 }
+
                                 DarkMessageBox.ShowError("State not found.", Resources.GOOLBox_Goto);
                                 return;
                             }
                         }
+                        // Search for line index
                         else
                         {
                             if (int.TryParse(input, out int targetIndex))
