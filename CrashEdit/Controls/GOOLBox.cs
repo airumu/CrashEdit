@@ -74,10 +74,6 @@ namespace CrashEdit.CE
             contextMenuStrip.Opening += ContextMenuStrip_Opening;
             dgvCode.ContextMenuStrip = contextMenuStrip;
 
-            processedRows = new();
-            headerCount = 0;
-            addressIndex = 0;
-
             PopulateData(goolentry);
             TabsInit();
         }
@@ -176,6 +172,14 @@ namespace CrashEdit.CE
 
         private void PopulateData(GOOLEntry goolentry)
         {
+            processedRows = [];
+            headerCount = 0;
+            addressIndex = 0;
+
+            dgvCode.SuspendLayout();
+            dgvCode.ScrollBars = ScrollBars.None;
+            dgvCode.Rows.Clear();
+
             // Data container
             //var rows = new List<(string Index, string Description)>();
             var rows = dgvCode.Rows;
@@ -420,6 +424,9 @@ namespace CrashEdit.CE
 
                 rows.Add(gool + mips + invalid);
             }
+
+            dgvCode.ScrollBars = ScrollBars.Vertical;
+            dgvCode.ResumeLayout();
         }
 
         private void dgvCode_MouseDown(object sender, MouseEventArgs e)
@@ -614,7 +621,20 @@ namespace CrashEdit.CE
 
         private void dgvCode_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.G && e.Modifiers == Keys.Control)
+            if (e.KeyCode == Keys.R && e.Modifiers == Keys.Control)
+            {
+                int currentRowIndex = dgvCode.CurrentCell?.RowIndex ?? -1;
+                PopulateData(goolentry);
+                if (currentRowIndex >= 0 && currentRowIndex < dgvCode.Rows.Count)
+                {
+                    int targetRowIndex = dgvCode.Rows[currentRowIndex].Index;
+                    dgvCode.FirstDisplayedScrollingRowIndex = targetRowIndex;
+                    dgvCode.ClearSelection();
+                    dgvCode.Rows[targetRowIndex].Selected = true;
+                    dgvCode.CurrentCell = dgvCode.Rows[targetRowIndex].Cells[0];
+                }
+            }
+            else if (e.KeyCode == Keys.G && e.Modifiers == Keys.Control)
             {
                 using (InputWindow inputWindow = new(Resources.GOOLBox_Goto, "Arrow", "Enter a line address or state code:",
                                                      string.Empty, -1,

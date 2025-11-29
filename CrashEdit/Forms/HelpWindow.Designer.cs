@@ -51,6 +51,8 @@ namespace CrashEdit.CE
             lbTextureChunk = new Label();
             tableLayoutPanel1 = new TableLayoutPanel();
             flowLayoutPanel2 = new FlowLayoutPanel();
+            fraGOOL = new DarkGroupBox();
+            lbGOOL = new Label();
             fraHexViewer.SuspendLayout();
             fraNSDBox.SuspendLayout();
             fraSpawns.SuspendLayout();
@@ -64,6 +66,7 @@ namespace CrashEdit.CE
             fraTextureChunk.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
+            fraGOOL.SuspendLayout();
             SuspendLayout();
             // 
             // fraHexViewer
@@ -101,7 +104,7 @@ namespace CrashEdit.CE
             fraNSDBox.BackColor = Color.Transparent;
             fraNSDBox.Controls.Add(fraSpawns);
             fraNSDBox.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            fraNSDBox.Location = new Point(6, 164);
+            fraNSDBox.Location = new Point(6, 258);
             fraNSDBox.Name = "fraNSDBox";
             fraNSDBox.Size = new Size(279, 162);
             fraNSDBox.TabIndex = 15;
@@ -340,6 +343,7 @@ namespace CrashEdit.CE
             flowLayoutPanel2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             flowLayoutPanel2.Controls.Add(fraTextureChunk);
             flowLayoutPanel2.Controls.Add(fraTextureViewer);
+            flowLayoutPanel2.Controls.Add(fraGOOL);
             flowLayoutPanel2.Controls.Add(fraNSDBox);
             flowLayoutPanel2.Dock = DockStyle.Fill;
             flowLayoutPanel2.FlowDirection = FlowDirection.TopDown;
@@ -348,6 +352,34 @@ namespace CrashEdit.CE
             flowLayoutPanel2.Padding = new Padding(3);
             flowLayoutPanel2.Size = new Size(290, 648);
             flowLayoutPanel2.TabIndex = 17;
+            // 
+            // fraGOOL
+            // 
+            fraGOOL.AutoSize = true;
+            fraGOOL.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraGOOL.BackColor = Color.Transparent;
+            fraGOOL.Controls.Add(lbGOOL);
+            fraGOOL.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            fraGOOL.Location = new Point(6, 164);
+            fraGOOL.Name = "fraGOOL";
+            fraGOOL.Size = new Size(193, 88);
+            fraGOOL.TabIndex = 15;
+            fraGOOL.TabStop = false;
+            fraGOOL.Text = "GOOLBox";
+            // 
+            // lbGOOL
+            // 
+            lbGOOL.AutoSize = true;
+            lbGOOL.Dock = DockStyle.Fill;
+            lbGOOL.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lbGOOL.ForeColor = SystemColors.ControlText;
+            lbGOOL.Location = new Point(3, 19);
+            lbGOOL.Margin = new Padding(3);
+            lbGOOL.Name = "lbGOOL";
+            lbGOOL.Padding = new Padding(3);
+            lbGOOL.Size = new Size(187, 66);
+            lbGOOL.TabIndex = 0;
+            lbGOOL.Text = "[Right-click] Show context menu\r\n[Ctrl+C] Copy line\r\n[Ctrl+G] Goto\r\n[Ctrl+R] Reload";
             // 
             // HelpWindow
             // 
@@ -392,6 +424,8 @@ namespace CrashEdit.CE
             tableLayoutPanel1.PerformLayout();
             flowLayoutPanel2.ResumeLayout(false);
             flowLayoutPanel2.PerformLayout();
+            fraGOOL.ResumeLayout(false);
+            fraGOOL.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -417,5 +451,7 @@ namespace CrashEdit.CE
         private DarkGroupBox darkGroupBox2;
         private TableLayoutPanel tableLayoutPanel1;
         private FlowLayoutPanel flowLayoutPanel2;
+        private DarkGroupBox fraGOOL;
+        private Label lbGOOL;
     }
 }
