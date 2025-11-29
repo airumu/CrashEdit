@@ -1,16 +1,19 @@
+using System.Media;
 using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.Crash;
 using MetroSet_UI.Controls;
-using System.Media;
+using NAudio.Wave;
 
 namespace CrashEdit.CE
 {
     public sealed class SoundBox : UserControl
     {
         private SampleSet samples;
+        private SampleSet sampleset;
+        private byte[] pcm;
 
-        private SoundPlayer spPlayer;
+        private WaveOutEvent spPlayer;
 
         private SoundEntry soundentry;
         private SpeechEntry speechentry;
@@ -26,13 +29,21 @@ namespace CrashEdit.CE
         private MetroSetTrackBar trkSampleRate;
         private Label lblSampleRate;
         private DarkNumericUpDown numSampleRate;
+        private CheckBox chkLoop;
+
+        private int samplerate
+        {
+            get
+            {
+                return (int)(trkSampleRate.Value / 256.0 * (11025 / 4.0));
+            }
+        }
 
         private void UpdateSampleRate()
         {
-            int smpe = (int)(trkSampleRate.Value / 256.0 * (11025 / 4.0));
             double smpe2 = trkSampleRate.Value / 256.0;
-            cmdPlay.Text = string.Format("Play ({0}Hz)", smpe);
-            cmdExport.Text = string.Format("Export ({0}Hz)", smpe);
+            cmdPlay.Text = string.Format("Play ({0}Hz)", samplerate);
+            cmdExport.Text = string.Format("Export ({0}Hz)", samplerate);
             lblSampleRate.Text = string.Format("Sample Rate: {0:0.000}", smpe2);
         }
 
@@ -42,7 +53,11 @@ namespace CrashEdit.CE
             isSpeech = title.Contains("Speech");
             DoubleBuffered = true;
 
-            spPlayer = new SoundPlayer();
+            spPlayer = new WaveOutEvent()
+            {
+                DesiredLatency = 80,  // 80ms
+                NumberOfBuffers = 2
+            };
 
             tbbImport = new ToolStripButton();
             tbbImport.Text = "Import";
@@ -86,25 +101,31 @@ namespace CrashEdit.CE
                 UpdateSampleRate();
             };
 
-            int smp = (int)(trkSampleRate.Value / 256.0 * (11025 / 4.0));
+            chkLoop = new CheckBox()
+            {
+                Text = "Loop",
+                Dock = DockStyle.Fill,
+                ForeColor = SystemColors.ControlText,
+                BackColor = Color.Transparent,
+                Checked = true
+            };
+
             cmdPlay = new DarkButton()
             {
                 Dock = DockStyle.Fill,
-                //Style = MetroSet_UI.Enums.Style.Dark,
-                Text = string.Format("Play ({0}Hz)", smp)
+                Text = string.Format("Play ({0}Hz)", samplerate)
             };
-            /*            cmdPlay.ForeColor = SystemColors.ControlText;
-                        cmdPlay.BackColor = SystemColors.Window;*/
             cmdPlay.Click += new EventHandler(cmdPlay_Click);
+            cmdPlay.LostFocus += (s, e) =>
+            { 
+                spPlayer.Stop(); 
+            };
 
             cmdExport = new DarkButton()
             {
                 Dock = DockStyle.Fill,
-                //Style = MetroSet_UI.Enums.Style.Dark,
-                Text = string.Format("Export ({0}Hz)", smp)
+                Text = string.Format("Export ({0}Hz)", samplerate)
             };
-            /*            cmdExport.ForeColor = SystemColors.ControlText;
-                        cmdExport.BackColor = SystemColors.Window;*/
             cmdExport.Click += new EventHandler(cmdExport_Click);
 
             lblSampleRate = new Label()
@@ -115,6 +136,8 @@ namespace CrashEdit.CE
                 TextAlign = ContentAlignment.TopRight,
                 Dock = DockStyle.Fill
             };
+
+            soundInit();
 
             pnOptions = new TableLayoutPanel();
             pnOptions.Dock = DockStyle.Fill;
@@ -132,20 +155,35 @@ namespace CrashEdit.CE
             pnOptions.Controls.Add(cmdExport, 1, 0);
             pnOptions.Controls.Add(trkSampleRate, 1, 1);
             pnOptions.Controls.Add(lblSampleRate, 0, 1);
+            pnOptions.Controls.Add(chkLoop, 0, 2);
             pnOptions.Controls.Add(numSampleRate, 1, 2);
 
             Controls.Add(pnOptions);
             Controls.Add(tsToolbar);
         }
 
+        private void soundInit()
+        {
+            loadPcm(out SampleSet sampleset, out byte[] pcm);
+            this.sampleset = sampleset;
+            this.pcm = pcm;
+
+            if (sampleset.LoopStart < 0)
+            {
+                sampleset.LoopStart = 0;
+                chkLoop.Checked = false;
+                chkLoop.Enabled = false;
+            }
+        }
+
         void cmdPlay_Click(object sender, EventArgs e)
         {
-            Play((int)(trkSampleRate.Value / 256.0 * (11025 / 4.0)));
+            Play();
         }
 
         void cmdExport_Click(object sender, EventArgs e)
         {
-            ExportWave((int)(trkSampleRate.Value / 256.0 * (11025 / 4.0)));
+            ExportWave(samplerate);
         }
 
         public SoundBox(SoundEntry entry) : this(entry.Samples, entry.Title)
@@ -187,11 +225,61 @@ namespace CrashEdit.CE
             FileUtil.SaveFile(samples.Save(), FileFilters.Any);
         }
 
-        private void Play(int samplerate)
+        private void loadPcm(out SampleSet sampleset, out byte[] pcmdata)
         {
-            byte[] wave = WaveConv.ToWave(samples.ToPCM(), samplerate).Save();
+            List<byte> pcm = [];
+            double s0 = 0.0;
+            double s1 = 0.0;
+            samples.LoopStart = -1;
+            foreach (SampleLine sampleline in samples.SampleLines)
+            {
+                if (sampleline.Flags == SampleLineFlags.LoopStart || sampleline.Flags == SampleLineFlags.LoopStartAlt)
+                {
+                    samples.LoopStart = pcm.Count;
+                }
+
+                pcm.AddRange(sampleline.ToPCM(ref s0, ref s1));
+
+                if (sampleline.Flags == SampleLineFlags.StopEnvelope)
+                {
+                    samples.LoopEnd = pcm.Count;
+                    break;
+                }
+                if (sampleline.Flags == SampleLineFlags.LoopEnd)
+                {
+                    samples.LoopEnd = pcm.Count;
+                    break;
+                }
+            }
+
+            sampleset = samples;
+            pcmdata = pcm.ToArray();
+        }
+
+        private void Play()
+        {
+            // byte[] pcm = WaveConv.ToWave(samples.ToPCM(), samplerate).Save();
+            var ms = new MemoryStream(pcm);
+
+            WaveFormat format = new(samplerate, 16, 1);  // 16bit mono
+            RawSourceWaveStream reader = new(ms, format);
+
+            LoopStream loop = new(reader)
+            {
+                LoopStart = sampleset.LoopStart,
+                LoopEnd = sampleset.LoopEnd
+            };
+
             spPlayer.Stop();
-            spPlayer.Stream = new MemoryStream(wave);
+            // spPlayer.Stream = new MemoryStream(wave);
+            if (chkLoop.Checked)
+            {
+                spPlayer.Init(loop);
+            }
+            else
+            {
+                spPlayer.Init(reader);
+            }
             spPlayer.Play();
         }
 
@@ -209,6 +297,49 @@ namespace CrashEdit.CE
                 spPlayer.Stop();
                 spPlayer.Dispose();
             }
+        }
+    }
+
+    public class LoopStream : WaveStream
+    {
+        private readonly WaveStream source;
+        public long LoopStart { get; set; }
+        public long LoopEnd { get; set; }
+
+        public LoopStream(WaveStream sourceStream)
+        {
+            source = sourceStream;
+            LoopStart = 0;
+            LoopEnd = sourceStream.Length;
+        }
+
+        public override WaveFormat WaveFormat => source.WaveFormat;
+        public override long Length => source.Length;
+
+        public override long Position
+        {
+            get => source.Position;
+            set => source.Position = value;
+        }
+
+        public override int Read(byte[] buffer, int offset, int count)
+        {
+            int bytesRead = source.Read(buffer, offset, count);
+
+            if (Position >= LoopEnd)
+            {
+                Position = LoopStart;
+            }
+
+            if (bytesRead < count)
+            {
+                Position = LoopStart;
+                int additionalBytes = source.Read(
+                    buffer, offset + bytesRead, count - bytesRead);
+                bytesRead += additionalBytes;
+            }
+
+            return bytesRead;
         }
     }
 }
