@@ -104,7 +104,7 @@ namespace CrashEdit.CE
             fraNSDBox.BackColor = Color.Transparent;
             fraNSDBox.Controls.Add(fraSpawns);
             fraNSDBox.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            fraNSDBox.Location = new Point(6, 258);
+            fraNSDBox.Location = new Point(6, 273);
             fraNSDBox.Name = "fraNSDBox";
             fraNSDBox.Size = new Size(279, 162);
             fraNSDBox.TabIndex = 15;
@@ -362,7 +362,7 @@ namespace CrashEdit.CE
             fraGOOL.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             fraGOOL.Location = new Point(6, 164);
             fraGOOL.Name = "fraGOOL";
-            fraGOOL.Size = new Size(193, 88);
+            fraGOOL.Size = new Size(193, 103);
             fraGOOL.TabIndex = 15;
             fraGOOL.TabStop = false;
             fraGOOL.Text = "GOOLBox";
@@ -377,9 +377,9 @@ namespace CrashEdit.CE
             lbGOOL.Margin = new Padding(3);
             lbGOOL.Name = "lbGOOL";
             lbGOOL.Padding = new Padding(3);
-            lbGOOL.Size = new Size(187, 66);
+            lbGOOL.Size = new Size(187, 81);
             lbGOOL.TabIndex = 0;
-            lbGOOL.Text = "[Right-click] Show context menu\r\n[Ctrl+C] Copy line\r\n[Ctrl+G] Goto\r\n[Ctrl+R] Reload";
+            lbGOOL.Text = "[Right-click] Show context menu\r\n[F2] Edit instruction\r\n[Ctrl+C] Copy line\r\n[Ctrl+G] Goto\r\n[Ctrl+R] Reload";
             // 
             // HelpWindow
             // 

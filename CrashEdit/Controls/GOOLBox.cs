@@ -70,11 +70,11 @@ namespace CrashEdit.CE
             dgvCode.MouseDown += dgvCode_MouseDown;
             dgvCode.KeyDown += dgvCode_KeyDown;
             ContextMenuStrip contextMenuStrip = new ContextMenuStrip();
-            contextMenuStrip.Items.Add("Copy Offset as hex", null, CopyOffsetToClipboard);
+            contextMenuStrip.Items.Add("Copy offset as hex (Ctrl + X)", null, CopyOffsetToClipboard);
             contextMenuStrip.Opening += ContextMenuStrip_Opening;
             dgvCode.ContextMenuStrip = contextMenuStrip;
 
-            PopulateData(goolentry);
+            PopulateData();
             TabsInit();
         }
 
@@ -170,7 +170,7 @@ namespace CrashEdit.CE
 
         #region Code
 
-        private void PopulateData(GOOLEntry goolentry)
+        private void PopulateData()
         {
             processedRows = [];
             headerCount = 0;
@@ -619,20 +619,85 @@ namespace CrashEdit.CE
             }
         }
 
+        private static int SwapEndian(int value)
+        {
+            return (value >> 24) |
+                   ((value >> 8) & 0x0000FF00) |
+                   ((value << 8) & 0x00FF0000) |
+                    (value << 24);
+        }
+
+        private void refreshScreen()
+        {
+            int firstDisplayed = dgvCode.FirstDisplayedScrollingRowIndex;
+            int currentRow = dgvCode.CurrentCell?.RowIndex ?? -1;
+            int currentCol = dgvCode.CurrentCell?.ColumnIndex ?? -1;
+
+            var selectedRows = dgvCode.SelectedRows
+                .Cast<DataGridViewRow>()
+                .Select(r => r.Index)
+                .ToList();
+
+            PopulateData();
+
+            if (firstDisplayed >= 0 && firstDisplayed < dgvCode.Rows.Count)
+                dgvCode.FirstDisplayedScrollingRowIndex = firstDisplayed;
+
+            dgvCode.ClearSelection();
+            foreach (int idx in selectedRows)
+            {
+                if (idx < dgvCode.Rows.Count)
+                    dgvCode.Rows[idx].Selected = true;
+            }
+
+            if (currentRow >= 0 &&
+                currentRow < dgvCode.Rows.Count &&
+                currentCol >= 0 &&
+                currentCol < dgvCode.Columns.Count)
+            {
+                dgvCode.CurrentCell = dgvCode.Rows[currentRow].Cells[currentCol];
+            }
+        }
+
         private void dgvCode_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.R && e.Modifiers == Keys.Control)
+            if (e.KeyCode == Keys.F2)
             {
-                int currentRowIndex = dgvCode.CurrentCell?.RowIndex ?? -1;
-                PopulateData(goolentry);
-                if (currentRowIndex >= 0 && currentRowIndex < dgvCode.Rows.Count)
+                if (dgvCode.SelectedCells.Count == 0) return;
+                if (!dgvCode.SelectedCells[0].Value.ToString().Contains('#')) return;
+
+                int i = int.Parse(dgvCode.SelectedCells[0].Value.ToString().Split(' ')[0]);
+                GOOLInstruction ins = goolentry.Instructions[i];
+                string hexvalue = SwapEndian(ins.Value).ToString("X8");
+
+                using (InputWindow inputWindow = new("Edit Instruction", "Modify", "Enter a value to replace:", hexvalue, 8))
                 {
-                    int targetRowIndex = dgvCode.Rows[currentRowIndex].Index;
-                    dgvCode.FirstDisplayedScrollingRowIndex = targetRowIndex;
-                    dgvCode.ClearSelection();
-                    dgvCode.Rows[targetRowIndex].Selected = true;
-                    dgvCode.CurrentCell = dgvCode.Rows[targetRowIndex].Cells[0];
+                    if (inputWindow.ShowDialog() == DialogResult.OK)
+                    {
+                        string input = inputWindow.Input;
+                        if (int.TryParse(input, System.Globalization.NumberStyles.HexNumber, null, out int newValue) && input.Length == 8)
+                        {
+                            newValue = SwapEndian(newValue);
+                            bool isMIPS = ins is MIPSInstruction;
+                            goolentry.Instructions[i] = goolentry.LoadInstruction(newValue, isMIPS);
+                            refreshScreen();
+                        }
+                        else
+                        {
+                            DarkMessageBox.ShowError("Invalid input.", "Edit Instruction");
+                            return;
+                        }
+                    }
                 }
+            }
+            else if (e.KeyCode == Keys.X && e.Modifiers == Keys.Control)
+            {
+                CopyOffsetToClipboard(sender, e);
+                e.Handled = true;
+            }
+            else if (e.KeyCode == Keys.R && e.Modifiers == Keys.Control)
+            {
+                refreshScreen();
             }
             else if (e.KeyCode == Keys.G && e.Modifiers == Keys.Control)
             {

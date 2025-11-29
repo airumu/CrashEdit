@@ -25,7 +25,7 @@ namespace CrashEdit.Crash
             }
         }
 
-        internal GOOLInstruction LoadInstruction(int ins, bool mips)
+        public GOOLInstruction LoadInstruction(int ins, bool mips)
         {
             if (!mips)
             {
