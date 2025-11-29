@@ -1019,6 +1019,11 @@ namespace CrashEdit.CE
                     {
                         textbox.KeyPress -= TextBox_KeyPress;
                     }
+
+                    if (dgvFrameGroup.SelectedCells[0].ColumnIndex == ColEID)
+                    {
+                        textbox.MaxLength = 5;
+                    }
                 }
             }
         }

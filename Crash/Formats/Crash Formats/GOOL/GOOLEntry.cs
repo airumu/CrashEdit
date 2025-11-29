@@ -119,8 +119,28 @@ namespace CrashEdit.Crash
         public IList<GOOLStateDescriptor> StateDescriptors => statedescriptors;
         public IList<GOOLFrameGroupBase> FrameGroups => framegroups;
 
-        public int ID => BitConv.FromInt32(Header, 0);
-        public int Class => BitConv.FromInt32(Header, 4);
+        public int ID
+        {
+            get
+            {
+                return BitConv.FromInt32(Header, 0);
+            }
+            set
+            {
+                BitConv.ToInt32(Header, 0, value);
+            }
+        }
+        public int Class
+        {
+            get
+            {
+                return BitConv.FromInt32(Header, 4);
+            }
+            set
+            {
+                BitConv.ToInt32(Header, 4, value);
+            }
+        }
         public int Format => BitConv.FromInt32(Header, 8);
         public int HeapBase => BitConv.FromInt32(Header, 12);
         public int EventCount => BitConv.FromInt32(Header, 16);

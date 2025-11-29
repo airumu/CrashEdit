@@ -181,7 +181,7 @@ namespace CrashEdit.CE
             dgvTexture.RowHeadersWidth = 24;
             dgvTexture.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dgvTexture.ShowCellToolTips = false;
-            dgvTexture.Size = new Size(446, 403);
+            dgvTexture.Size = new Size(446, 400);
             dgvTexture.TabIndex = 0;
             dgvTexture.Visible = false;
             dgvTexture.CellBeginEdit += dgvTexture_CellBeginEdit;
@@ -204,7 +204,7 @@ namespace CrashEdit.CE
             dgvFrameGroup.RowHeadersWidth = 24;
             dgvFrameGroup.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dgvFrameGroup.ShowCellToolTips = false;
-            dgvFrameGroup.Size = new Size(338, 403);
+            dgvFrameGroup.Size = new Size(338, 400);
             dgvFrameGroup.TabIndex = 0;
             dgvFrameGroup.CellBeginEdit += dgvFrameGroup_CellBeginEdit;
             dgvFrameGroup.CellValidating += dgvFrameGroup_CellValidating;
