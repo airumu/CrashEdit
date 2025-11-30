@@ -139,10 +139,10 @@
     <value>デモ ({0})</value>
   </data>
   <data name="EntryController_AcDelete" xml:space="preserve">
-    <value>エントリ 「{0}」 の削除</value>
+    <value>エントリの削除</value>
   </data>
   <data name="EntryController_AcDeprocess" xml:space="preserve">
-    <value>エントリ 「{0}」 の未処理化</value>
+    <value>エントリの未処理化</value>
   </data>
   <data name="GameVersionForm_Message" xml:space="preserve">
     <value>ゲームバージョンを選択してください。NTSC-U 版、NTSC-J 版及び PAL 版は全てサポートされています。</value>
@@ -310,10 +310,10 @@
     <value>エントリをインポート</value>
   </data>
   <data name="EntryController_AcExport" xml:space="preserve">
-    <value>エントリ 「{0}」 を保存</value>
+    <value>エントリを保存</value>
   </data>
   <data name="EntryController_AcRename" xml:space="preserve">
-    <value>エントリ 「{0}」 の名前を変更</value>
+    <value>エントリの名前を変更</value>
   </data>
   <data name="NSFController_AcAddOldSoundChunk" xml:space="preserve">
     <value>旧サウンドチャンクの追加</value>
@@ -384,10 +384,10 @@
   <data name="NSFController_AcImportEntriesIntoChunks" xml:space="preserve">
     <value>Import Entries Into New Chunks</value>
   </data>
-  <data name="EntryController_AcClone" xml:space="preserve">
-    <value>エントリ 「{0}」 のクローン</value>
+  <data name="EntryController_AcDuplicate" xml:space="preserve">
+    <value>エントリの複製</value>
   </data>
   <data name="EntryController_AcReload" xml:space="preserve">
-    <value>エントリ 「{0}」 の再読み込み</value>
+    <value>再読み込み</value>
   </data>
 </root>

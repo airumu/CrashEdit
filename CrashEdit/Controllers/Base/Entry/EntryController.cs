@@ -9,7 +9,7 @@ namespace CrashEdit.CE
         {
             Entry = entry;
             AddMenu(string.Format(CrashUI.Properties.Resources.EntryController_AcRename, entry.EName), "Modify", Menu_Rename_Entry);
-            AddMenu(string.Format(CrashUI.Properties.Resources.EntryController_AcClone, entry.EName), "Copy", Menu_Clone_Entry);
+            AddMenu(string.Format(CrashUI.Properties.Resources.EntryController_AcDuplicate, entry.EName), "Copy", Menu_Duplicate_Entry);
             if (this is not UnprocessedEntryController)
             {
                 AddMenu(string.Format(CrashUI.Properties.Resources.EntryController_AcDeprocess, entry.EName), "Pinion", Menu_Unprocess_Entry);
@@ -68,7 +68,7 @@ namespace CrashEdit.CE
                     Entry.EID = newentrywindow.EID;
                     EntryChunkController.NeedsNewEditor = true;
                     LegacyVerbs[0]._text = string.Format(CrashUI.Properties.Resources.EntryController_AcRename, Entry.EName);
-                    LegacyVerbs[1]._text = string.Format(CrashUI.Properties.Resources.EntryController_AcClone, Entry.EName);
+                    LegacyVerbs[1]._text = string.Format(CrashUI.Properties.Resources.EntryController_AcDuplicate, Entry.EName);
                     if (this is not UnprocessedEntryController)
                         LegacyVerbs[2]._text = string.Format(CrashUI.Properties.Resources.EntryController_AcDeprocess, Entry.EName);
                     else
@@ -77,11 +77,11 @@ namespace CrashEdit.CE
             }
         }
 
-        private void Menu_Clone_Entry()
+        private void Menu_Duplicate_Entry()
         {
             using (NewEntryForm newentrywindow = new NewEntryForm(GetNSF(), GameVersion))
             {
-                newentrywindow.Text = "Clone Entry";
+                newentrywindow.Text = "Duplicate Entry";
                 newentrywindow.SetRenameMode(Entry.EName);
                 if (newentrywindow.ShowDialog() == DialogResult.OK)
                 {

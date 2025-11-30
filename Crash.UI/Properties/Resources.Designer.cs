@@ -182,11 +182,11 @@ namespace CrashEdit.CrashUI.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Clone Entry &quot;{0}&quot;.
         /// </summary>
-        public static string EntryController_AcClone
+        public static string EntryController_AcDuplicate
         {
             get
             {
-                return ResourceManager.GetString("EntryController_AcClone", resourceCulture);
+                return ResourceManager.GetString("EntryController_AcDuplicate", resourceCulture);
             }
         }
 
