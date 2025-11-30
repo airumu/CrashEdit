@@ -235,17 +235,6 @@ namespace CrashEdit.CE
             lblArgAs.Text = MakeArgAsText();
             chkSettingHex_CheckedChanged(null, null);
 
-            tipVictim = new DarkToolTip();
-            tipVictim.SetToolTip(lbVictimID, Resources.EntityBox_tipLists);
-            tipEIDA = new DarkToolTip();
-            tipEIDA.SetToolTip(lbEIDA, Resources.EntityBox_tipLists);
-            tipEIDB = new DarkToolTip();
-            tipEIDB.SetToolTip(lbEIDB, Resources.EntityBox_tipLists);
-            tipEntityA = new DarkToolTip();
-            tipEntityA.SetToolTip(lbEntityA, Resources.EntityBox_tipLists);
-            tipEntityB = new DarkToolTip();
-            tipEntityB.SetToolTip(lbEntityB, Resources.EntityBox_tipLists);
-
             // use a Timer because of PAL switch
             argtexttimer = new()
             {
@@ -276,26 +265,6 @@ namespace CrashEdit.CE
                 }
             };
             tbcTabs.SelectedIndexChanged += tabChangedHandler;
-
-            tipOverrideId = new DarkToolTip();
-            tipOverrideMult = new DarkToolTip();
-
-            lblHelpOverrideId = new Label();
-            lblHelpOverrideId.Text = "(?)";
-            lblHelpOverrideId.AutoSize = true;
-            lblHelpOverrideId.Location = new Point(110, chkDrawOverrideId.Top);
-            lblHelpOverrideId.Cursor = Cursors.Help;
-            fraDrawOverrides.Controls.Add(lblHelpOverrideId);
-
-            lblHelpOverrideMult = new Label();
-            lblHelpOverrideMult.Text = "(?)";
-            lblHelpOverrideMult.AutoSize = true;
-            lblHelpOverrideMult.Location = new Point(110, chkDrawOverrideMult.Top);
-            lblHelpOverrideMult.Cursor = Cursors.Help;
-            fraDrawOverrides.Controls.Add(lblHelpOverrideMult);
-
-            tipOverrideId.SetToolTip(lblHelpOverrideId, "c2export rebuild_dl: \nposition override ID\nWhen making draw lists,\nuses position of other entity\n(must be from same zone).");
-            tipOverrideMult.SetToolTip(lblHelpOverrideMult, "c2export rebuild_dl: \ndistance multiplier\nWhen making draw lists,\nallowed distance is\nmultipled by this / 100.");
         }
 
         #region General
@@ -1197,6 +1166,30 @@ namespace CrashEdit.CE
             UpdateDDASection();
             UpdateDDASettings();
             UpdateDrawOverride();
+
+            tipVictim = new DarkToolTip();
+            tipVictim.SetToolTip(lbVictimID, Resources.EntityBox_tipLists);
+
+            tipOverrideId = new DarkToolTip();
+            tipOverrideMult = new DarkToolTip();
+
+            lblHelpOverrideId = new Label();
+            lblHelpOverrideId.Text = "(?)";
+            lblHelpOverrideId.AutoSize = true;
+            lblHelpOverrideId.Location = new Point(110, chkDrawOverrideId.Top);
+            lblHelpOverrideId.Cursor = Cursors.Help;
+            fraDrawOverrides.Controls.Add(lblHelpOverrideId);
+
+            lblHelpOverrideMult = new Label();
+            lblHelpOverrideMult.Text = "(?)";
+            lblHelpOverrideMult.AutoSize = true;
+            lblHelpOverrideMult.Location = new Point(110, chkDrawOverrideMult.Top);
+            lblHelpOverrideMult.Cursor = Cursors.Help;
+            fraDrawOverrides.Controls.Add(lblHelpOverrideMult);
+
+            tipOverrideId.SetToolTip(lblHelpOverrideId, "c2export rebuild_dl: \nposition override ID\nWhen making draw lists,\nuses position of other entity\n(must be from same zone).");
+            tipOverrideMult.SetToolTip(lblHelpOverrideMult, "c2export rebuild_dl: \ndistance multiplier\nWhen making draw lists,\nallowed distance is\nmultipled by this / 100.");
+
             if (controller.GetNSF().Version == GameVersion.Crash3)
             {
                 UpdateScaling();
@@ -1206,8 +1199,11 @@ namespace CrashEdit.CE
             else
             {
                 tabSpecial.Controls.Remove(fraTTReward);
+                fraTTReward.Dispose();
                 tabSpecial.Controls.Remove(fraOtherSettings);
+                fraOtherSettings.Dispose();
                 tabSpecial.Controls.Remove(fraScaling);
+                fraScaling.Dispose();
             }
             tabSpecial.Enter -= tabSpecial_Enter;
         }
@@ -2139,6 +2135,12 @@ namespace CrashEdit.CE
             LoadEIDBList();
             UpdateLoadListA();
             UpdateLoadListB();
+
+            tipEIDA = new DarkToolTip();
+            tipEIDA.SetToolTip(lbEIDA, Resources.EntityBox_tipLists);
+            tipEIDB = new DarkToolTip();
+            tipEIDB.SetToolTip(lbEIDB, Resources.EntityBox_tipLists);
+
             tabLoadLists.Enter -= tabLoadLists_Enter;
         }
 
@@ -3008,6 +3010,12 @@ namespace CrashEdit.CE
             UpdateDrawListB();
             LoadDrawListAList();
             LoadDrawListBList();
+
+            tipEntityA = new DarkToolTip();
+            tipEntityA.SetToolTip(lbEntityA, Resources.EntityBox_tipLists);
+            tipEntityB = new DarkToolTip();
+            tipEntityB.SetToolTip(lbEntityB, Resources.EntityBox_tipLists);
+
             tabDrawLists.Enter -= tabDrawLists_Enter;
         }
 
