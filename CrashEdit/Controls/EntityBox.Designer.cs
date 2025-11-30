@@ -3458,7 +3458,7 @@ namespace CrashEdit.CE
             Margin = new Padding(4, 3, 4, 3);
             Name = "EntityBox";
             Size = new Size(600, 600);
-            VisibleChanged += entityBox_VisibleChanged;
+            VisibleChanged += EntityBox_VisibleChanged;
             ((System.ComponentModel.ISupportInitialize)numType).EndInit();
             fraType.ResumeLayout(false);
             fraType.PerformLayout();
