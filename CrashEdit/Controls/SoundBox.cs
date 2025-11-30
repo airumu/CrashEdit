@@ -1,35 +1,21 @@
-using System.Media;
-using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.Crash;
-using MetroSet_UI.Controls;
 using NAudio.Wave;
 
 namespace CrashEdit.CE
 {
-    public sealed class SoundBox : UserControl
+    public partial class SoundBox : UserControl
     {
+        private WaveOutEvent spPlayer;
+
         private SampleSet samples;
         private SampleSet sampleset;
         private byte[] pcm;
 
-        private WaveOutEvent spPlayer;
-
-        private SoundEntry soundentry;
-        private SpeechEntry speechentry;
+        private SoundEntry? soundentry = null;
+        private SpeechEntry? speechentry = null;
 
         private bool isSpeech;
-
-        private ToolStrip tsToolbar;
-        private ToolStripButton tbbImport;
-        private ToolStripButton tbbExport;
-        private TableLayoutPanel pnOptions;
-        private DarkButton cmdPlay;
-        private DarkButton cmdExport;
-        private MetroSetTrackBar trkSampleRate;
-        private Label lblSampleRate;
-        private DarkNumericUpDown numSampleRate;
-        private CheckBox chkLoop;
 
         private int samplerate
         {
@@ -39,127 +25,37 @@ namespace CrashEdit.CE
             }
         }
 
-        private void UpdateSampleRate()
-        {
-            double smpe2 = trkSampleRate.Value / 256.0;
-            cmdPlay.Text = string.Format("Play ({0}Hz)", samplerate);
-            cmdExport.Text = string.Format("Export ({0}Hz)", samplerate);
-            lblSampleRate.Text = string.Format("Sample Rate: {0:0.000}", smpe2);
-        }
-
         public SoundBox(SampleSet samples, string title)
         {
             this.samples = samples;
             isSpeech = title.Contains("Speech");
             DoubleBuffered = true;
 
+            InitializeComponent();
+
             spPlayer = new WaveOutEvent()
             {
                 DesiredLatency = 80,  // 80ms
                 NumberOfBuffers = 2
             };
-
-            tbbImport = new ToolStripButton();
-            tbbImport.Text = "Import";
-            tbbImport.Click += new EventHandler(tbbImport_Click);
-
-            tbbExport = new ToolStripButton();
-            tbbExport.Text = "Export";
-            tbbExport.Click += new EventHandler(tbbExport_Click);
-
-            tsToolbar = new ToolStrip();
-            tsToolbar.Dock = DockStyle.Top;
-            tsToolbar.Items.Add(tbbImport);
-            tsToolbar.Items.Add(tbbExport);
-
-            trkSampleRate = new MetroSetTrackBar
-            {
-                Minimum = 0,
-                Maximum = 16 * 256,
-                TickFrequency = 16,
-                Value = isSpeech ? 2048 : 1024,
-                Dock = DockStyle.Fill,
-                Style = MetroSet_UI.Enums.Style.Dark
-            };
-            trkSampleRate.ValueChanged += (object sender, EventArgs e) =>
-            {
-                numSampleRate.Value = (int)trkSampleRate.Value;
-                UpdateSampleRate();
-            };
-
-            numSampleRate = new DarkNumericUpDown()
-            {
-                Minimum = 0,
-                Maximum = 16 * 256,
-                Value = 1024,
-                Hexadecimal = true,
-                Dock = DockStyle.Fill
-            };
-            numSampleRate.ValueChanged += (object sender, EventArgs e) =>
-            {
-                trkSampleRate.Value = (int)numSampleRate.Value;
-                UpdateSampleRate();
-            };
-
-            chkLoop = new CheckBox()
-            {
-                Text = "Loop",
-                Dock = DockStyle.Fill,
-                ForeColor = SystemColors.ControlText,
-                BackColor = Color.Transparent,
-                Checked = true
-            };
-
-            cmdPlay = new DarkButton()
-            {
-                Dock = DockStyle.Fill,
-                Text = string.Format("Play ({0}Hz)", samplerate)
-            };
-            cmdPlay.Click += new EventHandler(cmdPlay_Click);
-            cmdPlay.LostFocus += (s, e) =>
-            { 
-                spPlayer.Stop(); 
-            };
-
-            cmdExport = new DarkButton()
-            {
-                Dock = DockStyle.Fill,
-                Text = string.Format("Export ({0}Hz)", samplerate)
-            };
-            cmdExport.Click += new EventHandler(cmdExport_Click);
-
-            lblSampleRate = new Label()
-            {
-                ForeColor = SystemColors.ControlText,
-                BackColor = Color.Transparent,
-                Text = string.Format("Sample Rate: {0:0.000}", trkSampleRate.Value / 256.0),
-                TextAlign = ContentAlignment.TopRight,
-                Dock = DockStyle.Fill
-            };
-
             soundInit();
 
-            pnOptions = new TableLayoutPanel();
-            pnOptions.Dock = DockStyle.Fill;
-            pnOptions.BackColor = Color.FromArgb(31, 31, 32);
-            pnOptions.ColumnCount = 2;
-            pnOptions.RowCount = 4;
-            pnOptions.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
-            pnOptions.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
-            pnOptions.RowStyles.Add(new RowStyle(SizeType.Percent, 40));
-            pnOptions.RowStyles.Add(new RowStyle(SizeType.Percent, 5));
-            pnOptions.RowStyles.Add(new RowStyle(SizeType.Percent, 5));
-            pnOptions.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
+            int defaultRate = isSpeech ? 2048 : 1024;
+            numSampleRate.Value = defaultRate;
+            trkSampleRate.Value = defaultRate;
+            UpdateSampleRate();
 
-            pnOptions.Controls.Add(cmdPlay, 0, 0);
-            pnOptions.Controls.Add(cmdExport, 1, 0);
-            pnOptions.Controls.Add(trkSampleRate, 1, 1);
-            pnOptions.Controls.Add(lblSampleRate, 0, 1);
-            pnOptions.Controls.Add(chkLoop, 0, 2);
-            pnOptions.Controls.Add(numSampleRate, 1, 2);
+            numSampleRate.MouseWheel += ScrollHandlerFunction2;
+        }
 
-            Controls.Add(pnOptions);
-            Controls.Add(tsToolbar);
+        public SoundBox(SoundEntry entry) : this(entry.Samples, entry.Title)
+        {
+            soundentry = entry;
+        }
+
+        public SoundBox(SpeechEntry entry) : this(entry.Samples, entry.Title)
+        {
+            speechentry = entry;
         }
 
         private void soundInit()
@@ -176,27 +72,25 @@ namespace CrashEdit.CE
             }
         }
 
-        void cmdPlay_Click(object sender, EventArgs e)
+        private void UpdateSampleRate()
+        {
+            double smpe2 = trkSampleRate.Value / 256.0;
+            cmdPlay.Text = string.Format("Play ({0}Hz)", samplerate);
+            cmdExport.Text = string.Format("Export ({0}Hz)", samplerate);
+            lblSampleRate.Text = string.Format("Sample Rate: {0:0.000}", smpe2);
+        }
+
+        private void cmdPlay_Click(object sender, EventArgs e)
         {
             Play();
         }
 
-        void cmdExport_Click(object sender, EventArgs e)
+        private void cmdExport_Click(object sender, EventArgs e)
         {
             ExportWave(samplerate);
         }
 
-        public SoundBox(SoundEntry entry) : this(entry.Samples, entry.Title)
-        {
-            soundentry = entry;
-        }
-
-        public SoundBox(SpeechEntry entry) : this(entry.Samples, entry.Title)
-        {
-            speechentry = entry;
-        }
-
-        void tbbImport_Click(object sender, EventArgs e)
+        private void tbbImport_Click(object sender, EventArgs e)
         {
             // Todo refresh sound chunk
             byte[] data = FileUtil.OpenFile(FileFilters.VAG + "|" + FileFilters.Any);
@@ -220,7 +114,7 @@ namespace CrashEdit.CE
                 soundentry.Samples = samples;
         }
 
-        void tbbExport_Click(object sender, EventArgs e)
+        private void tbbExport_Click(object sender, EventArgs e)
         {
             FileUtil.SaveFile(samples.Save(), FileFilters.Any);
         }
@@ -289,13 +183,38 @@ namespace CrashEdit.CE
             FileUtil.SaveFile(wave, FileFilters.Wave, FileFilters.Any);
         }
 
-        protected override void Dispose(bool disposing)
+        private void cmdPlay_Leave(object sender, EventArgs e)
         {
-            base.Dispose(disposing);
-            if (disposing)
+            spPlayer.Stop();
+        }
+
+        private void trkSampleRate_ValueChanged(object sender, EventArgs e)
+        {
+            numSampleRate.Value = (int)trkSampleRate.Value;
+            UpdateSampleRate();
+        }
+
+        private void numSampleRate_ValueChanged(object sender, EventArgs e)
+        {
+            trkSampleRate.Value = (int)numSampleRate.Value;
+            UpdateSampleRate();
+        }
+
+        private void ScrollHandlerFunction2(object sender, MouseEventArgs e)
+        {
+            if (sender is NumericUpDown numericUpDown)
             {
-                spPlayer.Stop();
-                spPlayer.Dispose();
+                HandledMouseEventArgs handledArgs = e as HandledMouseEventArgs;
+                if (handledArgs != null) handledArgs.Handled = true;
+
+                decimal newValue = numericUpDown.Value;
+                if (e.Delta > 0 && newValue + 8 < numericUpDown.Maximum)
+                    newValue += 8;
+
+                else if (e.Delta < 0 && newValue - 8 >= numericUpDown.Minimum)
+                    newValue -= 8;
+
+                numericUpDown.Value = newValue;
             }
         }
     }
