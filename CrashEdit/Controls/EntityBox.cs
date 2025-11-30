@@ -2270,15 +2270,17 @@ namespace CrashEdit.CE
             // paste list
             else if (e.KeyCode == Keys.V && (e.Modifiers & Keys.Control) == Keys.Control && (e.Modifiers & Keys.Shift) == Keys.Shift)
             {
-                StringReader sr = new StringReader(Clipboard.GetText());
-                string line;
-                while ((line = sr.ReadLine()) != null)
+                string clipboardText = Clipboard.GetText();
+                string[] items = clipboardText.Split(['\r', '\n', ','], StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (string item in items)
                 {
+                    string trimmed = item.Trim();
                     if (entity.LoadListA.Rows[loadlistarowindex].Values.Count >= 1023) break;
-                    if (CheckEname(line).Length > 0)
+                    if (CheckEname(trimmed).Length > 0)
                     {
-                        entity.LoadListA.Rows[loadlistarowindex].Values.Add(Entry.ENameToEID(line));
-                        lbEIDA.Items.Add(line);
+                        entity.LoadListA.Rows[loadlistarowindex].Values.Add(Entry.ENameToEID(trimmed));
+                        lbEIDA.Items.Add(trimmed);
                     }
                 }
                 if (lbEIDA.Items.Count > 0 && lbEIDA.SelectedIndex == -1)
@@ -2582,15 +2584,17 @@ namespace CrashEdit.CE
             // pate list
             else if (e.KeyCode == Keys.V && (e.Modifiers & Keys.Control) == Keys.Control && (e.Modifiers & Keys.Shift) == Keys.Shift)
             {
-                StringReader sr = new StringReader(Clipboard.GetText());
-                string line;
-                while ((line = sr.ReadLine()) != null)
+                string clipboardText = Clipboard.GetText();
+                string[] items = clipboardText.Split(['\r', '\n', ','], StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (string item in items)
                 {
+                    string trimmed = item.Trim();
                     if (entity.LoadListB.Rows[loadlistbrowindex].Values.Count >= 1023) break;
-                    if (CheckEname(line).Length > 0)
+                    if (CheckEname(trimmed).Length > 0)
                     {
-                        entity.LoadListB.Rows[loadlistbrowindex].Values.Add(Entry.ENameToEID(line));
-                        lbEIDB.Items.Add(line);
+                        entity.LoadListB.Rows[loadlistbrowindex].Values.Add(Entry.ENameToEID(trimmed));
+                        lbEIDB.Items.Add(trimmed);
                     }
                 }
                 if (lbEIDB.Items.Count > 0 && lbEIDB.SelectedIndex == -1)
