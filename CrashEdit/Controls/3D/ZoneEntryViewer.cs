@@ -1,5 +1,6 @@
-using CrashEdit.CE.Properties;
+﻿using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
+using CrashEdit.Crash.GOOLIns;
 using OpenTK.Mathematics;
 
 namespace CrashEdit.CE
@@ -18,20 +19,50 @@ namespace CrashEdit.CE
         private Vector3 zone_trans;
         private bool time_trial_mode;
 
+        private ZoneEntry? master_zone = null;
+
+        private double pulseTime = 0;
+        private int pulseRange = 95;
+
         private Rgba GetZoneColor(Color4 color)
         {
             return new Rgba(color, zone_alpha);
         }
 
-        private Rgba GetZoneColor(byte r, byte g, byte b)
+        private Rgba GetZoneColor(Entity entity, Color4 color)
         {
-            return new Rgba(r, g, b, zone_alpha);
+            return new Rgba(color, GetAlpha(entity, 0.09));
+        }
+
+        private Rgba GetZoneColor(Entity entity, byte r, byte g, byte b)
+        {
+            return new Rgba(r, g, b, GetAlpha(entity, 0.015));
+        }
+
+        private byte GetAlpha(Entity entity, double pulseT)
+        {
+            byte alpha = zone_alpha;
+            if (GetSelectedEntity(entity))
+            {
+                pulseTime += pulseT;
+                double s = (Math.Sin(pulseTime) + 1.0) / 2.0;
+                int pulse = (int)(pulseRange * s);
+
+                alpha = (byte)Math.Clamp(zone_alpha - pulse, 0, 255);
+            }
+            return alpha;
+        }
+
+        private bool GetSelectedEntity(Entity entity)
+        {
+            return master_zone != null && master_zone.SelectedEntity == master_zone.Entities.IndexOf(entity);
         }
 
         public ZoneEntryViewer(NSF nsf, int zone_eid) : base(nsf, new List<int>())
         {
             zones = new() { zone_eid };
             this_zone = zone_eid;
+            master_zone = GetMasterZone();
             octree_renderer = new(this);
             animation_renderer = new() { TPages = tpages, Render = render };
             GetGOOLs();
@@ -503,7 +534,8 @@ namespace CrashEdit.CE
                 Vector3 trans = new Vector3(entity.Positions[0].X, entity.Positions[0].Y, entity.Positions[0].Z) / scale + zone_trans;
                 if (!string.IsNullOrEmpty(entity.Name) && Settings.Default.Font3DEnable)
                 {
-                    AddText3D(entity.Name, trans, GetZoneColor(Color4.Yellow), size: text_size, ofs_y: text_y, flags: TextRenderFlags.Default | TextRenderFlags.Bottom);
+                    Color4 col = GetSelectedEntity(entity) ? Color4.Cyan : Color4.Yellow;
+                    AddText3D(entity.Name, trans, GetZoneColor(col), size: text_size, ofs_y: text_y, flags: TextRenderFlags.Default | TextRenderFlags.Bottom);
                 }
 
                 bool rendered_model = false;
@@ -516,7 +548,7 @@ namespace CrashEdit.CE
                 {
                     if (entity.Subtype.HasValue && entity.Type == 3)
                     {
-                        draw_type = !rendered_model && !RenderPickupEntity(trans + new Vector3(0, .5f, 0), entity.Subtype.Value);
+                        draw_type = !rendered_model && !RenderPickupEntity(entity, trans + new Vector3(0, .5f, 0), entity.Subtype.Value);
                         if (entity.Subtype.Value == 25 && entity.Settings.Count > 0)
                         {
                             draw_type = false;
@@ -543,12 +575,12 @@ namespace CrashEdit.CE
                                 size_z = entity.Settings[2].Value / 4096f;
                                 text_y += AddText3D($"{size_x} x {size_y} x {size_z}", trans, GetZoneColor(Color4.White), size: text_size, ofs_y: text_y).Y;
                             }
-                            RenderBoxEntity(trans, entity.Subtype.Value, timetrialcontents, size_x, size_y, size_z);
+                            RenderBoxEntity(entity, trans, entity.Subtype.Value, timetrialcontents, size_x, size_y, size_z);
                         }
                         else
                         {
                             if (!rendered_model)
-                                RenderBoxEntity(trans, entity.Subtype.Value, timetrialcontents);
+                                RenderBoxEntity(entity, trans, entity.Subtype.Value, timetrialcontents);
                             if (entity.Settings.Count > 0)
                             {
                                 int pickup = entity.Settings[0].ValueB;
@@ -605,7 +637,10 @@ namespace CrashEdit.CE
                     else
                     {
                         if (!rendered_model)
-                            AddSprite(trans, new Vector2(1), GetZoneColor(Color4.White), OldResources.PointTexture);
+                        {
+                            Color4 col = GetSelectedEntity(entity) ? Color4.Turquoise : Color4.White;
+                            AddSprite(trans, new Vector2(1), GetZoneColor(col), OldResources.PointTexture);
+                        }
                     }
                 }
                 else
@@ -687,14 +722,14 @@ namespace CrashEdit.CE
             };
         }
 
-        private bool RenderPickupEntity(Vector3 trans, int subtype)
+        private bool RenderPickupEntity(Entity entity, Vector3 trans, int subtype)
         {
             var texture = GetPickupTexture(subtype);
-            AddSprite(trans, GetPickupScale(subtype), GetZoneColor(Color4.White), texture);
+            AddSprite(trans, GetPickupScale(subtype), GetZoneColor(entity, Color4.White), texture);
             return texture != OldResources.UnknownPickupTexture;
         }
 
-        private void RenderBoxEntity(Vector3 trans, int subtype, int timetrialcontents, float size_x = 1, float size_y = 1, float size_z = 1)
+        private void RenderBoxEntity(Entity entity, Vector3 trans, int subtype, int timetrialcontents, float size_x = 1, float size_y = 1, float size_z = 1)
         {
             Rectangle sideTexRect = OldResources.TexMap[GetBoxSideTexture(subtype, timetrialcontents)];
             Span<Vector2> uvs_side = stackalloc Vector2[6] {
@@ -706,12 +741,12 @@ namespace CrashEdit.CE
                 new Vector2(sideTexRect.Left, sideTexRect.Bottom)
             };
             Span<Rgba> cols = stackalloc Rgba[6] {
-                GetZoneColor(93*2, 93*2, 93*2),
-                GetZoneColor(51*2, 51*2, 76*2),
-                GetZoneColor(115*2, 115*2, 92*2),
-                GetZoneColor(51*2, 51*2, 76*2),
-                GetZoneColor(33*2, 33*2, 59*2),
-                GetZoneColor(115*2, 115*2, 92*2)
+                GetZoneColor(entity, 93*2, 93*2, 93*2),
+                GetZoneColor(entity, 51*2, 51*2, 76*2),
+                GetZoneColor(entity, 115*2, 115*2, 92*2),
+                GetZoneColor(entity, 51*2, 51*2, 76*2),
+                GetZoneColor(entity, 33*2, 33*2, 59*2),
+                GetZoneColor(entity, 115*2, 115*2, 92*2)
             };
             Vector3 size = new Vector3(size_x, size_y, size_z) * 0.5f;
             for (int i = 0; i < 4 * 6; ++i)

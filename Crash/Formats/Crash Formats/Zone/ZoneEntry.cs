@@ -23,6 +23,8 @@ namespace CrashEdit.Crash
         [SubresourceList]
         public List<Entity> Entities { get; } = new List<Entity>();
 
+        public int SelectedEntity = 0;
+
         public int WorldCount
         {
             get => Zoneheader.WorldCount;

@@ -66,7 +66,7 @@ namespace CrashEdit.CE
             if (Settings.Default.EnableLegacyEntityBox == false)
             {
                 // Check CameraCout to see if the entity is a camera
-                ZoneEntry zone = controller.ZoneEntryController.ZoneEntry;
+                ZoneEntry zone = controller.ZoneEntry;
                 if (zone.Entities.IndexOf(entity) < zone.CameraCount)
                 {
                     // If it's camera[0]
@@ -284,6 +284,11 @@ namespace CrashEdit.CE
 
             tipOverrideId.SetToolTip(lblHelpOverrideId, "c2export rebuild_dl: \nposition override ID\nWhen making draw lists,\nuses position of other entity\n(must be from same zone).");
             tipOverrideMult.SetToolTip(lblHelpOverrideMult, "c2export rebuild_dl: \ndistance multiplier\nWhen making draw lists,\nallowed distance is\nmultipled by this / 100.");
+        }
+
+        private void entityBox_VisibleChanged(object sender, EventArgs e)
+        {
+            controller.ZoneEntry.SelectedEntity = controller.ZoneEntry.Entities.IndexOf(entity);
         }
 
         public EntityBox(EntityController controller)
@@ -2476,7 +2481,7 @@ namespace CrashEdit.CE
             numDrawOverrideMult.Enabled = chkDrawOverrideMult.Checked;
             if (chkDrawOverrideMult.Checked)
             {
-                entity.DrawOverrideMult = new EntitySetting(0, (int) numDrawOverrideMult.Value);
+                entity.DrawOverrideMult = new EntitySetting(0, (int)numDrawOverrideMult.Value);
             }
             else
             {
@@ -2486,7 +2491,7 @@ namespace CrashEdit.CE
 
         private void numDrawOverrideMult_Changed(object sender, EventArgs e)
         {
-            entity.DrawOverrideMult = new EntitySetting(0, (int) numDrawOverrideMult.Value);
+            entity.DrawOverrideMult = new EntitySetting(0, (int)numDrawOverrideMult.Value);
         }
 
         private void UpdateScaling()
