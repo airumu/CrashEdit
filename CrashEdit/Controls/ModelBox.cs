@@ -1886,8 +1886,8 @@ namespace CrashEdit.CE.Controls
         private void CreateTextureListColumns()
         {
             dgvTextures.Columns.Add("Page", "Page");
-            dgvTextures.Columns.Add("ClutX", "Clut X");
-            dgvTextures.Columns.Add("ClutY", "Clut Y");
+            dgvTextures.Columns.Add("ClutX", "ClutX");
+            dgvTextures.Columns.Add("ClutY", "ClutY");
             dgvTextures.Columns.Add("Left", "X  ");
             dgvTextures.Columns.Add("Top", "Y  ");
             dgvTextures.Columns.Add("Width", "Width");
@@ -1917,7 +1917,7 @@ namespace CrashEdit.CE.Controls
             {
                 column.SortMode = DataGridViewColumnSortMode.NotSortable;
                 column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-                column.Width = 44;
+                column.Width = 40;
                 column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft;
             }
         }
