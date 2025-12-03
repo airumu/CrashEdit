@@ -379,7 +379,7 @@
     <value>クラッシュ3からインポートされた座標を修正</value>
   </data>
   <data name="NSFController_AcEditScenery" xml:space="preserve">
-    <value>背景を編集</value>
+    <value>背景エディタを開く</value>
   </data>
   <data name="NSFController_AcImportEntriesIntoChunks" xml:space="preserve">
     <value>Import Entries Into New Chunks</value>
@@ -389,5 +389,8 @@
   </data>
   <data name="EntryController_AcReload" xml:space="preserve">
     <value>再読み込み</value>
+  </data>
+  <data name="NSFController_AcEditEntities" xml:space="preserve">
+    <value>エンティティエディタを開く</value>
   </data>
 </root>

@@ -449,7 +449,18 @@ namespace CrashEdit.CrashUI.Properties {
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Animation ({0}).
+        ///   Looks up a localized string similar Entity Editor.
+        /// </summary>
+        public static string NSFController_AcEditEntities
+        {
+            get
+            {
+                return ResourceManager.GetString("NSFController_AcEditEntities", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Scenery Editor.
         /// </summary>
         public static string NSFController_AcEditScenery
         {

@@ -1218,23 +1218,6 @@ namespace CrashEdit.CE
             chkDDASettings.Checked = entity.DDASettings.HasValue;
         }
 
-        private void UpdateDrawOverride()
-        {
-            if (entity.DrawOverrideID.HasValue)
-            {
-                numDrawOverrideId.Value = entity.DrawOverrideID.Value.ValueB;
-            }
-            numDrawOverrideId.Enabled = entity.DrawOverrideID.HasValue;
-            chkDrawOverrideId.Checked = entity.DrawOverrideID.HasValue;
-
-            if (entity.DrawOverrideMult.HasValue)
-            {
-                numDrawOverrideMult.Value = entity.DrawOverrideMult.Value.ValueB;
-            }
-            numDrawOverrideMult.Enabled = entity.DrawOverrideMult.HasValue;
-            chkDrawOverrideMult.Checked = entity.DrawOverrideMult.HasValue;
-        }
-
         private void chkDDASettings_CheckedChanged(object sender, EventArgs e)
         {
             numDDASettings.Enabled = chkDDASettings.Checked;
@@ -1281,6 +1264,23 @@ namespace CrashEdit.CE
             entity.DDASection = (int)numDDASection.Value;
         }
 
+        private void UpdateDrawOverride()
+        {
+            if (entity.DrawOverrideID.HasValue)
+            {
+                numDrawOverrideId.Value = entity.DrawOverrideID.Value.ValueB;
+            }
+            numDrawOverrideId.Enabled = entity.DrawOverrideID.HasValue;
+            chkDrawOverrideId.Checked = entity.DrawOverrideID.HasValue;
+
+            if (entity.DrawOverrideMult.HasValue)
+            {
+                numDrawOverrideMult.Value = entity.DrawOverrideMult.Value.ValueB;
+            }
+            numDrawOverrideMult.Enabled = entity.DrawOverrideMult.HasValue;
+            chkDrawOverrideMult.Checked = entity.DrawOverrideMult.HasValue;
+        }
+
         private void chkDrawOverrideId_Changed(object sender, EventArgs e)
         {
             numDrawOverrideId.Enabled = chkDrawOverrideId.Checked;
@@ -1298,6 +1298,7 @@ namespace CrashEdit.CE
         {
             entity.DrawOverrideID = new EntitySetting(0, (int)numDrawOverrideId.Value);
         }
+
         private void chkDrawOverrideMult_Changed(object sender, EventArgs e)
         {
             numDrawOverrideMult.Enabled = chkDrawOverrideMult.Checked;
@@ -3748,8 +3749,7 @@ namespace CrashEdit.CE
 
         private void KillForm()
         {
-            if (syncListForm != null)
-                syncListForm.Dispose();
+            syncListForm?.Dispose();
         }
     }
 }

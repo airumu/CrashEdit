@@ -379,7 +379,7 @@
     <value>Fix coords imported from Crash 3</value>
   </data>
   <data name="NSFController_AcEditScenery" xml:space="preserve">
-    <value>Edit Scenery</value>
+    <value>Open Scenery Editor</value>
   </data>
   <data name="NSFController_AcImportEntriesIntoChunks" xml:space="preserve">
     <value>Import Entries Into New Chunks</value>
@@ -389,5 +389,8 @@
   </data>
   <data name="EntryController_AcReload" xml:space="preserve">
     <value>Reload</value>
+  </data>
+  <data name="NSFController_AcEditEntities" xml:space="preserve">
+    <value>Open Entity Editor</value>
   </data>
 </root>
