@@ -1,4 +1,4 @@
-namespace CrashEdit.Crash
+﻿namespace CrashEdit.Crash
 {
     public sealed class ModelEntry : Entry
     {
@@ -260,6 +260,123 @@ namespace CrashEdit.Crash
                 }
             }
             return new UnprocessedEntry(items, EID, Type);
+        }
+
+        public static (ModelEntry model, AnimationEntry anim) ConvertCompressedToUncompressed(ModelEntry compressedModel, AnimationEntry compressedAnim)
+        {
+            if (compressedModel.Positions == null)
+                throw new InvalidOperationException("Linked model is already uncompressed.");
+
+            ModelEntry newModel = DecompressModel(compressedModel);
+
+            AnimationEntry newAnim = new(compressedAnim.Frames, compressedAnim.IsNew, compressedAnim.EID);
+            for (int i = 0; i < compressedAnim.Frames.Count; i++)
+            {
+                newAnim.Frames[i] = DecompressFrame(compressedModel, compressedAnim.Frames[i]);
+            }
+
+            return (newModel, newAnim);
+        }
+
+        public static ModelEntry DecompressModel(ModelEntry compressed)
+        {
+            if (compressed.Positions == null)
+                throw new InvalidOperationException("Model is already uncompressed.");
+
+            return new ModelEntry(
+                compressed.Info,
+                compressed.PolyData,
+                compressed.Colors,
+                compressed.Textures,
+                compressed.AnimatedTextures,
+                positions: null!,
+                compressed.EID
+            );
+        }
+
+        public static Frame DecompressFrame(ModelEntry model, Frame compressed)
+        {
+            // get verts
+            IList<Position> verts = compressed.MakeVertices(model);
+
+            FrameVertex[] newVerts = new FrameVertex[verts.Count];
+            for (int i = 0; i < verts.Count; ++i)
+            {
+                byte x = (byte)verts[i].X;
+                byte y = (byte)verts[i].Y;
+                byte z = (byte)verts[i].Z;
+                newVerts[i] = new FrameVertex(x, y, z);
+            }
+
+            bool[] newTemporals = MakeTemporals(newVerts, specialVertexCount: 0);
+
+            return new Frame(
+                compressed.XOffset,
+                compressed.YOffset,
+                compressed.ZOffset,
+                compressed.Unknown,
+                compressed.ModelEID,
+                compressed.HeaderSize,
+                compressed.Collision,
+                newVerts,
+                compressed.SpecialVertexCount,
+                newTemporals,
+                false
+            );
+        }
+
+        private static bool[] MakeTemporals(FrameVertex[] vertices, int specialVertexCount)
+        {
+            int vertexCount = vertices.Length;
+            int uncompressedBitsNeeded = vertexCount * 8 * 3; // = vertexCount * 24
+            int paddedBits = ((uncompressedBitsNeeded + 31) / 32) * 32;
+            bool[] U = new bool[paddedBits];
+            int bi = specialVertexCount * 8 * 3;
+
+            for (int i = specialVertexCount; i < vertexCount; ++i)
+            {
+                FrameVertex v = vertices[i];
+
+                for (int b = 0; b < 8; ++b)
+                {
+                    U[bi++] = ((v.X >> (7 - b)) & 0x1) != 0;
+                }
+                for (int b = 0; b < 8; ++b)
+                {
+                    U[bi++] = ((v.Y >> (7 - b)) & 0x1) != 0;
+                }
+                for (int b = 0; b < 8; ++b)
+                {
+                    U[bi++] = ((v.Z >> (7 - b)) & 0x1) != 0;
+                }
+            }
+
+            bool[] T = new bool[paddedBits];
+            int groups = paddedBits / 32;
+            for (int i = 0; i < groups; ++i)
+            {
+                for (int j = 0; j < 4; ++j)
+                {
+                    for (int k = 0; k < 8; ++k)
+                    {
+                        int tIndex = i * 32 + j * 8 + k;
+                        int uIndex = i * 32 + 24 - j * 8 + k;
+                        if (uIndex >= 0 && uIndex < U.Length)
+                            T[tIndex] = U[uIndex];
+                        else
+                            T[tIndex] = false;
+                    }
+                }
+            }
+
+            // copy and insert specialVerts at head
+            int specialBits = specialVertexCount * 24;
+            bool[] result = new bool[T.Length + specialBits];
+
+            Array.Copy(T, 0, result, 0, specialBits);
+            Array.Copy(T, 0, result, specialBits, T.Length);
+
+            return result;
         }
     }
 }

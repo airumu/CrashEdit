@@ -42,6 +42,7 @@
       <None Remove="Embeds\Images\ArrowRefresh.png" />
       <None Remove="Embeds\Images\Calculator.png" />
       <None Remove="Embeds\Images\CD.png" />
+      <None Remove="Embeds\Images\Container.png" />
       <None Remove="Embeds\Images\Controller.png" />
       <None Remove="Embeds\Images\Copy.png" />
       <None Remove="Embeds\Images\Cut.png" />
@@ -114,6 +115,7 @@
       <EmbeddedResource Include="Embeds\Images\ArrowRefresh.png" />
       <EmbeddedResource Include="Embeds\Images\Calculator.png" />
       <EmbeddedResource Include="Embeds\Images\CD.png" />
+      <EmbeddedResource Include="Embeds\Images\Container.png" />
       <EmbeddedResource Include="Embeds\Images\Controller.png" />
       <EmbeddedResource Include="Embeds\Images\Copy.png" />
       <EmbeddedResource Include="Embeds\Images\Cut.png" />
