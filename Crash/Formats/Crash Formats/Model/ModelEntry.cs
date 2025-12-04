@@ -308,7 +308,7 @@
                 newVerts[i] = new FrameVertex(x, y, z);
             }
 
-            bool[] newTemporals = MakeTemporals(newVerts, specialVertexCount: 0);
+            bool[] newTemporals = MakeTemporals(newVerts, compressed.SpecialVertexCount);
 
             return new Frame(
                 compressed.XOffset,
@@ -331,9 +331,9 @@
             int uncompressedBitsNeeded = vertexCount * 8 * 3; // = vertexCount * 24
             int paddedBits = ((uncompressedBitsNeeded + 31) / 32) * 32;
             bool[] U = new bool[paddedBits];
-            int bi = specialVertexCount * 8 * 3;
+            int bi = 0;
 
-            for (int i = specialVertexCount; i < vertexCount; ++i)
+            for (int i = 0; i < vertexCount - specialVertexCount; ++i)
             {
                 FrameVertex v = vertices[i];
 
