@@ -1989,14 +1989,14 @@ namespace CrashEdit.CE.Forms
 
         private void cmdCopySetting_Click(object sender, EventArgs e)
         {
-            // todo: remove this
-            {
+            //// todo: remove this
+            //{
                 
-                string args = string.Join(", ", entity.Settings.Select(setting => setting.Value));
-                string _text = $"new() {{ Name = \"{entity.Name.Substring(4)}\", Type = {entity.Type.ToString()}, Subtype = {entity.Subtype.ToString()}, Args = [{args}] }},";
-                Clipboard.SetDataObject(_text, true, 10, 100);
-                return;
-            }
+            //    string args = string.Join(", ", entity.Settings.Select(setting => setting.Value));
+            //    string _text = $"new() {{ Name = \"{entity.Name.Substring(4)}\", Type = {entity.Type.ToString()}, Subtype = {entity.Subtype.ToString()}, Args = [{args}] }},";
+            //    Clipboard.SetDataObject(_text, true, 10, 100);
+            //    return;
+            //}
 
             string text = string.Join(", ", entity.Settings.Select(setting => setting.Value));
             Clipboard.SetDataObject(text, true, 10, 100);
