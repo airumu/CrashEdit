@@ -144,6 +144,7 @@ namespace CrashEdit.CE.Forms
             txtFilter = new AltUI.Controls.DarkTextBox();
             chkShowZone = new CheckBox();
             splitContainer1 = new SplitContainer();
+            tsbObjects = new ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)dgvEntities).BeginInit();
             fraName.SuspendLayout();
             fraPosition.SuspendLayout();
@@ -1513,7 +1514,7 @@ namespace CrashEdit.CE.Forms
             // 
             // toolStrip1
             // 
-            toolStrip1.Items.AddRange(new ToolStripItem[] { tstSearch, tslSearch, tsbEditDDA });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { tstSearch, tslSearch, tsbEditDDA, tsbObjects });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(435, 25);
@@ -1639,6 +1640,15 @@ namespace CrashEdit.CE.Forms
             splitContainer1.Size = new Size(1505, 776);
             splitContainer1.SplitterDistance = 641;
             splitContainer1.TabIndex = 9;
+            // 
+            // tsbObjects
+            // 
+            tsbObjects.Image = (Image)resources.GetObject("tsbObjects.Image");
+            tsbObjects.ImageTransparentColor = Color.Magenta;
+            tsbObjects.Name = "tsbObjects";
+            tsbObjects.Size = new Size(67, 22);
+            tsbObjects.Text = "Objects";
+            tsbObjects.Click += tsbObjects_Click;
             // 
             // EntityEditor
             // 
@@ -1838,5 +1848,6 @@ namespace CrashEdit.CE.Forms
         private ToolStripLabel tslSearch;
         private CheckBox chkHideNoEntityZone;
         private ToolStripButton tsbEditDDA;
+        private ToolStripButton tsbObjects;
     }
 }

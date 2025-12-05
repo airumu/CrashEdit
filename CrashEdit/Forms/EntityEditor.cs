@@ -1,6 +1,8 @@
 ﻿using System.Data;
+using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using AltUI.Controls;
 using AltUI.Forms;
@@ -39,6 +41,7 @@ namespace CrashEdit.CE.Forms
         private DarkToolTip tipOverrideMult;
 
         private DDAEditor? frmDDAEditor;
+        private ObjectList? frmObjectList;
         private ZoneEntryViewer? zoneEntryViewer;
 
         private readonly int ColIndex = 0;
@@ -64,6 +67,7 @@ namespace CrashEdit.CE.Forms
             chkShowCameras.Checked = Settings.Default.ViewCamera;
             tslSearch.Image = Embeds.GetIcon("Find").ToBitmap();
             tsbEditDDA.Image = Embeds.GetIcon("List").ToBitmap();
+            tsbObjects.Image = Embeds.GetIcon("Sitemap").ToBitmap();
 
             ContextMenuStrip contextMenuStrip = new();
             contextMenuStrip.Items.Add("Delete Entity", Embeds.GetIcon("Erase").ToBitmap(), MenuDeleteEntity);
@@ -221,56 +225,54 @@ namespace CrashEdit.CE.Forms
 
         private void FindEntityByID()
         {
-            using (InputWindow inputWindow = new("Find", "Find", "Enter an entity ID:", string.Empty, 4))
+            using InputWindow inputWindow = new("Find", "Find", "Enter an entity ID:", string.Empty, 4);
+            if (inputWindow.ShowDialog() == DialogResult.OK)
             {
-                if (inputWindow.ShowDialog() == DialogResult.OK)
+                string input = inputWindow.Input;
+                if (int.TryParse(input, System.Globalization.NumberStyles.Integer, null, out int value))
                 {
-                    string input = inputWindow.Input;
-                    if (int.TryParse(input, System.Globalization.NumberStyles.Integer, null, out int value))
+                    foreach (ZoneEntry zone in nsf.GetEntries<ZoneEntry>())
                     {
-                        foreach (ZoneEntry zone in nsf.GetEntries<ZoneEntry>())
+                        foreach (Entity otherentity in zone.Entities)
                         {
-                            foreach (Entity otherentity in zone.Entities)
+                            if (otherentity.ID == null) continue;
+                            if (otherentity.ID.Value == value)
                             {
-                                if (otherentity.ID == null) continue;
-                                if (otherentity.ID.Value == value)
+                                dirty.Push(true);
+                                this.zone = zone;
+
+                                lbZones.BeginUpdate();
+                                lbZones.SelectedItem = zone.EName;
+                                lbZones.EndUpdate();
+
+                                int newIndex = lbZones.SelectedIndex;
+                                if (newIndex != _lastSelectedZoneIndex)
                                 {
-                                    dirty.Push(true);
-                                    this.zone = zone;
-
-                                    lbZones.BeginUpdate();
-                                    lbZones.SelectedItem = zone.EName;
-                                    lbZones.EndUpdate();
-
-                                    int newIndex = lbZones.SelectedIndex;
-                                    if (newIndex != _lastSelectedZoneIndex)
-                                    {
-                                        _lastSelectedZoneIndex = newIndex;
-                                        UpdateEntityList();
-                                        ShowZone(true);
-                                    }
-                                    dirty.Pop();
-
-                                    foreach (DataGridViewRow row in dgvEntities.Rows)
-                                    {
-                                        if (row.Cells[ColID].Value?.ToString() == value.ToString())
-                                        {
-                                            row.Selected = true;
-                                            dgvEntities.CurrentCell = row.Cells[ColName];
-                                        }
-                                    }
-                                    return;
+                                    _lastSelectedZoneIndex = newIndex;
+                                    UpdateEntityList();
+                                    ShowZone(true);
                                 }
+                                dirty.Pop();
+
+                                foreach (DataGridViewRow row in dgvEntities.Rows)
+                                {
+                                    if (row.Cells[ColID].Value?.ToString() == value.ToString())
+                                    {
+                                        row.Selected = true;
+                                        dgvEntities.CurrentCell = row.Cells[ColName];
+                                    }
+                                }
+                                return;
                             }
                         }
-                        DarkMessageBox.ShowError("No results found.", "Find");
-                        return;
                     }
-                    else
-                    {
-                        DarkMessageBox.ShowError("Invalid input.", "Find");
-                        return;
-                    }
+                    DarkMessageBox.ShowError("No results found.", "Find");
+                    return;
+                }
+                else
+                {
+                    DarkMessageBox.ShowError("Invalid input.", "Find");
+                    return;
                 }
             }
         }
@@ -731,6 +733,20 @@ namespace CrashEdit.CE.Forms
                 frmDDAEditor.Show();
             else
                 frmDDAEditor.Activate();
+        }
+
+        private void tsbObjects_Click(object sender, EventArgs e)
+        {
+            if (frmObjectList == null || frmObjectList.IsDisposed)
+            {
+                frmObjectList = new(this);
+                frmObjectList.FormClosed += (s, e) => frmObjectList = null;
+            }
+
+            if (!frmObjectList.Visible)
+                frmObjectList.Show();
+            else
+                frmObjectList.Activate();
         }
 
         #region Zones
@@ -1973,13 +1989,22 @@ namespace CrashEdit.CE.Forms
 
         private void cmdCopySetting_Click(object sender, EventArgs e)
         {
-            string text = string.Join("\n", entity.Settings.Select(setting => setting.Value));
+            // todo: remove this
+            {
+                
+                string args = string.Join(", ", entity.Settings.Select(setting => setting.Value));
+                string _text = $"new() {{ Name = \"{entity.Name.Substring(4)}\", Type = {entity.Type.ToString()}, Subtype = {entity.Subtype.ToString()}, Args = [{args}] }},";
+                Clipboard.SetDataObject(_text, true, 10, 100);
+                return;
+            }
+
+            string text = string.Join(", ", entity.Settings.Select(setting => setting.Value));
             Clipboard.SetDataObject(text, true, 10, 100);
         }
 
         private void cmdPasteSetting_Click(object sender, EventArgs e)
         {
-            string[] lines = Clipboard.GetText().Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
+            string[] lines = Clipboard.GetText().Split(new[] { "\r\n", "\n", "," }, StringSplitOptions.None);
             settingindex = 0;
             entity.Settings.Clear();
             foreach (string line in lines)
@@ -2804,9 +2829,1128 @@ namespace CrashEdit.CE.Forms
         private void CloseEntityEditor()
         {
             frmDDAEditor?.Dispose();
+            frmObjectList?.Dispose();
         }
 
+        public void ReplaceEntityProperties(ObjectList.EntityObject obj)
+        {
+            if (entity == null || !pnProperties.Enabled)
+            {
+                DarkMessageBox.ShowError("No entity is selected.", "Error");
+                return;
+            }
+
+            dirty.Push(true);
+
+            entity.Name = obj.Name;
+            entity.Type = obj.Type;
+            entity.Subtype = obj.Subtype;
+            dgvEntities.Rows[dgvEntities.SelectedCells[0].RowIndex].Cells[ColName].Value = entity.Name;
+            dgvEntities.Rows[dgvEntities.SelectedCells[0].RowIndex].Cells[ColType].Value = entity.Type;
+            dgvEntities.Rows[dgvEntities.SelectedCells[0].RowIndex].Cells[ColSubtype].Value = entity.Subtype;
+
+            settingindex = 0;
+            entity.Settings.Clear();
+            foreach (int value in obj.Args)
+            {
+                entity.Settings.Add(new EntitySetting(value));
+            }
+
+            UpdateName();
+            UpdateType();
+            UpdateSubtype();
+            UpdateSettings();
+
+            dirty.Pop();
+        }
+
+    }
+
+    public partial class ObjectList : DarkForm
+    {
+        public class EntityObject
+        {
+            public string? Name { get; set; }
+            public int? Type { get; set; }
+            public int? Subtype { get; set; }
+            public List<int>? Args { get; set; }
+        }
+
+        private readonly EntityEditor editor;
+
+        private readonly string objectsFileName = "CrashEdit.exe.objectlist.json";
+
+        private Dictionary<string, Dictionary<string, List<EntityObject>>>? objectData;
+
+        private JsonSerializerOptions serializerOptions;
+        private CancellationTokenSource? _saveDebounceCts;
+
+        internal Stack<bool> dirty = [];
+        internal bool Dirty => dirty.Count > 0 && dirty.Peek();
+
+        private DoubleBufferedTreeView treeView;
+        private DataGridView dgvProps;
+        private DataGridView dgvArgs;
+        private ContextMenuStrip contextMenu;
+        private DarkGroupBox fraReplace;
+        private DarkButton cmdApply;
+        private DarkButton cmdAdd;
+        private DarkGroupBox fraArgs;
+        private DarkCheckBox chkShowAsHex;
+
+        private Panel panel1;
+        private Panel panel2;
+        private TableLayoutPanel pnMain;
+
+        public ObjectList(EntityEditor editor)
+        {
+            this.editor = editor;
+
+            InitializeUI();
+            LoadData();
+            PopulateTree();
+        }
+
+        private void InitializeData()
+        {
+            objectData = new Dictionary<string, Dictionary<string, List<EntityObject>>>
+            {
+                ["Crash 2"] = new Dictionary<string, List<EntityObject>>
+                {
+                    ["General"] =
+                    [
+                        new() { Name = "willy", Type = 0, Subtype = 0, Args = [] },
+                        new() { Name = "warp_out", Type = 1, Subtype = 1, Args = [] },
+                        new() { Name = "warp_secret", Type = 1, Subtype = 9, Args = [0, 0] },
+                        new() { Name = "crystal", Type = 3, Subtype = 24, Args = [0, -3276, -2048, 0, 128, 128, 128] },
+                        new() { Name = "gem", Type = 3, Subtype = 25, Args = [0, -3276, -2048, 0] },
+                        new() { Name = "box_counter", Type = 4, Subtype = 17, Args = [] },
+                        new() { Name = "elevator", Type = 9, Subtype = 6, Args = [163840, 12032, 0, 4096, 0, 0, 0, 0] },
+                        new() { Name = "elevator_bonus", Type = 9, Subtype = 31, Args = [163840, 12032, 0, 4096, 0, 0, 0, 0] },
+                        new() { Name = "elevator_catch", Type = 9, Subtype = 32, Args = [0, 0] },
+                        new() { Name = "elevator_catch (bonus)", Type = 9, Subtype = 32, Args = [256, 0] },
+                        new() { Name = "bonus_return", Type = 9, Subtype = 38, Args = [1280] },
+                        new() { Name = "plat_touch", Type = 14, Subtype = 7, Args = [256, 76, 0, 0, 0] },
+                        new() { Name = "plat_gem", Type = 14, Subtype = 8, Args = [1024, 256, 0, 0, 14848] },
+                    ],
+                    ["Jungle"] =
+                    [
+                        new() { Name = "spike_turtle", Type = 2, Subtype = 0, Args = [0, 2227, 1448154] },
+                        new() { Name = "saw_turtle", Type = 2, Subtype = 5, Args = [0, 2227, 1448154] },
+                        new() { Name = "bird", Type = 6, Subtype = 2, Args = [256000, 2304, 2457600, 1024000, 0] },
+                        new() { Name = "swarmer", Type = 8, Subtype = 0, Args = [0, 409600, 256000, 1024] },
+                        new() { Name = "butterfly", Type = 15, Subtype = 0, Args = [] },
+                        new() { Name = "leaf", Type = 15, Subtype = 4, Args = [] },
+                        new() { Name = "swallup", Type = 15, Subtype = 10, Args = [] },
+                        new() { Name = "armadillo", Type = 20, Subtype = 0, Args = [0, 2048] },
+                        new() { Name = "armadillo_naked", Type = 20, Subtype = 5, Args = [0, 2048] },
+                        new() { Name = "possum_path", Type = 28, Subtype = 2, Args = [0, 3072, 0, 0, 0, 256, 256] },
+                        new() { Name = "lizard_path", Type = 28, Subtype = 3, Args = [0, 3072, 1280, 0, 0, 256, 256] },
+                        new() { Name = "ostrich", Type = 30, Subtype = 0, Args = [] },
+                        new() { Name = "dragonfly", Type = 46, Subtype = 0, Args = [120, 0, 0, 0] },
+                        new() { Name = "fire_fly", Type = 57, Subtype = 1, Args = [390, 1, 0, 0, 0, 0, 0] }
+                    ],
+                    ["Snow"] =
+                    [
+                        new() { Name = "plat_drop", Type = 14, Subtype = 1, Args = [0, 1024000, 30, 54, 409600, 1024000, 3072000, 1024, 0, 0] },
+                        new() { Name = "dropplank", Type = 14, Subtype = 6, Args = [256, 1024000, 30, 54, 409600, 1024000, 3072000, 1024, 0, 0] },
+                        new() { Name = "seal", Type = 24, Subtype = 0, Args = [0, 120, 0, 10, 0] },
+                        new() { Name = "seal_path", Type = 24, Subtype = 1, Args = [768, 768, 22, 0, 256000, 30, 512000, 256, -3328, 7] },
+                        new() { Name = "penguin", Type = 25, Subtype = 0, Args = [0, 2048, 0] },
+                        new() { Name = "penguin_pulse", Type = 25, Subtype = 1, Args = [0] },
+                        new() { Name = "penguin_path", Type = 25, Subtype = 2, Args = [768, 768, 22, 0, 256000] },
+                        new() { Name = "porcupine", Type = 27, Subtype = 0, Args = [102400, 1536, 0, -256000, 0, 0, 0, 0] },
+                        new() { Name = "smasher", Type = 32, Subtype = 0, Args = [153600, 11] },
+                        new() { Name = "smasher_constant", Type = 32, Subtype = 1, Args = [60, 0, 153600] },
+                        new() { Name = "roller", Type = 32, Subtype = 2, Args = [0, 20480000, 197847, 0] },
+                        new() { Name = "icicle", Type = 32, Subtype = 3, Args = [307200, 512000, 0, 0] },
+                        new() { Name = "ice_slide", Type = 32, Subtype = 4, Args = [302, 36635, 8192, 8192] }
+                    ],
+                    ["River"] =
+                    [
+                        new() { Name = "plat_path", Type = 14, Subtype = 2, Args = [0, 240, 0, 0, 0] },
+                        new() { Name = "plat_conveyor", Type = 14, Subtype = 9, Args = [0, 240, 1280] },
+                        new() { Name = "evil_plant", Type = 38, Subtype = 4, Args = [1228800] },
+                        new() { Name = "hippo", Type = 47, Subtype = 1, Args = [0] },
+                        new() { Name = "board_launch", Type = 47, Subtype = 2, Args = [] },
+                        new() { Name = "board_dropoff", Type = 47, Subtype = 3, Args = [256] },
+                        new() { Name = "mine_float", Type = 47, Subtype = 4, Args = [] },
+                        new() { Name = "fish", Type = 47, Subtype = 5, Args = [0, 0, 614400] },
+                        new() { Name = "ramp", Type = 47, Subtype = 6, Args = [] },
+                        new() { Name = "mine_path", Type = 47, Subtype = 7, Args = [120, 0] },
+                        new() { Name = "whirlpool", Type = 47, Subtype = 8, Args = [0] },
+                        new() { Name = "waterfall", Type = 47, Subtype = 10, Args = [] }
+                    ],
+                    ["Sewer"] =
+                    [
+                        new() { Name = "fan", Type = 12, Subtype = 1, Args = [0, 60, 0] },
+                        new() { Name = "fan_break", Type = 12, Subtype = 2, Args = [0, 15, 0] },
+                        new() { Name = "eel", Type = 12, Subtype = 8, Args = [120, 0, 30] },
+                        new() { Name = "eel#secondary", Type = 12, Subtype = 8, Args = [120, 0, 108] },
+                        new() { Name = "barrel_tunnel", Type = 12, Subtype = 9, Args = [1024, 235520, 1024, 2048, 90, 0, 25, 0, 0] },
+                        new() { Name = "scrubber", Type = 13, Subtype = 0, Args = [0, 120, 0, 512, 307200] },
+                        new() { Name = "scrubber_path", Type = 13, Subtype = 5, Args = [102400, 512] },
+                        new() { Name = "scrubber_circle", Type = 13, Subtype = 6, Args = [0, 60, 0, 512, 204800] },
+                        new() { Name = "scrubber_tunnel_ring", Type = 13, Subtype = 8, Args = [0, 60, 0, 512, 307200] },
+                        new() { Name = "scrubber_tunnel", Type = 13, Subtype = 10, Args = [0, 120, 0, 2560, 307200] },
+                        new() { Name = "plat_drop", Type = 14, Subtype = 1, Args = [0, 153600, 90, 54, 307200, 102400, 3072000, 1024, 227, 0] },
+                        new() { Name = "plat_drop_path", Type = 14, Subtype = 1, Args = [0, 153600, 90, 54, 307200, 102400, 3072000, 1024, 227, 0] },
+                        new() { Name = "mech_floater", Type = 21, Subtype = 0, Args = [0, 240, 0, 15] },
+                        new() { Name = "mech_hanger", Type = 21, Subtype = 1, Args = [0, 240, 0, 15] },
+                        new() { Name = "mech_bob", Type = 21, Subtype = 3, Args = [0, 60, 0, 15] },
+                        new() { Name = "mech_path", Type = 21, Subtype = 4, Args = [0, 1536, 0, 15] },
+                        new() { Name = "mech_path_floater", Type = 21, Subtype = 5, Args = [0, 3072, 0, 15] },
+                        new() { Name = "welder", Type = 16, Subtype = 0, Args = [1024, 256, 0] },
+                        new() { Name = "rat", Type = 28, Subtype = 0, Args = [307200, 1792, 0, 0, -256, 256, 256] },
+                        new() { Name = "rat_tunnel", Type = 28, Subtype = 1, Args = [307200, 1792, 0, 0, 0, 256, 256] },
+                        new() { Name = "rat_circle", Type = 28, Subtype = 4, Args = [0, 114, 0, 512, 307200, 512] },
+                        new() { Name = "rat_tunnel_ring", Type = 28, Subtype = 6, Args = [0, 114, 0, 512, 307200, 512] }
+                    ],
+                    ["Ruins"] =
+                    [
+                        new() { Name = "fireface", Type = 7, Subtype = 0, Args = [0, 682, 120, 0, 120, 115, 51, 1024000, 51200, 2048000, 2048000] },
+                        new() { Name = "fireface_watcher", Type = 7, Subtype = 1, Args = [] },
+                        new() { Name = "monkey_hop", Type = 10, Subtype = 0, Args = [-28, 10240000, 819200, 256] },
+                        new() { Name = "gorilla_boulder", Type = 11, Subtype = 0, Args = [120, 3456, 3] },
+                        new() { Name = "pillar_drop", Type = 14, Subtype = 3, Args = [0, 1024000, 15, 54, 409600, 2048000, 3072000, 1024, 0, 0] },
+                        new() { Name = "pillar_in_drop", Type = 14, Subtype = 4, Args = [256, 1024000, 15, 54, 409600, 2048000, 3072000, 1024, 0, 0] },
+                        new() { Name = "plat_crumbler", Type = 26, Subtype = 0, Args = [0, 240] },
+                        new() { Name = "leaner", Type = 26, Subtype = 2, Args = [512, 240, 0, 284, 0] },
+                        new() { Name = "spinner", Type = 26, Subtype = 3, Args = [768, 240, 0, 284] },
+                        new() { Name = "pillar_array", Type = 26, Subtype = 4, Args = [460800, 341, 0] },
+                        new() { Name = "pillar_array (possums)", Type = 26, Subtype = 4, Args = [460800, 341, 256] },
+                        new() { Name = "possum_path", Type = 28, Subtype = 2, Args = [0, 3072, 0, 0, -256, 256, 256] },
+                        new() { Name = "possum_path (static)", Type = 28, Subtype = 2, Args = [102400, 3072, 0, 0, -512, 256, 256] },
+                        new() { Name = "lizard_path", Type = 28, Subtype = 3, Args = [0, 3072, 0, 0, 0, 256, 256] }
+                    ],
+                    ["Alpine"] =
+                    [
+                        new() { Name = "bee_hive", Type = 18, Subtype = 0, Args = [1024, -153600, 0, 0] },
+                        new() { Name = "bee_hive (swarm)", Type = 18, Subtype = 0, Args = [1024, -153600, 256, 22] },
+                        new() { Name = "hive", Type = 18, Subtype = 2, Args = [] },
+                        new() { Name = "ass_banger", Type = 33, Subtype = 0, Args = [0] },
+                        new() { Name = "spore_plant", Type = 38, Subtype = 0, Args = [2662400, 716800, 0] },
+                        new() { Name = "mine", Type = 39, Subtype = 0, Args = [] },
+                        new() { Name = "fence", Type = 39, Subtype = 1, Args = [] },
+                        new() { Name = "plank", Type = 39, Subtype = 2, Args = [0] },
+                        new() { Name = "accelerator", Type = 39, Subtype = 3, Args = [-2048] },
+                        new() { Name = "boulder_door", Type = 39, Subtype = 5, Args = [] },
+                        new() { Name = "timed_spark", Type = 39, Subtype = 6, Args = [120, 0, 30] },
+                        new() { Name = "tiki", Type = 39, Subtype = 7, Args = [1024000, 0, 0] },
+                        new() { Name = "tiki (fast)", Type = 39, Subtype = 7, Args = [1024000, 256, 512] },
+                        new() { Name = "critter", Type = 39, Subtype = 8, Args = [0, 716800] },
+                        new() { Name = "fencetile", Type = 39, Subtype = 9, Args = [] },
+                        new() { Name = "fence_sound", Type = 39, Subtype = 10, Args = [] },
+                        new() { Name = "boulder", Type = 41, Subtype = 0, Args = [1208, 0, -512000, 0] },
+                        new() { Name = "papa", Type = 41, Subtype = 2, Args = [1489, 0, 512000, 0] },
+                        new() { Name = "labjack", Type = 45, Subtype = 1, Args = [1536, 60, 0] }
+                    ],
+                    ["Dynamo"] =
+                    [
+                        new() { Name = "plat_path", Type = 14, Subtype = 2, Args = [256, 180, 0, 0, 0] },
+                        new() { Name = "fred", Type = 53, Subtype = 0, Args = [0, 120, 0, 17920, 0, 0] },
+                        new() { Name = "piston_up", Type = 55, Subtype = 0, Args = [120, 0, 60] },
+                        new() { Name = "piston (short)", Type = 55, Subtype = 1, Args = [120, 30, 60, 0] },
+                        new() { Name = "piston", Type = 55, Subtype = 1, Args = [120, 0, 60, 1] },
+                        new() { Name = "pad", Type = 55, Subtype = 2, Args = [0, 0] },
+                        new() { Name = "gun", Type = 55, Subtype = 3, Args = [-1024] },
+                        new() { Name = "gun_down", Type = 55, Subtype = 4, Args = [1024] },
+                        new() { Name = "ass_pusher", Type = 56, Subtype = 0, Args = [256, 0, 0] },
+                        new() { Name = "robot_walker", Type = 55, Subtype = 5, Args = [120, 0] }
+                    ],
+                    ["Space"] =
+                    [
+                        new() { Name = "space_box", Type = 35, Subtype = 0, Args = [] },
+                        new() { Name = "space_jet_pack", Type = 35, Subtype = 1, Args = [] },
+                        new() { Name = "space_door", Type = 35, Subtype = 3, Args = [] },
+                        new() { Name = "spacelock", Type = 35, Subtype = 6, Args = [] },
+                        new() { Name = "space_pad", Type = 35, Subtype = 8, Args = [] },
+                        new() { Name = "space_cable", Type = 35, Subtype = 11, Args = [] },
+                        new() { Name = "space_gun", Type = 35, Subtype = 13, Args = [0] },
+                        new() { Name = "space_ring", Type = 35, Subtype = 15, Args = [4, 102400, 409600, 90, 0, 90, 0, 0, 256] },
+                        new() { Name = "space_lab_ass", Type = 42, Subtype = 0, Args = [1536000] }
+                    ],
+                    ["Bear"] =
+                    [
+                        new() { Name = "plat_drop", Type = 14, Subtype = 1, Args = [0, 1024000, 30, 54, 409600, 1024000, 3072000, 1024, 227, 0] },
+                        new() { Name = "bear", Type = 48, Subtype = 0, Args = [] },
+                        new() { Name = "orca", Type = 48, Subtype = 2, Args = [0, 15, 512, 0, 225280] },
+                        new() { Name = "lab_ass_lift", Type = 48, Subtype = 5, Args = [0, 0, 15, 15] }
+                    ],
+                },
+
+                ["Custom"] = new Dictionary<string, List<EntityObject>>
+                {
+                    ["Sample"] =
+                    [
+                        new() { Name = "sample", Type = 0, Subtype = 0, Args = [] },
+                    ]
+                }
+            };
+        }
+
+        private void InitializeUI()
+        {
+            Text = "Object List";
+            Icon = Embeds.GetIcon("Sitemap");
+            Size = new Size(600, 500);
+            //MaximizeBox = false;
+            //MinimizeBox = false;
+            //MinimumSize = new Size(300, 222);
+            //MaximumSize = new Size(Size.Width, 8192);
+
+            pnMain = new()
+            {
+                Dock = DockStyle.Fill,
+                Margin = Padding.Empty,
+                BackColor = Color.Transparent,
+                AutoScroll = false,
+                ColumnCount = 2,
+                RowCount = 1
+            };
+
+            panel1 = new()
+            {
+                BackColor = Color.Transparent,
+                Dock = DockStyle.Fill
+            };
+            panel2 = new()
+            {
+                BackColor = Color.Transparent,
+                Dock = DockStyle.Fill
+            };
+
+            treeView = new()
+            {
+                Dock = DockStyle.Fill,
+                BackColor = Color.FromArgb(31, 31, 32)
+            };
+            treeView.AfterSelect += TreeView_AfterSelect;
+            treeView.NodeMouseClick += TreeView_NodeMouseClick;
+            panel1.Controls.Add(treeView);
+
+            dgvProps = new()
+            {
+                Location = new(10, 10),
+                Size = new Size(200, 120)
+            };
+            DoubleBufferedDataGridView.Initialize(dgvProps);
+            dgvPropsInit();
+            panel2.Controls.Add(dgvProps);
+
+            fraArgs = new()
+            {
+                Location = new(10, 130),
+                Size = new Size(210, 310),
+                Text = "Arguments",
+                BackColor = Color.Transparent
+            };
+            panel2.Controls.Add(fraArgs);
+
+            dgvArgs = new()
+            {
+                Left = 8,
+                Top = 24,
+                Size = new Size(196, 280)
+            };
+            DoubleBufferedDataGridView.Initialize(dgvArgs);
+            dgvArgsInit();
+            dgvArgs.CellMouseDown += dgvArgs_CellMouseDown;
+            fraArgs.Controls.Add(dgvArgs);
+
+            ContextMenuStrip contextMenuStrip = new();
+            contextMenuStrip.Items.Add("Add argument", Embeds.GetIcon("Add").ToBitmap(), MenuAddArg);
+            contextMenuStrip.Items.Add("Delete argument", Embeds.GetIcon("Erase").ToBitmap(), MenuDeleteArg);
+            contextMenuStrip.Opening += ContextMenuStrip_Opening;
+            dgvArgs.ContextMenuStrip = contextMenuStrip;
+
+            chkShowAsHex = new()
+            {
+                Location = new(240, 140),
+                Text = "Hex",
+                Size = new Size(47, 19),
+                Checked = true
+            };
+            chkShowAsHex.CheckedChanged += chkShowAsHex_CheckedChanged;
+            panel2.Controls.Add(chkShowAsHex);
+
+            cmdApply = new()
+            {
+                Location = new(240, 380),
+                Size = new Size(80, 28),
+                Text = "Apply"
+            };
+            panel2.Controls.Add(cmdApply);
+            cmdApply.Click += cmdApply_Click;
+
+            cmdAdd = new()
+            {
+                Location = new(240, 20),
+                Size = new Size(80, 28),
+                Text = "Get Entity"
+            };
+            panel2.Controls.Add(cmdAdd);
+            cmdAdd.Click += cmdAdd_Click;
+
+            pnMain.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
+            pnMain.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F));
+            pnMain.Controls.Add(panel1, 0, 0);
+            pnMain.Controls.Add(panel2, 1, 0);
+            Controls.Add(pnMain);
+
+            contextMenu = new();
+
+            serializerOptions = new()
+            {
+                WriteIndented = true
+            };
+        }
+
+        private void chkShowAsHex_CheckedChanged(object? sender, EventArgs e)
+        {
+            dgvArgs.Refresh();
+        }
+
+        private void dgvArgs_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+
+            if (e.Button == MouseButtons.Right)
+            {
+                dgvArgs.Rows[e.RowIndex].Cells[e.ColumnIndex].Selected = true;
+                dgvArgs.CurrentCell = dgvArgs.Rows[e.RowIndex].Cells[e.ColumnIndex];
+            }
+        }
+
+        private void ContextMenuStrip_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var node = treeView.SelectedNode;
+            if (node.Tag is not EntityObject) e.Cancel = true;
+
+            int[] indices = [1];
+            if (dgvArgs.SelectedCells.Count == 0)
+            {
+                foreach (int i in indices)
+                    dgvArgs.ContextMenuStrip.Items[i].Visible = false;
+            }
+            else
+            {
+                foreach (int i in indices)
+                    dgvArgs.ContextMenuStrip.Items[i].Visible = true;
+            }
+        }
+
+        private void MenuAddArg(object sender, EventArgs e)
+        {
+            var node = treeView.SelectedNode;
+            if (node.Tag is not EntityObject) return;
+
+            EntityObject obj = node.Tag as EntityObject;
+
+            dirty.Push(true);
+
+            DataGridViewRow row = new();
+            row.CreateCells(
+                dgvArgs,
+                dgvArgs.Rows.Count + 1,
+                0
+            );
+            row.Cells[0].Style.BackColor = Color.FromArgb(32, 32, 32);
+            row.Cells[1].Style.BackColor = Color.FromArgb(40, 40, 40);
+            dgvArgs.Rows.Add(row);
+
+            obj.Args.Add(0);
+
+            ScheduleSave();
+
+            dirty.Pop();
+        }
+
+        private void MenuDeleteArg(object sender, EventArgs e)
+        {
+            if (dgvArgs.SelectedCells.Count == 0) return;
+            var node = treeView.SelectedNode;
+            if (node.Tag is not EntityObject) return;
+
+            EntityObject obj = node.Tag as EntityObject;
+
+            dirty.Push(true);
+
+            int index = dgvArgs.SelectedCells[0].RowIndex;
+            dgvArgs.Rows.RemoveAt(index);
+            for (int i = 0; i < dgvArgs.Rows.Count; i++)
+            {
+                dgvArgs.Rows[i].Cells[0].Value = i;
+            }
+
+            obj.Args.RemoveAt(index);
+
+            ScheduleSave();
+
+            dirty.Pop();
+        }
+
+        private void dgvPropsInit()
+        {
+            dgvProps.Columns.Add("", "");
+            dgvProps.Columns.Add("", "");
+
+            foreach (DataGridViewColumn column in dgvProps.Columns)
+            {
+                column.SortMode = DataGridViewColumnSortMode.NotSortable;
+                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            }
+            dgvProps.Columns[0].Width = 50;
+            dgvProps.Columns[1].Width = 120;
+
+            dgvProps.AllowUserToAddRows = false;
+            dgvProps.AllowUserToResizeColumns = false;
+            dgvProps.AllowUserToResizeRows = false;
+            dgvProps.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dgvProps.ColumnHeadersHeight = 24;
+            dgvProps.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvProps.ColumnHeadersVisible = false;
+            dgvProps.RowHeadersWidth = 24;
+            dgvProps.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            //dgvProps.RowHeadersVisible = false;
+            dgvProps.ScrollBars = ScrollBars.None;
+            dgvProps.ShowCellToolTips = false;
         
+            dgvProps.CellBeginEdit += dgv_CellBeginEdit;
+            dgvProps.CellValidating += dgvProps_CellValidating;
+            dgvProps.CellValueChanged += dgvProps_CellValueChanged;
+        }
+
+        private void dgv_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            if (e.ColumnIndex == 0)
+                e.Cancel = true;
+        }
+
+        private void getMaxValue(int rowIndex, out int minValue, out int maxValue)
+        {
+            maxValue = 0; minValue = 0;
+            switch (rowIndex)
+            {
+                case 1: // Type
+                    maxValue = Byte.MaxValue;
+                    minValue = Byte.MinValue;
+                    break;
+                case 2: // Subtype, Args
+                    maxValue = Int32.MaxValue;
+                    minValue = Int32.MinValue;
+                    break;
+            }
+        }
+
+        private void dgvProps_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            if (dgvProps.SelectedCells.Count == 0) return;
+            if (e.ColumnIndex == 0) return;
+
+            string inputValue = e.FormattedValue?.ToString() ?? "";
+
+            if (e.RowIndex == 0)
+            {
+                if (inputValue.Length > short.MaxValue)
+                {
+                    DarkMessageBox.ShowError($"Invalid input. Maximum length is {short.MaxValue} characters.", Resources.Title_InputError);
+                    e.Cancel = true;
+                }
+            }
+            else if (e.RowIndex == 1 || e.RowIndex == 2)
+            {
+                if (int.TryParse(inputValue, out int newValue))
+                {
+                    getMaxValue(e.RowIndex, out int minValue, out int maxValue);
+                    if (newValue > maxValue)
+                    {
+                        DarkMessageBox.ShowError($"Invalid input. The value must be less than or equal to {maxValue}.", Resources.Title_InputError);
+                        e.Cancel = true;
+                    }
+                    else if (newValue < minValue)
+                    {
+                        DarkMessageBox.ShowError($"Invalid input. The value must be greater than or equal to {minValue}.", Resources.Title_InputError);
+                        e.Cancel = true;
+                    }
+                }
+                else
+                {
+                    DarkMessageBox.ShowError($"Invalid input.", Resources.Title_InputError);
+                    e.Cancel = true;
+                }
+            }
+        }
+
+        private void dgvProps_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (Dirty) return;
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+
+            var node = treeView.SelectedNode;
+            if (node.Tag is not EntityObject) return;
+
+            EntityObject obj = node.Tag as EntityObject;
+
+            dirty.Push(true);
+
+            var cell = dgvProps.Rows[e.RowIndex].Cells[e.ColumnIndex];
+            string text = cell.Value?.ToString() ?? "";
+
+            if (e.RowIndex == 0)
+            {
+                obj.Name = text;
+                node.Text = text;
+            }
+            else
+            {
+                int value = Convert.ToInt32(cell.Value);
+                switch (e.RowIndex)
+                {
+                    case 1:
+                        obj.Type = value;
+                        break;
+                    case 2:
+                        obj.Subtype = value;
+                        break;
+                }
+            }
+
+            ScheduleSave();
+
+            dirty.Pop();
+        }
+
+        private void dgvArgsInit()
+        {
+            dgvArgs.Columns.Add("", "");
+            dgvArgs.Columns.Add("Arg", "Arg");
+
+            foreach (DataGridViewColumn column in dgvArgs.Columns)
+            {
+                column.SortMode = DataGridViewColumnSortMode.NotSortable;
+                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            }
+            dgvArgs.Columns[0].Width = 28;
+            dgvArgs.Columns[1].Width = 140;
+
+            dgvArgs.AllowUserToAddRows = false;
+            dgvArgs.AllowUserToResizeColumns = false;
+            dgvArgs.AllowUserToResizeRows = false;
+            dgvArgs.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dgvArgs.ColumnHeadersHeight = 24;
+            dgvArgs.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvArgs.ColumnHeadersVisible = false;
+            dgvArgs.RowHeadersWidth = 24;
+            dgvArgs.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            //dgvArgs.RowHeadersVisible = false;
+            dgvArgs.ScrollBars = ScrollBars.Vertical;
+            dgvArgs.ShowCellToolTips = false;
+
+            dgvArgs.CellBeginEdit += dgv_CellBeginEdit;
+            dgvArgs.CellValidating += dgvArgs_CellValidating;
+            dgvArgs.CellValueChanged += dgvArgs_CellValueChanged;
+            dgvArgs.CellFormatting += dgvArgs_CellFormatting;
+            dgvArgs.CellParsing += dgvArgs_CellParsing;
+        }
+
+        private void dgvArgs_CellValidating_2(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            if (dgvProps.SelectedCells.Count == 0) return;
+            if (e.ColumnIndex == 0) return;
+
+            string inputValue = e.FormattedValue?.ToString() ?? "";
+
+            if (int.TryParse(inputValue, out int newValue))
+            {
+                getMaxValue(2, out int minValue, out int maxValue);
+                if (newValue > maxValue)
+                {
+                    DarkMessageBox.ShowError($"Invalid input. The value must be less than or equal to {maxValue}.", Resources.Title_InputError);
+                    e.Cancel = true;
+                }
+                else if (newValue < minValue)
+                {
+                    DarkMessageBox.ShowError($"Invalid input. The value must be greater than or equal to {minValue}.", Resources.Title_InputError);
+                    e.Cancel = true;
+                }
+            }
+            else
+            {
+                DarkMessageBox.ShowError($"Invalid input.", Resources.Title_InputError);
+                e.Cancel = true;
+            }
+        }
+
+        private void dgvArgs_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            if (e.ColumnIndex != 1) return;
+
+            string input = e.FormattedValue?.ToString()?.Trim() ?? "";
+
+            if (string.IsNullOrEmpty(input))
+            {
+                DarkMessageBox.ShowError("Value cannot be empty.", Resources.Title_InputError);
+                e.Cancel = true;
+                return;
+            }
+
+            int value;
+
+            if (chkShowAsHex.Checked)
+            {
+                if (input.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
+                    input = input[2..];
+
+                if (!int.TryParse(input, NumberStyles.HexNumber, null, out int val))
+                {
+                    DarkMessageBox.ShowError("Invalid hex value.", Resources.Title_InputError);
+                    e.Cancel = true;
+                    return;
+                }
+                value = val;
+            }
+            else
+            {
+                if (!int.TryParse(input, out int val))
+                {
+                    DarkMessageBox.ShowError("Invalid decimal value.", Resources.Title_InputError);
+                    e.Cancel = true;
+                    return;
+                }
+                value = val;
+            }
+
+            getMaxValue(2, out int minValue, out int maxValue);
+            if (value > maxValue)
+            {
+                DarkMessageBox.ShowError($"Invalid input. The value must be less than or equal to {maxValue}.", Resources.Title_InputError);
+                e.Cancel = true;
+            }
+            else if (value < minValue)
+            {
+                DarkMessageBox.ShowError($"Invalid input. The value must be greater than or equal to {minValue}.", Resources.Title_InputError);
+                e.Cancel = true;
+            }
+        }
+
+        private void dgvArgs_CellParsing(object sender, DataGridViewCellParsingEventArgs e)
+        {
+            if (e.ColumnIndex != 1) return;
+
+            if (e.Value is string s)
+            {
+                string x = s.Trim();
+
+                if (chkShowAsHex.Checked)
+                {
+                    if (x.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
+                        x = x[2..];
+
+                    if (int.TryParse(x, NumberStyles.HexNumber, null, out int hex))
+                    {
+                        e.Value = hex;
+                        e.ParsingApplied = true;
+                    }
+                }
+                else
+                {
+                    if (int.TryParse(x, out int dec))
+                    {
+                        e.Value = dec;
+                        e.ParsingApplied = true;
+                    }
+                }
+            }
+        }
+
+        private void dgvArgs_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex != 1) return;
+
+            var cell = dgvArgs.Rows[e.RowIndex].Cells[e.ColumnIndex];
+            string? value = cell.Value?.ToString();
+
+            if (string.IsNullOrWhiteSpace(value))
+                return;
+
+            var node = treeView.SelectedNode;
+            if (node.Tag is not EntityObject) return;
+
+            EntityObject obj = node.Tag as EntityObject;
+
+            if (int.TryParse(value, out int decValue))
+            {
+                obj.Args[e.RowIndex] = decValue;
+                ScheduleSave();
+            }
+        }
+
+        private void dgvArgs_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.ColumnIndex == 1 && e.Value is int v)
+            {
+                if (chkShowAsHex.Checked)
+                    e.Value = $"0x{v:X2}";
+                else
+                    e.Value = v.ToString();
+
+                e.FormattingApplied = true;
+            }
+        }
+
+
+        private void cmdApply_Click(object? sender, EventArgs e)
+        {
+            if (treeView.SelectedNode?.Tag is EntityObject obj)
+            {
+                editor.ReplaceEntityProperties(obj);
+            }
+        }
+
+        private void cmdAdd_Click(object? sender, EventArgs e)
+        {
+            var node = treeView.SelectedNode;
+            if (node == null) return;
+
+            if (node.Parent == null)
+            {
+                DarkMessageBox.ShowError("The object cannot be added to the selected directory.", "Error");
+                return;
+            }
+
+            // identify the target node
+            TreeNode subGenreNode = node.Tag is EntityObject
+                ? node.Parent
+                : node;
+
+            string genreKey = subGenreNode.Parent.Text;
+            string subGenreKey = subGenreNode.Text;
+
+            if (editor.entity == null)
+            {
+                DarkMessageBox.ShowError("No entity is selected.", "Error");
+                return;
+            }
+
+            var entity = editor.entity;
+            var settings = entity.Settings.Select(a => a.Value).ToList();
+
+            EntityObject newObj = new()
+            {
+                Name = entity.Name,
+                Type = entity.Type,
+                Subtype = entity.Subtype,
+                Args = settings
+            };
+
+            TreeNode objNode = new(newObj.Name)
+            {
+                Tag = newObj
+            };
+            subGenreNode.Nodes.Add(objNode);
+
+            objectData[genreKey][subGenreKey].Add(newObj);
+
+            ScheduleSave();
+
+            subGenreNode.Expand();
+        }
+
+        private void PopulateTree()
+        {
+            treeView.BeginUpdate();
+            treeView.Nodes.Clear();
+
+            foreach (var genre in objectData)
+            {
+                TreeNode genreNode = new(genre.Key);
+
+                foreach (var subGenre in genre.Value)
+                {
+                    TreeNode subNode = new(subGenre.Key);
+
+                    foreach (var obj in subGenre.Value)
+                    {
+                        TreeNode objNode = new TreeNode(obj.Name);
+                        objNode.Tag = obj;
+                        subNode.Nodes.Add(objNode);
+                    }
+
+                    genreNode.Nodes.Add(subNode);
+                }
+
+                treeView.Nodes.Add(genreNode);
+            }
+
+            //treeView.ExpandAll();
+            treeView.EndUpdate();
+        }
+
+        private void AddPropRow(string key, object value)
+        {
+            DataGridViewRow row = new();
+            row.CreateCells(dgvProps, key, value);
+
+            row.Cells[0].Style.BackColor = Color.FromArgb(32, 32, 32);
+            row.Cells[1].Style.BackColor = Color.FromArgb(40, 40, 40);
+
+            dgvProps.Rows.Add(row);
+        }
+
+        private void AddArgRow(int index, int value)
+        {
+            DataGridViewRow row = new();
+            row.CreateCells(dgvArgs, index, value);
+
+            row.Cells[0].Style.BackColor = Color.FromArgb(32, 32, 32);
+            row.Cells[1].Style.BackColor = Color.FromArgb(40, 40, 40);
+
+            dgvArgs.Rows.Add(row);
+        }
+
+        private void TreeView_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            dirty.Push(true);
+
+            try
+            {
+                var node = treeView.SelectedNode;
+                if (node == null) return;
+
+                dgvProps.SuspendLayout();
+                dgvArgs.SuspendLayout();
+                dgvProps.Rows.Clear();
+                dgvArgs.Rows.Clear();
+
+                if (node.Tag is EntityObject obj)
+                {
+                    AddPropRow("Name", obj.Name);
+                    AddPropRow("Type", obj.Type);
+                    AddPropRow("Subtype", obj.Subtype);
+
+                    int index = 1;
+                    foreach (int value in obj.Args)
+                    {
+                        AddArgRow(index++, value);
+                    }
+                }
+
+                dgvProps.ClearSelection();
+                dgvArgs.ClearSelection();
+            }
+            finally
+            {
+                dgvProps.ResumeLayout();
+                dgvArgs.ResumeLayout();
+                dirty.Pop();
+            }
+        }
+
+        private void TreeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            treeView.SelectedNode = e.Node;
+
+            if (e.Button == MouseButtons.Right)
+            {
+                contextMenu.Items.Clear();
+
+                if (e.Node.Tag is EntityObject)
+                {
+                    // object nodes
+                    contextMenu.Items.Add("Delete", Embeds.GetIcon("Erase").ToBitmap(), (s, ev) => DeleteObject(e.Node));
+                }
+                else
+                {
+                    TreeNode parentNode = e.Node.Parent;
+                    if (parentNode != null)
+                    {
+                        // sub dir
+                        contextMenu.Items.Add("Add Object", Embeds.GetIcon("Add").ToBitmap(), (s, ev) => AddObject(e.Node));
+                        contextMenu.Items.Add("Rename", Embeds.GetIcon("Modify").ToBitmap(), (s, ev) => RenameDirectory(e.Node));
+                        contextMenu.Items.Add("Delete", Embeds.GetIcon("Erase").ToBitmap(), (s, ev) => DeleteDirectory(e.Node));
+                    }
+                    else
+                    {
+                        // parent dir
+                        contextMenu.Items.Add("Add Directory", Embeds.GetIcon("Add").ToBitmap(), (s, ev) => AddDirectory(e.Node));
+                    }
+                }
+
+                contextMenu.Show(treeView, e.Location);
+            }
+        }
+
+        private void AddDirectory(TreeNode node)
+        {
+            using InputWindow inputWindow = new("Add Directory", "Add", "Enter directory name:", string.Empty, -1);
+            if (inputWindow.ShowDialog() == DialogResult.OK)
+            {
+                string name = inputWindow.Input;
+                if (string.IsNullOrEmpty(name)) return;
+
+                string genreKey = node.Parent != null ? node.Parent.Text : node.Text;
+                if (objectData[genreKey].ContainsKey(name))
+                {
+                    DarkMessageBox.ShowError("The directory already exists.", "Error");
+                    return;
+                }
+
+                List<EntityObject> newList = [];
+
+                TreeNode subNode = new(name);
+                node.Nodes.Add(subNode);
+
+                objectData[genreKey].Add(name, newList);
+
+                ScheduleSave();
+            }
+        }
+
+        private void AddObject(TreeNode node)
+        {
+            using InputWindow inputWindow = new("Add Object", "Add", "Enter object name:", string.Empty, -1);
+            if (inputWindow.ShowDialog() == DialogResult.OK)
+            {
+                string name = inputWindow.Input;
+                if (string.IsNullOrEmpty(name)) return;
+
+                EntityObject newObj = new() { Name = name, Type = 0, Subtype = 0, Args = [] };
+
+                TreeNode objNode = new(newObj.Name);
+                objNode.Tag = newObj;
+                node.Nodes.Add(objNode);
+                node.Expand();
+
+                string genreKey = node.Parent != null ? node.Parent.Text : node.Text;
+                string subGenreKey = node.Parent != null ? node.Text : null;
+                if (subGenreKey != null)
+                    objectData[genreKey][subGenreKey].Add(newObj);
+
+                ScheduleSave();
+            }
+        }
+
+        private void RenameDirectory(TreeNode node)
+        {
+            using InputWindow inputWindow = new("Rename Directory", "Modify", "Enter directory name:", node.Text, -1);
+            if (inputWindow.ShowDialog() != DialogResult.OK) return;
+
+            string newName = inputWindow.Input;
+            if (string.IsNullOrEmpty(newName)) return;
+
+            string oldName = node.Text;
+            if (oldName == newName) return;
+
+            if (node.Parent == null)
+            {
+                if (!objectData.ContainsKey(oldName)) return;
+
+                var temp = objectData[oldName];
+                objectData.Remove(oldName);
+                objectData[newName] = temp;
+            }
+            else
+            {
+                string genreKey = node.Parent.Text;
+
+                if (!objectData[genreKey].ContainsKey(oldName)) return;
+
+                var temp = objectData[genreKey][oldName];
+                objectData[genreKey].Remove(oldName);
+                objectData[genreKey][newName] = temp;
+            }
+
+            node.Text = newName;
+
+            ScheduleSave();
+        }
+
+        private void DeleteDirectory(TreeNode node)
+        {
+            if (DarkMessageBox.ShowWarning($"Delete {node.Text}?", "Delete Confirmation Prompt", DarkDialogButton.YesNo) == DialogResult.Yes)
+            {
+                TreeNode parentNode = node.Parent;
+                if (parentNode != null)
+                {
+                    parentNode.Nodes.Remove(node);
+
+                    string genreKey = parentNode.Parent != null ? parentNode.Parent.Text : parentNode.Text;
+                    if (genreKey != null)
+                        objectData[genreKey].Remove(node.Text);
+
+                    ScheduleSave();
+                }
+            }
+        }
+
+        private void DeleteObject(TreeNode node)
+        {
+            if (node.Tag is EntityObject obj)
+            {
+                if (DarkMessageBox.ShowWarning($"Delete {obj.Name}?", "Delete Confirmation Prompt", DarkDialogButton.YesNo) == DialogResult.Yes)
+                {
+                    TreeNode parentNode = node.Parent;
+                    if (parentNode != null)
+                    {
+                        parentNode.Nodes.Remove(node);
+
+                        string genreKey = parentNode.Parent != null ? parentNode.Parent.Text : parentNode.Text;
+                        string subGenreKey = parentNode.Parent != null ? parentNode.Text : null;
+                        if (subGenreKey != null)
+                            objectData[genreKey][subGenreKey].Remove(obj);
+
+                        ScheduleSave();
+                    }
+                }
+            }
+        }
+
+        private void ScheduleSave()
+        {
+            _saveDebounceCts?.Cancel();
+            _saveDebounceCts = new CancellationTokenSource();
+            var token = _saveDebounceCts.Token;
+
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    await Task.Delay(500, token);
+                    await SaveAsync();
+                }
+                catch (TaskCanceledException)
+                {
+                }
+            });
+        }
+
+
+        private async Task SaveAsync()
+        {
+            string path = objectsFileName;
+            string json = JsonSerializer.Serialize(objectData, serializerOptions);
+            await File.WriteAllTextAsync(path, json);
+        }
+
+        private void LoadData()
+        {
+            string path = objectsFileName;
+            if (File.Exists(path))
+            {
+                string json = File.ReadAllText(path);
+                objectData = JsonSerializer.Deserialize<
+                    Dictionary<string, Dictionary<string, List<EntityObject>>>
+                >(json) ?? null;
+            }
+
+            if (objectData == null)
+                InitializeData();
+        }
+
+
     }
 
     public class DDAEditor : DarkForm
@@ -3124,6 +4268,18 @@ namespace CrashEdit.CE.Forms
 
         [DllImport("user32.dll")]
         private static extern IntPtr SendMessage(IntPtr hWnd, int msg, bool wParam, int lParam);
+    }
+
+    public class DoubleBufferedTreeView : TreeView
+    {
+        public DoubleBufferedTreeView()
+        {
+            this.DoubleBuffered = true;
+
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            this.SetStyle(ControlStyles.ResizeRedraw, true);
+        }
     }
 
 }
