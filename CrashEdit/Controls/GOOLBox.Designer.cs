@@ -41,7 +41,8 @@ namespace CrashEdit.CE
             numGoolType = new DarkNumericUpDown();
             tbpCode = new TabPage();
             tbpDataPool = new TabPage();
-            chkPoolToggleEID = new CheckBox();
+            darkGroupBox1 = new DarkGroupBox();
+            tglPoolView = new MetroSetSwitch();
             dgvPool = new DataGridView();
             tbpStateMap = new TabPage();
             dgvStateMap = new DataGridView();
@@ -59,6 +60,7 @@ namespace CrashEdit.CE
             fraGoolType.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numGoolType).BeginInit();
             tbpDataPool.SuspendLayout();
+            darkGroupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvPool).BeginInit();
             tbpStateMap.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvStateMap).BeginInit();
@@ -84,7 +86,7 @@ namespace CrashEdit.CE
             tbcTabs.ItemSize = new Size(100, 28);
             tbcTabs.Location = new Point(0, 0);
             tbcTabs.Name = "tbcTabs";
-            tbcTabs.SelectedIndex = 4;
+            tbcTabs.SelectedIndex = 1;
             tbcTabs.SelectedTextColor = Color.White;
             tbcTabs.Size = new Size(800, 800);
             tbcTabs.SizeMode = TabSizeMode.Fixed;
@@ -164,7 +166,7 @@ namespace CrashEdit.CE
             // 
             tbpDataPool.AutoScroll = true;
             tbpDataPool.BackColor = Color.FromArgb(31, 31, 32);
-            tbpDataPool.Controls.Add(chkPoolToggleEID);
+            tbpDataPool.Controls.Add(darkGroupBox1);
             tbpDataPool.Controls.Add(dgvPool);
             tbpDataPool.Location = new Point(4, 32);
             tbpDataPool.Name = "tbpDataPool";
@@ -173,20 +175,41 @@ namespace CrashEdit.CE
             tbpDataPool.Text = "Data Pool";
             tbpDataPool.Enter += tbpDataPool_Enter;
             // 
-            // chkPoolToggleEID
+            // darkGroupBox1
             // 
-            chkPoolToggleEID.AutoSize = true;
-            chkPoolToggleEID.BackColor = Color.Transparent;
-            chkPoolToggleEID.Checked = true;
-            chkPoolToggleEID.CheckState = System.Windows.Forms.CheckState.Checked;
-            chkPoolToggleEID.Location = new Point(305, 3);
-            chkPoolToggleEID.Name = "chkPoolToggleEID";
-            chkPoolToggleEID.Size = new Size(89, 19);
-            chkPoolToggleEID.TabIndex = 1;
-            chkPoolToggleEID.Text = "Show as EID";
-            chkPoolToggleEID.UseVisualStyleBackColor = false;
-            chkPoolToggleEID.Visible = false;
-            chkPoolToggleEID.CheckedChanged += chkPoolToggleEID_CheckedChanged;
+            darkGroupBox1.BackColor = Color.Transparent;
+            darkGroupBox1.Controls.Add(tglPoolView);
+            darkGroupBox1.Location = new Point(347, 3);
+            darkGroupBox1.Name = "darkGroupBox1";
+            darkGroupBox1.Size = new Size(97, 65);
+            darkGroupBox1.TabIndex = 2;
+            darkGroupBox1.TabStop = false;
+            darkGroupBox1.Text = "Toggle View";
+            // 
+            // tglPoolView
+            // 
+            tglPoolView.BackColor = Color.Transparent;
+            tglPoolView.BackgroundColor = Color.Empty;
+            tglPoolView.BorderColor = Color.FromArgb(155, 155, 155);
+            tglPoolView.CheckColor = Color.FromArgb(65, 177, 225);
+            tglPoolView.CheckState = MetroSet_UI.Enums.CheckState.Unchecked;
+            tglPoolView.DisabledBorderColor = Color.FromArgb(85, 85, 85);
+            tglPoolView.DisabledCheckColor = Color.FromArgb(100, 65, 177, 225);
+            tglPoolView.DisabledUnCheckColor = Color.FromArgb(200, 205, 205, 205);
+            tglPoolView.IsDerivedStyle = true;
+            tglPoolView.Location = new Point(10, 26);
+            tglPoolView.Name = "tglPoolView";
+            tglPoolView.Size = new Size(58, 22);
+            tglPoolView.Style = Style.Dark;
+            tglPoolView.StyleManager = null;
+            tglPoolView.Switched = false;
+            tglPoolView.SymbolColor = Color.FromArgb(92, 92, 92);
+            tglPoolView.TabIndex = 0;
+            tglPoolView.Text = "metroSetSwitch1";
+            tglPoolView.ThemeAuthor = "Narwin";
+            tglPoolView.ThemeName = "MetroDark";
+            tglPoolView.UnCheckColor = Color.FromArgb(155, 155, 155);
+            tglPoolView.SwitchedChanged += tglPoolView_SwitchedChanged;
             // 
             // dgvPool
             // 
@@ -202,13 +225,15 @@ namespace CrashEdit.CE
             dgvPool.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dgvPool.ScrollBars = ScrollBars.Vertical;
             dgvPool.ShowCellToolTips = false;
-            dgvPool.Size = new Size(296, 548);
+            dgvPool.Size = new Size(338, 548);
             dgvPool.TabIndex = 0;
             dgvPool.CellBeginEdit += dgvPool_CellBeginEdit;
             dgvPool.CellFormatting += dgvPool_CellFormatting;
+            dgvPool.CellParsing += dgvPool_CellParsing;
             dgvPool.CellValidating += dgvPool_CellValidating;
             dgvPool.CellValueChanged += dgvPool_CellValueChanged;
             dgvPool.EditingControlShowing += dgvPool_EditingControlShowing;
+            dgvPool.KeyDown += dgvPool_KeyDown;
             // 
             // tbpStateMap
             // 
@@ -349,7 +374,7 @@ namespace CrashEdit.CE
             fraGoolType.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)numGoolType).EndInit();
             tbpDataPool.ResumeLayout(false);
-            tbpDataPool.PerformLayout();
+            darkGroupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvPool).EndInit();
             tbpStateMap.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvStateMap).EndInit();
@@ -375,7 +400,6 @@ namespace CrashEdit.CE
         private TabPage tbpStateMap;
         private TabPage tbpStateDescriptors;
         private DataGridView dgvPool;
-        private CheckBox chkPoolToggleEID;
         private DarkGroupBox fraGoolType;
         private DarkNumericUpDown numGoolType;
         private DarkGroupBox fraGoolClass;
@@ -387,5 +411,7 @@ namespace CrashEdit.CE
         private DarkGroupBox fraExternal;
         private DarkNumericUpDown numExternalIndex;
         private DarkGroupBox fraExternalIndex;
+        private DarkGroupBox darkGroupBox1;
+        private MetroSetSwitch tglPoolView;
     }
 }

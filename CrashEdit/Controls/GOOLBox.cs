@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Globalization;
+using System.Text.RegularExpressions;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
@@ -18,7 +19,7 @@ namespace CrashEdit.CE
         private int headerCount;
         private int addressIndex;
 
-        private bool poolShowAsEID => chkPoolToggleEID.Checked;
+        private bool poolShowAsEID => !tglPoolView.Switched;
 
         private readonly int ColState = 0;
         private readonly int ColStateFlags = 1;
@@ -619,13 +620,15 @@ namespace CrashEdit.CE
             }
         }
 
-        private static int SwapEndian(int value)
+        private static uint SwapEndian(uint v)
         {
-            return (value >> 24) |
-                   ((value >> 8) & 0x0000FF00) |
-                   ((value << 8) & 0x00FF0000) |
-                    (value << 24);
+            return
+                (v >> 24) |
+                ((v >> 8) & 0x0000FF00) |
+                ((v << 8) & 0x00FF0000) |
+                (v << 24);
         }
+
 
         private void refreshScreen()
         {
@@ -668,7 +671,7 @@ namespace CrashEdit.CE
 
                 int i = int.Parse(dgvCode.SelectedCells[0].Value.ToString().Split(' ')[0]);
                 GOOLInstruction ins = goolentry.Instructions[i];
-                string hexvalue = SwapEndian(ins.Value).ToString("X8");
+                string hexvalue = SwapEndian((uint)ins.Value).ToString("X8");
 
                 using (InputWindow inputWindow = new("Edit Instruction", "Modify", "Enter a value to replace:", hexvalue, 8))
                 {
@@ -677,7 +680,7 @@ namespace CrashEdit.CE
                         string input = inputWindow.Input;
                         if (int.TryParse(input, System.Globalization.NumberStyles.HexNumber, null, out int newValue) && input.Length == 8)
                         {
-                            newValue = SwapEndian(newValue);
+                            newValue = (int)SwapEndian((uint)newValue);
                             bool isMIPS = ins is MIPSInstruction;
                             goolentry.Instructions[i] = goolentry.LoadInstruction(newValue, isMIPS);
                             refreshScreen();
@@ -1002,7 +1005,7 @@ namespace CrashEdit.CE
                     rowIndex = dgvPool.Rows.Add();
                 }
                 dgvPool.Rows[rowIndex].Cells[col].Value = ename;
-                var tagValue = $"{cval}, {ename}";
+                var tagValue = $"{(uint)cval}, {ename}";
                 dgvPool.Rows[rowIndex].Cells[col].Tag = tagValue;
             }
 
@@ -1022,7 +1025,7 @@ namespace CrashEdit.CE
             {
                 column.SortMode = DataGridViewColumnSortMode.NotSortable;
                 column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-                column.Width = 64;
+                column.Width = 74;
                 column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             }
@@ -1057,10 +1060,17 @@ namespace CrashEdit.CE
             {
                 if (poolShowAsEID)
                 {
-                    string input = Entry.CheckEIDErrors(inputValue, true);
-                    if (input != string.Empty)
+                    if (Entry.CheckEIDErrors(inputValue, true) != string.Empty)
                     {
                         DarkMessageBox.ShowError($"Invalid EID string.", Resources.Title_InputError);
+                        e.Cancel = true;
+                    }
+                }
+                else
+                {
+                    if (!uint.TryParse(inputValue, NumberStyles.HexNumber, null, out _))
+                    {
+                        DarkMessageBox.ShowError($"Invalid hex string.", Resources.Title_InputError);
                         e.Cancel = true;
                     }
                 }
@@ -1078,80 +1088,99 @@ namespace CrashEdit.CE
             if (e.RowIndex < 0 || e.ColumnIndex < 0 || !(dgvPool.SelectedCells.Count > 0)) return;
 
             var cell = dgvPool.Rows[e.RowIndex].Cells[e.ColumnIndex];
-            if (cell.Value != null)
+            if (cell.Tag == null) return;
+
+            int poolIndex = e.RowIndex * 4 + e.ColumnIndex;
+            if (poolIndex < goolentry.Data.Length)
             {
-                string ename = cell.Value.ToString();
-                int poolIndex = e.RowIndex * 4 + e.ColumnIndex;
-                if (poolIndex < goolentry.Data.Length)
+                uint eid;
+                if (poolShowAsEID)
                 {
-                    int eid = Entry.ENameToEID(ename);
-                    goolentry.Data[poolIndex] = eid;
+                    string ename = cell.Value.ToString();
+                    eid = (uint)Entry.ENameToEID(ename);
                 }
+                else
+                {
+                    eid = uint.Parse(cell.Value.ToString(), NumberStyles.HexNumber);
+                }
+                goolentry.Data[poolIndex] = (int)eid;
+
+                var tagValue = $"{eid}, {Entry.EIDToEName((int)eid)}";
+                cell.Tag = tagValue;
+            }
+        }
+
+        private void dgvPool_CellParsing(object sender, DataGridViewCellParsingEventArgs e)
+        {
+            if (!poolShowAsEID)
+            {
+                uint value = uint.Parse(e.Value.ToString(), NumberStyles.HexNumber);
+                uint swapped = SwapEndian(value);
+                e.Value = $"{swapped:X8}";
+                e.ParsingApplied = true;
             }
         }
 
         private void dgvPool_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if (e.Value == null || !poolShowAsEID) return;
+            if (e.Value == null) return;
 
-            string text = e.Value.ToString();
+            if (poolShowAsEID)
+            {
+                string text = e.Value.ToString();
 
-            if (text.EndsWith("A")) // sound
-                e.CellStyle.ForeColor = states;
-            else if (text.EndsWith("G")) // model
-                e.CellStyle.ForeColor = logicals;
-            else if (text.EndsWith("V")) // animation
-                e.CellStyle.ForeColor = titles;
-            else if (text.EndsWith("C")) // GOOL entry
-                e.CellStyle.ForeColor = Color.MediumSeaGreen;
-            else if (text.EndsWith("T")) // texture
-                e.CellStyle.ForeColor = numbers;
-            else if (text.EndsWith("O")) // voice
-                e.CellStyle.ForeColor = Color.SeaShell;
-            else if (text.EndsWith("D")) // image
-                e.CellStyle.ForeColor = globals;
-            else if (text.EndsWith("I")) // unassigned
-                e.CellStyle.ForeColor = statements;
+                if (text.EndsWith("A")) // sound
+                    e.CellStyle.ForeColor = states;
+                else if (text.EndsWith("G")) // model
+                    e.CellStyle.ForeColor = logicals;
+                else if (text.EndsWith("V")) // animation
+                    e.CellStyle.ForeColor = titles;
+                else if (text.EndsWith("C")) // GOOL entry
+                    e.CellStyle.ForeColor = Color.MediumSeaGreen;
+                else if (text.EndsWith("T")) // texture
+                    e.CellStyle.ForeColor = numbers;
+                else if (text.EndsWith("O")) // voice
+                    e.CellStyle.ForeColor = Color.SeaShell;
+                else if (text.EndsWith("D")) // image
+                    e.CellStyle.ForeColor = globals;
+                else if (text.EndsWith("I")) // unassigned
+                    e.CellStyle.ForeColor = statements;
+                else
+                    e.CellStyle.ForeColor = comments;
+            }
             else
-                e.CellStyle.ForeColor = comments;
+            {
+                uint value = uint.Parse(e.Value.ToString(), NumberStyles.HexNumber);
+                uint swapped = SwapEndian(value);
+                e.Value = $"{swapped:X8}";
+                e.FormattingApplied = true;
+            }
         }
 
-        private void chkPoolToggleEID_CheckedChanged(object sender, EventArgs e)
+        private void tglPoolView_SwitchedChanged(object sender)
         {
+            dgvPool.SuspendLayout();
             dirty.Push(true);
 
-            if (chkPoolToggleEID.Checked)
+            foreach (DataGridViewRow row in dgvPool.Rows)
             {
-                foreach (DataGridViewRow row in dgvPool.Rows)
+                foreach (DataGridViewCell cell in row.Cells)
                 {
-                    foreach (DataGridViewCell cell in row.Cells)
-                    {
-                        if (cell.Value == null) continue;
+                    if (cell.Value == null) continue;
 
-                        string tag = cell.Tag.ToString();
-                        string[] parts = tag.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
-                        if (parts.Length == 2)
+                    string tag = cell.Tag.ToString();
+                    string[] parts = tag.Split([", "], StringSplitOptions.RemoveEmptyEntries);
+                    if (parts.Length == 2)
+                    {
+                        if (poolShowAsEID)
                         {
                             string ename = parts[1];
                             cell.Value = ename;
                         }
-                    }
-                }
-            }
-            else
-            {
-                foreach (DataGridViewRow row in dgvPool.Rows)
-                {
-                    foreach (DataGridViewCell cell in row.Cells)
-                    {
-                        if (cell.Value == null) continue;
-
-                        string tag = cell.Tag.ToString();
-                        string[] parts = tag.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
-                        if (parts.Length == 2)
+                        else
                         {
-                            string eidn = parts[0];
-                            int eid = Convert.ToInt32(eidn);
+                            string cval = parts[0];
+                            uint eid = Convert.ToUInt32(cval);
                             cell.Value = eid.ToString("X8");
                         }
                     }
@@ -1159,6 +1188,15 @@ namespace CrashEdit.CE
             }
 
             dirty.Pop();
+            dgvPool.ResumeLayout();
+        }
+
+        private void dgvPool_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Z && e.Modifiers == Keys.Control)
+            {
+                tglPoolView.Switched = !tglPoolView.Switched;
+            }
         }
 
         #endregion
@@ -1533,7 +1571,7 @@ namespace CrashEdit.CE
                         cell.Tag = null;
                     }
                 }
-                
+
                 UpdateStateDescriptor(e.RowIndex, e.ColumnIndex, hookValue);
             }
         }
@@ -1716,5 +1754,7 @@ namespace CrashEdit.CE
         }
 
         #endregion
+
+      
     }
 }
