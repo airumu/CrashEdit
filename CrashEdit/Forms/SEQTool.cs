@@ -16,6 +16,8 @@ namespace CrashEdit.CE.Forms
         private MidiFile? midi;
         private IList<MidiEvent> midiEvents;
 
+        private readonly OpenFileDialog dialog = new();
+
         private string titleText;
 
         private readonly BindingList<MidiEventModel> eventList = [];
@@ -138,9 +140,10 @@ namespace CrashEdit.CE.Forms
         {
             InitializeComponent();
             Icon = Embeds.GetIcon("MusicNoteBlue");
-            KeyPreview = true;
-            MinimumSize = new Size(Width, 236);
+            MinimumSize = new Size(Width, 360);
             MaximumSize = new Size(Width, 8192);
+
+            dialog.Filter = FileFilters.MIDI + "|" + FileFilters.Any;
 
             dgvEventsInit();
             dgvLoopInit(dgvLoopStart);
@@ -148,18 +151,24 @@ namespace CrashEdit.CE.Forms
 
             ToolStripButtonInit(tsbOpen, "FolderOpen", Resources.Toolbar_Open, $"{Resources.Toolbar_Open} (Ctrl + O)");
             ToolStripButtonInit(tsbSave, "Floppy", Resources.Toolbar_Save, $"{Resources.Toolbar_Save} (Ctrl + S)");
-        }
 
-        private void dgvLoopInit(DataGridView dgv)
-        {
-            DoubleBufferedDataGridView.Initialize(dgv);
-            dgv.Columns.Add("", "");
-            dgv.Columns.Add("", "");
-            dgv.Columns[0].Width = 54;
-            dgv.Columns[1].Width = 32;
-            dgv.Rows.Add("Measure", 0);
-            dgv.Rows.Add("Beat", 0);
-            dgv.Rows.Add("Tick", 0);
+            numLoopStart.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
+            numLoopEnd.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
+
+            KeyPreview = true;
+            KeyDown += (sender, e) =>
+            {
+                if (e.Control && e.KeyCode == Keys.O)
+                {
+                    tsbOpen.PerformClick();
+                    e.SuppressKeyPress = true;
+                }
+                else if (e.Control && e.KeyCode == Keys.S)
+                {
+                    tsbSave.PerformClick();
+                    e.SuppressKeyPress = true;
+                }
+            };
         }
 
         private void ToolStripButtonInit(ToolStripButton tsb, string imageKey, string text, string tooltip)
@@ -174,8 +183,6 @@ namespace CrashEdit.CE.Forms
 
         private void tsbOpen_Click(object sender, EventArgs e)
         {
-            using OpenFileDialog dialog = new();
-            dialog.Filter = FileFilters.MIDI + "|" + FileFilters.Any;
             if (dialog.ShowDialog(this) == DialogResult.OK)
             {
                 dirty.Push(true);
@@ -189,7 +196,8 @@ namespace CrashEdit.CE.Forms
                 OptimizeMIDI();
 
                 UpdateEventGrids();
-                UpdateLoopGrids();
+                UpdateLoopGrids(dgvLoopStart, numLoopStart);
+                UpdateLoopGrids(dgvLoopEnd, numLoopEnd);
                 pnControls.Enabled = true;
 
                 dirty.Pop();
@@ -232,6 +240,15 @@ namespace CrashEdit.CE.Forms
         }
 
         #region Loops
+
+        private void dgvLoopInit(DataGridView dgv)
+        {
+            DoubleBufferedDataGridView.Initialize(dgv);
+            dgv.Columns.Add("", "");
+            dgv.Columns.Add("", "");
+            dgv.Columns[0].Width = 54;
+            dgv.Columns[1].Width = 32;
+        }
 
         private void dgvLoop_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
@@ -359,22 +376,15 @@ namespace CrashEdit.CE.Forms
             return (measure, beat, tick);
         }
 
-        private void UpdateLoopGrids()
+        private void UpdateLoopGrids(DataGridView dgv, DarkNumericUpDown num)
         {
-            // Loop start
-            {
-                (int measure, int beat, int tick) = GetTimeSignature((long)numLoopStart.Value);
-                dgvLoopStart.Rows[0].Cells[1].Value = measure;
-                dgvLoopStart.Rows[1].Cells[1].Value = beat;
-                dgvLoopStart.Rows[2].Cells[1].Value = tick;
-            }
-            // Loop end
-            {
-                (int measure, int beat, int tick) = GetTimeSignature((long)numLoopEnd.Value);
-                dgvLoopEnd.Rows[0].Cells[1].Value = measure;
-                dgvLoopEnd.Rows[1].Cells[1].Value = beat;
-                dgvLoopEnd.Rows[2].Cells[1].Value = tick;
-            }
+            (int measure, int beat, int tick) = GetTimeSignature((long)num.Value);
+            dgv.Rows.Clear();
+            dgv.Rows.Add("Measure", measure);
+            dgv.Rows.Add("Beat", beat);
+            dgv.Rows.Add("Tick", tick);
+            dgv.CurrentCell = null;
+            dgv.ClearSelection();
         }
 
         private void numLoopStart_ValueChanged(object sender, EventArgs e)
@@ -1027,5 +1037,24 @@ namespace CrashEdit.CE.Forms
 
         #endregion
 
+
+        private void ScrollHandlerFunction2(object sender, MouseEventArgs e)
+        {
+            if (sender is NumericUpDown numericUpDown)
+            {
+                HandledMouseEventArgs handledArgs = e as HandledMouseEventArgs;
+                if (handledArgs != null)
+                    handledArgs.Handled = true;
+
+                decimal newValue = numericUpDown.Value;
+                if (e.Delta > 0 && newValue + 12 <= numericUpDown.Maximum)
+                    newValue += 12;
+
+                else if (e.Delta < 0 && newValue - 12 >= numericUpDown.Minimum)
+                    newValue -= 12;
+
+                numericUpDown.Value = newValue;
+            }
+        }
     }
 }
