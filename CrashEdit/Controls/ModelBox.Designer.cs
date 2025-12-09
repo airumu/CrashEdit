@@ -604,7 +604,7 @@ namespace CrashEdit.CE.Controls
             fraTempVertices.Size = new Size(248, 560);
             fraTempVertices.TabIndex = 13;
             fraTempVertices.TabStop = false;
-            fraTempVertices.Text = "Temporary Vertices";
+            fraTempVertices.Text = "Selected Vertices";
             // 
             // panel4
             // 
@@ -827,7 +827,7 @@ namespace CrashEdit.CE.Controls
             chkEditTempVertices.Name = "chkEditTempVertices";
             chkEditTempVertices.Size = new Size(160, 19);
             chkEditTempVertices.TabIndex = 14;
-            chkEditTempVertices.Text = "Affect Temporary Vertices";
+            chkEditTempVertices.Text = "Affect Selected Vertices";
             chkEditTempVertices.UseVisualStyleBackColor = false;
             chkEditTempVertices.CheckedChanged += chkEditTempVertices_CheckedChanged;
             // 
