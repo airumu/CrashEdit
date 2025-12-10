@@ -78,7 +78,7 @@ namespace CrashEdit.CE
             sf2Path = Path.ChangeExtension(basePath, ".sf2");
             dlsPath = Path.ChangeExtension(basePath, ".dls");
 
-            lbEIDError.Visible = false;
+            lbEIDError.Text = "";
             txtMusic.Enabled =
             fraControls.Enabled =
             lbTimeInfo.Enabled =
@@ -158,7 +158,6 @@ namespace CrashEdit.CE
 
         private void txtMusic_TextChanged(object? sender, EventArgs e)
         {
-            lbEIDError.Visible = true;
             lbEIDError.Text = Entry.CheckEIDErrors(txtMusic.Text, true);
         }
 
