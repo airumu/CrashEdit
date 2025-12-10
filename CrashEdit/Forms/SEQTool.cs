@@ -16,6 +16,8 @@ namespace CrashEdit.CE.Forms
         private MidiFile? midi;
         private IList<MidiEvent> midiEvents;
 
+        public SEQ convertedSEQ;
+
         private readonly OpenFileDialog dialog = new();
 
         private string titleText;
@@ -136,7 +138,7 @@ namespace CrashEdit.CE.Forms
         internal Stack<bool> dirty = [];
         internal bool Dirty => dirty.Count > 0 && dirty.Peek();
 
-        public SEQTool()
+        public SEQTool(string? midiFileName)
         {
             InitializeComponent();
             Icon = Embeds.GetIcon("MusicNoteBlue");
@@ -151,6 +153,7 @@ namespace CrashEdit.CE.Forms
 
             ToolStripButtonInit(tsbOpen, "FolderOpen", Resources.Toolbar_Open, $"{Resources.Toolbar_Open} (Ctrl + O)");
             ToolStripButtonInit(tsbSave, "Floppy", Resources.Toolbar_Save, $"{Resources.Toolbar_Save} (Ctrl + S)");
+            tsbSave.Enabled = false;
 
             numLoopStart.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
             numLoopEnd.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
@@ -169,6 +172,16 @@ namespace CrashEdit.CE.Forms
                     e.SuppressKeyPress = true;
                 }
             };
+
+            if (midiFileName != null) // import a MIDI file from the SEQ context menu
+            {
+                toolStrip.Enabled = false;
+                OpenMIDI(midiFileName);
+            }
+            else
+            {
+                cmdImport.Visible = false;
+            }
         }
 
         private void ToolStripButtonInit(ToolStripButton tsb, string imageKey, string text, string tooltip)
@@ -181,27 +194,46 @@ namespace CrashEdit.CE.Forms
             tsb.DisplayStyle = ToolStripItemDisplayStyle.Text;
         }
 
+        private void OpenMIDI(string midiFileName)
+        {
+            dirty.Push(true);
+
+            midi = new MidiFile(midiFileName, false);
+            titleText = $"- {midiFileName}";
+            Text = "SEQ Tool " + titleText;
+
+            midi = MergeMIDITracks();
+            midiEvents = midi.Events[0];
+            OptimizeMIDI();
+
+            UpdateEventGrids();
+            UpdateLoopGrids(dgvLoopStart, numLoopStart);
+            UpdateLoopGrids(dgvLoopEnd, numLoopEnd);
+            pnControls.Enabled = true;
+            tsbSave.Enabled = true;
+
+            dirty.Pop();
+        }
+
         private void tsbOpen_Click(object sender, EventArgs e)
         {
             if (dialog.ShowDialog(this) == DialogResult.OK)
             {
-                dirty.Push(true);
-
-                midi = new MidiFile(dialog.FileName, false);
-                titleText = $"- {dialog.FileName}";
-                Text = "SEQ Tool " + titleText;
-
-                midi = MergeMIDITracks();
-                midiEvents = midi.Events[0];
-                OptimizeMIDI();
-
-                UpdateEventGrids();
-                UpdateLoopGrids(dgvLoopStart, numLoopStart);
-                UpdateLoopGrids(dgvLoopEnd, numLoopEnd);
-                pnControls.Enabled = true;
-
-                dirty.Pop();
+                OpenMIDI(dialog.FileName);
             }
+        }
+
+        private void ConvertMIDItoSEQ()
+        {
+            short rhythm = (short)((timeSignatureInfo.Numerator << 8) | timeSignatureInfo.Denominator);
+            convertedSEQ = FromMidi(
+                midi.Events,
+                midiEvents,
+                Convert.ToInt64(numLoopStart.Value),
+                Convert.ToInt64(numLoopEnd.Value),
+                midiTempo.MicrosecondsPerQuarterNote,
+                rhythm
+                );
         }
 
         private void tsbSave_Click(object sender, EventArgs e)
@@ -209,20 +241,18 @@ namespace CrashEdit.CE.Forms
             if (midi == null) return;
             try
             {
-                short rhythm = (short)((timeSignatureInfo.Numerator << 8) | timeSignatureInfo.Denominator);
-                SEQ seq = FromMidi(
-                    midi.Events,
-                    midiEvents,
-                    Convert.ToInt64(numLoopStart.Value),
-                    Convert.ToInt64(numLoopEnd.Value),
-                    midiTempo.MicrosecondsPerQuarterNote,
-                    rhythm
-                    );
-                FileUtil.SaveFile(seq.Save(), FileFilters.SEQ, FileFilters.Any);
+                ConvertMIDItoSEQ();
+                FileUtil.SaveFile(convertedSEQ.Save(), FileFilters.SEQ, FileFilters.Any);
             }
             catch
             {
             }
+        }
+
+        private void cmdImport_Click(object sender, EventArgs e)
+        {
+            ConvertMIDItoSEQ();
+            DialogResult = DialogResult.OK;
         }
 
         private void CloseMidi()
@@ -237,6 +267,7 @@ namespace CrashEdit.CE.Forms
 
             midi = null;
             pnControls.Enabled = false;
+            tsbSave.Enabled = false;
         }
 
         #region Loops
@@ -499,6 +530,11 @@ namespace CrashEdit.CE.Forms
 
         public async Task LoadMidiAsync()
         {
+            if (!IsHandleCreated)
+            {
+                CreateHandle();
+            }
+
             dgvEvents.SuspendLayout();
             dgvEvents.ScrollBars = ScrollBars.None;
 
@@ -662,7 +698,7 @@ namespace CrashEdit.CE.Forms
             midiEvents.Clear();
             foreach (var ev in filtered)
                 midiEvents.Add(ev);
-            
+
 
             long lastEventTick = 0;
             long actualLastEventTick = 0; // to remove events added by DAW

@@ -41,6 +41,7 @@
             dgvLoopEnd = new DataGridView();
             progressBar = new ProgressBar();
             pnControls = new Panel();
+            cmdImport = new AltUI.Controls.DarkButton();
             toolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvEvents).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numLoopStart).BeginInit();
@@ -184,9 +185,9 @@
             // 
             // progressBar
             // 
-            progressBar.Location = new Point(6, 390);
+            progressBar.Location = new Point(12, 390);
             progressBar.Name = "progressBar";
-            progressBar.Size = new Size(90, 23);
+            progressBar.Size = new Size(86, 23);
             progressBar.TabIndex = 5;
             progressBar.Visible = false;
             // 
@@ -195,6 +196,7 @@
             pnControls.AutoSize = true;
             pnControls.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             pnControls.BackColor = Color.Transparent;
+            pnControls.Controls.Add(cmdImport);
             pnControls.Controls.Add(fraLoopStart);
             pnControls.Controls.Add(progressBar);
             pnControls.Controls.Add(fraLoopEnd);
@@ -204,6 +206,20 @@
             pnControls.Name = "pnControls";
             pnControls.Size = new Size(109, 425);
             pnControls.TabIndex = 6;
+            // 
+            // cmdImport
+            // 
+            cmdImport.BorderColour = Color.Empty;
+            cmdImport.CustomColour = false;
+            cmdImport.FlatBottom = false;
+            cmdImport.FlatTop = false;
+            cmdImport.Location = new Point(12, 314);
+            cmdImport.Name = "cmdImport";
+            cmdImport.Padding = new Padding(5);
+            cmdImport.Size = new Size(86, 47);
+            cmdImport.TabIndex = 6;
+            cmdImport.Text = "Import";
+            cmdImport.Click += cmdImport_Click;
             // 
             // SEQTool
             // 
@@ -246,5 +262,6 @@
         private Panel pnControls;
         private DataGridView dgvLoopStart;
         private DataGridView dgvLoopEnd;
+        private AltUI.Controls.DarkButton cmdImport;
     }
 }

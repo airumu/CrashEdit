@@ -1263,7 +1263,7 @@ namespace CrashEdit.CE
         void tbxSEQTool_Click(object sender, EventArgs e)
         {
             if (frmSEQTool == null || frmSEQTool.IsDisposed)
-                frmSEQTool = new();
+                frmSEQTool = new(null);
 
             if (!frmSEQTool.Visible)
                 frmSEQTool.Show();
