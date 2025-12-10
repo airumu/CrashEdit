@@ -67,12 +67,10 @@ namespace CrashEdit.CE
             DoubleBufferedDataGridView.Initialize(dgvPropertyValues);
             DoubleBufferedDataGridView.Initialize(dgvSavePropertyValues);
 
-            ContextMenuStrip contextMenu = new ContextMenuStrip();
-            ToolStripMenuItem insertRowItem = new ToolStripMenuItem("Insert Row");
-            ToolStripMenuItem deleteRowItem = new ToolStripMenuItem("Delete Row");
-
-            insertRowItem.Click += InsertRowItem_Click;
-            deleteRowItem.Click += DeleteRowItem_Click;
+            ContextMenuStrip contextMenu = new();
+            ToolStripMenuItem insertRowItem = new("Insert Row", Embeds.GetIcon("Add").ToBitmap(), InsertRowItem_Click);
+            ToolStripMenuItem deleteRowItem = new("Delete Row", Embeds.GetIcon("Erase").ToBitmap(), DeleteRowItem_Click);
+            contextMenu.Opening += ContextMenuStrip_Opening;
             contextMenu.Items.Add(insertRowItem);
             contextMenu.Items.Add(deleteRowItem);
 
@@ -107,13 +105,22 @@ namespace CrashEdit.CE
             }
         }
 
+        private void ContextMenuStrip_Opening(object sender, CancelEventArgs e)
+        {
+            if (currentDataGridView == dgvPropertyMetaValues)
+            {
+                bool canDelete = dgvPropertyMetaValues.Rows.Count > 1;
+                dgvPropertyMetaValues.ContextMenuStrip.Items[1].Visible = canDelete;
+            }
+            else if (currentDataGridView == dgvPropertyValues)
+            {
+                bool canDelete = dgvPropertyValues.Rows.Count > 0;
+                dgvPropertyValues.ContextMenuStrip.Items[1].Visible = canDelete;
+            }
+        }
+
         private void InsertRowItem_Click(object sender, EventArgs e)
         {
-            if (currentDataGridView == null)
-            {
-                DarkMessageBox.ShowError("Please select a row to insert.", Resources.Title_Error);
-                return;
-            }
             if (lbProperties.SelectedItem == null) return;
 
             dynamic field = selectedField;
@@ -271,11 +278,6 @@ namespace CrashEdit.CE
 
         private void DeleteRowItem_Click(object sender, EventArgs e)
         {
-            if (currentDataGridView == null)
-            {
-                DarkMessageBox.ShowError("Please select a row to delete.", Resources.Title_Error);
-                return;
-            }
             if (lbProperties.SelectedItem == null || !(currentDataGridView.SelectedRows.Count > 0) || !(dgvPropertyMetaValues.SelectedCells.Count > 0)) return;
             int rowindex = dgvPropertyMetaValues.SelectedCells[0].RowIndex;
 
@@ -1708,7 +1710,8 @@ namespace CrashEdit.CE
         {
             if (lbSavedProperties.SelectedIndex < 0) return;
 
-            if (DarkMessageBox.ShowWarning("Are you sure you want to remove the selected items?", Resources.Delete_ConfirmationPrompt, DarkDialogButton.YesNo) == DialogResult.Yes)
+            string str = lbSavedProperties.SelectedItems.Count > 1 ? "items" : "item";
+            if (DarkMessageBox.ShowWarning($"Are you sure you want to remove the selected {str}?", Resources.Delete_ConfirmationPrompt, DarkDialogButton.YesNo) == DialogResult.Yes)
             {
                 foreach (var selectedItem in lbSavedProperties.SelectedItems.Cast<string>().ToList())
                 {
