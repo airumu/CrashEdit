@@ -12,6 +12,7 @@ namespace CrashEdit.CE
             AddMenu(string.Format(CrashUI.Properties.Resources.EntryController_AcDuplicate, entry.EName), "Copy", Menu_Duplicate_Entry);
             if (this is not UnprocessedEntryController)
             {
+                AddMenuSeparator();
                 AddMenu(string.Format(CrashUI.Properties.Resources.EntryController_AcDeprocess, entry.EName), "Pinion", Menu_Unprocess_Entry);
                 AddMenu(string.Format(CrashUI.Properties.Resources.EntryController_AcReload, entry.EName), "ArrowRefresh", Menu_Reload_Entry);
             }
