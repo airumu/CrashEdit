@@ -1116,5 +1116,26 @@ namespace CrashEdit.CE
                 UpdateVertices();
             }
         }
+
+        private void cmdSwapVertZ_Click(object sender, EventArgs e)
+        {
+            // Swap the first and second Z every 4 verts
+            foreach (Frame frame in animationEntry.Frames)
+            {
+                for (int i = 0; i + 3 < frame.Positions.Count; i += 4)
+                {
+                    var p1 = frame.Positions[i];
+                    var p2 = frame.Positions[i + 1];
+
+                    Position pos = frame.Positions[i];
+                    frame.Positions[i] = new Position(pos.X, pos.Y, p2.Z);
+                    UpdateTemporals(frame, ZOffset, p2.Z, i);
+
+                    Position pos2 = frame.Positions[i + 1];
+                    frame.Positions[i + 1] = new Position(pos2.X, pos2.Y, p1.Z);
+                    UpdateTemporals(frame, ZOffset, p1.Z, i + 1);
+                }
+            }
+        }
     }
 }

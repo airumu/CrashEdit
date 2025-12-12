@@ -102,6 +102,8 @@ namespace CrashEdit.CE
             fraCopy = new DarkGroupBox();
             cmdCopyOffset = new DarkButton();
             pnFrameBox = new Panel();
+            fraMisc = new DarkGroupBox();
+            cmdSwapVertZ = new DarkButton();
             fraVertice.SuspendLayout();
             fraNearbyVertices.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numDistance).BeginInit();
@@ -133,6 +135,7 @@ namespace CrashEdit.CE
             darkGroupBox1.SuspendLayout();
             fraCopy.SuspendLayout();
             pnFrameBox.SuspendLayout();
+            fraMisc.SuspendLayout();
             SuspendLayout();
             // 
             // fraVertice
@@ -1069,6 +1072,7 @@ namespace CrashEdit.CE
             // 
             pnFrameBox.AutoScroll = true;
             pnFrameBox.BackColor = Color.FromArgb(31, 31, 32);
+            pnFrameBox.Controls.Add(fraMisc);
             pnFrameBox.Controls.Add(fraCopy);
             pnFrameBox.Controls.Add(cmdInsertVertice);
             pnFrameBox.Controls.Add(chkSyncFrames);
@@ -1084,6 +1088,32 @@ namespace CrashEdit.CE
             pnFrameBox.Name = "pnFrameBox";
             pnFrameBox.Size = new Size(710, 524);
             pnFrameBox.TabIndex = 21;
+            // 
+            // fraMisc
+            // 
+            fraMisc.BackColor = Color.Transparent;
+            fraMisc.Controls.Add(cmdSwapVertZ);
+            fraMisc.Location = new Point(474, 360);
+            fraMisc.Name = "fraMisc";
+            fraMisc.Size = new Size(141, 116);
+            fraMisc.TabIndex = 21;
+            fraMisc.TabStop = false;
+            fraMisc.Text = "Misc";
+            fraMisc.Visible = false;
+            // 
+            // cmdSwapVertZ
+            // 
+            cmdSwapVertZ.BorderColour = Color.Empty;
+            cmdSwapVertZ.CustomColour = false;
+            cmdSwapVertZ.FlatBottom = false;
+            cmdSwapVertZ.FlatTop = false;
+            cmdSwapVertZ.Location = new Point(6, 20);
+            cmdSwapVertZ.Name = "cmdSwapVertZ";
+            cmdSwapVertZ.Padding = new Padding(5);
+            cmdSwapVertZ.Size = new Size(75, 23);
+            cmdSwapVertZ.TabIndex = 0;
+            cmdSwapVertZ.Text = "SwapZ 1-2";
+            cmdSwapVertZ.Click += cmdSwapVertZ_Click;
             // 
             // FrameBox
             // 
@@ -1136,6 +1166,7 @@ namespace CrashEdit.CE
             fraCopy.ResumeLayout(false);
             pnFrameBox.ResumeLayout(false);
             pnFrameBox.PerformLayout();
+            fraMisc.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -1213,5 +1244,7 @@ namespace CrashEdit.CE
         private DarkGroupBox fraNearbyVertices;
         private DarkNumericUpDown numDistance;
         private DarkLabel lbDistance;
+        private DarkGroupBox fraMisc;
+        private DarkButton cmdSwapVertZ;
     }
 }
