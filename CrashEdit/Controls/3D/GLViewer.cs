@@ -1127,7 +1127,7 @@ namespace CrashEdit.CE
                     }
                     var anim = animated_textures[tex_id];
                     // check if it's an untextured polygon
-                    if (anim.Offset != 0)
+                    if (anim.Offset != 0 || Settings.Default.ShowAnimTex0)
                     {
                         tex_id = anim.Offset - 1;
                         if (anim.IsLOD)

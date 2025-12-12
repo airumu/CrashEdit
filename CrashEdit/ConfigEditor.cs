@@ -121,6 +121,7 @@ namespace CrashEdit.CE
             chkPatchGOOLC3toC2.Checked = Settings.Default.PatchGOOLC3toC2;
             chkSplitViewerPanels.Checked = Settings.Default.SplitAnimViewerPanels;
             chkEnableLegacyEntityBox.Checked = Settings.Default.EnableLegacyEntityBox;
+            chkAnimTexShow0.Checked = Settings.Default.ShowAnimTex0;
             chkOutputCopyTextureResult.Checked = Settings.Default.OutputCopyTextureResult;
             chkOutputModelTextureInfo.Checked = Settings.Default.OutputModelTextureInfo;
             chkOutputCLUTInfo.Checked = Settings.Default.OutputCLUTInfo;
@@ -566,6 +567,12 @@ namespace CrashEdit.CE
         private void chkUseNeighborZoneTransparency_CheckedChanged(object sender, EventArgs e)
         {
             Settings.Default.UseNeighborZoneTransparency = chkUseNeighborZoneTransparency.Checked;
+            Settings.Default.Save();
+        }
+
+        private void chkAnimTexShow0_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.ShowAnimTex0 = chkAnimTexShow0.Checked;
             Settings.Default.Save();
         }
     }

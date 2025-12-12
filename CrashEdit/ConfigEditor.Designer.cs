@@ -1,4 +1,5 @@
 ﻿using AltUI.Controls;
+using CrashEdit.CE.Properties;
 using MetroSet_UI.Controls;
 
 namespace CrashEdit.CE
@@ -74,6 +75,7 @@ namespace CrashEdit.CE
             tbp3D = new TabPage();
             fraCollisionNode = new DarkGroupBox();
             chkUseNeighborZoneTransparency = new CheckBox();
+            chkAnimTexShow0 = new CheckBox();
             tbpDebugDisplay = new TabPage();
             chkShowRenderingErrors = new CheckBox();
             darkGroupBox3 = new DarkGroupBox();
@@ -706,7 +708,7 @@ namespace CrashEdit.CE
             fraCollisionNode.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             fraCollisionNode.BackColor = Color.Transparent;
             fraCollisionNode.Controls.Add(fraNodeShadeAmt);
-            fraCollisionNode.Controls.Add(chkUseNeighborZoneTransparency);
+            fraCollisionNode.Controls.Add(chkUseNeighborZoneTransparency);            
             fraCollisionNode.Location = new Point(7, 202);
             fraCollisionNode.Name = "fraCollisionNode";
             fraCollisionNode.Size = new Size(290, 130);
@@ -726,7 +728,7 @@ namespace CrashEdit.CE
             chkUseNeighborZoneTransparency.TabIndex = 0;
             chkUseNeighborZoneTransparency.Text = "Use transparency for neighbor zones";
             chkUseNeighborZoneTransparency.UseVisualStyleBackColor = true;
-            chkUseNeighborZoneTransparency.CheckedChanged += chkUseNeighborZoneTransparency_CheckedChanged;
+            chkUseNeighborZoneTransparency.CheckedChanged += chkUseNeighborZoneTransparency_CheckedChanged;            
             // 
             // tbpDebugDisplay
             // 
@@ -884,6 +886,7 @@ namespace CrashEdit.CE
             tbpExtra.Controls.Add(chkSplitViewerPanels);
             tbpExtra.Controls.Add(chkLiteralCollisionTypes);
             tbpExtra.Controls.Add(chkPatchGOOLC3toC2);
+            tbpExtra.Controls.Add(chkAnimTexShow0);
             tbpExtra.Location = new Point(4, 32);
             tbpExtra.Name = "tbpExtra";
             tbpExtra.Padding = new Padding(3);
@@ -908,7 +911,7 @@ namespace CrashEdit.CE
             fraMiscDebug.Controls.Add(chkOutputCopyTextureResult);
             fraMiscDebug.Controls.Add(chkOutputCLUTInfo);
             fraMiscDebug.Controls.Add(chkOutputModelTextureInfo);
-            fraMiscDebug.Location = new Point(0, 131);
+            fraMiscDebug.Location = new Point(0, 157);
             fraMiscDebug.Name = "fraMiscDebug";
             fraMiscDebug.Size = new Size(417, 100);
             fraMiscDebug.TabIndex = 20;
@@ -963,13 +966,25 @@ namespace CrashEdit.CE
             chkEnableLegacyEntityBox.UseVisualStyleBackColor = true;
             chkEnableLegacyEntityBox.CheckedChanged += chkEnableLegacyEntityBox_CheckedChanged;
             // 
+            // chkAnimTexShow0
+            //
+            chkAnimTexShow0.AutoSize = true;
+            chkAnimTexShow0.Location = new Point(6, 131);
+            chkAnimTexShow0.Margin = new Padding(4, 3, 4, 3);
+            chkAnimTexShow0.Name = "chkAnimTexShow0";
+            chkAnimTexShow0.Size = new Size(165, 19);
+            chkAnimTexShow0.TabIndex = 20;
+            chkAnimTexShow0.Text = "Animated textures display Offset 0 textures";
+            chkAnimTexShow0.UseVisualStyleBackColor = true;
+            chkAnimTexShow0.CheckedChanged += chkAnimTexShow0_CheckedChanged;
+            // 
             // fraExtra
             // 
             fraExtra.BackColor = Color.Transparent;
             fraExtra.Controls.Add(chkEnableCustomCrates);
             fraExtra.Controls.Add(chkLagacyPatchNSD);
             fraExtra.Controls.Add(chkEnableC2TT);
-            fraExtra.Location = new Point(0, 237);
+            fraExtra.Location = new Point(0, 262);
             fraExtra.Name = "fraExtra";
             fraExtra.Size = new Size(417, 100);
             fraExtra.TabIndex = 18;
@@ -1016,7 +1031,7 @@ namespace CrashEdit.CE
             fraUICtrls.Controls.Add(chkShowRebuild);
             fraUICtrls.Controls.Add(chkShowUndockButton);
             fraUICtrls.Controls.Add(chkShowRefresh);
-            fraUICtrls.Location = new Point(0, 345);
+            fraUICtrls.Location = new Point(0, 370);
             fraUICtrls.Name = "fraUICtrls";
             fraUICtrls.Size = new Size(417, 100);
             fraUICtrls.TabIndex = 25;
@@ -1222,5 +1237,6 @@ namespace CrashEdit.CE
         private DarkButton cmdClearRecentFiles;
         private CheckBox chkUseNeighborZoneTransparency;
         private DarkGroupBox fraCollisionNode;
+        private CheckBox chkAnimTexShow0;
     }
 }
