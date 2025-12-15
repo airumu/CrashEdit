@@ -227,6 +227,17 @@ namespace CrashEdit.CE.Forms
             fileContent += Environment.NewLine;
             fileContent += "kill";
             fileContent += Environment.NewLine;
+            
+            if (comboSpawns.SelectedIndex >= 0)
+            {
+                // find 7th line and replace
+                var lines = fileContent.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+                if (lines.Length >= 7)
+                {
+                    lines[6] = (comboSpawns.SelectedIndex + 1).ToString();
+                    fileContent = string.Join(Environment.NewLine, lines);
+                }
+            }
 
             Process = new Process
             {
@@ -243,7 +254,11 @@ namespace CrashEdit.CE.Forms
             };
 
             outputLog.Text += "Running c2export with config file:" + Environment.NewLine;
-            outputLog.Text += configFilePath + Environment.NewLine + Environment.NewLine;
+            outputLog.Text += configFilePath + Environment.NewLine;
+            if (comboSpawns.SelectedIndex >= 0)
+                outputLog.Text += $"using override spawn #{comboSpawns.SelectedIndex + 1}" + Environment.NewLine;
+
+            outputLog.Text += Environment.NewLine;
             outputLog.Text += "File content:" + Environment.NewLine;
             outputLog.Text += fileContent + Environment.NewLine + Environment.NewLine;
             outputLog.Text += "Program output:" + Environment.NewLine + Environment.NewLine;

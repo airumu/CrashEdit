@@ -1,4 +1,6 @@
 ﻿using AltUI.Controls;
+using CrashEdit.CE.Properties;
+using CrashEdit.Crash;
 
 namespace CrashEdit.CE.Forms
 {
@@ -22,7 +24,7 @@ namespace CrashEdit.CE.Forms
             base.Dispose(disposing);
         }
 
-        const int BASE_HEIGHT = 400;
+        const int BASE_HEIGHT = 425;
 
         #region Windows Form Designer generated code
 
@@ -53,6 +55,7 @@ namespace CrashEdit.CE.Forms
             pnOptions = new Panel();
             txtSearch = new TextBox();
             labelSearchCount = new Label();
+            comboSpawns = new DarkComboBox();
             pnOptions.SuspendLayout();
             SuspendLayout();
 
@@ -367,6 +370,39 @@ namespace CrashEdit.CE.Forms
                 tooltip.Hide(btnWorkingDir);
             };
 
+            spawnLabel = new Label();
+            spawnLabel.AutoSize = true;
+            spawnLabel.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            spawnLabel.BackColor = Color.Transparent;
+            spawnLabel.Location = new Point(460, 174); 
+            spawnLabel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            spawnLabel.Name = "spawnLabel";
+            spawnLabel.Size = new Size(100, 15);
+            spawnLabel.Text = "Spawn override";
+
+            comboSpawns = new DarkComboBox();
+            comboSpawnsOnOpen();
+            comboSpawns.SelectedIndex = -1;
+            comboSpawns.Name = "comboSpawns";
+            comboSpawns.Padding = new Padding(0);
+            comboSpawns.TabIndex = 11;
+            comboSpawns.Size = new Size(100, 25);
+            comboSpawns.Location = new Point(590, 170);
+            comboSpawns.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            comboSpawns.Font = new Font("Consolas", 8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            comboSpawns.Click += (s, e) => comboSpawnsOnOpen();
+            comboSpawns.SelectedIndexChanged += (s, e) => ComboSpawns_SelectedIndexChanged();
+
+            spawnLabel2 = new Label();
+            spawnLabel2.AutoSize = true;
+            spawnLabel2.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            spawnLabel2.BackColor = Color.Transparent;
+            spawnLabel2.Location = new Point(560, 174); 
+            spawnLabel2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            spawnLabel2.Name = "spawnLabel2";
+            spawnLabel2.Size = new Size(20, 15);
+            spawnLabel2.Text = "-1";
+
             labelWorkingDirValue = new Label();
             labelWorkingDirValue.BackColor = Color.Transparent;
             labelWorkingDirValue.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
@@ -519,6 +555,9 @@ namespace CrashEdit.CE.Forms
             pnOptions.Controls.Add(outputLog);
             pnOptions.Controls.Add(txtSearch);
             pnOptions.Controls.Add(labelSearchCount);
+            pnOptions.Controls.Add(spawnLabel);
+            pnOptions.Controls.Add(comboSpawns);
+            pnOptions.Controls.Add(spawnLabel2);
             pnOptions.Location = new Point(0, 0);
             pnOptions.Name = "pnOptions";
             pnOptions.Size = new Size(700, BASE_HEIGHT);
@@ -541,6 +580,52 @@ namespace CrashEdit.CE.Forms
             pnOptions.ResumeLayout(false);
             pnOptions.PerformLayout();
             ResumeLayout(false);
+        }
+
+        private void ComboSpawns_SelectedIndexChanged()
+        {
+            if (spawnLabel2 is not null)
+                spawnLabel2.Text = comboSpawns.SelectedIndex == -1 ? "-" : (comboSpawns.SelectedIndex + 1).ToString();
+        }
+
+        private void comboSpawnsOnOpen()
+        {
+            comboSpawns.Items.Clear();
+            comboSpawns.SelectedIndex = -1;
+
+            NSFBox nsfbox = null;
+            try {
+                nsfbox = (NSFBox)owner.TabControl.SelectedTab?.Tag;
+            } 
+            catch {
+                return;
+            }
+
+            if (nsfbox is null)
+                return;
+
+            NSF nsf = nsfbox.NSF;
+            var entries = nsf.GetEntries<ZoneEntry>();
+            entries.Sort((a, b) => a.EID.CompareTo(b.EID));
+
+            foreach (ZoneEntry zone in entries)
+            {
+                if (zone.CameraCount == 0)
+                    continue;
+
+                foreach (Entity entity in zone.Entities)
+                {
+                    if (!entity.ID.HasValue)
+                        continue;
+                    if ((entity.Type == 34 && entity.Subtype == 4) || (entity.Type == 0 && entity.Subtype == 0))
+                    {
+                        string itemText = $"{zone.EName} ID {entity.ID.Value}";
+                        if (!comboSpawns.Items.Contains(itemText))                       
+                            comboSpawns.Items.Add(itemText);                        
+                    }
+                }
+            }
+            ComboSpawns_SelectedIndexChanged();
         }
 
         private void ScrollToNextSearchResult()
@@ -649,5 +734,9 @@ namespace CrashEdit.CE.Forms
         private TextBox txtSearch;
         private Label labelSearchCount;
         private int lastSearchIndex = -1;
+
+        private Label spawnLabel;
+        private DarkComboBox comboSpawns;
+        private Label spawnLabel2;
     }
 }
