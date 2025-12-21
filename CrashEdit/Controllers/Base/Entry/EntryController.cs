@@ -15,6 +15,7 @@ namespace CrashEdit.CE
                 AddMenuSeparator();
                 AddMenu(string.Format(CrashUI.Properties.Resources.EntryController_AcDeprocess, entry.EName), "Pinion", Menu_Unprocess_Entry);
                 AddMenu(string.Format(CrashUI.Properties.Resources.EntryController_AcReload, entry.EName), "ArrowRefresh", Menu_Reload_Entry);
+                AddMenu(string.Format("Replace Entry", entry.EName), "ImportPlus", Menu_Replace_Entry);
             }
         }
 
@@ -108,16 +109,34 @@ namespace CrashEdit.CE
         {
             int index = EntryChunkController.EntryChunk.Entries.IndexOf(Entry);
             UnprocessedEntry unprocessedentry = Entry.Unprocess();
-            Entry reloadedentry;
             try
             {
-                reloadedentry = unprocessedentry.Process(GameVersion);
+                Entry reloadedentry = unprocessedentry.Process(GameVersion);
+                EntryChunkController.EntryChunk.Entries[index] = reloadedentry;
             }
             catch (LoadAbortedException)
             {
                 return;
             }
-            EntryChunkController.EntryChunk.Entries[index] = reloadedentry;
+        }
+
+        private void Menu_Replace_Entry()
+        {
+            byte[] data = FileUtil.OpenFile(FileFilters.NSEntryExt, FileFilters.Any);
+            if (data == null)
+                return;
+
+            int index = EntryChunkController.EntryChunk.Entries.IndexOf(Entry);
+            try
+            {
+                UnprocessedEntry newentry = Entry.Load(data);
+                Entry processedentry = newentry.Process(GameVersion);
+                EntryChunkController.EntryChunk.Entries[index] = processedentry;
+            }
+            catch (LoadAbortedException)
+            {
+                return;
+            }
         }
     }
 }
