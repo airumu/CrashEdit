@@ -12,12 +12,12 @@ namespace CrashEdit.Crash
             CodeHook = cpc;
         }
 
-        public int StateFlags { get; }
-        public int BlockFlags { get; }
-        public short GOOLIndex { get; }
-        public short EventHook { get; }
-        public short TransHook { get; }
-        public short CodeHook { get; }
+        public int StateFlags { get; set; }
+        public int BlockFlags { get; set; }
+        public short GOOLIndex { get; set; }
+        public short EventHook { get; set; }
+        public short TransHook { get; set; }
+        public short CodeHook { get; set; }
 
         public byte[] Save()
         {

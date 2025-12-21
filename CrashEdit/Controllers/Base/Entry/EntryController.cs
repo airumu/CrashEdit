@@ -9,9 +9,13 @@ namespace CrashEdit.CE
         {
             Entry = entry;
             AddMenu(string.Format(CrashUI.Properties.Resources.EntryController_AcRename, entry.EName), "Modify", Menu_Rename_Entry);
+            AddMenu(string.Format(CrashUI.Properties.Resources.EntryController_AcDuplicate, entry.EName), "Copy", Menu_Duplicate_Entry);
             if (this is not UnprocessedEntryController)
             {
+                AddMenuSeparator();
                 AddMenu(string.Format(CrashUI.Properties.Resources.EntryController_AcDeprocess, entry.EName), "Pinion", Menu_Unprocess_Entry);
+                AddMenu(string.Format(CrashUI.Properties.Resources.EntryController_AcReload, entry.EName), "ArrowRefresh", Menu_Reload_Entry);
+                AddMenu(string.Format("Replace Entry", entry.EName), "ImportPlus", Menu_Replace_Entry);
             }
         }
 
@@ -65,12 +69,73 @@ namespace CrashEdit.CE
                 {
                     Entry.EID = newentrywindow.EID;
                     EntryChunkController.NeedsNewEditor = true;
-                    LegacyVerbs[0]._text = string.Format(CrashUI.Properties.Resources.EntryController_AcRename, Entry.EName);
-                    if (this is not UnprocessedEntryController)
-                        LegacyVerbs[1]._text = string.Format(CrashUI.Properties.Resources.EntryController_AcDeprocess, Entry.EName);
-                    else
-                        LegacyVerbs[1]._text = string.Format(CrashUI.Properties.Resources.UnprocessedEntryController_AcProcess, Entry.EName);
+                    //LegacyVerbs[0]._text = string.Format(CrashUI.Properties.Resources.EntryController_AcRename, Entry.EName);
+                    //LegacyVerbs[1]._text = string.Format(CrashUI.Properties.Resources.EntryController_AcDuplicate, Entry.EName);
+                    //if (this is not UnprocessedEntryController)
+                    //    LegacyVerbs[2]._text = string.Format(CrashUI.Properties.Resources.EntryController_AcDeprocess, Entry.EName);
+                    //else
+                    //    LegacyVerbs[2]._text = string.Format(CrashUI.Properties.Resources.UnprocessedEntryController_AcProcess, Entry.EName);
                 }
+            }
+        }
+
+        private void Menu_Duplicate_Entry()
+        {
+            using (NewEntryForm newentrywindow = new NewEntryForm(GetNSF(), GameVersion))
+            {
+                newentrywindow.Text = "Duplicate Entry";
+                newentrywindow.SetRenameMode(Entry.EName);
+                if (newentrywindow.ShowDialog() == DialogResult.OK)
+                {
+                    // create a clone by unprocessing and then reloading
+                    UnprocessedEntry unprocessed = Entry.Unprocess();
+                    UnprocessedEntry clonedUnprocessed = unprocessed.Clone(newentrywindow.EID);
+
+                    Entry clonedProcessed;
+                    try
+                    {
+                        clonedProcessed = clonedUnprocessed.Process(GameVersion);
+                    }
+                    catch (LoadAbortedException)
+                    {
+                        return;
+                    }
+                    EntryChunkController.EntryChunk.Entries.Add(clonedProcessed);
+                }
+            }
+        }
+
+        private void Menu_Reload_Entry()
+        {
+            int index = EntryChunkController.EntryChunk.Entries.IndexOf(Entry);
+            UnprocessedEntry unprocessedentry = Entry.Unprocess();
+            try
+            {
+                Entry reloadedentry = unprocessedentry.Process(GameVersion);
+                EntryChunkController.EntryChunk.Entries[index] = reloadedentry;
+            }
+            catch (LoadAbortedException)
+            {
+                return;
+            }
+        }
+
+        private void Menu_Replace_Entry()
+        {
+            byte[] data = FileUtil.OpenFile(FileFilters.NSEntryExt, FileFilters.Any);
+            if (data == null)
+                return;
+
+            int index = EntryChunkController.EntryChunk.Entries.IndexOf(Entry);
+            try
+            {
+                UnprocessedEntry newentry = Entry.Load(data);
+                Entry processedentry = newentry.Process(GameVersion);
+                EntryChunkController.EntryChunk.Entries[index] = processedentry;
+            }
+            catch (LoadAbortedException)
+            {
+                return;
             }
         }
     }

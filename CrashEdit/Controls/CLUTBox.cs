@@ -1,9 +1,12 @@
 ﻿using System.Collections.Concurrent;
+using System.Text.RegularExpressions;
+using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 using MetroSet_UI.Controls;
 using Color = System.Drawing.Color;
 using HslColor = Cyotek.Windows.Forms.HslColor;
+using Timer = System.Windows.Forms.Timer;
 
 namespace CrashEdit.CE.Controls
 {
@@ -18,6 +21,11 @@ namespace CrashEdit.CE.Controls
 
         private int editStartRow;
         private int editEndRow;
+
+        private Rectangle animRect;
+        private int animStep = 0;
+        private int animDirection = 1;
+        private Timer animTimer;
 
         private double MasterHue => colorEditorGlobal.HslColor.H;
         private double MasterSaturation => colorEditorGlobal.HslColor.S;
@@ -55,6 +63,20 @@ namespace CrashEdit.CE.Controls
             numClutY1.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
             numClutY2.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
             numLoadClut.MouseWheel += new MouseEventHandler(ScrollHandlerFunction);
+
+            // Animation Timer
+            animTimer = new Timer();
+            animTimer.Interval = 30;
+            animTimer.Tick += AnimTimer_Tick;
+        }
+
+        private void AnimTimer_Tick(object sender, EventArgs e)
+        {
+            animStep += animDirection;
+            if (animStep >= 10) animDirection = -1;
+            if (animStep <= 0) animDirection = 1;
+
+            dgvCLUT.Invalidate(animRect);
         }
 
         private void ScrollHandlerFunction(object sender, MouseEventArgs e)
@@ -81,21 +103,44 @@ namespace CrashEdit.CE.Controls
             if (e.RowIndex >= 0 && e.ColumnIndex >= 1)
             {
                 var cell = dgvCLUT[e.ColumnIndex, e.RowIndex];
+                bool isSelected = cell.Selected;
+                bool isCurrent = (dgvCLUT.CurrentCell != null &&
+                                  dgvCLUT.CurrentCell.RowIndex == e.RowIndex &&
+                                  dgvCLUT.CurrentCell.ColumnIndex == e.ColumnIndex);
                 var tags = cell.Tag as List<object>;
-                if (cell.Selected)
-                {
-                    e.Graphics.FillRectangle(new SolidBrush(e.CellStyle.BackColor), e.CellBounds);
-                    e.Graphics.DrawRectangle(Pens.Gainsboro, e.CellBounds.X, e.CellBounds.Y, e.CellBounds.Width - 1, e.CellBounds.Height - 1);
 
-                    e.Handled = true;
+                e.Graphics.FillRectangle(new SolidBrush(e.CellStyle.BackColor), e.CellBounds);
+
+                if (isSelected)
+                {
+                    if (isCurrent)
+                    {
+                        Rectangle cellRect = dgvCLUT.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, true);
+                        int thickness = 1 + animStep / 2;
+                        int alpha = 100 + animStep * 15;
+                        alpha = Math.Min(alpha, 255);
+
+                        using Pen p = new(Color.FromArgb(alpha, Color.White), thickness);
+                        Rectangle r = e.CellBounds;
+                        r.Width -= 1;
+                        r.Height -= 1;
+                        e.Graphics.DrawRectangle(p, r);
+                    }
+                    else
+                    {
+                        e.Graphics.DrawRectangle(Pens.Gainsboro, e.CellBounds.X, e.CellBounds.Y, e.CellBounds.Width - 1, e.CellBounds.Height - 1);
+                    }
                 }
                 else if (chkHighlightSTPbit.Checked & (int)tags[1] == 1)
                 {
-                    e.Graphics.FillRectangle(new SolidBrush(e.CellStyle.BackColor), e.CellBounds);
                     e.Graphics.DrawRectangle(Pens.Turquoise, e.CellBounds.X, e.CellBounds.Y, e.CellBounds.Width - 1, e.CellBounds.Height - 1);
-
-                    e.Handled = true;
                 }
+                else
+                {
+                    return;
+                }
+
+                e.Handled = true;
             }
         }
 
@@ -138,7 +183,15 @@ namespace CrashEdit.CE.Controls
                         row.Cells.Add(new DataGridViewTextBoxCell());
                     }
 
-                    row.Cells[0].Value = $"X{i % 16}, Y{i / 16}";
+                    if (i % 16 == 0)
+                    {
+                        row.Cells[0].Style.ForeColor = Color.Turquoise;
+                    }
+                    else
+                    {
+                        row.Cells[0].Style.ForeColor = Color.Gainsboro;
+                    }
+                    row.Cells[0].Value = $"Y{i / 16}, X{i % 16}";
 
                     for (int j = 0; j < 16; j++)
                     {
@@ -188,7 +241,88 @@ namespace CrashEdit.CE.Controls
             //        Clipboard.SetDataObject(tagValue, true, 10, 100);
             //    }
             //}
+
+            if (e.KeyCode == Keys.V && e.Modifiers == Keys.Control)
+            {
+                if (dgvCLUT.SelectedCells.Count == 0) return;
+                string clipboardText = Clipboard.GetText().Trim();
+                if (string.IsNullOrEmpty(clipboardText)) return;
+
+                MatchCollection matches = Regex.Matches(clipboardText, @"#?[0-9A-Fa-f]{6}\b");
+                List<string> hexColors = matches.Cast<Match>().Select(m => m.Value).ToList();
+                if (hexColors.Count == 0) return;
+
+                List<List<string>> colorRows = new List<List<string>>();
+                for (int i = 0; i < hexColors.Count; i += 16)
+                {
+                    List<string> group = hexColors.Skip(i).Take(16).ToList();
+                    colorRows.Add(group);
+                }
+
+                int startRow = dgvCLUT.SelectedCells
+                    .Cast<DataGridViewCell>()
+                    .Min(c => c.RowIndex);
+                if (startRow == 0)
+                {
+                    DarkMessageBox.ShowError("Cannot paste colors into header row.", "Error");
+                    return;
+                }
+
+                for (int r = 0; r < colorRows.Count && r < dgvCLUT.SelectedRows.Count; r++)
+                {
+                    int targetRow = startRow + r;
+                    List<string> rowColors = colorRows[r];
+
+                    for (int c = 0; c < rowColors.Count && c < dgvCLUT.Columns.Count; c++)
+                    {
+                        string hex = rowColors[c];
+                        try
+                        {
+                            var cell = dgvCLUT[c + 1, targetRow];
+                            Color color = HexToColor(hex);
+                            cell.Style.BackColor = color;
+                            cell.Value = hex;
+
+                            var tags = cell.Tag as List<object>;
+                            ushort rgba5551 = GetRGBA5551(color.B, color.G, color.R, Convert.ToByte(tags[1]));
+                            byte[] convertedPalette = BitConverter.GetBytes(rgba5551);
+                            int offset = (int)tags[0];
+                            Array.Copy(convertedPalette, 0, chunk.Data, offset, 2);
+                        }
+                        catch (FormatException)
+                        {
+                        }
+                    }
+                }
+            }
+            if (e.KeyCode == Keys.Z)
+            {
+                if (tglGlobalControl.Switched)
+                    tglGlobalControl.Switched = false;
+                else
+                    tglGlobalControl.Switched = true;
+            }
         }
+
+        private Color HexToColor(string hex)
+        {
+            hex = hex.Trim();
+            if (hex.StartsWith("#"))
+                hex = hex.Substring(1);
+
+            if (hex.Length == 6)
+            {
+                int r = int.Parse(hex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
+                int g = int.Parse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
+                int b = int.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
+                return Color.FromArgb(r, g, b);
+            }
+            else
+            {
+                throw new FormatException("Invalid hex color format.");
+            }
+        }
+
 
         private static List<byte[]> GetCLUT(byte[] source, int clutsize, int count)
         {
@@ -383,6 +517,15 @@ namespace CrashEdit.CE.Controls
         {
             if (dgvCLUT.SelectedCells.Count > 0)
             {
+                // Start animation
+                int rowIndex = dgvCLUT.SelectedCells[0].RowIndex;
+                int columnIndex = dgvCLUT.SelectedCells[0].ColumnIndex;
+                animRect = dgvCLUT.GetCellDisplayRectangle(columnIndex, rowIndex, true);
+                animStep = 0;
+                animDirection = 1;
+                animTimer.Start();
+                dgvCLUT.Invalidate();
+
                 var cell = dgvCLUT.SelectedCells[0];
                 if (cell.RowIndex > 0 && cell.ColumnIndex > 0)
                 {

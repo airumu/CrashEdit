@@ -74,10 +74,10 @@ namespace CrashEdit.CE
             cmdCopyProperty.CustomColour = false;
             cmdCopyProperty.FlatBottom = false;
             cmdCopyProperty.FlatTop = false;
-            cmdCopyProperty.Location = new Point(6, 394);
+            cmdCopyProperty.Location = new Point(6, 391);
             cmdCopyProperty.Name = "cmdCopyProperty";
             cmdCopyProperty.Padding = new Padding(5);
-            cmdCopyProperty.Size = new Size(75, 23);
+            cmdCopyProperty.Size = new Size(75, 26);
             cmdCopyProperty.TabIndex = 14;
             cmdCopyProperty.Text = "Save";
             cmdCopyProperty.Click += cmdCopyProperty_Click;
@@ -214,10 +214,10 @@ namespace CrashEdit.CE
             cmdRemoveProperty.CustomColour = false;
             cmdRemoveProperty.FlatBottom = false;
             cmdRemoveProperty.FlatTop = false;
-            cmdRemoveProperty.Location = new Point(6, 313);
+            cmdRemoveProperty.Location = new Point(6, 316);
             cmdRemoveProperty.Name = "cmdRemoveProperty";
             cmdRemoveProperty.Padding = new Padding(5);
-            cmdRemoveProperty.Size = new Size(75, 23);
+            cmdRemoveProperty.Size = new Size(75, 26);
             cmdRemoveProperty.TabIndex = 2;
             cmdRemoveProperty.Text = "Remove";
             cmdRemoveProperty.Click += cmdRemoveProperty_Click;
@@ -231,7 +231,7 @@ namespace CrashEdit.CE
             cmdAppendProperty.Location = new Point(6, 284);
             cmdAppendProperty.Name = "cmdAppendProperty";
             cmdAppendProperty.Padding = new Padding(5);
-            cmdAppendProperty.Size = new Size(75, 23);
+            cmdAppendProperty.Size = new Size(75, 26);
             cmdAppendProperty.TabIndex = 2;
             cmdAppendProperty.Text = "Append";
             cmdAppendProperty.Click += cmdAppendProperty_Click;
@@ -332,7 +332,7 @@ namespace CrashEdit.CE
             fraSaveProperties.Controls.Add(dgvSavePropertyValues);
             fraSaveProperties.Location = new Point(0, 461);
             fraSaveProperties.Name = "fraSaveProperties";
-            fraSaveProperties.Size = new Size(600, 276);
+            fraSaveProperties.Size = new Size(600, 282);
             fraSaveProperties.TabIndex = 17;
             fraSaveProperties.TabStop = false;
             fraSaveProperties.Text = "Saved Properties";
@@ -348,7 +348,7 @@ namespace CrashEdit.CE
             rbtReload.Font = new Font("Microsoft Sans Serif", 10F);
             rbtReload.Group = 0;
             rbtReload.IsDerivedStyle = true;
-            rbtReload.Location = new Point(576, 253);
+            rbtReload.Location = new Point(576, 256);
             rbtReload.Name = "rbtReload";
             rbtReload.Size = new Size(19, 17);
             rbtReload.Style = MetroSet_UI.Enums.Style.Dark;
@@ -360,13 +360,15 @@ namespace CrashEdit.CE
             // 
             // pnControlsSaved
             // 
+            pnControlsSaved.AutoSize = true;
+            pnControlsSaved.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             pnControlsSaved.Controls.Add(cmdRenameSavedList);
             pnControlsSaved.Controls.Add(cmdCopyFromSaved);
             pnControlsSaved.Controls.Add(cmdRemoveSavedList);
             pnControlsSaved.Enabled = false;
             pnControlsSaved.Location = new Point(6, 210);
             pnControlsSaved.Name = "pnControlsSaved";
-            pnControlsSaved.Size = new Size(204, 60);
+            pnControlsSaved.Size = new Size(204, 64);
             pnControlsSaved.TabIndex = 20;
             // 
             // cmdRenameSavedList
@@ -378,7 +380,7 @@ namespace CrashEdit.CE
             cmdRenameSavedList.Location = new Point(3, 3);
             cmdRenameSavedList.Name = "cmdRenameSavedList";
             cmdRenameSavedList.Padding = new Padding(5);
-            cmdRenameSavedList.Size = new Size(75, 23);
+            cmdRenameSavedList.Size = new Size(75, 26);
             cmdRenameSavedList.TabIndex = 19;
             cmdRenameSavedList.Text = "Rename";
             cmdRenameSavedList.Click += cmdRenameSavedList_Click;
@@ -392,9 +394,9 @@ namespace CrashEdit.CE
             cmdCopyFromSaved.Location = new Point(126, 3);
             cmdCopyFromSaved.Name = "cmdCopyFromSaved";
             cmdCopyFromSaved.Padding = new Padding(5);
-            cmdCopyFromSaved.Size = new Size(75, 23);
+            cmdCopyFromSaved.Size = new Size(75, 26);
             cmdCopyFromSaved.TabIndex = 18;
-            cmdCopyFromSaved.Text = "Copy fields";
+            cmdCopyFromSaved.Text = "Apply";
             cmdCopyFromSaved.Click += cmdCopyFromSaved_Click;
             // 
             // cmdRemoveSavedList
@@ -403,10 +405,10 @@ namespace CrashEdit.CE
             cmdRemoveSavedList.CustomColour = false;
             cmdRemoveSavedList.FlatBottom = false;
             cmdRemoveSavedList.FlatTop = false;
-            cmdRemoveSavedList.Location = new Point(3, 32);
+            cmdRemoveSavedList.Location = new Point(3, 35);
             cmdRemoveSavedList.Name = "cmdRemoveSavedList";
             cmdRemoveSavedList.Padding = new Padding(5);
-            cmdRemoveSavedList.Size = new Size(75, 23);
+            cmdRemoveSavedList.Size = new Size(75, 26);
             cmdRemoveSavedList.TabIndex = 19;
             cmdRemoveSavedList.Text = "Remove";
             cmdRemoveSavedList.Click += cmdRemoveSavedList_Click;
@@ -468,6 +470,7 @@ namespace CrashEdit.CE
             fraPropertyID.PerformLayout();
             fraPropertyField.ResumeLayout(false);
             fraSaveProperties.ResumeLayout(false);
+            fraSaveProperties.PerformLayout();
             pnControlsSaved.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvSavePropertyValues).EndInit();
             ResumeLayout(false);

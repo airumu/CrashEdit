@@ -11,6 +11,9 @@ namespace CrashEdit.CE
         private bool _halfspeed = false;
         private bool _modelautocycle = false;
         private int _modelforceindex = 0;
+        private bool _playAnimation = true;
+        private int _frameIndex = 0;
+        private int _tickCount = 0;
 
         public AnimationEntryViewer(NSF nsf, int anim_eid, int frame = -1) : base(nsf, anim_eid, frame)
         {
@@ -162,7 +165,10 @@ namespace CrashEdit.CE
             animation_renderer.Setup(_interpolate, _halfspeed);
 
             var anim = nsf.GetEntry<AnimationEntry>(animId);
-            if (animation_renderer.RenderAnimFrame(new Vector3(0), vaoModel, anim, animFrame != -1 ? animFrame * (_halfspeed ? 2 : 1) : render.FullCurrentFrame / 2, x => nsf.GetEntry<ModelEntry>(GetModelEID(anim, x))))
+            if (animation_renderer.RenderAnimFrame(new Vector3(0), vaoModel, anim,
+                                                   animFrame != -1 ? animFrame * (_halfspeed ? 2 : 1) : render.FullCurrentFrame / 2,
+                                                   _playAnimation, _frameIndex,
+                                                   x => nsf.GetEntry<ModelEntry>(GetModelEID(anim, x))))
             {
                 UploadTPAGs();
 
@@ -276,30 +282,6 @@ namespace CrashEdit.CE
                 anim.HoveredVertex = PickVertex(e.X, e.Y);
         }
 
-        protected override void OnKeyDown(KeyEventArgs e)
-        {
-            base.OnKeyDown(e);
-
-            var anim = nsf.GetEntry<AnimationEntry>(animId);
-            if (anim != null && render.ShowVertices)
-            {
-                if (KDown(Keys.Left))
-                {
-                    anim.SelectedVertex = Math.Max(-1, anim.SelectedVertex - 1);
-                    e.Handled = true;
-                }
-                else if (KDown(Keys.Right))
-                {
-                    var vertices = animation_renderer.GetAllVerts();
-                    if (vertices != null)
-                    {
-                        anim.SelectedVertex = Math.Min(vertices.Length - 1, anim.SelectedVertex + 1);
-                        e.Handled = true;
-                    }
-                }
-            }
-        }
-
         protected override void PrintDebug()
         {
             base.PrintDebug();
@@ -321,24 +303,33 @@ namespace CrashEdit.CE
             base.PrintHelp();
             con_help += KeyboardControls.ToggleSlowAnim.Print(OnOffName(_halfspeed));
             con_help += KeyboardControls.ToggleVerticesVisible.Print(OnOffName(render.ShowVertices));
-
-            var animm = nsf.GetEntry<AnimationEntry>(animId);
-            if (render.ShowVertices && animm != null)
-            {
-                con_help += "\nLeft/Right to change highlighted vertex\n";
-                con_help += string.Format("Highlighted vertex: {0}", animm.SelectedVertex);
-            }
+            con_help += KeyboardControls.ToggleAnimation.Print(OnOffName(_playAnimation));
 
             var anim = nsf.GetEntry<AnimationEntry>(animId);
-            if (anim != null && anim.IsNew)
+            if (anim != null)
             {
-                var models = GetCrash3ModelList(anim);
-                if (models.Count > 1)
+                if (render.ShowVertices)
                 {
-                    if (models.Count == anim.Frames.Count)
-                        con_help += KeyboardControls.ToggleModelCycle.Print(OnOffName(_modelautocycle));
-                    if (!_modelautocycle)
-                        con_help += string.Format(Resources.ViewerControls_PickModel, Entry.EIDToEName(models[_modelforceindex % models.Count]));
+                    con_help += "\nLeft/Right to change highlighted vertex\n";
+                    con_help += string.Format("Highlighted vertex: {0}", anim.SelectedVertex);
+                }
+
+                if (!_playAnimation)
+                {
+                    con_help += "\nF/G to change frame\n";
+                    con_help += string.Format("Frame: {0} / {1}", _frameIndex, anim.Frames.Count - 1);
+                }
+
+                if (anim.IsNew)
+                {
+                    var models = GetCrash3ModelList(anim);
+                    if (models.Count > 1)
+                    {
+                        if (models.Count == anim.Frames.Count)
+                            con_help += KeyboardControls.ToggleModelCycle.Print(OnOffName(_modelautocycle));
+                        if (!_modelautocycle)
+                            con_help += string.Format(Resources.ViewerControls_PickModel, Entry.EIDToEName(models[_modelforceindex % models.Count]));
+                    }
                 }
             }
         }
@@ -347,27 +338,77 @@ namespace CrashEdit.CE
         {
             base.RunLogic();
             if (KPress(KeyboardControls.ToggleSlowAnim)) _halfspeed = !_halfspeed;
+            if (KPress(KeyboardControls.ToggleAnimation)) _playAnimation = !_playAnimation;
+
             var anim = nsf.GetEntry<AnimationEntry>(animId);
-            if (anim != null && anim.IsNew)
+            if (anim != null)
             {
-                var models = GetCrash3ModelList(anim);
-                if (models.Count > 1)
+                if (anim.IsNew)
                 {
-                    if (models.Count == anim.Frames.Count)
-                        if (KPress(KeyboardControls.ToggleModelCycle)) _modelautocycle = !_modelautocycle;
-                    if (!_modelautocycle)
+                    var models = GetCrash3ModelList(anim);
+                    if (models.Count > 1)
                     {
-                        if (KPress(Keys.Left))
-                            --_modelforceindex;
-                        if (KPress(Keys.Right))
-                            ++_modelforceindex;
-                        while (_modelforceindex < 0)
+                        if (models.Count == anim.Frames.Count)
+                            if (KPress(KeyboardControls.ToggleModelCycle)) _modelautocycle = !_modelautocycle;
+                        if (!_modelautocycle)
                         {
-                            _modelforceindex += models.Count;
+                            if (KPress(Keys.Left))
+                                --_modelforceindex;
+                            if (KPress(Keys.Right))
+                                ++_modelforceindex;
+                            while (_modelforceindex < 0)
+                            {
+                                _modelforceindex += models.Count;
+                            }
+                            _modelforceindex = _modelforceindex % models.Count;
                         }
-                        _modelforceindex = _modelforceindex % models.Count;
                     }
                 }
+
+                if (render.ShowVertices)
+                {
+                    if (KDown(Keys.Left))
+                    {
+                        if (Environment.TickCount - _tickCount > 200)
+                        {
+                            anim.SelectedVertex = Math.Max(-1, anim.SelectedVertex - 1);
+                            _tickCount = Environment.TickCount;
+                        }
+                    }
+                    else if (KDown(Keys.Right))
+                    {
+                        var vertices = animation_renderer.GetAllVerts();
+                        if (vertices != null)
+                        {
+                            if (Environment.TickCount - _tickCount > 200)
+                            {
+                                anim.SelectedVertex = Math.Min(vertices.Length - 1, anim.SelectedVertex + 1);
+                                _tickCount = Environment.TickCount;
+                            }
+                        }
+                    }
+                }
+
+                if (!_playAnimation)
+                {
+                    if (KDown(Keys.F))
+                    {
+                        if (Environment.TickCount - _tickCount > 200)
+                        {
+                            _frameIndex = Math.Max(0, _frameIndex - 1);
+                            _tickCount = Environment.TickCount;
+                        }
+                    }
+                    else if (KDown(Keys.G))
+                    {
+                        if (Environment.TickCount - _tickCount > 200)
+                        {
+                            _frameIndex = Math.Min(anim.Frames.Count - 1, _frameIndex + 1);
+                            _tickCount = Environment.TickCount;
+                        }
+                    }
+                }
+
             }
         }
     }

@@ -856,7 +856,7 @@
     <value>3Dエンティティの表示({0})</value>
   </data>
   <data name="ViewerControls_ToggleVerticesVisible" xml:space="preserve">
-    <value>Toggle vertex display ({0})</value>
+    <value>頂点の表示 ({0})</value>
   </data>
   <data name="Delete_ConfirmationPrompt" xml:space="preserve">
     <value>削除の確認</value>
@@ -986,5 +986,8 @@
   </data>
   <data name="T21_tipViewer" xml:space="preserve">
     <value>[右クリック] 画像を保存</value>
+  </data>
+  <data name="ViewerControls_ToggleAnimation" xml:space="preserve">
+    <value>アニメーションの有効化 ({0})</value>
   </data>
 </root>

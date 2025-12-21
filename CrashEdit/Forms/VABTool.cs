@@ -79,7 +79,6 @@ namespace CrashEdit.CE
         public VABTool(MusicBox? musicBox = null)
         {
             InitializeComponent();
-            Icon = Embeds.GetIcon("Wrench");
             toolStrip.ImageList = Embeds.ImageList;
             ToolStripButtonInit(tbbOpen, "FolderOpen", Resources.Toolbar_Open, $"{Resources.Toolbar_Open} (Ctrl + O)");
             ToolStripButtonInit(tbbSave, "Floppy", Resources.Toolbar_Save, $"{Resources.Toolbar_Save} (Ctrl + S)");
@@ -1752,6 +1751,7 @@ namespace CrashEdit.CE
             this.vabTool = vabTool;
             MainInit();
             Text = "VAG Data " + vabTool.titleText;
+            Icon = Embeds.GetIcon("List");
         }
 
         private void MainInit()
@@ -2165,6 +2165,7 @@ namespace CrashEdit.CE
             this.vabTool = vabTool;
             MainInit();
             Text = "ADSR Settings " + vabTool.titleText;
+            Icon = Embeds.GetIcon("Pinion");
         }
 
         private void MainInit()

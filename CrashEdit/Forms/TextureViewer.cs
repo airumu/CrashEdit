@@ -21,7 +21,6 @@ namespace CrashEdit.CE
 
         private bool isDragging = false;
         private Point dragStartPoint;
-        private Point initialSelectedRegionPosition;
         private int selectionSize;
         private byte[] tempTexture;
         private int tempWidth;
@@ -31,6 +30,8 @@ namespace CrashEdit.CE
 
         private bool isBGRA;
         private bool replaceCLUT;
+
+        private bool clearCLUT => chkClearCLUT.Checked;
 
         private DarkToolTip tipViewer;
 
@@ -70,6 +71,11 @@ namespace CrashEdit.CE
             {
                 if (e.Button == MouseButtons.Right && pictureBox1.Image != null && pictureBox1.Image is Bitmap bmp)
                 {
+                    if (TexX + TexW > (256 << (2 - TexColorMode)) || TexY + TexH > 128)
+                    {
+                        DarkMessageBox.ShowError("The selected region is out of bounds and cannot be exported.", "Texture Export");
+                        return;
+                    }
                     using (MemoryStream w = new MemoryStream())
                     {
                         bmp.Clone(selectedregion, PixelFormat.Format32bppArgb).Save(w, ImageFormat.Png);
@@ -132,20 +138,6 @@ namespace CrashEdit.CE
                     C2numH.Value = selectedregion.Height;
                     UpdatePicture();
                 }
-                //if (isDragging)
-                //{
-                //    int deltaX = e.X - dragStartPoint.X;
-                //    int deltaY = e.Y - dragStartPoint.Y;
-                //    int newX = initialSelectedRegionPosition.X + deltaX;
-                //    int newY = initialSelectedRegionPosition.Y + deltaY;
-                //    newX = (newX / TexW) * TexW;
-                //    newY = (newY / TexH) * TexH;
-                //    C2numX.Value = newX;
-                //    C2numY.Value = newY;
-                //    selectedregion.X = newX;
-                //    selectedregion.Y = newY;
-                //    UpdatePicture();
-                //}
             };
 
             pictureBox1.MouseUp += (sender, e) =>
@@ -196,8 +188,9 @@ namespace CrashEdit.CE
             C2numY2.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
             C2numW.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
             C2numH.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
-            C2numShiftX.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
-            C2numShiftY.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
+            C2numShiftX.MouseWheel += new MouseEventHandler(ScrollHandlerFunction3);
+            C2numShiftY.MouseWheel += new MouseEventHandler(ScrollHandlerFunction3);
+            C2numSelectionSize.MouseWheel += new MouseEventHandler(ScrollHandlerFunction3);
 
             UpdatePicture();
 
@@ -224,11 +217,12 @@ namespace CrashEdit.CE
 
         private void MakeArgAsText()
         {
-            int clut_offset = ((int)C2numCX.Value * 0x20) + ((int)C2numCY.Value * 0x200);
-            int clut_val = (int)C2numCX.Value + ((int)C2numCY.Value * 0x40);
-            string clut_offset_hex = clut_offset.ToString("X");
-            string clut_val_hex = clut_val.ToString("X");
-            lblCLUT.Text = string.Format("Hex    0x{0}\r\nOffset 0x{1}", clut_val_hex, clut_offset_hex);
+            //int clut_offset = ((int)C2numCX.Value * 0x20) + ((int)C2numCY.Value * 0x200);
+            //int clut_val = (int)C2numCX.Value + ((int)C2numCY.Value * 0x40);
+            //string clut_offset_hex = clut_offset.ToString("X");
+            //string clut_val_hex = clut_val.ToString("X");
+            //lblCLUT.Text = string.Format("Hex    0x{0}\r\nOffset 0x{1}", clut_val_hex, clut_offset_hex);
+            lblCLUT.Text = $"Offset 0x{(((int)C2numCX.Value * 0x20) + ((int)C2numCY.Value * 0x200)).ToString("X")}";
         }
 
         private void Control_UpdatePicture(object sender, EventArgs e)
@@ -294,9 +288,9 @@ namespace CrashEdit.CE
                     {
                         int pixel = colormode == 0 ? palette[chunk.Data[x / 2 + y * 512] >> ((x & 1) == 0 ? 0 : 4) & 0xF] :
                                     colormode == 1 ? palette[chunk.Data[x + y * 512]] :
-                                    colormode == 2 ? PixelConv.Convert5551_8888(BitConv.FromInt16(chunk.Data, x * 2 + y * 512), blendmode)
-                                    : throw new Exception("invalid colormode");
-                        System.Runtime.InteropServices.Marshal.WriteInt32(bdata.Scan0, x * 4 + y * bdata.Stride, pixel);
+                                    colormode == 2 ? PixelConv.Convert5551_8888(BitConv.FromInt16(chunk.Data, x * 2 + y * 512), blendmode) :
+                                    throw new Exception("invalid colormode");
+                        Marshal.WriteInt32(bdata.Scan0, x * 4 + y * bdata.Stride, pixel);
                     }
                 }
             }
@@ -356,76 +350,21 @@ namespace CrashEdit.CE
             //Width = 1024 + 32;
         }
 
-        private void C2Size4_Click(object sender, EventArgs e)
+        private void C2numSelectionSize_ValueChanged(object sender, EventArgs e)
         {
-            C2numW.Value = 4;
-            C2numH.Value = 4;
-            selectionSize = 4;
-            lblSelectionSize.Text = "Current: 4 x 4";
-            UpdatePicture();
-        }
-
-        private void C2Size8_Click(object sender, EventArgs e)
-        {
-            C2numW.Value = 8;
-            C2numH.Value = 8;
-            selectionSize = 8;
-            lblSelectionSize.Text = "Current: 8 x 8";
-            UpdatePicture();
-        }
-
-        private void C2Size16_Click(object sender, EventArgs e)
-        {
-            C2numW.Value = 16;
-            C2numH.Value = 16;
-            selectionSize = 16;
-            lblSelectionSize.Text = "Current: 16 x 16";
-            UpdatePicture();
-        }
-
-        private void C2Size32_Click(object sender, EventArgs e)
-        {
-            C2numW.Value = 32;
-            C2numH.Value = 32;
-            selectionSize = 32;
-            lblSelectionSize.Text = "Current: 32 x 32";
-            UpdatePicture();
-        }
-
-        private void C2Size64_Click(object sender, EventArgs e)
-        {
-            C2numW.Value = 64;
-            C2numH.Value = 64;
-            selectionSize = 64;
-            lblSelectionSize.Text = "Current: 64 x 64";
+            int size = (int)C2numSelectionSize.Value;
+            C2numW.Value = size;
+            C2numH.Value = size;
+            selectionSize = size;
             UpdatePicture();
         }
 
         private void C2SizeMax_Click(object sender, EventArgs e)
         {
+            C2numX.Value = 0;
+            C2numY.Value = 0;
             C2numW.Value = 256 << (2 - TexColorMode);
             C2numH.Value = 128;
-            UpdatePicture();
-        }
-
-        private void C1Size16_Click(object sender, EventArgs e)
-        {
-            C1dpdW.SelectedItem = "16";
-            C1dpdH.SelectedItem = "16";
-            UpdatePicture();
-        }
-
-        private void C1Size32_Click(object sender, EventArgs e)
-        {
-            C1dpdW.SelectedItem = "32";
-            C1dpdH.SelectedItem = "32";
-            UpdatePicture();
-        }
-
-        private void C1Size64_Click(object sender, EventArgs e)
-        {
-            C1dpdW.SelectedItem = "64";
-            C1dpdH.SelectedItem = "64";
             UpdatePicture();
         }
 
@@ -480,7 +419,7 @@ namespace CrashEdit.CE
             }
             if ((int)C2numX.Value < 32 && (int)C2numY.Value == 0)
             {
-                DarkMessageBox.ShowError("Textures cannot be replaced on the header.", Resources.Title_TextureReplacement);
+                DarkMessageBox.ShowError("Textures cannot be replaced in the header.", Resources.Title_TextureReplacement);
                 return;
             }
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
@@ -568,16 +507,33 @@ namespace CrashEdit.CE
                 Array.Copy(chunk.Data, offset, tempCLUT, 0, length);
                 File.WriteAllBytes(Path.Combine(basePath, "tempCLUT"), tempCLUT);
 
-                if (e.KeyCode == Keys.X) // clear
+                if (e.KeyCode == Keys.X) // cut
                 {
                     if ((int)C2numX.Value < 32 && (int)C2numY.Value == 0)
                     {
-                        DarkMessageBox.ShowError("Textures cannot be replaced on the header.", Resources.Title_TextureReplacement);
+                        DarkMessageBox.ShowError("Textures cannot be removed in the header.", Resources.Title_TextureReplacement);
+                        Console.WriteLine("Failed to cut texture.");
+                        return;
                     }
                     else
                     {
-                        byte[] emptyChunk = new byte[65536];
+                        byte[] emptyChunk = new byte[0x10000];
                         TextureConv.ReplaceTexture(emptyChunk, chunk.Data, tempWidth, tempHeight, tempBpp, 0, 0, tempWidth, tempHeight, (int)C2numX.Value, (int)C2numY.Value, false);
+
+                        if (clearCLUT)
+                        {
+                            if ((TexColorMode == 0 && (int)C2numCX.Value == 0 && (int)C2numCY.Value == 0) || (TexColorMode == 1 && (int)C2numCY.Value == 0))
+                            {
+                                DarkMessageBox.ShowError("CLUT cannot be cleared in the header.", Resources.Title_TextureReplacement);
+                                Console.WriteLine("Failed to clear CLUT.");
+                            }
+                            else
+                            {
+                                byte[] clearCLUTData = new byte[length];
+                                Array.Copy(clearCLUTData, 0, chunk.Data, offset, length);
+                                Console.WriteLine("Cleared CLUT successfully.");
+                            }
+                        }
 
                         BitConv.ToInt32(chunk.Data, 12, Chunk.CalculateChecksum(chunk.Data));
                     }
@@ -618,7 +574,7 @@ namespace CrashEdit.CE
                 bool failed = false;
                 if ((int)C2numX.Value < 32 && (int)C2numY.Value == 0)
                 {
-                    DarkMessageBox.ShowError("Textures cannot be replaced on the header.", Resources.Title_TextureReplacement);
+                    DarkMessageBox.ShowError("Textures cannot be replaced in the header.", Resources.Title_TextureReplacement);
                     failed = true;
                 }
                 else if ((int)C2numX.Value + tempWidth > (256 << (2 - TexColorMode)) || (int)C2numY.Value + tempHeight > 128)
@@ -660,8 +616,7 @@ namespace CrashEdit.CE
             if (sender is NumericUpDown numericUpDown)
             {
                 HandledMouseEventArgs handledArgs = e as HandledMouseEventArgs;
-                if (handledArgs != null)
-                    handledArgs.Handled = true;
+                if (handledArgs != null) handledArgs.Handled = true;
 
                 decimal newValue = numericUpDown.Value;
                 if (e.Delta > 0 && newValue < numericUpDown.Maximum)
@@ -679,8 +634,7 @@ namespace CrashEdit.CE
             if (sender is NumericUpDown numericUpDown)
             {
                 HandledMouseEventArgs handledArgs = e as HandledMouseEventArgs;
-                if (handledArgs != null)
-                    handledArgs.Handled = true;
+                if (handledArgs != null) handledArgs.Handled = true;
 
                 decimal newValue = numericUpDown.Value;
                 if (e.Delta > 0 && newValue + 8 < numericUpDown.Maximum)
@@ -688,6 +642,26 @@ namespace CrashEdit.CE
 
                 else if (e.Delta < 0 && newValue - 8 >= numericUpDown.Minimum)
                     newValue -= 8;
+
+                numericUpDown.Value = newValue;
+                UpdatePicture();
+            }
+        }
+
+        private void ScrollHandlerFunction3(object sender, MouseEventArgs e)
+        {
+            if (sender is NumericUpDown numericUpDown)
+            {
+                HandledMouseEventArgs handledArgs = e as HandledMouseEventArgs;
+                if (handledArgs != null) handledArgs.Handled = true;
+
+                decimal newValue = numericUpDown.Value;
+                int unit = newValue < 16 ? 4 : 8;
+                if (e.Delta > 0 && newValue + unit < numericUpDown.Maximum)
+                    newValue += unit;
+
+                else if (e.Delta < 0 && newValue - unit >= numericUpDown.Minimum)
+                    newValue -= unit;
 
                 numericUpDown.Value = newValue;
                 UpdatePicture();

@@ -1,5 +1,4 @@
-﻿using System.Windows.Media.Media3D;
-using AltUI.Forms;
+﻿using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 using Frame = CrashEdit.Crash.Frame;
@@ -30,8 +29,9 @@ namespace CrashEdit.CE
 
         private const int AnimC3toC2 = 0;
         private const int AnimC2toC2 = 1;
-        private const int AnimC2toC3 = 2;
-        private const int AnimC3toC3 = 3;
+        private const int AnimC1toC2 = 2;
+        private const int AnimC2toC3 = 3;
+        private const int AnimC3toC3 = 4;
 
         private const int Unknown2Index = 8;
         private const int Unknown2Length = 8;
@@ -186,8 +186,41 @@ namespace CrashEdit.CE
                             }
                             else if (cmbType.SelectedIndex == TypeAnimation)
                             {
-                                int vertexcount = BitConv.FromInt32(entry.Items[0], 8);
-                                string type = vertexcount == 0 ? "Crash3" : "Crash2";
+                                string type = string.Empty;
+                                DataGridViewRow newRow = new();
+
+                                GameVersion version;
+                                if (cmbMode.SelectedIndex == AnimC1toC2)
+                                {
+                                    version = GameVersion.Crash1;
+                                }
+                                else if (cmbMode.SelectedIndex == AnimC3toC2 || cmbMode.SelectedIndex == AnimC3toC3)
+                                {
+                                    version = GameVersion.Crash3;
+                                }
+                                else
+                                {
+                                    version = GameVersion.Crash2;
+                                }
+
+                                var _entry = entry.Process(version);
+                                if (_entry is OldAnimationEntry oldAnimationEntry && cmbMode.SelectedIndex == AnimC1toC2)
+                                {
+                                    type = "OldAnimation";
+                                    newRow.Tag = Entry.EIDToEName(oldAnimationEntry.Frames[0].ModelEID);
+                                }
+                                else if (_entry is AnimationEntry animationEntry && (
+                                        cmbMode.SelectedIndex == AnimC2toC2 || cmbMode.SelectedIndex == AnimC2toC3 ||
+                                        cmbMode.SelectedIndex == AnimC3toC2 || cmbMode.SelectedIndex == AnimC3toC3
+                                        ))
+                                {
+                                    int vertexcount = BitConv.FromInt32(entry.Items[0], 8);
+                                    type = vertexcount == 0 ? "Crash3" : "Crash2";
+                                }
+                                else
+                                {
+                                    throw new InvalidOperationException("Invalid entry type.");
+                                }
 
                                 string animEID = Entry.EIDToEName(BitConv.FromInt32(fileBytes, 4));
                                 string modelEID = string.Empty;
@@ -195,9 +228,8 @@ namespace CrashEdit.CE
                                 {
                                     modelEID = animEID.Substring(0, animEID.Length - 1) + "G";
                                 }
-                                DataGridViewRow row = new DataGridViewRow();
-                                row.CreateCells(dgvAnim, Path.GetFileNameWithoutExtension(fileInfo.Name), fileInfo.FullName, type, animEID, modelEID);
-                                dgvAnim.Rows.Add(row);
+                                newRow.CreateCells(dgvAnim, Path.GetFileNameWithoutExtension(fileInfo.Name), fileInfo.FullName, type, animEID, modelEID);
+                                dgvAnim.Rows.Add(newRow);
                             }
                         }
                         catch (Exception ex)
@@ -426,17 +458,18 @@ namespace CrashEdit.CE
 
                         Console.WriteLine($"Processing entry: {fileName}");
 
+                        int index = cmbMode.SelectedIndex;
 
-                        if (cmbMode.SelectedIndex == AnimC3toC2 || cmbMode.SelectedIndex == AnimC3toC3)
+                        if (index == AnimC1toC2)
                         {
-                            if (type != "Crash3")
+                            if (type != "OldAnimation")
                             {
                                 Console.WriteLine("    Error: Wrong entry type.");
                                 ++errorCount;
                                 continue;
                             }
                         }
-                        else
+                        else if (index == AnimC2toC2 || index == AnimC2toC3)
                         {
                             if (type != "Crash2")
                             {
@@ -445,8 +478,17 @@ namespace CrashEdit.CE
                                 continue;
                             }
                         }
+                        else if (index == AnimC3toC2 || index == AnimC3toC3)
+                        {
+                            if (type != "Crash3")
+                            {
+                                Console.WriteLine("    Error: Wrong entry type.");
+                                ++errorCount;
+                                continue;
+                            }
+                        }
 
-                        if (cmbMode.SelectedIndex == AnimC3toC2 || cmbMode.SelectedIndex == AnimC2toC2)
+                        if (index == AnimC3toC2 || index == AnimC2toC2 || index == AnimC1toC2)
                         {
                             string checkedEID = Entry.CheckEIDErrors(modelEID, true);
                             if (checkedEID != string.Empty)
@@ -457,13 +499,76 @@ namespace CrashEdit.CE
                             }
                         }
 
+                        byte[] fileBytes = [];
                         string mode = string.Empty;
                         UnprocessedEntry entry = loadedEntries[row.Index];
+
                         for (int i = 0; i < entry.Items.Count; i++)
                         {
                             byte[] data = entry.Items[i];
 
-                            if (cmbMode.SelectedIndex == AnimC3toC2)
+                            if (index == AnimC1toC2)
+                            {
+                                OldAnimationEntry oldAnim = (OldAnimationEntry)entry.Process(GameVersion.Crash1);
+
+                                List<Frame> frames = [];
+
+                                for (int j = 0; j < oldAnim.Frames.Count; j++)
+                                {
+                                    OldFrame oldFrame = oldAnim.Frames[j];
+                                    
+                                    List<byte[]> vertices = [];
+                                    List<byte[]> normals = [];
+                                    foreach (OldFrameVertex vertex in oldFrame.Vertices)
+                                    {
+                                        // swap Y and Z axes
+                                        vertices.Add([vertex.X, vertex.Z, vertex.Y]);
+                                        normals.Add([vertex.R, vertex.G, vertex.B, 0x00]);
+                                    }
+
+                                    byte[] verts = vertices.SelectMany(v => v).ToArray();
+                                    int length = verts.Length;
+
+                                    int paddedLength = (length % 4 == 0) ? length : (length / 4 + 1) * 4;
+                                    byte[] paddedVertices = new byte[paddedLength];
+
+                                    Array.Copy(verts, paddedVertices, length);
+
+                                    byte[] result = new byte[0x40 + paddedLength];
+
+                                    BitConv.ToInt16(result, 0, (short)oldFrame.XOffset);
+                                    BitConv.ToInt16(result, 2, (short)oldFrame.YOffset);
+                                    BitConv.ToInt16(result, 4, (short)oldFrame.ZOffset);
+                                    ushort unk = 0xFFFF;
+                                    BitConv.ToInt16(result, 6, (short)unk); // unknown
+                                    BitConv.ToInt32(result, 8, oldFrame.Vertices.Count);
+                                    BitConv.ToInt32(result, 12, 1); // collision count
+                                    BitConv.ToInt32(result, 16, Entry.ENameToEID(modelEID));
+                                    BitConv.ToInt32(result, 20, 0x40); // header size
+
+                                    BitConv.ToInt32(result, 24 + 0x00, oldFrame.Collision.U);
+                                    BitConv.ToInt32(result, 24 + 0x04, oldFrame.Collision.XOffset);
+                                    BitConv.ToInt32(result, 24 + 0x08, oldFrame.Collision.YOffset);
+                                    BitConv.ToInt32(result, 24 + 0x0C, oldFrame.Collision.ZOffset);
+                                    BitConv.ToInt32(result, 24 + 0x10, oldFrame.Collision.X1);
+                                    BitConv.ToInt32(result, 24 + 0x14, oldFrame.Collision.Y1);
+                                    BitConv.ToInt32(result, 24 + 0x18, oldFrame.Collision.Z1);
+                                    BitConv.ToInt32(result, 24 + 0x1C, oldFrame.Collision.X2);
+                                    BitConv.ToInt32(result, 24 + 0x20, oldFrame.Collision.Y2);
+                                    BitConv.ToInt32(result, 24 + 0x24, oldFrame.Collision.Z2);
+
+                                    Array.Copy(paddedVertices, 0, result, 0x40, paddedLength);
+
+                                    Frame frame = Frame.Load(result);
+                                    frames.Add(frame);
+                                }
+
+                                AnimationEntry anim = new(frames, false, Entry.ENameToEID(modelEID));
+
+                                mode = "C1toC2";
+                                fileBytes = anim.Save();
+                            }
+                            if (index == AnimC3toC2)
                             {
                                 // Remove unknown2
                                 byte[] newArray = new byte[data.Length - Unknown2Length];
@@ -495,8 +600,9 @@ namespace CrashEdit.CE
 
                                 entry.Items[i] = newArray2;
                                 mode = "C3toC2";
+                                fileBytes = entry.Save();
                             }
-                            else if (cmbMode.SelectedIndex == AnimC2toC3)
+                            else if (index == AnimC2toC3)
                             {
                                 // Remove ModelEID
                                 byte[] newArray = new byte[data.Length - ModelEIDLength];
@@ -524,8 +630,9 @@ namespace CrashEdit.CE
 
                                 entry.Items[i] = newArray2;
                                 mode = "C2toC3";
+                                fileBytes = entry.Save();
                             }
-                            else if (cmbMode.SelectedIndex == AnimC2toC2)
+                            else if (index == AnimC2toC2)
                             {
                                 // Set ModelEID
                                 int eid = Entry.ENameToEID(modelEID);
@@ -533,15 +640,15 @@ namespace CrashEdit.CE
 
                                 entry.Items[i] = data;
                                 mode = "C2toC2";
+                                fileBytes = entry.Save();
                             }
-                            else if (cmbMode.SelectedIndex == AnimC3toC3)
+                            else if (index == AnimC3toC3)
                             {
                                 // Do nothing
                                 mode = "C3toC3";
+                                fileBytes = entry.Save();
                             }
                         }
-
-                        byte[] fileBytes = entry.Save();
 
                         // Set AnimEID
                         BitConv.ToInt32(fileBytes, 4, Entry.ENameToEID(animEID));
@@ -618,14 +725,15 @@ namespace CrashEdit.CE
 
         private void cmbMode_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cmbMode.SelectedIndex < 0) return;
+            int index = cmbMode.SelectedIndex;
+            if (index < 0) return;
 
             ClearRows();
             lblWarning.Visible = false;
 
             if (cmbType.SelectedIndex == TypeModel)
             {
-                if (cmbMode.SelectedIndex == ModelC1AnimtoC2 || cmbMode.SelectedIndex == ModelC1ColoredAnimtoC2)
+                if (index == ModelC1AnimtoC2 || index == ModelC1ColoredAnimtoC2)
                 {
                     dgvAnim.Columns[ColFileName].Visible = false;
                     dgvAnim.Columns[ColType].Visible = false;
@@ -644,7 +752,7 @@ namespace CrashEdit.CE
             }
             else
             {
-                if (cmbMode.SelectedIndex == AnimC3toC2 || cmbMode.SelectedIndex == AnimC2toC2)
+                if (index == AnimC3toC2 || index == AnimC2toC2 || index == AnimC1toC2)
                 {
                     chkSetModelEID.Enabled = true;
                     dgvAnim.Columns[ColModelEID].Visible = true;
@@ -659,11 +767,12 @@ namespace CrashEdit.CE
 
         private void cmbType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cmbType.SelectedIndex < 0) return;
+            int index = cmbType.SelectedIndex;
+            if (index < 0) return;
 
             ClearRows();
             cmbMode.Items.Clear();
-            if (cmbType.SelectedIndex == TypeModel)
+            if (index == TypeModel)
             {
                 cmbMode.Items.AddRange(new object[]
                 {
@@ -688,6 +797,7 @@ namespace CrashEdit.CE
                 {
                     "Crash3 -> Crash2",
                     "Crash2 -> Crash2",
+                    "Crash1 -> Crash2",
                     "Crash2 -> Crash3",
                     "Crash3 -> Crash3"
                 });

@@ -139,10 +139,10 @@
     <value>Demo ({0})</value>
   </data>
   <data name="EntryController_AcDelete" xml:space="preserve">
-    <value>Delete Entry "{0}"</value>
+    <value>Delete Entry</value>
   </data>
   <data name="EntryController_AcDeprocess" xml:space="preserve">
-    <value>Deprocess Entry "{0}"</value>
+    <value>Deprocess Entry</value>
   </data>
   <data name="GameVersionForm_Message" xml:space="preserve">
     <value>Select a game version from the list below. NTSC-U, NTSC-J, and PAL are all supported.</value>
@@ -310,10 +310,10 @@
     <value>Import Entry</value>
   </data>
   <data name="EntryController_AcExport" xml:space="preserve">
-    <value>Export Entry "{0}"</value>
+    <value>Export Entry</value>
   </data>
   <data name="EntryController_AcRename" xml:space="preserve">
-    <value>Rename Entry "{0}"</value>
+    <value>Rename Entry</value>
   </data>
   <data name="NSFController_AcAddOldSoundChunk" xml:space="preserve">
     <value>Add Old Sound Chunk</value>
@@ -346,7 +346,7 @@
     <value>Rename Chunk</value>
   </data>
   <data name="UnprocessedEntryController_AcProcess" xml:space="preserve">
-    <value>Process Entry "{0}"</value>
+    <value>Process Entry</value>
   </data>
   <data name="ZoneEntryController_AcAddEntity" xml:space="preserve">
     <value>Add Entity</value>
@@ -379,9 +379,18 @@
     <value>Fix coords imported from Crash 3</value>
   </data>
   <data name="NSFController_AcEditScenery" xml:space="preserve">
-    <value>Edit Scenery</value>
+    <value>Open Scenery Editor</value>
   </data>
   <data name="NSFController_AcImportEntriesIntoChunks" xml:space="preserve">
     <value>Import Entries Into New Chunks</value>
+  </data>
+  <data name="EntryController_AcDuplicate" xml:space="preserve">
+    <value>Duplicate Entry</value>
+  </data>
+  <data name="EntryController_AcReload" xml:space="preserve">
+    <value>Reload</value>
+  </data>
+  <data name="NSFController_AcEditEntities" xml:space="preserve">
+    <value>Open Entity Editor</value>
   </data>
 </root>

@@ -1,6 +1,7 @@
 using System.Media;
 using System.Text;
 using AltUI.Forms;
+using CrashEdit.CE.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 using CrashEdit.Exporters;
@@ -21,7 +22,7 @@ namespace CrashEdit.CE
             AddMenu(CrashUI.Properties.Resources.NSFController_AcAddSpeechChunk, "JournalWhite", Menu_Add_SpeechChunk);
             AddMenu(CrashUI.Properties.Resources.NSFController_AcAddTextureChunk, "Painting", Menu_Add_TextureChunk);
             AddMenu(CrashUI.Properties.Resources.NSFController_AcImportChunk, "Import", Menu_Import_Chunk);
-            AddMenu(CrashUI.Properties.Resources.NSFController_AcImportEntriesIntoChunks, "", Menu_Import_Entries_Into_New_Chunks);
+            AddMenu(CrashUI.Properties.Resources.NSFController_AcImportEntriesIntoChunks, "ImportPlus", Menu_Import_Entries_Into_New_Chunks);
             if (GameVersion == GameVersion.Crash2 || GameVersion == GameVersion.Crash3)
             {
                 AddMenuSeparator();
@@ -46,10 +47,11 @@ namespace CrashEdit.CE
             }
             else if (GameVersion == GameVersion.Crash2 || GameVersion == GameVersion.Crash3)
             {
+                AddMenu(CrashUI.Properties.Resources.NSFController_AcEditEntities, "Modify", Menu_EditEntitiesC2);
+                AddMenu(CrashUI.Properties.Resources.NSFController_AcEditScenery, "Wrench", Menu_EditSceneryC2);
+                AddMenuSeparator();
                 AddMenu(CrashUI.Properties.Resources.NSFController_AcShowLevel, "ThingBlue", Menu_ShowLevelC2);
                 AddMenu(CrashUI.Properties.Resources.NSFController_AcShowLevelZones, "ThingViolet", Menu_ShowLevelZonesC2);
-                AddMenuSeparator();
-                AddMenu(CrashUI.Properties.Resources.NSFController_AcEditScenery, "Wrench", Menu_EditSceneryC2);
                 AddMenuSeparator();
                 AddMenu(CrashUI.Properties.Resources.NSFController_AcExportScenery, Menu_ExportSceneryC2OBJ);
             }
@@ -59,6 +61,7 @@ namespace CrashEdit.CE
 
         private DarkForm? ShowLevelForm { get; set; }
         private DarkForm? ShowLevelZonesForm { get; set; }
+        private EntityEditor? EntityEditorForm { get; set; }
         private SceneryEditor? SceneryEditorForm { get; set; }
 
         public void Kill()
@@ -69,6 +72,9 @@ namespace CrashEdit.CE
             ShowLevelZonesForm?.Close();
             ShowLevelZonesForm?.Dispose();
             ShowLevelZonesForm = null;
+            EntityEditorForm?.Close();
+            EntityEditorForm?.Dispose();
+            EntityEditorForm = null;
             SceneryEditorForm?.Close();
             SceneryEditorForm?.Dispose();
             SceneryEditorForm = null;
@@ -635,6 +641,21 @@ namespace CrashEdit.CE
             };
         }
 
+        private void Menu_EditEntitiesC2()
+        {
+            if (EntityEditorForm != null)
+            {
+                EntityEditorForm.Focus();
+                return;
+            }
+            EntityEditorForm = new(NSF);
+            EntityEditorForm.FormClosed += (sender, e) =>
+            {
+                EntityEditorForm = null;
+            };
+            EntityEditorForm.Show();
+        }
+
         private void Menu_EditSceneryC2()
         {
             if (SceneryEditorForm != null)
@@ -642,7 +663,7 @@ namespace CrashEdit.CE
                 SceneryEditorForm.Focus();
                 return;
             }
-            SceneryEditorForm = new (NSF);
+            SceneryEditorForm = new(NSF);
             SceneryEditorForm.FormClosed += (sender, e) =>
             {
                 SceneryEditorForm = null;

@@ -58,6 +58,7 @@ namespace CrashEdit.CE
             showGOOLMapForm = new DarkForm()
             {
                 Text = $"GOOL Map ({NSDFileName})",
+                Icon = Embeds.GetIcon("ThingCode"),
                 BackColor = Color.FromArgb(31, 31, 32),
                 MaximizeBox = false,
                 MinimizeBox = false,

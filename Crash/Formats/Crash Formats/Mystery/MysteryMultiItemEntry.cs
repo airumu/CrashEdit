@@ -2,7 +2,7 @@ namespace CrashEdit.Crash
 {
     public abstract class MysteryMultiItemEntry : Entry
     {
-        private List<byte[]> items;
+        public List<byte[]> items;
 
         public MysteryMultiItemEntry(IEnumerable<byte[]> items, int eid) : base(eid)
         {

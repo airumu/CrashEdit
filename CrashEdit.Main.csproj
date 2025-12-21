@@ -42,6 +42,7 @@
       <None Remove="Embeds\Images\ArrowRefresh.png" />
       <None Remove="Embeds\Images\Calculator.png" />
       <None Remove="Embeds\Images\CD.png" />
+      <None Remove="Embeds\Images\Container.png" />
       <None Remove="Embeds\Images\Controller.png" />
       <None Remove="Embeds\Images\Copy.png" />
       <None Remove="Embeds\Images\Cut.png" />
@@ -61,6 +62,7 @@
       <None Remove="Embeds\Images\HelpSymbol.png" />
       <None Remove="Embeds\Images\Hint.png" />
       <None Remove="Embeds\Images\Import.png" />
+      <None Remove="Embeds\Images\ImportPlus.png" />
       <None Remove="Embeds\Images\JournalBlue.gif" />
       <None Remove="Embeds\Images\JournalCode.gif" />
       <None Remove="Embeds\Images\JournalCyan.gif" />
@@ -113,6 +115,7 @@
       <EmbeddedResource Include="Embeds\Images\ArrowRefresh.png" />
       <EmbeddedResource Include="Embeds\Images\Calculator.png" />
       <EmbeddedResource Include="Embeds\Images\CD.png" />
+      <EmbeddedResource Include="Embeds\Images\Container.png" />
       <EmbeddedResource Include="Embeds\Images\Controller.png" />
       <EmbeddedResource Include="Embeds\Images\Copy.png" />
       <EmbeddedResource Include="Embeds\Images\Cut.png" />
@@ -132,6 +135,7 @@
       <EmbeddedResource Include="Embeds\Images\HelpSymbol.png" />
       <EmbeddedResource Include="Embeds\Images\Hint.png" />
       <EmbeddedResource Include="Embeds\Images\Import.png" />
+      <EmbeddedResource Include="Embeds\Images\ImportPlus.png" />
       <EmbeddedResource Include="Embeds\Images\JournalBlue.gif" />
       <EmbeddedResource Include="Embeds\Images\JournalCode.gif" />
       <EmbeddedResource Include="Embeds\Images\JournalCyan.gif" />

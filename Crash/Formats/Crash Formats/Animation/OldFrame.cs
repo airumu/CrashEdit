@@ -89,7 +89,7 @@ namespace CrashEdit.Crash
         public int YOffset { get; set; }
         public int ZOffset { get; set; }
         public bool Proto { get; set; }
-
+        public FrameCollision Collision => collision;
         public IList<OldFrameVertex> Vertices => vertices;
 
         public short Unknown { get; set; }

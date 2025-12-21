@@ -287,11 +287,11 @@ namespace CrashEdit.CE.Controls
             fraCLUT.Controls.Add(lblClutX);
             fraCLUT.Controls.Add(numClutX2);
             fraCLUT.Controls.Add(numClutY2);
+            fraCLUT.Controls.Add(numClutX1);
             fraCLUT.Controls.Add(label1);
             fraCLUT.Controls.Add(label2);
             fraCLUT.Controls.Add(numClutY1);
             fraCLUT.Controls.Add(lblClutY);
-            fraCLUT.Controls.Add(numClutX1);
             fraCLUT.Location = new Point(3, 26);
             fraCLUT.Name = "fraCLUT";
             fraCLUT.Size = new Size(208, 80);
@@ -319,7 +319,7 @@ namespace CrashEdit.CE.Controls
             // lblClutX
             // 
             lblClutX.AutoSize = true;
-            lblClutX.Location = new Point(52, 2);
+            lblClutX.Location = new Point(148, 2);
             lblClutX.Name = "lblClutX";
             lblClutX.Size = new Size(45, 15);
             lblClutX.TabIndex = 3;
@@ -327,7 +327,7 @@ namespace CrashEdit.CE.Controls
             // 
             // numClutX2
             // 
-            numClutX2.Location = new Point(44, 49);
+            numClutX2.Location = new Point(138, 49);
             numClutX2.Maximum = new decimal(new int[] { 15, 0, 0, 0 });
             numClutX2.Name = "numClutX2";
             numClutX2.Size = new Size(64, 23);
@@ -336,7 +336,7 @@ namespace CrashEdit.CE.Controls
             // 
             // numClutY2
             // 
-            numClutY2.Location = new Point(138, 49);
+            numClutY2.Location = new Point(44, 49);
             numClutY2.Maximum = new decimal(new int[] { 32, 0, 0, 0 });
             numClutY2.Name = "numClutY2";
             numClutY2.Size = new Size(64, 23);
@@ -363,7 +363,7 @@ namespace CrashEdit.CE.Controls
             // 
             // numClutY1
             // 
-            numClutY1.Location = new Point(138, 20);
+            numClutY1.Location = new Point(44, 20);
             numClutY1.Maximum = new decimal(new int[] { 32, 0, 0, 0 });
             numClutY1.Name = "numClutY1";
             numClutY1.Size = new Size(64, 23);
@@ -373,7 +373,7 @@ namespace CrashEdit.CE.Controls
             // lblClutY
             // 
             lblClutY.AutoSize = true;
-            lblClutY.Location = new Point(148, 2);
+            lblClutY.Location = new Point(52, 2);
             lblClutY.Name = "lblClutY";
             lblClutY.Size = new Size(45, 15);
             lblClutY.TabIndex = 3;
@@ -381,7 +381,7 @@ namespace CrashEdit.CE.Controls
             // 
             // numClutX1
             // 
-            numClutX1.Location = new Point(44, 20);
+            numClutX1.Location = new Point(138, 20);
             numClutX1.Maximum = new decimal(new int[] { 15, 0, 0, 0 });
             numClutX1.Name = "numClutX1";
             numClutX1.Size = new Size(64, 23);

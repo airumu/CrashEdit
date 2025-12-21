@@ -9,6 +9,7 @@ namespace CrashEdit.CE
         public EntryChunkController(EntryChunk entrychunk, SubcontrollerGroup parentGroup) : base(entrychunk, parentGroup)
         {
             EntryChunk = entrychunk;
+            AddMenu(CrashUI.Properties.Resources.EntryController_AcReload, "ArrowRefresh", Menu_Reload_Chunk);
             AddMenu(CrashUI.Properties.Resources.EntryChunkController_AcImport, "Import", Menu_Import_Entry);
             AddMenu(CrashUI.Properties.Resources.EntryChunkController_AcAddNew, "Add", Menu_Add_Entry);
         }
@@ -18,6 +19,25 @@ namespace CrashEdit.CE
         public override bool EditorAvailable => true;
 
         public override Control CreateEditor() => new EntryChunkBox(this);
+
+        private void Menu_Reload_Chunk()
+        {
+            int index = NSFController.NSF.Chunks.IndexOf(EntryChunk);
+            UnprocessedChunk unprocessed = EntryChunk.Unprocess();
+
+            Chunk processedchunk;
+            try
+            {
+                processedchunk = unprocessed.Process();
+            }
+            catch (LoadAbortedException)
+            {
+                return;
+            }
+            ((EntryChunk)processedchunk).ProcessAll(NSFController.GameVersion);
+
+            NSFController.NSF.Chunks[index] = processedchunk;
+        }
 
         private void Menu_Import_Entry()
         {
@@ -124,6 +144,18 @@ namespace CrashEdit.CE
                                 new List<GOOLStateDescriptor>() { new GOOLStateDescriptor(0x1, 0x0, 0x0, 0x3FFF, 0x3FFF, 0x0) },
                                 new List<GOOLFrameGroupBase>(),
                                 newentrywindow.EID);
+                            break;
+                        case 12: // sound
+                            items[0] = new byte[]
+                            {
+                                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                0x0C, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                0x00, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+                            };
+                            newentry = new SoundEntry(SampleSet.Load(items[0]), newentrywindow.EID);
                             break;
                     }
                     if (newentry == null)

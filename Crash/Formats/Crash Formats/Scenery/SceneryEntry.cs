@@ -66,6 +66,12 @@ namespace CrashEdit.Crash
             set => BitConv.ToInt32(Info, 12, value ? 1 : 0);
         }
 
+        public int AnimatedTextureCount
+        {
+            get => BitConv.FromInt32(Info, 0x24);
+            set => BitConv.ToInt32(Info, 0x24, value);
+        }
+
         public int TPAGCount
         {
             get => BitConv.FromInt32(Info, 0x28);

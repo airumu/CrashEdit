@@ -52,6 +52,18 @@ namespace CrashEdit.CE
         internal Stack<bool> dirty = new Stack<bool>();
         internal bool Dirty => dirty.Count > 0 && dirty.Peek();
 
+        private void EntityBox_VisibleChanged(object sender, EventArgs e)
+        {
+            controller.ZoneEntry.SelectedEntity = controller.ZoneEntry.Entities.IndexOf(entity);
+        }
+
+        public EntityBox(EntityController controller)
+        {
+            this.controller = controller;
+            entity = controller.Entity;
+            MainInit();
+        }
+
         internal void MainInit()
         {
             InitializeComponent();
@@ -66,7 +78,7 @@ namespace CrashEdit.CE
             if (Settings.Default.EnableLegacyEntityBox == false)
             {
                 // Check CameraCout to see if the entity is a camera
-                ZoneEntry zone = controller.ZoneEntryController.ZoneEntry;
+                ZoneEntry zone = controller.ZoneEntry;
                 if (zone.Entities.IndexOf(entity) < zone.CameraCount)
                 {
                     // If it's camera[0]
@@ -223,17 +235,6 @@ namespace CrashEdit.CE
             lblArgAs.Text = MakeArgAsText();
             chkSettingHex_CheckedChanged(null, null);
 
-            tipVictim = new DarkToolTip();
-            tipVictim.SetToolTip(lbVictimID, Resources.EntityBox_tipLists);
-            tipEIDA = new DarkToolTip();
-            tipEIDA.SetToolTip(lbEIDA, Resources.EntityBox_tipLists);
-            tipEIDB = new DarkToolTip();
-            tipEIDB.SetToolTip(lbEIDB, Resources.EntityBox_tipLists);
-            tipEntityA = new DarkToolTip();
-            tipEntityA.SetToolTip(lbEntityA, Resources.EntityBox_tipLists);
-            tipEntityB = new DarkToolTip();
-            tipEntityB.SetToolTip(lbEntityB, Resources.EntityBox_tipLists);
-
             // use a Timer because of PAL switch
             argtexttimer = new()
             {
@@ -264,34 +265,9 @@ namespace CrashEdit.CE
                 }
             };
             tbcTabs.SelectedIndexChanged += tabChangedHandler;
-
-            tipOverrideId = new DarkToolTip();
-            tipOverrideMult = new DarkToolTip();
-
-            lblHelpOverrideId = new Label();
-            lblHelpOverrideId.Text = "(?)";
-            lblHelpOverrideId.AutoSize = true;
-            lblHelpOverrideId.Location = new Point(110, chkDrawOverrideId.Top);
-            lblHelpOverrideId.Cursor = Cursors.Help;
-            fraDrawOverrides.Controls.Add(lblHelpOverrideId);
-
-            lblHelpOverrideMult = new Label();
-            lblHelpOverrideMult.Text = "(?)";
-            lblHelpOverrideMult.AutoSize = true;
-            lblHelpOverrideMult.Location = new Point(110, chkDrawOverrideMult.Top);
-            lblHelpOverrideMult.Cursor = Cursors.Help;
-            fraDrawOverrides.Controls.Add(lblHelpOverrideMult);
-
-            tipOverrideId.SetToolTip(lblHelpOverrideId, "c2export rebuild_dl: \nposition override ID\nWhen making draw lists,\nuses position of other entity\n(must be from same zone).");
-            tipOverrideMult.SetToolTip(lblHelpOverrideMult, "c2export rebuild_dl: \ndistance multiplier\nWhen making draw lists,\nallowed distance is\nmultipled by this / 100.");
         }
 
-        public EntityBox(EntityController controller)
-        {
-            this.controller = controller;
-            entity = controller.Entity;
-            MainInit();
-        }
+        #region General
 
         internal string MakeArgAsText()
         {
@@ -814,6 +790,633 @@ namespace CrashEdit.CE
             entity.Subtype = (int)numSubtype.Value;
         }
 
+        private void chkSettingHex_CheckedChanged(object sender, EventArgs e)
+        {
+            numSettingC.Hexadecimal = chkSettingHex.Checked;
+            SetCVal((long)numSettingC.Value);
+        }
+
+        private void chkSyncEntities_CheckedChanged(object sender, EventArgs e)
+        {
+            cmdSyncEntities.Enabled = chkSyncEntities.Checked;
+        }
+
+        private void cmdSyncList_Click(object sender, EventArgs e)
+        {
+            if (syncListForm == null || syncListForm.IsDisposed)
+            {
+                syncListForm = new DarkForm()
+                {
+                    Text = "Sync Entities",
+                    Icon = Embeds.GetIcon("ThingViolet"),
+                    Size = new Size(200, 360),
+                    MinimizeBox = false,
+                    MaximizeBox = false,
+                    AutoSize = true
+                };
+                syncListForm.FormClosing += (sender, e) =>
+                {
+                    syncListForm = null;
+                };
+
+                FlowLayoutPanel panel = new()
+                {
+                    Dock = DockStyle.Fill,
+                    AutoSize = true,
+                    AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                    FlowDirection = FlowDirection.TopDown,
+                    WrapContents = false
+                };
+
+                DarkGroupBox fraSyncedEntities = new()
+                {
+                    Text = "Synced Entities",
+                    AutoSize = true,
+                    Margin = new Padding(6, 3, 6, 19)
+                };
+
+                FlowLayoutPanel panel2 = new()
+                {
+                    Dock = DockStyle.Fill,
+                    AutoSize = true,
+                    AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                    FlowDirection = FlowDirection.TopDown,
+                    WrapContents = false
+                };
+
+                DarkListBox lstSyncedEntities = new()
+                {
+                    Size = new Size(200, 200),
+                    SelectionMode = SelectionMode.MultiExtended
+                };
+                if (syncEntityList == null)
+                    syncEntityList = new();
+                else
+                {
+                    foreach (string item in syncEntityList)
+                    {
+                        lstSyncedEntities.Items.Add(item);
+                    }
+                }
+
+                DarkButton cmdRemove = new()
+                {
+                    Text = "Remove"
+                };
+
+                DarkComboBox cmbZones = new()
+                {
+                    DropDownHeight = 220,
+                    Margin = new Padding(6, 3, 6, 3)
+                };
+                foreach (ZoneEntry zone in controller.GetEntries<ZoneEntry>())
+                {
+                    cmbZones.Items.Add(zone.EName);
+                }
+
+                DarkButton cmdAdd = new()
+                {
+                    Text = "Add",
+                    Margin = new Padding(6, 3, 6, 3)
+                };
+
+                DarkListBox lstEntities = new()
+                {
+                    Size = new Size(200, 200),
+                    SelectionMode = SelectionMode.MultiExtended,
+                    Margin = new Padding(6, 3, 6, 6)
+                };
+
+                cmbZones.SelectedIndexChanged += (sender, e) =>
+                {
+                    lstEntities.Items.Clear();
+                    ZoneEntry zone = controller.GetEntry<ZoneEntry>(Entry.ENameToEID(cmbZones.SelectedItem.ToString()));
+                    foreach (Entity otherentity in zone.Entities)
+                    {
+                        if (otherentity.ID.HasValue)
+                        {
+                            string text = $"{otherentity.Name} [ID {otherentity.ID}]";
+                            if (!lstSyncedEntities.Items.Contains(text))
+                            {
+                                lstEntities.Items.Add(text);
+                            }
+                        }
+                    }
+                };
+
+                cmdAdd.Click += (sender, e) =>
+                {
+                    foreach (var item in lstEntities.SelectedItems.Cast<object>().ToList())
+                    {
+                        lstSyncedEntities.Items.Add(item);
+                        syncEntityList.Add((string)item);
+                        lstEntities.Items.Remove(item);
+                    }
+                };
+
+                cmdRemove.Click += (sender, e) =>
+                {
+                    List<string> fakeList = new();
+                    ZoneEntry zone = controller.GetEntry<ZoneEntry>(Entry.ENameToEID(cmbZones.SelectedItem.ToString()));
+                    foreach (Entity otherentity in zone.Entities)
+                    {
+                        if (otherentity.ID.HasValue)
+                        {
+                            string text = $"{otherentity.Name} [ID {otherentity.ID}]";
+                            fakeList.Add(text);
+                        }
+                    }
+
+                    foreach (var item in lstSyncedEntities.SelectedItems.Cast<object>().ToList())
+                    {
+                        if (fakeList.Contains(item))
+                            lstEntities.Items.Add(item);
+                        syncEntityList.Remove((string)item);
+                        lstSyncedEntities.Items.Remove(item);
+                    }
+                };
+
+                cmbZones.SelectedItem = controller.ZoneEntry.EName;
+
+                panel2.Controls.Add(lstSyncedEntities);
+                panel2.Controls.Add(cmdRemove);
+                fraSyncedEntities.Controls.Add(panel2);
+
+                panel.Controls.Add(fraSyncedEntities);
+                panel.Controls.Add(cmbZones);
+                panel.Controls.Add(cmdAdd);
+                panel.Controls.Add(lstEntities);
+
+                syncListForm.Controls.Add(panel);
+                syncListForm.FormBorderStyle = FormBorderStyle.FixedSingle;
+                syncListForm.Show();
+            }
+            else
+            {
+                syncListForm.Select();
+            }
+        }
+
+        private void cmdInterpolate_Click(object sender, EventArgs e)
+        {
+            Position[] pos = new Position[entity.Positions.Count];
+            for (int i = 0; i < entity.Positions.Count; ++i)
+            {
+                pos[i] = new Position(entity.Positions[i].X, entity.Positions[i].Y, entity.Positions[i].Z);
+            }
+            using (InterpolatorForm interpolator = new InterpolatorForm(pos))
+            {
+                if (interpolator.ShowDialog() == DialogResult.OK)
+                {
+                    if (interpolator.Mode == 0)
+                    {
+                        for (int m = interpolator.Start - 1, i = interpolator.End - 2; i > m; --i)
+                        {
+                            entity.Positions.RemoveAt(i);
+                        }
+                        for (int i = 0; i < interpolator.Amount; ++i)
+                        {
+                            entity.Positions.Insert(i + interpolator.Start, new EntityPosition(interpolator.NewPositions[i + 1]));
+                        }
+                    }
+                    else
+                    {
+                        entity.Positions.Clear();
+                        for (int i = 0; i < interpolator.Amount + 1; ++i)
+                        {
+                            entity.Positions.Add(new EntityPosition(interpolator.NewPositions[i]));
+                        }
+                    }
+
+                    UpdatePosition();
+                }
+            }
+        }
+
+        private void UpdateZMod()
+        {
+            if (entity.ZMod.HasValue)
+            {
+                numZMod.Value = entity.ZMod.Value;
+            }
+            numZMod.Enabled = entity.ZMod.HasValue;
+            chkZMod.Checked = entity.ZMod.HasValue;
+        }
+
+        private void chkZMod_CheckedChanged(object sender, EventArgs e)
+        {
+            numZMod.Enabled = chkZMod.Checked;
+            if (chkZMod.Checked)
+            {
+                entity.ZMod = (int)numZMod.Value;
+            }
+            else
+            {
+                entity.ZMod = null;
+            }
+        }
+
+        private void numZMod_ValueChanged(object sender, EventArgs e)
+        {
+            entity.ZMod = (int)numZMod.Value;
+        }
+
+        // C2-tweaked
+        private void UpdateC2TTSets()
+        {
+            if (Settings.Default.EnableC2TTEditor)
+            {
+                fraC2TTSet.Visible = true;
+                fraC2TTSet.Location = new Point(245, 146);
+                fraZMod.Location = new Point(384, 146);
+                UpdateC2TTType();
+                UpdateC2TTYRot();
+                UpdateC2TTBoxFlag();
+                UpdateC2TTGhostTarget();
+            }
+            else
+            {
+                fraC2TTSet.Visible = false;
+                fraC2TTSet.Location = new Point(245, 146);
+                fraZMod.Location = new Point(245, 146);
+            }
+        }
+
+        private void UpdateC2TTType()
+        {
+            if (entity.C2TTType.HasValue)
+            {
+                numC2TTType.Value = entity.C2TTType.Value >> 8;
+            }
+            numC2TTType.Enabled = entity.C2TTType.HasValue;
+            chkC2TTType.Checked = entity.C2TTType.HasValue;
+        }
+
+        private void chkC2TTType_CheckedChanged(object sender, EventArgs e)
+        {
+            numC2TTType.Enabled = chkC2TTType.Checked;
+            if (chkC2TTType.Checked)
+            {
+                entity.C2TTType = (int)numC2TTType.Value << 8;
+            }
+            else
+            {
+                entity.C2TTType = null;
+            }
+        }
+
+        private void numC2TTType_ValueChanged(object sender, EventArgs e)
+        {
+            entity.C2TTType = (int)numC2TTType.Value << 8;
+        }
+
+        private void UpdateC2TTYRot()
+        {
+            if (entity.C2TTYRot.HasValue)
+            {
+                numC2TTYRot.Value = entity.C2TTYRot.Value >> 8;
+            }
+            numC2TTYRot.Enabled = entity.C2TTYRot.HasValue;
+            chkC2TTYRot.Checked = entity.C2TTYRot.HasValue;
+        }
+
+        private void chkC2TTYRot_CheckedChanged(object sender, EventArgs e)
+        {
+            numC2TTYRot.Enabled = chkC2TTYRot.Checked;
+            if (chkC2TTYRot.Checked)
+            {
+                entity.C2TTYRot = (int)numC2TTYRot.Value << 8;
+            }
+            else
+            {
+                entity.C2TTYRot = null;
+            }
+        }
+
+        private void numC2TTYRot_ValueChanged(object sender, EventArgs e)
+        {
+            entity.C2TTYRot = (int)numC2TTYRot.Value << 8;
+        }
+
+        private void UpdateC2TTBoxFlag()
+        {
+            if (entity.C2TTBoxFlag.HasValue)
+            {
+                numC2TTFlags.Value = entity.C2TTBoxFlag.Value >> 8;
+            }
+            numC2TTFlags.Enabled = entity.C2TTBoxFlag.HasValue;
+            chkC2TTFlags.Checked = entity.C2TTBoxFlag.HasValue;
+        }
+
+        private void chkC2TTFlags_CheckedChanged(object sender, EventArgs e)
+        {
+            numC2TTFlags.Enabled = chkC2TTFlags.Checked;
+            if (chkC2TTFlags.Checked)
+            {
+                entity.C2TTBoxFlag = (int)numC2TTFlags.Value << 8;
+            }
+            else
+            {
+                entity.C2TTBoxFlag = null;
+            }
+        }
+
+        private void numC2TTFlags_ValueChanged(object sender, EventArgs e)
+        {
+            entity.C2TTBoxFlag = (int)numC2TTFlags.Value << 8;
+        }
+
+        private void UpdateC2TTGhostTarget()
+        {
+            if (entity.C2TTGhostTarget.HasValue)
+            {
+                numC2TTGhostTarget.Value = entity.C2TTGhostTarget.Value >> 8;
+            }
+            numC2TTGhostTarget.Enabled = entity.C2TTGhostTarget.HasValue;
+            chkC2TTGhostTarget.Checked = entity.C2TTGhostTarget.HasValue;
+        }
+
+        private void chkC2TTGhostTarget_CheckedChanged(object sender, EventArgs e)
+        {
+            numC2TTGhostTarget.Enabled = chkC2TTGhostTarget.Checked;
+            if (chkC2TTGhostTarget.Checked)
+            {
+                entity.C2TTGhostTarget = (int)numC2TTGhostTarget.Value << 8;
+            }
+            else
+            {
+                entity.C2TTGhostTarget = null;
+            }
+        }
+
+        private void numC2TTGhostTarget_ValueChanged(object sender, EventArgs e)
+        {
+            entity.C2TTGhostTarget = (int)numC2TTGhostTarget.Value << 8;
+        }
+
+        #endregion
+
+        #region Special
+
+        private void tabSpecial_Enter(object sender, EventArgs e)
+        {
+            LoadVictimList();
+            UpdateVictim();
+            UpdateBoxCount();
+            UpdateDDASection();
+            UpdateDDASettings();
+            UpdateDrawOverride();
+
+            tipVictim = new DarkToolTip();
+            tipVictim.SetToolTip(lbVictimID, Resources.EntityBox_tipLists);
+
+            tipOverrideId = new DarkToolTip();
+            tipOverrideMult = new DarkToolTip();
+
+            lblHelpOverrideId = new Label();
+            lblHelpOverrideId.Text = "(?)";
+            lblHelpOverrideId.AutoSize = true;
+            lblHelpOverrideId.Location = new Point(110, chkDrawOverrideId.Top);
+            lblHelpOverrideId.Cursor = Cursors.Help;
+            fraDrawOverrides.Controls.Add(lblHelpOverrideId);
+
+            lblHelpOverrideMult = new Label();
+            lblHelpOverrideMult.Text = "(?)";
+            lblHelpOverrideMult.AutoSize = true;
+            lblHelpOverrideMult.Location = new Point(110, chkDrawOverrideMult.Top);
+            lblHelpOverrideMult.Cursor = Cursors.Help;
+            fraDrawOverrides.Controls.Add(lblHelpOverrideMult);
+
+            tipOverrideId.SetToolTip(lblHelpOverrideId, "c2export rebuild_dl: \nposition override ID\nWhen making draw lists,\nuses position of other entity\n(must be from same zone).");
+            tipOverrideMult.SetToolTip(lblHelpOverrideMult, "c2export rebuild_dl: \ndistance multiplier\nWhen making draw lists,\nallowed distance is\nmultipled by this / 100.");
+
+            if (controller.GetNSF().Version == GameVersion.Crash3)
+            {
+                UpdateScaling();
+                UpdateOtherSettings();
+                UpdateTTReward();
+            }
+            else
+            {
+                tabSpecial.Controls.Remove(fraTTReward);
+                fraTTReward.Dispose();
+                tabSpecial.Controls.Remove(fraOtherSettings);
+                fraOtherSettings.Dispose();
+                tabSpecial.Controls.Remove(fraScaling);
+                fraScaling.Dispose();
+            }
+            tabSpecial.Enter -= tabSpecial_Enter;
+        }
+
+        private void UpdateDDASettings()
+        {
+            if (entity.DDASettings.HasValue)
+            {
+                numDDASettings.Value = entity.DDASettings.Value >> 8;
+            }
+            numDDASettings.Enabled = entity.DDASettings.HasValue;
+            chkDDASettings.Checked = entity.DDASettings.HasValue;
+        }
+
+        private void chkDDASettings_CheckedChanged(object sender, EventArgs e)
+        {
+            numDDASettings.Enabled = chkDDASettings.Checked;
+            if (chkDDASettings.Checked)
+            {
+                entity.DDASettings = (int)numDDASettings.Value << 8;
+            }
+            else
+            {
+                entity.DDASettings = null;
+            }
+        }
+
+        private void numDDASettings_ValueChanged(object sender, EventArgs e)
+        {
+            entity.DDASettings = (int)numDDASettings.Value << 8;
+        }
+
+        private void UpdateDDASection()
+        {
+            if (entity.DDASection.HasValue)
+            {
+                numDDASection.Value = entity.DDASection.Value;
+            }
+            numDDASection.Enabled = entity.DDASection.HasValue;
+            chkDDASection.Checked = entity.DDASection.HasValue;
+        }
+
+        private void chkDDASection_CheckedChanged(object sender, EventArgs e)
+        {
+            numDDASection.Enabled = chkDDASection.Checked;
+            if (chkDDASection.Checked)
+            {
+                entity.DDASection = (int)numDDASection.Value;
+            }
+            else
+            {
+                entity.DDASection = null;
+            }
+        }
+
+        private void numDDASection_ValueChanged(object sender, EventArgs e)
+        {
+            entity.DDASection = (int)numDDASection.Value;
+        }
+
+        private void UpdateDrawOverride()
+        {
+            if (entity.DrawOverrideID.HasValue)
+            {
+                numDrawOverrideId.Value = entity.DrawOverrideID.Value.ValueB;
+            }
+            numDrawOverrideId.Enabled = entity.DrawOverrideID.HasValue;
+            chkDrawOverrideId.Checked = entity.DrawOverrideID.HasValue;
+
+            if (entity.DrawOverrideMult.HasValue)
+            {
+                numDrawOverrideMult.Value = entity.DrawOverrideMult.Value.ValueB;
+            }
+            numDrawOverrideMult.Enabled = entity.DrawOverrideMult.HasValue;
+            chkDrawOverrideMult.Checked = entity.DrawOverrideMult.HasValue;
+        }
+
+        private void chkDrawOverrideId_Changed(object sender, EventArgs e)
+        {
+            numDrawOverrideId.Enabled = chkDrawOverrideId.Checked;
+            if (chkDrawOverrideId.Checked)
+            {
+                entity.DrawOverrideID = new EntitySetting(0, (int)numDrawOverrideId.Value);
+            }
+            else
+            {
+                entity.DrawOverrideID = null;
+            }
+        }
+
+        private void numDrawOverrideId_Changed(object sender, EventArgs e)
+        {
+            entity.DrawOverrideID = new EntitySetting(0, (int)numDrawOverrideId.Value);
+        }
+
+        private void chkDrawOverrideMult_Changed(object sender, EventArgs e)
+        {
+            numDrawOverrideMult.Enabled = chkDrawOverrideMult.Checked;
+            if (chkDrawOverrideMult.Checked)
+            {
+                entity.DrawOverrideMult = new EntitySetting(0, (int)numDrawOverrideMult.Value);
+            }
+            else
+            {
+                entity.DrawOverrideMult = null;
+            }
+        }
+
+        private void numDrawOverrideMult_Changed(object sender, EventArgs e)
+        {
+            entity.DrawOverrideMult = new EntitySetting(0, (int)numDrawOverrideMult.Value);
+        }
+
+        private void UpdateScaling()
+        {
+            if (entity.Scaling.HasValue)
+            {
+                numScaling.Value = entity.Scaling.Value;
+            }
+            numScaling.Enabled = entity.Scaling.HasValue;
+            chkScaling.Checked = entity.Scaling.HasValue;
+        }
+
+        private void chkScaling_CheckedChanged(object sender, EventArgs e)
+        {
+            numScaling.Enabled = chkScaling.Checked;
+            if (chkScaling.Checked)
+            {
+                entity.Scaling = (int)numScaling.Value;
+            }
+            else
+            {
+                entity.Scaling = null;
+            }
+        }
+
+        private void numScaling_ValueChanged(object sender, EventArgs e)
+        {
+            entity.Scaling = (int)numScaling.Value;
+        }
+
+        private void UpdateOtherSettings()
+        {
+            if (entity.OtherSettings.HasValue)
+            {
+                numOtherSettings.Value = entity.OtherSettings.Value;
+            }
+            numOtherSettings.Enabled = entity.OtherSettings.HasValue;
+            chkOtherSettings.Checked = entity.OtherSettings.HasValue;
+        }
+
+        private void chkOtherSettings_CheckedChanged(object sender, EventArgs e)
+        {
+            numOtherSettings.Enabled = chkOtherSettings.Checked;
+            if (chkOtherSettings.Checked)
+            {
+                entity.OtherSettings = (int)numOtherSettings.Value;
+            }
+            else
+            {
+                entity.OtherSettings = null;
+            }
+        }
+
+        private void numOtherSettings_ValueChanged(object sender, EventArgs e)
+        {
+            entity.OtherSettings = (int)numOtherSettings.Value;
+        }
+
+        private void UpdateSLST()
+        {
+            if (entity.SLST != null)
+            {
+                txtSLST.Text = Entry.EIDToEName(entity.SLST.Rows[0].Values[0]);
+                chkSLST.Checked = true;
+                lblEIDErr1.Visible = true;
+                txtSLST.Enabled = true;
+            }
+            else
+            {
+                txtSLST.Enabled = false;
+                chkSLST.Checked = false;
+                lblEIDErr1.Visible = false;
+                txtSLST.Enabled = false;
+            }
+        }
+
+        private void chkSLST_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkSLST.Checked)
+            {
+                lblEIDErr1.Text = Entry.CheckEIDErrors(txtSLST.Text, true);
+                entity.SLST = new EntityT4Property();
+                entity.SLST.Rows.Add(new EntityPropertyRow<int>());
+                if (lblEIDErr1.Text != string.Empty)
+                    entity.SLST.Rows[0].Values.Add(Entry.NullEID);
+                else
+                    entity.SLST.Rows[0].Values.Add(Entry.ENameToEID(txtSLST.Text));
+            }
+            else
+            {
+                entity.SLST = null;
+            }
+            UpdateSLST();
+        }
+
+        private void txtSLST_TextChanged(object sender, EventArgs e)
+        {
+            lblEIDErr1.Text = Entry.CheckEIDErrors(txtSLST.Text, true);
+            if (lblEIDErr1.Text != string.Empty) return;
+            entity.SLST.Rows[0].Values[0] = Entry.ENameToEID(txtSLST.Text);
+        }
+
         private void UpdateBoxCount()
         {
             if (entity.BoxCount.HasValue)
@@ -1086,22 +1689,460 @@ namespace CrashEdit.CE
             UpdateVictim();
         }
 
-        public static string CheckEname(string ename)
+        private void UpdateTTReward()
         {
-            if (ename.Length != 5)
+            if (entity.TimeTrialReward.HasValue)
             {
-                return string.Empty;
+                numTTReward.Value = entity.TimeTrialReward.Value >> 8;
             }
-            int eid = Entry.NullEID;
-            try
+            numTTReward.Enabled = entity.TimeTrialReward.HasValue;
+            chkTTReward.Checked = entity.TimeTrialReward.HasValue;
+        }
+
+        private void chkTTReward_CheckedChanged(object sender, EventArgs e)
+        {
+            numTTReward.Enabled = chkTTReward.Checked;
+            if (chkTTReward.Checked)
             {
-                eid = Entry.ENameToEID(ename);
+                entity.TimeTrialReward = (int)numTTReward.Value << 8;
             }
-            catch (ArgumentException)
+            else
             {
-                return string.Empty;
+                entity.TimeTrialReward = null;
             }
-            return ename;
+        }
+
+        private void numTTReward_ValueChanged(object sender, EventArgs e)
+        {
+            entity.TimeTrialReward = (int)numTTReward.Value << 8;
+        }
+
+        #endregion
+
+        #region Camera
+
+        private void tabCamera_Enter(object sender, EventArgs e)
+        {
+            UpdateSLST();
+            UpdateCameraIndex();
+            UpdateCameraSubIndex();
+            UpdateMode();
+            UpdateAvgDist();
+            UpdateNeighbors();
+            UpdateFOV();
+            tabCamera.Enter -= tabCamera_Enter;
+        }
+
+        private void UpdateCameraIndex()
+        {
+            if (entity.CameraIndex.HasValue)
+            {
+                numCameraIndex.Value = entity.CameraIndex.Value;
+            }
+            numCameraIndex.Enabled = entity.CameraIndex.HasValue;
+            chkCameraIndex.Checked = entity.CameraIndex.HasValue;
+        }
+
+        private void UpdateCameraSubIndex()
+        {
+            if (entity.CameraSubIndex.HasValue)
+            {
+                numCameraSubIndex.Value = entity.CameraSubIndex.Value;
+            }
+            numCameraSubIndex.Enabled = entity.CameraSubIndex.HasValue;
+            chkCameraSubIndex.Checked = entity.CameraSubIndex.HasValue;
+        }
+
+        private void numCameraIndex_ValueChanged(object sender, EventArgs e)
+        {
+            entity.CameraIndex = (int)numCameraIndex.Value;
+        }
+
+        private void chkCameraIndex_CheckedChanged(object sender, EventArgs e)
+        {
+            numCameraIndex.Enabled = chkCameraIndex.Checked;
+            if (chkCameraIndex.Checked)
+                entity.CameraIndex = (int)numCameraIndex.Value;
+            else
+                entity.CameraIndex = null;
+        }
+
+        private void numCameraSubIndex_ValueChanged(object sender, EventArgs e)
+        {
+            entity.CameraSubIndex = (int)numCameraSubIndex.Value;
+        }
+
+        private void chkCameraSubIndex_CheckedChanged(object sender, EventArgs e)
+        {
+            numCameraSubIndex.Enabled = chkCameraSubIndex.Checked;
+            if (chkCameraSubIndex.Checked)
+                entity.CameraSubIndex = (int)numCameraSubIndex.Value;
+            else
+                entity.CameraSubIndex = null;
+        }
+
+        private void UpdateMode()
+        {
+            //if (entity.Mode.HasValue)
+            //{
+            //    numMode.Value = entity.Mode.Value;
+            //}
+            //numMode.Enabled = entity.Mode.HasValue;
+            //chkMode.Checked = entity.Mode.HasValue;
+        }
+
+        private void numMode_ValueChanged(object sender, EventArgs e)
+        {
+            //entity.Mode = (byte)numMode.Value;
+        }
+
+        private void chkMode_CheckedChanged(object sender, EventArgs e)
+        {
+            //numMode.Enabled = chkMode.Checked;
+            //if (chkMode.Checked)
+            //    entity.Mode = (byte)numMode.Value;
+            //else
+            //    entity.Mode = null;
+        }
+
+        private void UpdateAvgDist()
+        {
+            if (entity.AverageDistance.HasValue)
+            {
+                numAvgDist.Value = entity.AverageDistance.Value.ValueB;
+            }
+            numAvgDist.Enabled = entity.AverageDistance.HasValue;
+            chkAvgDist.Checked = entity.AverageDistance.HasValue;
+        }
+
+        private void numAvgDist_ValueChanged(object sender, EventArgs e)
+        {
+            entity.AverageDistance = new EntitySetting(0, (int)numAvgDist.Value);
+        }
+
+        private void chkAvgDist_CheckedChanged(object sender, EventArgs e)
+        {
+            numAvgDist.Enabled = chkAvgDist.Checked;
+            if (chkAvgDist.Checked)
+                entity.AverageDistance = new EntitySetting(0, (int)numAvgDist.Value);
+            else
+                entity.AverageDistance = null;
+        }
+
+        private void UpdateNeighbors()
+        {
+            if (entity.Neighbors != null && entity.Neighbors.RowCount != 0)
+            {
+                if (neighborindex >= entity.Neighbors.RowCount)
+                    neighborindex = entity.Neighbors.RowCount - 1;
+                numNeighborPosition.Value = entity.Neighbors.Rows[neighborindex].MetaValue.Value;
+                lblNeighbor.Text = $"{neighborindex + 1} / {entity.Neighbors.RowCount}";
+                cmdPrevNeighbor.Enabled = neighborindex > 0;
+                cmdNextNeighbor.Enabled = neighborindex + 1 < entity.Neighbors.RowCount;
+                lblNeighborPosition.Enabled =
+                numNeighborPosition.Enabled =
+                cmdRemoveNeighbor.Enabled = true;
+                cmdInsertNeighborSetting.Enabled = true;
+                neighborsettingindex = Math.Min(entity.Neighbors.Rows[neighborindex].Values.Count - 1, neighborsettingindex);
+                if (entity.Neighbors.Rows[neighborindex].Values.Count > 0)
+                {
+                    lblNeighborSetting.Text = $"{neighborsettingindex + 1} / {entity.Neighbors.Rows[neighborindex].Values.Count}";
+                    cmdPrevNeighborSetting.Enabled = neighborsettingindex > 0;
+                    cmdNextNeighborSetting.Enabled = neighborsettingindex + 1 < entity.Neighbors.Rows[neighborindex].Values.Count;
+                    cmdRemoveNeighborSetting.Enabled =
+                    numNeighborFlag.Enabled =
+                    numNeighborZone.Enabled =
+                    numNeighborCamera.Enabled =
+                    numNeighborLink.Enabled =
+                    lblNeighborFlag.Enabled =
+                    lblNeighborZone.Enabled =
+                    lblNeighborCamera.Enabled =
+                    lblNeighborLink.Enabled = true;
+                    numNeighborFlag.Value = (entity.Neighbors.Rows[neighborindex].Values[neighborsettingindex] & (0xFF << 0)) >> 0;
+                    numNeighborCamera.Value = (entity.Neighbors.Rows[neighborindex].Values[neighborsettingindex] & (0xFF << 8)) >> 8;
+                    numNeighborZone.Value = (entity.Neighbors.Rows[neighborindex].Values[neighborsettingindex] & (0xFF << 16)) >> 16;
+                    numNeighborLink.Value = (entity.Neighbors.Rows[neighborindex].Values[neighborsettingindex] & (0xFF << 24)) >> 24;
+                }
+                else
+                {
+                    lblNeighborSetting.Text = "-- / --";
+                    cmdPrevNeighborSetting.Enabled =
+                    cmdNextNeighborSetting.Enabled =
+                    cmdRemoveNeighborSetting.Enabled =
+                    numNeighborFlag.Enabled =
+                    numNeighborZone.Enabled =
+                    numNeighborCamera.Enabled =
+                    numNeighborLink.Enabled =
+                    lblNeighborFlag.Enabled =
+                    lblNeighborZone.Enabled =
+                    lblNeighborCamera.Enabled =
+                    lblNeighborLink.Enabled = false;
+                }
+            }
+            else
+            {
+                entity.Neighbors = null;
+                lblNeighbor.Text = "-- / --";
+                lblNeighborSetting.Text = "-- / --";
+                lblNeighborPosition.Enabled =
+                numNeighborPosition.Enabled =
+                cmdPrevNeighbor.Enabled =
+                cmdNextNeighbor.Enabled =
+                cmdRemoveNeighbor.Enabled =
+                cmdInsertNeighborSetting.Enabled =
+                cmdPrevNeighborSetting.Enabled =
+                cmdNextNeighborSetting.Enabled =
+                cmdRemoveNeighborSetting.Enabled =
+                numNeighborFlag.Enabled =
+                numNeighborZone.Enabled =
+                numNeighborCamera.Enabled =
+                numNeighborLink.Enabled =
+                lblNeighborFlag.Enabled =
+                lblNeighborZone.Enabled =
+                lblNeighborCamera.Enabled =
+                lblNeighborLink.Enabled = false;
+            }
+        }
+
+        private void cmdNextNeighbor_Click(object sender, EventArgs e)
+        {
+            ++neighborindex;
+            UpdateNeighbors();
+        }
+
+        private void cmdPrevNeighbor_Click(object sender, EventArgs e)
+        {
+            --neighborindex;
+            UpdateNeighbors();
+        }
+
+        private void cmdRemoveNeighbor_Click(object sender, EventArgs e)
+        {
+            entity.Neighbors.Rows.RemoveAt(neighborindex);
+            UpdateNeighbors();
+        }
+
+        private void cmdInsertNeighbor_Click(object sender, EventArgs e)
+        {
+            if (entity.Neighbors == null || entity.Neighbors.Rows.Count == 0)
+            {
+                entity.Neighbors = new EntityUInt32Property();
+                entity.Neighbors.Rows.Add(new EntityPropertyRow<uint>());
+                entity.Neighbors.Rows[entity.Neighbors.RowCount - 1].MetaValue = 0;
+            }
+            else
+            {
+                var newrow = new EntityPropertyRow<uint>();
+                newrow.MetaValue = entity.Neighbors.Rows[neighborindex].MetaValue;
+                foreach (var val in entity.Neighbors.Rows[neighborindex].Values)
+                    newrow.Values.Add(val);
+                entity.Neighbors.Rows.Insert(neighborindex, newrow);
+            }
+            UpdateNeighbors();
+        }
+
+        private void numNeighborFlag_ValueChanged(object sender, EventArgs e)
+        {
+            entity.Neighbors.Rows[neighborindex].Values[neighborsettingindex] &= 0xFFFFFF00;
+            entity.Neighbors.Rows[neighborindex].Values[neighborsettingindex] |= (uint)((byte)numNeighborFlag.Value << 0);
+        }
+
+        private void numNeighborCamera_ValueChanged(object sender, EventArgs e)
+        {
+            entity.Neighbors.Rows[neighborindex].Values[neighborsettingindex] &= 0xFFFF00FF;
+            entity.Neighbors.Rows[neighborindex].Values[neighborsettingindex] |= (uint)((byte)numNeighborCamera.Value << 8);
+        }
+
+        private void numNeighborZone_ValueChanged(object sender, EventArgs e)
+        {
+            entity.Neighbors.Rows[neighborindex].Values[neighborsettingindex] &= 0xFF00FFFF;
+            entity.Neighbors.Rows[neighborindex].Values[neighborsettingindex] |= (uint)((byte)numNeighborZone.Value << 16);
+        }
+
+        private void numNeighborLink_ValueChanged(object sender, EventArgs e)
+        {
+            entity.Neighbors.Rows[neighborindex].Values[neighborsettingindex] &= 0x00FFFFFF;
+            entity.Neighbors.Rows[neighborindex].Values[neighborsettingindex] |= (uint)((byte)numNeighborLink.Value << 24);
+        }
+
+        private void numNeighborPosition_ValueChanged(object sender, EventArgs e)
+        {
+            entity.Neighbors.Rows[neighborindex].MetaValue = (short)numNeighborPosition.Value;
+        }
+
+        private void cmdPrevNeighborSetting_Click(object sender, EventArgs e)
+        {
+            --neighborsettingindex;
+            UpdateNeighbors();
+        }
+
+        private void cmdNextNeighborSetting_Click(object sender, EventArgs e)
+        {
+            ++neighborsettingindex;
+            UpdateNeighbors();
+        }
+
+        private void cmdRemoveNeighborSetting_Click(object sender, EventArgs e)
+        {
+            entity.Neighbors.Rows[neighborindex].Values.RemoveAt(neighborsettingindex);
+            UpdateNeighbors();
+        }
+
+        private void cmdInsertNeighborSetting_Click(object sender, EventArgs e)
+        {
+            if (entity.Neighbors.Rows[neighborindex].Values.Count == 0)
+                entity.Neighbors.Rows[neighborindex].Values.Add(0);
+            else
+                entity.Neighbors.Rows[neighborindex].Values.Insert(neighborsettingindex, entity.Neighbors.Rows[neighborindex].Values[neighborsettingindex]);
+            UpdateNeighbors();
+        }
+
+        private void UpdateFOV()
+        {
+            if (entity.FOV != null && entity.FOV.RowCount != 0)
+            {
+                if (fovframeindex >= entity.FOV.RowCount)
+                    fovframeindex = entity.FOV.RowCount - 1;
+                lblFOVPosition.Enabled = true;
+                numFOVPosition.Enabled = true;
+                numFOVPosition.Value = entity.FOV.Rows[fovframeindex].MetaValue.Value;
+                lblFOVFrame.Text = $"{fovframeindex + 1} / {entity.FOV.RowCount}";
+                cmdPrevFOVFrame.Enabled = fovframeindex > 0;
+                cmdNextFOVFrame.Enabled = fovframeindex + 1 < entity.FOV.RowCount;
+                cmdRemoveFOVFrame.Enabled = true;
+                if (entity.FOV.Rows[fovframeindex].Values.Count > 0)
+                {
+                    if (fovindex >= entity.FOV.Rows[fovframeindex].Values.Count)
+                        fovindex = entity.FOV.Rows[fovframeindex].Values.Count - 1;
+                    cmdInsertFOV.Enabled = true;
+                    cmdRemoveFOV.Enabled = true;
+                    lblFOV.Enabled = true;
+                    numFOV.Enabled = true;
+                    cmdPrevFOV.Enabled = fovindex > 0;
+                    cmdNextFOV.Enabled = fovindex + 1 < entity.FOV.Rows[fovframeindex].Values.Count;
+                    lblFOVIndex.Text = $"{fovindex + 1} / {entity.FOV.Rows[fovframeindex].Values.Count}";
+                    numFOV.Value = entity.FOV.Rows[fovframeindex].Values[fovindex].VictimID;
+                }
+                else
+                {
+                    cmdInsertFOV.Enabled = false;
+                    cmdRemoveFOV.Enabled = false;
+                    lblFOV.Enabled = false;
+                    numFOV.Enabled = false;
+                    cmdPrevFOV.Enabled = false;
+                    cmdNextFOV.Enabled = false;
+                    lblFOVIndex.Text = "-- / --";
+                }
+            }
+            else
+            {
+                entity.FOV = null;
+                lblFOVFrame.Text = "-- / --";
+                lblFOVIndex.Text = "-- / --";
+                lblFOVPosition.Enabled = false;
+                cmdPrevFOVFrame.Enabled = false;
+                cmdNextFOVFrame.Enabled = false;
+                cmdRemoveFOVFrame.Enabled = false;
+                lblFOV.Enabled = false;
+                numFOV.Enabled = false;
+                cmdPrevFOV.Enabled = false;
+                cmdNextFOV.Enabled = false;
+                cmdRemoveFOV.Enabled = false;
+                cmdInsertFOV.Enabled = false;
+            }
+        }
+
+        private void cmdPrevFOVFrame_Click(object sender, EventArgs e)
+        {
+            --fovframeindex;
+            UpdateFOV();
+        }
+
+        private void cmdNextFOVFrame_Click(object sender, EventArgs e)
+        {
+            ++fovframeindex;
+            UpdateFOV();
+        }
+
+        private void cmdRemoveFOVFrame_Click(object sender, EventArgs e)
+        {
+            entity.FOV.Rows.RemoveAt(fovframeindex);
+            UpdateFOV();
+        }
+
+        private void cmdInsertFOVFrame_Click(object sender, EventArgs e)
+        {
+            if (entity.FOV == null || entity.FOV.Rows.Count == 0)
+            {
+                entity.FOV = new EntityVictimProperty();
+                entity.FOV.Rows.Add(new EntityPropertyRow<EntityVictim>());
+                entity.FOV.Rows[entity.FOV.RowCount - 1].MetaValue = 0;
+            }
+            else
+            {
+                var newrow = new EntityPropertyRow<EntityVictim>();
+                newrow.MetaValue = entity.FOV.Rows[fovframeindex].MetaValue;
+                foreach (var val in entity.FOV.Rows[fovframeindex].Values)
+                    newrow.Values.Add(val);
+                entity.FOV.Rows.Insert(fovframeindex, newrow);
+            }
+            UpdateFOV();
+        }
+
+        private void cmdPrevFOV_Click(object sender, EventArgs e)
+        {
+            --fovindex;
+            UpdateFOV();
+        }
+
+        private void cmdNextFOV_Click(object sender, EventArgs e)
+        {
+            ++fovindex;
+            UpdateFOV();
+        }
+
+        private void cmdRemoveFOV_Click(object sender, EventArgs e)
+        {
+            entity.FOV.Rows[fovframeindex].Values.RemoveAt(fovindex);
+            UpdateFOV();
+        }
+
+        private void cmdInsertFOV_Click(object sender, EventArgs e)
+        {
+            if (entity.FOV.Rows[fovframeindex].Values.Count == 0)
+                entity.FOV.Rows[fovframeindex].Values.Add(new EntityVictim());
+            else
+                entity.FOV.Rows[fovframeindex].Values.Insert(fovindex, entity.FOV.Rows[fovframeindex].Values[fovindex]);
+            UpdateFOV();
+        }
+
+        private void numFOVPosition_ValueChanged(object sender, EventArgs e)
+        {
+            entity.FOV.Rows[fovframeindex].MetaValue = (short)numFOVPosition.Value;
+        }
+
+        private void numFOV_ValueChanged(object sender, EventArgs e)
+        {
+            entity.FOV.Rows[fovframeindex].Values[fovindex] = new EntityVictim((short)numFOV.Value);
+        }
+
+        #endregion
+
+        #region Load Lists
+
+        private void tabLoadLists_Enter(object sender, EventArgs e)
+        {
+            LoadEIDAList();
+            LoadEIDBList();
+            UpdateLoadListA();
+            UpdateLoadListB();
+
+            tipEIDA = new DarkToolTip();
+            tipEIDA.SetToolTip(lbEIDA, Resources.EntityBox_tipLists);
+            tipEIDB = new DarkToolTip();
+            tipEIDB.SetToolTip(lbEIDB, Resources.EntityBox_tipLists);
+
+            tabLoadLists.Enter -= tabLoadLists_Enter;
         }
 
         private void OnEntityListUpdated(object sender, EventArgs e)
@@ -1230,15 +2271,17 @@ namespace CrashEdit.CE
             // paste list
             else if (e.KeyCode == Keys.V && (e.Modifiers & Keys.Control) == Keys.Control && (e.Modifiers & Keys.Shift) == Keys.Shift)
             {
-                StringReader sr = new StringReader(Clipboard.GetText());
-                string line;
-                while ((line = sr.ReadLine()) != null)
+                string clipboardText = Clipboard.GetText();
+                string[] items = clipboardText.Split(['\r', '\n', ','], StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (string item in items)
                 {
+                    string trimmed = item.Trim();
                     if (entity.LoadListA.Rows[loadlistarowindex].Values.Count >= 1023) break;
-                    if (CheckEname(line).Length > 0)
+                    if (CheckEname(trimmed).Length > 0)
                     {
-                        entity.LoadListA.Rows[loadlistarowindex].Values.Add(Entry.ENameToEID(line));
-                        lbEIDA.Items.Add(line);
+                        entity.LoadListA.Rows[loadlistarowindex].Values.Add(Entry.ENameToEID(trimmed));
+                        lbEIDA.Items.Add(trimmed);
                     }
                 }
                 if (lbEIDA.Items.Count > 0 && lbEIDA.SelectedIndex == -1)
@@ -1542,15 +2585,17 @@ namespace CrashEdit.CE
             // pate list
             else if (e.KeyCode == Keys.V && (e.Modifiers & Keys.Control) == Keys.Control && (e.Modifiers & Keys.Shift) == Keys.Shift)
             {
-                StringReader sr = new StringReader(Clipboard.GetText());
-                string line;
-                while ((line = sr.ReadLine()) != null)
+                string clipboardText = Clipboard.GetText();
+                string[] items = clipboardText.Split(['\r', '\n', ','], StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (string item in items)
                 {
+                    string trimmed = item.Trim();
                     if (entity.LoadListB.Rows[loadlistbrowindex].Values.Count >= 1023) break;
-                    if (CheckEname(line).Length > 0)
+                    if (CheckEname(trimmed).Length > 0)
                     {
-                        entity.LoadListB.Rows[loadlistbrowindex].Values.Add(Entry.ENameToEID(line));
-                        lbEIDB.Items.Add(line);
+                        entity.LoadListB.Rows[loadlistbrowindex].Values.Add(Entry.ENameToEID(trimmed));
+                        lbEIDB.Items.Add(trimmed);
                     }
                 }
                 if (lbEIDB.Items.Count > 0 && lbEIDB.SelectedIndex == -1)
@@ -1738,6 +2783,245 @@ namespace CrashEdit.CE
         private void numMetavalueLoadB_ValueChanged(object sender, EventArgs e)
         {
             entity.LoadListB.Rows[loadlistbrowindex].MetaValue = (short)numMetavalueLoadB.Value;
+        }
+
+        private void txtEIDA_LostFocus(object sender, EventArgs e)
+        {
+            UpdateLoadListA();
+        }
+
+        private void txtEIDB_LostFocus(object sender, EventArgs e)
+        {
+            UpdateLoadListB();
+        }
+
+        private void cmdLoadListVerify_Click(object sender, EventArgs e)
+        {
+            bool haserror = false;
+            List<int> loadedentries = new List<int>();
+            string eidlist = string.Empty;
+            for (int i = 0; i < entity.Positions.Count; ++i)
+            {
+                foreach (var row in entity.LoadListA.Rows)
+                {
+                    if (row.MetaValue == i)
+                    {
+                        // load
+                        foreach (int eid in row.Values)
+                        {
+                            loadedentries.Add(eid);
+                        }
+                    }
+                }
+                foreach (var row in entity.LoadListB.Rows)
+                {
+                    if (row.MetaValue == i)
+                    {
+                        // unload
+                        foreach (int eid in row.Values)
+                        {
+                            if (!loadedentries.Remove(eid))
+                            {
+                                eidlist += $"\n\t[position {i}] {Entry.EIDToEName(eid)}";
+                            }
+                        }
+                    }
+                }
+            }
+            if (eidlist != string.Empty)
+            {
+                lblVerifyLoadLists.Visible = false;
+                DarkMessageBox.ShowWarning($"Load lists are incorrect. The following entries were already deloaded:{eidlist}", "Load list verification exception");
+                haserror = true;
+            }
+            if (loadedentries.Count == 0 && !haserror)
+                //DarkMessageBox.ShowMessage("Load lists are correct.", "Load list verification exception.");
+                lblVerifyLoadLists.Visible = true;
+            else if (loadedentries.Count != 0)
+            {
+                string eidlist2 = string.Empty;
+                for (int i = 0; i < entity.Positions.Count; ++i)
+                {
+                    foreach (var row in entity.LoadListA.Rows)
+                    {
+                        if (row.MetaValue == i)
+                        {
+                            foreach (int eid in row.Values)
+                            {
+                                if (loadedentries.Remove(eid))
+                                {
+                                    eidlist2 += $"\n\t[position {i}] {Entry.EIDToEName(eid)}";
+                                }
+                            }
+                        }
+                    }
+                }
+                lblVerifyLoadLists.Visible = false;
+                DarkMessageBox.ShowWarning($"Load lists are incorrect. The following entries are never deloaded:{eidlist2}", "Load list verification exception");
+            }
+        }
+
+        private void cmdPayload_Click(object sender, EventArgs e)
+        {
+            CheckPayload();
+        }
+
+        private void CheckPayload()
+        {
+            List<int> loadedentries = new List<int>();
+            for (int i = 0; i < numPayloadPosition.Value + 1; ++i)
+            {
+                foreach (var row in entity.LoadListA.Rows)
+                {
+                    if (row.MetaValue == i)
+                    {
+                        // load
+                        foreach (int eid in row.Values)
+                        {
+                            loadedentries.Add(eid);
+                        }
+                    }
+                }
+                foreach (var row in entity.LoadListB.Rows)
+                {
+                    if (row.MetaValue == i)
+                    {
+                        // unload
+                        foreach (int eid in row.Values)
+                        {
+                            if (!loadedentries.Remove(eid))
+                            {
+                                lblVerifyLoadLists.Visible = false;
+                                DarkMessageBox.ShowWarning($"Load lists are incorrect. {Entry.EIDToEName(eid)} was already deloaded by position {i}.", "Load list verification exception.");
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+            List<Chunk> chunks = null;
+            HashSet<Entry> entries = null;
+            chunks = controller.GetNSF().Chunks;
+            entries = new HashSet<Entry>();
+            foreach (int eid in loadedentries)
+            {
+                entries.Add(controller.GetEntry<Entry>(eid));
+            }
+            HashSet<Chunk> loadedchunks = new HashSet<Chunk>();
+            HashSet<Chunk> loadedsoundchunks = new HashSet<Chunk>();
+            HashSet<Chunk> loadedtexturechunks = new HashSet<Chunk>();
+            HashSet<Chunk> loadedwavebankchunks = new HashSet<Chunk>();
+            foreach (Chunk chunk in chunks)
+            {
+                if (chunk is NormalChunk c)
+                {
+                    foreach (Entry entry in entries)
+                    {
+                        if (c.Entries.Contains(entry))
+                            loadedchunks.Add(chunk);
+                    }
+                }
+                else if (chunk is SoundChunk s)
+                {
+                    foreach (Entry entry in entries)
+                    {
+                        if (s.Entries.Contains(entry))
+                            loadedsoundchunks.Add(chunk);
+                    }
+                }
+                else if (chunk is TextureChunk t)
+                {
+                    foreach (Entry entry in entries)
+                    {
+                        if (loadedentries.Contains(t.EID))
+                            loadedtexturechunks.Add(chunk);
+                    }
+                }
+                else if (chunk is WavebankChunk w)
+                {
+                    foreach (Entry entry in entries)
+                    {
+                        loadedwavebankchunks.Add(chunk);
+                    }
+                }
+            }
+            lblPayload.Visible = true;
+            lblPayload.Text = $"Payload is {loadedchunks.Count} normal chunks";
+            lblPayloadTexture.Visible = true;
+            lblPayloadTexture.Text = $"Payload is {loadedtexturechunks.Count} texture chunks";
+            lblPayloadSound.Visible = true;
+            lblPayloadSound.Text = $"Payload is {loadedsoundchunks.Count} - {loadedwavebankchunks.Count}\nsound/wavebank chunks";
+            if (loadedchunks.Count < 20)
+            {
+                lblPayload.ForeColor = Color.LimeGreen;
+            }
+            else if (loadedchunks.Count <= 21)
+            {
+                lblPayload.ForeColor = Color.Goldenrod;
+            }
+            else
+            {
+                lblPayload.ForeColor = Color.Red;
+            }
+
+            if (loadedtexturechunks.Count <= 7)
+            {
+                lblPayloadTexture.ForeColor = Color.LimeGreen;
+            }
+            else if (loadedtexturechunks.Count == 8)
+            {
+                lblPayloadTexture.ForeColor = Color.Goldenrod;
+            }
+            else
+            {
+                lblPayloadTexture.ForeColor = Color.Red;
+            }
+
+            if (loadedsoundchunks.Count + loadedwavebankchunks.Count <= 8)
+            {
+                lblPayloadSound.ForeColor = Color.CornflowerBlue;
+            }
+            else
+            {
+                lblPayloadSound.ForeColor = Color.Red;
+            }
+        }
+
+        public static string CheckEname(string ename)
+        {
+            if (ename.Length != 5)
+            {
+                return string.Empty;
+            }
+            int eid = Entry.NullEID;
+            try
+            {
+                eid = Entry.ENameToEID(ename);
+            }
+            catch (ArgumentException)
+            {
+                return string.Empty;
+            }
+            return ename;
+        }
+
+        #endregion
+
+        #region Draw Lists
+
+        private void tabDrawLists_Enter(object sender, EventArgs e)
+        {
+            UpdateDrawListA();
+            UpdateDrawListB();
+            LoadDrawListAList();
+            LoadDrawListBList();
+
+            tipEntityA = new DarkToolTip();
+            tipEntityA.SetToolTip(lbEntityA, Resources.EntityBox_tipLists);
+            tipEntityB = new DarkToolTip();
+            tipEntityB.SetToolTip(lbEntityB, Resources.EntityBox_tipLists);
+
+            tabDrawLists.Enter -= tabDrawLists_Enter;
         }
 
         private int GetEntityID(decimal value)
@@ -2381,469 +3665,6 @@ namespace CrashEdit.CE
             entity.DrawListB.Rows[drawlistbrowindex].MetaValue = (short)numMetavalueDrawB.Value;
         }
 
-        private void UpdateDDASettings()
-        {
-            if (entity.DDASettings.HasValue)
-            {
-                numDDASettings.Value = entity.DDASettings.Value >> 8;
-            }
-            numDDASettings.Enabled = entity.DDASettings.HasValue;
-            chkDDASettings.Checked = entity.DDASettings.HasValue;
-        }
-
-        private void UpdateDrawOverride()
-        {
-            if (entity.DrawOverrideID.HasValue)
-            {
-                numDrawOverrideId.Value = entity.DrawOverrideID.Value.ValueB;
-            }
-            numDrawOverrideId.Enabled = entity.DrawOverrideID.HasValue;
-            chkDrawOverrideId.Checked = entity.DrawOverrideID.HasValue;
-
-            if (entity.DrawOverrideMult.HasValue)
-            {
-                numDrawOverrideMult.Value = entity.DrawOverrideMult.Value.ValueB;
-            }
-            numDrawOverrideMult.Enabled = entity.DrawOverrideMult.HasValue;
-            chkDrawOverrideMult.Checked = entity.DrawOverrideMult.HasValue;
-        }
-
-        private void chkDDASettings_CheckedChanged(object sender, EventArgs e)
-        {
-            numDDASettings.Enabled = chkDDASettings.Checked;
-            if (chkDDASettings.Checked)
-            {
-                entity.DDASettings = (int)numDDASettings.Value << 8;
-            }
-            else
-            {
-                entity.DDASettings = null;
-            }
-        }
-
-        private void numDDASettings_ValueChanged(object sender, EventArgs e)
-        {
-            entity.DDASettings = (int)numDDASettings.Value << 8;
-        }
-
-        private void UpdateDDASection()
-        {
-            if (entity.DDASection.HasValue)
-            {
-                numDDASection.Value = entity.DDASection.Value;
-            }
-            numDDASection.Enabled = entity.DDASection.HasValue;
-            chkDDASection.Checked = entity.DDASection.HasValue;
-        }
-
-        private void chkDDASection_CheckedChanged(object sender, EventArgs e)
-        {
-            numDDASection.Enabled = chkDDASection.Checked;
-            if (chkDDASection.Checked)
-            {
-                entity.DDASection = (int)numDDASection.Value;
-            }
-            else
-            {
-                entity.DDASection = null;
-            }
-        }
-
-        private void numDDASection_ValueChanged(object sender, EventArgs e)
-        {
-            entity.DDASection = (int)numDDASection.Value;
-        }
-
-        private void chkDrawOverrideId_Changed(object sender, EventArgs e)
-        {
-            numDrawOverrideId.Enabled = chkDrawOverrideId.Checked;
-            if (chkDrawOverrideId.Checked)
-            {
-                entity.DrawOverrideID = new EntitySetting(0, (int)numDrawOverrideId.Value);
-            }
-            else
-            {
-                entity.DrawOverrideID = null;
-            }
-        }
-
-        private void numDrawOverrideId_Changed(object sender, EventArgs e)
-        {
-            entity.DrawOverrideID = new EntitySetting(0, (int)numDrawOverrideId.Value);
-        }
-        private void chkDrawOverrideMult_Changed(object sender, EventArgs e)
-        {
-            numDrawOverrideMult.Enabled = chkDrawOverrideMult.Checked;
-            if (chkDrawOverrideMult.Checked)
-            {
-                entity.DrawOverrideMult = new EntitySetting(0, (int) numDrawOverrideMult.Value);
-            }
-            else
-            {
-                entity.DrawOverrideMult = null;
-            }
-        }
-
-        private void numDrawOverrideMult_Changed(object sender, EventArgs e)
-        {
-            entity.DrawOverrideMult = new EntitySetting(0, (int) numDrawOverrideMult.Value);
-        }
-
-        private void UpdateScaling()
-        {
-            if (entity.Scaling.HasValue)
-            {
-                numScaling.Value = entity.Scaling.Value;
-            }
-            numScaling.Enabled = entity.Scaling.HasValue;
-            chkScaling.Checked = entity.Scaling.HasValue;
-        }
-
-        private void chkScaling_CheckedChanged(object sender, EventArgs e)
-        {
-            numScaling.Enabled = chkScaling.Checked;
-            if (chkScaling.Checked)
-            {
-                entity.Scaling = (int)numScaling.Value;
-            }
-            else
-            {
-                entity.Scaling = null;
-            }
-        }
-
-        private void numScaling_ValueChanged(object sender, EventArgs e)
-        {
-            entity.Scaling = (int)numScaling.Value;
-        }
-
-        private void UpdateOtherSettings()
-        {
-            if (entity.OtherSettings.HasValue)
-            {
-                numOtherSettings.Value = entity.OtherSettings.Value;
-            }
-            numOtherSettings.Enabled = entity.OtherSettings.HasValue;
-            chkOtherSettings.Checked = entity.OtherSettings.HasValue;
-        }
-
-        private void chkOtherSettings_CheckedChanged(object sender, EventArgs e)
-        {
-            numOtherSettings.Enabled = chkOtherSettings.Checked;
-            if (chkOtherSettings.Checked)
-            {
-                entity.OtherSettings = (int)numOtherSettings.Value;
-            }
-            else
-            {
-                entity.OtherSettings = null;
-            }
-        }
-
-        private void numOtherSettings_ValueChanged(object sender, EventArgs e)
-        {
-            entity.OtherSettings = (int)numOtherSettings.Value;
-        }
-
-        private void UpdateSLST()
-        {
-            if (entity.SLST != null)
-            {
-                txtSLST.Text = Entry.EIDToEName(entity.SLST.Rows[0].Values[0]);
-                chkSLST.Checked = true;
-                lblEIDErr1.Visible = true;
-                txtSLST.Enabled = true;
-            }
-            else
-            {
-                txtSLST.Enabled = false;
-                chkSLST.Checked = false;
-                lblEIDErr1.Visible = false;
-                txtSLST.Enabled = false;
-            }
-        }
-
-        private void chkSLST_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chkSLST.Checked)
-            {
-                lblEIDErr1.Text = Entry.CheckEIDErrors(txtSLST.Text, true);
-                entity.SLST = new EntityT4Property();
-                entity.SLST.Rows.Add(new EntityPropertyRow<int>());
-                if (lblEIDErr1.Text != string.Empty)
-                    entity.SLST.Rows[0].Values.Add(Entry.NullEID);
-                else
-                    entity.SLST.Rows[0].Values.Add(Entry.ENameToEID(txtSLST.Text));
-            }
-            else
-            {
-                entity.SLST = null;
-            }
-            UpdateSLST();
-        }
-
-        private void txtSLST_TextChanged(object sender, EventArgs e)
-        {
-            lblEIDErr1.Text = Entry.CheckEIDErrors(txtSLST.Text, true);
-            if (lblEIDErr1.Text != string.Empty) return;
-            entity.SLST.Rows[0].Values[0] = Entry.ENameToEID(txtSLST.Text);
-        }
-
-        private void tabSpecial_Enter(object sender, EventArgs e)
-        {
-            LoadVictimList();
-            UpdateVictim();
-            UpdateBoxCount();
-            UpdateDDASection();
-            UpdateDDASettings();
-            UpdateDrawOverride();
-            if (controller.GetNSF().Version == GameVersion.Crash3)
-            {
-                UpdateScaling();
-                UpdateOtherSettings();
-                UpdateTTReward();
-            }
-            else
-            {
-                tabSpecial.Controls.Remove(fraTTReward);
-                tabSpecial.Controls.Remove(fraOtherSettings);
-                tabSpecial.Controls.Remove(fraScaling);
-            }
-            tabSpecial.Enter -= tabSpecial_Enter;
-        }
-
-        private void tabCamera_Enter(object sender, EventArgs e)
-        {
-            UpdateSLST();
-            UpdateCameraIndex();
-            UpdateCameraSubIndex();
-            UpdateMode();
-            UpdateAvgDist();
-            UpdateNeighbors();
-            UpdateFOV();
-            tabCamera.Enter -= tabCamera_Enter;
-        }
-
-        private void tabLoadLists_Enter(object sender, EventArgs e)
-        {
-            LoadEIDAList();
-            LoadEIDBList();
-            UpdateLoadListA();
-            UpdateLoadListB();
-            tabLoadLists.Enter -= tabLoadLists_Enter;
-        }
-
-        private void tabDrawLists_Enter(object sender, EventArgs e)
-        {
-            UpdateDrawListA();
-            UpdateDrawListB();
-            LoadDrawListAList();
-            LoadDrawListBList();
-            tabDrawLists.Enter -= tabDrawLists_Enter;
-        }
-
-        private void txtEIDA_LostFocus(object sender, EventArgs e)
-        {
-            UpdateLoadListA();
-        }
-
-        private void txtEIDB_LostFocus(object sender, EventArgs e)
-        {
-            UpdateLoadListB();
-        }
-
-        private void cmdLoadListVerify_Click(object sender, EventArgs e)
-        {
-            bool haserror = false;
-            List<int> loadedentries = new List<int>();
-            string eidlist = string.Empty;
-            for (int i = 0; i < entity.Positions.Count; ++i)
-            {
-                foreach (var row in entity.LoadListA.Rows)
-                {
-                    if (row.MetaValue == i)
-                    {
-                        // load
-                        foreach (int eid in row.Values)
-                        {
-                            loadedentries.Add(eid);
-                        }
-                    }
-                }
-                foreach (var row in entity.LoadListB.Rows)
-                {
-                    if (row.MetaValue == i)
-                    {
-                        // unload
-                        foreach (int eid in row.Values)
-                        {
-                            if (!loadedentries.Remove(eid))
-                            {
-                                eidlist += $"\n\t[position {i}] {Entry.EIDToEName(eid)}";
-                            }
-                        }
-                    }
-                }
-            }
-            if (eidlist != string.Empty)
-            {
-                lblVerifyLoadLists.Visible = false;
-                DarkMessageBox.ShowWarning($"Load lists are incorrect. The following entries were already deloaded:{eidlist}", "Load list verification exception");
-                haserror = true;
-            }
-            if (loadedentries.Count == 0 && !haserror)
-                //DarkMessageBox.ShowMessage("Load lists are correct.", "Load list verification exception.");
-                lblVerifyLoadLists.Visible = true;
-            else if (loadedentries.Count != 0)
-            {
-                string eidlist2 = string.Empty;
-                for (int i = 0; i < entity.Positions.Count; ++i)
-                {
-                    foreach (var row in entity.LoadListA.Rows)
-                    {
-                        if (row.MetaValue == i)
-                        {
-                            foreach (int eid in row.Values)
-                            {
-                                if (loadedentries.Remove(eid))
-                                {
-                                    eidlist2 += $"\n\t[position {i}] {Entry.EIDToEName(eid)}";
-                                }
-                            }
-                        }
-                    }
-                }
-                lblVerifyLoadLists.Visible = false;
-                DarkMessageBox.ShowWarning($"Load lists are incorrect. The following entries are never deloaded:{eidlist2}", "Load list verification exception");
-            }
-        }
-
-        private void cmdPayload_Click(object sender, EventArgs e)
-        {
-            CheckPayload();
-        }
-
-        private void CheckPayload()
-        {
-            List<int> loadedentries = new List<int>();
-            for (int i = 0; i < numPayloadPosition.Value + 1; ++i)
-            {
-                foreach (var row in entity.LoadListA.Rows)
-                {
-                    if (row.MetaValue == i)
-                    {
-                        // load
-                        foreach (int eid in row.Values)
-                        {
-                            loadedentries.Add(eid);
-                        }
-                    }
-                }
-                foreach (var row in entity.LoadListB.Rows)
-                {
-                    if (row.MetaValue == i)
-                    {
-                        // unload
-                        foreach (int eid in row.Values)
-                        {
-                            if (!loadedentries.Remove(eid))
-                            {
-                                lblVerifyLoadLists.Visible = false;
-                                DarkMessageBox.ShowWarning($"Load lists are incorrect. {Entry.EIDToEName(eid)} was already deloaded by position {i}.", "Load list verification exception.");
-                                return;
-                            }
-                        }
-                    }
-                }
-            }
-            List<Chunk> chunks = null;
-            HashSet<Entry> entries = null;
-            chunks = controller.GetNSF().Chunks;
-            entries = new HashSet<Entry>();
-            foreach (int eid in loadedentries)
-            {
-                entries.Add(controller.GetEntry<Entry>(eid));
-            }
-            HashSet<Chunk> loadedchunks = new HashSet<Chunk>();
-            HashSet<Chunk> loadedsoundchunks = new HashSet<Chunk>();
-            HashSet<Chunk> loadedtexturechunks = new HashSet<Chunk>();
-            HashSet<Chunk> loadedwavebankchunks = new HashSet<Chunk>();
-            foreach (Chunk chunk in chunks)
-            {
-                if (chunk is NormalChunk c)
-                {
-                    foreach (Entry entry in entries)
-                    {
-                        if (c.Entries.Contains(entry))
-                            loadedchunks.Add(chunk);
-                    }
-                }
-                else if (chunk is SoundChunk s)
-                {
-                    foreach (Entry entry in entries)
-                    {
-                        if (s.Entries.Contains(entry))
-                            loadedsoundchunks.Add(chunk);
-                    }
-                }
-                else if (chunk is TextureChunk t)
-                {
-                    foreach (Entry entry in entries)
-                    {
-                        if (loadedentries.Contains(t.EID))
-                            loadedtexturechunks.Add(chunk);
-                    }
-                }
-                else if (chunk is WavebankChunk w)
-                {
-                    foreach (Entry entry in entries)
-                    {
-                        loadedwavebankchunks.Add(chunk);
-                    }
-                }
-            }
-            lblPayload.Visible = true;
-            lblPayload.Text = $"Payload is {loadedchunks.Count} normal chunks";
-            lblPayloadTexture.Visible = true;
-            lblPayloadTexture.Text = $"Payload is {loadedtexturechunks.Count} texture chunks";
-            lblPayloadSound.Visible = true;
-            lblPayloadSound.Text = $"Payload is {loadedsoundchunks.Count} - {loadedwavebankchunks.Count}\nsound/wavebank chunks";
-            if (loadedchunks.Count < 20)
-            {
-                lblPayload.ForeColor = Color.LimeGreen;
-            }
-            else if (loadedchunks.Count <= 21)
-            {
-                lblPayload.ForeColor = Color.Goldenrod;
-            }
-            else
-            {
-                lblPayload.ForeColor = Color.Red;
-            }
-
-            if (loadedtexturechunks.Count <= 7)
-            {
-                lblPayloadTexture.ForeColor = Color.LimeGreen;
-            }
-            else if (loadedtexturechunks.Count == 8)
-            {
-                lblPayloadTexture.ForeColor = Color.Goldenrod;
-            }
-            else
-            {
-                lblPayloadTexture.ForeColor = Color.Red;
-            }
-
-            if (loadedsoundchunks.Count + loadedwavebankchunks.Count <= 8)
-            {
-                lblPayloadSound.ForeColor = Color.CornflowerBlue;
-            }
-            else
-            {
-                lblPayloadSound.ForeColor = Color.Red;
-            }
-        }
-
         private void cmdVerifyDrawList_Click(object sender, EventArgs e)
         {
             Dictionary<int, int> globalDrawCounts = new Dictionary<int, int>();
@@ -2924,795 +3745,11 @@ namespace CrashEdit.CE
             }
         }
 
-        private void chkSettingHex_CheckedChanged(object sender, EventArgs e)
-        {
-            numSettingC.Hexadecimal = chkSettingHex.Checked;
-            SetCVal((long)numSettingC.Value);
-        }
-
-        private void chkSyncEntities_CheckedChanged(object sender, EventArgs e)
-        {
-            cmdSyncEntities.Enabled = chkSyncEntities.Checked;
-        }
-
-        private void cmdSyncList_Click(object sender, EventArgs e)
-        {
-            if (syncListForm == null || syncListForm.IsDisposed)
-            {
-                syncListForm = new DarkForm()
-                {
-                    Text = "Sync Entities",
-                    Icon = Embeds.GetIcon("ThingViolet"),
-                    Size = new Size(200, 360),
-                    MinimizeBox = false,
-                    MaximizeBox = false,
-                    AutoSize = true
-                };
-                syncListForm.FormClosing += (sender, e) =>
-                {
-                    syncListForm = null;
-                };
-
-                FlowLayoutPanel panel = new()
-                {
-                    Dock = DockStyle.Fill,
-                    AutoSize = true,
-                    AutoSizeMode = AutoSizeMode.GrowAndShrink,
-                    FlowDirection = FlowDirection.TopDown,
-                    WrapContents = false
-                };
-
-                DarkGroupBox fraSyncedEntities = new()
-                {
-                    Text = "Synced Entities",
-                    AutoSize = true,
-                    Margin = new Padding(6, 3, 6, 19)
-                };
-
-                FlowLayoutPanel panel2 = new()
-                {
-                    Dock = DockStyle.Fill,
-                    AutoSize = true,
-                    AutoSizeMode = AutoSizeMode.GrowAndShrink,
-                    FlowDirection = FlowDirection.TopDown,
-                    WrapContents = false
-                };
-
-                DarkListBox lstSyncedEntities = new()
-                {
-                    Size = new Size(200, 200),
-                    SelectionMode = SelectionMode.MultiExtended
-                };
-                if (syncEntityList == null)
-                    syncEntityList = new();
-                else
-                {
-                    foreach (string item in syncEntityList)
-                    {
-                        lstSyncedEntities.Items.Add(item);
-                    }
-                }
-
-                DarkButton cmdRemove = new()
-                {
-                    Text = "Remove"
-                };
-
-                DarkComboBox cmbZones = new()
-                {
-                    DropDownHeight = 220,
-                    Margin = new Padding(6, 3, 6, 3)
-                };
-                foreach (ZoneEntry zone in controller.GetEntries<ZoneEntry>())
-                {
-                    cmbZones.Items.Add(zone.EName);
-                }
-
-                DarkButton cmdAdd = new()
-                {
-                    Text = "Add",
-                    Margin = new Padding(6, 3, 6, 3)
-                };
-
-                DarkListBox lstEntities = new()
-                {
-                    Size = new Size(200, 200),
-                    SelectionMode = SelectionMode.MultiExtended,
-                    Margin = new Padding(6, 3, 6, 6)
-                };
-
-                cmbZones.SelectedIndexChanged += (sender, e) =>
-                {
-                    lstEntities.Items.Clear();
-                    ZoneEntry zone = controller.GetEntry<ZoneEntry>(Entry.ENameToEID(cmbZones.SelectedItem.ToString()));
-                    foreach (Entity otherentity in zone.Entities)
-                    {
-                        if (otherentity.ID.HasValue)
-                        {
-                            string text = $"{otherentity.Name} [ID {otherentity.ID}]";
-                            if (!lstSyncedEntities.Items.Contains(text))
-                            {
-                                lstEntities.Items.Add(text);
-                            }
-                        }
-                    }
-                };
-
-                cmdAdd.Click += (sender, e) =>
-                {
-                    foreach (var item in lstEntities.SelectedItems.Cast<object>().ToList())
-                    {
-                        lstSyncedEntities.Items.Add(item);
-                        syncEntityList.Add((string)item);
-                        lstEntities.Items.Remove(item);
-                    }
-                };
-
-                cmdRemove.Click += (sender, e) =>
-                {
-                    List<string> fakeList = new();
-                    ZoneEntry zone = controller.GetEntry<ZoneEntry>(Entry.ENameToEID(cmbZones.SelectedItem.ToString()));
-                    foreach (Entity otherentity in zone.Entities)
-                    {
-                        if (otherentity.ID.HasValue)
-                        {
-                            string text = $"{otherentity.Name} [ID {otherentity.ID}]";
-                            fakeList.Add(text);
-                        }
-                    }
-
-                    foreach (var item in lstSyncedEntities.SelectedItems.Cast<object>().ToList())
-                    {
-                        if (fakeList.Contains(item))
-                            lstEntities.Items.Add(item);
-                        syncEntityList.Remove((string)item);
-                        lstSyncedEntities.Items.Remove(item);
-                    }
-                };
-
-                cmbZones.SelectedItem = controller.ZoneEntry.EName;
-
-                panel2.Controls.Add(lstSyncedEntities);
-                panel2.Controls.Add(cmdRemove);
-                fraSyncedEntities.Controls.Add(panel2);
-
-                panel.Controls.Add(fraSyncedEntities);
-                panel.Controls.Add(cmbZones);
-                panel.Controls.Add(cmdAdd);
-                panel.Controls.Add(lstEntities);
-
-                syncListForm.Controls.Add(panel);
-                syncListForm.FormBorderStyle = FormBorderStyle.FixedSingle;
-                syncListForm.Show();
-            }
-            else
-            {
-                syncListForm.Select();
-            }
-        }
-
-        private void cmdInterpolate_Click(object sender, EventArgs e)
-        {
-            Position[] pos = new Position[entity.Positions.Count];
-            for (int i = 0; i < entity.Positions.Count; ++i)
-            {
-                pos[i] = new Position(entity.Positions[i].X, entity.Positions[i].Y, entity.Positions[i].Z);
-            }
-            using (InterpolatorForm interpolator = new InterpolatorForm(pos))
-            {
-                if (interpolator.ShowDialog() == DialogResult.OK)
-                {
-                    if (interpolator.Mode == 0)
-                    {
-                        for (int m = interpolator.Start - 1, i = interpolator.End - 2; i > m; --i)
-                        {
-                            entity.Positions.RemoveAt(i);
-                        }
-                        for (int i = 0; i < interpolator.Amount; ++i)
-                        {
-                            entity.Positions.Insert(i + interpolator.Start, new EntityPosition(interpolator.NewPositions[i + 1]));
-                        }
-                    }
-                    else
-                    {
-                        entity.Positions.Clear();
-                        for (int i = 0; i < interpolator.Amount + 1; ++i)
-                        {
-                            entity.Positions.Add(new EntityPosition(interpolator.NewPositions[i]));
-                        }
-                    }
-
-                    UpdatePosition();
-                }
-            }
-        }
-
-        private void UpdateTTReward()
-        {
-            if (entity.TimeTrialReward.HasValue)
-            {
-                numTTReward.Value = entity.TimeTrialReward.Value >> 8;
-            }
-            numTTReward.Enabled = entity.TimeTrialReward.HasValue;
-            chkTTReward.Checked = entity.TimeTrialReward.HasValue;
-        }
-
-        private void chkTTReward_CheckedChanged(object sender, EventArgs e)
-        {
-            numTTReward.Enabled = chkTTReward.Checked;
-            if (chkTTReward.Checked)
-            {
-                entity.TimeTrialReward = (int)numTTReward.Value << 8;
-            }
-            else
-            {
-                entity.TimeTrialReward = null;
-            }
-        }
-
-        private void numTTReward_ValueChanged(object sender, EventArgs e)
-        {
-            entity.TimeTrialReward = (int)numTTReward.Value << 8;
-        }
-
-        // C2-tweaked
-        private void UpdateC2TTSets()
-        {
-            if (Settings.Default.EnableC2TTEditor)
-            {
-                fraC2TTSet.Visible = true;
-                fraC2TTSet.Location = new Point(245, 146);
-                fraZMod.Location = new Point(384, 146);
-                UpdateC2TTType();
-                UpdateC2TTYRot();
-                UpdateC2TTBoxFlag();
-                UpdateC2TTGhostTarget();
-            }
-            else
-            {
-                fraC2TTSet.Visible = false;
-                fraC2TTSet.Location = new Point(245, 146);
-                fraZMod.Location = new Point(245, 146);
-            }
-        }
-
-        private void UpdateC2TTType()
-        {
-            if (entity.C2TTType.HasValue)
-            {
-                numC2TTType.Value = entity.C2TTType.Value >> 8;
-            }
-            numC2TTType.Enabled = entity.C2TTType.HasValue;
-            chkC2TTType.Checked = entity.C2TTType.HasValue;
-        }
-
-        private void chkC2TTType_CheckedChanged(object sender, EventArgs e)
-        {
-            numC2TTType.Enabled = chkC2TTType.Checked;
-            if (chkC2TTType.Checked)
-            {
-                entity.C2TTType = (int)numC2TTType.Value << 8;
-            }
-            else
-            {
-                entity.C2TTType = null;
-            }
-        }
-
-        private void numC2TTType_ValueChanged(object sender, EventArgs e)
-        {
-            entity.C2TTType = (int)numC2TTType.Value << 8;
-        }
-
-        private void UpdateC2TTYRot()
-        {
-            if (entity.C2TTYRot.HasValue)
-            {
-                numC2TTYRot.Value = entity.C2TTYRot.Value >> 8;
-            }
-            numC2TTYRot.Enabled = entity.C2TTYRot.HasValue;
-            chkC2TTYRot.Checked = entity.C2TTYRot.HasValue;
-        }
-
-        private void chkC2TTYRot_CheckedChanged(object sender, EventArgs e)
-        {
-            numC2TTYRot.Enabled = chkC2TTYRot.Checked;
-            if (chkC2TTYRot.Checked)
-            {
-                entity.C2TTYRot = (int)numC2TTYRot.Value << 8;
-            }
-            else
-            {
-                entity.C2TTYRot = null;
-            }
-        }
-
-        private void numC2TTYRot_ValueChanged(object sender, EventArgs e)
-        {
-            entity.C2TTYRot = (int)numC2TTYRot.Value << 8;
-        }
-
-        private void UpdateC2TTBoxFlag()
-        {
-            if (entity.C2TTBoxFlag.HasValue)
-            {
-                numC2TTFlags.Value = entity.C2TTBoxFlag.Value >> 8;
-            }
-            numC2TTFlags.Enabled = entity.C2TTBoxFlag.HasValue;
-            chkC2TTFlags.Checked = entity.C2TTBoxFlag.HasValue;
-        }
-
-        private void chkC2TTFlags_CheckedChanged(object sender, EventArgs e)
-        {
-            numC2TTFlags.Enabled = chkC2TTFlags.Checked;
-            if (chkC2TTFlags.Checked)
-            {
-                entity.C2TTBoxFlag = (int)numC2TTFlags.Value << 8;
-            }
-            else
-            {
-                entity.C2TTBoxFlag = null;
-            }
-        }
-
-        private void numC2TTFlags_ValueChanged(object sender, EventArgs e)
-        {
-            entity.C2TTBoxFlag = (int)numC2TTFlags.Value << 8;
-        }
-
-        private void UpdateC2TTGhostTarget()
-        {
-            if (entity.C2TTGhostTarget.HasValue)
-            {
-                numC2TTGhostTarget.Value = entity.C2TTGhostTarget.Value >> 8;
-            }
-            numC2TTGhostTarget.Enabled = entity.C2TTGhostTarget.HasValue;
-            chkC2TTGhostTarget.Checked = entity.C2TTGhostTarget.HasValue;
-        }
-
-        private void chkC2TTGhostTarget_CheckedChanged(object sender, EventArgs e)
-        {
-            numC2TTGhostTarget.Enabled = chkC2TTGhostTarget.Checked;
-            if (chkC2TTGhostTarget.Checked)
-            {
-                entity.C2TTGhostTarget = (int)numC2TTGhostTarget.Value << 8;
-            }
-            else
-            {
-                entity.C2TTGhostTarget = null;
-            }
-        }
-
-        private void numC2TTGhostTarget_ValueChanged(object sender, EventArgs e)
-        {
-            entity.C2TTGhostTarget = (int)numC2TTGhostTarget.Value << 8;
-        }
-
-        private void UpdateCameraIndex()
-        {
-            if (entity.CameraIndex.HasValue)
-            {
-                numCameraIndex.Value = entity.CameraIndex.Value;
-            }
-            numCameraIndex.Enabled = entity.CameraIndex.HasValue;
-            chkCameraIndex.Checked = entity.CameraIndex.HasValue;
-        }
-
-        private void UpdateCameraSubIndex()
-        {
-            if (entity.CameraSubIndex.HasValue)
-            {
-                numCameraSubIndex.Value = entity.CameraSubIndex.Value;
-            }
-            numCameraSubIndex.Enabled = entity.CameraSubIndex.HasValue;
-            chkCameraSubIndex.Checked = entity.CameraSubIndex.HasValue;
-        }
-
-        private void numCameraIndex_ValueChanged(object sender, EventArgs e)
-        {
-            entity.CameraIndex = (int)numCameraIndex.Value;
-        }
-
-        private void chkCameraIndex_CheckedChanged(object sender, EventArgs e)
-        {
-            numCameraIndex.Enabled = chkCameraIndex.Checked;
-            if (chkCameraIndex.Checked)
-                entity.CameraIndex = (int)numCameraIndex.Value;
-            else
-                entity.CameraIndex = null;
-        }
-
-        private void numCameraSubIndex_ValueChanged(object sender, EventArgs e)
-        {
-            entity.CameraSubIndex = (int)numCameraSubIndex.Value;
-        }
-
-        private void chkCameraSubIndex_CheckedChanged(object sender, EventArgs e)
-        {
-            numCameraSubIndex.Enabled = chkCameraSubIndex.Checked;
-            if (chkCameraSubIndex.Checked)
-                entity.CameraSubIndex = (int)numCameraSubIndex.Value;
-            else
-                entity.CameraSubIndex = null;
-        }
-
-        private void UpdateMode()
-        {
-            //if (entity.Mode.HasValue)
-            //{
-            //    numMode.Value = entity.Mode.Value;
-            //}
-            //numMode.Enabled = entity.Mode.HasValue;
-            //chkMode.Checked = entity.Mode.HasValue;
-        }
-
-        private void numMode_ValueChanged(object sender, EventArgs e)
-        {
-            //entity.Mode = (byte)numMode.Value;
-        }
-
-        private void chkMode_CheckedChanged(object sender, EventArgs e)
-        {
-            //numMode.Enabled = chkMode.Checked;
-            //if (chkMode.Checked)
-            //    entity.Mode = (byte)numMode.Value;
-            //else
-            //    entity.Mode = null;
-        }
-
-        private void UpdateAvgDist()
-        {
-            if (entity.AverageDistance.HasValue)
-            {
-                numAvgDist.Value = entity.AverageDistance.Value.ValueB;
-            }
-            numAvgDist.Enabled = entity.AverageDistance.HasValue;
-            chkAvgDist.Checked = entity.AverageDistance.HasValue;
-        }
-
-        private void numAvgDist_ValueChanged(object sender, EventArgs e)
-        {
-            entity.AverageDistance = new EntitySetting(0, (int)numAvgDist.Value);
-        }
-
-        private void chkAvgDist_CheckedChanged(object sender, EventArgs e)
-        {
-            numAvgDist.Enabled = chkAvgDist.Checked;
-            if (chkAvgDist.Checked)
-                entity.AverageDistance = new EntitySetting(0, (int)numAvgDist.Value);
-            else
-                entity.AverageDistance = null;
-        }
-
-        private void UpdateNeighbors()
-        {
-            if (entity.Neighbors != null && entity.Neighbors.RowCount != 0)
-            {
-                if (neighborindex >= entity.Neighbors.RowCount)
-                    neighborindex = entity.Neighbors.RowCount - 1;
-                numNeighborPosition.Value = entity.Neighbors.Rows[neighborindex].MetaValue.Value;
-                lblNeighbor.Text = $"{neighborindex + 1} / {entity.Neighbors.RowCount}";
-                cmdPrevNeighbor.Enabled = neighborindex > 0;
-                cmdNextNeighbor.Enabled = neighborindex + 1 < entity.Neighbors.RowCount;
-                lblNeighborPosition.Enabled =
-                numNeighborPosition.Enabled =
-                cmdRemoveNeighbor.Enabled = true;
-                cmdInsertNeighborSetting.Enabled = true;
-                neighborsettingindex = Math.Min(entity.Neighbors.Rows[neighborindex].Values.Count - 1, neighborsettingindex);
-                if (entity.Neighbors.Rows[neighborindex].Values.Count > 0)
-                {
-                    lblNeighborSetting.Text = $"{neighborsettingindex + 1} / {entity.Neighbors.Rows[neighborindex].Values.Count}";
-                    cmdPrevNeighborSetting.Enabled = neighborsettingindex > 0;
-                    cmdNextNeighborSetting.Enabled = neighborsettingindex + 1 < entity.Neighbors.Rows[neighborindex].Values.Count;
-                    cmdRemoveNeighborSetting.Enabled =
-                    numNeighborFlag.Enabled =
-                    numNeighborZone.Enabled =
-                    numNeighborCamera.Enabled =
-                    numNeighborLink.Enabled =
-                    lblNeighborFlag.Enabled =
-                    lblNeighborZone.Enabled =
-                    lblNeighborCamera.Enabled =
-                    lblNeighborLink.Enabled = true;
-                    numNeighborFlag.Value = (entity.Neighbors.Rows[neighborindex].Values[neighborsettingindex] & (0xFF << 0)) >> 0;
-                    numNeighborCamera.Value = (entity.Neighbors.Rows[neighborindex].Values[neighborsettingindex] & (0xFF << 8)) >> 8;
-                    numNeighborZone.Value = (entity.Neighbors.Rows[neighborindex].Values[neighborsettingindex] & (0xFF << 16)) >> 16;
-                    numNeighborLink.Value = (entity.Neighbors.Rows[neighborindex].Values[neighborsettingindex] & (0xFF << 24)) >> 24;
-                }
-                else
-                {
-                    lblNeighborSetting.Text = "-- / --";
-                    cmdPrevNeighborSetting.Enabled =
-                    cmdNextNeighborSetting.Enabled =
-                    cmdRemoveNeighborSetting.Enabled =
-                    numNeighborFlag.Enabled =
-                    numNeighborZone.Enabled =
-                    numNeighborCamera.Enabled =
-                    numNeighborLink.Enabled =
-                    lblNeighborFlag.Enabled =
-                    lblNeighborZone.Enabled =
-                    lblNeighborCamera.Enabled =
-                    lblNeighborLink.Enabled = false;
-                }
-            }
-            else
-            {
-                entity.Neighbors = null;
-                lblNeighbor.Text = "-- / --";
-                lblNeighborSetting.Text = "-- / --";
-                lblNeighborPosition.Enabled =
-                numNeighborPosition.Enabled =
-                cmdPrevNeighbor.Enabled =
-                cmdNextNeighbor.Enabled =
-                cmdRemoveNeighbor.Enabled =
-                cmdInsertNeighborSetting.Enabled =
-                cmdPrevNeighborSetting.Enabled =
-                cmdNextNeighborSetting.Enabled =
-                cmdRemoveNeighborSetting.Enabled =
-                numNeighborFlag.Enabled =
-                numNeighborZone.Enabled =
-                numNeighborCamera.Enabled =
-                numNeighborLink.Enabled =
-                lblNeighborFlag.Enabled =
-                lblNeighborZone.Enabled =
-                lblNeighborCamera.Enabled =
-                lblNeighborLink.Enabled = false;
-            }
-        }
-
-        private void cmdNextNeighbor_Click(object sender, EventArgs e)
-        {
-            ++neighborindex;
-            UpdateNeighbors();
-        }
-
-        private void cmdPrevNeighbor_Click(object sender, EventArgs e)
-        {
-            --neighborindex;
-            UpdateNeighbors();
-        }
-
-        private void cmdRemoveNeighbor_Click(object sender, EventArgs e)
-        {
-            entity.Neighbors.Rows.RemoveAt(neighborindex);
-            UpdateNeighbors();
-        }
-
-        private void cmdInsertNeighbor_Click(object sender, EventArgs e)
-        {
-            if (entity.Neighbors == null || entity.Neighbors.Rows.Count == 0)
-            {
-                entity.Neighbors = new EntityUInt32Property();
-                entity.Neighbors.Rows.Add(new EntityPropertyRow<uint>());
-                entity.Neighbors.Rows[entity.Neighbors.RowCount - 1].MetaValue = 0;
-            }
-            else
-            {
-                var newrow = new EntityPropertyRow<uint>();
-                newrow.MetaValue = entity.Neighbors.Rows[neighborindex].MetaValue;
-                foreach (var val in entity.Neighbors.Rows[neighborindex].Values)
-                    newrow.Values.Add(val);
-                entity.Neighbors.Rows.Insert(neighborindex, newrow);
-            }
-            UpdateNeighbors();
-        }
-
-        private void numNeighborFlag_ValueChanged(object sender, EventArgs e)
-        {
-            entity.Neighbors.Rows[neighborindex].Values[neighborsettingindex] &= 0xFFFFFF00;
-            entity.Neighbors.Rows[neighborindex].Values[neighborsettingindex] |= (uint)((byte)numNeighborFlag.Value << 0);
-        }
-
-        private void numNeighborCamera_ValueChanged(object sender, EventArgs e)
-        {
-            entity.Neighbors.Rows[neighborindex].Values[neighborsettingindex] &= 0xFFFF00FF;
-            entity.Neighbors.Rows[neighborindex].Values[neighborsettingindex] |= (uint)((byte)numNeighborCamera.Value << 8);
-        }
-
-        private void numNeighborZone_ValueChanged(object sender, EventArgs e)
-        {
-            entity.Neighbors.Rows[neighborindex].Values[neighborsettingindex] &= 0xFF00FFFF;
-            entity.Neighbors.Rows[neighborindex].Values[neighborsettingindex] |= (uint)((byte)numNeighborZone.Value << 16);
-        }
-
-        private void numNeighborLink_ValueChanged(object sender, EventArgs e)
-        {
-            entity.Neighbors.Rows[neighborindex].Values[neighborsettingindex] &= 0x00FFFFFF;
-            entity.Neighbors.Rows[neighborindex].Values[neighborsettingindex] |= (uint)((byte)numNeighborLink.Value << 24);
-        }
-
-        private void numNeighborPosition_ValueChanged(object sender, EventArgs e)
-        {
-            entity.Neighbors.Rows[neighborindex].MetaValue = (short)numNeighborPosition.Value;
-        }
-
-        private void cmdPrevNeighborSetting_Click(object sender, EventArgs e)
-        {
-            --neighborsettingindex;
-            UpdateNeighbors();
-        }
-
-        private void cmdNextNeighborSetting_Click(object sender, EventArgs e)
-        {
-            ++neighborsettingindex;
-            UpdateNeighbors();
-        }
-
-        private void cmdRemoveNeighborSetting_Click(object sender, EventArgs e)
-        {
-            entity.Neighbors.Rows[neighborindex].Values.RemoveAt(neighborsettingindex);
-            UpdateNeighbors();
-        }
-
-        private void cmdInsertNeighborSetting_Click(object sender, EventArgs e)
-        {
-            if (entity.Neighbors.Rows[neighborindex].Values.Count == 0)
-                entity.Neighbors.Rows[neighborindex].Values.Add(0);
-            else
-                entity.Neighbors.Rows[neighborindex].Values.Insert(neighborsettingindex, entity.Neighbors.Rows[neighborindex].Values[neighborsettingindex]);
-            UpdateNeighbors();
-        }
-
-        private void UpdateZMod()
-        {
-            if (entity.ZMod.HasValue)
-            {
-                numZMod.Value = entity.ZMod.Value;
-            }
-            numZMod.Enabled = entity.ZMod.HasValue;
-            chkZMod.Checked = entity.ZMod.HasValue;
-        }
-
-        private void chkZMod_CheckedChanged(object sender, EventArgs e)
-        {
-            numZMod.Enabled = chkZMod.Checked;
-            if (chkZMod.Checked)
-            {
-                entity.ZMod = (int)numZMod.Value;
-            }
-            else
-            {
-                entity.ZMod = null;
-            }
-        }
-
-        private void numZMod_ValueChanged(object sender, EventArgs e)
-        {
-            entity.ZMod = (int)numZMod.Value;
-        }
-
-        private void UpdateFOV()
-        {
-            if (entity.FOV != null && entity.FOV.RowCount != 0)
-            {
-                if (fovframeindex >= entity.FOV.RowCount)
-                    fovframeindex = entity.FOV.RowCount - 1;
-                lblFOVPosition.Enabled = true;
-                numFOVPosition.Enabled = true;
-                numFOVPosition.Value = entity.FOV.Rows[fovframeindex].MetaValue.Value;
-                lblFOVFrame.Text = $"{fovframeindex + 1} / {entity.FOV.RowCount}";
-                cmdPrevFOVFrame.Enabled = fovframeindex > 0;
-                cmdNextFOVFrame.Enabled = fovframeindex + 1 < entity.FOV.RowCount;
-                cmdRemoveFOVFrame.Enabled = true;
-                if (entity.FOV.Rows[fovframeindex].Values.Count > 0)
-                {
-                    if (fovindex >= entity.FOV.Rows[fovframeindex].Values.Count)
-                        fovindex = entity.FOV.Rows[fovframeindex].Values.Count - 1;
-                    cmdInsertFOV.Enabled = true;
-                    cmdRemoveFOV.Enabled = true;
-                    lblFOV.Enabled = true;
-                    numFOV.Enabled = true;
-                    cmdPrevFOV.Enabled = fovindex > 0;
-                    cmdNextFOV.Enabled = fovindex + 1 < entity.FOV.Rows[fovframeindex].Values.Count;
-                    lblFOVIndex.Text = $"{fovindex + 1} / {entity.FOV.Rows[fovframeindex].Values.Count}";
-                    numFOV.Value = entity.FOV.Rows[fovframeindex].Values[fovindex].VictimID;
-                }
-                else
-                {
-                    cmdInsertFOV.Enabled = false;
-                    cmdRemoveFOV.Enabled = false;
-                    lblFOV.Enabled = false;
-                    numFOV.Enabled = false;
-                    cmdPrevFOV.Enabled = false;
-                    cmdNextFOV.Enabled = false;
-                    lblFOVIndex.Text = "-- / --";
-                }
-            }
-            else
-            {
-                entity.FOV = null;
-                lblFOVFrame.Text = "-- / --";
-                lblFOVIndex.Text = "-- / --";
-                lblFOVPosition.Enabled = false;
-                cmdPrevFOVFrame.Enabled = false;
-                cmdNextFOVFrame.Enabled = false;
-                cmdRemoveFOVFrame.Enabled = false;
-                lblFOV.Enabled = false;
-                numFOV.Enabled = false;
-                cmdPrevFOV.Enabled = false;
-                cmdNextFOV.Enabled = false;
-                cmdRemoveFOV.Enabled = false;
-                cmdInsertFOV.Enabled = false;
-            }
-        }
-
-        private void cmdPrevFOVFrame_Click(object sender, EventArgs e)
-        {
-            --fovframeindex;
-            UpdateFOV();
-        }
-
-        private void cmdNextFOVFrame_Click(object sender, EventArgs e)
-        {
-            ++fovframeindex;
-            UpdateFOV();
-        }
-
-        private void cmdRemoveFOVFrame_Click(object sender, EventArgs e)
-        {
-            entity.FOV.Rows.RemoveAt(fovframeindex);
-            UpdateFOV();
-        }
-
-        private void cmdInsertFOVFrame_Click(object sender, EventArgs e)
-        {
-            if (entity.FOV == null || entity.FOV.Rows.Count == 0)
-            {
-                entity.FOV = new EntityVictimProperty();
-                entity.FOV.Rows.Add(new EntityPropertyRow<EntityVictim>());
-                entity.FOV.Rows[entity.FOV.RowCount - 1].MetaValue = 0;
-            }
-            else
-            {
-                var newrow = new EntityPropertyRow<EntityVictim>();
-                newrow.MetaValue = entity.FOV.Rows[fovframeindex].MetaValue;
-                foreach (var val in entity.FOV.Rows[fovframeindex].Values)
-                    newrow.Values.Add(val);
-                entity.FOV.Rows.Insert(fovframeindex, newrow);
-            }
-            UpdateFOV();
-        }
-
-        private void cmdPrevFOV_Click(object sender, EventArgs e)
-        {
-            --fovindex;
-            UpdateFOV();
-        }
-
-        private void cmdNextFOV_Click(object sender, EventArgs e)
-        {
-            ++fovindex;
-            UpdateFOV();
-        }
-
-        private void cmdRemoveFOV_Click(object sender, EventArgs e)
-        {
-            entity.FOV.Rows[fovframeindex].Values.RemoveAt(fovindex);
-            UpdateFOV();
-        }
-
-        private void cmdInsertFOV_Click(object sender, EventArgs e)
-        {
-            if (entity.FOV.Rows[fovframeindex].Values.Count == 0)
-                entity.FOV.Rows[fovframeindex].Values.Add(new EntityVictim());
-            else
-                entity.FOV.Rows[fovframeindex].Values.Insert(fovindex, entity.FOV.Rows[fovframeindex].Values[fovindex]);
-            UpdateFOV();
-        }
-
-        private void numFOVPosition_ValueChanged(object sender, EventArgs e)
-        {
-            entity.FOV.Rows[fovframeindex].MetaValue = (short)numFOVPosition.Value;
-        }
-
-        private void numFOV_ValueChanged(object sender, EventArgs e)
-        {
-            entity.FOV.Rows[fovframeindex].Values[fovindex] = new EntityVictim((short)numFOV.Value);
-        }
+        #endregion
 
         private void KillForm()
         {
-            if (syncListForm != null)
-                syncListForm.Dispose();
+            syncListForm?.Dispose();
         }
     }
 }

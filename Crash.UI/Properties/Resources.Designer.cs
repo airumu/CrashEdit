@@ -178,7 +178,18 @@ namespace CrashEdit.CrashUI.Properties {
                 return ResourceManager.GetString("EntryChunkController_AcImport", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Clone Entry &quot;{0}&quot;.
+        /// </summary>
+        public static string EntryController_AcDuplicate
+        {
+            get
+            {
+                return ResourceManager.GetString("EntryController_AcDuplicate", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Delete Entry &quot;{0}&quot;.
         /// </summary>
@@ -205,7 +216,18 @@ namespace CrashEdit.CrashUI.Properties {
                 return ResourceManager.GetString("EntryController_AcExport", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Reload Entry &quot;{0}&quot;.
+        /// </summary>
+        public static string EntryController_AcReload
+        {
+            get
+            {
+                return ResourceManager.GetString("EntryController_AcReload", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Rename Entry &quot;{0}&quot;.
         /// </summary>
@@ -214,7 +236,7 @@ namespace CrashEdit.CrashUI.Properties {
                 return ResourceManager.GetString("EntryController_AcRename", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Frame.
         /// </summary>
@@ -427,7 +449,18 @@ namespace CrashEdit.CrashUI.Properties {
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Animation ({0}).
+        ///   Looks up a localized string similar Entity Editor.
+        /// </summary>
+        public static string NSFController_AcEditEntities
+        {
+            get
+            {
+                return ResourceManager.GetString("NSFController_AcEditEntities", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Scenery Editor.
         /// </summary>
         public static string NSFController_AcEditScenery
         {

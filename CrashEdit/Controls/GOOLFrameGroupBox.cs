@@ -221,38 +221,45 @@ namespace CrashEdit.CE
             }
         }
 
-        private void SetMaxValueStyle(int start, int end)
+        private void SetMaxValueStyle(int startCol, int endCol)
         {
-            int startColumnIndex = start;
-            int endColumnIndex = end;
-
             Parallel.For(0, dgvTexture.Rows.Count, rowIndex =>
             {
                 var row = dgvTexture.Rows[rowIndex];
-                double maxValue = double.MinValue;
+                int maxValue = int.MinValue;
+                HashSet<int> keys = [];
 
-                for (int col = startColumnIndex; col <= endColumnIndex; col++)
+                for (int col = startCol; col <= endCol; col++)
                 {
-                    var cellValue = row.Cells[col].Value;
-
-                    if (cellValue != null && double.TryParse(cellValue.ToString(), out double value))
+                    int value = Convert.ToInt32(row.Cells[col].Value);
+                    if (value > maxValue)
                     {
-                        if (value > maxValue)
-                        {
-                            maxValue = value;
-                        }
+                        maxValue = value;
                     }
+                    keys.Add(value);
                 }
-                for (int col = startColumnIndex; col <= endColumnIndex; col++)
+                // If all values are the same, set the default
+                if (keys.Count == 1)
                 {
-                    var cellValue = row.Cells[col].Value;
-
-                    if (cellValue != null && double.TryParse(cellValue.ToString(), out double value))
+                    if (startCol == ColX1)
                     {
-                        if (value == maxValue)
-                        {
-                            row.Cells[col].Style = maxValueStyle;
-                        }
+                        row.Cells[ColX2].Style = maxValueStyle;
+                        row.Cells[ColX4].Style = maxValueStyle;
+                    }
+                    else if (startCol == ColY1)
+                    {
+                        row.Cells[ColY3].Style = maxValueStyle;
+                        row.Cells[ColY4].Style = maxValueStyle;
+                    }
+                    return;
+                }
+
+                for (int col = startCol; col <= endCol; col++)
+                {
+                    int value = Convert.ToInt32(row.Cells[col].Value);
+                    if (value == maxValue)
+                    {
+                        row.Cells[col].Style = maxValueStyle;
                     }
                 }
             });
@@ -1018,6 +1025,11 @@ namespace CrashEdit.CE
                     else
                     {
                         textbox.KeyPress -= TextBox_KeyPress;
+                    }
+
+                    if (dgvFrameGroup.SelectedCells[0].ColumnIndex == ColEID)
+                    {
+                        textbox.MaxLength = 5;
                     }
                 }
             }

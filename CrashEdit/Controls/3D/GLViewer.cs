@@ -223,6 +223,7 @@ namespace CrashEdit.CE
             public static readonly ControlsKeyboardInfo ToggleAlignedMovement = new(Keys.Z, Resources.ViewerControls_MoveAligned);
             public static readonly ControlsKeyboardInfo ToggleEntityVisual = new(Keys.G, Resources.ViewerControls_ToggleEntityVisual);
             public static readonly ControlsKeyboardInfo ToggleVerticesVisible = new(Keys.B, Resources.ViewerControls_ToggleVerticesVisible);
+            public static readonly ControlsKeyboardInfo ToggleAnimation = new(Keys.Space, Resources.ViewerControls_ToggleAnimation);
         }
         #endregion
 

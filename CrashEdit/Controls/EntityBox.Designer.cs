@@ -94,11 +94,6 @@ namespace CrashEdit.CE
             fraC2TTType = new DarkGroupBox();
             numC2TTType = new DarkNumericUpDown();
             chkC2TTType = new CheckBox();
-            fraDrawOverrides = new DarkGroupBox();
-            chkDrawOverrideId = new CheckBox();
-            numDrawOverrideId = new DarkNumericUpDown();
-            chkDrawOverrideMult = new CheckBox();
-            numDrawOverrideMult = new DarkNumericUpDown();
             fraZMod = new DarkGroupBox();
             chkZMod = new CheckBox();
             numZMod = new DarkNumericUpDown();
@@ -118,6 +113,11 @@ namespace CrashEdit.CE
             fraDDASettings = new DarkGroupBox();
             chkDDASettings = new CheckBox();
             numDDASettings = new DarkNumericUpDown();
+            fraDrawOverrides = new DarkGroupBox();
+            chkDrawOverrideId = new CheckBox();
+            numDrawOverrideId = new DarkNumericUpDown();
+            chkDrawOverrideMult = new CheckBox();
+            numDrawOverrideMult = new DarkNumericUpDown();
             fraBoxCount = new DarkGroupBox();
             chkBonusBoxCount = new CheckBox();
             numBonusBoxCount = new DarkNumericUpDown();
@@ -299,10 +299,12 @@ namespace CrashEdit.CE
             ((System.ComponentModel.ISupportInitialize)numDDASection).BeginInit();
             fraDDASettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numDDASettings).BeginInit();
+            fraDrawOverrides.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numDrawOverrideId).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numDrawOverrideMult).BeginInit();
             fraBoxCount.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numBonusBoxCount).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numBoxCount).BeginInit();
-            fraDrawOverrides.SuspendLayout();
             fraVictims.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numEditVictimID).BeginInit();
             tabCamera.SuspendLayout();
@@ -1005,7 +1007,6 @@ namespace CrashEdit.CE
             // 
             // tabGeneral
             // 
-            tabGeneral.AutoScroll = true;
             tabGeneral.BackColor = Color.FromArgb(31, 31, 32);
             tabGeneral.Controls.Add(fraC2TTSet);
             tabGeneral.Controls.Add(fraName);
@@ -1221,7 +1222,6 @@ namespace CrashEdit.CE
             // 
             // tabSpecial
             // 
-            tabSpecial.AutoScroll = true;
             tabSpecial.BackColor = Color.FromArgb(31, 31, 32);
             tabSpecial.Controls.Add(fraTTReward);
             tabSpecial.Controls.Add(fraOtherSettings);
@@ -1447,7 +1447,7 @@ namespace CrashEdit.CE
             chkDrawOverrideId.Location = new Point(7, 22);
             chkDrawOverrideId.Margin = new Padding(4, 3, 4, 3);
             chkDrawOverrideId.Name = "chkDrawOverrideId";
-            chkDrawOverrideId.Size = new Size(68, 19);
+            chkDrawOverrideId.Size = new Size(85, 19);
             chkDrawOverrideId.TabIndex = 0;
             chkDrawOverrideId.Text = "Override ID";
             chkDrawOverrideId.UseVisualStyleBackColor = false;
@@ -1471,13 +1471,13 @@ namespace CrashEdit.CE
             chkDrawOverrideMult.Location = new Point(7, 80);
             chkDrawOverrideMult.Margin = new Padding(4, 3, 4, 3);
             chkDrawOverrideMult.Name = "chkDrawOverrideMult";
-            chkDrawOverrideMult.Size = new Size(68, 19);
+            chkDrawOverrideMult.Size = new Size(99, 19);
             chkDrawOverrideMult.TabIndex = 0;
             chkDrawOverrideMult.Text = "Override Mult";
             chkDrawOverrideMult.UseVisualStyleBackColor = false;
             chkDrawOverrideMult.CheckedChanged += chkDrawOverrideMult_Changed;
             // 
-            // numDrawOverrideId
+            // numDrawOverrideMult
             // 
             numDrawOverrideMult.Location = new Point(7, 106);
             numDrawOverrideMult.Margin = new Padding(4, 3, 4, 3);
@@ -1635,7 +1635,6 @@ namespace CrashEdit.CE
             // 
             // tabCamera
             // 
-            tabCamera.AutoScroll = true;
             tabCamera.BackColor = Color.FromArgb(31, 31, 32);
             tabCamera.Controls.Add(fraFOV);
             tabCamera.Controls.Add(fraNeighbor);
@@ -2376,7 +2375,6 @@ namespace CrashEdit.CE
             // 
             // tabLoadLists
             // 
-            tabLoadLists.AutoScroll = true;
             tabLoadLists.BackColor = Color.FromArgb(31, 31, 32);
             tabLoadLists.Controls.Add(lblEIDErrB);
             tabLoadLists.Controls.Add(fraLoadListPayload);
@@ -2968,7 +2966,6 @@ namespace CrashEdit.CE
             // 
             // tabDrawLists
             // 
-            tabDrawLists.AutoScroll = true;
             tabDrawLists.BackColor = Color.FromArgb(31, 31, 32);
             tabDrawLists.Controls.Add(fraVerifyDrawList);
             tabDrawLists.Controls.Add(fraDrawListB);
@@ -3456,6 +3453,7 @@ namespace CrashEdit.CE
             Margin = new Padding(4, 3, 4, 3);
             Name = "EntityBox";
             Size = new Size(600, 600);
+            VisibleChanged += EntityBox_VisibleChanged;
             ((System.ComponentModel.ISupportInitialize)numType).EndInit();
             fraType.ResumeLayout(false);
             fraType.PerformLayout();
@@ -3510,11 +3508,14 @@ namespace CrashEdit.CE
             fraDDASettings.ResumeLayout(false);
             fraDDASettings.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numDDASettings).EndInit();
+            fraDrawOverrides.ResumeLayout(false);
+            fraDrawOverrides.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numDrawOverrideId).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numDrawOverrideMult).EndInit();
             fraBoxCount.ResumeLayout(false);
             fraBoxCount.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numBonusBoxCount).EndInit();
             ((System.ComponentModel.ISupportInitialize)numBoxCount).EndInit();
-            fraDrawOverrides.ResumeLayout(false);
             fraVictims.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)numEditVictimID).EndInit();
             tabCamera.ResumeLayout(false);

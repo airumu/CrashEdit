@@ -139,10 +139,10 @@
     <value>デモ ({0})</value>
   </data>
   <data name="EntryController_AcDelete" xml:space="preserve">
-    <value>エントリ 「{0}」 の削除</value>
+    <value>エントリの削除</value>
   </data>
   <data name="EntryController_AcDeprocess" xml:space="preserve">
-    <value>エントリ 「{0}」 の未処理化</value>
+    <value>エントリの未処理化</value>
   </data>
   <data name="GameVersionForm_Message" xml:space="preserve">
     <value>ゲームバージョンを選択してください。NTSC-U 版、NTSC-J 版及び PAL 版は全てサポートされています。</value>
@@ -310,10 +310,10 @@
     <value>エントリをインポート</value>
   </data>
   <data name="EntryController_AcExport" xml:space="preserve">
-    <value>エントリ 「{0}」 を保存</value>
+    <value>エントリを保存</value>
   </data>
   <data name="EntryController_AcRename" xml:space="preserve">
-    <value>エントリ 「{0}」 の名前を変更</value>
+    <value>エントリの名前を変更</value>
   </data>
   <data name="NSFController_AcAddOldSoundChunk" xml:space="preserve">
     <value>旧サウンドチャンクの追加</value>
@@ -346,7 +346,7 @@
     <value>チャンク名の変更</value>
   </data>
   <data name="UnprocessedEntryController_AcProcess" xml:space="preserve">
-    <value>エントリ 「{0}」 の処理化</value>
+    <value>エントリの処理化</value>
   </data>
   <data name="ZoneEntryController_AcAddEntity" xml:space="preserve">
     <value>エンティティの追加</value>
@@ -379,9 +379,18 @@
     <value>クラッシュ3からインポートされた座標を修正</value>
   </data>
   <data name="NSFController_AcEditScenery" xml:space="preserve">
-    <value>背景を編集</value>
+    <value>背景エディタを開く</value>
   </data>
   <data name="NSFController_AcImportEntriesIntoChunks" xml:space="preserve">
     <value>Import Entries Into New Chunks</value>
+  </data>
+  <data name="EntryController_AcDuplicate" xml:space="preserve">
+    <value>エントリの複製</value>
+  </data>
+  <data name="EntryController_AcReload" xml:space="preserve">
+    <value>再読み込み</value>
+  </data>
+  <data name="NSFController_AcEditEntities" xml:space="preserve">
+    <value>エンティティエディタを開く</value>
   </data>
 </root>

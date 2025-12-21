@@ -591,23 +591,27 @@ namespace CrashEdit.CE
                 {
                     wasEmpty = true;
                 }
-                StringReader sr = new StringReader(Clipboard.GetText());
-                string line;
-                while ((line = sr.ReadLine()) != null)
+
+                string clipboardText = Clipboard.GetText();
+                string[] items = clipboardText.Split(['\r', '\n', ','], StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (string item in items)
                 {
+                    string trimmed = item.Trim();
                     if (spLoadList.Count >= 39)
                     {
                         cmdAppendSP.Enabled = false;
                         break;
                     }
-                    if (CheckEname(line).Length > 0)
+                    if (CheckEname(trimmed).Length > 0)
                     {
-                        spLoadList.Add(line);
+                        spLoadList.Add(trimmed);
                         ++spLoadListCount;
                         cmdRemoveSP.Enabled = true;
                         txtSPLoadList.Enabled = true;
                     }
                 }
+
                 UpdateSPLoadListsCount();
                 UpdateSPLoadListsEID(false);
                 if (spLoadList.Count > 0 && wasEmpty)

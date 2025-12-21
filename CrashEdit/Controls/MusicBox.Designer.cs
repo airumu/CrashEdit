@@ -36,6 +36,7 @@ namespace CrashEdit.CE
             txtMusic = new DarkTextBox();
             lbEIDError = new Label();
             fraVABLinks = new DarkGroupBox();
+            cmdEditor = new DarkButton();
             fraPlayer = new DarkGroupBox();
             fraControls = new DarkGroupBox();
             numSeqSpeed = new DarkNumericUpDown();
@@ -49,7 +50,6 @@ namespace CrashEdit.CE
             trkSeekBar = new MetroSet_UI.Controls.MetroSetTrackBar();
             numSEQ = new DarkNumericUpDown();
             lbTracks = new Label();
-            cmdEditor = new DarkButton();
             fraVABLinks.SuspendLayout();
             fraPlayer.SuspendLayout();
             fraControls.SuspendLayout();
@@ -90,7 +90,7 @@ namespace CrashEdit.CE
             lbEIDError.AutoSize = true;
             lbEIDError.BackColor = Color.Transparent;
             lbEIDError.ForeColor = Color.Red;
-            lbEIDError.Location = new Point(3, 267);
+            lbEIDError.Location = new Point(6, 254);
             lbEIDError.Name = "lbEIDError";
             lbEIDError.Size = new Size(63, 15);
             lbEIDError.TabIndex = 2;
@@ -98,16 +98,33 @@ namespace CrashEdit.CE
             // 
             // fraVABLinks
             // 
+            fraVABLinks.AutoSize = true;
             fraVABLinks.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             fraVABLinks.BackColor = Color.Transparent;
+            fraVABLinks.Controls.Add(lbEIDError);
             fraVABLinks.Controls.Add(lstMusic);
             fraVABLinks.Controls.Add(txtMusic);
+            fraVABLinks.Controls.Add(cmdEditor);
             fraVABLinks.Location = new Point(3, 3);
             fraVABLinks.Name = "fraVABLinks";
-            fraVABLinks.Size = new Size(132, 261);
+            fraVABLinks.Size = new Size(224, 288);
             fraVABLinks.TabIndex = 3;
             fraVABLinks.TabStop = false;
             fraVABLinks.Text = "VAB Links";
+            // 
+            // cmdEditor
+            // 
+            cmdEditor.BorderColour = Color.Empty;
+            cmdEditor.CustomColour = false;
+            cmdEditor.FlatBottom = false;
+            cmdEditor.FlatTop = false;
+            cmdEditor.Location = new Point(132, 22);
+            cmdEditor.Name = "cmdEditor";
+            cmdEditor.Padding = new Padding(5);
+            cmdEditor.Size = new Size(86, 32);
+            cmdEditor.TabIndex = 3;
+            cmdEditor.Text = "Open Editor";
+            cmdEditor.Click += cmdEditor_Click;
             // 
             // fraPlayer
             // 
@@ -121,7 +138,7 @@ namespace CrashEdit.CE
             fraPlayer.Controls.Add(trkSeekBar);
             fraPlayer.Controls.Add(numSEQ);
             fraPlayer.Controls.Add(lbTracks);
-            fraPlayer.Location = new Point(3, 293);
+            fraPlayer.Location = new Point(3, 297);
             fraPlayer.Name = "fraPlayer";
             fraPlayer.Size = new Size(327, 222);
             fraPlayer.TabIndex = 4;
@@ -155,13 +172,13 @@ namespace CrashEdit.CE
             numSeqSpeed.Value = new decimal(new int[] { 10, 0, 0, 65536 });
             numSeqSpeed.ValueChanged += numSeqSpeed_ValueChanged;
             // 
-            // numSynthVolumee
+            // numSynthVolume
             // 
             numSynthVolume.DecimalPlaces = 1;
             numSynthVolume.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
             numSynthVolume.Location = new Point(6, 37);
             numSynthVolume.Maximum = new decimal(new int[] { 20, 0, 0, 65536 });
-            numSynthVolume.Name = "numSynthVolumee";
+            numSynthVolume.Name = "numSynthVolume";
             numSynthVolume.Size = new Size(120, 23);
             numSynthVolume.TabIndex = 1;
             numSynthVolume.Value = new decimal(new int[] { 10, 0, 0, 65536 });
@@ -282,27 +299,11 @@ namespace CrashEdit.CE
             lbTracks.TabIndex = 0;
             lbTracks.Text = "Tracks";
             // 
-            // cmdEditor
-            // 
-            cmdEditor.BorderColour = Color.Empty;
-            cmdEditor.CustomColour = false;
-            cmdEditor.FlatBottom = false;
-            cmdEditor.FlatTop = false;
-            cmdEditor.Location = new Point(141, 11);
-            cmdEditor.Name = "cmdEditor";
-            cmdEditor.Padding = new Padding(5);
-            cmdEditor.Size = new Size(86, 26);
-            cmdEditor.TabIndex = 3;
-            cmdEditor.Text = "Open Editor";
-            cmdEditor.Click += cmdEditor_Click;
-            // 
             // MusicBox
             // 
             BackColor = Color.FromArgb(31, 31, 32);
-            Controls.Add(lbEIDError);
             Controls.Add(fraPlayer);
             Controls.Add(fraVABLinks);
-            Controls.Add(cmdEditor);
             Name = "MusicBox";
             Size = new Size(520, 544);
             Leave += musicBox_Leave;

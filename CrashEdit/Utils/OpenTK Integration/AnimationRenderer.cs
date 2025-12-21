@@ -40,7 +40,9 @@ namespace CrashEdit.CE
             BlendMask = BlendMode.None;
         }
 
-        public bool RenderAnimFrame(Vector3 trans, VAO[] vaos, AnimationEntry? anim, double frame, Func<Frame, ModelEntry?> get_model_func, Vector3 scale = default, Vector3 rot = default)
+        public bool RenderAnimFrame(Vector3 trans, VAO[] vaos, AnimationEntry? anim, double frame,
+                                    bool playAnimation, int frameIndex, Func<Frame, ModelEntry?> get_model_func,
+                                    Vector3 scale = default, Vector3 rot = default)
         {
             BaseFrame = null;
 
@@ -56,24 +58,31 @@ namespace CrashEdit.CE
             Frame? frame2 = null;
             float interp = 0;
             int curframe = 0;
-            if (frames.Count != 1)
+            if (!playAnimation)
             {
-                if (HalfSpeed)
-                    frame /= 2;
-                curframe = (int)((long)Math.Floor(frame) % frames.Count);
-                if (vaos[1] != null)
+                curframe = frameIndex;
+            }
+            else
+            {
+                if (frames.Count != 1)
                 {
-                    if (Interpolate)
+                    if (HalfSpeed)
+                        frame /= 2;
+                    curframe = (int)((long)Math.Floor(frame) % frames.Count);
+                    if (vaos[1] != null)
                     {
-                        frame2 = frames[(int)((long)Math.Ceiling(frame) % frames.Count)];
-                        interp = (float)frame.TruncatePart();
-                    }
-                    else if (HalfSpeed)
-                    {
-                        if (((long)(frame * 2) & 0x1) != 0)
+                        if (Interpolate)
                         {
-                            frame2 = frames[(curframe + 1) % frames.Count];
-                            interp = 0.5f;
+                            frame2 = frames[(int)((long)Math.Ceiling(frame) % frames.Count)];
+                            interp = (float)frame.TruncatePart();
+                        }
+                        else if (HalfSpeed)
+                        {
+                            if (((long)(frame * 2) & 0x1) != 0)
+                            {
+                                frame2 = frames[(curframe + 1) % frames.Count];
+                                interp = 0.5f;
+                            }
                         }
                     }
                 }

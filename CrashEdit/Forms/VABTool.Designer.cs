@@ -1079,6 +1079,7 @@ namespace CrashEdit.CE
             MaximizeBox = false;
             Name = "VABTool";
             Text = "VAB Tool";
+            Icon = Embeds.GetIcon("MusicNoteBlue");
             TransparencyKey = Color.FromArgb(31, 31, 32);
             FormClosing += VABTool_FormClosing;
             toolStrip.ResumeLayout(false);

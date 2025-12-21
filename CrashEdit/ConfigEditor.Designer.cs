@@ -1005,6 +1005,7 @@ namespace CrashEdit.CE
             // chkLagacyPatchNSD
             // 
             chkLagacyPatchNSD.AutoSize = true;
+            chkLagacyPatchNSD.ForeColor = Color.Gold;
             chkLagacyPatchNSD.Location = new Point(6, 72);
             chkLagacyPatchNSD.Margin = new Padding(4, 3, 4, 3);
             chkLagacyPatchNSD.Name = "chkLagacyPatchNSD";

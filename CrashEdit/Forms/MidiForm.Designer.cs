@@ -342,6 +342,7 @@ namespace CrashEdit.CE
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "MidiForm";
+            Icon = Embeds.GetIcon("SpeakerWhite");
             TransparencyKey = Color.FromArgb(31, 31, 32);
             HelpButtonClicked += MidiForm_HelpButtonClicked;
             pnPiano.ResumeLayout(false);
