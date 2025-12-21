@@ -10,7 +10,9 @@ namespace CrashEdit.CE
         {
             EntryChunk = entrychunk;
             AddMenu(CrashUI.Properties.Resources.EntryController_AcReload, "ArrowRefresh", Menu_Reload_Chunk);
+            AddMenuSeparator();
             AddMenu(CrashUI.Properties.Resources.EntryChunkController_AcImport, "Import", Menu_Import_Entry);
+            AddMenu("Import and Replace Entry", "ImportPlus", Menu_ImportAndReplace_Entry);
             AddMenu(CrashUI.Properties.Resources.EntryChunkController_AcAddNew, "Add", Menu_Add_Entry);
         }
 
@@ -58,6 +60,43 @@ namespace CrashEdit.CE
                     else
                     {
                         EntryChunk.Entries.Add(entry);
+                    }
+                }
+                catch (LoadAbortedException)
+                {
+                }
+            }
+            NeedsNewEditor = true;
+        }
+
+        private void Menu_ImportAndReplace_Entry()
+        {
+            byte[][] datas = FileUtil.OpenFiles(FileFilters.NSEntryExt, FileFilters.Any);
+            if (datas == null)
+                return;
+            bool process = DarkMessageBox.ShowMessage("Do you want to process the imported entries?", "Import and Replace Entry", DarkDialogButton.YesNo) == DialogResult.Yes;
+            foreach (var data in datas)
+            {
+                try
+                {
+                    UnprocessedEntry entry = Entry.Load(data);
+                    Entry newentry;
+                    if (process)
+                    {
+                        newentry = entry.Process(NSFController.GameVersion);
+                    }
+                    else
+                    {
+                        newentry = entry;
+                    }
+                    int index = EntryChunk.Entries.FindIndex(e => e.EID == newentry.EID);
+                    if (index >= 0)
+                    {
+                        EntryChunk.Entries[index] = newentry;
+                    }
+                    else
+                    {
+                        EntryChunk.Entries.Add(newentry);
                     }
                 }
                 catch (LoadAbortedException)
