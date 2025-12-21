@@ -194,6 +194,10 @@ namespace CrashEdit.CE
                                 {
                                     version = GameVersion.Crash1;
                                 }
+                                else if (cmbMode.SelectedIndex == AnimC3toC2 || cmbMode.SelectedIndex == AnimC3toC3)
+                                {
+                                    version = GameVersion.Crash3;
+                                }
                                 else
                                 {
                                     version = GameVersion.Crash2;

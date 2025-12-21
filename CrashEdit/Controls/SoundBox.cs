@@ -112,6 +112,7 @@ namespace CrashEdit.CE
                 speechentry.Samples = samples;
             else
                 soundentry.Samples = samples;
+            soundInit();
         }
 
         private void tbbExport_Click(object sender, EventArgs e)

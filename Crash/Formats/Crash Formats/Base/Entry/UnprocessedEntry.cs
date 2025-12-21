@@ -113,5 +113,14 @@ namespace CrashEdit.Crash
             }
             return data;
         }
+
+        public UnprocessedEntry Clone(int newEID)
+        {
+            var copiedItems = new List<byte[]>();
+            foreach (var item in items)
+                copiedItems.Add((byte[])item.Clone());
+
+            return new UnprocessedEntry(copiedItems, EID, Type);
+        }
     }
 }
