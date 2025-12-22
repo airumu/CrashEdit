@@ -120,7 +120,7 @@ namespace CrashEdit.Crash
             foreach (var item in items)
                 copiedItems.Add((byte[])item.Clone());
 
-            return new UnprocessedEntry(copiedItems, EID, Type);
+            return new UnprocessedEntry(copiedItems, newEID, Type);
         }
     }
 }

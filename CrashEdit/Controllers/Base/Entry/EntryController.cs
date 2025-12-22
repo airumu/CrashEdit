@@ -90,6 +90,7 @@ namespace CrashEdit.CE
                     // create a clone by unprocessing and then reloading
                     UnprocessedEntry unprocessed = Entry.Unprocess();
                     UnprocessedEntry clonedUnprocessed = unprocessed.Clone(newentrywindow.EID);
+                    clonedUnprocessed.EID = newentrywindow.EID;
 
                     Entry clonedProcessed;
                     try
