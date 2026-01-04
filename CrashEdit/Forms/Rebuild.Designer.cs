@@ -194,6 +194,7 @@ namespace CrashEdit.CE.Forms
                 labelPathCfgValue.Text = configFilePath;
                 labelPathCfgValue.ForeColor = Color.Yellow;
                 CheckArgsValid();
+                comboSpawns.SelectedIndex = -1;
             };
             btnClearConfig.MouseHover += (s, e) =>
             {
@@ -213,6 +214,7 @@ namespace CrashEdit.CE.Forms
             {
                 SearchForConfigFile();
                 CheckArgsValid();
+                comboSpawns.SelectedIndex = -1;
             };
             btnRecheckConfig.MouseHover += (s, e) =>
             {
