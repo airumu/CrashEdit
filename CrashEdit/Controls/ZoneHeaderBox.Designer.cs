@@ -1,4 +1,5 @@
-﻿using CrashEdit.Crash.GOOLIns;
+﻿using AltUI.Controls;
+using CrashEdit.Crash.GOOLIns;
 
 namespace CrashEdit.CE
 {
@@ -52,6 +53,9 @@ namespace CrashEdit.CE
             txtZoneFlags = new AltUI.Controls.DarkTextBox();
             fraDrawGenFlag = new AltUI.Controls.DarkGroupBox();
             chkDrawGenFlag = new AltUI.Controls.DarkCheckBox();
+            fraTransLoadOverride = new DarkGroupBox();
+            chkTransLoadOverride = new DarkCheckBox();
+            cmbTransLoadOverride = new DarkComboBox();
             pnHeader = new Panel();
             pnMisc = new Panel();
             ((System.ComponentModel.ISupportInitialize)dgvZones).BeginInit();
@@ -339,7 +343,7 @@ namespace CrashEdit.CE
             fraDrawGenFlag.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             fraDrawGenFlag.Location = new Point(3, 60);
             fraDrawGenFlag.Name = "fraDrawGenFlag";
-            fraDrawGenFlag.Size = new Size(176, 52);
+            fraDrawGenFlag.Size = new Size(206, 52);
             fraDrawGenFlag.TabIndex = 3;
             fraDrawGenFlag.TabStop = false;
             fraDrawGenFlag.Text = "Draw list gen (c2export)";
@@ -352,6 +356,38 @@ namespace CrashEdit.CE
             chkDrawGenFlag.Checked = false;
             chkDrawGenFlag.CheckedChanged += chkDrawGen_Changed;
             fraDrawGenFlag.Controls.Add(chkDrawGenFlag);
+            //
+            // fraTransLoadOverride
+            //
+            fraTransLoadOverride.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraTransLoadOverride.Location = new Point(3, 120);
+            fraTransLoadOverride.Name = "fraTransLoadOverride";
+            fraTransLoadOverride.Size = new Size(206, 52);
+            fraTransLoadOverride.TabIndex = 4;
+            fraTransLoadOverride.TabStop = false;
+            fraTransLoadOverride.Text = "Trans load override (c2export)";
+            //
+            // chkTransLoadOverride
+            // 
+            chkTransLoadOverride.Location = new Point(10, 22);
+            chkTransLoadOverride.Text = "Enable";
+            chkTransLoadOverride.AutoSize = true;
+            chkTransLoadOverride.Checked = false;
+            chkTransLoadOverride.CheckedChanged += chkTransLoadOverride_Changed;
+            fraTransLoadOverride.Controls.Add(chkTransLoadOverride);
+            //
+            // cmbTransLoadOverride
+            //
+            cmbTransLoadOverride.Location = new Point(75, 20);
+            cmbTransLoadOverride.Size = new Size(125, 20);
+            cmbTransLoadOverride.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbTransLoadOverride.Items.AddRange([
+                "[0] none",
+                "[1] textures",
+                "[2] normal entries",
+                "[3] all",
+                ]);
+            fraTransLoadOverride.Controls.Add(cmbTransLoadOverride);
             // 
             // pnHeader
             // 
@@ -371,6 +407,7 @@ namespace CrashEdit.CE
             pnMisc.Controls.Add(fraMusic);
             pnMisc.Controls.Add(fraZoneFlags);
             pnMisc.Controls.Add(fraDrawGenFlag);
+            pnMisc.Controls.Add(fraTransLoadOverride);
             pnMisc.Controls.Add(lblEIDError);
             pnMisc.Location = new Point(3, 293);
             pnMisc.Name = "pnMisc";
@@ -413,6 +450,9 @@ namespace CrashEdit.CE
         private AltUI.Controls.DarkTextBox txtMusic;
         private AltUI.Controls.DarkGroupBox fraDrawGenFlag;
         private AltUI.Controls.DarkCheckBox chkDrawGenFlag;
+        private DarkGroupBox fraTransLoadOverride;
+        private DarkCheckBox chkTransLoadOverride;
+        private DarkComboBox cmbTransLoadOverride;
         private Label lblEIDError;
         private AltUI.Controls.DarkGroupBox fraSpecialLoadList;
         private AltUI.Controls.DarkButton cmdRemoveSP;

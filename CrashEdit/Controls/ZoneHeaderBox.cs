@@ -19,6 +19,9 @@ namespace CrashEdit.CE
         private TabPage tbpHeader;
         private TabPage tbpHex;
 
+        private bool transOverrideEnabled;
+        private int transOverrideValue;
+
         private bool spDrawGenFlag;
         private int spLoadListCount;
         private BindingList<string> spLoadList;
@@ -112,6 +115,7 @@ namespace CrashEdit.CE
             //    fraSpecialLoadList.Visible = false;
             //}
             UpdateSPLoadLists();
+            UpdateTransPreloadOverride();
         }
 
         private void HexInit()
@@ -222,6 +226,19 @@ namespace CrashEdit.CE
             }
             chkDrawGenFlag.Checked = spDrawGenFlag;
         }
+
+        private void UpdateTransPreloadOverride()
+        {
+            int value = ((BitConv.FromInt32(header.Chunk1, 0x8) & 0xFF00) >> 8);
+            transOverrideEnabled = (value & 0x80) != 0;
+            transOverrideValue = (value & 0x7F);
+
+            chkTransLoadOverride.Checked = transOverrideEnabled;
+            cmbTransLoadOverride.SelectedIndex = transOverrideValue;
+            cmbTransLoadOverride.Enabled = transOverrideEnabled;
+            cmbTransLoadOverride.SelectedIndexChanged += cmbTransLoadOverride_SelectedIndexChanged;
+        }
+
 
         private void DataGridView_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
@@ -455,9 +472,13 @@ namespace CrashEdit.CE
             }
         }
 
-        private void UpdateSPLoadListsCount()
+        private void UpdateSpecialRebuildMetadata()
         {
-            byte[] bytes = BitConverter.GetBytes(spLoadListCount | (spDrawGenFlag ? (1 << 24) : 0));
+            byte[] bytes = BitConverter.GetBytes(
+                spLoadListCount |
+                (transOverrideEnabled ? ((transOverrideValue + 0x80) << 8) : 0) |
+                (spDrawGenFlag ? (1 << 24) : 0)
+            );
             Array.Copy(bytes, 0, header.Chunk1, 0x8, 0x4);
         }
 
@@ -498,7 +519,7 @@ namespace CrashEdit.CE
             if (spLoadList.Count > 0)
                 eid = spLoadList[spLoadList.Count - 1];
             spLoadList.Add(eid);
-            UpdateSPLoadListsCount();
+            UpdateSpecialRebuildMetadata();
             UpdateSPLoadListsEID(false);
 
             lbSPLoadList.SelectedIndex = lbSPLoadList.Items.Count - 1;
@@ -525,7 +546,7 @@ namespace CrashEdit.CE
 
             --spLoadListCount;
             spLoadList.RemoveAt(selctedIndex);
-            UpdateSPLoadListsCount();
+            UpdateSpecialRebuildMetadata();
             UpdateSPLoadListsEID(true);
 
             if (lbSPLoadList.Items.Count > 0)
@@ -577,7 +598,7 @@ namespace CrashEdit.CE
                     spLoadList.Clear();
                     ClearSPLoadListEID();
                     spLoadListCount = 0;
-                    UpdateSPLoadListsCount();
+                    UpdateSpecialRebuildMetadata();
                     cmdAppendSP.Enabled = true;
                     cmdRemoveSP.Enabled = false;
                     txtSPLoadList.Enabled = false;
@@ -612,7 +633,7 @@ namespace CrashEdit.CE
                     }
                 }
 
-                UpdateSPLoadListsCount();
+                UpdateSpecialRebuildMetadata();
                 UpdateSPLoadListsEID(false);
                 if (spLoadList.Count > 0 && wasEmpty)
                 {
@@ -664,7 +685,20 @@ namespace CrashEdit.CE
         public void chkDrawGen_Changed(object sender, EventArgs e)
         {
             spDrawGenFlag = chkDrawGenFlag.Checked;
-            UpdateSPLoadListsCount();
+            UpdateSpecialRebuildMetadata();
+        }
+
+        public void chkTransLoadOverride_Changed(object sender, EventArgs e)
+        {
+            transOverrideEnabled = chkTransLoadOverride.Checked;
+            cmbTransLoadOverride.Enabled = transOverrideEnabled;
+            UpdateSpecialRebuildMetadata();
+        }
+
+        public void cmbTransLoadOverride_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            transOverrideValue = cmbTransLoadOverride.SelectedIndex;
+            UpdateSpecialRebuildMetadata();
         }
 
         public static string CheckEname(string ename)
