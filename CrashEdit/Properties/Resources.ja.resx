@@ -930,7 +930,7 @@
     <value>GOOLマップを表示</value>
   </data>
   <data name="OldMainForm_tbxEntryConverter" xml:space="preserve">
-    <value>エントリの変換</value>
+    <value>エントリ コンバーター</value>
   </data>
   <data name="Config_chkShowRenderingErrors" xml:space="preserve">
     <value>レンダリングエラーを表示する</value>
@@ -989,5 +989,8 @@
   </data>
   <data name="ViewerControls_ToggleAnimation" xml:space="preserve">
     <value>アニメーションの有効化 ({0})</value>
+  </data>
+  <data name="OldMainForm_tbxModelConverter" xml:space="preserve">
+    <value>モデル コンバーター</value>
   </data>
 </root>
