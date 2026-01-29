@@ -103,7 +103,10 @@ namespace CrashEdit.CE
             cmdCopyOffset = new DarkButton();
             pnFrameBox = new Panel();
             fraMisc = new DarkGroupBox();
-            cmdSwapVertZ = new DarkButton();
+            cmdRotateZ = new DarkButton();
+            cmdRotateY = new DarkButton();
+            cmdRotateX = new DarkButton();
+            cmdMisc = new CheckBox();
             fraVertice.SuspendLayout();
             fraNearbyVertices.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numDistance).BeginInit();
@@ -1072,6 +1075,7 @@ namespace CrashEdit.CE
             // 
             pnFrameBox.AutoScroll = true;
             pnFrameBox.BackColor = Color.FromArgb(31, 31, 32);
+            pnFrameBox.Controls.Add(cmdMisc);
             pnFrameBox.Controls.Add(fraMisc);
             pnFrameBox.Controls.Add(fraCopy);
             pnFrameBox.Controls.Add(cmdInsertVertice);
@@ -1092,7 +1096,9 @@ namespace CrashEdit.CE
             // fraMisc
             // 
             fraMisc.BackColor = Color.Transparent;
-            fraMisc.Controls.Add(cmdSwapVertZ);
+            fraMisc.Controls.Add(cmdRotateZ);
+            fraMisc.Controls.Add(cmdRotateY);
+            fraMisc.Controls.Add(cmdRotateX);
             fraMisc.Location = new Point(474, 360);
             fraMisc.Name = "fraMisc";
             fraMisc.Size = new Size(141, 116);
@@ -1101,19 +1107,58 @@ namespace CrashEdit.CE
             fraMisc.Text = "Misc";
             fraMisc.Visible = false;
             // 
-            // cmdSwapVertZ
+            // cmdRotateZ
             // 
-            cmdSwapVertZ.BorderColour = Color.Empty;
-            cmdSwapVertZ.CustomColour = false;
-            cmdSwapVertZ.FlatBottom = false;
-            cmdSwapVertZ.FlatTop = false;
-            cmdSwapVertZ.Location = new Point(6, 20);
-            cmdSwapVertZ.Name = "cmdSwapVertZ";
-            cmdSwapVertZ.Padding = new Padding(5);
-            cmdSwapVertZ.Size = new Size(75, 23);
-            cmdSwapVertZ.TabIndex = 0;
-            cmdSwapVertZ.Text = "SwapZ 1-2";
-            cmdSwapVertZ.Click += cmdSwapVertZ_Click;
+            cmdRotateZ.BorderColour = Color.Empty;
+            cmdRotateZ.CustomColour = false;
+            cmdRotateZ.FlatBottom = false;
+            cmdRotateZ.FlatTop = false;
+            cmdRotateZ.Location = new Point(6, 84);
+            cmdRotateZ.Name = "cmdRotateZ";
+            cmdRotateZ.Padding = new Padding(5);
+            cmdRotateZ.Size = new Size(126, 26);
+            cmdRotateZ.TabIndex = 0;
+            cmdRotateZ.Text = "Rotate Z 90deg";
+            cmdRotateZ.Click += cmdRotateZ_Click;
+            // 
+            // cmdRotateY
+            // 
+            cmdRotateY.BorderColour = Color.Empty;
+            cmdRotateY.CustomColour = false;
+            cmdRotateY.FlatBottom = false;
+            cmdRotateY.FlatTop = false;
+            cmdRotateY.Location = new Point(6, 52);
+            cmdRotateY.Name = "cmdRotateY";
+            cmdRotateY.Padding = new Padding(5);
+            cmdRotateY.Size = new Size(126, 26);
+            cmdRotateY.TabIndex = 0;
+            cmdRotateY.Text = "Rotate Y 90deg";
+            cmdRotateY.Click += cmdRotateY_Click;
+            // 
+            // cmdRotateX
+            // 
+            cmdRotateX.BorderColour = Color.Empty;
+            cmdRotateX.CustomColour = false;
+            cmdRotateX.FlatBottom = false;
+            cmdRotateX.FlatTop = false;
+            cmdRotateX.Location = new Point(6, 20);
+            cmdRotateX.Name = "cmdRotateX";
+            cmdRotateX.Padding = new Padding(5);
+            cmdRotateX.Size = new Size(126, 26);
+            cmdRotateX.TabIndex = 0;
+            cmdRotateX.Text = "Rotate X 90deg";
+            cmdRotateX.Click += cmdRotateX_Click;
+            // 
+            // cmdMisc
+            // 
+            cmdMisc.AutoSize = true;
+            cmdMisc.Location = new Point(474, 335);
+            cmdMisc.Name = "cmdMisc";
+            cmdMisc.Size = new Size(52, 19);
+            cmdMisc.TabIndex = 22;
+            cmdMisc.Text = "Misc";
+            cmdMisc.UseVisualStyleBackColor = true;
+            cmdMisc.CheckedChanged += cmdMisc_CheckedChanged;
             // 
             // FrameBox
             // 
@@ -1245,6 +1290,9 @@ namespace CrashEdit.CE
         private DarkNumericUpDown numDistance;
         private DarkLabel lbDistance;
         private DarkGroupBox fraMisc;
-        private DarkButton cmdSwapVertZ;
+        private DarkButton cmdRotateX;
+        private DarkButton cmdRotateY;
+        private DarkButton cmdRotateZ;
+        private CheckBox cmdMisc;
     }
 }

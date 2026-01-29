@@ -1137,5 +1137,59 @@ namespace CrashEdit.CE
                 }
             }
         }
+
+        private void cmdRotateX_Click(object sender, EventArgs e)
+        {
+            foreach (Frame frame in animationEntry.Frames)
+            {
+                for (int i = 0; i < frame.Positions.Count; i++)
+                {
+                    Position pos = frame.Positions[i];
+                    var newY = -pos.Z;
+                    var newZ = pos.Y;
+                    frame.Positions[i] = new Position(pos.X, newY, newZ);
+                    UpdateTemporals(frame, YOffset, newY, i);
+                    UpdateTemporals(frame, ZOffset, newZ, i);
+                }
+            }
+
+        }
+
+        private void cmdRotateY_Click(object sender, EventArgs e)
+        {
+            foreach (Frame frame in animationEntry.Frames)
+            {
+                for (int i = 0; i < frame.Positions.Count; i++)
+                {
+                    Position pos = frame.Positions[i];
+                    var newX = -pos.Y;
+                    var newY = pos.X;
+                    frame.Positions[i] = new Position(newX, newY, pos.Z);
+                    UpdateTemporals(frame, XOffset, newX, i);
+                    UpdateTemporals(frame, YOffset, newY, i);
+                }
+            }
+        }
+
+        private void cmdRotateZ_Click(object sender, EventArgs e)
+        {
+            foreach (Frame frame in animationEntry.Frames)
+            {
+                for (int i = 0; i < frame.Positions.Count; i++)
+                {
+                    Position pos = frame.Positions[i];
+                    var newX = pos.Z;
+                    var newZ = -pos.X;
+                    frame.Positions[i] = new Position(newX, pos.Y, newZ);
+                    UpdateTemporals(frame, XOffset, newX, i);
+                    UpdateTemporals(frame, ZOffset, newZ, i);
+                }
+            }
+        }
+
+        private void cmdMisc_CheckedChanged(object sender, EventArgs e)
+        {
+            fraMisc.Visible = cmdMisc.Checked;
+        }
     }
 }
