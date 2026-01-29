@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using AltUI.Controls;
 using AltUI.Forms;
+using CrashEdit.Crash;
 
 namespace CrashEdit
 {
@@ -18,6 +19,7 @@ namespace CrashEdit
         private DarkComboBox EntryType { get; }
         private DoubleBufferedListBox EntryList { get; }
         private DarkTextBox SearchBox { get; }
+        private DarkButton cmdExport { get; }
 
         private List<string>? originalItems;
         private bool mouseClicked;
@@ -80,7 +82,7 @@ namespace CrashEdit
             SearchBox.KeyDown += Event_KeyDown;
             table1.Controls.Add(SearchBox, 0, 1);
 
-            PictureBox pictureBox = new PictureBox()
+            PictureBox pictureBox = new()
             {
                 Size = new Size(16, 16 + 4),
                 Image = Embeds.GetIcon("Hint")!.ToBitmap(),
@@ -88,6 +90,14 @@ namespace CrashEdit
                 Padding = new Padding(0, 4, 0, 0)
             };
             table1.Controls.Add(pictureBox, 1, 1);
+
+            cmdExport = new()
+            {
+                Text = "Export",
+                Enabled = false
+            };
+            cmdExport.Click += cmdExport_Click;
+            table1.Controls.Add(cmdExport, 1, 0);
 
             DarkToolTip tip1 = new();
             tip1.SetToolTip(pictureBox, "The filter supports regex.");
@@ -148,6 +158,8 @@ namespace CrashEdit
             SearchBox.Text = string.Empty;
             string? type = EntryType.SelectedItem == null ? string.Empty : EntryType.SelectedItem.ToString();
             if (string.IsNullOrEmpty(type)) return;
+
+            cmdExport.Enabled = type != "Entity";
 
             dirty.Push(true);
 
@@ -283,6 +295,110 @@ namespace CrashEdit
             }
         }
 
+        private static readonly Dictionary<string, Type> EntryTypeMap = new()
+        {
+            ["Zone"] = typeof(ZoneEntry),
+            ["Scenery"] = typeof(SceneryEntry),
+            ["Sort List"] = typeof(SLSTEntry),
+            ["Model"] = typeof(ModelEntry),
+            ["Animation"] = typeof(AnimationEntry),
+            ["GOOL"] = typeof(GOOLEntry),
+            ["Music"] = typeof(MusicEntry),
+            ["Sound"] = typeof(SoundEntry),
+            ["Texture"] = typeof(TextureChunk),
+        };
+
+        private static dynamic GetEntryType(string type, object rsc)
+        {
+            if (!EntryTypeMap.TryGetValue(type, out var t))
+                throw new NotImplementedException(type);
+
+            return rsc.GetType() == t ? rsc : null;
+        }
+
+        private static dynamic GetEntryList(string type)
+        {
+            if (!EntryTypeMap.TryGetValue(type, out var t))
+                throw new NotImplementedException(type);
+
+            var listType = typeof(List<>).MakeGenericType(t);
+            return Activator.CreateInstance(listType);
+        }
+
+        private void cmdExport_Click(object? sender, EventArgs e)
+        {
+            string? type = EntryType.SelectedItem == null ? string.Empty : EntryType.SelectedItem.ToString();
+            if (type == null) return;
+
+            var entries = GetEntryList(type);
+
+            if (Host.ActiveWorkspaceHost is MainControl mainCtl)
+            {
+                string currentQuary = mainCtl.SearchQuery;
+                mainCtl.IgnoreFilter =
+                mainCtl.UseRegex = true;
+
+                foreach (var item in EntryList.Items)
+                {
+                    mainCtl.SearchQuery = "Workspace";
+                    string query = item.ToString() == null ? string.Empty : Regex.Escape(item.ToString()!);
+
+                    var w = new Walker();
+                    w.Cursor = WsHost.RootController;
+
+                    // Get Entry list.
+                    while (w.MoveToLastChild()) { }
+                    while (!WsHost.SearchPredicate!(w.Cursor))
+                    {
+                        if (Regex.IsMatch(w.Cursor.Text, query))
+                        {
+                            entries.Add(GetEntryType(type, w.Cursor.Resource));
+                        }
+                        if (!w.MoveToPreviousDFS())
+                        {
+                            dirty.Pop();
+                            return;
+                        }
+                    }
+                    if (Regex.IsMatch(w.Cursor.Text, query)) // Add the last one.
+                    {
+                        entries.Add(GetEntryType(type, w.Cursor.Resource));
+                    }
+                }
+
+                mainCtl.IgnoreFilter =
+                mainCtl.UseRegex = false;
+                mainCtl.SearchQuery = currentQuary;
+            }
+
+            if (entries.Count > 0)
+            {
+                using FolderBrowserDialog fbd = new()
+                {
+                    ShowNewFolderButton = true
+                };
+                if (fbd.ShowDialog() == DialogResult.OK)
+                {
+                    string folderPath = fbd.SelectedPath;
+                    foreach (var ent in entries)
+                    {
+                        if (type == "Texture")
+                        {
+                            string fileName = $"{type}_{Entry.EIDToEName(ent.EID)}.nschunk";
+                            string filePath = Path.Combine(folderPath, fileName);
+                            File.WriteAllBytes(filePath, ent.Data);
+                        }
+                        else
+                        {
+                            string fileName = $"{type}_{Entry.EIDToEName(ent.EID)}.nsentry";
+                            string filePath = Path.Combine(folderPath, fileName);
+                            File.WriteAllBytes(filePath, ent.Save());
+                        }
+                    }
+                    Console.WriteLine($"Exported {entries.Count} entries to {folderPath}.");
+                }
+            }
+        }
     }
 
     public class DoubleBufferedListBox : DarkListBox
