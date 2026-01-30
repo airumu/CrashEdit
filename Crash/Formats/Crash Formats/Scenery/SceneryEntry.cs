@@ -8,8 +8,11 @@ namespace CrashEdit.Crash
         private List<ModelTexture> textures;
         private List<SceneryColor> colors;
         private List<ModelExtendedTexture> animatedtextures;
+
         public int SelectedVertex = -1;
+        public SortedSet<int> MassSelectVertices = new SortedSet<int>();
         public int HoveredVertex = -1;
+        public bool AddColocatedToMult = true;
 
         public SceneryEntry(Scenery scenery, byte[] info, IEnumerable<SceneryVertex> vertices, IEnumerable<SceneryTriangle> triangles, IEnumerable<SceneryQuad> quads, IEnumerable<ModelTexture> textures, IEnumerable<SceneryColor> colors, IEnumerable<ModelExtendedTexture> animatedtextures, bool is_c3, int eid)
             : base(eid)

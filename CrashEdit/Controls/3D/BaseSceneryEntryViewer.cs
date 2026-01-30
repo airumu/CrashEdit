@@ -72,7 +72,18 @@ namespace CrashEdit.CE
         {
             base.PrintHelp();
             con_help += KeyboardControls.ToggleVerticesVisible.Print(OnOffName(render.ShowVertices));
+
+            if (render.ShowVertices)
+            {
+                con_help += "\n";
+                con_help += "Use ALT to multiselect via box-select\n";
+                var worlds = GetWorlds();
+                var firstWorld = worlds?.FirstOrDefault();
+                if (firstWorld is SceneryEntry sceneryEntry)
+                    con_help += "Add Co-Located to Multi: " + (sceneryEntry.AddColocatedToMult ? "On" : "Off") + "\n";
+            }
         }
+
         protected override void Render()
         {
             base.Render();

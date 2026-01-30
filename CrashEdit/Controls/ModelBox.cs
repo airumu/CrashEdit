@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using System.Linq;
 using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
@@ -30,6 +31,8 @@ namespace CrashEdit.CE.Controls
 
         private bool disable_inp_change = false;
         private int PrevSelectedVertex = -1;
+        private int PrevMassCount = -1;
+        private bool ForceTempVertsReload = false;
         private dynamic controller;
         private dynamic model;
         private TextureChunk chunk { get; set; }
@@ -66,7 +69,6 @@ namespace CrashEdit.CE.Controls
         private int currentColorMode;
         private List<string> colorCopy;
 
-        private bool enableTempVertices => chkTempVertices.Checked;
         private bool editTempVertices => chkEditTempVertices.Checked;
         private bool editNearbyVertices => chkEditNearbyVertices.Checked;
         private bool enableGuides => chkEnableGuides.Checked;
@@ -188,6 +190,7 @@ namespace CrashEdit.CE.Controls
                 tbpPolygons.Dispose();
                 tabModel.Controls.Remove(tbpPositions);
                 tbpPositions.Dispose();
+                chkTempAddCoVerts.Checked = model.AddColocatedToMult;
             }
             else
             {
@@ -372,7 +375,7 @@ namespace CrashEdit.CE.Controls
             // Tooltips
             picTempVertsHint.Image = Embeds.GetIcon("Hint")!.ToBitmap();
             tipTempVerts = new DarkToolTip();
-            tipTempVerts.SetToolTip(picTempVertsHint, "Select a vertex to add it to the list for batch editing.");
+            tipTempVerts.SetToolTip(picTempVertsHint, "Set of currently selected vertices");
 
             // Timer setup
             if (vertexCheckTimer == null)
@@ -396,10 +399,48 @@ namespace CrashEdit.CE.Controls
 
         private void VertexCheckTimer_Tick(object sender, EventArgs e)
         {
-            if (model.SelectedVertex != PrevSelectedVertex)
-            {
+            bool sel_vert_changed = model.SelectedVertex != PrevSelectedVertex;
+
+            if (sel_vert_changed)
                 SelectedVertexChanged(model.SelectedVertex);
+
+            disable_inp_change = true;
+            if (model.MassSelectVertices.Count != PrevMassCount || sel_vert_changed || ForceTempVertsReload)
+            {                
+                List<int> massSelectSorted = ((IEnumerable<int>)model.MassSelectVertices).ToList();                 
+                cmdRemoveTempVerts.Enabled = false;
+                cmdClearTempVerts.Enabled = false;
+
+                ForceTempVertsReload = false;
+                dgvTempVertices.Rows.Clear();
+                PrevMassCount = massSelectSorted.Count;
+                for (int i = 0; i < massSelectSorted.Count; i++)
+                {
+                    int vert_idx = massSelectSorted[i];
+                    string xyz = $"[{model.Vertices[vert_idx].X},{model.Vertices[vert_idx].Y},{model.Vertices[vert_idx].Z}]";
+
+                    dgvTempVertices.Rows.Add(
+                        vert_idx,
+                        model.Vertices[vert_idx].FX,
+                        model.Vertices[vert_idx].Color,
+                        xyz);
+
+                    cmdRemoveTempVerts.Enabled = true;
+                    cmdClearTempVerts.Enabled = true;
+                }
+
+                foreach (DataGridViewRow row in dgvTempVertices.Rows)
+                {
+                    if (Convert.ToInt32(row.Cells[0].Value) == model.SelectedVertex)
+                    {
+                        dgvTempVertices.CurrentCell = row.Cells[0];
+                        row.Selected = true;
+                        break;
+                    }
+                }
+                fraTempVertices.Text = $"Multiselected vertices ({dgvTempVertices.RowCount})";
             }
+            disable_inp_change = false;
         }
 
         private void CreateNearbyVerticesColumns()
@@ -412,7 +453,7 @@ namespace CrashEdit.CE.Controls
             {
                 column.SortMode = DataGridViewColumnSortMode.NotSortable;
                 column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-                column.Width = 64;
+                column.Width = 50;
                 column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft;
             }
         }
@@ -422,14 +463,16 @@ namespace CrashEdit.CE.Controls
             dgvTempVertices.Columns.Add("Index", "Index");
             dgvTempVertices.Columns.Add("FX", "FX");
             dgvTempVertices.Columns.Add("ColorID", "ColorID");
+            dgvTempVertices.Columns.Add("XYZ", "XYZ");
 
             foreach (DataGridViewColumn column in dgvTempVertices.Columns)
             {
                 column.SortMode = DataGridViewColumnSortMode.NotSortable;
                 column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-                column.Width = 64;
+                column.Width = 50;
                 column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft;
             }
+            dgvTempVertices.Columns[dgvTempVertices.ColumnCount - 1].Width = 120;
         }
 
         private void UpdateNearbyVerticesGrid(int newVal)
@@ -454,32 +497,6 @@ namespace CrashEdit.CE.Controls
                     );
                     if (i == newVal)
                         selectedRowIndex = rowIndex;
-
-                    if (enableTempVertices)
-                    {
-                        if (chkTempAddCoVerts.Checked || (!chkTempAddCoVerts.Checked && i == newVal))
-                        {
-                            bool skip = false;
-                            foreach (DataGridViewRow row in dgvTempVertices.Rows)
-                            {
-                                if (Convert.ToInt32(row.Cells[0].Value) == i)
-                                    skip = true;
-                            }
-                            if (!skip)
-                            {
-                                dgvTempVertices.Rows.Add(
-                                    i,
-                                    model.Vertices[i].FX,
-                                    model.Vertices[i].Color
-                                );
-                                if (!cmdRemoveTempVerts.Enabled)
-                                {
-                                    cmdRemoveTempVerts.Enabled =
-                                    cmdClearTempVerts.Enabled = true;
-                                }
-                            }
-                        }
-                    }
                 }
             }
             if (selectedRowIndex >= 0)
@@ -647,6 +664,7 @@ namespace CrashEdit.CE.Controls
                     }
                 }
             );
+            ForceTempVertsReload = true;
         }
 
         private void VertexFX_ValueChanged(object sender, EventArgs e)
@@ -716,6 +734,18 @@ namespace CrashEdit.CE.Controls
                 }
                 rowsToRemove.Sort();
                 rowsToRemove.Reverse();
+
+                List<int> vertsToRemove = new List<int>();
+                foreach (int rowIndex in rowsToRemove)
+                {
+                    int vertIdx = Convert.ToInt32(dgvTempVertices.Rows[rowIndex].Cells[0].Value);
+                    vertsToRemove.Add(vertIdx);
+                }
+
+                foreach (int vertIdx in vertsToRemove)
+                {
+                    model.MassSelectVertices.Remove(vertIdx);
+                }
                 foreach (int rowIndex in rowsToRemove)
                 {
                     dgvTempVertices.Rows.RemoveAt(rowIndex);
@@ -731,13 +761,23 @@ namespace CrashEdit.CE.Controls
             }
         }
 
+        private void ChkTempAddCoVerts_CheckedChanged(object sender, EventArgs e)
+        {
+            model.AddColocatedToMult = chkTempAddCoVerts.Checked;
+        }
+
         private void cmdClearTempVerts_Click(object sender, EventArgs e)
         {
+            disable_inp_change = true;
+            model.MassSelectVertices.Clear();
             dgvTempVertices.ClearSelection();
             dgvTempVertices.CurrentCell = null;
             dgvTempVertices.Rows.Clear();
-            cmdRemoveTempVerts.Enabled =
+
+            cmdRemoveTempVerts.Enabled = false;
             cmdClearTempVerts.Enabled = false;
+
+            disable_inp_change = false;
         }
 
         private void chkEditNearbyVertices_CheckedChanged(object sender, EventArgs e)
@@ -754,11 +794,6 @@ namespace CrashEdit.CE.Controls
             {
                 chkEditNearbyVertices.Checked = false;
             }
-        }
-
-        private void chkTempVertices_CheckedChanged(object sender, EventArgs e)
-        {
-            chkTempAddCoVerts.Enabled = chkTempVertices.Checked;
         }
 
         #endregion
@@ -3378,7 +3413,7 @@ namespace CrashEdit.CE.Controls
             {
                 column.SortMode = DataGridViewColumnSortMode.NotSortable;
                 column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-                column.Width = 48;
+                column.Width = 56;
                 column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft;
             }
         }
