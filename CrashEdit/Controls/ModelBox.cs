@@ -406,7 +406,8 @@ namespace CrashEdit.CE.Controls
 
             disable_inp_change = true;
             if (model.MassSelectVertices.Count != PrevMassCount || sel_vert_changed || ForceTempVertsReload)
-            {                
+            {
+                this.SuspendLayout();
                 List<int> massSelectSorted = ((IEnumerable<int>)model.MassSelectVertices).ToList();                 
                 cmdRemoveTempVerts.Enabled = false;
                 cmdClearTempVerts.Enabled = false;
@@ -439,6 +440,7 @@ namespace CrashEdit.CE.Controls
                     }
                 }
                 fraTempVertices.Text = $"Multiselected vertices ({dgvTempVertices.RowCount})";
+                this.ResumeLayout();
             }
             disable_inp_change = false;
         }
