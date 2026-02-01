@@ -378,6 +378,23 @@ namespace CrashEdit.CE
             }
         }
 
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+
+            // ctrl-a
+            if (is_single_view && render.ShowVertices && e.KeyCode == Keys.A && CtrlHeld())
+            {
+                var worlds = GetWorlds();
+                var firstWorld = worlds?.FirstOrDefault();
+                if (firstWorld == null)
+                    return;
+                firstWorld.MassSelectVertices.Clear();
+                for (int i = 0; i < firstWorld.Vertices.Count; i++)
+                    firstWorld.MassSelectVertices.Add(i);
+            }
+        }
+
         protected override void RenderWorlds(bool sky)
         {
             // collect valid worlds
