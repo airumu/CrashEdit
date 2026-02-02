@@ -26,9 +26,10 @@ namespace CrashEdit.CE.Forms
         private const int MAX_LEVEL_ID = 0x3F;
         private const int MAX_SPAWN_INDEX = 50;
         private const int MAX_THREAD_COUNT = 128;
+        private const int MAX_BOOST_RATIO = 25;
         private const int MAX_TRANS_PREL_TYPE = 3;
         private const int MAX_ANGLE_3D = 180;
-        private const int MAX_MERGE_TYPE = 5;
+        private const int MAX_MERGE_TYPE = 6;
         private const float MAX_RANDOM_MULT = 5.0f;
         private const int MAX_RANDOM_SEED = 1000000000;
 
@@ -93,6 +94,8 @@ namespace CrashEdit.CE.Forms
         private DarkTextBox txtRandomSeed;
         private Label lblThreadCount;
         private DarkTextBox txtThreadCount;
+        private Label lblHotBoostRatio;
+        private DarkTextBox txtHotBoostRatio;
 
         private ToolTip tooltip;
         private Panel separatorLine;
@@ -322,6 +325,12 @@ namespace CrashEdit.CE.Forms
                     txtThreadCount.Text = threadCount.ToString();
                 else
                     Console.WriteLine($"Invalid thread count in config: {thread_count}");
+
+                var hotspot_boost_ratio = lines[curr_idx++].Trim();
+                if (int.TryParse(hotspot_boost_ratio, out int boostRatioInt) && boostRatioInt >= 0 && boostRatioInt <= MAX_BOOST_RATIO)
+                    txtHotBoostRatio.Text = boostRatioInt.ToString();
+                else
+                    Console.WriteLine($"Invalid hotspot boost ratio in config: {hotspot_boost_ratio}");
             }
             catch (Exception ex)
             {
@@ -497,6 +506,8 @@ namespace CrashEdit.CE.Forms
             txtRandomSeed = new DarkTextBox();
             lblThreadCount = new Label();
             txtThreadCount = new DarkTextBox();
+            lblHotBoostRatio = new Label();
+            txtHotBoostRatio = new DarkTextBox();
             btnOpenPathPerma = new DarkButton();
             btnOpenPathDeps = new DarkButton();
             btnOpenPathCollDeps = new DarkButton();
@@ -579,8 +590,9 @@ namespace CrashEdit.CE.Forms
                 "[1] BAD occurence count matrix (rel)",
                 "[2] BAD relatives & payload",
                 "[3] BAD state set graph search based (A*DFS)",
-                "[4] occ. count matrix (abs, rand)",
-                "[5] occ. count matrix (abs, rand, multithreaded)",
+                "[4] occ. count (abs, rand)",
+                "[5] occ. count (abs, rand, threaded)",
+                "[6] occ. count (abs, rand, threaded, hot-boost)",
                 ]);
             cmbMergeType.SelectedIndex = 4;
             cmbMergeType.SelectedIndexChanged += (s, e) =>
@@ -757,6 +769,14 @@ namespace CrashEdit.CE.Forms
             txtThreadCount.TextChanged += (s, e) => intField_Changed(txtThreadCount, 1, MAX_THREAD_COUNT);
             txtThreadCount.Leave += (s, e) => intField_Leave(txtThreadCount, "4");
 
+            // hotspot boost ratio (method 6)
+            lblHotBoostRatio.AutoSize = true;
+            lblHotBoostRatio.Text = "Hotspot boost:";
+            txtHotBoostRatio.Text = "10";
+            txtHotBoostRatio.KeyPress += IntegerOnly_KeyPress;
+            txtHotBoostRatio.TextChanged += (s, e) => intField_Changed(txtHotBoostRatio, 0, 200);
+            txtHotBoostRatio.Leave += (s, e) => intField_Leave(txtHotBoostRatio, "10");
+
             // ---------------------------------------------------------------
             // Horizontal separator
             separatorLineH.BackColor = Color.FromArgb(100, 100, 100);
@@ -821,6 +841,7 @@ namespace CrashEdit.CE.Forms
             AddTooltip(lblRandomMult, "Random multiplier for merge algorithm costs (use 1.5 if unsure)\nDefines how 'chaotic' merging is");
             AddTooltip(lblRandomSeed, "Random seed for merge algorithm (use 0 for random seed)");
             AddTooltip(lblThreadCount, "[Merge method 5] Number of parallel threads");
+            AddTooltip(lblHotBoostRatio, "[Merge method 6] Boost ratio for pairs loaded in hotspots");
 
             AddTooltip(btnOpenPathPerma, "Open the perma file in the default text editor");
             AddTooltip(btnOpenPathDeps, "Open the entity dependencies file in the default text editor");
@@ -891,6 +912,8 @@ namespace CrashEdit.CE.Forms
                 txtRandomSeed,
                 lblThreadCount,
                 txtThreadCount,
+                lblHotBoostRatio,
+                txtHotBoostRatio,
 
                 separatorLineH,
                 separatorLineH2,
@@ -921,9 +944,12 @@ namespace CrashEdit.CE.Forms
             lblDL_Dist_Angle3D.Enabled = is_rebuild_dl;
             txtDL_Dist_Angle3D.Enabled = is_rebuild_dl;
 
-            bool is_method_5 = (cmbMergeType.SelectedIndex == 5);
-            txtThreadCount.Enabled = is_method_5;
-            lblThreadCount.Enabled = is_method_5;
+            bool is_threaded = (cmbMergeType.SelectedIndex >= 5);
+            txtThreadCount.Enabled = is_threaded;
+            lblThreadCount.Enabled = is_threaded;
+            bool is_hotboost = (cmbMergeType.SelectedIndex >= 6);
+            txtHotBoostRatio.Enabled = is_hotboost;
+            lblHotBoostRatio.Enabled = is_hotboost;
 
             bool is_remake_load_lists = (cmbRemakeLL.SelectedIndex >= 1);
             lblPathDeps.Enabled = is_remake_load_lists;
@@ -996,8 +1022,11 @@ namespace CrashEdit.CE.Forms
             cfgText += txtRandomMult.Text + "\r\n";
             cfgText += txtRandomSeed.Text + "\r\n";
 
-            if (is_method_5)
+            if (is_threaded)
                 cfgText += txtThreadCount.Text + "\r\n";
+
+            if (is_hotboost)
+                cfgText += txtHotBoostRatio.Text + "\r\n";
 
             outputTextArea.Text = cfgText;
             ConfigContent = cfgText;
@@ -1373,6 +1402,10 @@ namespace CrashEdit.CE.Forms
             lblThreadCount.Location = new Point(PADDING, PADDING_LBL + PADDING_LBL + ROW_HEIGHT * 19);
             txtThreadCount.Size = new Size(80, 23);
             txtThreadCount.Location = new Point(125, PADDING_LBL + PADDING + ROW_HEIGHT * 19);
+
+            lblHotBoostRatio.Location = new Point(ClientSize.Width / 2 - PADDING - 200, PADDING_LBL + PADDING_LBL + ROW_HEIGHT * 19);
+            txtHotBoostRatio.Size = new Size(80, 23);
+            txtHotBoostRatio.Location = new Point(ClientSize.Width / 2 - PADDING - 80, PADDING_LBL + PADDING + ROW_HEIGHT * 19);
         }
     }
 }
