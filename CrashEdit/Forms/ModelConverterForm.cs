@@ -1,133 +1,345 @@
-﻿using AltUI.Forms;
-using CrashEdit.CE.Controls;
+﻿using AltUI.Controls;
+using AltUI.Forms;
 using CrashEdit.Crash;
-using MetroSet_UI.Animates;
-using OpenTK.Windowing.Common.Input;
-using System;
 using System.ComponentModel;
-using System.Drawing.Imaging;
+using System.Data;
 using System.Media;
 using System.Numerics;
+using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using System.Windows.Media.TextFormatting;
-using System.Xml.Linq;
+using static CrashEdit.CE.ModelConverterForm;
+using static CrashEdit.CE.TriangleStripBuilder;
+using static CrashEdit.CE.BlenderModelConverter;
 using static CrashEdit.CE.TextureAtlasPacker;
 
 namespace CrashEdit.CE
 {
     public partial class ModelConverterForm : DarkForm
     {
-        private static readonly string Version = "1.0";
+        private static readonly string Version = "1.0.0";
 
-        public bool DebugMode;
+        private const float BASE_SCALE_FACTOR = 255.0f;
+        private const float BASE_MODEL_SCALE = 0x646;
+        private const float TOLERANCE = 0.01f;
+        private const float BASE_PRODUCT = BASE_SCALE_FACTOR * BASE_MODEL_SCALE;
 
+        private readonly Debug debug = new()
+        {
+            DebugMode = false,
+            TestCompression = false
+        };
         private ModelSettings modelSettings;
+        private string modelPath;
         private string settingsPath;
+        private string exporterVersion;
+        private int compressionMethod = 0;
+
+        private FileSystemWatcher? watcher;
+        private readonly System.Windows.Forms.Timer reloadTimer;
+
+        private readonly ToolTip toolTip1 = new();
+        private readonly ToolTip toolTip2 = new();
+        private readonly ToolTip toolTip3 = new();
+        private readonly ToolTip toolTip4 = new();
+        private readonly ToolTip toolTip5 = new();
+        private readonly ToolTip toolTip6 = new();
+        private readonly ToolTip toolTip7 = new();
+
+        internal Stack<bool> dirty = new();
+        internal bool Dirty => dirty.Count > 0 && dirty.Peek();
 
         public ModelConverterForm()
         {
             InitializeComponent();
-            Icon = Embeds.GetIcon("Wrench");
+            Icon = Embeds.GetIcon("Plugin");
 
-            DebugMode = chkDebug.Checked;
-
+            DgvBatchInit();
             lblPath.Text = "";
             lblExportPath.Text = "";
+            lblVersion.Text = $"\r\nConverter: v{Version}";
+
+            toolTip1.SetToolTip(lblStripIterations, "Number of iterations to generate triangle strips.");
+            toolTip2.SetToolTip(lblMaxKeyWeight, "Penalty weight for longer-living position keys.");
+            toolTip3.SetToolTip(chkCompressModel, "Sets the model compression method.");
+            toolTip4.SetToolTip(chkSkipOddFrames, "Skips output for every odd frame.\r\nUseful when frame interpolation is enabled in GOOL.");
+            toolTip5.SetToolTip(cmdOpen, "You can also drag and drop a file onto this form.");
+            toolTip6.SetToolTip(chkBatch, "Enables batch processing mode.\r\nThe collection name is used as the model EID for the objects in the collection,\r\nso it must end with a valid EID (e.g., 'Collection_1234G').\r\n\r\nIf a valid EID is found in the object name, it will be used as the animation EID.\r\n(e.g., 'Object_1234V')\r\n\r\nOtherwise, a default EID will be assigned.");
+            toolTip7.SetToolTip(lblScaleMod, "Use this only if the model scale in Blender is incorrect.");
+
             cmdSetExportPath.Image = new Bitmap(Embeds.Bitmaps["FolderOpen"], new Size(16, 16));
+
             numScaleX.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
             numScaleY.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
             numScaleZ.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
             numScaleFX.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
             numScaleFY.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
             numScaleFZ.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
+
+            numMaxLiveKeysWeight.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
+            numMaxStripIterations.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
+
+            reloadTimer = new()
+            {
+                Interval = 300
+            };
+            reloadTimer.Tick += ReloadTimer_Tick;
+        }
+
+        private void StartWatching(string path)
+        {
+            if (watcher != null)
+            {
+                watcher.EnableRaisingEvents = false;
+                watcher.Dispose();
+                watcher = null;
+            }
+
+            watcher = new FileSystemWatcher(Path.GetDirectoryName(path)!)
+            {
+                Filter = Path.GetFileName(path),
+                NotifyFilter = NotifyFilters.LastWrite
+                             | NotifyFilters.Size
+                             | NotifyFilters.FileName
+            };
+
+            watcher.Changed += OnJsonChanged;
+            watcher.EnableRaisingEvents = true;
+        }
+
+        private void OnJsonChanged(object sender, FileSystemEventArgs e)
+        {
+            Thread.Sleep(100); // wait for file write to complete
+
+            if (IsDisposed || Disposing) return;
+            if (!IsHandleCreated) return;
+
+            BeginInvoke((MethodInvoker)(() =>
+            {
+                reloadTimer.Stop();
+                reloadTimer.Start();
+            }));
+        }
+
+        private void ReloadTimer_Tick(object? sender, EventArgs e)
+        {
+            reloadTimer.Stop();
+
+            if (IsDisposed) return;
+
+            var jsons = LoadModelJson(modelPath);
+            CreateRows(jsons);
+            Console.WriteLine("Model JSON file changed, reloaded.");
+        }
+
+        private void DgvBatchInit()
+        {
+            DoubleBufferedDataGridView.Initialize(dgvBatch);
+
+            dgvBatch.Columns.Add("Name", "Name");
+            dgvBatch.Columns.Add("Model", "Model");
+            dgvBatch.Columns.Add("Anim", "Anim");
+            foreach (DataGridViewColumn column in dgvBatch.Columns)
+            {
+                column.SortMode = DataGridViewColumnSortMode.NotSortable;
+                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            }
+            dgvBatch.Columns[0].Width = 120;
+            dgvBatch.Columns[1].Width = 60;
+            dgvBatch.Columns[2].Width = 60;
+
+            dgvBatch.DefaultCellStyle.ForeColor = Color.Gray;
         }
 
         private void cmdOpen_Click(object sender, EventArgs e)
         {
             using OpenFileDialog ofd = new();
             ofd.Filter = FileFilters.JSON;
-
             if (ofd.ShowDialog() == DialogResult.OK)
-            {
-                string path = ofd.FileName;
-                string saveDirectory = Path.GetDirectoryName(path)!;
-                string fileName = Path.GetFileNameWithoutExtension(path);
+                openFile(ofd.FileName);
+        }
 
-                Console.WriteLine();
-                Console.WriteLine("Selected file: " + path);
-                // try load settings file
+        private void openFile(string path)
+        {
+            string saveDirectory = Path.GetDirectoryName(path)!;
+            string fileName = Path.GetFileNameWithoutExtension(path);
+
+            Console.WriteLine();
+            Console.WriteLine("Selected file: " + path);
+            // try load settings file
+            try
+            {
+                modelSettings = ModelSettingsIO.Load(path);
+                settingsPath = path;
+                LoadSettings();
+                Console.WriteLine("Loaded settings.");
+            }
+            // if invalid settings file, try load as model json file
+            catch (Exception)
+            {
                 try
                 {
-                    modelSettings = ModelSettingsIO.Load(path);
-                    settingsPath = path;
-                    LoadSettings();
-                    Console.WriteLine("Loaded settings.");
+                    Console.WriteLine("Could not load settings, trying to load model JSON file...");
+                    List<Crash2Json> jsons = LoadModelJson(path);
+
+                    settingsPath = Path.Combine(saveDirectory, $"{fileName}_settings.json");
+
+                    // load existing settings
+                    if (File.Exists(settingsPath))
+                    {
+                        modelSettings = ModelSettingsIO.Load(settingsPath);
+                        LoadSettings();
+                        Console.WriteLine("Found and loaded existing settings.");
+                    }
+                    else
+                    {
+                        // use default settings
+                        dirty.Push(true);
+                        numScaleX.Value = 0x646;
+                        numScaleY.Value = 0x646;
+                        numScaleZ.Value = 0x646;
+                        numScaleFX.Value = 127.0M;
+                        numScaleFY.Value = 127.0M;
+                        numScaleFZ.Value = 127.0M;
+                        numScaleMod.Value = 1.0M;
+                        chkBatch.Checked = false;
+                        chkSkipOddFrames.Checked = false;
+                        numMaxStripIterations.Value = 64.0M;
+                        numMaxLiveKeysWeight.Value = 1000.0M;
+                        numAvgKeysWeight.Value = 100.0M;
+                        numStripCountWeight.Value = 10.0M;
+                        chkCompressModel.Checked = false;
+                        compressionMethod = 0;
+                        radioButton1.Checked = true;
+
+                        CreateRows(jsons);
+
+                        modelPath = path;
+                        lblPath.Text = settingsPath;
+                        lblExportPath.Text = saveDirectory;
+                        exporterVersion = jsons[0].version;
+                        lblVersion.Text = $"Exporter: v{exporterVersion}\r\nConverter: v{Version}";
+                        modelSettings = new();
+                        SaveSettings();
+                        dirty.Pop();
+
+                        Console.WriteLine("No existing settings found, created new default settings.");
+                    }
                 }
-                // invalid settings file, try load model json
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    try
-                    {
-                        Console.WriteLine("Could not load settings, trying to load model JSON file...");
-                        var json = BlenderModelConverter.LoadJson(path);
-
-                        settingsPath = Path.Combine(saveDirectory, $"{fileName}_settings.json");
-
-                        // load existing settings
-                        if (File.Exists(settingsPath))
-                        {
-                            modelSettings = ModelSettingsIO.Load(settingsPath);
-                            LoadSettings();
-                            Console.WriteLine("Found and loaded existing settings.");
-                        }
-                        else
-                        {
-                            // use default settings
-                            txtModelEID.Text = "0000G";
-                            txtAnimEID.Text = "0000V";
-                            txtTpageEID.Text = "Z000T";
-                            numScaleX.Value = 0x646;
-                            numScaleY.Value = 0x646;
-                            numScaleZ.Value = 0x646;
-                            numScaleFX.Value = 127.0M;
-                            numScaleFY.Value = 127.0M;
-                            numScaleFZ.Value = 127.0M;
-
-                            lblPath.Text = path;
-                            lblExportPath.Text = saveDirectory;
-                            modelSettings = new();
-                            SaveSettings();
-
-                            Console.WriteLine("No existing settings found, created new default settings.");
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        DarkMessageBox.ShowError($"The selected file is not a valid model JSON file.\n\nDetails: {ex.Message}", "Invalid File");
-                        return;
-                    }
+                    DarkMessageBox.ShowError($"The selected file is not a valid model JSON file.\n\nDetails: {ex.Message}", "Invalid File");
+                    return;
                 }
-
-                chkDebug.Enabled =
-                cmdConvert.Enabled =
-                fraSettings.Enabled = true;
             }
+
+            pnBottom.Enabled =
+            fraSettings.Enabled = true;
+
+            StartWatching(modelPath);
         }
 
         private void LoadSettings()
         {
-            lblPath.Text = modelSettings.ModelJsonPath;
+            lblPath.Text = settingsPath;
+            modelPath = modelSettings.ModelPath;
+            var jsons = LoadModelJson(modelPath);
+
+            CreateRows(jsons);
+
             lblExportPath.Text = modelSettings.ExportPath;
-            txtModelEID.Text = modelSettings.ModelEID;
-            txtAnimEID.Text = modelSettings.AnimationEID;
-            txtTpageEID.Text = modelSettings.TpageEID;
             numScaleX.Value = modelSettings.ModelScales[0];
             numScaleY.Value = modelSettings.ModelScales[1];
             numScaleZ.Value = modelSettings.ModelScales[2];
             numScaleFX.Value = (decimal)modelSettings.ScaleFactor[0];
             numScaleFY.Value = (decimal)modelSettings.ScaleFactor[1];
             numScaleFZ.Value = (decimal)modelSettings.ScaleFactor[2];
+            numScaleMod.Value = (decimal)modelSettings.ScaleMod;
+            chkBatch.Checked = modelSettings.BatchProcessing;
+            chkSkipOddFrames.Checked = modelSettings.SkipOddFrames;
+            numMaxStripIterations.Value = (decimal)modelSettings.MaxIterations;
+            numMaxLiveKeysWeight.Value = (decimal)modelSettings.MaxKeysPenalty;
+            numAvgKeysWeight.Value = (decimal)modelSettings.AvgKeysPenalty;
+            numStripCountWeight.Value = (decimal)modelSettings.StripCountPenalty;
+
+            if (modelSettings.CompressionMethod >= 0)
+            {
+                chkCompressModel.Checked = true;
+                compressionMethod = modelSettings.CompressionMethod;
+
+                if (compressionMethod == 0) radioButton1.Checked = true;
+                else if (compressionMethod == 1) radioButton2.Checked = true;
+                else if (compressionMethod == 2) radioButton3.Checked = true;
+                else if (compressionMethod == 3) radioButton4.Checked = true;
+            }
+            else
+            {
+                chkCompressModel.Checked = false;
+            }
+
+            exporterVersion = jsons[0].version;
+            lblVersion.Text = $"Exporter: v{exporterVersion}\r\nConverter: v{Version}";
+        }
+
+        private void CreateRows(List<Crash2Json> jsons)
+        {
+            dgvBatch.SuspendLayout();
+            dgvBatch.Rows.Clear();
+
+            string str;
+            int defaultAnimCount = 0, defaultModelCount = 0;
+            Dictionary<string, string> usedNames = [];
+
+            for (int i = 0; i < jsons.Count; i++)
+            {
+                var json = jsons[i];
+
+                string animName = "";
+                str = json.name;
+                if (((str.Length >= 6 && str[^6] == '_') || str.Length == 5) && str.EndsWith('V')) // try to get eid from object name
+                    animName = str[^5..];
+                if (Entry.CheckEIDErrors(animName, true) != string.Empty) // if invalid eid, use default
+                {
+                    animName = GetDefaultEID('V', defaultAnimCount);
+                    defaultAnimCount++;
+                }
+
+                string modelName = "";
+                if (json.collection == null) // if collection is null, treat it as a single-object and try to get model name from anim name
+                {
+                    var sb = new StringBuilder(animName);
+                    sb[4] = 'G';
+                    modelName = sb.ToString();
+                }
+                else
+                {
+                    str = json.collection;
+                    if (((str.Length >= 6 && str[^6] == '_') || str.Length == 5) && str.EndsWith('G'))
+                        modelName = str[^5..];
+                    if (Entry.CheckEIDErrors(modelName, true) != string.Empty)
+                    {
+                        if (usedNames.TryGetValue(str, out string? value))
+                        {
+                            modelName = value;
+                        }
+                        else
+                        {
+                            modelName = GetDefaultEID('G', defaultModelCount);
+                            usedNames.Add(str, modelName);
+                            defaultModelCount++;
+                        }
+                    }
+                }
+
+                DataGridViewRow row = new();
+                row.CreateCells(dgvBatch, json.name, modelName, animName);
+                dgvBatch.Rows.Add(row);
+            }
+
+            dgvBatch.ClearSelection();
+            dgvBatch.CurrentCell = null;
+            dgvBatch.ResumeLayout();
         }
 
         private void cmdSaveSettings_Click(object sender, EventArgs e)
@@ -138,17 +350,25 @@ namespace CrashEdit.CE
         private void cmdConvert_Click(object sender, EventArgs e)
         {
             SaveSettings();
-            BlenderModelConverter.ConvertModel(modelSettings, DebugMode);
+            ConvertModel(modelPath, modelSettings, debug);
         }
 
         private void SaveSettings()
         {
-            modelSettings.Version = Version;
-            modelSettings.ModelJsonPath = lblPath.Text;
+            modelSettings.ConverterVersion = exporterVersion;
+            modelSettings.ExporterVersion = Version;
+            modelSettings.ModelPath = modelPath;
+            modelSettings.ModelList = [];
+            foreach (DataGridViewRow row in dgvBatch.Rows)
+            {
+                modelSettings.ModelList.Add(new ModelList()
+                {
+                    Name = row.Cells[0].Value.ToString(),
+                    ModelEID = row.Cells[1].Value.ToString(),
+                    AnimEID = row.Cells[2].Value.ToString()
+                });
+            }
             modelSettings.ExportPath = lblExportPath.Text;
-            modelSettings.ModelEID = txtModelEID.Text;
-            modelSettings.AnimationEID = txtAnimEID.Text;
-            modelSettings.TpageEID = txtTpageEID.Text;
             modelSettings.ModelScales =
             [
                 (int)numScaleX.Value,
@@ -161,6 +381,14 @@ namespace CrashEdit.CE
                 (float)numScaleFY.Value,
                 (float)numScaleFZ.Value
             ];
+            modelSettings.ScaleMod = (float)numScaleMod.Value;
+            modelSettings.BatchProcessing = chkBatch.Checked;
+            modelSettings.SkipOddFrames = chkSkipOddFrames.Checked;
+            modelSettings.MaxIterations = (int)numMaxStripIterations.Value;
+            modelSettings.MaxKeysPenalty = (double)numMaxLiveKeysWeight.Value;
+            modelSettings.AvgKeysPenalty = (double)numAvgKeysWeight.Value;
+            modelSettings.StripCountPenalty = (double)numStripCountWeight.Value;
+            modelSettings.CompressionMethod = chkCompressModel.Checked ? compressionMethod : -1;
 
             ModelSettingsIO.Save(settingsPath, modelSettings);
             Console.WriteLine("Settings saved.");
@@ -172,8 +400,24 @@ namespace CrashEdit.CE
             string error = Entry.CheckEIDErrors(txtBox.Text, true);
             if (error != string.Empty)
             {
-                e.Cancel = true;
                 DarkMessageBox.ShowError(error, "EID Error");
+                e.Cancel = true;
+            }
+        }
+
+        private void BaseEID_Validating(object sender, CancelEventArgs e)
+        {
+            TextBox txtBox = sender as TextBox ?? throw new InvalidOperationException("Sender is not a TextBox");
+            string error = Entry.CheckEIDErrors(txtBox.Text, true);
+            if (error != string.Empty)
+            {
+                DarkMessageBox.ShowError(error, "EID Error");
+                e.Cancel = true;
+            }
+            if (!txtBox.Text.Contains('_'))
+            {
+                DarkMessageBox.ShowError("EID must contain one '_' charater.", "EID Error");
+                e.Cancel = true;
             }
         }
 
@@ -184,13 +428,6 @@ namespace CrashEdit.CE
             {
                 lblExportPath.Text = fbd.SelectedPath;
             }
-        }
-
-        private void chkHex_CheckedChanged(object sender, EventArgs e)
-        {
-            numScaleX.Hexadecimal =
-            numScaleY.Hexadecimal =
-            numScaleZ.Hexadecimal = chkHex.Checked;
         }
 
         private void ScrollHandlerFunction2(object sender, MouseEventArgs e)
@@ -211,9 +448,195 @@ namespace CrashEdit.CE
             }
         }
 
+        private void dgvBatch_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            if (!(dgvBatch.SelectedCells.Count > 0)) return;
+            if (dgvBatch.SelectedCells[0].ColumnIndex == 0) e.Cancel = true;
+        }
+
         private void chkDebug_CheckedChanged(object sender, EventArgs e)
         {
-            DebugMode = chkDebug.Checked;
+            debug.DebugMode = chkDebug.Checked;
+        }
+
+        private void chkTestCompression_CheckedChanged(object sender, EventArgs e)
+        {
+            debug.TestCompression = chkTestCompression.Checked;
+        }
+
+        private void UpdateScaleRatioState()
+        {
+            float baseProduct = BASE_PRODUCT * (float)numScaleMod.Value;
+            float scalex = (float)numScaleFX.Value * (float)numScaleX.Value / baseProduct;
+            float diffx = Math.Abs(scalex - 1f);
+            lblRatioX.Text = $"Scale:{scalex:F4}  diff:{diffx:F4}";
+            lblRatioX.ForeColor = diffx <= TOLERANCE ? Color.SpringGreen : Color.Crimson;
+
+            float scaley = (float)numScaleFY.Value * (float)numScaleY.Value / baseProduct;
+            float diffy = Math.Abs(scaley - 1f);
+            lblRatioY.Text = $"Scale:{scaley:F4}  diff:{diffy:F4}";
+            lblRatioY.ForeColor = diffy <= TOLERANCE ? Color.SpringGreen : Color.Crimson;
+
+            float scalez = (float)numScaleFZ.Value * (float)numScaleZ.Value / baseProduct;
+            float diffz = Math.Abs(scalez - 1f);
+            lblRatioZ.Text = $"Scale:{scalez:F4}  diff:{diffz:F4}";
+            lblRatioZ.ForeColor = diffz <= TOLERANCE ? Color.SpringGreen : Color.Crimson;
+        }
+
+        private void numScaleFactor_ValueChanged(object sender, EventArgs e)
+        {
+            if (Dirty) return;
+            DarkNumericUpDown num = sender as DarkNumericUpDown ?? throw new InvalidOperationException("Sender is not a DarkNumericUpDown");
+
+            dirty.Push(true);
+            float baseProduct = BASE_PRODUCT * (float)numScaleMod.Value;
+
+            if (chkLinkScaleFactor.Checked)
+            {
+                numScaleFX.Value = num.Value;
+                numScaleFY.Value = num.Value;
+                numScaleFZ.Value = num.Value;
+                if (chkAutoScale.Checked)
+                {
+                    numScaleX.Value = (decimal)Math.Round(baseProduct / (float)numScaleFX.Value);
+                    numScaleY.Value = (decimal)Math.Round(baseProduct / (float)numScaleFY.Value);
+                    numScaleZ.Value = (decimal)Math.Round(baseProduct / (float)numScaleFZ.Value);
+                }
+            }
+            else if (chkAutoScale.Checked)
+            {
+                if (num == numScaleFX)
+                    numScaleX.Value = (decimal)Math.Round(baseProduct / (float)numScaleFX.Value);
+                else if (num == numScaleFY)
+                    numScaleY.Value = (decimal)Math.Round(baseProduct / (float)numScaleFY.Value);
+                else if (num == numScaleFZ)
+                    numScaleZ.Value = (decimal)Math.Round(baseProduct / (float)numScaleFZ.Value);
+            }
+            UpdateScaleRatioState();
+            dirty.Pop();
+        }
+
+        private void numModelScale_ValueChanged(object sender, EventArgs e)
+        {
+            if (Dirty) return;
+            DarkNumericUpDown num = sender as DarkNumericUpDown ?? throw new InvalidOperationException("Sender is not a DarkNumericUpDown");
+
+            dirty.Push(true);
+            float baseProduct = BASE_PRODUCT * (float)numScaleMod.Value;
+            if (chkLinkModelScale.Checked)
+            {
+                numScaleX.Value = num.Value;
+                numScaleY.Value = num.Value;
+                numScaleZ.Value = num.Value;
+                if (chkAutoScale.Checked)
+                {
+                    numScaleFX.Value = (decimal)Math.Round(baseProduct / (float)numScaleX.Value, 2);
+                    numScaleFY.Value = (decimal)Math.Round(baseProduct / (float)numScaleY.Value, 2);
+                    numScaleFZ.Value = (decimal)Math.Round(baseProduct / (float)numScaleZ.Value, 2);
+                }
+            }
+            else if (chkAutoScale.Checked)
+            {
+                if (num == numScaleX)
+                    numScaleFX.Value = (decimal)Math.Round(baseProduct / (float)numScaleX.Value, 2);
+                else if (num == numScaleY)
+                    numScaleFY.Value = (decimal)Math.Round(baseProduct / (float)numScaleY.Value, 2);
+                else if (num == numScaleZ)
+                    numScaleFZ.Value = (decimal)Math.Round(baseProduct / (float)numScaleZ.Value, 2);
+            }
+            UpdateScaleRatioState();
+            dirty.Pop();
+        }
+
+        private void chkCompressModel_CheckedChanged(object sender, EventArgs e)
+        {
+            pnCompressModel.Enabled = chkCompressModel.Checked;
+        }
+
+        private void radioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Dirty) return;
+            RadioButton rb = sender as RadioButton ?? throw new InvalidOperationException("Sender is not a RadioButton");
+            if (rb != null && rb.Checked && rb.Tag != null)
+            {
+                if (int.TryParse(rb.Tag.ToString(), out int v))
+                    compressionMethod = v;
+            }
+        }
+
+        private void chkBatch_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkBatch.Checked)
+            {
+                pnBatch.Enabled = true;
+                dgvBatch.DefaultCellStyle.ForeColor = Color.Gainsboro;
+            }
+            else
+            {
+                pnBatch.Enabled = false;
+                dgvBatch.DefaultCellStyle.ForeColor = Color.Gray;
+            }
+            dgvBatch.ClearSelection();
+            dgvBatch.CurrentCell = null;
+        }
+
+        public static string GetDefaultEID(char c, int i)
+        {
+            string pattern = "00_0" + c;
+            return pattern.Replace("_", Convert62(i + 1).ToString());
+        }
+
+        private static char Convert62(int n)
+        {
+            if (n < 0 || n >= 62)
+                throw new ArgumentOutOfRangeException(nameof(n));
+
+            if (n < 10)          // 0–9
+                return (char)('0' + n);
+
+            if (n < 36)          // a–z
+                return (char)('a' + (n - 10));
+
+            return (char)('A' + (n - 36)); // A–Z
+        }
+
+        private void ModelConverterForm_DragEnter(object sender, DragEventArgs e)
+        {
+            if (!e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.None;
+                return;
+            }
+
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            if (files.Length != 1)
+            {
+                e.Effect = DragDropEffects.None;
+                return;
+            }
+
+            if (string.Equals(Path.GetExtension(files[0]), ".json", StringComparison.OrdinalIgnoreCase))
+                e.Effect = DragDropEffects.Copy;
+            else
+                e.Effect = DragDropEffects.None;
+        }
+
+        private void ModelConverterForm_DragDrop(object sender, DragEventArgs e)
+        {
+            string file = ((string[])e.Data.GetData(DataFormats.FileDrop))[0];
+            openFile(file);
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            base.OnFormClosing(e);
+
+            if (watcher != null)
+            {
+                watcher.EnableRaisingEvents = false;
+                watcher.Dispose();
+                watcher = null;
+            }
         }
     }
 
@@ -237,23 +660,51 @@ namespace CrashEdit.CE
         }
     }
 
+    public class ListItem
+    {
+        public string Name { get; set; }
+        public string Path { get; set; }
+    }
+
+    public class Debug
+    {
+        public bool DebugMode { get; set; }
+        public bool TestCompression { get; set; }
+    }
+
+    public class ModelList
+    {
+        public string Name { get; set; }
+        public string ModelEID { get; set; }
+        public string AnimEID { get; set; }
+    }
+
     public class ModelSettings
     {
-        public string Version { get; set; }
-        public string ModelJsonPath { get; set; }
+        public string ConverterVersion { get; set; }
+        public string ExporterVersion { get; set; }
+        public string ModelPath { get; set; }
+        public List<ModelList> ModelList { get; set; }
         public string ExportPath { get; set; }
-        public string ModelEID { get; set; }
-        public string AnimationEID { get; set; }
-        public string TpageEID { get; set; }
         public int[] ModelScales { get; set; }
         public float[] ScaleFactor { get; set; }
+        public float ScaleMod { get; set; }
+        public bool BatchProcessing { get; set; }
+        public bool SkipOddFrames { get; set; }
+        public int CompressionMethod { get; set; }
+
+        public int MaxIterations { get; set; } 
+        public double MaxKeysPenalty { get; set; }
+        public double AvgKeysPenalty { get; set; }
+        public double StripCountPenalty { get; set; }
     }
 
     public class Crash2Triangle
     {
         public int[] v { get; set; }
         public float[] normal { get; set; }
-        public float[][] uv { get; set; } 
+        public float[][] uv { get; set; }
+        public int[] c { get; set; }
         public int material { get; set; } // TextureIndex
     }
 
@@ -269,14 +720,32 @@ namespace CrashEdit.CE
         public float[] max { get; set; }
     }
 
+    public class Crash2Marker
+    {
+        public string name { get; set; }
+        public float[] pos { get; set; }
+    }
+
     public class Crash2Json
     {
+        public string version { get; set; }
+        public string? collection { get; set; }
+        public string name { get; set; }
         public List<float[]> vertices { get; set; }
         public List<Crash2Triangle> triangles { get; set; }
         public List<List<float[]>> frames { get; set; }
         public List<int[]> colors { get; set; }
         public List<Crash2Material> materials { get; set; }
         public List<List<Crash2Collision>> collisions { get; set; }
+        public List<List<Crash2Marker>> markers { get; set; }
+    }
+
+    public class Tri
+    {
+        public int v0, v1, v2;
+        public bool used = false;
+        public List<int> adj = []; // adjacent tris
+        public int degree;
     }
 
     public readonly struct TriangleKey(int material, byte[] uv0, byte[] uv1, byte[] uv2)
@@ -287,7 +756,14 @@ namespace CrashEdit.CE
         public readonly byte U2 = uv2[0], V2 = uv2[1];
     }
 
-    public readonly struct PackedTexture(int index, string name, string filePath, int bpp, int clutX, int clutY, int destX, int destY, int w, int h, int tpage, TextureInfo info)
+    public readonly struct StructureInfo(byte textureIndex, byte faceOrientation, bool isCC)
+    {
+        public readonly byte TextureIndex = textureIndex;
+        public readonly byte FaceOrientation = faceOrientation;
+        public readonly bool IsCC = isCC;
+    }
+
+    public readonly struct PackedTexture(int index, string name, string filePath, int bpp, int clutX, int clutY, int destX, int destY, int w, int h, int tpage, MaterialInfo info)
     {
         public readonly int Index = index;
         public readonly string Name = name;
@@ -298,139 +774,1269 @@ namespace CrashEdit.CE
         public readonly int Width = w;
         public readonly int Height = h;
         public readonly int TPage = tpage;
-        public readonly TextureInfo Info = info;
+        public readonly MaterialInfo Info = info;
     }
 
-    public struct TextureInfo
+    public readonly struct MaterialInfo(int face, int blend, int offset, int count, int speed, int delay)
     {
-        public int BlendMode;
-        public int AnimOffset; // split texture offset
-        public int AnimCount;
-        public int AnimSpeed;
-        public int AnimDelay;
+        public readonly int FaceOrientation = face;
+        public readonly int BlendMode = blend;
+        public readonly int AnimOffset = offset; // split texture offset
+        public readonly int AnimCount = count;
+        public readonly int AnimSpeed = speed;
+        public readonly int AnimDelay = delay;
     }
 
-    public struct ModelMaterial
+    public readonly struct ModelMaterial(string name, MaterialInfo info, int aniTexIdx, List<ModelTexture> texture)
     {
-        public string Name;
-        public TextureInfo Info;
-        public int TextureIndex;
-        public int AnimatedTextureIndex;
-        public List<ModelTexture> Texture;
+        public readonly string Name = name;
+        public readonly MaterialInfo Info = info;
+        public readonly int AnimatedTextureIndex = aniTexIdx;
+        public readonly List<ModelTexture> Texture = texture;
     }
 
-    public static class BlenderModelConverter
+    public static class TriangleStripBuilder
     {
-        public static Crash2Json LoadJson(string path)
+        public static(int, int) Edge(int x, int y)
+                   => x < y ? (x, y) : (y, x);
+
+        static int FindBestNextTri(List<Tri> tris, int currentTriIndex, int v0, int v1)
         {
-            string json = File.ReadAllText(path);
-            return JsonSerializer.Deserialize<Crash2Json>(json)!;
+            // find adjacent triangle that shares the edge (v0, v1)
+            foreach (var adjIdx in tris[currentTriIndex].adj)
+            {
+                var t = tris[adjIdx];
+                if (t.used) continue;
+
+                int match = 0;
+                if (t.v0 == v0 || t.v0 == v1) match++;
+                if (t.v1 == v0 || t.v1 == v1) match++;
+                if (t.v2 == v0 || t.v2 == v1) match++;
+
+                if (match >= 2)
+                    return adjIdx; // found
+            }
+
+            return -1;
         }
 
-        //
-        // model
-        //
-        private static uint[] BuildPolyData(Crash2Json json, Dictionary<SceneryColor, int> colors, Dictionary<TriangleKey, ModelMaterial> materials, bool debug)
+        private static List<int> BuildStrip(List<Tri> tris, int start)
         {
-            //Console.WriteLine();
-            //Console.WriteLine($"[PolyData]");
-            List<uint> poly = [];
+            tris[start].used = true;
+            var t0 = tris[start];
 
-            // init
-            var mc = new ModelColor(
-                color1: 0,
-                color2: 0
-            );
-            poly.Add(mc.Save());
+            var strip = new List<int> { t0.v0, t0.v1, t0.v2 };
 
-            foreach (var tri in json.triangles)
+            Grow(tris, strip, forward: true, start);
+            Grow(tris, strip, forward: false, start);
+
+            return strip;
+        }
+
+        public static List<List<int>> BuildAllStripsBestOfAttempts(List<Tri> trisTemplate, ModelSettings settings, bool output)
+        {
+            var bestStrips = new List<List<int>>();
+            int bestScore = int.MaxValue;
+
+            BuildAdjacency(trisTemplate, output);
+            UnifyWinding(trisTemplate);
+
+            // strategy 1: degree descending
             {
-                for (int i = 0; i < 3; i++)
+                var tris = CopyTris(trisTemplate);
+                var strips = BuildAllStripsWithStrategy(tris, settings, 1);
+                int score = EvaluateStrips(strips, settings);
+                if (score < bestScore)
                 {
-                    SceneryColor color = new()
+                    bestScore = score;
+                    bestStrips = strips;
+                }
+                if (output)
+                    Console.WriteLine($"Strategy 1: {strips.Count} strips, score: {score}");
+            }
+
+            // strategy 2: degree ascending
+            {
+                var tris = CopyTris(trisTemplate);
+                var strips = BuildAllStripsWithStrategy(tris, settings, 2);
+                int score = EvaluateStrips(strips, settings);
+                if (score < bestScore)
+                {
+                    bestScore = score;
+                    bestStrips = strips;
+                }
+                if (output)
+                    Console.WriteLine($"Strategy 2: {strips.Count} strips, score: {score}");
+            }
+
+            //// strategy 3: random
+            //{
+            //    var random = new Random(123456);
+            //    Console.WriteLine($"Strategy 3: Random attempts (seed: {random.GetHashCode()}); first 10 attempts:");
+            //    for (int iteration = 0; iteration < settings.MaxIterations; iteration++)
+            //    {
+            //        var tris = CopyTris(trisTemplate);
+            //        var strips = BuildAllStripsWithStrategy(tris, settings, 3, random);
+            //        int score = EvaluateStrips(strips, settings);
+            //        if (score < bestScore)
+            //        {
+            //            bestScore = score;
+            //            bestStrips = strips;
+            //        }
+            //        if (iteration < 10)
+            //            Console.WriteLine($"    Attempt {iteration}: {strips.Count} strips, score: {score}");
+            //    }
+            //}
+
+            if (output)
+                Console.WriteLine($"[Strip Generation] Best: {bestStrips.Count} strips with score {bestScore}");
+            return bestStrips;
+        }
+
+        private static int EvaluateStrips(List<List<int>> strips, ModelSettings settings)
+        {
+            var currentLive = new HashSet<int>();
+            var globalRemaining = new Dictionary<int, int>();
+
+            foreach (var s in strips)
+                foreach (var v in s)
+                    globalRemaining[v] = globalRemaining.TryGetValue(v, out int cnt) ? cnt + 1 : 1;
+
+            int maxLive = 0;
+            int totalLive = 0;
+            int sampleCount = 0;
+
+            foreach (var strip in strips)
+            {
+                foreach (var v in strip)
+                {
+                    if (!currentLive.Contains(v))
+                        currentLive.Add(v);
+                    globalRemaining[v]--;
+                    if (globalRemaining[v] == 0)
+                        currentLive.Remove(v);
+
+                    totalLive += currentLive.Count;
+                    sampleCount++;
+                    if (currentLive.Count > maxLive)
+                        maxLive = currentLive.Count;
+                }
+            }
+
+            int avgLive = sampleCount > 0 ? totalLive / sampleCount : 0;
+
+            int score = (int)(maxLive * settings.MaxKeysPenalty
+                      + avgLive * settings.AvgKeysPenalty
+                      + strips.Count * settings.StripCountPenalty);
+
+            return score;
+        }
+
+        public static List<List<int>> ReorderStripsGreedy(IList<List<int>> strips, int keyOffset, bool output)
+        {
+            if (strips == null) return new List<List<int>>();
+            var remaining = new List<List<int>>(strips);
+            var result = new List<List<int>>(strips.Count);
+
+            var keyMap = new Dictionary<int, int>();
+            var freeKeys = new SortedSet<int>();
+            int nextKey = keyOffset;
+            int currentMaxKey = keyOffset - 1;
+
+            var globalRemaining = new Dictionary<int, int>();
+            foreach (var s in strips)
+                foreach (var v in s)
+                    globalRemaining[v] = globalRemaining.TryGetValue(v, out var cnt) ? cnt + 1 : 1;
+
+            var vertexRemaining = new Dictionary<int, int>(globalRemaining);
+
+            int GetOrCreateKeySimulated(int vertexIndex)
+            {
+                if (keyMap.TryGetValue(vertexIndex, out int existingKey))
+                {
+                    vertexRemaining[vertexIndex]--;
+                    if (vertexRemaining[vertexIndex] == 0)
                     {
-                        Red = (byte)json.colors[tri.v[i]][0],
-                        Green = (byte)json.colors[tri.v[i]][1],
-                        Blue = (byte)json.colors[tri.v[i]][2],
-                        Extra = 0
-                    };
-                    int colorIndex = 0;
-                    if (colors.ContainsKey(color))
-                    {
-                        colorIndex = colors.TryGetValue(color, out int idx) ? idx : 0;
+                        keyMap.Remove(vertexIndex);
+                        freeKeys.Add(existingKey);
                     }
+                    return existingKey;
+                }
 
-                    byte textureIndex = 0;
-                    TriangleKey key = new(
-                        tri.material,
-                        ToUVByte(tri.uv[0]),
-                        ToUVByte(tri.uv[1]),
-                        ToUVByte(tri.uv[2])
-                    );
+                int assigned;
+                if (freeKeys.Count > 0)
+                {
+                    assigned = freeKeys.Min;
+                    freeKeys.Remove(assigned);
+                }
+                else
+                {
+                    while (nextKey == ModelTriangle.NullPtr) nextKey++;
+                    assigned = nextKey++;
+                }
 
-                    bool animated = false;
+                keyMap[vertexIndex] = assigned;
 
-                    if (materials.TryGetValue(key, out ModelMaterial mat))
+                if (assigned > currentMaxKey)
+                    currentMaxKey = assigned;
+
+                vertexRemaining[vertexIndex]--;
+                if (vertexRemaining[vertexIndex] == 0)
+                {
+                    keyMap.Remove(vertexIndex);
+                    freeKeys.Add(assigned);
+                }
+
+                return assigned;
+            }
+
+            while (remaining.Count > 0)
+            {
+                int bestIdx = -1;
+                int bestPeakKey = int.MaxValue;
+                int bestNew = int.MaxValue;
+                int bestReuse = -1;
+                int bestScoreLen = -1;
+
+                for (int i = 0; i < remaining.Count; i++)
+                {
+                    var s = remaining[i];
+                    int newVerts = 0;
+                    int reusedVerts = 0;
+                    var seen = new HashSet<int>();
+
+                    var tempKeyMap = new Dictionary<int, int>(keyMap);
+                    var tempFreeKeys = new SortedSet<int>(freeKeys);
+                    var tempVertexRemaining = new Dictionary<int, int>(vertexRemaining);
+                    int tempNextKey = nextKey;
+                    int peakKey = currentMaxKey;
+
+                    foreach (var v in s)
                     {
-                        textureIndex = (byte)mat.TextureIndex;
-
-                        var info = mat.Info;
-                        if (info.AnimCount > 0)
+                        if (seen.Add(v))
                         {
-                            animated = true;
-                            //DebugLog($"    Count: {info.AnimCount}, Delay: {info.AnimDelay}, Speed: {info.AnimSpeed}", true, debug);
+                            if (!keyMap.ContainsKey(v))
+                                newVerts++;
+                            else
+                                reusedVerts++;
 
-                            string baseName = Regex.Replace(mat.Name, @"_[d]\d+", "");
-                            int delay = 0;
-                            var match = Regex.Match(mat.Name, @"_d(\d+)");
-                            if (match.Success)
-                                delay = int.Parse(match.Groups[1].Value);
-
-                            foreach (var kvp in materials)
+                            int assignedKey;
+                            if (tempKeyMap.TryGetValue(v, out int existingKey))
                             {
-                                ModelMaterial _mat = kvp.Value;
-                                if (_mat.Name == mat.Name &&
-                                    _mat.Info.AnimDelay == delay &&
-                                    kvp.Key.U0 == key.U0 && kvp.Key.V0 == key.V0 &&
-                                    kvp.Key.U1 == key.U1 && kvp.Key.V1 == key.V1 &&
-                                    kvp.Key.U2 == key.U2 && kvp.Key.V2 == key.V2)
+                                assignedKey = existingKey;
+                                tempVertexRemaining[v]--;
+                                if (tempVertexRemaining[v] == 0)
                                 {
-                                    textureIndex = (byte)_mat.AnimatedTextureIndex;
-                                    break;
+                                    tempKeyMap.Remove(v);
+                                    tempFreeKeys.Add(existingKey);
+                                }
+                            }
+                            else
+                            {
+                                if (tempFreeKeys.Count > 0)
+                                {
+                                    assignedKey = tempFreeKeys.Min;
+                                    tempFreeKeys.Remove(assignedKey);
+                                }
+                                else
+                                {
+                                    while (tempNextKey == ModelTriangle.NullPtr) tempNextKey++;
+                                    assignedKey = tempNextKey++;
+                                }
+
+                                tempKeyMap[v] = assignedKey;
+
+                                if (assignedKey > peakKey)
+                                    peakKey = assignedKey;
+
+                                tempVertexRemaining[v]--;
+                                if (tempVertexRemaining[v] == 0)
+                                {
+                                    tempKeyMap.Remove(v);
+                                    tempFreeKeys.Add(assignedKey);
                                 }
                             }
                         }
                     }
 
-                    // TriangleSubtype (face orientation)
-                    // 0 = double sided?
-                    // 1 = backward
-                    // 2 = double sided
-                    // 3 = forward
-                    byte triangleSubtype = 3; // temp
-                    byte triangleType = 2; // temp
+                    bool withinLimit = peakKey < ModelTriangle.NullPtr;
+                    bool currentBestWithinLimit = bestPeakKey < ModelTriangle.NullPtr;
 
-                    ModelTriangle mt = new(
-                        texture: textureIndex,
-                        animated: animated,
-                        color: (byte)colorIndex,
-                        key: 0x57, // temp NullPtr
-                        unknown: 0, // temp, can be used for some vfx stuff
-                        type: (byte)ModelTriangle.IndexType.Original, // temp
-                        flag: true, // temp ?
-                        tritype: (byte)((triangleSubtype & 0x3) | ((triangleType & 0x3) << 2))
-                    );
+                    bool isBetter = false;
 
-                    poly.Add(mt.Save());
+                    if (withinLimit && !currentBestWithinLimit)
+                    {
+                        isBetter = true;
+                    }
+                    else if (withinLimit == currentBestWithinLimit)
+                    {
+                        if (peakKey < bestPeakKey ||
+                            (peakKey == bestPeakKey && newVerts < bestNew) ||
+                            (peakKey == bestPeakKey && newVerts == bestNew && reusedVerts > bestReuse) ||
+                            (peakKey == bestPeakKey && newVerts == bestNew && reusedVerts == bestReuse && s.Count > bestScoreLen))
+                        {
+                            isBetter = true;
+                        }
+                    }
+
+                    if (isBetter)
+                    {
+                        bestPeakKey = peakKey;
+                        bestNew = newVerts;
+                        bestReuse = reusedVerts;
+                        bestIdx = i;
+                        bestScoreLen = s.Count;
+                    }
+                }
+
+                var pick = remaining[bestIdx];
+                remaining.RemoveAt(bestIdx);
+                result.Add(pick);
+
+                foreach (var v in pick)
+                {
+                    GetOrCreateKeySimulated(v);
                 }
             }
 
-            poly.Add(0xFFFFFFFF); // footer
+            //if (output)
+            //    Console.WriteLine($"[Reorder] Peak key number: {currentMaxKey} (offset: {keyOffset}, max allowed: {ModelTriangle.NullPtr - 1})");
 
-            return poly.ToArray();
+            return result;
         }
 
-        private static ModelEntry BuildModelEntry(Crash2Json json, Dictionary<TriangleKey, ModelMaterial> materials, int eid, string tpageName, int[] modelScales, bool debug)
+        private static List<Tri> CopyTris(List<Tri> trisTemplate)
+        {
+            var tris = new List<Tri>(trisTemplate.Count);
+            for (int i = 0; i < trisTemplate.Count; i++)
+            {
+                var t = trisTemplate[i];
+                tris.Add(new Tri
+                {
+                    v0 = t.v0,
+                    v1 = t.v1,
+                    v2 = t.v2,
+                    used = false,
+                    adj = new List<int>(t.adj),
+                    degree = t.degree
+                });
+            }
+            return tris;
+        }
+
+        private static List<List<int>> BuildAllStripsWithStrategy(List<Tri> tris, ModelSettings settings, int strategy, Random random = null)
+        {
+            var strips = new List<List<int>>();
+
+            List<int> order;
+            switch (strategy)
+            {
+                case 1: // boundary priority, high degree first
+                    order = tris
+                        .Select((t, i) => new { Index = i, IsBoundary = t.adj.Count < 3, Degree = t.adj.Count })
+                        .OrderByDescending(x => x.IsBoundary)
+                        .ThenByDescending(x => x.Degree)
+                        .Select(x => x.Index)
+                        .ToList();
+                    break;
+
+                case 2: // boundary priority, low degree first
+                    order = tris
+                        .Select((t, i) => new { Index = i, IsBoundary = t.adj.Count < 3, Degree = t.adj.Count })
+                        .OrderByDescending(x => x.IsBoundary)
+                        .ThenBy(x => x.Degree)
+                        .Select(x => x.Index)
+                        .ToList();
+                    break;
+
+                case 3: // smart random - randomize within degree groups
+                    var grouped = tris
+                        .Select((t, i) => new { Index = i, IsBoundary = t.adj.Count < 3, Degree = t.adj.Count })
+                        .GroupBy(x => x.Degree)
+                        .OrderByDescending(g => g.Key) // high degree first
+                        .ToList();
+
+                    order = [];
+                    foreach (var group in grouped)
+                    {
+                        var shuffled = group.OrderBy(x => random.Next()).Select(x => x.Index).ToList();
+                        order.AddRange(shuffled);
+                    }
+                    break;
+
+                default:
+                    order = Enumerable.Range(0, tris.Count).ToList();
+                    break;
+            }
+
+            foreach (var idx in order)
+            {
+                if (tris[idx].used) continue;
+                var strip = BuildStrip(tris, idx);
+                if (strip.Count >= 3)
+                {
+                    strips.Add(strip);
+                }
+            }
+
+            // remaining tris (should not happen)
+            for (int i = 0; i < tris.Count; i++)
+            {
+                if (!tris[i].used)
+                {
+                    var strip = new List<int> { tris[i].v0, tris[i].v1, tris[i].v2 };
+                    tris[i].used = true;
+                    strips.Add(strip);
+                }
+            }
+
+            return strips;
+        }
+
+        private static void Grow(List<Tri> tris, List<int> strip, bool forward, int currentTriIndex)
+        {
+            while (true)
+            {
+                int v0, v1;
+                if (forward)
+                {
+                    v0 = strip[^2];
+                    v1 = strip[^1];
+                }
+                else
+                {
+                    v0 = strip[1];
+                    v1 = strip[0];
+                }
+
+                int next = FindBestNextTri(tris, currentTriIndex, v0, v1);
+                if (next == -1) break;
+
+                var nt = tris[next];
+                var (a, b, c) = OrientToEdge(nt, v0, v1);
+
+                // add vertex c to the strip if edge direction matches,
+                // end the strip if direction does not match (do not use degenerate triangle)
+                if (forward)
+                {
+
+                    if (a == v0 && b == v1)
+                        strip.Add(c);
+                    else
+                        break;
+                }
+                else
+                {
+                    if (a == v1 && b == v0)
+                        strip.Insert(0, c);
+                    else
+                        break;
+                }
+
+                nt.used = true;
+                currentTriIndex = next;
+            }
+        }
+
+        private static void BuildAdjacency(List<Tri> tris, bool output)
+        {
+            foreach (var t in tris)
+            {
+                t.adj.Clear();
+            }
+
+            var map = new Dictionary<(int, int), List<int>>();
+
+            for (int i = 0; i < tris.Count; i++)
+            {
+                var t = tris[i];
+                foreach (var e in new[] { Edge(t.v0, t.v1), Edge(t.v1, t.v2), Edge(t.v2, t.v0) })
+                {
+                    if (!map.TryGetValue(e, out var list))
+                        map[e] = list = [];
+                    list.Add(i);
+                }
+            }
+
+            foreach (var kv in map)
+            {
+                var list = kv.Value;
+                if (list.Count == 2)
+                {
+                    tris[list[0]].adj.Add(list[1]);
+                    tris[list[1]].adj.Add(list[0]);
+                }
+            }
+
+            foreach (var t in tris)
+                t.degree = t.adj.Count;
+
+            int sharedEdges = map.Count(kv => kv.Value.Count == 2);
+            int isolated = tris.Count(t => t.adj.Count == 0);
+            if (output)
+                Console.WriteLine($"[Adjacency] Shared edges: {sharedEdges}, Isolated tris: {isolated}");
+        }
+
+        private static (int a, int b, int c) OrientToEdge(Tri t, int e0, int e1)
+        {
+            int[] v = { t.v0, t.v1, t.v2 };
+            for (int i = 0; i < 3; i++)
+            {
+                int x = v[i], y = v[(i + 1) % 3], z = v[(i + 2) % 3];
+                if (x == e0 && y == e1) return (x, y, z);
+                if (x == e1 && y == e0) return (y, x, z);
+            }
+            return (t.v0, t.v1, t.v2);
+        }
+
+        private static void UnifyWinding(List<Tri> tris)
+        {
+            var visited = new bool[tris.Count];
+            var stack = new Stack<int>();
+            stack.Push(0);
+            visited[0] = true;
+
+            while (stack.Count > 0)
+            {
+                int i = stack.Pop();
+                var t = tris[i];
+
+                foreach (var j in t.adj)
+                {
+                    if (visited[j]) continue;
+
+                    if (!SameEdgeDirection(t, tris[j]))
+                    {
+                        Swap(tris[j]); // swap v1 and v2
+                    }
+
+                    visited[j] = true;
+                    stack.Push(j);
+                }
+            }
+        }
+
+        private static bool SameEdgeDirection(Tri a, Tri b)
+        {
+            int[] av = { a.v0, a.v1, a.v2 };
+            int[] bv = { b.v0, b.v1, b.v2 };
+
+            // look for each edge of a
+            for (int i = 0; i < 3; i++)
+            {
+                int a0 = av[i];
+                int a1 = av[(i + 1) % 3];
+
+                // whether b has the same edge
+                for (int j = 0; j < 3; j++)
+                {
+                    int b0 = bv[j];
+                    int b1 = bv[(j + 1) % 3];
+
+                    if (a0 == b0 && a1 == b1)
+                        return true;   // same direction (abnormal)
+
+                    if (a0 == b1 && a1 == b0)
+                        return false;  // reverse direction (normal)
+                }
+            }
+
+            return false; // no shared edges (usually not)
+        }
+
+        private static void Swap(Tri t)
+        {
+            (t.v1, t.v2) = (t.v2, t.v1);
+        }
+
+        public static void RemapJsonToOutputOrder(Crash2Json json, Dictionary<int, int> originalVertexToOutputIndex)
+        {
+            int oldCount = json.vertices.Count;
+            int assignedCount = originalVertexToOutputIndex.Count;
+
+            int[] oldToNew = Enumerable.Repeat(-1, oldCount).ToArray();
+
+            foreach (var kv in originalVertexToOutputIndex)
+                oldToNew[kv.Key] = kv.Value;
+
+            // assign unassigned old vertices sequentially to the end
+            int nextIdx = assignedCount;
+            for (int i = 0; i < oldCount; i++)
+            {
+                if (oldToNew[i] == -1)
+                    oldToNew[i] = nextIdx++;
+            }
+
+            int newCount = nextIdx;
+
+            // reconstruct the vertex array
+            var newVertices = new List<float[]>(newCount);
+            for (int i = 0; i < newCount; i++) newVertices.Add(null!);
+            for (int old = 0; old < oldCount; old++)
+                newVertices[oldToNew[old]] = json.vertices[old];
+            json.vertices = newVertices;
+
+            // if colors exist for each vertex, sort them
+            if (json.colors != null && json.colors.Count == oldCount)
+            {
+                var newColors = new List<int[]>(newCount);
+                for (int i = 0; i < newCount; i++) newColors.Add(null!);
+                for (int old = 0; old < oldCount; old++)
+                    newColors[oldToNew[old]] = json.colors[old];
+                json.colors = newColors;
+            }
+
+            // frames: sort the vertex lists within each frame
+            if (json.frames != null)
+            {
+                for (int fi = 0; fi < json.frames.Count; fi++)
+                {
+                    var oldFrame = json.frames[fi];
+                    if (oldFrame == null) continue;
+                    var newFrame = new List<float[]>(newCount);
+                    for (int i = 0; i < newCount; i++) newFrame.Add(null!);
+                    for (int old = 0; old < oldFrame.Count; old++)
+                        newFrame[oldToNew[old]] = oldFrame[old];
+                    json.frames[fi] = newFrame;
+                }
+            }
+
+            // triangles: replace the indexes from old to new
+            foreach (var tri in json.triangles)
+            {
+                for (int k = 0; k < tri.v.Length; k++)
+                {
+                    int oldIdx = tri.v[k];
+                    tri.v[k] = oldToNew[oldIdx];
+                }
+            }
+        }
+    }
+
+    public static class BlenderModelConverter
+    {
+        public static List<Crash2Json> LoadModelJson(string path)
+        {
+            string json = File.ReadAllText(path);
+            return JsonSerializer.Deserialize<List<Crash2Json>>(json)!;
+        }
+
+        //
+        // model
+        //
+        private static (uint[], Dictionary<TriangleKey, StructureInfo>, int) BuildPolyDataFromStrip
+            (Crash2Json json, Dictionary<SceneryColor, int> colors, Dictionary<TriangleKey, ModelMaterial> materials, bool compressed, int spVcount, ModelSettings settings, bool debug)
+        {
+            if (debug)
+                Console.WriteLine("[Strips]");
+
+            // TODO: verify
+            byte header = (byte)colors.Count;
+            int keyOffset = (header + 1) / 2;
+            int maxAllowedKeys = ModelTriangle.NullPtr - keyOffset;
+
+            // build initial tris
+            List<Tri> tris = [];
+            for (int i = 0; i < json.triangles.Count; i++)
+            {
+                var t = json.triangles[i];
+                tris.Add(new Tri { v0 = t.v[0], v1 = t.v[1], v2 = t.v[2] });
+            }
+
+            // tris index map (tris -> json)
+            Dictionary<(int, int, int), int> triMap = [];
+            for (int i = 0; i < json.triangles.Count; i++)
+            {
+                var t = json.triangles[i];
+                int a = t.v[0],
+                    b = t.v[1],
+                    c = t.v[2];
+                var key = (a, b, c);
+                if (!triMap.ContainsKey(key))
+                    triMap[key] = i;
+            }
+
+            var strips = BuildAllStripsBestOfAttempts(tris, settings, false);
+            strips = ReorderStripsGreedy(strips, keyOffset, false);
+
+            if (debug)
+            {
+                for (int i = 0; i < strips.Count; i++)
+                    Console.WriteLine($"Strip [{i}]: {string.Join(", ", strips[i])}");
+                Console.WriteLine();
+
+                var edgeUse = new Dictionary<(int, int), int>();
+                foreach (var t in tris)
+                {
+                    foreach (var e in new[] { Edge(t.v0, t.v1), Edge(t.v1, t.v2), Edge(t.v2, t.v0) })
+                    {
+                        edgeUse.TryAdd(e, 0);
+                        edgeUse[e]++;
+                    }
+                }
+                int border = edgeUse.Count(e => e.Value == 1);
+                int manifold = edgeUse.Count(e => e.Value == 2);
+                int broken = edgeUse.Count(e => e.Value > 2);
+                Console.WriteLine($"border:{border}  manifold:{manifold}  broken:{broken}");
+            }
+
+            // pre-pass: determine originalVertexToOutputIndex (performed before creating ModelTriangle)
+            Dictionary<int, int> keyMapTemp = [];
+            byte nextKeyTemp = 0;
+            int GetOrCreateKeyTemp(int vertexIndex, out ModelTriangle.IndexType idxType)
+            {
+                if (keyMapTemp.TryGetValue(vertexIndex, out int existing))
+                {
+                    idxType = ModelTriangle.IndexType.Duplicate;
+                    return existing;
+                }
+                while (nextKeyTemp == ModelTriangle.NullPtr) nextKeyTemp++;
+                int assigned = nextKeyTemp++;
+                keyMapTemp[vertexIndex] = assigned;
+                idxType = ModelTriangle.IndexType.Original;
+                return assigned;
+            }
+
+            Dictionary<int, int> originalVertexToOutputIndex = [];
+            int nextOutputIndex = 0;
+
+            // scan strips first to determine the “first appearance order”
+            foreach (var strip in strips)
+            {
+                for (int j = 0; j < strip.Count; j++)
+                {
+                    int v = strip[j];
+                    var _ = GetOrCreateKeyTemp(v, out ModelTriangle.IndexType idt);
+                    if (idt == ModelTriangle.IndexType.Original)
+                    {
+                        if (!originalVertexToOutputIndex.ContainsKey(v))
+                            originalVertexToOutputIndex[v] = nextOutputIndex++;
+                    }
+                }
+            }
+
+            // sort JSON by output order (destructive)
+            RemapJsonToOutputOrder(json, originalVertexToOutputIndex);
+
+            // rebuild tris/trimap/strips after sorting (with new indexes)
+            tris.Clear();
+            for (int i = 0; i < json.triangles.Count; i++)
+            {
+                var t = json.triangles[i];
+                tris.Add(new Tri { v0 = t.v[0], v1 = t.v[1], v2 = t.v[2] });
+            }
+
+            triMap.Clear();
+            for (int i = 0; i < json.triangles.Count; i++)
+            {
+                var t = json.triangles[i];
+                int[] verts = [t.v[0], t.v[1], t.v[2]];
+                Array.Sort(verts);
+                var key = (verts[0], verts[1], verts[2]);
+                if (!triMap.ContainsKey(key))
+                    triMap[key] = i;
+            }
+
+            strips = BuildAllStripsBestOfAttempts(tris, settings, true);
+            strips = ReorderStripsGreedy(strips, keyOffset, true);
+            if (debug)
+            {
+                Console.WriteLine();
+                Console.WriteLine("[Remapped Strips]");
+                for (int i = 0; i < strips.Count; i++)
+                    Console.WriteLine($"Strip [{i}]: {string.Join(", ", strips[i])}");
+            }
+
+            var vertexRemaining = new Dictionary<int, int>();
+            foreach (var strip in strips)
+            {
+                foreach (var v in strip)
+                {
+                    if (!vertexRemaining.TryGetValue(v, out int cnt)) cnt = 0;
+                    vertexRemaining[v] = cnt + 1;
+                }
+            }
+
+            // PositionKey management — prioritize reuse of the smallest available key
+            var keyMap = new Dictionary<int, int>(); // vertex -> key
+            var freeKeys = new SortedSet<int>();
+            int nextKey = keyOffset;
+
+            int AllocateNewKey()
+            {
+                while (nextKey == ModelTriangle.NullPtr) nextKey++;
+
+                if (nextKey > ModelTriangle.NullPtr)
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine($"[WARNING] Allocating key {nextKey} which exceeds NullPtr ({ModelTriangle.NullPtr})");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    throw new InvalidOperationException("Exceeded maximum key limit. Consider reducing the number of vertices or colors.");
+                }
+
+                return nextKey++;
+            }
+
+            int GetOrCreateKey(int vertexIndex, out ModelTriangle.IndexType idxType)
+            {
+                // if already have the key -> Duplicate
+                if (keyMap.TryGetValue(vertexIndex, out int existingKey))
+                {
+                    idxType = ModelTriangle.IndexType.Duplicate;
+
+                    if (vertexRemaining.TryGetValue(vertexIndex, out int rem))
+                    {
+                        rem--;
+                        vertexRemaining[vertexIndex] = rem;
+                        if (rem == 0)
+                        {
+                            // release the key to make it reusable
+                            keyMap.Remove(vertexIndex);
+                            freeKeys.Add(existingKey);
+                        }
+                    }
+
+                    return existingKey;
+                }
+
+                // use the smallest available key first
+                int assigned;
+                if (freeKeys.Count > 0)
+                {
+                    assigned = freeKeys.Min;
+                    freeKeys.Remove(assigned);
+                }
+                else
+                {
+                    assigned = AllocateNewKey();
+                }
+
+                keyMap[vertexIndex] = assigned;
+                idxType = ModelTriangle.IndexType.Original;
+
+                if (vertexRemaining.TryGetValue(vertexIndex, out int remainingNow))
+                {
+                    remainingNow--;
+                    vertexRemaining[vertexIndex] = remainingNow;
+                    if (remainingNow == 0)
+                    {
+                        // if it won't be used in the future, release it immediately and make it reusable
+                        keyMap.Remove(vertexIndex);
+                        freeKeys.Add(assigned);
+                        assigned = ModelTriangle.NullPtr;
+                    }
+                }
+
+                return assigned;
+            }
+
+            var structureInfo = new Dictionary<TriangleKey, StructureInfo>();
+            byte texIdx = 1;
+            byte animTexIdx = 0;
+
+            var tempEntries = new List<(bool isColor, int Color1, int Color2, int Key, int Vertex, ModelTriangle.IndexType IdxType, int ColorIndex, byte TriangleType, byte TriangleSubtype, byte TextureIndex, bool Animated)>();
+            var entries = new List<(bool isColor, int Color1, int Color2, int Key, int Vertex, ModelTriangle.IndexType IdxType, int ColorIndex, byte TriangleType, byte TriangleSubtype, byte TextureIndex, bool Animated)>();
+            var data = new List<uint>();
+
+            // header
+            ModelColor initColor = new() { Color1 = header };
+            data.Add(initColor.SaveHeader());
+
+            HashSet<int> actualUsedKeys = [];
+            List<int> lastColors = [0, 0];
+
+            // if compressed, create deg tris for sp verts
+            if (compressed)
+            {
+                for (int spV = 0; spV < spVcount; spV++)
+                {
+                    var idt = ModelTriangle.IndexType.Original;
+                    tempEntries.Add((false, -1, -1, Key: keyOffset, Vertex: spV, IdxType: idt, ColorIndex: 0, TriangleType: 2, TriangleSubtype: 3, TextureIndex: 0, Animated: false));
+                    if (spV < spVcount - 1)
+                    {
+                        // og-og-dupl (a-b-b)
+                        spV++;
+                        tempEntries.Add((false, -1, -1, Key: keyOffset, Vertex: spV, IdxType: idt, ColorIndex: 0, TriangleType: 2, TriangleSubtype: 3, TextureIndex: 0, Animated: false));
+                        idt = ModelTriangle.IndexType.Duplicate;
+                        tempEntries.Add((false, -1, -1, Key: keyOffset, Vertex: spV, IdxType: idt, ColorIndex: 0, TriangleType: 2, TriangleSubtype: 3, TextureIndex: 0, Animated: false));
+                    }
+                    else
+                    {
+                        // og-dupl-dupl (a-a-a)
+                        idt = ModelTriangle.IndexType.Duplicate;
+                        tempEntries.Add((false, -1, -1, Key: keyOffset, Vertex: spV, IdxType: idt, ColorIndex: 0, TriangleType: 2, TriangleSubtype: 3, TextureIndex: 0, Animated: false));
+                        tempEntries.Add((false, -1, -1, Key: keyOffset, Vertex: spV, IdxType: idt, ColorIndex: 0, TriangleType: 2, TriangleSubtype: 3, TextureIndex: 0, Animated: false));
+                    }
+                }
+                entries.AddRange(from e in tempEntries
+                                 select e);
+            }
+
+            for (int si = 0; si < strips.Count; si++)
+            {
+                //DebugLog($"Strip [{si}]", true, debug);
+
+                var strip = strips[si];
+                tempEntries.Clear();
+                int offset = 0;
+
+                // create each vertex entry (textures, etc. are undetermined)
+                for (int j = 0; j < strip.Count; j++)
+                {
+                    int v = strip[j];
+                    int assigned = GetOrCreateKey(v, out ModelTriangle.IndexType idt);
+
+                    //if (idt == ModelTriangle.IndexType.Duplicate)
+                    //    actualUsedKeys.Add(assigned);
+                    if (assigned != ModelTriangle.NullPtr)
+                        actualUsedKeys.Add(assigned);
+
+                    int colorIndex = 0; // temp
+
+                    byte triType = (byte)(j < 3 ? 2 : 0); // first 3 tris are CC(2)
+                    byte triSubtype = 0; // temp
+
+                    tempEntries.Add((false, -1, -1, Key: assigned, Vertex: v, IdxType: idt, ColorIndex: colorIndex, TriangleType: triType, triSubtype, TextureIndex: 0, Animated: false));
+                }
+
+                // determine color/texture/animated/triSubtype
+                for (int j = 2; j < strip.Count; j++)
+                {
+                    int a, b, c;
+
+                    bool isCC = j == 2;
+                    if (isCC)
+                    {
+                        // CC
+                        a = strip[j - 2];
+                        b = strip[j - 1];
+                        c = strip[j];
+                    }
+                    else
+                    {
+                        // AA
+                        a = strip[j];
+                        b = strip[j - 1];
+                        c = strip[j - 2];
+                    }
+
+                    //DebugLog($"    {j - 2}: {a}, {b}, {c}", true, debug);
+
+                    byte color0 = 0;
+                    byte color1 = 0;
+                    byte color2 = 0;
+                    byte textureIndex = 0;
+                    bool animated = false;
+                    byte triSubtype = 0; // temp default
+                    bool overrideSubtype = false;
+
+                    int[] verts = [a, b, c];
+                    Array.Sort(verts);
+                    var key = (verts[0], verts[1], verts[2]);
+
+                    //Console.WriteLine($"Key: {key}");
+                    if (triMap.TryGetValue(key, out int triIndex))
+                    {
+                        var srcTri = json.triangles[triIndex];
+
+                        // get index (0-2) in the triangle
+                        int ia = Array.IndexOf(srcTri.v, a);
+                        int ib = Array.IndexOf(srcTri.v, b);
+                        int ic = Array.IndexOf(srcTri.v, c);
+
+                        //DebugLog($"        srcTri: {json.triangles.IndexOf(srcTri)}, mat: {srcTri.material}, order: {ia}, {ib}, {ic}", true, debug);
+
+                        if (ia >= 0 && ib >= 0 && ic >= 0)
+                        {
+                            color0 = (byte)srcTri.c[ia];
+                            color1 = (byte)srcTri.c[ib];
+                            color2 = (byte)srcTri.c[ic];
+                            //DebugLog($"        Color: {color0}, {color1}, {color2}", true, debug);
+
+                            // TODO
+                            if (isCC)
+                            {
+                                // CC[0]-CC[1]-CC[2]
+                                lastColors[0] = color2; // CC[2]
+                                lastColors[1] = color1; // CC[1]
+                            }
+                            else
+                            {
+                                if (lastColors[0] != color1 || lastColors[1] != color2)
+                                {
+                                    tempEntries.Insert(j + offset, (isColor: true, color1, color2, 0, 0, 0, 0, 0, 0, 0, false)); // ModelColor
+                                    offset++;
+                                    lastColors[0] = color1;
+                                    lastColors[1] = color2;
+                                }
+                            }
+
+                            // if not CC, swap uv0 and uv2
+                            byte[] uv0 = !isCC ? ToUVByte(srcTri.uv[ic]) : ToUVByte(srcTri.uv[ia]);
+                            byte[] uv1 = ToUVByte(srcTri.uv[ib]);
+                            byte[] uv2 = !isCC ? ToUVByte(srcTri.uv[ia]) : ToUVByte(srcTri.uv[ic]);
+
+                            // flip v
+                            byte v0 = uv0[1], v1 = uv1[1], v2 = uv2[1];
+                            byte minV = Math.Min(v0, Math.Min(v1, v2));
+                            byte maxV = Math.Max(v0, Math.Max(v1, v2));
+                            uv0[1] = v0 == minV ? maxV : minV;
+                            uv1[1] = v1 == minV ? maxV : minV;
+                            uv2[1] = v2 == minV ? maxV : minV;
+
+                            if (srcTri.material >= 0)
+                            {
+                                TriangleKey tkey = new(srcTri.material, uv0, uv1, uv2);
+                                if (!structureInfo.ContainsKey(tkey))
+                                {
+                                    textureIndex = texIdx;
+
+                                    // search for if animated
+                                    foreach (var oldKvp in materials)
+                                    {
+                                        TriangleKey oldKey = oldKvp.Key;
+                                        if (tkey.Material == oldKey.Material)
+                                        {
+                                            ModelMaterial mat = oldKvp.Value;
+
+                                            int fo = mat.Info.FaceOrientation;
+                                            if (fo > 0 && fo <= 3)
+                                            {
+                                                triSubtype = (byte)fo;
+                                                overrideSubtype = true;
+                                            }
+
+                                            // if animated
+                                            if (mat.Info.AnimCount > 0)
+                                            {
+                                                animated = true;
+                                                textureIndex = animTexIdx;
+                                                animTexIdx++;
+                                                texIdx += (byte)(mat.Info.AnimCount - 1);
+                                            }
+
+                                            break;
+                                        }
+                                    }
+                                    structureInfo.Add(tkey, new StructureInfo(texIdx, triSubtype, isCC));
+                                    texIdx++;
+                                    //DebugLog($"        Created new texture: {textureIndex}", true, debug);
+                                }
+                                else if (structureInfo.TryGetValue(tkey, out StructureInfo str))
+                                {
+                                    textureIndex = str.TextureIndex;
+                                    int fo = str.FaceOrientation;
+                                    if (fo > 0 && fo <= 3)
+                                    {
+                                        triSubtype = (byte)fo;
+                                        overrideSubtype = true;
+                                    }
+                                    //DebugLog($"        Found exist texture: {textureIndex}", true, debug);
+                                }
+                                else
+                                {
+                                    //DebugLog($"        Could not find texture.", true, debug);
+                                }
+                            }
+
+                            // determine the subtype from the winding (using the remapped vertices)
+                            if (!overrideSubtype)
+                            {
+                                try
+                                {
+                                    Vector3 va = new(json.vertices[a][0], json.vertices[a][1], json.vertices[a][2]);
+                                    Vector3 vb = new(json.vertices[b][0], json.vertices[b][1], json.vertices[b][2]);
+                                    Vector3 vc = new(json.vertices[c][0], json.vertices[c][1], json.vertices[c][2]);
+
+                                    Vector3 normalFromBlender = srcTri != null && srcTri.normal != null && srcTri.normal.Length >= 3
+                                        ? new Vector3(srcTri.normal[0], srcTri.normal[1], srcTri.normal[2])
+                                        : Vector3.Zero;
+
+                                    // true -> orientation matches (considered CCW） => subtype = 1
+                                    // false -> reversed orientation (CW) => subtype = 3
+                                    bool correct = IsWindingCorrect(va, vb, vc, normalFromBlender);
+                                    if (isCC)
+                                        triSubtype = correct ? (byte)3 : (byte)1;
+                                    else
+                                        triSubtype = correct ? (byte)1 : (byte)3;
+                                }
+                                catch
+                                {
+                                    triSubtype = 0;
+                                }
+                            }
+                        }
+                    }
+
+                    int i0 = j + offset - 2;
+
+                    // if CC-CC-CC
+                    if (i0 == 0)
+                    {
+                        tempEntries[i0] = (false, -1, -1, tempEntries[i0].Key, tempEntries[i0].Vertex, tempEntries[i0].IdxType, color0, tempEntries[i0].TriangleType, triSubtype, textureIndex, animated);
+                        tempEntries[i0 + 1] = (false, -1, -1, tempEntries[i0 + 1].Key, tempEntries[i0 + 1].Vertex, tempEntries[i0 + 1].IdxType, color1, tempEntries[i0 + 1].TriangleType, triSubtype, textureIndex, animated);
+                        tempEntries[i0 + 2] = (false, -1, -1, tempEntries[i0 + 2].Key, tempEntries[i0 + 2].Vertex, tempEntries[i0 + 2].IdxType, color2, tempEntries[i0 + 2].TriangleType, triSubtype, textureIndex, animated);
+                    }
+                    else
+                    {
+                        if (!tempEntries[i0 + 2].isColor)
+                            tempEntries[i0 + 2] = (false, -1, -1, tempEntries[i0 + 2].Key, tempEntries[i0 + 2].Vertex, tempEntries[i0 + 2].IdxType, color0, tempEntries[i0 + 2].TriangleType, triSubtype, textureIndex, animated);
+                    }
+
+                }
+
+                entries.AddRange(from e in tempEntries
+                                 select e);
+            }
+
+            int maxKey = actualUsedKeys.Count > 0 ? actualUsedKeys.Max() : keyOffset - 1;
+            int uniqueKeys = actualUsedKeys.Count;
+            Console.WriteLine();
+            Console.WriteLine("[Result]");
+            Console.WriteLine($"Strips: {strips.Count}");
+            Console.WriteLine($"Max key number: {maxKey} (offset: {keyOffset}, unique: {uniqueKeys})");
+
+            if (maxKey > ModelTriangle.NullPtr)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"Warning: The keys exceeded {ModelTriangle.NullPtr} (NullPtr). Exceeded by {maxKey - ModelTriangle.NullPtr}.");
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+
+            //int row = 0;
+            foreach (var e in entries)
+            {
+                if (e.isColor)
+                {
+                    var mc = new ModelColor
+                    {
+                        Color1 = (byte)e.Color1,
+                        Color2 = (byte)e.Color2
+                    };
+
+                    data.Add(mc.Save());
+                    //DebugLog($"{row}: color1={e.Color1} color2={e.Color2}", true, debug);
+                }
+                else
+                {
+                    //byte posKey = keyMap[e.Vertex];
+                    var mt = new ModelTriangle(
+                        texture: e.TextureIndex,
+                        animated: e.Animated,
+                        color: (byte)e.ColorIndex,
+                        key: (byte)e.Key,
+                        unknown: 0,
+                        type: (byte)e.IdxType,
+                        flag: true,
+                        tritype: (byte)((e.TriangleSubtype & 0x3) | ((e.TriangleType & 0x3) << 2))
+                    );
+
+                    data.Add(mt.Save());
+                    //DebugLog($"{row}: v{e.Vertex} posKey=0x{e.Key:X3} idxType={e.IdxType} triType={e.TriangleType} triSub={e.TriangleSubtype} tex={e.TextureIndex} col={e.ColorIndex}", true, debug);
+                }
+                //row++;
+            }
+
+            // footer
+            data.Add(0xFFFFFFFF);
+            return (data.ToArray(), structureInfo, strips.Count);
+        }
+
+        private static (List<ModelTexture>, List<ModelExtendedTexture>) BuildTexture(Dictionary<TriangleKey, StructureInfo> structureInfo, Dictionary<TriangleKey, ModelMaterial> materials, bool debug)
+        {
+            //if (debug)
+            //{
+            //    Console.WriteLine();
+            //    Console.WriteLine("[Textures]");
+            //}
+            //int count = 1;
+
+            List<ModelTexture> textures = [];
+            List<ModelExtendedTexture> animatedtextures = [];
+
+            foreach (var kvp in structureInfo)
+            {
+                TriangleKey key = kvp.Key;
+                foreach (var oldKvp in materials)
+                {
+                    TriangleKey oldKey = oldKvp.Key;
+                    if (key.Material == oldKey.Material)
+                    {
+                        var mat = oldKvp.Value;
+                        List<ModelTexture> modelTextures = mat.Texture;
+                        foreach (ModelTexture tex in modelTextures)
+                        {
+                            int blendMode = tex.BlendMode;
+                            int colorMode = tex.ColorMode;
+                            int clutY2 = tex.ClutY >> 2;
+                            int clutY1 = (tex.ClutY & 0x3) << 2;
+                            int clutX = tex.ClutX;
+
+                            int DestX = Math.Min(tex.U1, Math.Min(tex.U2, tex.U3));
+                            int DestY = Math.Min(tex.V1, Math.Min(tex.V2, tex.V3));
+                            int Width = Math.Max(tex.U1, Math.Max(tex.U2, tex.U3)) - DestX;
+                            int Height = Math.Max(tex.V1, Math.Max(tex.V2, tex.V3)) - DestY;
+
+                            //bool isCC = kvp.Value.IsCC;
+
+                            // UVs must be 0 or 1.
+                            int u1 = key.U0 != 0 ? DestX + Width : DestX;
+                            int v1 = key.V0 != 0 ? DestY + Height : DestY;
+                            int u2 = key.U1 != 0 ? DestX + Width : DestX;
+                            int v2 = key.V1 != 0 ? DestY + Height : DestY;
+                            int u3 = key.U2 != 0 ? DestX + Width : DestX;
+                            int v3 = key.V2 != 0 ? DestY + Height : DestY;
+
+                            int tpage = tex.Page;
+
+                            ModelTexture newTex = new(
+                                u1: (byte)u1,
+                                v1: (byte)v1,
+                                cluty1: (byte)clutY1,
+                                clutx: (byte)clutX,
+                                cluty2: (byte)clutY2,
+                                u2: (byte)u2,
+                                v2: (byte)v2,
+                                colormode: (byte)colorMode,
+                                blendmode: (byte)blendMode,
+                                segment: tex.Segment,
+                                textureoffset: (byte)tpage,
+                                u3: (byte)u3,
+                                v3: (byte)v3,
+                                u4: 0,
+                                v4: 0
+                            );
+                            textures.Add(newTex);
+
+                            //if (debug)
+                            //{
+                            //    Console.WriteLine($"[{count}] U: [{u1}, {u2}, {u3}] V: [{v1}, {v2}, {v3}]");
+                            //    count++;
+                            //}
+                        }
+
+                        // if animated texture
+                        if (mat.Info.AnimCount > 0)
+                        {
+                            var info = mat.Info;
+                            animatedtextures.Add(new ModelExtendedTexture(0)
+                            {
+                                Offset = textures.Count - info.AnimCount + 1,
+                                Mask = info.AnimCount - 1,
+                                Delay = info.AnimDelay,
+                                Latency = info.AnimSpeed
+                            });
+                        }
+
+                        break;
+                    }
+                }
+            }
+
+            return (textures, animatedtextures);
+        }
+
+        private static ModelEntry BuildModelEntry(Crash2Json json, Dictionary<TriangleKey, ModelMaterial> materials, int eid, string tpageName, int[] modelScales, bool compressed, int spVcount, ModelSettings settings, Debug debug)
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine();
@@ -460,67 +2066,24 @@ namespace CrashEdit.CE
 
             var colorsList = colors.Keys.ToList();
 
-            // textures
-            List<ModelTexture> textureSet = [];
-            List<ModelExtendedTexture> animatedtextures = [];
-
-            List<ModelMaterial> materialList = materials.Values.ToList();
-
-            int textureOffset = 0;
-
-            for (int idx = 0; idx < materialList.Count; idx++)
-            {
-                ModelMaterial mat = materialList[idx];
-                TextureInfo texInfo = mat.Info;
-
-                textureSet.Add(mat.Texture[0]);
-
-                // update texture index
-                mat.TextureIndex += textureOffset;
-                materialList[idx] = mat;
-
-                // if animated texture
-                if (texInfo.AnimCount > 0)
-                {
-                    // update animated texture index
-                    mat.AnimatedTextureIndex = animatedtextures.Count;
-                    materialList[idx] = mat;
-
-                    int index = mat.TextureIndex;
-
-                    Console.WriteLine($"Created animated texture for {mat.Name}, Index: {animatedtextures.Count}, Offset: {index}");
-                    animatedtextures.Add(new ModelExtendedTexture(0)
-                    {
-                        Offset = index,
-                        Mask = texInfo.AnimCount - 1,
-                        Delay = texInfo.AnimDelay,
-                        Latency = texInfo.AnimSpeed
-                    });
-
-                    for (int i = 1; i < texInfo.AnimCount; i++)
-                    {
-                        textureSet.Add(mat.Texture[i]);
-                        textureOffset++;
-                    }
-                }
-
-            }
-
-            List<ModelTexture> textures = textureSet.ToList();
-
-            var keys = materials.Keys.ToList();
-            for (int i = 0; i < keys.Count; i++)
-                materials[keys[i]] = materialList[i];
-
             // poly
-            var poly = BuildPolyData(json, colors, materials, debug);
+            var polys = BuildPolyDataFromStrip(json, colors, materials, compressed, spVcount, settings, debug.DebugMode);
+            uint[] poly = polys.Item1;
+            var structureInfo = polys.Item2;
+            int stripCount = polys.Item3;
+
+            // textures
+            var textureSet = BuildTexture(structureInfo, materials, debug.DebugMode);
+            List<ModelTexture> textures = textureSet.Item1;
+            List<ModelExtendedTexture> animatedtextures = textureSet.Item2;
 
             // info
             byte[] info = new byte[0x50];
 
+            int spVertCount = spVcount; // for compressed model
             int polyCount = poly.Length;
             int textureCount = textures.Count;
-            int vertexCount = json.triangles.Count * 3;
+            int vertexCount = json.vertices.Count + (spVertCount * 2);
             int colorCount = colorsList.Count;
             int triCount = json.triangles.Count;
             int animTexCount = animatedtextures.Count;
@@ -532,14 +2095,16 @@ namespace CrashEdit.CE
             BitConv.ToInt32(info, 0x0, modelScales[0]);  // scaleX
             BitConv.ToInt32(info, 0x4, modelScales[1]);  // scaleY
             BitConv.ToInt32(info, 0x8, modelScales[2]);  // scaleZ
-            BitConv.ToInt32(info, 0xC, tpage1);          // TPage1            temp
+            BitConv.ToInt32(info, 0xC, tpage1);          // TPage1                  temp
             BitConv.ToInt32(info, 0x2C, polyCount);      // ModelStructCount
+            BitConv.ToInt32(info, 0x30, stripCount);     // StripCount ?
             BitConv.ToInt32(info, 0x34, textureCount);   // TextureCount
             BitConv.ToInt32(info, 0x38, vertexCount);    // VertexCount
             BitConv.ToInt32(info, 0x3C, colorCount);     // ColorCount
             BitConv.ToInt32(info, 0x40, tpageCount);     // TPageCount
             BitConv.ToInt32(info, 0x44, triCount);       // PolyCount
             BitConv.ToInt32(info, 0x48, animTexCount);   // AnimatedTextureCount
+            BitConv.ToInt32(info, 0x4C, spVertCount);    // Special vertex count
 
             return new ModelEntry(
                 info,
@@ -547,14 +2112,11 @@ namespace CrashEdit.CE
                 colorsList,
                 textures,
                 animatedtextures,
-                positions: null!,
+                positions: compressed ? new List<ModelPosition>() : null!,
                 eid
             );
         }
 
-        //
-        // anim
-        //
         private static void DebugLog(string message, bool addLine, bool debug)
         {
             if (debug)
@@ -566,114 +2128,108 @@ namespace CrashEdit.CE
             }
         }
 
-        private static Frame BuildFrame(Crash2Json json, int frameIndex, int eid, float[] scaleFactors, bool debug)
+        //
+        // anim
+        //
+        // TODO: verify?
+        private const float BaseCollisionScale = 50944.0f;
+        private const float BaseFrameScale = 127.0f;
+        private const float BaseModelScale = 0x646;
+        private const float BaseUnit = BaseFrameScale * BaseModelScale;
+
+        private static Frame BuildFrame(Crash2Json json, int frameIndex, int eid, float[] scaleFactors, int[] modelScales, bool compressed, bool debug)
         {
-            DebugLog($"[Frame {frameIndex}]", true, debug);
+             //DebugLog($"[Frame {frameIndex}]", true, debug);
 
-            List<float[]> frameVerts = json.frames[frameIndex];
-            List<Crash2Triangle> triangles = json.triangles;
+            // special vertex
+            List<float[]> spVerts = [];
+            foreach (var marker in json.markers[frameIndex])
+                spVerts.Add(marker.pos);
 
-            // Vertices
+            int spVertCount = spVerts.Count;
+
+            // vertices
+            List<float[]> frameVerts = spVerts;
+            frameVerts.AddRange(json.frames[frameIndex]);
+
+            // vertices
             // only the vertex count is matters ?
-            FrameVertex[] vertices = new FrameVertex[triangles.Count * 3];
-
-            // Temporals
-            float minX = float.MaxValue, minY = float.MaxValue, minZ = float.MaxValue;
-            float maxX = float.MinValue, maxY = float.MinValue, maxZ = float.MinValue;
-
-            foreach (var v in frameVerts)
-            {
-                // change axis order (x, y, z) -> (x, z, -y)
-                minX = Math.Min(minX, v[0]);
-                minY = Math.Min(minY, v[2]);
-                minZ = Math.Min(minZ, -v[1]);
-                maxX = Math.Max(maxX, v[0]);
-                maxY = Math.Max(maxY, v[2]);
-                maxZ = Math.Max(maxZ, -v[1]);
-            }
+            FrameVertex[] vertices = new FrameVertex[frameVerts.Count];
 
             float scaleX = 1.0f / scaleFactors[0];
             float scaleY = 1.0f / scaleFactors[1];
             float scaleZ = 1.0f / scaleFactors[2];
 
-            // TODO: verify?
-            short frameOffsetX = (short)Math.Floor(minX / scaleX);
-            short frameOffsetY = (short)Math.Floor(minY / scaleY);
-            short frameOffsetZ = (short)Math.Floor(minZ / scaleZ);
+            int count = frameVerts.Count;
+            var rawX = new int[count];
+            var rawY = new int[count];
+            var rawZ = new int[count];
 
-            List<byte> lstVerts = [];
-            List<int> overflowedVerts = [];
-            for (int i = 0; i < triangles.Count; i++)
+            int minRawX = int.MaxValue, maxRawX = int.MinValue;
+            int minRawY = int.MaxValue, maxRawY = int.MinValue;
+            int minRawZ = int.MaxValue, maxRawZ = int.MinValue;
+
+            for (int i = 0; i < count; i++)
             {
-                Crash2Triangle tri = triangles[i];
-                int[] triVertIdx = tri.v;
-                
-                // test
-                float[] f0 = frameVerts[triVertIdx[0]];
-                float[] f1 = frameVerts[triVertIdx[1]];
-                float[] f2 = frameVerts[triVertIdx[2]];
-                bool correct = IsWindingCorrect(
-                    new(f0[0], f0[1], f0[2]),
-                    new(f1[0], f1[1], f1[2]),
-                    new(f2[0], f2[1], f2[2]),
-                    new(tri.normal[0], tri.normal[1], tri.normal[2]));
-                string winding = $", WindingCorrect: {correct}";
-                //
+                var v = frameVerts[i];
+                // change axis order (x, y, z) -> (x, z, -y)
+                int rx = (int)Math.Round(v[0] / scaleX);
+                int ry = (int)Math.Round(v[2] / scaleY);
+                int rz = (int)Math.Round(-v[1] / scaleZ);
 
-                DebugLog($"    Triangle {i}: Verts [{triVertIdx[0]}, {triVertIdx[1]}, {triVertIdx[2]}]" + winding, true, debug);
+                rawX[i] = rx;
+                rawY[i] = ry;
+                rawZ[i] = rz;
 
-                for (int j = 0; j < 3; j++)
-                {
-                    int vtxIndex = triVertIdx[j];
-                    float[] v = frameVerts[vtxIndex];
+                if (rx < minRawX) minRawX = rx;
+                if (rx > maxRawX) maxRawX = rx;
+                if (ry < minRawY) minRawY = ry;
+                if (ry > maxRawY) maxRawY = ry;
+                if (rz < minRawZ) minRawZ = rz;
+                if (rz > maxRawZ) maxRawZ = rz;
+            }
 
-                    // change axis order (x, y, z) -> (x, z, -y)
-                    int localX = (int)(Math.Round(v[0] / scaleX) - frameOffsetX);
-                    int localY = (int)(Math.Round(v[2] / scaleY) - frameOffsetY);
-                    int localZ = (int)(Math.Round(-v[1] / scaleZ) - frameOffsetZ);
-                    byte x = ToByte(localX, out bool ox);
-                    byte y = ToByte(localY, out bool oy);
-                    byte z = ToByte(localZ, out bool oz);
+            // choose offsets so that local = raw - offset >= 0
+            int frameOffsetRawX = minRawX;
+            int frameOffsetRawY = minRawY;
+            int frameOffsetRawZ = minRawZ;
 
-                    // swap Y and Z
-                    lstVerts.Add(x);
-                    lstVerts.Add(z);
-                    lstVerts.Add(y);
-                    vertices[i * 3 + j] = new FrameVertex(x, y, z);
+            short frameOffsetX = (short)(frameOffsetRawX * 4);
+            short frameOffsetY = (short)(frameOffsetRawY * 4);
+            short frameOffsetZ = (short)(frameOffsetRawZ * 4);
 
-                    DebugLog($"        [{vtxIndex}] {v[0]}, {v[1]}, {v[2]} -> {x}, {z}, {y}", false, debug);
-                    if (ox || oy || oz)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        DebugLog($"    Warning: Vertex overflowed!", true, debug);
-                        Console.ForegroundColor = ConsoleColor.White;
-                        overflowedVerts.Add(vtxIndex);
-                    }
-                    else
-                    {
-                        DebugLog("", true, debug);
-                    }
-                }
+            List<byte> lstVerts = new();
+            List<int> overflowedVerts = new();
+            for (int i = 0; i < count; i++)
+            {
+                int localX = rawX[i] - frameOffsetRawX;
+                int localY = rawY[i] - frameOffsetRawY;
+                int localZ = rawZ[i] - frameOffsetRawZ;
+
+                byte x = ToByte(localX, out bool ox);
+                byte y = ToByte(localY, out bool oy);
+                byte z = ToByte(localZ, out bool oz);
+
+                // swap Y and Z
+                lstVerts.Add(x);
+                lstVerts.Add(z);
+                lstVerts.Add(y);
+
+                if (ox || oy || oz)
+                    overflowedVerts.Add(i);
             }
 
             if (overflowedVerts.Count > 0)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                DebugLog("", true, debug);
-                Console.WriteLine($"[Frame {frameIndex}] Warning: Some vertices overflowed.");
+                Console.WriteLine($"[Frame {frameIndex}] Warning: Some vertices overflowed ({string.Join(", ", overflowedVerts)})");
                 Console.ForegroundColor = ConsoleColor.White;
             }
 
-            // adjust frame offsets
-            frameOffsetX *= 4;
-            frameOffsetY *= 4;
-            frameOffsetZ *= 4;
-
-            int byteCount = triangles.Count * 3 * 3;
+            int byteCount = frameVerts.Count * 3;
             byte[] verts = new byte[(byteCount + 3) / 4 * 4]; // align to 4 bytes
             Array.Copy(lstVerts.ToArray(), verts, lstVerts.ToArray().Length);
 
-            // convert to temporals bit array
             bool[] temporals = new bool[verts.Length / 4 * 32];
             for (int i = 0; i < verts.Length / 4; i++)
             {
@@ -684,16 +2240,22 @@ namespace CrashEdit.CE
                 }
             }
 
-            // Collision
+            // collisions
+            float[] collScales =
+            [
+                scaleFactors[0] * modelScales[0] / BaseUnit,
+                scaleFactors[1] * modelScales[1] / BaseUnit,
+                scaleFactors[2] * modelScales[2] / BaseUnit,
+            ];
             List<FrameCollision> lstColl = [];
-            foreach (var col in json.collisions[frameIndex])
+            foreach (var coll in json.collisions[frameIndex])
             {
-                lstColl.Add(BuildCollision(col.min, col.max));
+                lstColl.Add(BuildCollision(coll.min, coll.max, collScales));
             }
             FrameCollision[] collisions = lstColl.ToArray();
 
             // HeaderSize
-            int headersize = 0x18 + (collisions.Length * 0x28);
+            int headersize = 0x18 + (collisions.Length * 0x28) + (spVertCount * 3);
 
             return new Frame(
                 xoffset: frameOffsetX,
@@ -704,10 +2266,316 @@ namespace CrashEdit.CE
                 headersize: headersize,
                 collision: collisions,
                 vertices: vertices,
-                specialvertexcount: 0,
+                specialvertexcount: spVertCount,
                 temporals: temporals,
                 isnew: false
             );
+        }
+
+        private static IList<Position> GetVertices(Frame frame)
+        {
+            IList<Position> verts = new Position[frame.Vertices.Count];
+
+            // uncompressed frame
+            bool[] uncompressedbitstream = new bool[frame.Temporals.Length];
+            for (int i = 0; i < uncompressedbitstream.Length / 32; ++i)
+            {
+                for (int j = 0; j < 4; ++j)
+                {
+                    for (int k = 0; k < 8; ++k)
+                    {
+                        uncompressedbitstream[32 * i + 24 - j * 8 + k] = frame.Temporals[32 * i + j * 8 + k]; // replace this with a cool formula one day
+                    }
+                }
+            }
+            int bi = 0;
+            for (int i = 0; i < frame.Vertices.Count; ++i)
+            {
+                byte x = 0;
+                for (int j = 0; j < 8; ++j)
+                {
+                    x |= (byte)(Convert.ToByte(uncompressedbitstream[bi++]) << (7 - j));
+                }
+
+                byte y = 0;
+                for (int j = 0; j < 8; ++j)
+                {
+                    y |= (byte)(Convert.ToByte(uncompressedbitstream[bi++]) << (7 - j));
+                }
+
+                byte z = 0;
+                for (int j = 0; j < 8; ++j)
+                {
+                    z |= (byte)(Convert.ToByte(uncompressedbitstream[bi++]) << (7 - j));
+                }
+
+                verts[i] = new Position(x, y, z);
+            }
+
+            return verts;
+        }
+
+        private static void BuildOptimalSharedPositions(List<Frame> frames, List<ModelPosition> sharedPos, int method)
+        {
+            int spVcount = frames[0].SpecialVertexCount;
+            int vcount = frames[0].Vertices.Count;
+
+            for (int i = 0; i < vcount; i++)
+            {
+                var diffsX = new List<int>();
+                var diffsY = new List<int>();
+                var diffsZ = new List<int>();
+                int prevX = 0, prevY = 0, prevZ = 0;
+
+                foreach (var frame in frames)
+                {
+                    var v = GetVertices(frame)[i];
+
+                    int tx = (int)v.X;
+                    int ty = (int)v.Y;
+                    int tz = (int)v.Z;
+
+                    diffsX.Add(WrapDiff(tx, prevX));
+                    diffsY.Add(WrapDiff(ty, prevY));
+                    diffsZ.Add(WrapDiff(tz, prevZ));
+
+                    prevX = tx;
+                    prevY = ty;
+                    prevZ = tz;
+                }
+
+                int x, y, z;
+
+                switch (method)
+                {
+                    case 1: // average
+                        x = (int)diffsX.Average();
+                        y = (int)diffsY.Average();
+                        z = (int)diffsZ.Average();
+                        break;
+                    case 2: // all 0
+                        x = 0;
+                        y = 0;
+                        z = 0;
+                        break;
+                    case 3: // mid-range
+                        x = (diffsX.Min() + diffsX.Max()) / 2;
+                        y = (diffsY.Min() + diffsY.Max()) / 2;
+                        z = (diffsZ.Min() + diffsZ.Max()) / 2;
+                        break;
+                    default: // median
+                        x = Median(diffsX);
+                        y = Median(diffsY);
+                        z = Median(diffsZ);
+                        break;
+                }
+                ;
+
+                sharedPos[i].X = (byte)(x >> 1); // X is scaled to twice
+                sharedPos[i].Y = (byte)y;
+                sharedPos[i].Z = (byte)z;
+            }
+        }
+
+        public static (List<Frame>, List<ModelPosition>) CompressFrames(List<Frame> frames, int method)
+        {
+            if (frames == null || frames.Count == 0)
+                return (frames, new List<ModelPosition>());
+
+            int spVcount = frames[0].SpecialVertexCount;
+            int vcount = frames[0].Vertices.Count;
+
+            List<ModelPosition> sharedPos = [];
+            for (int i = 0; i < vcount; i++)
+                sharedPos.Add(new ModelPosition(0));
+
+            BuildOptimalSharedPositions(frames, sharedPos, method);
+
+            var maxXBits = new int[vcount];
+            var maxYBits = new int[vcount];
+            var maxZBits = new int[vcount];
+
+            foreach (var frame in frames)
+            {
+                int x_acc = 0, y_acc = 0, z_acc = 0;
+                var verts = GetVertices(frame);
+
+                for (int i = 0; i < vcount; i++)
+                {
+                    var p = sharedPos[i];
+                    var v = verts[i];
+
+                    int targetX, targetY, targetZ;
+
+                    targetX = (int)v.X;
+                    targetY = (int)v.Y;
+                    targetZ = (int)v.Z;
+
+                    int predX = (x_acc + ((p.XBits == 7) ? 0 : (p.X << 1))) & 0xFF;
+                    int predY = (y_acc + ((p.YBits == 7) ? 0 : p.Y)) & 0xFF;
+                    int predZ = (z_acc + ((p.ZBits == 7) ? 0 : p.Z)) & 0xFF;
+
+                    int diffX = WrapDiff(targetX, predX);
+                    int diffY = WrapDiff(targetY, predY);
+                    int diffZ = WrapDiff(targetZ, predZ);
+
+                    int xBits = BitsNeededSigned(diffX);
+                    int yBits = BitsNeededSigned(diffY);
+                    int zBits = BitsNeededSigned(diffZ);
+
+                    if (xBits > maxXBits[i]) maxXBits[i] = xBits;
+                    if (yBits > maxYBits[i]) maxYBits[i] = yBits;
+                    if (zBits > maxZBits[i]) maxZBits[i] = zBits;
+
+                    x_acc = targetX;
+                    y_acc = targetY;
+                    z_acc = targetZ;
+                }
+            }
+
+            for (int i = 0; i < vcount; i++)
+            {
+                if (i == 0)
+                {
+                    // the first one must always be reset
+                    sharedPos[i].X = 0;
+                    sharedPos[i].Y = 0;
+                    sharedPos[i].Z = 0;
+                    sharedPos[i].XBits = 7;
+                    sharedPos[i].YBits = 7;
+                    sharedPos[i].ZBits = 7;
+                }
+                else
+                {
+                    sharedPos[i].XBits = (byte)Math.Clamp(maxXBits[i], 0, 7);
+                    sharedPos[i].YBits = (byte)Math.Clamp(maxYBits[i], 0, 7);
+                    sharedPos[i].ZBits = (byte)Math.Clamp(maxZBits[i], 0, 7);
+                }
+            }
+
+            for (int f = 0; f < frames.Count; f++)
+            {
+                //Console.WriteLine($"Frame [{f}]");
+
+                var temporals = new List<bool>();
+                int x_acc = 0, y_acc = 0, z_acc = 0;
+
+                var frame = frames[f];
+                var verts = GetVertices(frame);
+
+                for (int s = 0; s < spVcount; s++)
+                {
+                    // these vertices are NEVER compressed
+                    WriteSignedBits(frame.Vertices[s].X, 7, temporals);
+                    WriteSignedBits(frame.Vertices[s].Y, 7, temporals);
+                    WriteSignedBits(frame.Vertices[s].Z, 7, temporals);
+                }
+
+                for (int i = 0; i < vcount; i++)
+                {
+                    //Console.WriteLine($"Vertex [{i}]");
+                    var p = sharedPos[i];
+                    var v = verts[i];
+
+                    int targetX = (int)v.X;
+                    int targetY = (int)v.Y;
+                    int targetZ = (int)v.Z;
+
+                    int predX = (x_acc + ((p.XBits == 7) ? 0 : (p.X << 1))) & 0xFF;
+                    int predY = (y_acc + ((p.YBits == 7) ? 0 : p.Y)) & 0xFF;
+                    int predZ = (z_acc + ((p.ZBits == 7) ? 0 : p.Z)) & 0xFF;
+
+                    int diffX = WrapDiff(targetX, predX);
+                    int diffY = WrapDiff(targetY, predY);
+                    int diffZ = WrapDiff(targetZ, predZ);
+
+                    if (p.XBits == 7)
+                    {
+                        sharedPos[i].X = 0;
+                        diffX = targetX;
+                    }
+                    if (p.YBits == 7)
+                    {
+                        sharedPos[i].Y = 0;
+                        diffY = targetY;
+                    }
+                    if (p.ZBits == 7)
+                    {
+                        sharedPos[i].Z = 0;
+                        diffZ = targetZ;
+                    }
+
+                    if (i == 0)
+                    {
+                        WriteSignedBits(targetX, 7, temporals);
+                        WriteSignedBits(targetZ, 7, temporals);
+                        WriteSignedBits(targetY, 7, temporals);
+                    }
+                    else
+                    {
+                        WriteSignedBits(diffX, p.XBits, temporals);
+                        WriteSignedBits(diffZ, p.ZBits, temporals);
+                        WriteSignedBits(diffY, p.YBits, temporals);
+                    }
+
+                    x_acc = targetX;
+                    y_acc = targetY;
+                    z_acc = targetZ;
+                    //Console.WriteLine($"x_acc={x_acc}, y_acc={y_acc}, z_acc={z_acc}");
+                    //Console.WriteLine($"dx={diffX}, XBits={p.XBits}\ndy={diffY}, YBits={p.YBits}\ndz={diffZ}, ZBits={p.ZBits}\n");
+                }
+
+                while (temporals.Count % 32 != 0)
+                    temporals.Add(false);
+
+                frame.Temporals = temporals.ToArray();
+                frames[f] = frame;
+            }
+
+            return (frames, sharedPos);
+        }
+
+        private static void WriteSignedBits(int value, int bits, List<bool> temporals)
+        {
+            if (bits == 7)
+            {
+                byte raw = (byte)value;
+                for (int b = 7; b >= 0; b--)
+                    temporals.Add(((raw >> b) & 1) != 0);
+                return;
+            }
+
+            bool sign = value < 0;
+            temporals.Add(sign);
+            int mag = sign ? value + (1 << bits) : value;
+
+            for (int b = bits - 1; b >= 0; b--)
+                temporals.Add(((mag >> b) & 1) != 0);
+        }
+
+        private static int Median(List<int> v)
+        {
+            v.Sort();
+            return v[v.Count / 2];
+        }
+
+        private static int WrapDiff(int a, int b)
+        {
+            int d = (a - b) & 0xFF;
+            if (d >= 128) d -= 256;
+            return d;
+        }
+
+        private static int BitsNeededSigned(int v)
+        {
+            for (int bits = 0; bits <= 6; bits++)
+            {
+                int min = -(1 << bits);
+                int max = (1 << bits) - 1;
+                if (v >= min && v <= max)
+                    return bits;
+            }
+            return 7;
         }
 
         private static byte ToByte(int v, out bool overflow)
@@ -728,10 +2596,12 @@ namespace CrashEdit.CE
             return dot >= 0f; // true = Orientation matches, false = Orientation is reversed
         }
 
-        private static FrameCollision BuildCollision(float[] min, float[] max)
+        private static FrameCollision BuildCollision(float[] min, float[] max, float[] collScales)
         {
-            // TODO: verify?
-            const float scale = 50944.0f; // 0xC700
+            const float scale = BaseCollisionScale;
+            float sx = scale * collScales[0];
+            float sy = scale * collScales[1];
+            float sz = scale * collScales[2];
 
             // change axis order (x, y, z) -> (x, z, -y)
             float cx = (min[0] + max[0]) * 0.5f;
@@ -745,15 +2615,15 @@ namespace CrashEdit.CE
             return new FrameCollision
             {
                 U = 0, // ?
-                XOffset = ClampToInt32(cx * scale),
-                YOffset = ClampToInt32(cy * scale),
-                ZOffset = ClampToInt32(cz * scale),
-                X1 = ClampToInt32(-ex * scale),
-                Y1 = ClampToInt32(-ey * scale),
-                Z1 = ClampToInt32(-ez * scale),
-                X2 = ClampToInt32(ex * scale),
-                Y2 = ClampToInt32(ey * scale),
-                Z2 = ClampToInt32(ez * scale)
+                XOffset = ClampToInt32(cx * sx),
+                YOffset = ClampToInt32(cy * sy),
+                ZOffset = ClampToInt32(cz * sz),
+                X1 = ClampToInt32(-ex * sx),
+                Y1 = ClampToInt32(-ey * sy),
+                Z1 = ClampToInt32(ez * sz),
+                X2 = ClampToInt32(ex * sx),
+                Y2 = ClampToInt32(ey * sy),
+                Z2 = ClampToInt32(-ez * sz)
             };
         }
 
@@ -764,26 +2634,36 @@ namespace CrashEdit.CE
             return i;
         }
 
-        private static AnimationEntry BuildAnimationEntry(Crash2Json json, int modelEID, int animEID, float[] scaleFactors, bool debug)
+        private static List<Frame> BuildFrames(Crash2Json json, int modelEID, float[] scaleFactors, int[] modelScales, bool compressed, ModelSettings settings, Debug debug)
+        {
+            List<Frame> frames = [];
+            bool skipOdd = settings.SkipOddFrames;
+            int i = 0;
+            foreach (var f in json.frames)
+            {
+                if (!skipOdd || (skipOdd && (i & 1) == 0))
+                    frames.Add(BuildFrame(json, i, modelEID, scaleFactors, modelScales, compressed, debug.DebugMode));
+                i++;
+            }
+
+            return frames;
+        }
+
+        private static AnimationEntry BuildAnimationEntry(Crash2Json json, int modelEID, int animEID, float[] scaleFactors, int[] modelScales, bool compressed, ModelSettings settings, Debug debug)
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine();
             Console.WriteLine($"Building animation with {json.frames.Count} frames...");
             Console.ForegroundColor = ConsoleColor.White;
 
-            // just for logging
             float scaleX = 1.0f / scaleFactors[0];
             float scaleY = 1.0f / scaleFactors[1];
             float scaleZ = 1.0f / scaleFactors[2];
             Console.WriteLine($"Scale: X={scaleX}, Y={scaleY}, Z={scaleZ}");
 
-            List<Frame> frames = [];
-            int i = 0;
-            foreach (var f in json.frames)
-            {
-                frames.Add(BuildFrame(json, i, modelEID, scaleFactors, debug));
-                i++;
-            }
+            List<Frame> frames = BuildFrames(json, modelEID, scaleFactors, modelScales, compressed, settings, debug);
+
+            // non-compressed
             return new AnimationEntry(frames, false, animEID);
         }
 
@@ -876,7 +2756,7 @@ namespace CrashEdit.CE
                         if (!materials.ContainsKey(key))
                         {
                             List<ModelTexture> tex = [];
-                            
+
                             // if animated, add split textures too
                             if (packed.Info.AnimCount > 0)
                             {
@@ -897,13 +2777,7 @@ namespace CrashEdit.CE
                                 tex.Add(BuildModelTexture(tri, packed));
                             }
 
-                            materials.Add(key, new ModelMaterial()
-                            { 
-                                Name = packed.Name,
-                                Info = packed.Info,
-                                TextureIndex = textureIndex,
-                                Texture = tex
-                            });
+                            materials.Add(key, new ModelMaterial(packed.Name, packed.Info, textureIndex, tex));
                             textureIndex++;
                         }
                     }
@@ -961,30 +2835,47 @@ namespace CrashEdit.CE
 
                     int bpp = palette.Length <= 0x40 ? 4 : 8;
 
+                    int faceOrientation = -1;
                     int blendMode = 3; // default
                     int animCount = 0;
-                    int animSpeed = 0;
+                    (int, int) grid = (0, 0);
                     int animDelay = 0;
+                    int animSpeed = 0;
 
-                    var matches = Regex.Matches(mat.name, @"_([asdm])(\d+)"); // a = anim count, s = speed, d = delay, m = blend mode
-                    foreach (Match m in matches)
+                    // a = anim count (cols x rows; e.g. _a4x1)
+                    // d = anim delay
+                    // s = anim speed
+                    // m = blend mode
+                    // t = face orientation (triSubtype)
+
+                    var gridMatch = Regex.Match(mat.name, @"_a(\d+)x(\d+)");
+                    if (gridMatch.Success)
+                    {
+                        int cols = int.Parse(gridMatch.Groups[1].Value);
+                        int rows = int.Parse(gridMatch.Groups[2].Value);
+                        grid = (cols, rows);
+                        animCount = cols * rows;
+                    }
+
+                    var paramMatches = Regex.Matches(mat.name, @"_([sdmf])(\d+)");
+                    foreach (Match m in paramMatches)
                     {
                         string type = m.Groups[1].Value;
                         int value = int.Parse(m.Groups[2].Value);
 
                         switch (type)
                         {
-                            case "a":
-                                animCount = value;
+                            case "d":
+                                animDelay = value;
                                 break;
                             case "s":
                                 animSpeed = value;
                                 break;
-                            case "d":
-                                animDelay = value;
-                                break;
                             case "m":
                                 blendMode = value;
+                                break;
+                            case "f":
+                                faceOrientation = value;
                                 break;
                         }
                     }
@@ -993,7 +2884,7 @@ namespace CrashEdit.CE
 
                     if (animCount > 0)
                     {
-                        List<Bitmap> splitTex = SplitPng(filePath, animCount);
+                        List<Bitmap> splitTex = SplitPng(filePath, grid.Item1, grid.Item2);
 
                         for (int j = 0; j < splitTex.Count; j++)
                         {
@@ -1018,14 +2909,7 @@ namespace CrashEdit.CE
                                 Bpp = bpp,
                                 Width = w,
                                 Height = h,
-                                Info = new TextureInfo
-                                {
-                                    BlendMode = blendMode,
-                                    AnimOffset = j,
-                                    AnimCount = animCount,
-                                    AnimSpeed = animSpeed,
-                                    AnimDelay = animDelay
-                                }
+                                Info = new MaterialInfo(faceOrientation, blendMode, j, animCount, animSpeed, animDelay)
                             });
                             Console.WriteLine($"    Split texture [{j}]: {w}x{h}");
                         }
@@ -1042,14 +2926,7 @@ namespace CrashEdit.CE
                             Bpp = bpp,
                             Width = bpp == 4 ? width : width * 2,
                             Height = height,
-                            Info = new TextureInfo
-                            {
-                                BlendMode = blendMode,
-                                AnimOffset = 0,
-                                AnimCount = 0,
-                                AnimSpeed = 0,
-                                AnimDelay = 0
-                            }
+                            Info = new MaterialInfo(faceOrientation, blendMode, 0, 0, 0, 0)
                         });
                     }
                 }
@@ -1063,41 +2940,52 @@ namespace CrashEdit.CE
             return (tex.Item1, tex.Item2);
         }
 
-        private static List<Bitmap> SplitPng(string path, int animCount)
+        private static List<Bitmap> SplitPng(string path, int cols, int rows)
         {
             Bitmap src = new(path);
 
-            if (src.Width % animCount != 0)
-                throw new Exception("Width not divisible by animCount");
+            if (src.Width % cols != 0 || src.Height % rows != 0)
+                throw new Exception("Image size not divisible by grid.");
 
-            int frameWidth = src.Width / animCount;
-            int height = src.Height;
+            int frameWidth = src.Width / cols;
+            int frameHeight = src.Height / rows;
 
-            List<Bitmap> frames = new(animCount);
+            List<Bitmap> frames = new(cols * rows);
 
-            for (int i = 0; i < animCount; i++)
+            for (int y = 0; y < rows; y++)
             {
-                Rectangle rect = new(i * frameWidth, 0, frameWidth, height);
+                for (int x = 0; x < cols; x++)
+                {
+                    Rectangle rect = new(
+                        x * frameWidth,
+                        y * frameHeight,
+                        frameWidth,
+                        frameHeight
+                    );
 
-                Bitmap frame = src.Clone(rect, src.PixelFormat);
-                frame.Palette = src.Palette;
-                frames.Add(frame);
+                    Bitmap frame = src.Clone(rect, src.PixelFormat);
+                    frame.Palette = src.Palette;
+                    frames.Add(frame);
+                }
             }
 
             src.Dispose();
             return frames;
         }
 
+
+        private static char Convert36(int n)
+        {
+            if (n < 10)
+                return (char)('0' + n);
+            return (char)('a' + (n - 10));
+        }
+
         //
         // run
         //
-        public static void ConvertModel(ModelSettings settings, bool debug)
+        public static void ConvertModel(string path, ModelSettings settings, Debug debug)
         {
-            string path = settings.ModelJsonPath;
-            var json = LoadJson(path);
-            string saveDirectory = settings.ExportPath;
-            string fileName = Path.GetFileNameWithoutExtension(path);
-
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine();
             Console.WriteLine("================================");
@@ -1105,47 +2993,245 @@ namespace CrashEdit.CE
             Console.WriteLine("================================");
             Console.ForegroundColor = ConsoleColor.White;
 
-            string modelName = settings.ModelEID;
-            string animName = settings.AnimationEID;
-            string tpageName = settings.TpageEID;
+            List<Crash2Json> jsons = LoadModelJson(path);
+            bool compressed = settings.CompressionMethod >= 0;
+            bool batchProcessing = settings.BatchProcessing;
+
+            string tpageName = GetDefaultEID('T', 0);
             int[] modelScales = settings.ModelScales;
             float[] scaleFactors = settings.ScaleFactor;
 
-            var tex = BuildTPages(json, tpageName);
-            List<TextureChunk> tpages = tex.Item1;
-            List<PackedTexture> packedTextures = tex.Item2;
-            Dictionary<TriangleKey, ModelMaterial> materials = BuildMaterials(json, packedTextures);
+            string saveDirectory = settings.ExportPath;
+            string fileName = Path.GetFileNameWithoutExtension(path);
 
-            int modelEID = Entry.ENameToEID(modelName);
-            int animEID = Entry.ENameToEID(animName);
-            ModelEntry model = BuildModelEntry(json, materials, modelEID, tpageName, modelScales, debug);
-            AnimationEntry animation = BuildAnimationEntry(json, modelEID, animEID, scaleFactors, debug);
+            Dictionary<string, List<Frame>> allFrames = [];
+            Dictionary<string, ModelEntry> modelsToSave = [];
+            List<(AnimationEntry, string)> animationsToSave = [];
+            List<List<(TextureChunk, string)>> texturesToSave = [];
+            byte[] fileBytes;
+            string savePath;
+            string str;
+            string modelName, animName;
+            int defaultModelCount = 0, defaultAnimCount = 0;
+            Dictionary<string, string> usedNames = [];
+
+            for (int p = 0; p < jsons.Count; p++)
+            {
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine();
+                Console.WriteLine($"==== Object [{p}] ====");
+                Console.ForegroundColor = ConsoleColor.White;
+
+                Crash2Json json = jsons[p];
+
+                bool skipExport = batchProcessing && p > 0;
+                int spVcount = json.markers[0].Count;
+
+                // anim
+                animName = "";
+                str = json.name;
+                if (((str.Length >= 6 && str[^6] == '_') || str.Length == 5) && str.EndsWith('V'))
+                    animName = str[^5..];
+                if (Entry.CheckEIDErrors(animName, true) != string.Empty)
+                {
+                    animName = GetDefaultEID('V', defaultAnimCount);
+                    defaultAnimCount++;
+                }
+
+                // model
+                modelName = "";
+                if (json.collection == null) // if collection is null, treat it as a single-object and try to get model name from anim name
+                {
+                    var sb = new StringBuilder(animName);
+                    sb[4] = 'G';
+                    modelName = sb.ToString();
+                }
+                else
+                {
+                    str = json.collection;
+                    if (((str.Length >= 6 && str[^6] == '_') || str.Length == 5) && str.EndsWith('G'))
+                        modelName = str[^5..];
+                    if (Entry.CheckEIDErrors(modelName, true) != string.Empty)
+                    {
+                        if (usedNames.TryGetValue(str, out string? value))
+                        {
+                            modelName = value;
+                        }
+                        else
+                        {
+                            modelName = GetDefaultEID('G', defaultModelCount);
+                            usedNames.Add(str, modelName);
+                            defaultModelCount++;
+                        }
+                    }
+                }
+
+                int modelEID = Entry.ENameToEID(modelName);
+                int animEID = Entry.ENameToEID(animName);
+
+                var tex = BuildTPages(json, tpageName);
+                List<TextureChunk> tpages = tex.Item1;
+                List<PackedTexture> packedTextures = tex.Item2;
+                Dictionary<TriangleKey, ModelMaterial> materials = BuildMaterials(json, packedTextures);
+
+                ModelEntry model = BuildModelEntry(json, materials, modelEID, tpageName, modelScales, compressed, spVcount, settings, debug);
+                AnimationEntry animation = BuildAnimationEntry(json, modelEID, animEID, scaleFactors, modelScales, compressed, settings, debug);
+
+                if (allFrames.TryAdd(modelName, new List<Frame>(animation.Frames)))
+                {
+                    // added new - create a copy of the frames list
+                }
+                else
+                {
+                    // already exists, append frames
+                    allFrames[modelName].AddRange(animation.Frames);
+                    Console.WriteLine($"Appended {animation.Frames.Count} frames to model '{modelName}' (total now {allFrames[modelName].Count} frames)");
+                }
+
+                // add model to list
+                if (modelsToSave.TryAdd(modelName, model))
+                {
+                    // added new
+                }
+
+                // add animation to list
+                animationsToSave.Add((animation, modelName));
+
+                // add tpages to list
+                if (!skipExport)
+                {
+                    List<(TextureChunk, string)> texture = [];
+                    for (int i = 0; i < tpages.Count; i++)
+                    {
+                        var tpage = tpages[i];
+                        savePath = Path.Combine(saveDirectory, $"{fileName}_{tpage.EName}.nschunk");
+                        texture.Add((tpage, savePath));
+                    }
+                    texturesToSave.Add(texture);
+                }
+
+                if (!batchProcessing)
+                    break;
+            }
+
+            Dictionary<string, List<Frame>>? allCompressedFrames = [];
+            Dictionary<string, List<ModelPosition>>? allPositions = [];
+
+            // compress frames if needed
+            if (compressed)
+            {
+                Console.WriteLine();
+                Console.WriteLine("[Model Compression]");
+                (List<Frame>, List<ModelPosition>) compressedItem = new();
+
+                foreach (var kvp in allFrames)
+                {
+                    modelName = kvp.Key;
+                    List<Frame> frames = kvp.Value;
+                    Console.WriteLine($"Compressing frames for model '{kvp.Key}'...");
+
+                    if (debug.TestCompression)
+                    {
+                        int bestLength = int.MaxValue;
+                        int bestMethod = 0;
+                        for (int m = 0; m < 4; m++)
+                        {
+                            List<Frame> copy = frames
+                                .Select(x => new Frame(x.XOffset, x.YOffset, x.ZOffset, x.Unknown, x.ModelEID, x.HeaderSize, x.Collision, x.Vertices, x.SpecialVertexCount, x.Temporals, x.IsNew))
+                                .ToList();
+                            var comp = CompressFrames(copy, m);
+
+                            int newLength = comp.Item1[0].Temporals.Length;
+
+                            // if better, store it
+                            if (newLength < bestLength)
+                            {
+                                bestLength = newLength;
+                                bestMethod = m;
+                                compressedItem = comp;
+                            }
+                            Console.WriteLine($"    Method {m}: {newLength / 8} bytes");
+                        }
+                        Console.WriteLine($"    Best={bestMethod}");
+                    }
+                    else
+                    {
+                        compressedItem = CompressFrames(frames, settings.CompressionMethod);
+                        Console.WriteLine($"    Method {settings.CompressionMethod}: {compressedItem.Item1[0].Temporals.Length / 8} bytes");
+                    }
+
+                    allCompressedFrames.Add(modelName, compressedItem.Item1);
+                    allPositions.Add(modelName, compressedItem.Item2);
+                }
+            }
 
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine();
             Console.WriteLine($"Saving...");
             Console.ForegroundColor = ConsoleColor.White;
 
-            // save model
-            byte[] fileBytes = model.Save();
-            string savePath = Path.Combine(saveDirectory, $"{fileName}_{modelName}.nsentry");
-            File.WriteAllBytes(savePath, fileBytes);
-            Console.WriteLine($"    Saved model entry:     {savePath}");
+            // save models
+            foreach (var kvp in modelsToSave)
+            {
+                ModelEntry model = kvp.Value;
+                modelName = kvp.Key;
 
-            // save animation
-            fileBytes = animation.Save();
-            savePath = Path.Combine(saveDirectory, $"{fileName}_{animName}.nsentry");
-            File.WriteAllBytes(savePath, fileBytes);
-            Console.WriteLine($"    Saved animation entry: {savePath}");
+                if (compressed)
+                {
+                    List<ModelPosition> positions = allPositions[modelName];
+                    foreach (var pos in positions)
+                        model.Positions.Add(pos);
+                }
+
+                fileBytes = model.Save();
+                savePath = Path.Combine(saveDirectory, $"{fileName}_{modelName}.nsentry");
+                File.WriteAllBytes(savePath, fileBytes);
+                Console.WriteLine($"    Saved model entry: {savePath}");
+            }
+
+            // save animations
+            Dictionary<string, int> modelOffsets = [];
+            foreach (var item in animationsToSave)
+            {
+                AnimationEntry anim = item.Item1;
+                string name = Entry.EIDToEName(anim.EID);
+                modelName = item.Item2;
+
+                if (!modelOffsets.ContainsKey(modelName))
+                    modelOffsets[modelName] = 0;
+
+                //Console.WriteLine($"Processing animation entry for saving: {name}, Model: {modelName}, {anim.Frames.Count} frames (offset: {modelOffsets[modelName]})");
+
+                if (compressed)
+                {
+                    List<Frame> frames = allCompressedFrames[modelName];
+                    int frameCount = anim.Frames.Count;
+                    int currentOffset = modelOffsets[modelName];
+
+                    for (int i = 0; i < frameCount; i++)
+                    {
+                        anim.Frames[i] = frames[i + currentOffset];
+                    }
+
+                    modelOffsets[modelName] += frameCount;
+                }
+
+                fileBytes = anim.Save();
+                savePath = Path.Combine(saveDirectory, $"{fileName}_{name}.nsentry");
+                File.WriteAllBytes(savePath, fileBytes);
+                Console.WriteLine($"    Saved animation entry: {savePath}");
+            }
 
             // save tpages
-            for (int i = 0; i < tpages.Count; i++)
+            foreach (var items in texturesToSave)
             {
-                var tpage = tpages[i];
-                fileBytes = tpage.Save();
-                savePath = Path.Combine(saveDirectory, $"{fileName}_{tpage.EName}.nschunk");
-                File.WriteAllBytes(savePath, fileBytes);
-                Console.WriteLine($"    Saved texture page:    {savePath}");
+                foreach (var item in items)
+                {
+                    fileBytes = item.Item1.Save();
+                    savePath = item.Item2;
+                    File.WriteAllBytes(savePath, fileBytes);
+                    Console.WriteLine($"    Saved texture page:    {savePath}");
+                }
             }
 
             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -1168,7 +3254,7 @@ namespace CrashEdit.CE
             public int Bpp;
             public int Width;
             public int Height;
-            public TextureInfo Info;
+            public MaterialInfo Info;
         }
 
         private struct SkylineNode
@@ -1479,3 +3565,4 @@ namespace CrashEdit.CE
         }
     }
 }
+

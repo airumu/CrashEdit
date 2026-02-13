@@ -1,8 +1,9 @@
-﻿using System.Drawing;
-using System.Drawing.Imaging;
-using System.Windows.Forms;
-using AltUI.Forms;
+﻿using AltUI.Forms;
 using CrashEdit.CE.Properties;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace CrashEdit.Crash
 {
@@ -62,6 +63,8 @@ namespace CrashEdit.Crash
             byte[] rgba5551List = ConvertPaletteToRGBA5551(palette);
             int paletteCount = rgba5551List.Length / 2;
             int bpp = (paletteCount <= 16) ? 4 : 8;
+            if (paletteCount == 0)
+                throw new Exception("Texture has no color palette");
 
             if (bpp != oldBpp)
             {
@@ -339,13 +342,57 @@ namespace CrashEdit.Crash
         public static ushort ConvertToRGBA5551(byte r, byte g, byte b, byte a)
         {
             ushort rgba5551 = 0;
+            int stp = (r < 8 && g < 8 && b < 8) ? 0 : 1; // if it's pure black, don't set it
 
             rgba5551 |= (ushort)((r >> 3) << 10);  // Red: 5 bits
             rgba5551 |= (ushort)((g >> 3) << 5);   // Green: 5 bits
             rgba5551 |= (ushort)((b >> 3));        // Blue: 5 bits
-            rgba5551 |= (ushort)((a >= 128 ? 0 : 1) << 15);  // Alpha: 1 bit
+            rgba5551 |= (ushort)(stp << 15);       // STP bit: 1 bit
 
             return rgba5551;
+        }
+
+        public static int CountUniqueColors(Bitmap bitmap)
+        {
+            var rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
+            var data = bitmap.LockBits(rect, ImageLockMode.ReadOnly, bitmap.PixelFormat);
+
+            try
+            {
+                int bytesPerPixel = Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
+                int stride = data.Stride;
+                int height = bitmap.Height;
+                int width = bitmap.Width;
+
+                HashSet<int> colors = [];
+
+                byte[] buffer = new byte[stride * height];
+                Marshal.Copy(data.Scan0, buffer, 0, buffer.Length);
+
+                for (int y = 0; y < height; y++)
+                {
+                    int row = y * stride;
+
+                    for (int x = 0; x < width; x++)
+                    {
+                        int i = row + x * bytesPerPixel;
+
+                        byte b = buffer[i];
+                        byte g = buffer[i + 1];
+                        byte r = buffer[i + 2];
+                        byte a = bytesPerPixel == 4 ? buffer[i + 3] : (byte)255;
+
+                        int argb = (a << 24) | (r << 16) | (g << 8) | b;
+                        colors.Add(argb);
+                    }
+                }
+
+                return colors.Count;
+            }
+            finally
+            {
+                bitmap.UnlockBits(data);
+            }
         }
 
         public static (byte[] rawImageData, byte[] palette, int width, int height) ProcessPng(Bitmap? image, string? filePath, bool isBGRA, int oldBpp, bool quantize)
@@ -354,14 +401,8 @@ namespace CrashEdit.Crash
                 Console.WriteLine();
             Bitmap bitmap = image ?? new(filePath);
 
-            // quantize 8bpp to 4bpp if needed
-            if (oldBpp == 4 && bitmap.PixelFormat == PixelFormat.Format8bppIndexed && quantize)
-            {
-                if (Settings.Default.OutputCopyTextureResult)
-                    Console.WriteLine($"Input pixel format: {bitmap.PixelFormat}; start quantization...");
-                OctreeQuantizer quantizer = new OctreeQuantizer(16);
-                bitmap = quantizer.Quantize4bpp(bitmap);
-            }
+            if (bitmap.Width <= 0 || bitmap.Height <= 0)
+                throw new InvalidOperationException("Invalid image dimensions.");
 
             // check if the pixel format is supported
             if (bitmap.PixelFormat != PixelFormat.Format4bppIndexed &&
@@ -372,6 +413,14 @@ namespace CrashEdit.Crash
 
                 if (Settings.Default.OutputCopyTextureResult)
                     Console.WriteLine($"Input pixel format: {bitmap.PixelFormat}; start quantization...");
+
+                // determine the target bpp based on the number of unique colors if oldBpp is not provided
+                if (oldBpp < 0)
+                {
+                    int count = CountUniqueColors(bitmap);
+                    oldBpp = (count <= 16) ? 4 : 8;
+                }
+
                 if (oldBpp == 4)
                 {
                     OctreeQuantizer quantizer = new OctreeQuantizer(16);
@@ -384,9 +433,13 @@ namespace CrashEdit.Crash
                 }
             }
 
-            if (bitmap.Width <= 0 || bitmap.Height <= 0)
+            // quantize to 4bpp if oldBpp is 4bpp but the input image is 8bpp, and quantization is allowed
+            if (oldBpp == 4 && bitmap.PixelFormat == PixelFormat.Format8bppIndexed && quantize)
             {
-                throw new InvalidOperationException("Invalid image dimensions.");
+                if (Settings.Default.OutputCopyTextureResult)
+                    Console.WriteLine($"Input pixel format: {bitmap.PixelFormat}; start quantization...");
+                OctreeQuantizer quantizer = new OctreeQuantizer(16);
+                bitmap = quantizer.Quantize4bpp(bitmap);
             }
 
             ColorPalette palette = bitmap.Palette;
@@ -415,6 +468,7 @@ namespace CrashEdit.Crash
             }
 
             byte[] rawImageData = ExtractRawImageData(bitmap);
+            //Console.WriteLine($"Image size: {rawImageData.Length} bytes, Palette size: {paletteData.Length} bytes");
             return (rawImageData, paletteData, bitmap.Width, bitmap.Height);
         }
 

@@ -83,7 +83,11 @@
       <None Remove="Embeds\Images\Painting.gif" />
       <None Remove="Embeds\Images\Paste.png" />
       <None Remove="Embeds\Images\Pinion.png" />
+      <None Remove="Embeds\Images\Playstation.png" />
+      <None Remove="Embeds\Images\Plugin.png" />
+      <None Remove="Embeds\Images\PluginDisabled.png" />
       <None Remove="Embeds\Images\Previous.png" />
+      <None Remove="Embeds\Images\Processor.png" />
       <None Remove="Embeds\Images\README.md" />
       <None Remove="Embeds\Images\Sitemap.png" />
       <None Remove="Embeds\Images\SpeakerBlue.png" />
@@ -156,7 +160,11 @@
       <EmbeddedResource Include="Embeds\Images\Painting.gif" />
       <EmbeddedResource Include="Embeds\Images\Paste.png" />
       <EmbeddedResource Include="Embeds\Images\Pinion.png" />
+      <EmbeddedResource Include="Embeds\Images\Playstation.png" />
+      <EmbeddedResource Include="Embeds\Images\Plugin.png" />
+      <EmbeddedResource Include="Embeds\Images\PluginDisabled.png" />
       <EmbeddedResource Include="Embeds\Images\Previous.png" />
+      <EmbeddedResource Include="Embeds\Images\Processor.png" />
       <EmbeddedResource Include="Embeds\Images\Sitemap.png" />
       <EmbeddedResource Include="Embeds\Images\SpeakerBlue.png" />
       <EmbeddedResource Include="Embeds\Images\SpeakerWhite.png" />
@@ -170,6 +178,10 @@
       <EmbeddedResource Include="Embeds\Images\ThingViolet.gif" />
       <EmbeddedResource Include="Embeds\Images\ThingYellow.gif" />
       <EmbeddedResource Include="Embeds\Images\Wrench.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include=".github\copilot-instructions.md" />
     </ItemGroup>
 
     <ItemGroup>
