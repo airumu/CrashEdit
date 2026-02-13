@@ -11,6 +11,7 @@ namespace CrashEdit.CE
         {
             AnimationEntry = animationentry;
             AddMenuSeparator();
+            AddMenu("Compress Animtaion", "Container", Menu_Compress);
             AddMenu("Decompress Animtaion", "Container", Menu_Decompress);
             AddMenuSeparator();
             AddMenu(CrashUI.Properties.Resources.AnimationEntryController_AcExportAsOBJ, Menu_Export_OBJ);
@@ -24,6 +25,19 @@ namespace CrashEdit.CE
         }
 
         public AnimationEntry AnimationEntry { get; }
+
+        private void Menu_Compress()
+        {
+            int modelEID = AnimationEntry.Frames[0].ModelEID;
+            ModelEntry? model = GetEntry<ModelEntry>(modelEID) ?? throw new InvalidOperationException("Linked model not found.");
+            var animodel = BlenderModelConverter.CompressFrames(AnimationEntry.Frames, 0);
+
+            AnimationEntry newAnim = new(animodel.Item1, AnimationEntry.IsNew, AnimationEntry.EID);
+            ModelEntry newModel = new(model.Info, model.PolyData, model.Colors, model.Textures, model.AnimatedTextures, animodel.Item2, model.EID);
+
+            FileUtil.SaveFile(newAnim.Save(), FileFilters.NSEntry, FileFilters.Any);
+            FileUtil.SaveFile(newModel.Save(), FileFilters.NSEntry, FileFilters.Any);
+        }
 
         private void Menu_Decompress()
         {
