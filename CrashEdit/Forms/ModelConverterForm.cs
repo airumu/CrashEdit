@@ -38,13 +38,13 @@ namespace CrashEdit.CE
         private FileSystemWatcher? watcher;
         private readonly System.Windows.Forms.Timer reloadTimer;
 
-        private readonly ToolTip toolTip1 = new();
-        private readonly ToolTip toolTip2 = new();
-        private readonly ToolTip toolTip3 = new();
-        private readonly ToolTip toolTip4 = new();
-        private readonly ToolTip toolTip5 = new();
-        private readonly ToolTip toolTip6 = new();
-        private readonly ToolTip toolTip7 = new();
+        private readonly DarkToolTip toolTip1 = new();
+        private readonly DarkToolTip toolTip2 = new();
+        private readonly DarkToolTip toolTip3 = new();
+        private readonly DarkToolTip toolTip4 = new();
+        private readonly DarkToolTip toolTip5 = new();
+        private readonly DarkToolTip toolTip6 = new();
+        private readonly DarkToolTip toolTip7 = new();
 
         internal Stack<bool> dirty = new();
         internal bool Dirty => dirty.Count > 0 && dirty.Peek();
@@ -64,8 +64,7 @@ namespace CrashEdit.CE
             toolTip3.SetToolTip(chkCompressModel, "Sets the model compression method.");
             toolTip4.SetToolTip(chkSkipOddFrames, "Skips output for every odd frame.\r\nUseful when frame interpolation is enabled in GOOL.");
             toolTip5.SetToolTip(cmdOpen, "You can also drag and drop a file onto this form.");
-            toolTip6.SetToolTip(chkBatch, "Enables batch processing mode.\r\nThe collection name is used as the model EID for the objects in the collection,\r\nso it must end with a valid EID (e.g., 'Collection_1234G').\r\n\r\nIf a valid EID is found in the object name, it will be used as the animation EID.\r\n(e.g., 'Object_1234V')\r\n\r\nOtherwise, a default EID will be assigned.");
-            toolTip7.SetToolTip(lblScaleMod, "Use this only if the model scale in Blender is incorrect.");
+            toolTip6.SetToolTip(lblScaleMod, "Use this only if the model scale in Blender is incorrect.");
 
             cmdSetExportPath.Image = new Bitmap(Embeds.Bitmaps["FolderOpen"], new Size(16, 16));
 
@@ -81,7 +80,7 @@ namespace CrashEdit.CE
 
             reloadTimer = new()
             {
-                Interval = 300
+                Interval = 1000
             };
             reloadTimer.Tick += ReloadTimer_Tick;
         }
@@ -98,18 +97,18 @@ namespace CrashEdit.CE
             watcher = new FileSystemWatcher(Path.GetDirectoryName(path)!)
             {
                 Filter = Path.GetFileName(path),
-                NotifyFilter = NotifyFilters.LastWrite
-                             | NotifyFilters.Size
-                             | NotifyFilters.FileName
+                NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.Size
             };
 
             watcher.Changed += OnJsonChanged;
+            watcher.Created += OnJsonChanged;
+            watcher.Renamed += OnJsonChanged;
             watcher.EnableRaisingEvents = true;
         }
 
         private void OnJsonChanged(object sender, FileSystemEventArgs e)
         {
-            Thread.Sleep(100); // wait for file write to complete
+            Thread.Sleep(100);
 
             if (IsDisposed || Disposing) return;
             if (!IsHandleCreated) return;
@@ -148,8 +147,6 @@ namespace CrashEdit.CE
             dgvBatch.Columns[0].Width = 120;
             dgvBatch.Columns[1].Width = 60;
             dgvBatch.Columns[2].Width = 60;
-
-            dgvBatch.DefaultCellStyle.ForeColor = Color.Gray;
         }
 
         private void cmdOpen_Click(object sender, EventArgs e)
@@ -203,7 +200,6 @@ namespace CrashEdit.CE
                         numScaleFY.Value = 127.0M;
                         numScaleFZ.Value = 127.0M;
                         numScaleMod.Value = 1.0M;
-                        chkBatch.Checked = false;
                         chkSkipOddFrames.Checked = false;
                         numMaxStripIterations.Value = 64.0M;
                         numMaxLiveKeysWeight.Value = 1000.0M;
@@ -256,7 +252,6 @@ namespace CrashEdit.CE
             numScaleFY.Value = (decimal)modelSettings.ScaleFactor[1];
             numScaleFZ.Value = (decimal)modelSettings.ScaleFactor[2];
             numScaleMod.Value = (decimal)modelSettings.ScaleMod;
-            chkBatch.Checked = modelSettings.BatchProcessing;
             chkSkipOddFrames.Checked = modelSettings.SkipOddFrames;
             numMaxStripIterations.Value = (decimal)modelSettings.MaxIterations;
             numMaxLiveKeysWeight.Value = (decimal)modelSettings.MaxKeysPenalty;
@@ -271,7 +266,6 @@ namespace CrashEdit.CE
                 if (compressionMethod == 0) radioButton1.Checked = true;
                 else if (compressionMethod == 1) radioButton2.Checked = true;
                 else if (compressionMethod == 2) radioButton3.Checked = true;
-                else if (compressionMethod == 3) radioButton4.Checked = true;
             }
             else
             {
@@ -382,7 +376,6 @@ namespace CrashEdit.CE
                 (float)numScaleFZ.Value
             ];
             modelSettings.ScaleMod = (float)numScaleMod.Value;
-            modelSettings.BatchProcessing = chkBatch.Checked;
             modelSettings.SkipOddFrames = chkSkipOddFrames.Checked;
             modelSettings.MaxIterations = (int)numMaxStripIterations.Value;
             modelSettings.MaxKeysPenalty = (double)numMaxLiveKeysWeight.Value;
@@ -564,22 +557,6 @@ namespace CrashEdit.CE
             }
         }
 
-        private void chkBatch_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chkBatch.Checked)
-            {
-                pnBatch.Enabled = true;
-                dgvBatch.DefaultCellStyle.ForeColor = Color.Gainsboro;
-            }
-            else
-            {
-                pnBatch.Enabled = false;
-                dgvBatch.DefaultCellStyle.ForeColor = Color.Gray;
-            }
-            dgvBatch.ClearSelection();
-            dgvBatch.CurrentCell = null;
-        }
-
         public static string GetDefaultEID(char c, int i)
         {
             string pattern = "00_0" + c;
@@ -689,7 +666,6 @@ namespace CrashEdit.CE
         public int[] ModelScales { get; set; }
         public float[] ScaleFactor { get; set; }
         public float ScaleMod { get; set; }
-        public bool BatchProcessing { get; set; }
         public bool SkipOddFrames { get; set; }
         public int CompressionMethod { get; set; }
 
@@ -738,6 +714,7 @@ namespace CrashEdit.CE
         public List<Crash2Material> materials { get; set; }
         public List<List<Crash2Collision>> collisions { get; set; }
         public List<List<Crash2Marker>> markers { get; set; }
+        public List<List<Crash2Marker>> groups { get; set; }
     }
 
     public class Tri
@@ -1417,8 +1394,53 @@ namespace CrashEdit.CE
     {
         public static List<Crash2Json> LoadModelJson(string path)
         {
-            string json = File.ReadAllText(path);
-            return JsonSerializer.Deserialize<List<Crash2Json>>(json)!;
+            WaitForStableFile(path);
+
+            for (int i = 0; i < 10; i++)
+            {
+                try
+                {
+                    using var fs = new FileStream(
+                        path,
+                        FileMode.Open,
+                        FileAccess.Read,
+                        FileShare.ReadWrite);
+
+                    using var sr = new StreamReader(fs);
+                    string json = sr.ReadToEnd();
+
+                    return JsonSerializer.Deserialize<List<Crash2Json>>(json)!;
+                }
+                catch (IOException)
+                {
+                    Thread.Sleep(100);
+                }
+                catch (JsonException)
+                {
+                    Thread.Sleep(100);
+                }
+            }
+
+            throw new Exception("JSON did not stabilize.");
+        }
+
+        private static void WaitForStableFile(string path)
+        {
+            long lastSize = -1;
+            int stableCount = 0;
+
+            while (stableCount < 5)
+            {
+                long size = new FileInfo(path).Length;
+
+                if (size == lastSize)
+                    stableCount++;
+                else
+                    stableCount = 0;
+
+                lastSize = size;
+                Thread.Sleep(100);
+            }
         }
 
         //
@@ -2145,6 +2167,8 @@ namespace CrashEdit.CE
             List<float[]> spVerts = [];
             foreach (var marker in json.markers[frameIndex])
                 spVerts.Add(marker.pos);
+            foreach (var marker in json.groups[frameIndex])
+                spVerts.Add(marker.pos);
 
             int spVertCount = spVerts.Count;
 
@@ -2357,11 +2381,6 @@ namespace CrashEdit.CE
                         x = 0;
                         y = 0;
                         z = 0;
-                        break;
-                    case 3: // mid-range
-                        x = (diffsX.Min() + diffsX.Max()) / 2;
-                        y = (diffsY.Min() + diffsY.Max()) / 2;
-                        z = (diffsZ.Min() + diffsZ.Max()) / 2;
                         break;
                     default: // median
                         x = Median(diffsX);
@@ -2995,7 +3014,6 @@ namespace CrashEdit.CE
 
             List<Crash2Json> jsons = LoadModelJson(path);
             bool compressed = settings.CompressionMethod >= 0;
-            bool batchProcessing = settings.BatchProcessing;
 
             string tpageName = GetDefaultEID('T', 0);
             int[] modelScales = settings.ModelScales;
@@ -3024,8 +3042,8 @@ namespace CrashEdit.CE
 
                 Crash2Json json = jsons[p];
 
-                bool skipExport = batchProcessing && p > 0;
-                int spVcount = json.markers[0].Count;
+                bool skipExport = p > 0;
+                int spVcount = json.markers[0].Count + json.groups[0].Count;
 
                 // anim
                 animName = "";
@@ -3109,9 +3127,6 @@ namespace CrashEdit.CE
                     }
                     texturesToSave.Add(texture);
                 }
-
-                if (!batchProcessing)
-                    break;
             }
 
             Dictionary<string, List<Frame>>? allCompressedFrames = [];
@@ -3134,7 +3149,7 @@ namespace CrashEdit.CE
                     {
                         int bestLength = int.MaxValue;
                         int bestMethod = 0;
-                        for (int m = 0; m < 4; m++)
+                        for (int m = 0; m < 3; m++)
                         {
                             List<Frame> copy = frames
                                 .Select(x => new Frame(x.XOffset, x.YOffset, x.ZOffset, x.Unknown, x.ModelEID, x.HeaderSize, x.Collision, x.Vertices, x.SpecialVertexCount, x.Temporals, x.IsNew))
