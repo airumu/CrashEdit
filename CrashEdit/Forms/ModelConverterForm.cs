@@ -1,6 +1,7 @@
 ﻿using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.Crash;
+using CrashEdit.Crash.GOOLIns;
 using System.ComponentModel;
 using System.Data;
 using System.Media;
@@ -8,10 +9,11 @@ using System.Numerics;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using static CrashEdit.CE.ModelConverterForm;
-using static CrashEdit.CE.TriangleStripBuilder;
+using System.Windows.Media.Media3D;
 using static CrashEdit.CE.BlenderModelConverter;
+using static CrashEdit.CE.ModelConverterForm;
 using static CrashEdit.CE.TextureAtlasPacker;
+using static CrashEdit.CE.TriangleStripBuilder;
 
 namespace CrashEdit.CE
 {
@@ -19,21 +21,30 @@ namespace CrashEdit.CE
     {
         private static readonly string Version = "1.0.0";
 
-        private const float BASE_SCALE_FACTOR = 255.0f;
-        private const float BASE_MODEL_SCALE = 0x646;
-        private const float TOLERANCE = 0.01f;
-        private const float BASE_PRODUCT = BASE_SCALE_FACTOR * BASE_MODEL_SCALE;
+        public const float BASE_SCALE_FACTOR = 255.0f;
+        public const float BASE_MODEL_SCALE = 0x646;
+        public const float BASE_PRODUCT = BASE_SCALE_FACTOR * BASE_MODEL_SCALE;
+        public const float TOLERANCE = 0.01f;
+
+        public const float BASE_COLLISION_SCALE = 50944.0f;
+        public const float BASE_FRAME_SCALE = 127.0f;
+        public const float BASE_COLLISION_PRODUCT = BASE_FRAME_SCALE * BASE_MODEL_SCALE;
 
         private readonly Debug debug = new()
         {
             DebugMode = false,
             TestCompression = false
         };
+
+        private Dictionary<string, ModelItem> modelItems = [];
+
+        private int currentIndex = 0;
+        private int compressionMethod = 0;
+
         private ModelSettings modelSettings;
         private string modelPath;
         private string settingsPath;
         private string exporterVersion;
-        private int compressionMethod = 0;
 
         private FileSystemWatcher? watcher;
         private readonly System.Windows.Forms.Timer reloadTimer;
@@ -45,6 +56,7 @@ namespace CrashEdit.CE
         private readonly DarkToolTip toolTip5 = new();
         private readonly DarkToolTip toolTip6 = new();
         private readonly DarkToolTip toolTip7 = new();
+        private readonly DarkToolTip toolTip8 = new();
 
         internal Stack<bool> dirty = new();
         internal bool Dirty => dirty.Count > 0 && dirty.Peek();
@@ -57,14 +69,17 @@ namespace CrashEdit.CE
             DgvBatchInit();
             lblPath.Text = "";
             lblExportPath.Text = "";
+            lblModel.Text = "";
             lblVersion.Text = $"\r\nConverter: v{Version}";
 
             toolTip1.SetToolTip(lblStripIterations, "Number of iterations to generate triangle strips.");
             toolTip2.SetToolTip(lblMaxKeyWeight, "Penalty weight for longer-living position keys.");
-            toolTip3.SetToolTip(chkCompressModel, "Sets the model compression method.");
+            toolTip3.SetToolTip(chkCompressModel, "Enables the model compression and sets the method.");
             toolTip4.SetToolTip(chkSkipOddFrames, "Skips output for every odd frame.\r\nUseful when frame interpolation is enabled in GOOL.");
             toolTip5.SetToolTip(cmdOpen, "You can also drag and drop a file onto this form.");
             toolTip6.SetToolTip(lblScaleMod, "Use this only if the model scale in Blender is incorrect.");
+            toolTip7.SetToolTip(chkAutoSave, "Saves the settings file automatically before conversion.");
+            toolTip8.SetToolTip(chkTestCompression, "Tries all compression methods to find the most efficient one.");
 
             cmdSetExportPath.Image = new Bitmap(Embeds.Bitmaps["FolderOpen"], new Size(16, 16));
 
@@ -128,6 +143,7 @@ namespace CrashEdit.CE
 
             var jsons = LoadModelJson(modelPath);
             CreateRows(jsons);
+            CreateLists();
             Console.WriteLine("Model JSON file changed, reloaded.");
         }
 
@@ -193,12 +209,12 @@ namespace CrashEdit.CE
                     {
                         // use default settings
                         dirty.Push(true);
-                        numScaleX.Value = 0x646;
-                        numScaleY.Value = 0x646;
-                        numScaleZ.Value = 0x646;
-                        numScaleFX.Value = 127.0M;
-                        numScaleFY.Value = 127.0M;
-                        numScaleFZ.Value = 127.0M;
+                        numScaleX.Value = (decimal)BASE_MODEL_SCALE;
+                        numScaleY.Value = (decimal)BASE_MODEL_SCALE;
+                        numScaleZ.Value = (decimal)BASE_MODEL_SCALE;
+                        numScaleFX.Value = (decimal)BASE_SCALE_FACTOR;
+                        numScaleFY.Value = (decimal)BASE_SCALE_FACTOR;
+                        numScaleFZ.Value = (decimal)BASE_SCALE_FACTOR;
                         numScaleMod.Value = 1.0M;
                         chkSkipOddFrames.Checked = false;
                         numMaxStripIterations.Value = 64.0M;
@@ -206,18 +222,19 @@ namespace CrashEdit.CE
                         numAvgKeysWeight.Value = 100.0M;
                         numStripCountWeight.Value = 10.0M;
                         chkCompressModel.Checked = false;
-                        compressionMethod = 0;
                         radioButton1.Checked = true;
 
-                        CreateRows(jsons);
+                        modelSettings = new();
 
                         modelPath = path;
-                        lblPath.Text = settingsPath;
                         lblExportPath.Text = saveDirectory;
-                        exporterVersion = jsons[0].version;
-                        lblVersion.Text = $"Exporter: v{exporterVersion}\r\nConverter: v{Version}";
-                        modelSettings = new();
+
+                        CreateRows(jsons);
+                        CreateModelObjects();
+
                         SaveSettings();
+                        LoadSettings();
+
                         dirty.Pop();
 
                         Console.WriteLine("No existing settings found, created new default settings.");
@@ -236,41 +253,88 @@ namespace CrashEdit.CE
             StartWatching(modelPath);
         }
 
+        private void CreateModelObjects()
+        {
+            modelSettings.ModelObjects = [];
+            modelSettings.ModelItems = [];
+            modelItems = [];
+            for (int i = 0; i < dgvBatch.Rows.Count; i++)
+            {
+                string name = dgvBatch.Rows[i].Cells[0].Value.ToString();
+                string modelEID = dgvBatch.Rows[i].Cells[1].Value.ToString();
+                string animEID = dgvBatch.Rows[i].Cells[2].Value.ToString();
+
+                modelSettings.ModelObjects.Add(new ModelObject()
+                {
+                    Name = name,
+                    ModelEID = modelEID,
+                    AnimEID = animEID
+                });
+
+                if (!modelItems.ContainsKey(modelEID))
+                {
+                    modelItems.Add(modelEID, new ModelItem()
+                    {
+                        ModelEID = modelEID,
+                        ModelScales = [(int)BASE_MODEL_SCALE, (int)BASE_MODEL_SCALE, (int)BASE_MODEL_SCALE],
+                        ScaleFactor = [BASE_SCALE_FACTOR, BASE_SCALE_FACTOR, BASE_SCALE_FACTOR],
+                        ScaleMod = 1.0f
+                    });
+                    Console.WriteLine($"Added model item for EID: {modelEID}");
+                }
+            }
+
+            foreach (var kvp in modelItems)
+            {
+                var item = kvp.Value;
+                modelSettings.ModelItems.Add(new ModelItem()
+                {
+                    ModelEID = item.ModelEID,
+                    ModelScales = item.ModelScales,
+                    ScaleFactor = item.ScaleFactor,
+                    ScaleMod = item.ScaleMod
+                });
+            }
+        }
+
+        private void CreateLists()
+        {
+            modelItems = [];
+            foreach (ModelItem model in modelSettings.ModelItems)
+                modelItems.Add(model.ModelEID, model);
+        }
+
         private void LoadSettings()
         {
             lblPath.Text = settingsPath;
+            lblExportPath.Text = modelSettings.ExportPath;
             modelPath = modelSettings.ModelPath;
+
             var jsons = LoadModelJson(modelPath);
 
             CreateRows(jsons);
-
-            lblExportPath.Text = modelSettings.ExportPath;
-            numScaleX.Value = modelSettings.ModelScales[0];
-            numScaleY.Value = modelSettings.ModelScales[1];
-            numScaleZ.Value = modelSettings.ModelScales[2];
-            numScaleFX.Value = (decimal)modelSettings.ScaleFactor[0];
-            numScaleFY.Value = (decimal)modelSettings.ScaleFactor[1];
-            numScaleFZ.Value = (decimal)modelSettings.ScaleFactor[2];
-            numScaleMod.Value = (decimal)modelSettings.ScaleMod;
-            chkSkipOddFrames.Checked = modelSettings.SkipOddFrames;
-            numMaxStripIterations.Value = (decimal)modelSettings.MaxIterations;
-            numMaxLiveKeysWeight.Value = (decimal)modelSettings.MaxKeysPenalty;
-            numAvgKeysWeight.Value = (decimal)modelSettings.AvgKeysPenalty;
-            numStripCountWeight.Value = (decimal)modelSettings.StripCountPenalty;
+            CreateLists();
 
             if (modelSettings.CompressionMethod >= 0)
             {
                 chkCompressModel.Checked = true;
-                compressionMethod = modelSettings.CompressionMethod;
+                int method = modelSettings.CompressionMethod;
 
-                if (compressionMethod == 0) radioButton1.Checked = true;
-                else if (compressionMethod == 1) radioButton2.Checked = true;
-                else if (compressionMethod == 2) radioButton3.Checked = true;
+                if (method == 0) radioButton1.Checked = true;
+                else if (method == 1) radioButton2.Checked = true;
+                else if (method == 2) radioButton3.Checked = true;
             }
             else
             {
                 chkCompressModel.Checked = false;
             }
+
+            numMaxStripIterations.Value = modelSettings.MaxIterations;
+            numAvgKeysWeight.Value = (decimal)modelSettings.AvgKeysPenalty;
+            numMaxLiveKeysWeight.Value = (decimal)modelSettings.MaxKeysPenalty;
+            numStripCountWeight.Value = (decimal)modelSettings.StripCountPenalty;
+
+            chkSkipOddFrames.Checked = modelSettings.SkipOddFrames;
 
             exporterVersion = jsons[0].version;
             lblVersion.Text = $"Exporter: v{exporterVersion}\r\nConverter: v{Version}";
@@ -334,6 +398,53 @@ namespace CrashEdit.CE
             dgvBatch.ClearSelection();
             dgvBatch.CurrentCell = null;
             dgvBatch.ResumeLayout();
+
+            fraModel.Enabled = false;
+        }
+
+        private void dgvBatch_SelectionChanged(object sender, EventArgs e)
+        {
+            if (Dirty) return;
+            if (dgvBatch.SelectedCells.Count > 0)
+            {
+                int index = dgvBatch.SelectedCells[0].RowIndex;
+                dirty.Push(true);
+
+                currentIndex = index;
+                string modelEID = dgvBatch.Rows[index].Cells[1].Value.ToString();
+                lblModel.Text = modelEID;
+
+                if (modelItems.Count > 0)
+                {
+                    ModelItem? item = modelItems.TryGetValue(modelEID, out ModelItem? value) ? value : null;
+
+                    if (item != null)
+                    {
+                        numScaleX.Value = item.ModelScales[0];
+                        numScaleY.Value = item.ModelScales[1];
+                        numScaleZ.Value = item.ModelScales[2];
+                        numScaleFX.Value = (decimal)item.ScaleFactor[0];
+                        numScaleFY.Value = (decimal)item.ScaleFactor[1];
+                        numScaleFZ.Value = (decimal)item.ScaleFactor[2];
+                        numScaleMod.Value = (decimal)item.ScaleMod;
+
+                        fraModel.Enabled = true;
+                        UpdateScaleRatioState();
+                    }
+                    else
+                    {
+                        numScaleX.Value = (decimal)BASE_MODEL_SCALE;
+                        numScaleY.Value = (decimal)BASE_MODEL_SCALE;
+                        numScaleZ.Value = (decimal)BASE_MODEL_SCALE;
+                        numScaleFX.Value = (decimal)BASE_SCALE_FACTOR;
+                        numScaleFY.Value = (decimal)BASE_SCALE_FACTOR;
+                        numScaleFZ.Value = (decimal)BASE_SCALE_FACTOR;
+                        numScaleMod.Value = 1.0M;
+                    }
+                }
+
+                dirty.Pop();
+            }
         }
 
         private void cmdSaveSettings_Click(object sender, EventArgs e)
@@ -343,7 +454,8 @@ namespace CrashEdit.CE
 
         private void cmdConvert_Click(object sender, EventArgs e)
         {
-            SaveSettings();
+            if (chkAutoSave.Checked)
+                SaveSettings();
             ConvertModel(modelPath, modelSettings, debug);
         }
 
@@ -352,36 +464,39 @@ namespace CrashEdit.CE
             modelSettings.ConverterVersion = exporterVersion;
             modelSettings.ExporterVersion = Version;
             modelSettings.ModelPath = modelPath;
-            modelSettings.ModelList = [];
-            foreach (DataGridViewRow row in dgvBatch.Rows)
+
+            modelSettings.ModelObjects = [];
+            for (int i = 0; i < dgvBatch.Rows.Count; i++)
             {
-                modelSettings.ModelList.Add(new ModelList()
+                modelSettings.ModelObjects.Add(new ModelObject()
                 {
-                    Name = row.Cells[0].Value.ToString(),
-                    ModelEID = row.Cells[1].Value.ToString(),
-                    AnimEID = row.Cells[2].Value.ToString()
+                    Name = dgvBatch.Rows[i].Cells[0].Value.ToString(),
+                    ModelEID = dgvBatch.Rows[i].Cells[1].Value.ToString(),
+                    AnimEID = dgvBatch.Rows[i].Cells[2].Value.ToString()
                 });
             }
-            modelSettings.ExportPath = lblExportPath.Text;
-            modelSettings.ModelScales =
-            [
-                (int)numScaleX.Value,
-                (int)numScaleY.Value,
-                (int)numScaleZ.Value
-            ];
-            modelSettings.ScaleFactor =
-            [
-                (float)numScaleFX.Value,
-                (float)numScaleFY.Value,
-                (float)numScaleFZ.Value
-            ];
-            modelSettings.ScaleMod = (float)numScaleMod.Value;
-            modelSettings.SkipOddFrames = chkSkipOddFrames.Checked;
+
+            modelSettings.ModelItems = [];
+            foreach (var kvp in modelItems)
+            {
+                var item = kvp.Value;
+                modelSettings.ModelItems.Add(new ModelItem()
+                {
+                    ModelEID = item.ModelEID,
+                    ModelScales = item.ModelScales,
+                    ScaleFactor = item.ScaleFactor,
+                    ScaleMod = item.ScaleMod
+                });
+            }
+
+            modelSettings.CompressionMethod = chkCompressModel.Checked ? compressionMethod : -1;
             modelSettings.MaxIterations = (int)numMaxStripIterations.Value;
             modelSettings.MaxKeysPenalty = (double)numMaxLiveKeysWeight.Value;
             modelSettings.AvgKeysPenalty = (double)numAvgKeysWeight.Value;
             modelSettings.StripCountPenalty = (double)numStripCountWeight.Value;
-            modelSettings.CompressionMethod = chkCompressModel.Checked ? compressionMethod : -1;
+            modelSettings.SkipOddFrames = chkSkipOddFrames.Checked;
+
+            modelSettings.ExportPath = lblExportPath.Text;
 
             ModelSettingsIO.Save(settingsPath, modelSettings);
             Console.WriteLine("Settings saved.");
@@ -483,27 +598,56 @@ namespace CrashEdit.CE
 
             dirty.Push(true);
             float baseProduct = BASE_PRODUCT * (float)numScaleMod.Value;
+            ModelItem? item = modelItems.TryGetValue(lblModel.Text, out ModelItem? value) ? value : null;
 
             if (chkLinkScaleFactor.Checked)
             {
                 numScaleFX.Value = num.Value;
                 numScaleFY.Value = num.Value;
                 numScaleFZ.Value = num.Value;
+                item.ScaleFactor = [(float)numScaleFX.Value, (float)numScaleFY.Value, (float)numScaleFZ.Value];
+
+
                 if (chkAutoScale.Checked)
                 {
                     numScaleX.Value = (decimal)Math.Round(baseProduct / (float)numScaleFX.Value);
                     numScaleY.Value = (decimal)Math.Round(baseProduct / (float)numScaleFY.Value);
                     numScaleZ.Value = (decimal)Math.Round(baseProduct / (float)numScaleFZ.Value);
+                    item.ModelScales = [(int)numScaleX.Value, (int)numScaleY.Value, (int)numScaleZ.Value];
                 }
             }
-            else if (chkAutoScale.Checked)
+            else
             {
                 if (num == numScaleFX)
-                    numScaleX.Value = (decimal)Math.Round(baseProduct / (float)numScaleFX.Value);
+                {
+                    item.ScaleFactor[0] = (float)numScaleFX.Value;
+
+                    if (chkAutoScale.Checked)
+                    {
+                        numScaleX.Value = (decimal)Math.Round(baseProduct / (float)numScaleFX.Value);
+                        item.ModelScales[0] = (int)numScaleX.Value;
+                    }
+                }
                 else if (num == numScaleFY)
-                    numScaleY.Value = (decimal)Math.Round(baseProduct / (float)numScaleFY.Value);
+                {
+                    item.ScaleFactor[1] = (float)numScaleFY.Value;
+
+                    if (chkAutoScale.Checked)
+                    {
+                        numScaleY.Value = (decimal)Math.Round(baseProduct / (float)numScaleFY.Value);
+                        item.ModelScales[1] = (int)numScaleY.Value;
+                    }
+                }
                 else if (num == numScaleFZ)
-                    numScaleZ.Value = (decimal)Math.Round(baseProduct / (float)numScaleFZ.Value);
+                {
+                    item.ScaleFactor[2] = (float)numScaleFZ.Value;
+
+                    if (chkAutoScale.Checked)
+                    {
+                        numScaleZ.Value = (decimal)Math.Round(baseProduct / (float)numScaleFZ.Value);
+                        item.ModelScales[2] = (int)numScaleZ.Value;
+                    }
+                }
             }
             UpdateScaleRatioState();
             dirty.Pop();
@@ -516,29 +660,64 @@ namespace CrashEdit.CE
 
             dirty.Push(true);
             float baseProduct = BASE_PRODUCT * (float)numScaleMod.Value;
+            ModelItem? item = modelItems.TryGetValue(lblModel.Text, out ModelItem? value) ? value : null;
+
             if (chkLinkModelScale.Checked)
             {
                 numScaleX.Value = num.Value;
                 numScaleY.Value = num.Value;
                 numScaleZ.Value = num.Value;
+                item.ModelScales = [(int)numScaleX.Value, (int)numScaleY.Value, (int)numScaleZ.Value];
                 if (chkAutoScale.Checked)
                 {
                     numScaleFX.Value = (decimal)Math.Round(baseProduct / (float)numScaleX.Value, 2);
                     numScaleFY.Value = (decimal)Math.Round(baseProduct / (float)numScaleY.Value, 2);
                     numScaleFZ.Value = (decimal)Math.Round(baseProduct / (float)numScaleZ.Value, 2);
+                    item.ScaleFactor = [(float)numScaleFX.Value, (float)numScaleFY.Value, (float)numScaleFZ.Value];
                 }
             }
-            else if (chkAutoScale.Checked)
+            else
             {
                 if (num == numScaleX)
-                    numScaleFX.Value = (decimal)Math.Round(baseProduct / (float)numScaleX.Value, 2);
+                {
+                    item.ModelScales[0] = (int)numScaleX.Value;
+
+                    if (chkAutoScale.Checked)
+                    {
+                        numScaleFX.Value = (decimal)Math.Round(baseProduct / (float)numScaleX.Value, 2);
+                        item.ScaleFactor[0] = (float)numScaleFX.Value;
+                    }
+                }
                 else if (num == numScaleY)
-                    numScaleFY.Value = (decimal)Math.Round(baseProduct / (float)numScaleY.Value, 2);
+                {
+                    item.ModelScales[1] = (int)numScaleY.Value;
+
+                    if (chkAutoScale.Checked)
+                    {
+                        numScaleFY.Value = (decimal)Math.Round(baseProduct / (float)numScaleY.Value, 2);
+                        item.ScaleFactor[1] = (float)numScaleFY.Value;
+                    }
+                }
                 else if (num == numScaleZ)
-                    numScaleFZ.Value = (decimal)Math.Round(baseProduct / (float)numScaleZ.Value, 2);
+                {
+                    item.ModelScales[2] = (int)numScaleZ.Value;
+
+                    if (chkAutoScale.Checked)
+                    {
+                        numScaleFZ.Value = (decimal)Math.Round(baseProduct / (float)numScaleZ.Value, 2);
+                        item.ScaleFactor[2] = (float)numScaleFZ.Value;
+                    }
+                }
             }
             UpdateScaleRatioState();
             dirty.Pop();
+        }
+
+        private void numScaleMod_ValueChanged(object sender, EventArgs e)
+        {
+            ModelItem? item = modelItems.TryGetValue(lblModel.Text, out ModelItem? value) ? value : null;
+            if (item != null)
+                item.ScaleMod = (float)numScaleMod.Value;
         }
 
         private void chkCompressModel_CheckedChanged(object sender, EventArgs e)
@@ -548,12 +727,13 @@ namespace CrashEdit.CE
 
         private void radioButton_CheckedChanged(object sender, EventArgs e)
         {
-            if (Dirty) return;
             RadioButton rb = sender as RadioButton ?? throw new InvalidOperationException("Sender is not a RadioButton");
             if (rb != null && rb.Checked && rb.Tag != null)
             {
                 if (int.TryParse(rb.Tag.ToString(), out int v))
+                {
                     compressionMethod = v;
+                }
             }
         }
 
@@ -615,6 +795,8 @@ namespace CrashEdit.CE
                 watcher = null;
             }
         }
+
+      
     }
 
     public static class ModelSettingsIO
@@ -649,11 +831,19 @@ namespace CrashEdit.CE
         public bool TestCompression { get; set; }
     }
 
-    public class ModelList
+    public class ModelObject
     {
         public string Name { get; set; }
         public string ModelEID { get; set; }
         public string AnimEID { get; set; }
+    }
+
+    public class ModelItem
+    {
+        public string ModelEID { get; set; }
+        public int[] ModelScales { get; set; }
+        public float[] ScaleFactor { get; set; }
+        public float ScaleMod { get; set; }
     }
 
     public class ModelSettings
@@ -661,18 +851,17 @@ namespace CrashEdit.CE
         public string ConverterVersion { get; set; }
         public string ExporterVersion { get; set; }
         public string ModelPath { get; set; }
-        public List<ModelList> ModelList { get; set; }
+        public List<ModelObject> ModelObjects { get; set; }
+        public List<ModelItem> ModelItems { get; set; }
         public string ExportPath { get; set; }
-        public int[] ModelScales { get; set; }
-        public float[] ScaleFactor { get; set; }
-        public float ScaleMod { get; set; }
-        public bool SkipOddFrames { get; set; }
-        public int CompressionMethod { get; set; }
 
-        public int MaxIterations { get; set; } 
+
+        public int CompressionMethod { get; set; }
+        public int MaxIterations { get; set; }
         public double MaxKeysPenalty { get; set; }
         public double AvgKeysPenalty { get; set; }
         public double StripCountPenalty { get; set; }
+        public bool SkipOddFrames { get; set; }
     }
 
     public class Crash2Triangle
@@ -2153,11 +2342,6 @@ namespace CrashEdit.CE
         //
         // anim
         //
-        // TODO: verify?
-        private const float BaseCollisionScale = 50944.0f;
-        private const float BaseFrameScale = 127.0f;
-        private const float BaseModelScale = 0x646;
-        private const float BaseUnit = BaseFrameScale * BaseModelScale;
 
         private static Frame BuildFrame(Crash2Json json, int frameIndex, int eid, float[] scaleFactors, int[] modelScales, bool compressed, bool debug)
         {
@@ -2246,7 +2430,7 @@ namespace CrashEdit.CE
             if (overflowedVerts.Count > 0)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($"[Frame {frameIndex}] Warning: Some vertices overflowed ({string.Join(", ", overflowedVerts)})");
+                Console.WriteLine($"[Frame {frameIndex}] Warning: Vertices overflowed ({string.Join(", ", overflowedVerts)})");
                 Console.ForegroundColor = ConsoleColor.White;
             }
 
@@ -2267,9 +2451,9 @@ namespace CrashEdit.CE
             // collisions
             float[] collScales =
             [
-                scaleFactors[0] * modelScales[0] / BaseUnit,
-                scaleFactors[1] * modelScales[1] / BaseUnit,
-                scaleFactors[2] * modelScales[2] / BaseUnit,
+                scaleFactors[0] * modelScales[0] / BASE_COLLISION_PRODUCT,
+                scaleFactors[1] * modelScales[1] / BASE_COLLISION_PRODUCT,
+                scaleFactors[2] * modelScales[2] / BASE_COLLISION_PRODUCT,
             ];
             List<FrameCollision> lstColl = [];
             foreach (var coll in json.collisions[frameIndex])
@@ -2617,7 +2801,7 @@ namespace CrashEdit.CE
 
         private static FrameCollision BuildCollision(float[] min, float[] max, float[] collScales)
         {
-            const float scale = BaseCollisionScale;
+            const float scale = BASE_COLLISION_SCALE;
             float sx = scale * collScales[0];
             float sy = scale * collScales[1];
             float sz = scale * collScales[2];
@@ -2993,13 +3177,6 @@ namespace CrashEdit.CE
         }
 
 
-        private static char Convert36(int n)
-        {
-            if (n < 10)
-                return (char)('0' + n);
-            return (char)('a' + (n - 10));
-        }
-
         //
         // run
         //
@@ -3016,8 +3193,6 @@ namespace CrashEdit.CE
             bool compressed = settings.CompressionMethod >= 0;
 
             string tpageName = GetDefaultEID('T', 0);
-            int[] modelScales = settings.ModelScales;
-            float[] scaleFactors = settings.ScaleFactor;
 
             string saveDirectory = settings.ExportPath;
             string fileName = Path.GetFileNameWithoutExtension(path);
@@ -3028,7 +3203,6 @@ namespace CrashEdit.CE
             List<List<(TextureChunk, string)>> texturesToSave = [];
             byte[] fileBytes;
             string savePath;
-            string str;
             string modelName, animName;
             int defaultModelCount = 0, defaultAnimCount = 0;
             Dictionary<string, string> usedNames = [];
@@ -3042,47 +3216,18 @@ namespace CrashEdit.CE
 
                 Crash2Json json = jsons[p];
 
+                ModelObject obj = settings.ModelObjects[p];
+              
+                animName = obj.AnimEID;
+                modelName = obj.ModelEID;
+
                 bool skipExport = p > 0;
                 int spVcount = json.markers[0].Count + json.groups[0].Count;
 
-                // anim
-                animName = "";
-                str = json.name;
-                if (((str.Length >= 6 && str[^6] == '_') || str.Length == 5) && str.EndsWith('V'))
-                    animName = str[^5..];
-                if (Entry.CheckEIDErrors(animName, true) != string.Empty)
-                {
-                    animName = GetDefaultEID('V', defaultAnimCount);
-                    defaultAnimCount++;
-                }
+                ModelItem item = settings.ModelItems.FirstOrDefault(m => m.ModelEID == modelName) ?? throw new InvalidOperationException("Model item not found for current model EID.");
 
-                // model
-                modelName = "";
-                if (json.collection == null) // if collection is null, treat it as a single-object and try to get model name from anim name
-                {
-                    var sb = new StringBuilder(animName);
-                    sb[4] = 'G';
-                    modelName = sb.ToString();
-                }
-                else
-                {
-                    str = json.collection;
-                    if (((str.Length >= 6 && str[^6] == '_') || str.Length == 5) && str.EndsWith('G'))
-                        modelName = str[^5..];
-                    if (Entry.CheckEIDErrors(modelName, true) != string.Empty)
-                    {
-                        if (usedNames.TryGetValue(str, out string? value))
-                        {
-                            modelName = value;
-                        }
-                        else
-                        {
-                            modelName = GetDefaultEID('G', defaultModelCount);
-                            usedNames.Add(str, modelName);
-                            defaultModelCount++;
-                        }
-                    }
-                }
+                int[] modelScales = item.ModelScales;
+                float[] scaleFactors = item.ScaleFactor;
 
                 int modelEID = Entry.ENameToEID(modelName);
                 int animEID = Entry.ENameToEID(animName);
