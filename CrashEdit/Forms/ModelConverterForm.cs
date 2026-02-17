@@ -2,8 +2,10 @@
 using AltUI.Forms;
 using CrashEdit.Crash;
 using CrashEdit.Crash.GOOLIns;
+using System;
 using System.ComponentModel;
 using System.Data;
+using System.Linq;
 using System.Media;
 using System.Numerics;
 using System.Text;
@@ -37,6 +39,7 @@ namespace CrashEdit.CE
         };
 
         private Dictionary<string, ModelItem> modelItems = [];
+        private List<ModelItem> oldModelItems = [];
 
         private int currentIndex = 0;
         private int compressionMethod = 0;
@@ -141,10 +144,11 @@ namespace CrashEdit.CE
 
             if (IsDisposed) return;
 
+            Console.WriteLine();
+            Console.WriteLine("Model JSON file changed, reloading...");
             var jsons = LoadModelJson(modelPath);
             CreateRows(jsons);
             CreateLists();
-            Console.WriteLine("Model JSON file changed, reloaded.");
         }
 
         private void DgvBatchInit()
@@ -299,9 +303,36 @@ namespace CrashEdit.CE
 
         private void CreateLists()
         {
+            //var oldModelItems = new Dictionary<string, ModelItem>();
+            //foreach (ModelItem model in modelSettings.ModelItems)
+            //    oldModelItems.Add(model.ModelEID, model);
+
+            oldModelItems = [];
             modelItems = [];
-            foreach (ModelItem model in modelSettings.ModelItems)
-                modelItems.Add(model.ModelEID, model);
+            for (int i = 0; i < dgvBatch.Rows.Count; i++)
+            {
+                string modelEID = dgvBatch.Rows[i].Cells[1].Value.ToString();
+                if (!modelItems.ContainsKey(modelEID))
+                {
+                    var value = modelSettings.OldModelItems.FirstOrDefault(m => m.ModelEID == modelEID);
+                    if (value != null)
+                    {
+                        modelItems.Add(modelEID, value);
+                        //Console.WriteLine($"Reused model item for EID: {modelEID}");
+                    }
+                    else
+                    {
+                        modelItems.Add(modelEID, new ModelItem()
+                        {
+                            ModelEID = modelEID,
+                            ModelScales = [(int)BASE_MODEL_SCALE, (int)BASE_MODEL_SCALE, (int)BASE_MODEL_SCALE],
+                            ScaleFactor = [BASE_SCALE_FACTOR, BASE_SCALE_FACTOR, BASE_SCALE_FACTOR],
+                            ScaleMod = 1.0f
+                        });
+                        //Console.WriteLine($"Added model item for EID: {modelEID}");
+                    }
+                }
+            }
         }
 
         private void LoadSettings()
@@ -464,6 +495,7 @@ namespace CrashEdit.CE
             modelSettings.ConverterVersion = exporterVersion;
             modelSettings.ExporterVersion = Version;
             modelSettings.ModelPath = modelPath;
+            modelSettings.ExportPath = lblExportPath.Text;
 
             modelSettings.ModelObjects = [];
             for (int i = 0; i < dgvBatch.Rows.Count; i++)
@@ -496,7 +528,21 @@ namespace CrashEdit.CE
             modelSettings.StripCountPenalty = (double)numStripCountWeight.Value;
             modelSettings.SkipOddFrames = chkSkipOddFrames.Checked;
 
-            modelSettings.ExportPath = lblExportPath.Text;
+            modelSettings.OldModelItems ??= [];
+            foreach (var kvp in modelItems)
+            {
+                var item = kvp.Value;
+                if (!modelSettings.OldModelItems.Any(m => m.ModelEID == item.ModelEID))
+                {
+                    modelSettings.OldModelItems.Add(new ModelItem()
+                    {
+                        ModelEID = item.ModelEID,
+                        ModelScales = item.ModelScales,
+                        ScaleFactor = item.ScaleFactor,
+                        ScaleMod = item.ScaleMod
+                    });
+                }
+            }
 
             ModelSettingsIO.Save(settingsPath, modelSettings);
             Console.WriteLine("Settings saved.");
@@ -851,17 +897,20 @@ namespace CrashEdit.CE
         public string ConverterVersion { get; set; }
         public string ExporterVersion { get; set; }
         public string ModelPath { get; set; }
-        public List<ModelObject> ModelObjects { get; set; }
-        public List<ModelItem> ModelItems { get; set; }
         public string ExportPath { get; set; }
 
+        public bool SkipOddFrames { get; set; }
 
         public int CompressionMethod { get; set; }
         public int MaxIterations { get; set; }
         public double MaxKeysPenalty { get; set; }
         public double AvgKeysPenalty { get; set; }
         public double StripCountPenalty { get; set; }
-        public bool SkipOddFrames { get; set; }
+
+        public List<ModelObject> ModelObjects { get; set; }
+        public List<ModelItem> ModelItems { get; set; }
+
+        public List<ModelItem> OldModelItems { get; set; }
     }
 
     public class Crash2Triangle
@@ -3192,18 +3241,16 @@ namespace CrashEdit.CE
             List<Crash2Json> jsons = LoadModelJson(path);
             bool compressed = settings.CompressionMethod >= 0;
 
-            string tpageName = GetDefaultEID('T', 0);
-
             string saveDirectory = settings.ExportPath;
             string fileName = Path.GetFileNameWithoutExtension(path);
 
             Dictionary<string, List<Frame>> allFrames = [];
             Dictionary<string, ModelEntry> modelsToSave = [];
             List<(AnimationEntry, string)> animationsToSave = [];
-            List<List<(TextureChunk, string)>> texturesToSave = [];
+            Dictionary<int, TextureChunk> texturesToSave = [];
             byte[] fileBytes;
             string savePath;
-            string modelName, animName;
+            string modelName, animName, tpageName;
             int defaultModelCount = 0, defaultAnimCount = 0;
             Dictionary<string, string> usedNames = [];
 
@@ -3220,6 +3267,9 @@ namespace CrashEdit.CE
               
                 animName = obj.AnimEID;
                 modelName = obj.ModelEID;
+                var sb = new StringBuilder(modelName);
+                sb[4] = 'T';
+                tpageName = sb.ToString();
 
                 bool skipExport = p > 0;
                 int spVcount = json.markers[0].Count + json.groups[0].Count;
@@ -3237,6 +3287,16 @@ namespace CrashEdit.CE
                 List<PackedTexture> packedTextures = tex.Item2;
                 Dictionary<TriangleKey, ModelMaterial> materials = BuildMaterials(json, packedTextures);
 
+                // if the same tpage (checksum) already exists, reuse the name to avoid duplicates
+                foreach (var kvp in texturesToSave)
+                {
+                    if (kvp.Value.HashKey == tpages[0].HashKey)
+                    {
+                        tpageName = kvp.Value.EName;
+                        break;
+                    }
+                }
+
                 ModelEntry model = BuildModelEntry(json, materials, modelEID, tpageName, modelScales, compressed, spVcount, settings, debug);
                 AnimationEntry animation = BuildAnimationEntry(json, modelEID, animEID, scaleFactors, modelScales, compressed, settings, debug);
 
@@ -3252,25 +3312,15 @@ namespace CrashEdit.CE
                 }
 
                 // add model to list
-                if (modelsToSave.TryAdd(modelName, model))
-                {
-                    // added new
-                }
+                _ = modelsToSave.TryAdd(modelName, model);
 
                 // add animation to list
                 animationsToSave.Add((animation, modelName));
 
                 // add tpages to list
-                if (!skipExport)
+                foreach (TextureChunk tpage in tpages)
                 {
-                    List<(TextureChunk, string)> texture = [];
-                    for (int i = 0; i < tpages.Count; i++)
-                    {
-                        var tpage = tpages[i];
-                        savePath = Path.Combine(saveDirectory, $"{fileName}_{tpage.EName}.nschunk");
-                        texture.Add((tpage, savePath));
-                    }
-                    texturesToSave.Add(texture);
+                    _ = texturesToSave.TryAdd(tpage.HashKey, tpage);
                 }
             }
 
@@ -3344,7 +3394,7 @@ namespace CrashEdit.CE
                 }
 
                 fileBytes = model.Save();
-                savePath = Path.Combine(saveDirectory, $"{fileName}_{modelName}.nsentry");
+                savePath = Path.Combine(saveDirectory, $"{fileName}_Model_{modelName}.nsentry");
                 File.WriteAllBytes(savePath, fileBytes);
                 Console.WriteLine($"    Saved model entry: {savePath}");
             }
@@ -3377,21 +3427,19 @@ namespace CrashEdit.CE
                 }
 
                 fileBytes = anim.Save();
-                savePath = Path.Combine(saveDirectory, $"{fileName}_{name}.nsentry");
+                savePath = Path.Combine(saveDirectory, $"{fileName}_Anim_{name}.nsentry");
                 File.WriteAllBytes(savePath, fileBytes);
                 Console.WriteLine($"    Saved animation entry: {savePath}");
             }
 
             // save tpages
-            foreach (var items in texturesToSave)
+            foreach (var kvp in texturesToSave)
             {
-                foreach (var item in items)
-                {
-                    fileBytes = item.Item1.Save();
-                    savePath = item.Item2;
-                    File.WriteAllBytes(savePath, fileBytes);
-                    Console.WriteLine($"    Saved texture page:    {savePath}");
-                }
+                TextureChunk tpage = kvp.Value;
+                fileBytes = tpage.Save();
+                savePath = Path.Combine(saveDirectory, $"{fileName}_Tpage_{tpage.EName}.nschunk");
+                File.WriteAllBytes(savePath, fileBytes);
+                Console.WriteLine($"    Saved texture page:    {savePath}");
             }
 
             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -3719,6 +3767,10 @@ namespace CrashEdit.CE
                     }
                 }
             }
+
+            // calculate and write checksum
+            int correct_checksum = Chunk.CalculateChecksum(tpage.Data);
+            BitConv.ToInt32(tpage.Data, 12, correct_checksum);
 
             tpages.Add(tpage);
             return (tpages, packedTextures);
