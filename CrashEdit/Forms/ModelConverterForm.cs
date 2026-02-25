@@ -2,6 +2,7 @@
 using AltUI.Forms;
 using CrashEdit.Crash;
 using CrashEdit.Crash.GOOLIns;
+using NAudio.Gui;
 using System;
 using System.ComponentModel;
 using System.Data;
@@ -992,7 +993,7 @@ namespace CrashEdit.CE
         public readonly MaterialInfo Info = info;
     }
 
-    public readonly struct MaterialInfo(int face, int blend, int offset, int count, int speed, int delay)
+    public readonly struct MaterialInfo(int face, int blend, int offset, int count, int speed, int delay, int repeat, int repeats)
     {
         public readonly int FaceOrientation = face;
         public readonly int BlendMode = blend;
@@ -1000,6 +1001,8 @@ namespace CrashEdit.CE
         public readonly int AnimCount = count;
         public readonly int AnimSpeed = speed;
         public readonly int AnimDelay = delay;
+        public readonly int AnimRepeat = repeat;
+        public readonly int TotalAnimRepeats = repeats;
     }
 
     public readonly struct ModelMaterial(string name, MaterialInfo info, int aniTexIdx, List<ModelTexture> texture)
@@ -1980,8 +1983,6 @@ namespace CrashEdit.CE
                         c = strip[j - 2];
                     }
 
-                    //DebugLog($"    {j - 2}: {a}, {b}, {c}", true, debug);
-
                     byte color0 = 0;
                     byte color1 = 0;
                     byte color2 = 0;
@@ -1994,7 +1995,6 @@ namespace CrashEdit.CE
                     Array.Sort(verts);
                     var key = (verts[0], verts[1], verts[2]);
 
-                    //Console.WriteLine($"Key: {key}");
                     if (triMap.TryGetValue(key, out int triIndex))
                     {
                         var srcTri = json.triangles[triIndex];
@@ -2004,14 +2004,11 @@ namespace CrashEdit.CE
                         int ib = Array.IndexOf(srcTri.v, b);
                         int ic = Array.IndexOf(srcTri.v, c);
 
-                        //DebugLog($"        srcTri: {json.triangles.IndexOf(srcTri)}, mat: {srcTri.material}, order: {ia}, {ib}, {ic}", true, debug);
-
                         if (ia >= 0 && ib >= 0 && ic >= 0)
                         {
                             color0 = (byte)srcTri.c[ia];
                             color1 = (byte)srcTri.c[ib];
                             color2 = (byte)srcTri.c[ic];
-                            //DebugLog($"        Color: {color0}, {color1}, {color2}", true, debug);
 
                             // TODO
                             if (isCC)
@@ -2072,24 +2069,41 @@ namespace CrashEdit.CE
                                                 animated = true;
                                                 textureIndex = animTexIdx;
                                                 animTexIdx++;
-                                                texIdx += (byte)(mat.Info.AnimCount - 1);
+                                            }
+                                            else
+                                            {
+                                                texIdx++;
                                             }
 
                                             break;
                                         }
                                     }
-                                    structureInfo.Add(tkey, new StructureInfo(texIdx, triSubtype, isCC));
-                                    texIdx++;
+
+                                    structureInfo.Add(tkey, new StructureInfo(textureIndex, triSubtype, isCC));
+
                                     //DebugLog($"        Created new texture: {textureIndex}", true, debug);
                                 }
                                 else if (structureInfo.TryGetValue(tkey, out StructureInfo str))
                                 {
                                     textureIndex = str.TextureIndex;
-                                    int fo = str.FaceOrientation;
-                                    if (fo > 0 && fo <= 3)
+
+                                    foreach (var oldKvp in materials)
                                     {
-                                        triSubtype = (byte)fo;
-                                        overrideSubtype = true;
+                                        TriangleKey oldKey = oldKvp.Key;
+                                        if (tkey.Material == oldKey.Material)
+                                        {
+                                            ModelMaterial mat = oldKvp.Value;
+                                            if (mat.Info.AnimCount > 0)
+                                                animated = true;
+
+                                            int fo = str.FaceOrientation;
+                                            if (fo > 0 && fo <= 3)
+                                            {
+                                                triSubtype = (byte)fo;
+                                                overrideSubtype = true;
+                                            }
+                                            break;
+                                        }
                                     }
                                     //DebugLog($"        Found exist texture: {textureIndex}", true, debug);
                                 }
@@ -2122,6 +2136,7 @@ namespace CrashEdit.CE
                                 }
                                 catch
                                 {
+                                    Console.WriteLine($"[Warning] Failed to determine triangle subtype for tri with vertices {a}, {b}, {c}.");
                                     triSubtype = 0;
                                 }
                             }
@@ -2204,15 +2219,12 @@ namespace CrashEdit.CE
 
         private static (List<ModelTexture>, List<ModelExtendedTexture>) BuildTexture(Dictionary<TriangleKey, StructureInfo> structureInfo, Dictionary<TriangleKey, ModelMaterial> materials, bool debug)
         {
-            //if (debug)
-            //{
-            //    Console.WriteLine();
-            //    Console.WriteLine("[Textures]");
-            //}
-            //int count = 1;
-
             List<ModelTexture> textures = [];
             List<ModelExtendedTexture> animatedtextures = [];
+
+            // split animated and normal textures to add normal textures first
+            var normalTextures = new List<ModelTexture>();
+            var animatedTextureData = new List<(List<ModelTexture> textures, MaterialInfo info)>();
 
             foreach (var kvp in structureInfo)
             {
@@ -2224,76 +2236,91 @@ namespace CrashEdit.CE
                     {
                         var mat = oldKvp.Value;
                         List<ModelTexture> modelTextures = mat.Texture;
-                        foreach (ModelTexture tex in modelTextures)
-                        {
-                            int blendMode = tex.BlendMode;
-                            int colorMode = tex.ColorMode;
-                            int clutY2 = tex.ClutY >> 2;
-                            int clutY1 = (tex.ClutY & 0x3) << 2;
-                            int clutX = tex.ClutX;
 
-                            int DestX = Math.Min(tex.U1, Math.Min(tex.U2, tex.U3));
-                            int DestY = Math.Min(tex.V1, Math.Min(tex.V2, tex.V3));
-                            int Width = Math.Max(tex.U1, Math.Max(tex.U2, tex.U3)) - DestX;
-                            int Height = Math.Max(tex.V1, Math.Max(tex.V2, tex.V3)) - DestY;
-
-                            //bool isCC = kvp.Value.IsCC;
-
-                            // UVs must be 0 or 1.
-                            int u1 = key.U0 != 0 ? DestX + Width : DestX;
-                            int v1 = key.V0 != 0 ? DestY + Height : DestY;
-                            int u2 = key.U1 != 0 ? DestX + Width : DestX;
-                            int v2 = key.V1 != 0 ? DestY + Height : DestY;
-                            int u3 = key.U2 != 0 ? DestX + Width : DestX;
-                            int v3 = key.V2 != 0 ? DestY + Height : DestY;
-
-                            int tpage = tex.Page;
-
-                            ModelTexture newTex = new(
-                                u1: (byte)u1,
-                                v1: (byte)v1,
-                                cluty1: (byte)clutY1,
-                                clutx: (byte)clutX,
-                                cluty2: (byte)clutY2,
-                                u2: (byte)u2,
-                                v2: (byte)v2,
-                                colormode: (byte)colorMode,
-                                blendmode: (byte)blendMode,
-                                segment: tex.Segment,
-                                textureoffset: (byte)tpage,
-                                u3: (byte)u3,
-                                v3: (byte)v3,
-                                u4: 0,
-                                v4: 0
-                            );
-                            textures.Add(newTex);
-
-                            //if (debug)
-                            //{
-                            //    Console.WriteLine($"[{count}] U: [{u1}, {u2}, {u3}] V: [{v1}, {v2}, {v3}]");
-                            //    count++;
-                            //}
-                        }
-
-                        // if animated texture
                         if (mat.Info.AnimCount > 0)
                         {
-                            var info = mat.Info;
-                            animatedtextures.Add(new ModelExtendedTexture(0)
+                            // animated texture: create ModelTexture list and store with anim info to add later
+                            var texList = new List<ModelTexture>();
+                            foreach (ModelTexture tex in modelTextures)
                             {
-                                Offset = textures.Count - info.AnimCount + 1,
-                                Mask = info.AnimCount - 1,
-                                Delay = info.AnimDelay,
-                                Latency = info.AnimSpeed
-                            });
+                                texList.Add(CreateModelTexture(tex, key));
+                            }
+                            animatedTextureData.Add((texList, mat.Info));
                         }
-
+                        else
+                        {
+                            // normal texture
+                            foreach (ModelTexture tex in modelTextures)
+                            {
+                                normalTextures.Add(CreateModelTexture(tex, key));
+                            }
+                        }
                         break;
                     }
                 }
             }
 
+            // add normal textures first
+            textures.AddRange(normalTextures);
+
+            // add animated textures
+            foreach (var (texList, info) in animatedTextureData)
+            {
+                int startOffset = textures.Count + 1;
+                textures.AddRange(texList);
+
+                animatedtextures.Add(new ModelExtendedTexture(0)
+                {
+                    Offset = startOffset,
+                    Mask = texList.Count - 1,
+                    Delay = info.AnimDelay,
+                    Latency = info.AnimSpeed
+                });
+            }
+
             return (textures, animatedtextures);
+        }
+
+        private static ModelTexture CreateModelTexture(ModelTexture tex, TriangleKey key)
+        {
+            int blendMode = tex.BlendMode;
+            int colorMode = tex.ColorMode;
+            int clutY2 = tex.ClutY >> 2;
+            int clutY1 = (tex.ClutY & 0x3) << 2;
+            int clutX = tex.ClutX;
+
+            int DestX = Math.Min(tex.U1, Math.Min(tex.U2, tex.U3));
+            int DestY = Math.Min(tex.V1, Math.Min(tex.V2, tex.V3));
+            int Width = Math.Max(tex.U1, Math.Max(tex.U2, tex.U3)) - DestX;
+            int Height = Math.Max(tex.V1, Math.Max(tex.V2, tex.V3)) - DestY;
+
+            // UVs must be 0 or 1.
+            int u1 = key.U0 != 0 ? DestX + Width : DestX;
+            int v1 = key.V0 != 0 ? DestY + Height : DestY;
+            int u2 = key.U1 != 0 ? DestX + Width : DestX;
+            int v2 = key.V1 != 0 ? DestY + Height : DestY;
+            int u3 = key.U2 != 0 ? DestX + Width : DestX;
+            int v3 = key.V2 != 0 ? DestY + Height : DestY;
+
+            int tpage = tex.Page;
+
+            return new ModelTexture(
+                u1: (byte)u1,
+                v1: (byte)v1,
+                cluty1: (byte)clutY1,
+                clutx: (byte)clutX,
+                cluty2: (byte)clutY2,
+                u2: (byte)u2,
+                v2: (byte)v2,
+                colormode: (byte)colorMode,
+                blendmode: (byte)blendMode,
+                segment: tex.Segment,
+                textureoffset: (byte)tpage,
+                u3: (byte)u3,
+                v3: (byte)v3,
+                u4: 0,
+                v4: 0
+            );
         }
 
         private static ModelEntry BuildModelEntry(Crash2Json json, Dictionary<TriangleKey, ModelMaterial> materials, int eid, string tpageName, int[] modelScales, bool compressed, int spVcount, ModelSettings settings, Debug debug)
@@ -2841,10 +2868,8 @@ namespace CrashEdit.CE
             Vector3 e1 = v1 - v0;
             Vector3 e2 = v2 - v0;
 
-            Vector3 geomNormal = Vector3.Cross(e1, e2); // normals calculated in vertex order
-
+            Vector3 geomNormal = Vector3.Cross(e1, e2);
             float dot = Vector3.Dot(geomNormal, normalFromBlender);
-
             return dot >= 0f; // true = Orientation matches, false = Orientation is reversed
         }
 
@@ -2988,7 +3013,11 @@ namespace CrashEdit.CE
             Console.ForegroundColor = ConsoleColor.White;
 
             Dictionary<TriangleKey, ModelMaterial> materials = [];
-            int textureIndex = 1; // start from 1, 0 is reserved for null texture
+
+            var normalMaterials = new List<(TriangleKey key, ModelMaterial material)>();
+            var animatedMaterials = new List<(TriangleKey key, ModelMaterial material)>();
+
+            var processedKeys = new HashSet<TriangleKey>();
 
             foreach (Crash2Triangle tri in json.triangles)
             {
@@ -3001,39 +3030,75 @@ namespace CrashEdit.CE
                     ToUVByte(tri.uv[2])
                 );
 
+                if (processedKeys.Contains(key))
+                    continue;
+
+                processedKeys.Add(key);
+
+                // find the first packed texture for this material index
+                PackedTexture? firstPacked = null;
                 foreach (PackedTexture packed in packedTextures)
                 {
                     if (packed.Index == materialIndex)
                     {
-                        if (!materials.ContainsKey(key))
-                        {
-                            List<ModelTexture> tex = [];
-
-                            // if animated, add split textures too
-                            if (packed.Info.AnimCount > 0)
-                            {
-                                Console.Write($"Packing split textures for '{packed.Name}'...");
-                                int count = 0;
-                                foreach (PackedTexture p in packedTextures)
-                                {
-                                    if (p.Name == packed.Name)
-                                    {
-                                        tex.Add(BuildModelTexture(tri, p));
-                                        count++;
-                                    }
-                                }
-                                Console.WriteLine($"    Done. Total: {count}");
-                            }
-                            else
-                            {
-                                tex.Add(BuildModelTexture(tri, packed));
-                            }
-
-                            materials.Add(key, new ModelMaterial(packed.Name, packed.Info, textureIndex, tex));
-                            textureIndex++;
-                        }
+                        firstPacked = packed;
+                        break;
                     }
                 }
+
+                if (firstPacked == null)
+                    continue;
+
+                List<ModelTexture> tex = [];
+
+                // if animated, add split textures too
+                if (firstPacked.Value.Info.AnimCount > 0)
+                {
+                    Console.Write($"Packing split textures for '{firstPacked.Value.Name}'...");
+                    int count = 0;
+                    foreach (PackedTexture p in packedTextures)
+                    {
+                        if (p.Name == firstPacked.Value.Name && p.Index == materialIndex)
+                        {
+                            tex.Add(BuildModelTexture(tri, p));
+                            count++;
+                        }
+                    }
+                    Console.WriteLine($"    Done. Total: {count}");
+
+                    animatedMaterials.Add((key, new ModelMaterial(firstPacked.Value.Name, firstPacked.Value.Info, 0, tex)));
+                }
+                else
+                {
+                    tex.Add(BuildModelTexture(tri, firstPacked.Value));
+                    normalMaterials.Add((key, new ModelMaterial(firstPacked.Value.Name, firstPacked.Value.Info, 0, tex)));
+                }
+            }
+
+            // assign texture indices to normal materials
+            int textureIndex = 1; // start from 1
+            foreach (var (key, material) in normalMaterials)
+            {
+                materials.Add(key, new ModelMaterial(
+                    material.Name,
+                    material.Info,
+                    textureIndex,
+                    material.Texture
+                ));
+                textureIndex++;
+            }
+
+            // assign texture indices to animated materials
+            int animatedTextureIndex = 0;
+            foreach (var (key, material) in animatedMaterials)
+            {
+                materials.Add(key, new ModelMaterial(
+                    material.Name,
+                    material.Info,
+                    animatedTextureIndex,
+                    material.Texture
+                ));
+                animatedTextureIndex++;
             }
 
             return materials;
@@ -3065,6 +3130,8 @@ namespace CrashEdit.CE
             Console.WriteLine("Loading textures...");
             Console.ForegroundColor = ConsoleColor.White;
 
+            int indexOffset = 0;
+
             for (int i = 0; i < json.materials.Count; i++)
             {
                 var mat = json.materials[i];
@@ -3093,12 +3160,7 @@ namespace CrashEdit.CE
                     (int, int) grid = (0, 0);
                     int animDelay = 0;
                     int animSpeed = 0;
-
-                    // a = anim count (cols x rows; e.g. _a4x1)
-                    // d = anim delay
-                    // s = anim speed
-                    // m = blend mode
-                    // t = face orientation (triSubtype)
+                    List<(int index, int repeat)> animSequence = [];
 
                     var gridMatch = Regex.Match(mat.name, @"_a(\d+)x(\d+)");
                     if (gridMatch.Success)
@@ -3109,25 +3171,50 @@ namespace CrashEdit.CE
                         animCount = cols * rows;
                     }
 
-                    var paramMatches = Regex.Matches(mat.name, @"_([sdmf])(\d+)");
+                    var paramMatches = Regex.Matches(mat.name, @"_([sdrmf])(\d+|=[^_]+)");
                     foreach (Match m in paramMatches)
                     {
                         string type = m.Groups[1].Value;
-                        int value = int.Parse(m.Groups[2].Value);
+                        string valueStr = m.Groups[2].Value;
 
                         switch (type)
                         {
                             case "d":
-                                animDelay = value;
+                                animDelay = int.Parse(valueStr);
                                 break;
                             case "s":
-                                animSpeed = value;
+                                animSpeed = int.Parse(valueStr);
+                                break;
+                            case "r":
+                                if (valueStr.StartsWith('='))
+                                {
+                                    var sequenceStr = valueStr[1..]; // remove '='
+                                    var parts = sequenceStr.Split(',');
+
+                                    foreach (var part in parts)
+                                    {
+                                        if (part.Length >= 2)
+                                        {
+                                            char indexChar = part[0];
+                                            string repeatStr = part[1..];
+
+                                            int index = char.IsUpper(indexChar)
+                                                ? indexChar - 'A'
+                                                : indexChar - 'a';
+
+                                            if (int.TryParse(repeatStr, out int repeat))
+                                            {
+                                                animSequence.Add((index, repeat));
+                                            }
+                                        }
+                                    }
+                                }
                                 break;
                             case "m":
-                                blendMode = value;
+                                blendMode = int.Parse(valueStr);
                                 break;
                             case "f":
-                                faceOrientation = value;
+                                faceOrientation = int.Parse(valueStr);
                                 break;
                         }
                     }
@@ -3136,12 +3223,26 @@ namespace CrashEdit.CE
 
                     if (animCount > 0)
                     {
+                        // If no explicit sequence is provided, default to a simple sequential animation
+                        if (animSequence.Count == 0)
+                        {
+                            for (int j = 0; j < animCount; j++)
+                                animSequence.Add((j, 1));
+                        }
+
                         List<Bitmap> splitTex = SplitPng(filePath, grid.Item1, grid.Item2);
 
-                        for (int j = 0; j < splitTex.Count; j++)
+                        int sequenceOffset = 0;
+                        foreach (var (texIndex, repeat) in animSequence)
                         {
+                            if (texIndex >= splitTex.Count)
+                            {
+                                Console.WriteLine($"Warning: Texture index {texIndex} out of range for '{name}'");
+                                continue;
+                            }
+
                             var image = TextureConv.ProcessPng(
-                                splitTex[j],
+                                splitTex[texIndex],
                                 null,
                                 isBGRA: true,
                                 oldBpp: -1,
@@ -3153,7 +3254,7 @@ namespace CrashEdit.CE
 
                             textures.Add(new TextureEntry
                             {
-                                Index = i,
+                                Index = i + indexOffset,
                                 Name = mat.name,
                                 FilePath = filePath,
                                 Data = image.rawImageData,
@@ -3161,16 +3262,27 @@ namespace CrashEdit.CE
                                 Bpp = bpp,
                                 Width = w,
                                 Height = h,
-                                Info = new MaterialInfo(faceOrientation, blendMode, j, animCount, animSpeed, animDelay)
+                                Info = new MaterialInfo(
+                                    faceOrientation,
+                                    blendMode,
+                                    texIndex,
+                                    animCount,         // AnimCount
+                                    animSpeed,
+                                    animDelay,
+                                    repeat,            // AnimRepeat
+                                    animSequence.Sum(s => s.repeat)  // TotalAnimRepeats
+                                )
                             });
-                            Console.WriteLine($"    Split texture [{j}]: {w}x{h}");
+
+                            Console.WriteLine($"    Sequence[{sequenceOffset}]: texture[{texIndex}] × {repeat} frames");
+                            sequenceOffset++;
                         }
                     }
                     else
                     {
                         textures.Add(new TextureEntry
                         {
-                            Index = i,
+                            Index = i + indexOffset,
                             Name = mat.name,
                             FilePath = filePath,
                             Data = rawImageData,
@@ -3178,7 +3290,7 @@ namespace CrashEdit.CE
                             Bpp = bpp,
                             Width = bpp == 4 ? width : width * 2,
                             Height = height,
-                            Info = new MaterialInfo(faceOrientation, blendMode, 0, 0, 0, 0)
+                            Info = new MaterialInfo(faceOrientation, blendMode, 0, 0, 0, 0, 1, 1)
                         });
                     }
                 }
@@ -3251,7 +3363,6 @@ namespace CrashEdit.CE
             byte[] fileBytes;
             string savePath;
             string modelName, animName, tpageName;
-            int defaultModelCount = 0, defaultAnimCount = 0;
             Dictionary<string, string> usedNames = [];
 
             for (int p = 0; p < jsons.Count; p++)
@@ -3580,6 +3691,9 @@ namespace CrashEdit.CE
                 ];
             }
 
+            // this identifies a unique physical texture regardless of how many times it's used in the animation sequence
+            var physicalTextureMap = new Dictionary<(int Index, int AnimOffset, string FilePath), PackedTexture>();
+
             // sort textures by size
             List<int> sorted = [];
             for (int i = 0; i < textures.Count; i++)
@@ -3636,6 +3750,7 @@ namespace CrashEdit.CE
             {
                 var tex = textures[i];
                 var info = tex.Info;
+
                 if (info.AnimDelay > 0)
                 {
                     // if animated texture with delay, search for a non-delayed texture
@@ -3672,6 +3787,36 @@ namespace CrashEdit.CE
                     continue;
                 }
 
+                // check if an identical texture (same file and same anim offset) has already been placed, if so reuse it
+                var physicalKey = (tex.Index, info.AnimOffset, tex.FilePath);
+
+                if (physicalTextureMap.TryGetValue(physicalKey, out var existingPacked))
+                {
+                    var reusedPacked = new PackedTexture(
+                        index: tex.Index,
+                        name: tex.Name,
+                        filePath: existingPacked.FilePath,
+                        bpp: existingPacked.Bpp,
+                        clutX: existingPacked.ClutX,
+                        clutY: existingPacked.ClutY,
+                        destX: existingPacked.DestX,
+                        destY: existingPacked.DestY,
+                        w: existingPacked.Width,
+                        h: existingPacked.Height,
+                        tpage: existingPacked.TPage,
+                        info: info  // use the current texture's info, which may differ in anim count/repeat, but has the same anim offset
+                    );
+
+                    for (int r = 0; r < info.AnimRepeat; r++)
+                    {
+                        packedTextures.Add(reusedPacked);
+                    }
+
+                    Console.WriteLine($"Reused texture [{info.AnimOffset}] {Path.GetFileName(tex.FilePath)} ({tex.Name}) × {info.AnimRepeat} frames (same as offset {existingPacked.Info.AnimOffset})");
+                    continue;
+                }
+
+                // place the texture in the atlas
                 Point result = new();
                 bool placed = false;
                 for (int seg = 0; seg < segmentCount && !placed; seg++)
@@ -3690,10 +3835,7 @@ namespace CrashEdit.CE
                 if (!placed)
                     throw new Exception("Atlas overflow (all segments full)");
 
-                // place texture into tpage
                 string filePath = tex.FilePath;
-                string extension = Path.GetExtension(filePath).ToLower();
-
                 int bpp = tex.Bpp;
                 bool addNewClut = true;
                 if (info.AnimCount > 0)
@@ -3733,22 +3875,30 @@ namespace CrashEdit.CE
 
                 tpage.Data = TextureConv.ReplaceTextureFromViewer(tpage.Data, tex.Data, tex.Palette, width, height, destX, destY, addNewClut, bpp, curClutX, curClutY);
 
-                packedTextures.Add(new PackedTexture(
+                var packedTex = new PackedTexture(
                     index: tex.Index,
                     name: tex.Name,
                     filePath: filePath,
                     bpp: bpp,
                     clutX: curClutX,
                     clutY: curClutY,
-                    destX: bpp == 8 ? result.X / 2 : result.X, // restore correct pos
+                    destX: bpp == 8 ? result.X / 2 : result.X,
                     destY: destY,
                     w: width,
                     h: height,
                     tpage: tpageIndex,
                     info: info
-                ));
+                );
 
-                Console.WriteLine($"Allocated texture {Path.GetFileName(tex.FilePath)} ({tex.Name}) at ({result.X,4:d}, {result.Y,3:d}), {width,3:d}x{height,3:d}, CLUT: Y{curClutY,2:d} - X{curClutX,2:d}");
+                // store the physical texture info
+                physicalTextureMap[physicalKey] = packedTex;
+
+                for (int r = 0; r < info.AnimRepeat; r++)
+                {
+                    packedTextures.Add(packedTex);
+                }
+
+                Console.WriteLine($"Allocated texture [{info.AnimOffset}] {Path.GetFileName(tex.FilePath)} ({tex.Name}) at ({result.X,4:d}, {result.Y,3:d}), {width,3:d}x{height,3:d}, CLUT: Y{curClutY,2:d} - X{curClutX,2:d} × {info.AnimRepeat} frames");
 
                 if (addNewClut)
                 {
@@ -3768,7 +3918,6 @@ namespace CrashEdit.CE
                 }
             }
 
-            // calculate and write checksum
             int correct_checksum = Chunk.CalculateChecksum(tpage.Data);
             BitConv.ToInt32(tpage.Data, 12, correct_checksum);
 
