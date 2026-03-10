@@ -34,7 +34,22 @@ namespace CrashEdit.CE
             cmdOpen = new DarkButton();
             cmdConvert = new DarkButton();
             fraSettings = new DarkGroupBox();
+            darkGroupBox5 = new DarkGroupBox();
+            label2 = new Label();
+            lblExportPath = new Label();
+            cmdSetExportPath = new DarkButton();
+            darkGroupBox4 = new DarkGroupBox();
+            label5 = new Label();
+            lblModelPath = new Label();
+            cmdSetModelPath = new DarkButton();
             fraModel = new DarkGroupBox();
+            chkBatchProcess = new CheckBox();
+            darkGroupBox3 = new DarkGroupBox();
+            pnCompressModel = new Panel();
+            radioButton3 = new RadioButton();
+            radioButton1 = new RadioButton();
+            radioButton2 = new RadioButton();
+            chkCompressModel = new CheckBox();
             lblModel = new Label();
             fraScaleFactor = new DarkGroupBox();
             chkLinkScaleFactor = new CheckBox();
@@ -59,13 +74,13 @@ namespace CrashEdit.CE
             lblRatioZ = new Label();
             numScaleMod = new DarkNumericUpDown();
             lblScaleMod = new Label();
-            panel1 = new Panel();
-            label2 = new Label();
-            lblExportPath = new Label();
-            cmdSetExportPath = new DarkButton();
             fraObjectList = new DarkGroupBox();
+            lblObject = new Label();
             dgvBatch = new DataGridView();
-            darkGroupBox3 = new DarkGroupBox();
+            fraGeneral = new DarkGroupBox();
+            txtBaseTpage = new DarkTextBox();
+            chkSkipOddFrames = new CheckBox();
+            lblBaseTpage = new Label();
             tableCfgStrip = new TableLayoutPanel();
             lblStripIterations = new Label();
             numMaxStripIterations = new DarkNumericUpDown();
@@ -75,22 +90,23 @@ namespace CrashEdit.CE
             label3 = new Label();
             numMaxLiveKeysWeight = new DarkNumericUpDown();
             numAvgKeysWeight = new DarkNumericUpDown();
-            pnCompressModel = new Panel();
-            radioButton3 = new RadioButton();
-            radioButton2 = new RadioButton();
-            radioButton1 = new RadioButton();
-            chkSkipOddFrames = new CheckBox();
-            chkCompressModel = new CheckBox();
             cmdSaveSettings = new DarkButton();
             lblPath = new Label();
             label1 = new Label();
-            chkDebug = new CheckBox();
+            chkDebugTextures = new CheckBox();
             lblVersion = new Label();
             chkTestCompression = new CheckBox();
             pnBottom = new Panel();
+            darkGroupBox2 = new DarkGroupBox();
+            chkDebugMaterials = new CheckBox();
+            chkDebugModels = new CheckBox();
             chkAutoSave = new CheckBox();
             fraSettings.SuspendLayout();
+            darkGroupBox5.SuspendLayout();
+            darkGroupBox4.SuspendLayout();
             fraModel.SuspendLayout();
+            darkGroupBox3.SuspendLayout();
+            pnCompressModel.SuspendLayout();
             fraScaleFactor.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numScaleFZ).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numScaleFY).BeginInit();
@@ -101,17 +117,16 @@ namespace CrashEdit.CE
             ((System.ComponentModel.ISupportInitialize)numScaleZ).BeginInit();
             pnScaleDiffs.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numScaleMod).BeginInit();
-            panel1.SuspendLayout();
             fraObjectList.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvBatch).BeginInit();
-            darkGroupBox3.SuspendLayout();
+            fraGeneral.SuspendLayout();
             tableCfgStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numMaxStripIterations).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numStripCountWeight).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numMaxLiveKeysWeight).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numAvgKeysWeight).BeginInit();
-            pnCompressModel.SuspendLayout();
             pnBottom.SuspendLayout();
+            darkGroupBox2.SuspendLayout();
             SuspendLayout();
             // 
             // cmdOpen
@@ -134,10 +149,10 @@ namespace CrashEdit.CE
             cmdConvert.CustomColour = false;
             cmdConvert.FlatBottom = false;
             cmdConvert.FlatTop = false;
-            cmdConvert.Location = new Point(341, 37);
+            cmdConvert.Location = new Point(380, 50);
             cmdConvert.Name = "cmdConvert";
             cmdConvert.Padding = new Padding(5);
-            cmdConvert.Size = new Size(351, 40);
+            cmdConvert.Size = new Size(324, 44);
             cmdConvert.TabIndex = 0;
             cmdConvert.Text = "Convert";
             cmdConvert.Click += cmdConvert_Click;
@@ -145,29 +160,209 @@ namespace CrashEdit.CE
             // fraSettings
             // 
             fraSettings.BackColor = Color.Transparent;
+            fraSettings.Controls.Add(darkGroupBox5);
+            fraSettings.Controls.Add(darkGroupBox4);
             fraSettings.Controls.Add(fraModel);
-            fraSettings.Controls.Add(panel1);
             fraSettings.Controls.Add(fraObjectList);
-            fraSettings.Controls.Add(darkGroupBox3);
+            fraSettings.Controls.Add(fraGeneral);
             fraSettings.Enabled = false;
-            fraSettings.Location = new Point(12, 61);
+            fraSettings.Location = new Point(8, 61);
             fraSettings.Name = "fraSettings";
-            fraSettings.Size = new Size(700, 435);
+            fraSettings.Size = new Size(703, 526);
             fraSettings.TabIndex = 2;
             fraSettings.TabStop = false;
+            // 
+            // darkGroupBox5
+            // 
+            darkGroupBox5.BackColor = Color.Transparent;
+            darkGroupBox5.Controls.Add(label2);
+            darkGroupBox5.Controls.Add(lblExportPath);
+            darkGroupBox5.Controls.Add(cmdSetExportPath);
+            darkGroupBox5.Location = new Point(280, 446);
+            darkGroupBox5.Name = "darkGroupBox5";
+            darkGroupBox5.Size = new Size(414, 70);
+            darkGroupBox5.TabIndex = 15;
+            darkGroupBox5.TabStop = false;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.BackColor = Color.Transparent;
+            label2.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label2.Location = new Point(6, 9);
+            label2.Name = "label2";
+            label2.Size = new Size(80, 15);
+            label2.TabIndex = 3;
+            label2.Text = "Export Folder:";
+            // 
+            // lblExportPath
+            // 
+            lblExportPath.BackColor = Color.Transparent;
+            lblExportPath.Location = new Point(6, 32);
+            lblExportPath.Name = "lblExportPath";
+            lblExportPath.Size = new Size(402, 30);
+            lblExportPath.TabIndex = 3;
+            lblExportPath.Text = "===PATH===\r\n===PATH===";
+            // 
+            // cmdSetExportPath
+            // 
+            cmdSetExportPath.BorderColour = Color.Empty;
+            cmdSetExportPath.CustomColour = false;
+            cmdSetExportPath.FlatBottom = false;
+            cmdSetExportPath.FlatTop = false;
+            cmdSetExportPath.Location = new Point(89, 5);
+            cmdSetExportPath.Name = "cmdSetExportPath";
+            cmdSetExportPath.Padding = new Padding(5);
+            cmdSetExportPath.Size = new Size(24, 24);
+            cmdSetExportPath.TabIndex = 8;
+            cmdSetExportPath.Click += cmdSetExportPath_Click;
+            // 
+            // darkGroupBox4
+            // 
+            darkGroupBox4.BackColor = Color.Transparent;
+            darkGroupBox4.Controls.Add(label5);
+            darkGroupBox4.Controls.Add(lblModelPath);
+            darkGroupBox4.Controls.Add(cmdSetModelPath);
+            darkGroupBox4.Location = new Point(280, 377);
+            darkGroupBox4.Name = "darkGroupBox4";
+            darkGroupBox4.Size = new Size(414, 70);
+            darkGroupBox4.TabIndex = 15;
+            darkGroupBox4.TabStop = false;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.BackColor = Color.Transparent;
+            label5.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label5.Location = new Point(6, 9);
+            label5.Name = "label5";
+            label5.Size = new Size(65, 15);
+            label5.TabIndex = 3;
+            label5.Text = "Model File:";
+            // 
+            // lblModelPath
+            // 
+            lblModelPath.BackColor = Color.Transparent;
+            lblModelPath.Location = new Point(6, 32);
+            lblModelPath.Name = "lblModelPath";
+            lblModelPath.Size = new Size(402, 30);
+            lblModelPath.TabIndex = 3;
+            lblModelPath.Text = "===PATH===\r\n===PATH===";
+            // 
+            // cmdSetModelPath
+            // 
+            cmdSetModelPath.BorderColour = Color.Empty;
+            cmdSetModelPath.CustomColour = false;
+            cmdSetModelPath.FlatBottom = false;
+            cmdSetModelPath.FlatTop = false;
+            cmdSetModelPath.Location = new Point(73, 5);
+            cmdSetModelPath.Name = "cmdSetModelPath";
+            cmdSetModelPath.Padding = new Padding(5);
+            cmdSetModelPath.Size = new Size(24, 24);
+            cmdSetModelPath.TabIndex = 8;
+            cmdSetModelPath.Click += cmdSetModelPath_Click;
             // 
             // fraModel
             // 
             fraModel.BackColor = Color.Transparent;
+            fraModel.Controls.Add(chkBatchProcess);
+            fraModel.Controls.Add(darkGroupBox3);
             fraModel.Controls.Add(lblModel);
             fraModel.Controls.Add(fraScaleFactor);
             fraModel.Controls.Add(darkGroupBox1);
             fraModel.Controls.Add(pnScaleDiffs);
             fraModel.Location = new Point(280, 10);
             fraModel.Name = "fraModel";
-            fraModel.Size = new Size(412, 160);
+            fraModel.Size = new Size(414, 300);
             fraModel.TabIndex = 13;
             fraModel.TabStop = false;
+            fraModel.Text = "Model Settings";
+            // 
+            // chkBatchProcess
+            // 
+            chkBatchProcess.AutoSize = true;
+            chkBatchProcess.Location = new Point(159, 189);
+            chkBatchProcess.Name = "chkBatchProcess";
+            chkBatchProcess.Size = new Size(160, 19);
+            chkBatchProcess.TabIndex = 5;
+            chkBatchProcess.Text = "Apply to Selected Models";
+            chkBatchProcess.UseVisualStyleBackColor = true;
+            // 
+            // darkGroupBox3
+            // 
+            darkGroupBox3.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            darkGroupBox3.BackColor = Color.Transparent;
+            darkGroupBox3.Controls.Add(pnCompressModel);
+            darkGroupBox3.Controls.Add(chkCompressModel);
+            darkGroupBox3.Location = new Point(6, 176);
+            darkGroupBox3.Name = "darkGroupBox3";
+            darkGroupBox3.Size = new Size(136, 115);
+            darkGroupBox3.TabIndex = 14;
+            darkGroupBox3.TabStop = false;
+            darkGroupBox3.Text = "Model Compression";
+            // 
+            // pnCompressModel
+            // 
+            pnCompressModel.AutoSize = true;
+            pnCompressModel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            pnCompressModel.BackColor = Color.Transparent;
+            pnCompressModel.Controls.Add(radioButton3);
+            pnCompressModel.Controls.Add(radioButton1);
+            pnCompressModel.Controls.Add(radioButton2);
+            pnCompressModel.Enabled = false;
+            pnCompressModel.Location = new Point(18, 42);
+            pnCompressModel.Name = "pnCompressModel";
+            pnCompressModel.Size = new Size(74, 65);
+            pnCompressModel.TabIndex = 15;
+            // 
+            // radioButton3
+            // 
+            radioButton3.AutoSize = true;
+            radioButton3.Location = new Point(3, 43);
+            radioButton3.Name = "radioButton3";
+            radioButton3.Size = new Size(68, 19);
+            radioButton3.TabIndex = 11;
+            radioButton3.Tag = "2";
+            radioButton3.Text = "All-Zero";
+            radioButton3.UseVisualStyleBackColor = true;
+            radioButton3.CheckedChanged += radioButton_CheckedChanged;
+            // 
+            // radioButton1
+            // 
+            radioButton1.AutoSize = true;
+            radioButton1.Checked = true;
+            radioButton1.Location = new Point(3, 3);
+            radioButton1.Name = "radioButton1";
+            radioButton1.Size = new Size(65, 19);
+            radioButton1.TabIndex = 11;
+            radioButton1.TabStop = true;
+            radioButton1.Tag = "0";
+            radioButton1.Text = "Median";
+            radioButton1.UseVisualStyleBackColor = true;
+            radioButton1.CheckedChanged += radioButton_CheckedChanged;
+            // 
+            // radioButton2
+            // 
+            radioButton2.AutoSize = true;
+            radioButton2.Location = new Point(3, 23);
+            radioButton2.Name = "radioButton2";
+            radioButton2.Size = new Size(68, 19);
+            radioButton2.TabIndex = 11;
+            radioButton2.Tag = "1";
+            radioButton2.Text = "Average";
+            radioButton2.UseVisualStyleBackColor = true;
+            radioButton2.CheckedChanged += radioButton_CheckedChanged;
+            // 
+            // chkCompressModel
+            // 
+            chkCompressModel.AutoSize = true;
+            chkCompressModel.Location = new Point(6, 22);
+            chkCompressModel.Name = "chkCompressModel";
+            chkCompressModel.Size = new Size(68, 19);
+            chkCompressModel.TabIndex = 10;
+            chkCompressModel.Text = "Enabled";
+            chkCompressModel.UseVisualStyleBackColor = true;
+            chkCompressModel.CheckedChanged += chkCompressModel_CheckedChanged;
             // 
             // lblModel
             // 
@@ -175,7 +370,7 @@ namespace CrashEdit.CE
             lblModel.BackColor = Color.Transparent;
             lblModel.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblModel.ForeColor = Color.Orange;
-            lblModel.Location = new Point(6, 4);
+            lblModel.Location = new Point(6, 20);
             lblModel.Name = "lblModel";
             lblModel.Size = new Size(48, 15);
             lblModel.TabIndex = 3;
@@ -191,9 +386,9 @@ namespace CrashEdit.CE
             fraScaleFactor.Controls.Add(numScaleFX);
             fraScaleFactor.Controls.Add(lblScaleFY);
             fraScaleFactor.Controls.Add(lblScaleFZ);
-            fraScaleFactor.Location = new Point(6, 22);
+            fraScaleFactor.Location = new Point(6, 38);
             fraScaleFactor.Name = "fraScaleFactor";
-            fraScaleFactor.Size = new Size(115, 132);
+            fraScaleFactor.Size = new Size(116, 132);
             fraScaleFactor.TabIndex = 6;
             fraScaleFactor.TabStop = false;
             fraScaleFactor.Text = "Scale Factors";
@@ -229,7 +424,7 @@ namespace CrashEdit.CE
             numScaleFZ.Name = "numScaleFZ";
             numScaleFZ.Size = new Size(64, 23);
             numScaleFZ.TabIndex = 0;
-            numScaleFZ.Value = new decimal(new int[] { 127, 0, 0, 0 });
+            numScaleFZ.Value = new decimal(new int[] { 255, 0, 0, 0 });
             numScaleFZ.ValueChanged += numScaleFactor_ValueChanged;
             // 
             // numScaleFY
@@ -241,7 +436,7 @@ namespace CrashEdit.CE
             numScaleFY.Name = "numScaleFY";
             numScaleFY.Size = new Size(64, 23);
             numScaleFY.TabIndex = 0;
-            numScaleFY.Value = new decimal(new int[] { 127, 0, 0, 0 });
+            numScaleFY.Value = new decimal(new int[] { 255, 0, 0, 0 });
             numScaleFY.ValueChanged += numScaleFactor_ValueChanged;
             // 
             // numScaleFX
@@ -253,7 +448,7 @@ namespace CrashEdit.CE
             numScaleFX.Name = "numScaleFX";
             numScaleFX.Size = new Size(64, 23);
             numScaleFX.TabIndex = 0;
-            numScaleFX.Value = new decimal(new int[] { 127, 0, 0, 0 });
+            numScaleFX.Value = new decimal(new int[] { 255, 0, 0, 0 });
             numScaleFX.ValueChanged += numScaleFactor_ValueChanged;
             // 
             // lblScaleFY
@@ -286,9 +481,9 @@ namespace CrashEdit.CE
             darkGroupBox1.Controls.Add(numScaleZ);
             darkGroupBox1.Controls.Add(lblScaleY);
             darkGroupBox1.Controls.Add(lblScaleZ);
-            darkGroupBox1.Location = new Point(127, 22);
+            darkGroupBox1.Location = new Point(128, 38);
             darkGroupBox1.Name = "darkGroupBox1";
-            darkGroupBox1.Size = new Size(132, 132);
+            darkGroupBox1.Size = new Size(116, 132);
             darkGroupBox1.TabIndex = 6;
             darkGroupBox1.TabStop = false;
             darkGroupBox1.Text = "Model Scale";
@@ -298,7 +493,7 @@ namespace CrashEdit.CE
             chkLinkModelScale.AutoSize = true;
             chkLinkModelScale.Checked = true;
             chkLinkModelScale.CheckState = CheckState.Checked;
-            chkLinkModelScale.Location = new Point(62, 107);
+            chkLinkModelScale.Location = new Point(42, 107);
             chkLinkModelScale.Name = "chkLinkModelScale";
             chkLinkModelScale.Size = new Size(48, 19);
             chkLinkModelScale.TabIndex = 5;
@@ -309,16 +504,16 @@ namespace CrashEdit.CE
             // 
             lblScaleX.AutoSize = true;
             lblScaleX.BackColor = Color.Transparent;
-            lblScaleX.Location = new Point(12, 26);
+            lblScaleX.Location = new Point(10, 26);
             lblScaleX.Name = "lblScaleX";
-            lblScaleX.Size = new Size(44, 15);
+            lblScaleX.Size = new Size(14, 15);
             lblScaleX.TabIndex = 3;
-            lblScaleX.Text = "Scale X";
+            lblScaleX.Text = "X";
             // 
             // numScaleX
             // 
             numScaleX.Hexadecimal = true;
-            numScaleX.Location = new Point(62, 22);
+            numScaleX.Location = new Point(42, 22);
             numScaleX.Maximum = new decimal(new int[] { 65535, 0, 0, 0 });
             numScaleX.Minimum = new decimal(new int[] { 400, 0, 0, 0 });
             numScaleX.Name = "numScaleX";
@@ -330,7 +525,7 @@ namespace CrashEdit.CE
             // numScaleY
             // 
             numScaleY.Hexadecimal = true;
-            numScaleY.Location = new Point(62, 51);
+            numScaleY.Location = new Point(42, 51);
             numScaleY.Maximum = new decimal(new int[] { 65535, 0, 0, 0 });
             numScaleY.Minimum = new decimal(new int[] { 400, 0, 0, 0 });
             numScaleY.Name = "numScaleY";
@@ -342,7 +537,7 @@ namespace CrashEdit.CE
             // numScaleZ
             // 
             numScaleZ.Hexadecimal = true;
-            numScaleZ.Location = new Point(62, 80);
+            numScaleZ.Location = new Point(42, 80);
             numScaleZ.Maximum = new decimal(new int[] { 65535, 0, 0, 0 });
             numScaleZ.Minimum = new decimal(new int[] { 400, 0, 0, 0 });
             numScaleZ.Name = "numScaleZ";
@@ -355,21 +550,21 @@ namespace CrashEdit.CE
             // 
             lblScaleY.AutoSize = true;
             lblScaleY.BackColor = Color.Transparent;
-            lblScaleY.Location = new Point(12, 55);
+            lblScaleY.Location = new Point(10, 55);
             lblScaleY.Name = "lblScaleY";
-            lblScaleY.Size = new Size(44, 15);
+            lblScaleY.Size = new Size(14, 15);
             lblScaleY.TabIndex = 3;
-            lblScaleY.Text = "Scale Y";
+            lblScaleY.Text = "Y";
             // 
             // lblScaleZ
             // 
             lblScaleZ.AutoSize = true;
             lblScaleZ.BackColor = Color.Transparent;
-            lblScaleZ.Location = new Point(12, 84);
+            lblScaleZ.Location = new Point(10, 84);
             lblScaleZ.Name = "lblScaleZ";
-            lblScaleZ.Size = new Size(44, 15);
+            lblScaleZ.Size = new Size(14, 15);
             lblScaleZ.TabIndex = 3;
-            lblScaleZ.Text = "Scale Z";
+            lblScaleZ.Text = "Z";
             // 
             // pnScaleDiffs
             // 
@@ -379,9 +574,9 @@ namespace CrashEdit.CE
             pnScaleDiffs.Controls.Add(lblRatioZ);
             pnScaleDiffs.Controls.Add(numScaleMod);
             pnScaleDiffs.Controls.Add(lblScaleMod);
-            pnScaleDiffs.Location = new Point(265, 28);
+            pnScaleDiffs.Location = new Point(250, 44);
             pnScaleDiffs.Name = "pnScaleDiffs";
-            pnScaleDiffs.Size = new Size(141, 126);
+            pnScaleDiffs.Size = new Size(154, 126);
             pnScaleDiffs.TabIndex = 12;
             // 
             // chkAutoScale
@@ -389,11 +584,11 @@ namespace CrashEdit.CE
             chkAutoScale.AutoSize = true;
             chkAutoScale.Checked = true;
             chkAutoScale.CheckState = CheckState.Checked;
-            chkAutoScale.Location = new Point(3, 49);
+            chkAutoScale.Location = new Point(3, 52);
             chkAutoScale.Name = "chkAutoScale";
-            chkAutoScale.Size = new Size(79, 19);
+            chkAutoScale.Size = new Size(82, 19);
             chkAutoScale.TabIndex = 5;
-            chkAutoScale.Text = "AutoScale";
+            chkAutoScale.Text = "Auto Scale";
             chkAutoScale.UseVisualStyleBackColor = true;
             // 
             // lblRatioX
@@ -402,9 +597,9 @@ namespace CrashEdit.CE
             lblRatioX.BackColor = Color.Transparent;
             lblRatioX.Location = new Point(3, 1);
             lblRatioX.Name = "lblRatioX";
-            lblRatioX.Size = new Size(130, 15);
+            lblRatioX.Size = new Size(148, 15);
             lblRatioX.TabIndex = 3;
-            lblRatioX.Text = "Scale:1.0000  diff:0.0000";
+            lblRatioX.Text = "[X] Scale:1.0000  diff:0.0000";
             // 
             // lblRatioY
             // 
@@ -412,9 +607,9 @@ namespace CrashEdit.CE
             lblRatioY.BackColor = Color.Transparent;
             lblRatioY.Location = new Point(3, 16);
             lblRatioY.Name = "lblRatioY";
-            lblRatioY.Size = new Size(130, 15);
+            lblRatioY.Size = new Size(148, 15);
             lblRatioY.TabIndex = 3;
-            lblRatioY.Text = "Scale:1.0000  diff:0.0000";
+            lblRatioY.Text = "[Y] Scale:1.0000  diff:0.0000";
             // 
             // lblRatioZ
             // 
@@ -422,9 +617,9 @@ namespace CrashEdit.CE
             lblRatioZ.BackColor = Color.Transparent;
             lblRatioZ.Location = new Point(3, 31);
             lblRatioZ.Name = "lblRatioZ";
-            lblRatioZ.Size = new Size(130, 15);
+            lblRatioZ.Size = new Size(148, 15);
             lblRatioZ.TabIndex = 3;
-            lblRatioZ.Text = "Scale:1.0000  diff:0.0000";
+            lblRatioZ.Text = "[Z] Scale:1.0000  diff:0.0000";
             // 
             // numScaleMod
             // 
@@ -445,62 +640,32 @@ namespace CrashEdit.CE
             lblScaleMod.BackColor = Color.Transparent;
             lblScaleMod.Location = new Point(3, 102);
             lblScaleMod.Name = "lblScaleMod";
-            lblScaleMod.Size = new Size(59, 15);
+            lblScaleMod.Size = new Size(62, 15);
             lblScaleMod.TabIndex = 3;
-            lblScaleMod.Text = "ScaleMod";
-            // 
-            // panel1
-            // 
-            panel1.BackColor = Color.Transparent;
-            panel1.Controls.Add(label2);
-            panel1.Controls.Add(lblExportPath);
-            panel1.Controls.Add(cmdSetExportPath);
-            panel1.Location = new Point(3, 351);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(414, 78);
-            panel1.TabIndex = 13;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.BackColor = Color.Transparent;
-            label2.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.Location = new Point(3, 13);
-            label2.Name = "label2";
-            label2.Size = new Size(71, 15);
-            label2.TabIndex = 3;
-            label2.Text = "Export Path:";
-            // 
-            // lblExportPath
-            // 
-            lblExportPath.BackColor = Color.Transparent;
-            lblExportPath.Location = new Point(3, 35);
-            lblExportPath.Name = "lblExportPath";
-            lblExportPath.Size = new Size(400, 30);
-            lblExportPath.TabIndex = 3;
-            lblExportPath.Text = "PATH---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
-            // 
-            // cmdSetExportPath
-            // 
-            cmdSetExportPath.BorderColour = Color.Empty;
-            cmdSetExportPath.CustomColour = false;
-            cmdSetExportPath.FlatBottom = false;
-            cmdSetExportPath.FlatTop = false;
-            cmdSetExportPath.Location = new Point(77, 9);
-            cmdSetExportPath.Name = "cmdSetExportPath";
-            cmdSetExportPath.Padding = new Padding(5);
-            cmdSetExportPath.Size = new Size(24, 24);
-            cmdSetExportPath.TabIndex = 8;
-            cmdSetExportPath.Click += cmdSetExportPath_Click;
+            lblScaleMod.Text = "Scale Mod";
             // 
             // fraObjectList
             // 
+            fraObjectList.Controls.Add(lblObject);
             fraObjectList.Controls.Add(dgvBatch);
             fraObjectList.Location = new Point(6, 10);
             fraObjectList.Name = "fraObjectList";
-            fraObjectList.Size = new Size(268, 336);
+            fraObjectList.Size = new Size(268, 466);
             fraObjectList.TabIndex = 13;
             fraObjectList.TabStop = false;
+            fraObjectList.Text = "Object List";
+            // 
+            // lblObject
+            // 
+            lblObject.AutoSize = true;
+            lblObject.BackColor = Color.Transparent;
+            lblObject.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            lblObject.ForeColor = Color.DarkTurquoise;
+            lblObject.Location = new Point(6, 20);
+            lblObject.Name = "lblObject";
+            lblObject.Size = new Size(48, 15);
+            lblObject.TabIndex = 3;
+            lblObject.Text = "OBJECT";
             // 
             // dgvBatch
             // 
@@ -510,7 +675,7 @@ namespace CrashEdit.CE
             dgvBatch.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dgvBatch.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvBatch.EditMode = DataGridViewEditMode.EditOnEnter;
-            dgvBatch.Location = new Point(6, 6);
+            dgvBatch.Location = new Point(6, 38);
             dgvBatch.Name = "dgvBatch";
             dgvBatch.ReadOnly = true;
             dgvBatch.RowHeadersVisible = false;
@@ -519,24 +684,56 @@ namespace CrashEdit.CE
             dgvBatch.ScrollBars = ScrollBars.Vertical;
             dgvBatch.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvBatch.ShowCellToolTips = false;
-            dgvBatch.Size = new Size(256, 295);
+            dgvBatch.Size = new Size(256, 420);
             dgvBatch.TabIndex = 12;
             dgvBatch.CellBeginEdit += dgvBatch_CellBeginEdit;
             dgvBatch.SelectionChanged += dgvBatch_SelectionChanged;
             // 
-            // darkGroupBox3
+            // fraGeneral
             // 
-            darkGroupBox3.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            darkGroupBox3.Controls.Add(tableCfgStrip);
-            darkGroupBox3.Controls.Add(pnCompressModel);
-            darkGroupBox3.Controls.Add(chkSkipOddFrames);
-            darkGroupBox3.Controls.Add(chkCompressModel);
-            darkGroupBox3.Location = new Point(280, 177);
-            darkGroupBox3.Name = "darkGroupBox3";
-            darkGroupBox3.Size = new Size(412, 169);
-            darkGroupBox3.TabIndex = 6;
-            darkGroupBox3.TabStop = false;
-            darkGroupBox3.Text = "Advanced";
+            fraGeneral.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraGeneral.Controls.Add(txtBaseTpage);
+            fraGeneral.Controls.Add(chkSkipOddFrames);
+            fraGeneral.Controls.Add(lblBaseTpage);
+            fraGeneral.Location = new Point(280, 316);
+            fraGeneral.Name = "fraGeneral";
+            fraGeneral.Size = new Size(414, 55);
+            fraGeneral.TabIndex = 6;
+            fraGeneral.TabStop = false;
+            fraGeneral.Text = "General Settings";
+            // 
+            // txtBaseTpage
+            // 
+            txtBaseTpage.BackColor = Color.FromArgb(26, 26, 28);
+            txtBaseTpage.BorderStyle = BorderStyle.FixedSingle;
+            txtBaseTpage.ForeColor = Color.FromArgb(213, 213, 213);
+            txtBaseTpage.Location = new Point(319, 22);
+            txtBaseTpage.MaxLength = 5;
+            txtBaseTpage.Name = "txtBaseTpage";
+            txtBaseTpage.Size = new Size(60, 23);
+            txtBaseTpage.TabIndex = 13;
+            txtBaseTpage.Text = "00_0T";
+            txtBaseTpage.Validating += BaseEID_Validating;
+            // 
+            // chkSkipOddFrames
+            // 
+            chkSkipOddFrames.AutoSize = true;
+            chkSkipOddFrames.Location = new Point(6, 24);
+            chkSkipOddFrames.Name = "chkSkipOddFrames";
+            chkSkipOddFrames.Size = new Size(167, 19);
+            chkSkipOddFrames.TabIndex = 10;
+            chkSkipOddFrames.Text = "Skip output on odd frames";
+            chkSkipOddFrames.UseVisualStyleBackColor = true;
+            // 
+            // lblBaseTpage
+            // 
+            lblBaseTpage.AutoSize = true;
+            lblBaseTpage.BackColor = Color.Transparent;
+            lblBaseTpage.Location = new Point(212, 26);
+            lblBaseTpage.Name = "lblBaseTpage";
+            lblBaseTpage.Size = new Size(101, 15);
+            lblBaseTpage.TabIndex = 3;
+            lblBaseTpage.Text = "Base TPage Name";
             // 
             // tableCfgStrip
             // 
@@ -551,7 +748,7 @@ namespace CrashEdit.CE
             tableCfgStrip.Controls.Add(label3, 0, 2);
             tableCfgStrip.Controls.Add(numMaxLiveKeysWeight, 1, 1);
             tableCfgStrip.Controls.Add(numAvgKeysWeight, 1, 2);
-            tableCfgStrip.Location = new Point(6, 22);
+            tableCfgStrip.Location = new Point(737, 576);
             tableCfgStrip.Name = "tableCfgStrip";
             tableCfgStrip.RowCount = 4;
             tableCfgStrip.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
@@ -560,6 +757,7 @@ namespace CrashEdit.CE
             tableCfgStrip.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
             tableCfgStrip.Size = new Size(236, 115);
             tableCfgStrip.TabIndex = 13;
+            tableCfgStrip.Visible = false;
             // 
             // lblStripIterations
             // 
@@ -642,86 +840,16 @@ namespace CrashEdit.CE
             numAvgKeysWeight.TabIndex = 0;
             numAvgKeysWeight.Value = new decimal(new int[] { 100, 0, 0, 0 });
             // 
-            // pnCompressModel
-            // 
-            pnCompressModel.Controls.Add(radioButton3);
-            pnCompressModel.Controls.Add(radioButton2);
-            pnCompressModel.Controls.Add(radioButton1);
-            pnCompressModel.Enabled = false;
-            pnCompressModel.Location = new Point(281, 36);
-            pnCompressModel.Name = "pnCompressModel";
-            pnCompressModel.Size = new Size(104, 68);
-            pnCompressModel.TabIndex = 12;
-            // 
-            // radioButton3
-            // 
-            radioButton3.AutoSize = true;
-            radioButton3.Location = new Point(3, 43);
-            radioButton3.Name = "radioButton3";
-            radioButton3.Size = new Size(66, 19);
-            radioButton3.TabIndex = 11;
-            radioButton3.Tag = "2";
-            radioButton3.Text = "All-zero";
-            radioButton3.UseVisualStyleBackColor = true;
-            radioButton3.CheckedChanged += radioButton_CheckedChanged;
-            // 
-            // radioButton2
-            // 
-            radioButton2.AutoSize = true;
-            radioButton2.Location = new Point(3, 23);
-            radioButton2.Name = "radioButton2";
-            radioButton2.Size = new Size(68, 19);
-            radioButton2.TabIndex = 11;
-            radioButton2.Tag = "1";
-            radioButton2.Text = "Average";
-            radioButton2.UseVisualStyleBackColor = true;
-            radioButton2.CheckedChanged += radioButton_CheckedChanged;
-            // 
-            // radioButton1
-            // 
-            radioButton1.AutoSize = true;
-            radioButton1.Checked = true;
-            radioButton1.Location = new Point(3, 3);
-            radioButton1.Name = "radioButton1";
-            radioButton1.Size = new Size(65, 19);
-            radioButton1.TabIndex = 11;
-            radioButton1.TabStop = true;
-            radioButton1.Tag = "0";
-            radioButton1.Text = "Median";
-            radioButton1.UseVisualStyleBackColor = true;
-            radioButton1.CheckedChanged += radioButton_CheckedChanged;
-            // 
-            // chkSkipOddFrames
-            // 
-            chkSkipOddFrames.AutoSize = true;
-            chkSkipOddFrames.Location = new Point(6, 143);
-            chkSkipOddFrames.Name = "chkSkipOddFrames";
-            chkSkipOddFrames.Size = new Size(167, 19);
-            chkSkipOddFrames.TabIndex = 10;
-            chkSkipOddFrames.Text = "Skip output on odd frames";
-            chkSkipOddFrames.UseVisualStyleBackColor = true;
-            // 
-            // chkCompressModel
-            // 
-            chkCompressModel.AutoSize = true;
-            chkCompressModel.Location = new Point(269, 15);
-            chkCompressModel.Name = "chkCompressModel";
-            chkCompressModel.Size = new Size(116, 19);
-            chkCompressModel.TabIndex = 10;
-            chkCompressModel.Text = "Compress model";
-            chkCompressModel.UseVisualStyleBackColor = true;
-            chkCompressModel.CheckedChanged += chkCompressModel_CheckedChanged;
-            // 
             // cmdSaveSettings
             // 
             cmdSaveSettings.BorderColour = Color.Empty;
             cmdSaveSettings.CustomColour = false;
             cmdSaveSettings.FlatBottom = false;
             cmdSaveSettings.FlatTop = false;
-            cmdSaveSettings.Location = new Point(596, 3);
+            cmdSaveSettings.Location = new Point(608, 10);
             cmdSaveSettings.Name = "cmdSaveSettings";
             cmdSaveSettings.Padding = new Padding(5);
-            cmdSaveSettings.Size = new Size(96, 28);
+            cmdSaveSettings.Size = new Size(96, 32);
             cmdSaveSettings.TabIndex = 7;
             cmdSaveSettings.Text = "Save Settings";
             cmdSaveSettings.Click += cmdSaveSettings_Click;
@@ -731,9 +859,9 @@ namespace CrashEdit.CE
             lblPath.BackColor = Color.Transparent;
             lblPath.Location = new Point(93, 25);
             lblPath.Name = "lblPath";
-            lblPath.Size = new Size(326, 30);
+            lblPath.Size = new Size(611, 30);
             lblPath.TabIndex = 3;
-            lblPath.Text = "PATH---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
+            lblPath.Text = "===PATH===\r\n===PATH===";
             // 
             // label1
             // 
@@ -742,26 +870,26 @@ namespace CrashEdit.CE
             label1.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.Location = new Point(93, 8);
             label1.Name = "label1";
-            label1.Size = new Size(55, 15);
+            label1.Size = new Size(74, 15);
             label1.TabIndex = 3;
-            label1.Text = "File Path:";
+            label1.Text = "Settings File:";
             // 
-            // chkDebug
+            // chkDebugTextures
             // 
-            chkDebug.AutoSize = true;
-            chkDebug.Location = new Point(215, 58);
-            chkDebug.Name = "chkDebug";
-            chkDebug.Size = new Size(107, 19);
-            chkDebug.TabIndex = 5;
-            chkDebug.Text = "Log debug info";
-            chkDebug.UseVisualStyleBackColor = true;
-            chkDebug.CheckedChanged += chkDebug_CheckedChanged;
+            chkDebugTextures.AutoSize = true;
+            chkDebugTextures.Location = new Point(8, 21);
+            chkDebugTextures.Name = "chkDebugTextures";
+            chkDebugTextures.Size = new Size(92, 19);
+            chkDebugTextures.TabIndex = 5;
+            chkDebugTextures.Text = "Log Textures";
+            chkDebugTextures.UseVisualStyleBackColor = true;
+            chkDebugTextures.CheckedChanged += chkDebugTextures_CheckedChanged;
             // 
             // lblVersion
             // 
             lblVersion.AutoSize = true;
             lblVersion.BackColor = Color.Transparent;
-            lblVersion.Location = new Point(3, 47);
+            lblVersion.Location = new Point(6, 60);
             lblVersion.Name = "lblVersion";
             lblVersion.Size = new Size(86, 30);
             lblVersion.TabIndex = 3;
@@ -770,48 +898,86 @@ namespace CrashEdit.CE
             // chkTestCompression
             // 
             chkTestCompression.AutoSize = true;
-            chkTestCompression.Location = new Point(215, 37);
+            chkTestCompression.Location = new Point(384, 27);
             chkTestCompression.Name = "chkTestCompression";
-            chkTestCompression.Size = new Size(117, 19);
+            chkTestCompression.Size = new Size(137, 19);
             chkTestCompression.TabIndex = 5;
-            chkTestCompression.Text = "Test compression";
+            chkTestCompression.Text = "Test all compressions";
             chkTestCompression.UseVisualStyleBackColor = true;
             chkTestCompression.CheckedChanged += chkTestCompression_CheckedChanged;
             // 
             // pnBottom
             // 
             pnBottom.BackColor = Color.Transparent;
+            pnBottom.Controls.Add(darkGroupBox2);
             pnBottom.Controls.Add(cmdConvert);
             pnBottom.Controls.Add(lblVersion);
             pnBottom.Controls.Add(chkAutoSave);
-            pnBottom.Controls.Add(chkDebug);
             pnBottom.Controls.Add(cmdSaveSettings);
             pnBottom.Controls.Add(chkTestCompression);
             pnBottom.Enabled = false;
-            pnBottom.Location = new Point(12, 502);
+            pnBottom.Location = new Point(3, 592);
             pnBottom.Name = "pnBottom";
-            pnBottom.Size = new Size(695, 80);
+            pnBottom.Size = new Size(708, 99);
             pnBottom.TabIndex = 12;
+            // 
+            // darkGroupBox2
+            // 
+            darkGroupBox2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            darkGroupBox2.BackColor = Color.Transparent;
+            darkGroupBox2.Controls.Add(chkDebugTextures);
+            darkGroupBox2.Controls.Add(chkDebugMaterials);
+            darkGroupBox2.Controls.Add(chkDebugModels);
+            darkGroupBox2.Location = new Point(233, 6);
+            darkGroupBox2.Name = "darkGroupBox2";
+            darkGroupBox2.Size = new Size(133, 88);
+            darkGroupBox2.TabIndex = 14;
+            darkGroupBox2.TabStop = false;
+            darkGroupBox2.Text = "Debug Logging";
+            // 
+            // chkDebugMaterials
+            // 
+            chkDebugMaterials.AutoSize = true;
+            chkDebugMaterials.Location = new Point(8, 42);
+            chkDebugMaterials.Name = "chkDebugMaterials";
+            chkDebugMaterials.Size = new Size(97, 19);
+            chkDebugMaterials.TabIndex = 5;
+            chkDebugMaterials.Text = "Log Materials";
+            chkDebugMaterials.UseVisualStyleBackColor = true;
+            chkDebugMaterials.CheckedChanged += chkDebugMaterials_CheckedChanged;
+            // 
+            // chkDebugModels
+            // 
+            chkDebugModels.AutoSize = true;
+            chkDebugModels.Location = new Point(8, 63);
+            chkDebugModels.Name = "chkDebugModels";
+            chkDebugModels.Size = new Size(88, 19);
+            chkDebugModels.TabIndex = 5;
+            chkDebugModels.Text = "Log Models";
+            chkDebugModels.UseVisualStyleBackColor = true;
+            chkDebugModels.CheckedChanged += chkDebugModels_CheckedChanged;
             // 
             // chkAutoSave
             // 
             chkAutoSave.AutoSize = true;
             chkAutoSave.Checked = true;
             chkAutoSave.CheckState = CheckState.Checked;
-            chkAutoSave.Location = new Point(215, 16);
+            chkAutoSave.Location = new Point(384, 6);
             chkAutoSave.Name = "chkAutoSave";
             chkAutoSave.Size = new Size(78, 19);
             chkAutoSave.TabIndex = 5;
             chkAutoSave.Text = "Auto save";
             chkAutoSave.UseVisualStyleBackColor = true;
-            chkAutoSave.CheckedChanged += chkDebug_CheckedChanged;
             // 
             // ModelConverterForm
             // 
             AllowDrop = true;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(720, 595);
+            AutoSize = true;
+            AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            ClientSize = new Size(987, 708);
+            Controls.Add(tableCfgStrip);
             Controls.Add(pnBottom);
             Controls.Add(label1);
             Controls.Add(lblPath);
@@ -821,13 +987,22 @@ namespace CrashEdit.CE
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             Name = "ModelConverterForm";
+            Padding = new Padding(0, 0, 4, 4);
             Text = "Model Converter";
             TransparencyKey = Color.FromArgb(31, 31, 32);
             DragDrop += ModelConverterForm_DragDrop;
             DragEnter += ModelConverterForm_DragEnter;
             fraSettings.ResumeLayout(false);
+            darkGroupBox5.ResumeLayout(false);
+            darkGroupBox5.PerformLayout();
+            darkGroupBox4.ResumeLayout(false);
+            darkGroupBox4.PerformLayout();
             fraModel.ResumeLayout(false);
             fraModel.PerformLayout();
+            darkGroupBox3.ResumeLayout(false);
+            darkGroupBox3.PerformLayout();
+            pnCompressModel.ResumeLayout(false);
+            pnCompressModel.PerformLayout();
             fraScaleFactor.ResumeLayout(false);
             fraScaleFactor.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numScaleFZ).EndInit();
@@ -841,22 +1016,21 @@ namespace CrashEdit.CE
             pnScaleDiffs.ResumeLayout(false);
             pnScaleDiffs.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numScaleMod).EndInit();
-            panel1.ResumeLayout(false);
-            panel1.PerformLayout();
             fraObjectList.ResumeLayout(false);
+            fraObjectList.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvBatch).EndInit();
-            darkGroupBox3.ResumeLayout(false);
-            darkGroupBox3.PerformLayout();
+            fraGeneral.ResumeLayout(false);
+            fraGeneral.PerformLayout();
             tableCfgStrip.ResumeLayout(false);
             tableCfgStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numMaxStripIterations).EndInit();
             ((System.ComponentModel.ISupportInitialize)numStripCountWeight).EndInit();
             ((System.ComponentModel.ISupportInitialize)numMaxLiveKeysWeight).EndInit();
             ((System.ComponentModel.ISupportInitialize)numAvgKeysWeight).EndInit();
-            pnCompressModel.ResumeLayout(false);
-            pnCompressModel.PerformLayout();
             pnBottom.ResumeLayout(false);
             pnBottom.PerformLayout();
+            darkGroupBox2.ResumeLayout(false);
+            darkGroupBox2.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -880,7 +1054,7 @@ namespace CrashEdit.CE
         private Label label2;
         private Label lblExportPath;
         private DarkButton cmdSetExportPath;
-        private CheckBox chkDebug;
+        private CheckBox chkDebugTextures;
         private DarkGroupBox fraScaleFactor;
         private Label lblScaleFX;
         private DarkNumericUpDown numScaleFX;
@@ -890,7 +1064,7 @@ namespace CrashEdit.CE
         private DarkNumericUpDown numScaleFY;
         private CheckBox chkSkipOddFrames;
         private Label lblVersion;
-        private DarkGroupBox darkGroupBox3;
+        private DarkGroupBox fraGeneral;
         private Label lblMaxKeyWeight;
         private DarkNumericUpDown numMaxLiveKeysWeight;
         private DarkNumericUpDown darkNumericUpDown2;
@@ -899,7 +1073,6 @@ namespace CrashEdit.CE
         private CheckBox chkLinkScaleFactor;
         private Label lblStripIterations;
         private DarkNumericUpDown numMaxStripIterations;
-        private Panel pnCompressModel;
         private RadioButton radioButton3;
         private RadioButton radioButton2;
         private RadioButton radioButton1;
@@ -920,9 +1093,22 @@ namespace CrashEdit.CE
         private Panel pnBottom;
         private TableLayoutPanel tableCfgStrip;
         private DarkGroupBox fraObjectList;
-        private Panel panel1;
         private DarkGroupBox fraModel;
         private Label lblModel;
         private CheckBox chkAutoSave;
+        private Label lblObject;
+        private DarkTextBox txtBaseTpage;
+        private Label lblBaseTpage;
+        private CheckBox chkDebugModels;
+        private CheckBox chkDebugMaterials;
+        private DarkGroupBox darkGroupBox2;
+        private Label label5;
+        private Label lblModelPath;
+        private DarkButton cmdSetModelPath;
+        private DarkGroupBox darkGroupBox5;
+        private DarkGroupBox darkGroupBox4;
+        private DarkGroupBox darkGroupBox3;
+        private Panel pnCompressModel;
+        private CheckBox chkBatchProcess;
     }
 }

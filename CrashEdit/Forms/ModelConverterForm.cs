@@ -1,18 +1,13 @@
 ﻿using AltUI.Controls;
 using AltUI.Forms;
 using CrashEdit.Crash;
-using CrashEdit.Crash.GOOLIns;
-using NAudio.Gui;
-using System;
 using System.ComponentModel;
 using System.Data;
-using System.Linq;
 using System.Media;
 using System.Numerics;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using System.Windows.Media.Media3D;
 using static CrashEdit.CE.BlenderModelConverter;
 using static CrashEdit.CE.ModelConverterForm;
 using static CrashEdit.CE.TextureAtlasPacker;
@@ -35,16 +30,15 @@ namespace CrashEdit.CE
 
         private readonly Debug debug = new()
         {
+            DebugMaterials = false,
+            DebugTextures = false,
+            DebugModels = false,
             DebugMode = false,
             TestCompression = false
         };
 
-        private Dictionary<string, ModelItem> modelItems = [];
-        private List<ModelItem> oldModelItems = [];
-
         private int currentIndex = 0;
-        private int compressionMethod = 0;
-
+        private Dictionary<string, ModelItem> modelItems = [];
         private ModelSettings modelSettings;
         private string modelPath;
         private string settingsPath;
@@ -61,6 +55,8 @@ namespace CrashEdit.CE
         private readonly DarkToolTip toolTip6 = new();
         private readonly DarkToolTip toolTip7 = new();
         private readonly DarkToolTip toolTip8 = new();
+        private readonly DarkToolTip toolTip9 = new();
+        private readonly DarkToolTip toolTip10 = new();
 
         internal Stack<bool> dirty = new();
         internal bool Dirty => dirty.Count > 0 && dirty.Peek();
@@ -73,29 +69,33 @@ namespace CrashEdit.CE
             DgvBatchInit();
             lblPath.Text = "";
             lblExportPath.Text = "";
+            lblModelPath.Text = "";
             lblModel.Text = "";
+            lblObject.Text = "";
             lblVersion.Text = $"\r\nConverter: v{Version}";
 
             toolTip1.SetToolTip(lblStripIterations, "Number of iterations to generate triangle strips.");
             toolTip2.SetToolTip(lblMaxKeyWeight, "Penalty weight for longer-living position keys.");
             toolTip3.SetToolTip(chkCompressModel, "Enables the model compression and sets the method.");
-            toolTip4.SetToolTip(chkSkipOddFrames, "Skips output for every odd frame.\r\nUseful when frame interpolation is enabled in GOOL.");
+            toolTip4.SetToolTip(chkSkipOddFrames, "Skips output on every odd frame.\r\nEnable this when using frame interpolation.");
             toolTip5.SetToolTip(cmdOpen, "You can also drag and drop a file onto this form.");
-            toolTip6.SetToolTip(lblScaleMod, "Use this only if the model scale in Blender is incorrect.");
+            toolTip6.SetToolTip(lblScaleMod, "Use this only if the model scale in Blender is incorrect.\r\nIt is recommended to fix the scale in Blender instead.");
             toolTip7.SetToolTip(chkAutoSave, "Saves the settings file automatically before conversion.");
-            toolTip8.SetToolTip(chkTestCompression, "Tries all compression methods to find the most efficient one.");
+            toolTip8.SetToolTip(chkTestCompression, "Tries all compression methods to find the most efficient one.\r\nRequires model compression to be enabled.");
+            toolTip9.SetToolTip(lblBaseTpage, "Sets the base TPage name for the model's textures.\r\nThe converter replaces '_' in the name with the actual TPage index.");
+            toolTip10.SetToolTip(chkBatchProcess, "When enabled, model setting changes will apply to all selected models in the object list.");
 
             cmdSetExportPath.Image = new Bitmap(Embeds.Bitmaps["FolderOpen"], new Size(16, 16));
+            cmdSetModelPath.Image = new Bitmap(Embeds.Bitmaps["FolderOpen"], new Size(16, 16));
 
+            numScaleFX.MouseWheel += new MouseEventHandler(ScrollHandlerFunction1);
+            numScaleFY.MouseWheel += new MouseEventHandler(ScrollHandlerFunction1);
+            numScaleFZ.MouseWheel += new MouseEventHandler(ScrollHandlerFunction1);
             numScaleX.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
             numScaleY.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
             numScaleZ.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
-            numScaleFX.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
-            numScaleFY.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
-            numScaleFZ.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
 
-            numMaxLiveKeysWeight.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
-            numMaxStripIterations.MouseWheel += new MouseEventHandler(ScrollHandlerFunction2);
+            numScaleMod.MouseWheel += new MouseEventHandler(ScrollHandlerFunction3);
 
             reloadTimer = new()
             {
@@ -175,87 +175,97 @@ namespace CrashEdit.CE
             using OpenFileDialog ofd = new();
             ofd.Filter = FileFilters.JSON;
             if (ofd.ShowDialog() == DialogResult.OK)
-                openFile(ofd.FileName);
+                TryOpenSettingsFile(ofd.FileName);
         }
 
-        private void openFile(string path)
+        private void TryOpenSettingsFile(string path)
         {
-            string saveDirectory = Path.GetDirectoryName(path)!;
-            string fileName = Path.GetFileNameWithoutExtension(path);
-
             Console.WriteLine();
-            Console.WriteLine("Selected file: " + path);
-            // try load settings file
+            Console.WriteLine($"Opening file: {path}");
+
             try
             {
+                // try to load settings file
                 modelSettings = ModelSettingsIO.Load(path);
                 settingsPath = path;
-                LoadSettings();
-                Console.WriteLine("Loaded settings.");
+                LoadSettings(true);
+                Console.WriteLine("  Settings loaded.");
             }
-            // if invalid settings file, try load as model json file
             catch (Exception)
             {
-                try
-                {
-                    Console.WriteLine("Could not load settings, trying to load model JSON file...");
-                    List<Crash2Json> jsons = LoadModelJson(path);
-
-                    settingsPath = Path.Combine(saveDirectory, $"{fileName}_settings.json");
-
-                    // load existing settings
-                    if (File.Exists(settingsPath))
-                    {
-                        modelSettings = ModelSettingsIO.Load(settingsPath);
-                        LoadSettings();
-                        Console.WriteLine("Found and loaded existing settings.");
-                    }
-                    else
-                    {
-                        // use default settings
-                        dirty.Push(true);
-                        numScaleX.Value = (decimal)BASE_MODEL_SCALE;
-                        numScaleY.Value = (decimal)BASE_MODEL_SCALE;
-                        numScaleZ.Value = (decimal)BASE_MODEL_SCALE;
-                        numScaleFX.Value = (decimal)BASE_SCALE_FACTOR;
-                        numScaleFY.Value = (decimal)BASE_SCALE_FACTOR;
-                        numScaleFZ.Value = (decimal)BASE_SCALE_FACTOR;
-                        numScaleMod.Value = 1.0M;
-                        chkSkipOddFrames.Checked = false;
-                        numMaxStripIterations.Value = 64.0M;
-                        numMaxLiveKeysWeight.Value = 1000.0M;
-                        numAvgKeysWeight.Value = 100.0M;
-                        numStripCountWeight.Value = 10.0M;
-                        chkCompressModel.Checked = false;
-                        radioButton1.Checked = true;
-
-                        modelSettings = new();
-
-                        modelPath = path;
-                        lblExportPath.Text = saveDirectory;
-
-                        CreateRows(jsons);
-                        CreateModelObjects();
-
-                        SaveSettings();
-                        LoadSettings();
-
-                        dirty.Pop();
-
-                        Console.WriteLine("No existing settings found, created new default settings.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    DarkMessageBox.ShowError($"The selected file is not a valid model JSON file.\n\nDetails: {ex.Message}", "Invalid File");
+                // if failed, try to load model JSON file and find/create settings file from it
+                Console.Write("  Failed to load settings, trying to load the file as a model JSON file...  ");
+                if (!TryOpenModelFiles(path, true))
                     return;
-                }
             }
 
             pnBottom.Enabled =
             fraSettings.Enabled = true;
 
             StartWatching(modelPath);
+        }
+
+        private bool TryOpenModelFiles(string path, bool updateSettings)
+        {
+            try
+            {
+                List<Crash2Json> jsons = LoadModelJson(path);
+
+                string saveDirectory = Path.GetDirectoryName(path)!;
+                string fileName = Path.GetFileNameWithoutExtension(path);
+                settingsPath = Path.Combine(saveDirectory, $"{fileName}_settings.json");
+
+                // try to load settings file for the model JSON, if it doesn't exist, create new settings with default values
+                if (File.Exists(settingsPath))
+                {
+                    Console.WriteLine("Success.");
+                    Console.WriteLine("  Found existing settings.");
+                    modelSettings = ModelSettingsIO.Load(settingsPath);
+                    LoadSettings(updateSettings);
+                    Console.WriteLine("  Settings loaded.");
+                }
+                else
+                {
+                    Console.WriteLine("Success.");
+                    Console.WriteLine("  No existing settings found, creating new default settings...");
+                    dirty.Push(true);
+                    numScaleX.Value = (decimal)BASE_MODEL_SCALE;
+                    numScaleY.Value = (decimal)BASE_MODEL_SCALE;
+                    numScaleZ.Value = (decimal)BASE_MODEL_SCALE;
+                    numScaleFX.Value = (decimal)BASE_SCALE_FACTOR;
+                    numScaleFY.Value = (decimal)BASE_SCALE_FACTOR;
+                    numScaleFZ.Value = (decimal)BASE_SCALE_FACTOR;
+                    numScaleMod.Value = 1.0M;
+                    chkSkipOddFrames.Checked = false;
+                    numMaxStripIterations.Value = 64.0M;
+                    numMaxLiveKeysWeight.Value = 1000.0M;
+                    numAvgKeysWeight.Value = 100.0M;
+                    numStripCountWeight.Value = 10.0M;
+                    chkCompressModel.Checked = false;
+                    radioButton1.Checked = true;
+                    txtBaseTpage.Text = "00_0T";
+
+                    modelSettings = new();
+
+                    lblExportPath.Text = saveDirectory;
+                    lblModelPath.Text = path;
+                    modelPath = lblModelPath.Text;
+
+                    CreateRows(jsons);
+                    CreateModelObjects();
+
+                    SaveSettings();
+                    LoadSettings(true);
+
+                    dirty.Pop();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                DarkMessageBox.ShowError($"The selected file is not a valid model JSON file.\n\nDetails: {ex.Message}", "Invalid File");
+                return false;
+            }
         }
 
         private void CreateModelObjects()
@@ -283,9 +293,10 @@ namespace CrashEdit.CE
                         ModelEID = modelEID,
                         ModelScales = [(int)BASE_MODEL_SCALE, (int)BASE_MODEL_SCALE, (int)BASE_MODEL_SCALE],
                         ScaleFactor = [BASE_SCALE_FACTOR, BASE_SCALE_FACTOR, BASE_SCALE_FACTOR],
-                        ScaleMod = 1.0f
+                        ScaleMod = 1.0f,
+                        CompressionMethod = -1
                     });
-                    Console.WriteLine($"Added model item for EID: {modelEID}");
+                    Console.WriteLine($"    Added model item for EID: {modelEID}");
                 }
             }
 
@@ -297,18 +308,14 @@ namespace CrashEdit.CE
                     ModelEID = item.ModelEID,
                     ModelScales = item.ModelScales,
                     ScaleFactor = item.ScaleFactor,
-                    ScaleMod = item.ScaleMod
+                    ScaleMod = item.ScaleMod,
+                    CompressionMethod = item.CompressionMethod
                 });
             }
         }
 
         private void CreateLists()
         {
-            //var oldModelItems = new Dictionary<string, ModelItem>();
-            //foreach (ModelItem model in modelSettings.ModelItems)
-            //    oldModelItems.Add(model.ModelEID, model);
-
-            oldModelItems = [];
             modelItems = [];
             for (int i = 0; i < dgvBatch.Rows.Count; i++)
             {
@@ -328,7 +335,8 @@ namespace CrashEdit.CE
                             ModelEID = modelEID,
                             ModelScales = [(int)BASE_MODEL_SCALE, (int)BASE_MODEL_SCALE, (int)BASE_MODEL_SCALE],
                             ScaleFactor = [BASE_SCALE_FACTOR, BASE_SCALE_FACTOR, BASE_SCALE_FACTOR],
-                            ScaleMod = 1.0f
+                            ScaleMod = 1.0f,
+                            CompressionMethod = -1
                         });
                         //Console.WriteLine($"Added model item for EID: {modelEID}");
                     }
@@ -336,30 +344,20 @@ namespace CrashEdit.CE
             }
         }
 
-        private void LoadSettings()
+        private void LoadSettings(bool updateSettings)
         {
-            lblPath.Text = settingsPath;
+            if (updateSettings)
+                lblPath.Text = settingsPath;
             lblExportPath.Text = modelSettings.ExportPath;
-            modelPath = modelSettings.ModelPath;
+            lblModelPath.Text = modelSettings.ModelPath;
+            modelPath = lblModelPath.Text;
+
+            txtBaseTpage.Text = modelSettings.BaseTPageName;
 
             var jsons = LoadModelJson(modelPath);
 
             CreateRows(jsons);
             CreateLists();
-
-            if (modelSettings.CompressionMethod >= 0)
-            {
-                chkCompressModel.Checked = true;
-                int method = modelSettings.CompressionMethod;
-
-                if (method == 0) radioButton1.Checked = true;
-                else if (method == 1) radioButton2.Checked = true;
-                else if (method == 2) radioButton3.Checked = true;
-            }
-            else
-            {
-                chkCompressModel.Checked = false;
-            }
 
             numMaxStripIterations.Value = modelSettings.MaxIterations;
             numAvgKeysWeight.Value = (decimal)modelSettings.AvgKeysPenalty;
@@ -386,17 +384,23 @@ namespace CrashEdit.CE
                 var json = jsons[i];
 
                 string animName = "";
+                string modelName = "";
+
+                // try to get anim eid from object name
                 str = json.name;
-                if (((str.Length >= 6 && str[^6] == '_') || str.Length == 5) && str.EndsWith('V')) // try to get eid from object name
+                if (((str.Length >= 6 && str[^6] == '_') || str.Length == 5) && str.EndsWith('V')) 
                     animName = str[^5..];
-                if (Entry.CheckEIDErrors(animName, true) != string.Empty) // if invalid eid, use default
+
+                // if invalid, use default
+                if (Entry.CheckEIDErrors(animName, true) != string.Empty) 
                 {
                     animName = GetDefaultEID('V', defaultAnimCount);
                     defaultAnimCount++;
                 }
 
-                string modelName = "";
-                if (json.collection == null) // if collection is null, treat it as a single-object and try to get model name from anim name
+                
+                // if collection is null, treat it as a single-object and use anim eid to get model eid
+                if (json.collection == null) 
                 {
                     var sb = new StringBuilder(animName);
                     sb[4] = 'G';
@@ -404,9 +408,12 @@ namespace CrashEdit.CE
                 }
                 else
                 {
+                    // try to get model eid from collection name
                     str = json.collection;
                     if (((str.Length >= 6 && str[^6] == '_') || str.Length == 5) && str.EndsWith('G'))
                         modelName = str[^5..];
+
+                    // if invalid, use default
                     if (Entry.CheckEIDErrors(modelName, true) != string.Empty)
                     {
                         if (usedNames.TryGetValue(str, out string? value))
@@ -439,12 +446,12 @@ namespace CrashEdit.CE
             if (Dirty) return;
             if (dgvBatch.SelectedCells.Count > 0)
             {
-                int index = dgvBatch.SelectedCells[0].RowIndex;
                 dirty.Push(true);
 
-                currentIndex = index;
-                string modelEID = dgvBatch.Rows[index].Cells[1].Value.ToString();
-                lblModel.Text = modelEID;
+                currentIndex = dgvBatch.SelectedCells[0].RowIndex;
+                string modelEID = dgvBatch.Rows[currentIndex].Cells[1].Value.ToString();
+                lblModel.Text = $"{modelEID}";
+                lblObject.Text = $"(index {currentIndex}) - {dgvBatch.Rows[currentIndex].Cells[0].Value}";
 
                 if (modelItems.Count > 0)
                 {
@@ -460,6 +467,29 @@ namespace CrashEdit.CE
                         numScaleFZ.Value = (decimal)item.ScaleFactor[2];
                         numScaleMod.Value = (decimal)item.ScaleMod;
 
+                        int method = item.CompressionMethod;
+                        if (method >= 0)
+                        {
+                            chkCompressModel.Checked = true;
+
+                            switch (method)
+                            {
+                                case 2:
+                                    radioButton3.Checked = true;
+                                    break;
+                                case 1:
+                                    radioButton2.Checked = true;
+                                    break;
+                                default:
+                                    radioButton1.Checked = true;
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            chkCompressModel.Checked = false;
+                        }
+
                         fraModel.Enabled = true;
                         UpdateScaleRatioState();
                     }
@@ -472,6 +502,7 @@ namespace CrashEdit.CE
                         numScaleFY.Value = (decimal)BASE_SCALE_FACTOR;
                         numScaleFZ.Value = (decimal)BASE_SCALE_FACTOR;
                         numScaleMod.Value = 1.0M;
+                        chkCompressModel.Checked = false;
                     }
                 }
 
@@ -495,8 +526,10 @@ namespace CrashEdit.CE
         {
             modelSettings.ConverterVersion = exporterVersion;
             modelSettings.ExporterVersion = Version;
-            modelSettings.ModelPath = modelPath;
             modelSettings.ExportPath = lblExportPath.Text;
+            modelSettings.ModelPath = lblModelPath.Text;
+
+            modelSettings.BaseTPageName = txtBaseTpage.Text;
 
             modelSettings.ModelObjects = [];
             for (int i = 0; i < dgvBatch.Rows.Count; i++)
@@ -518,11 +551,11 @@ namespace CrashEdit.CE
                     ModelEID = item.ModelEID,
                     ModelScales = item.ModelScales,
                     ScaleFactor = item.ScaleFactor,
-                    ScaleMod = item.ScaleMod
+                    ScaleMod = item.ScaleMod,
+                    CompressionMethod = item.CompressionMethod
                 });
             }
 
-            modelSettings.CompressionMethod = chkCompressModel.Checked ? compressionMethod : -1;
             modelSettings.MaxIterations = (int)numMaxStripIterations.Value;
             modelSettings.MaxKeysPenalty = (double)numMaxLiveKeysWeight.Value;
             modelSettings.AvgKeysPenalty = (double)numAvgKeysWeight.Value;
@@ -540,7 +573,8 @@ namespace CrashEdit.CE
                         ModelEID = item.ModelEID,
                         ModelScales = item.ModelScales,
                         ScaleFactor = item.ScaleFactor,
-                        ScaleMod = item.ScaleMod
+                        ScaleMod = item.ScaleMod,
+                        CompressionMethod = item.CompressionMethod
                     });
                 }
             }
@@ -564,15 +598,43 @@ namespace CrashEdit.CE
         {
             TextBox txtBox = sender as TextBox ?? throw new InvalidOperationException("Sender is not a TextBox");
             string error = Entry.CheckEIDErrors(txtBox.Text, true);
+            string s = txtBox.Text;
             if (error != string.Empty)
             {
                 DarkMessageBox.ShowError(error, "EID Error");
                 e.Cancel = true;
+                return;
             }
-            if (!txtBox.Text.Contains('_'))
+            if (!s.Contains('_') || !(s.IndexOf('_') == s.LastIndexOf('_') && s.Contains('_')))
             {
-                DarkMessageBox.ShowError("EID must contain one '_' charater.", "EID Error");
+                DarkMessageBox.ShowError("EID must contain only one '_' charater.", "EID Error");
                 e.Cancel = true;
+                return;
+            }
+        }
+
+        private void cmdSetModelPath_Click(object sender, EventArgs e)
+        {
+            using OpenFileDialog ofd = new();
+            ofd.Filter = FileFilters.JSON;
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    string path = ofd.FileName;
+                    List<Crash2Json> jsons = LoadModelJson(path);
+                    TryOpenModelFiles(ofd.FileName, false);
+
+                    lblModelPath.Text = path;
+                    modelPath = lblModelPath.Text;
+
+                    settingsPath = lblPath.Text;
+                }
+                catch (Exception ex)
+                {
+                    DarkMessageBox.ShowError($"The selected file is not a valid model JSON file.\n\nDetails: {ex.Message}", "Invalid File");
+                    return;
+                }
             }
         }
 
@@ -585,7 +647,7 @@ namespace CrashEdit.CE
             }
         }
 
-        private void ScrollHandlerFunction2(object sender, MouseEventArgs e)
+        private void ScrollHandlerFunction1(object sender, MouseEventArgs e)
         {
             if (sender is NumericUpDown numericUpDown)
             {
@@ -603,15 +665,47 @@ namespace CrashEdit.CE
             }
         }
 
+        private void ScrollHandlerFunction2(object sender, MouseEventArgs e)
+        {
+            if (sender is NumericUpDown numericUpDown)
+            {
+                HandledMouseEventArgs handledArgs = e as HandledMouseEventArgs;
+                if (handledArgs != null) handledArgs.Handled = true;
+
+                decimal newValue = numericUpDown.Value;
+                if (e.Delta > 0 && newValue + 0x40 < numericUpDown.Maximum)
+                    newValue += 0x40;
+
+                else if (e.Delta < 0 && newValue - 0x40 >= numericUpDown.Minimum)
+                    newValue -= 0x40;
+
+                numericUpDown.Value = newValue;
+            }
+        }
+
+        private void ScrollHandlerFunction3(object sender, MouseEventArgs e)
+        {
+            if (sender is NumericUpDown numericUpDown)
+            {
+                HandledMouseEventArgs handledArgs = e as HandledMouseEventArgs;
+                if (handledArgs != null) handledArgs.Handled = true;
+
+                decimal newValue = numericUpDown.Value;
+                if (e.Delta > 0 && newValue + (decimal)0.1 < numericUpDown.Maximum)
+                    newValue += (decimal)0.1;
+
+                else if (e.Delta < 0 && newValue - (decimal)0.1 >= numericUpDown.Minimum)
+                    newValue -= (decimal)0.1;
+
+                numericUpDown.Value = newValue;
+            }
+        }
+
+
         private void dgvBatch_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
             if (!(dgvBatch.SelectedCells.Count > 0)) return;
             if (dgvBatch.SelectedCells[0].ColumnIndex == 0) e.Cancel = true;
-        }
-
-        private void chkDebug_CheckedChanged(object sender, EventArgs e)
-        {
-            debug.DebugMode = chkDebug.Checked;
         }
 
         private void chkTestCompression_CheckedChanged(object sender, EventArgs e)
@@ -624,152 +718,250 @@ namespace CrashEdit.CE
             float baseProduct = BASE_PRODUCT * (float)numScaleMod.Value;
             float scalex = (float)numScaleFX.Value * (float)numScaleX.Value / baseProduct;
             float diffx = Math.Abs(scalex - 1f);
-            lblRatioX.Text = $"Scale:{scalex:F4}  diff:{diffx:F4}";
+            lblRatioX.Text = $"[X] Scale:{scalex:F4}  diff:{diffx:F4}";
             lblRatioX.ForeColor = diffx <= TOLERANCE ? Color.SpringGreen : Color.Crimson;
 
             float scaley = (float)numScaleFY.Value * (float)numScaleY.Value / baseProduct;
             float diffy = Math.Abs(scaley - 1f);
-            lblRatioY.Text = $"Scale:{scaley:F4}  diff:{diffy:F4}";
+            lblRatioY.Text = $"[Y] Scale:{scaley:F4}  diff:{diffy:F4}";
             lblRatioY.ForeColor = diffy <= TOLERANCE ? Color.SpringGreen : Color.Crimson;
 
             float scalez = (float)numScaleFZ.Value * (float)numScaleZ.Value / baseProduct;
             float diffz = Math.Abs(scalez - 1f);
-            lblRatioZ.Text = $"Scale:{scalez:F4}  diff:{diffz:F4}";
+            lblRatioZ.Text = $"[Z] Scale:{scalez:F4}  diff:{diffz:F4}";
             lblRatioZ.ForeColor = diffz <= TOLERANCE ? Color.SpringGreen : Color.Crimson;
+        }
+
+        private List<string> GetTargetModelEIDs()
+        {
+            if (!chkBatchProcess.Checked)
+                return [lblModel.Text];
+
+            var selectedEIDs = new HashSet<string>();
+
+            if (dgvBatch.SelectedCells.Count > 0)
+            {
+                foreach (DataGridViewCell cell in dgvBatch.SelectedCells)
+                {
+                    string modelEID = dgvBatch.Rows[cell.RowIndex].Cells[1].Value.ToString();
+                    selectedEIDs.Add(modelEID);
+                }
+            }
+
+            return [.. selectedEIDs];
         }
 
         private void numScaleFactor_ValueChanged(object sender, EventArgs e)
         {
-            if (Dirty) return;
             DarkNumericUpDown num = sender as DarkNumericUpDown ?? throw new InvalidOperationException("Sender is not a DarkNumericUpDown");
-
+            if (Dirty) return;
             dirty.Push(true);
+
             float baseProduct = BASE_PRODUCT * (float)numScaleMod.Value;
-            ModelItem? item = modelItems.TryGetValue(lblModel.Text, out ModelItem? value) ? value : null;
 
-            if (chkLinkScaleFactor.Checked)
+            List<string> targetEIDs = GetTargetModelEIDs();
+            foreach (var eid in targetEIDs)
             {
-                numScaleFX.Value = num.Value;
-                numScaleFY.Value = num.Value;
-                numScaleFZ.Value = num.Value;
-                item.ScaleFactor = [(float)numScaleFX.Value, (float)numScaleFY.Value, (float)numScaleFZ.Value];
+                ModelItem? item = modelItems.TryGetValue(eid, out ModelItem? value) ? value : null;
+                if (item == null) continue;
 
-
-                if (chkAutoScale.Checked)
+                if (chkLinkScaleFactor.Checked)
                 {
-                    numScaleX.Value = (decimal)Math.Round(baseProduct / (float)numScaleFX.Value);
-                    numScaleY.Value = (decimal)Math.Round(baseProduct / (float)numScaleFY.Value);
-                    numScaleZ.Value = (decimal)Math.Round(baseProduct / (float)numScaleFZ.Value);
-                    item.ModelScales = [(int)numScaleX.Value, (int)numScaleY.Value, (int)numScaleZ.Value];
+                    if (eid == lblModel.Text) // only update UI for the currently selected model
+                    {
+                        numScaleFX.Value = num.Value;
+                        numScaleFY.Value = num.Value;
+                        numScaleFZ.Value = num.Value;
+                    }
+                    item.ScaleFactor = [(float)num.Value, (float)num.Value, (float)num.Value];
+
+                    if (chkAutoScale.Checked)
+                    {
+                        float roundedX = (float)Math.Round(baseProduct / (float)num.Value);
+                        float roundedY = (float)Math.Round(baseProduct / (float)num.Value);
+                        float roundedZ = (float)Math.Round(baseProduct / (float)num.Value);
+
+                        if (eid == lblModel.Text)
+                        {
+                            numScaleX.Value = (decimal)roundedX;
+                            numScaleY.Value = (decimal)roundedY;
+                            numScaleZ.Value = (decimal)roundedZ;
+                        }
+                        item.ModelScales = [(int)roundedX, (int)roundedY, (int)roundedZ];
+                    }
+                }
+                else
+                {
+                    if (num == numScaleFX)
+                    {
+                        item.ScaleFactor[0] = (float)numScaleFX.Value;
+                        if (chkAutoScale.Checked)
+                        {
+                            float rounded = (float)Math.Round(baseProduct / (float)numScaleFX.Value);
+                            if (eid == lblModel.Text)
+                                numScaleX.Value = (decimal)rounded;
+                            item.ModelScales[0] = (int)rounded;
+                        }
+                    }
+                    else if (num == numScaleFY)
+                    {
+                        item.ScaleFactor[1] = (float)numScaleFY.Value;
+                        if (chkAutoScale.Checked)
+                        {
+                            float rounded = (float)Math.Round(baseProduct / (float)numScaleFY.Value);
+                            if (eid == lblModel.Text)
+                                numScaleY.Value = (decimal)rounded;
+                            item.ModelScales[1] = (int)rounded;
+                        }
+                    }
+                    else if (num == numScaleFZ)
+                    {
+                        item.ScaleFactor[2] = (float)numScaleFZ.Value;
+                        if (chkAutoScale.Checked)
+                        {
+                            float rounded = (float)Math.Round(baseProduct / (float)numScaleFZ.Value);
+                            if (eid == lblModel.Text)
+                                numScaleZ.Value = (decimal)rounded;
+                            item.ModelScales[2] = (int)rounded;
+                        }
+                    }
                 }
             }
-            else
-            {
-                if (num == numScaleFX)
-                {
-                    item.ScaleFactor[0] = (float)numScaleFX.Value;
 
-                    if (chkAutoScale.Checked)
-                    {
-                        numScaleX.Value = (decimal)Math.Round(baseProduct / (float)numScaleFX.Value);
-                        item.ModelScales[0] = (int)numScaleX.Value;
-                    }
-                }
-                else if (num == numScaleFY)
-                {
-                    item.ScaleFactor[1] = (float)numScaleFY.Value;
-
-                    if (chkAutoScale.Checked)
-                    {
-                        numScaleY.Value = (decimal)Math.Round(baseProduct / (float)numScaleFY.Value);
-                        item.ModelScales[1] = (int)numScaleY.Value;
-                    }
-                }
-                else if (num == numScaleFZ)
-                {
-                    item.ScaleFactor[2] = (float)numScaleFZ.Value;
-
-                    if (chkAutoScale.Checked)
-                    {
-                        numScaleZ.Value = (decimal)Math.Round(baseProduct / (float)numScaleFZ.Value);
-                        item.ModelScales[2] = (int)numScaleZ.Value;
-                    }
-                }
-            }
             UpdateScaleRatioState();
             dirty.Pop();
         }
 
         private void numModelScale_ValueChanged(object sender, EventArgs e)
         {
-            if (Dirty) return;
             DarkNumericUpDown num = sender as DarkNumericUpDown ?? throw new InvalidOperationException("Sender is not a DarkNumericUpDown");
-
+            if (Dirty) return;
             dirty.Push(true);
+
             float baseProduct = BASE_PRODUCT * (float)numScaleMod.Value;
-            ModelItem? item = modelItems.TryGetValue(lblModel.Text, out ModelItem? value) ? value : null;
 
-            if (chkLinkModelScale.Checked)
+            List<string> targetEIDs = GetTargetModelEIDs();
+            foreach (var eid in targetEIDs)
             {
-                numScaleX.Value = num.Value;
-                numScaleY.Value = num.Value;
-                numScaleZ.Value = num.Value;
-                item.ModelScales = [(int)numScaleX.Value, (int)numScaleY.Value, (int)numScaleZ.Value];
-                if (chkAutoScale.Checked)
+                ModelItem? item = modelItems.TryGetValue(eid, out ModelItem? value) ? value : null;
+                if (item == null) continue;
+
+                if (chkLinkModelScale.Checked)
                 {
-                    numScaleFX.Value = (decimal)Math.Round(baseProduct / (float)numScaleX.Value, 2);
-                    numScaleFY.Value = (decimal)Math.Round(baseProduct / (float)numScaleY.Value, 2);
-                    numScaleFZ.Value = (decimal)Math.Round(baseProduct / (float)numScaleZ.Value, 2);
-                    item.ScaleFactor = [(float)numScaleFX.Value, (float)numScaleFY.Value, (float)numScaleFZ.Value];
+                    if (eid == lblModel.Text) // only update UI for the currently selected model
+                    {
+                        numScaleX.Value = num.Value;
+                        numScaleY.Value = num.Value;
+                        numScaleZ.Value = num.Value;
+                    }
+                    item.ModelScales = [(int)num.Value, (int)num.Value, (int)num.Value];
+
+                    if (chkAutoScale.Checked)
+                    {
+                        float roundedX = (float)Math.Round(baseProduct / (float)num.Value, 2);
+                        float roundedY = (float)Math.Round(baseProduct / (float)num.Value, 2);
+                        float roundedZ = (float)Math.Round(baseProduct / (float)num.Value, 2);
+
+                        if (eid == lblModel.Text)
+                        {
+                            numScaleFX.Value = (decimal)roundedX;
+                            numScaleFY.Value = (decimal)roundedY;
+                            numScaleFZ.Value = (decimal)roundedZ;
+                        }
+                        item.ScaleFactor = [roundedX, roundedY, roundedZ];
+                    }
+                }
+                else
+                {
+                    if (num == numScaleX)
+                    {
+                        item.ModelScales[0] = (int)numScaleX.Value;
+                        if (chkAutoScale.Checked)
+                        {
+                            float rounded = (float)Math.Round(baseProduct / (float)numScaleX.Value, 2);
+                            if (eid == lblModel.Text)
+                                numScaleFX.Value = (decimal)rounded;
+                            item.ScaleFactor[0] = rounded;
+                        }
+                    }
+                    else if (num == numScaleY)
+                    {
+                        item.ModelScales[1] = (int)numScaleY.Value;
+                        if (chkAutoScale.Checked)
+                        {
+                            float rounded = (float)Math.Round(baseProduct / (float)numScaleY.Value, 2);
+                            if (eid == lblModel.Text)
+                                numScaleFY.Value = (decimal)rounded;
+                            item.ScaleFactor[1] = rounded;
+                        }
+                    }
+                    else if (num == numScaleZ)
+                    {
+                        item.ModelScales[2] = (int)numScaleZ.Value;
+                        if (chkAutoScale.Checked)
+                        {
+                            float rounded = (float)Math.Round(baseProduct / (float)numScaleZ.Value, 2);
+                            if (eid == lblModel.Text)
+                                numScaleFZ.Value = (decimal)rounded;
+                            item.ScaleFactor[2] = rounded;
+                        }
+                    }
                 }
             }
-            else
-            {
-                if (num == numScaleX)
-                {
-                    item.ModelScales[0] = (int)numScaleX.Value;
 
-                    if (chkAutoScale.Checked)
-                    {
-                        numScaleFX.Value = (decimal)Math.Round(baseProduct / (float)numScaleX.Value, 2);
-                        item.ScaleFactor[0] = (float)numScaleFX.Value;
-                    }
-                }
-                else if (num == numScaleY)
-                {
-                    item.ModelScales[1] = (int)numScaleY.Value;
-
-                    if (chkAutoScale.Checked)
-                    {
-                        numScaleFY.Value = (decimal)Math.Round(baseProduct / (float)numScaleY.Value, 2);
-                        item.ScaleFactor[1] = (float)numScaleFY.Value;
-                    }
-                }
-                else if (num == numScaleZ)
-                {
-                    item.ModelScales[2] = (int)numScaleZ.Value;
-
-                    if (chkAutoScale.Checked)
-                    {
-                        numScaleFZ.Value = (decimal)Math.Round(baseProduct / (float)numScaleZ.Value, 2);
-                        item.ScaleFactor[2] = (float)numScaleFZ.Value;
-                    }
-                }
-            }
             UpdateScaleRatioState();
             dirty.Pop();
         }
 
         private void numScaleMod_ValueChanged(object sender, EventArgs e)
         {
-            ModelItem? item = modelItems.TryGetValue(lblModel.Text, out ModelItem? value) ? value : null;
-            if (item != null)
-                item.ScaleMod = (float)numScaleMod.Value;
+            if (Dirty) return;
+            dirty.Push(true);
+
+            List<string> targetEIDs = GetTargetModelEIDs();
+            foreach (var eid in targetEIDs)
+            {
+                ModelItem? item = modelItems.TryGetValue(eid, out ModelItem? value) ? value : null;
+                if (item != null)
+                    item.ScaleMod = (float)numScaleMod.Value;
+            }
+
+            UpdateScaleRatioState();
+            dirty.Pop();
         }
 
         private void chkCompressModel_CheckedChanged(object sender, EventArgs e)
         {
             pnCompressModel.Enabled = chkCompressModel.Checked;
+
+            if (Dirty) return;
+            dirty.Push(true);
+
+            List<string> targetEIDs = GetTargetModelEIDs();
+            foreach (var eid in targetEIDs)
+            {
+                if (modelItems.TryGetValue(eid, out ModelItem? item))
+                {
+                    if (!chkCompressModel.Checked)
+                    {
+                        item.CompressionMethod = -1;
+                    }
+                    else
+                    {
+                        int method = 0;
+                        if (radioButton3.Checked)
+                            method = 2;
+                        else if (radioButton2.Checked)
+                            method = 1;
+                        else if (radioButton1.Checked)
+                            method = 0;
+
+                        item.CompressionMethod = method;
+                    }
+                }
+            }
+
+            dirty.Pop();
         }
 
         private void radioButton_CheckedChanged(object sender, EventArgs e)
@@ -779,18 +971,31 @@ namespace CrashEdit.CE
             {
                 if (int.TryParse(rb.Tag.ToString(), out int v))
                 {
-                    compressionMethod = v;
+                    if (Dirty) return;
+                    dirty.Push(true);
+
+                    List<string> targetEIDs = GetTargetModelEIDs();
+                    foreach (var eid in targetEIDs)
+                    {
+                        if (modelItems.TryGetValue(eid, out ModelItem? item))
+                        {
+                            if (chkCompressModel.Checked)
+                                item.CompressionMethod = v;
+                        }
+                    }
+
+                    dirty.Pop();
                 }
             }
         }
 
         public static string GetDefaultEID(char c, int i)
         {
-            string pattern = "00_0" + c;
-            return pattern.Replace("_", Convert62(i + 1).ToString());
+            string base62 = ToBase62(i + 1, 4);
+            return base62 + c;
         }
 
-        private static char Convert62(int n)
+        public static char Convert62(int n)
         {
             if (n < 0 || n >= 62)
                 throw new ArgumentOutOfRangeException(nameof(n));
@@ -802,6 +1007,26 @@ namespace CrashEdit.CE
                 return (char)('a' + (n - 10));
 
             return (char)('A' + (n - 36)); // A–Z
+        }
+
+        private static string ToBase62(int n, int width)
+        {
+            if (n == 0)
+                return new string('0', width);
+
+            var chars = new char[width];
+            Array.Fill(chars, '0');
+
+            int pos = width - 1;
+            int c = 36; // 0-9, a-z
+            while (n > 0 && pos >= 0)
+            {
+                chars[pos] = Convert62(n % c);
+                n /= c;
+                pos--;
+            }
+
+            return new string(chars);
         }
 
         private void ModelConverterForm_DragEnter(object sender, DragEventArgs e)
@@ -828,7 +1053,7 @@ namespace CrashEdit.CE
         private void ModelConverterForm_DragDrop(object sender, DragEventArgs e)
         {
             string file = ((string[])e.Data.GetData(DataFormats.FileDrop))[0];
-            openFile(file);
+            TryOpenSettingsFile(file);
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -843,7 +1068,22 @@ namespace CrashEdit.CE
             }
         }
 
-      
+        private void chkDebugTextures_CheckedChanged(object sender, EventArgs e)
+        {
+            debug.DebugTextures = chkDebugTextures.Checked;
+        }
+
+        private void chkDebugModels_CheckedChanged(object sender, EventArgs e)
+        {
+            debug.DebugModels = chkDebugModels.Checked;
+        }
+
+        private void chkDebugMaterials_CheckedChanged(object sender, EventArgs e)
+        {
+            debug.DebugMaterials = chkDebugMaterials.Checked;
+        }
+
+        
     }
 
     public static class ModelSettingsIO
@@ -874,6 +1114,9 @@ namespace CrashEdit.CE
 
     public class Debug
     {
+        public bool DebugTextures { get; set; }
+        public bool DebugMaterials { get; set; }
+        public bool DebugModels { get; set; }
         public bool DebugMode { get; set; }
         public bool TestCompression { get; set; }
     }
@@ -891,6 +1134,7 @@ namespace CrashEdit.CE
         public int[] ModelScales { get; set; }
         public float[] ScaleFactor { get; set; }
         public float ScaleMod { get; set; }
+        public int CompressionMethod { get; set; }
     }
 
     public class ModelSettings
@@ -900,9 +1144,10 @@ namespace CrashEdit.CE
         public string ModelPath { get; set; }
         public string ExportPath { get; set; }
 
+        public string BaseTPageName { get; set; }
+
         public bool SkipOddFrames { get; set; }
 
-        public int CompressionMethod { get; set; }
         public int MaxIterations { get; set; }
         public double MaxKeysPenalty { get; set; }
         public double AvgKeysPenalty { get; set; }
@@ -1056,6 +1301,9 @@ namespace CrashEdit.CE
             var bestStrips = new List<List<int>>();
             int bestScore = int.MaxValue;
 
+            if (output)
+                Console.WriteLine();
+
             BuildAdjacency(trisTemplate, output);
             UnifyWinding(trisTemplate);
 
@@ -1070,7 +1318,7 @@ namespace CrashEdit.CE
                     bestStrips = strips;
                 }
                 if (output)
-                    Console.WriteLine($"Strategy 1: {strips.Count} strips, score: {score}");
+                    Console.WriteLine($"    Strategy 1: {strips.Count} strips, score: {score}");
             }
 
             // strategy 2: degree ascending
@@ -1084,7 +1332,7 @@ namespace CrashEdit.CE
                     bestStrips = strips;
                 }
                 if (output)
-                    Console.WriteLine($"Strategy 2: {strips.Count} strips, score: {score}");
+                    Console.WriteLine($"    Strategy 2: {strips.Count} strips, score: {score}");
             }
 
             //// strategy 3: random
@@ -1107,7 +1355,7 @@ namespace CrashEdit.CE
             //}
 
             if (output)
-                Console.WriteLine($"[Strip Generation] Best: {bestStrips.Count} strips with score {bestScore}");
+                Console.WriteLine($"    [Strip Generation] Best: {bestStrips.Count} strips with score {bestScore}");
             return bestStrips;
         }
 
@@ -1492,7 +1740,7 @@ namespace CrashEdit.CE
             int sharedEdges = map.Count(kv => kv.Value.Count == 2);
             int isolated = tris.Count(t => t.adj.Count == 0);
             if (output)
-                Console.WriteLine($"[Adjacency] Shared edges: {sharedEdges}, Isolated tris: {isolated}");
+                Console.WriteLine($"    [Adjacency] Shared edges: {sharedEdges}, Isolated tris: {isolated}");
         }
 
         private static (int a, int b, int c) OrientToEdge(Tri t, int e0, int e1)
@@ -1688,10 +1936,15 @@ namespace CrashEdit.CE
         // model
         //
         private static (uint[], Dictionary<TriangleKey, StructureInfo>, int) BuildPolyDataFromStrip
-            (Crash2Json json, Dictionary<SceneryColor, int> colors, Dictionary<TriangleKey, ModelMaterial> materials, bool compressed, int spVcount, ModelSettings settings, bool debug)
+            (Crash2Json json, Dictionary<SceneryColor, int> colors, Dictionary<TriangleKey, ModelMaterial> materials, bool compressed, int spVcount, ModelSettings settings, Debug debug, bool skipOutput)
         {
-            if (debug)
-                Console.WriteLine("[Strips]");
+            bool output = debug.DebugModels && !skipOutput;
+
+            //if (output)
+            //{
+            //    Console.WriteLine();
+            //    Console.WriteLine("    [Strips]");
+            //}
 
             // TODO: verify
             byte header = (byte)colors.Count;
@@ -1722,26 +1975,26 @@ namespace CrashEdit.CE
             var strips = BuildAllStripsBestOfAttempts(tris, settings, false);
             strips = ReorderStripsGreedy(strips, keyOffset, false);
 
-            if (debug)
-            {
-                for (int i = 0; i < strips.Count; i++)
-                    Console.WriteLine($"Strip [{i}]: {string.Join(", ", strips[i])}");
-                Console.WriteLine();
+            //if (debug)
+            //{
+            //    for (int i = 0; i < strips.Count; i++)
+            //        Console.WriteLine($"Strip [{i}]: {string.Join(", ", strips[i])}");
+            //    Console.WriteLine();
 
-                var edgeUse = new Dictionary<(int, int), int>();
-                foreach (var t in tris)
-                {
-                    foreach (var e in new[] { Edge(t.v0, t.v1), Edge(t.v1, t.v2), Edge(t.v2, t.v0) })
-                    {
-                        edgeUse.TryAdd(e, 0);
-                        edgeUse[e]++;
-                    }
-                }
-                int border = edgeUse.Count(e => e.Value == 1);
-                int manifold = edgeUse.Count(e => e.Value == 2);
-                int broken = edgeUse.Count(e => e.Value > 2);
-                Console.WriteLine($"border:{border}  manifold:{manifold}  broken:{broken}");
-            }
+            //    var edgeUse = new Dictionary<(int, int), int>();
+            //    foreach (var t in tris)
+            //    {
+            //        foreach (var e in new[] { Edge(t.v0, t.v1), Edge(t.v1, t.v2), Edge(t.v2, t.v0) })
+            //        {
+            //            edgeUse.TryAdd(e, 0);
+            //            edgeUse[e]++;
+            //        }
+            //    }
+            //    int border = edgeUse.Count(e => e.Value == 1);
+            //    int manifold = edgeUse.Count(e => e.Value == 2);
+            //    int broken = edgeUse.Count(e => e.Value > 2);
+            //    Console.WriteLine($"border:{border}  manifold:{manifold}  broken:{broken}");
+            //}
 
             // pre-pass: determine originalVertexToOutputIndex (performed before creating ModelTriangle)
             Dictionary<int, int> keyMapTemp = [];
@@ -1800,15 +2053,15 @@ namespace CrashEdit.CE
                     triMap[key] = i;
             }
 
-            strips = BuildAllStripsBestOfAttempts(tris, settings, true);
+            strips = BuildAllStripsBestOfAttempts(tris, settings, output);
             strips = ReorderStripsGreedy(strips, keyOffset, true);
-            if (debug)
-            {
-                Console.WriteLine();
-                Console.WriteLine("[Remapped Strips]");
-                for (int i = 0; i < strips.Count; i++)
-                    Console.WriteLine($"Strip [{i}]: {string.Join(", ", strips[i])}");
-            }
+            //if (debug)
+            //{
+            //    Console.WriteLine();
+            //    Console.WriteLine("[Remapped Strips]");
+            //    for (int i = 0; i < strips.Count; i++)
+            //        Console.WriteLine($"Strip [{i}]: {string.Join(", ", strips[i])}");
+            //}
 
             var vertexRemaining = new Dictionary<int, int>();
             foreach (var strip in strips)
@@ -1828,15 +2081,6 @@ namespace CrashEdit.CE
             int AllocateNewKey()
             {
                 while (nextKey == ModelTriangle.NullPtr) nextKey++;
-
-                if (nextKey > ModelTriangle.NullPtr)
-                {
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine($"[WARNING] Allocating key {nextKey} which exceeds NullPtr ({ModelTriangle.NullPtr})");
-                    Console.ForegroundColor = ConsoleColor.White;
-                    throw new InvalidOperationException("Exceeded maximum key limit. Consider reducing the number of vertices or colors.");
-                }
-
                 return nextKey++;
             }
 
@@ -2136,7 +2380,7 @@ namespace CrashEdit.CE
                                 }
                                 catch
                                 {
-                                    Console.WriteLine($"[Warning] Failed to determine triangle subtype for tri with vertices {a}, {b}, {c}.");
+                                    Console.WriteLine($"    [Warning] Failed to determine triangle subtype for tri with vertices {a}, {b}, {c}.");
                                     triSubtype = 0;
                                 }
                             }
@@ -2166,16 +2410,31 @@ namespace CrashEdit.CE
 
             int maxKey = actualUsedKeys.Count > 0 ? actualUsedKeys.Max() : keyOffset - 1;
             int uniqueKeys = actualUsedKeys.Count;
-            Console.WriteLine();
-            Console.WriteLine("[Result]");
-            Console.WriteLine($"Strips: {strips.Count}");
-            Console.WriteLine($"Max key number: {maxKey} (offset: {keyOffset}, unique: {uniqueKeys})");
+
+            if (output)
+            {
+                Console.WriteLine();
+                Console.WriteLine("    [Result]");
+                Console.WriteLine($"    Strips: {strips.Count}");
+            }
+
+            if (!skipOutput)
+            {
+                if (!output)
+                    Console.WriteLine();
+                Console.WriteLine($"    Max key number: {maxKey} (offset: {keyOffset}, unique: {uniqueKeys})");
+            }
+            else
+            {
+                Console.WriteLine("  Skipped.");
+            }
 
             if (maxKey > ModelTriangle.NullPtr)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"Warning: The keys exceeded {ModelTriangle.NullPtr} (NullPtr). Exceeded by {maxKey - ModelTriangle.NullPtr}.");
+                Console.WriteLine($"    The keys exceeded {ModelTriangle.NullPtr} (NullPtr). Exceeded by {maxKey - ModelTriangle.NullPtr}.");
                 Console.ForegroundColor = ConsoleColor.White;
+                throw new InvalidOperationException("Exceeded maximum key limit. Consider reducing the number of vertices or colors.");
             }
 
             //int row = 0;
@@ -2217,7 +2476,7 @@ namespace CrashEdit.CE
             return (data.ToArray(), structureInfo, strips.Count);
         }
 
-        private static (List<ModelTexture>, List<ModelExtendedTexture>) BuildTexture(Dictionary<TriangleKey, StructureInfo> structureInfo, Dictionary<TriangleKey, ModelMaterial> materials, bool debug)
+        private static (List<ModelTexture>, List<ModelExtendedTexture>) BuildTexture(Dictionary<TriangleKey, StructureInfo> structureInfo, Dictionary<TriangleKey, ModelMaterial> materials)
         {
             List<ModelTexture> textures = [];
             List<ModelExtendedTexture> animatedtextures = [];
@@ -2323,13 +2582,8 @@ namespace CrashEdit.CE
             );
         }
 
-        private static ModelEntry BuildModelEntry(Crash2Json json, Dictionary<TriangleKey, ModelMaterial> materials, int eid, string tpageName, int[] modelScales, bool compressed, int spVcount, ModelSettings settings, Debug debug)
+        private static ModelEntry BuildModelEntry(Crash2Json json, Dictionary<TriangleKey, ModelMaterial> materials, int eid, List<string> tpageNames, int[] modelScales, bool compressed, int spVcount, ModelSettings settings, Debug debug, bool output)
         {
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine();
-            Console.WriteLine($"Building model...");
-            Console.ForegroundColor = ConsoleColor.White;
-
             // colors
             Dictionary<SceneryColor, int> colors = [];
             int colorIndex = 0;
@@ -2354,13 +2608,13 @@ namespace CrashEdit.CE
             var colorsList = colors.Keys.ToList();
 
             // poly
-            var polys = BuildPolyDataFromStrip(json, colors, materials, compressed, spVcount, settings, debug.DebugMode);
+            var polys = BuildPolyDataFromStrip(json, colors, materials, compressed, spVcount, settings, debug, output);
             uint[] poly = polys.Item1;
             var structureInfo = polys.Item2;
             int stripCount = polys.Item3;
 
             // textures
-            var textureSet = BuildTexture(structureInfo, materials, debug.DebugMode);
+            var textureSet = BuildTexture(structureInfo, materials);
             List<ModelTexture> textures = textureSet.Item1;
             List<ModelExtendedTexture> animatedtextures = textureSet.Item2;
 
@@ -2375,14 +2629,29 @@ namespace CrashEdit.CE
             int triCount = json.triangles.Count;
             int animTexCount = animatedtextures.Count;
 
-            int tpageCount = 1; // temp
-            int tpage1 = Entry.ENameToEID(tpageName);
+            int tpageCount = tpageNames.Count;
 
-            // TODO: calculate correct scale values
+            if (tpageCount > 8)
+                throw new Exception($"Too many TPages in model ({tpageCount} TPages, must be <= 8)");
+
+            if (tpageCount > 0)
+            {
+                // set first TPage
+                int tpage1 = Entry.ENameToEID(tpageNames[0]);
+
+                BitConv.ToInt32(info, 0xC, tpage1);
+
+                // set remaining TPages if exist
+                for (int i = 1; i < tpageNames.Count && i < 8; i++)
+                {
+                    int tpageEID = Entry.ENameToEID(tpageNames[i]);
+                    BitConv.ToInt32(info, 0x10 + (i - 1) * 4, tpageEID);
+                }
+            }
+
             BitConv.ToInt32(info, 0x0, modelScales[0]);  // scaleX
             BitConv.ToInt32(info, 0x4, modelScales[1]);  // scaleY
             BitConv.ToInt32(info, 0x8, modelScales[2]);  // scaleZ
-            BitConv.ToInt32(info, 0xC, tpage1);          // TPage1                  temp
             BitConv.ToInt32(info, 0x2C, polyCount);      // ModelStructCount
             BitConv.ToInt32(info, 0x30, stripCount);     // StripCount ?
             BitConv.ToInt32(info, 0x34, textureCount);   // TextureCount
@@ -2391,7 +2660,7 @@ namespace CrashEdit.CE
             BitConv.ToInt32(info, 0x40, tpageCount);     // TPageCount
             BitConv.ToInt32(info, 0x44, triCount);       // PolyCount
             BitConv.ToInt32(info, 0x48, animTexCount);   // AnimatedTextureCount
-            BitConv.ToInt32(info, 0x4C, spVertCount);    // Special vertex count
+            BitConv.ToInt32(info, 0x4C, spVertCount);    // SpecialVertexCount
 
             return new ModelEntry(
                 info,
@@ -2404,24 +2673,12 @@ namespace CrashEdit.CE
             );
         }
 
-        private static void DebugLog(string message, bool addLine, bool debug)
-        {
-            if (debug)
-            {
-                if (addLine)
-                    Console.WriteLine(message);
-                else
-                    Console.Write(message);
-            }
-        }
-
         //
         // anim
         //
-
         private static Frame BuildFrame(Crash2Json json, int frameIndex, int eid, float[] scaleFactors, int[] modelScales, bool compressed, bool debug)
         {
-             //DebugLog($"[Frame {frameIndex}]", true, debug);
+            //DebugLog($"[Frame {frameIndex}]", true, debug);
 
             // special vertex
             List<float[]> spVerts = [];
@@ -2506,7 +2763,7 @@ namespace CrashEdit.CE
             if (overflowedVerts.Count > 0)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($"[Frame {frameIndex}] Warning: Vertices overflowed ({string.Join(", ", overflowedVerts)})");
+                Console.WriteLine($"    [Frame {frameIndex}] Warning: Vertices overflowed ({string.Join(", ", overflowedVerts)})");
                 Console.ForegroundColor = ConsoleColor.White;
             }
 
@@ -2928,15 +3185,28 @@ namespace CrashEdit.CE
 
         private static AnimationEntry BuildAnimationEntry(Crash2Json json, int modelEID, int animEID, float[] scaleFactors, int[] modelScales, bool compressed, ModelSettings settings, Debug debug)
         {
+            int frameCount;
+            string info;
+            if (settings.SkipOddFrames)
+            {
+                frameCount = (json.frames.Count + 1) / 2;
+                info = $"    Building animation with {frameCount} frames (skipping odd frames)...";
+            }
+            else
+            {
+                frameCount = json.frames.Count;
+                info = $"    Building animation with {frameCount} frames...";
+            }
+
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine();
-            Console.WriteLine($"Building animation with {json.frames.Count} frames...");
+            //Console.WriteLine();
+            Console.WriteLine(info);
             Console.ForegroundColor = ConsoleColor.White;
 
-            float scaleX = 1.0f / scaleFactors[0];
-            float scaleY = 1.0f / scaleFactors[1];
-            float scaleZ = 1.0f / scaleFactors[2];
-            Console.WriteLine($"Scale: X={scaleX}, Y={scaleY}, Z={scaleZ}");
+            //float scaleX = 1.0f / scaleFactors[0];
+            //float scaleY = 1.0f / scaleFactors[1];
+            //float scaleZ = 1.0f / scaleFactors[2];
+            //Console.WriteLine($"Scale: X={scaleX}, Y={scaleY}, Z={scaleZ}");
 
             List<Frame> frames = BuildFrames(json, modelEID, scaleFactors, modelScales, compressed, settings, debug);
 
@@ -2947,161 +3217,160 @@ namespace CrashEdit.CE
         //
         // materials
         //
+        private static (Dictionary<TriangleKey, ModelMaterial>, List<string>) BuildMaterials(Crash2Json json, List<TextureChunk> tpages, List<PackedTexture> packedTextures, bool debug)
+        {
+            if (debug)
+                Console.WriteLine();
+
+            // create a set of texture paths used by this model's materials
+            var usedMaterialPaths = new HashSet<string>();
+            foreach (var mat in json.materials)
+            {
+                if (mat.texture != null)
+                    usedMaterialPaths.Add(mat.texture);
+            }
+
+            List<PackedTexture> modelPackedTextures = [];
+
+            var materialIndexToPackedTextures = new Dictionary<int, List<PackedTexture>>();
+
+            for (int matIdx = 0; matIdx < json.materials.Count; matIdx++)
+            {
+                var mat = json.materials[matIdx];
+                if (mat.texture == null)
+                    continue;
+
+                string matName = mat.name;
+                string searchName = Regex.Replace(matName, @"_r=[^_]+", "").TrimEnd('_');
+
+                // search for packed textures that match both the material's texture path and the base name (without parameters)
+                var matchingTextures = packedTextures.Where(pt =>
+                    pt.FilePath == mat.texture &&
+                    pt.Name == searchName
+                ).ToList();
+
+                // if no exact matches found, try matching by base name only (ignoring parameters)
+                if (matchingTextures.Count == 0)
+                {
+                    string baseMatName = Regex.Replace(searchName, @"_([dsmf])(\d+)", "");
+                    baseMatName = baseMatName.TrimEnd('_');
+
+                    matchingTextures = packedTextures.Where(pt =>
+                        pt.FilePath == mat.texture &&
+                        (pt.Name == baseMatName || Regex.Replace(pt.Name, @"_([dsmf])(\d+)", "").TrimEnd('_') == baseMatName)
+                    ).ToList();
+
+                    if (matchingTextures.Count > 0)
+                    {
+                        Console.WriteLine($"    Material [{matIdx}] '{matName}' matched to base '{baseMatName}' -> {matchingTextures.Count} packed textures");
+                    }
+                }
+
+                if (matchingTextures.Count > 0)
+                {
+                    // if the material name contains an animation delay parameter, apply it to the matched textures
+                    var delayMatch = Regex.Match(matName, @"_d(\d+)");
+                    if (delayMatch.Success)
+                    {
+                        int animDelay = int.Parse(delayMatch.Groups[1].Value);
+
+                        var delayedTextures = new List<PackedTexture>();
+                        foreach (var pt in matchingTextures)
+                        {
+                            var delayedInfo = new MaterialInfo(
+                                pt.Info.FaceOrientation,
+                                pt.Info.BlendMode,
+                                pt.Info.AnimOffset,
+                                pt.Info.AnimCount,
+                                pt.Info.AnimSpeed,
+                                animDelay,
+                                pt.Info.AnimRepeat,
+                                pt.Info.TotalAnimRepeats
+                            );
+
+                            delayedTextures.Add(new PackedTexture(
+                                matIdx, // use current material index for the model
+                                matName,
+                                pt.FilePath,
+                                pt.Bpp,
+                                pt.ClutX,
+                                pt.ClutY,
+                                pt.DestX,
+                                pt.DestY,
+                                pt.Width,
+                                pt.Height,
+                                pt.TPage,
+                                delayedInfo
+                            ));
+                        }
+
+                        materialIndexToPackedTextures[matIdx] = delayedTextures;
+                        modelPackedTextures.AddRange(delayedTextures);
+                    }
+                    else
+                    {
+                        // remap the matched textures to use the current material index for this model
+                        var remappedTextures = matchingTextures.Select(pt => new PackedTexture(
+                            matIdx,  // use current material index for the model
+                            pt.Name,
+                            pt.FilePath,
+                            pt.Bpp,
+                            pt.ClutX,
+                            pt.ClutY,
+                            pt.DestX,
+                            pt.DestY,
+                            pt.Width,
+                            pt.Height,
+                            pt.TPage,
+                            pt.Info
+                        )).ToList();
+
+                        materialIndexToPackedTextures[matIdx] = remappedTextures;
+                        modelPackedTextures.AddRange(remappedTextures);
+                    }
+
+                    if (debug)
+                        Console.WriteLine($"    Material [{matIdx}] '{mat.name}' -> {matchingTextures.Count} packed textures");
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine($"    Warning: Material [{matIdx}] '{mat.name}' (search: '{searchName}') has no matching packed textures");
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+            }
+
+            var usedTPageIndices = modelPackedTextures.Select(pt => pt.TPage).Distinct().OrderBy(x => x).ToList();
+            List<string> tpageNames = usedTPageIndices.Select(idx => tpages[idx].EName).ToList();
+
+            // create a mapping from global texture page index to local index
+            var globalToLocalPageMap = new Dictionary<int, int>();
+            for (int localIdx = 0; localIdx < usedTPageIndices.Count; localIdx++)
+            {
+                globalToLocalPageMap[usedTPageIndices[localIdx]] = localIdx;
+            }
+
+            if (debug)
+            {
+                //Console.WriteLine($"Texture page mapping for model '{modelName}':");
+                foreach (var kvp in globalToLocalPageMap)
+                    Console.WriteLine($"    Global page {kvp.Key} ({tpages[kvp.Key].EName}) -> Local index {kvp.Value}");
+            }
+
+            // build materials for this model using the assigned packed textures and the page mapping
+            Dictionary<TriangleKey, ModelMaterial> materials = BuildMaterialsFromPacked(
+                json,
+                materialIndexToPackedTextures,
+                globalToLocalPageMap);
+
+            return (materials, tpageNames);
+        }
+
         private static void GetXOff(int colorMode, int value, out int segment, out int xoff)
         {
             int xoffUnit = (1 << (2 - colorMode)) * 64;
             segment = value / xoffUnit;
             xoff = xoffUnit * segment;
-        }
-
-        private static ModelTexture BuildModelTexture(Crash2Triangle tri, PackedTexture packed)
-        {
-            int blendMode = packed.Info.BlendMode;
-            int colorMode = packed.Bpp == 4 ? 0 : 1;
-            int clutY2 = packed.ClutY >> 2;
-            int clutY1 = (packed.ClutY & 0x3) << 2;
-            int clutX = packed.ClutX;
-
-            int u1 = Math.Round(tri.uv[0][0]) > 0 ? packed.DestX + packed.Width - 1 : packed.DestX;
-            int v1 = Math.Round(tri.uv[0][1]) > 0 ? packed.DestY + packed.Height - 1 : packed.DestY;
-            int u2 = Math.Round(tri.uv[1][0]) > 0 ? packed.DestX + packed.Width - 1 : packed.DestX;
-            int v2 = Math.Round(tri.uv[1][1]) > 0 ? packed.DestY + packed.Height - 1 : packed.DestY;
-            int u3 = Math.Round(tri.uv[2][0]) > 0 ? packed.DestX + packed.Width - 1 : packed.DestX;
-            int v3 = Math.Round(tri.uv[2][1]) > 0 ? packed.DestY + packed.Height - 1 : packed.DestY;
-
-            // get x offset adjustments
-            GetXOff(colorMode, u1, out int segment, out int xoff);
-            u1 -= xoff;
-            GetXOff(colorMode, u2, out _, out xoff);
-            u2 -= xoff;
-            GetXOff(colorMode, u3, out _, out xoff);
-            u3 -= xoff;
-
-            // flip y
-            var minV = Math.Min(v1, Math.Min(v2, v3));
-            var maxV = Math.Max(v1, Math.Max(v2, v3));
-            v1 = v1 == minV ? maxV : minV;
-            v2 = v2 == minV ? maxV : minV;
-            v3 = v3 == minV ? maxV : minV;
-
-            int tpage = packed.TPage;
-
-            return new ModelTexture(
-                u1: (byte)u1,
-                v1: (byte)v1,
-                cluty1: (byte)clutY1,
-                clutx: (byte)clutX,
-                cluty2: (byte)clutY2,
-                u2: (byte)u2,
-                v2: (byte)v2,
-                colormode: (byte)colorMode,
-                blendmode: (byte)blendMode,
-                segment: (byte)segment,
-                textureoffset: (byte)tpage,
-                u3: (byte)u3,
-                v3: (byte)v3,
-                u4: 0,
-                v4: 0
-            );
-        }
-
-        private static Dictionary<TriangleKey, ModelMaterial> BuildMaterials(Crash2Json json, List<PackedTexture> packedTextures)
-        {
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine();
-            Console.WriteLine($"Building materials...");
-            Console.ForegroundColor = ConsoleColor.White;
-
-            Dictionary<TriangleKey, ModelMaterial> materials = [];
-
-            var normalMaterials = new List<(TriangleKey key, ModelMaterial material)>();
-            var animatedMaterials = new List<(TriangleKey key, ModelMaterial material)>();
-
-            var processedKeys = new HashSet<TriangleKey>();
-
-            foreach (Crash2Triangle tri in json.triangles)
-            {
-                int materialIndex = tri.material;
-
-                TriangleKey key = new(
-                    materialIndex,
-                    ToUVByte(tri.uv[0]),
-                    ToUVByte(tri.uv[1]),
-                    ToUVByte(tri.uv[2])
-                );
-
-                if (processedKeys.Contains(key))
-                    continue;
-
-                processedKeys.Add(key);
-
-                // find the first packed texture for this material index
-                PackedTexture? firstPacked = null;
-                foreach (PackedTexture packed in packedTextures)
-                {
-                    if (packed.Index == materialIndex)
-                    {
-                        firstPacked = packed;
-                        break;
-                    }
-                }
-
-                if (firstPacked == null)
-                    continue;
-
-                List<ModelTexture> tex = [];
-
-                // if animated, add split textures too
-                if (firstPacked.Value.Info.AnimCount > 0)
-                {
-                    Console.Write($"Packing split textures for '{firstPacked.Value.Name}'...");
-                    int count = 0;
-                    foreach (PackedTexture p in packedTextures)
-                    {
-                        if (p.Name == firstPacked.Value.Name && p.Index == materialIndex)
-                        {
-                            tex.Add(BuildModelTexture(tri, p));
-                            count++;
-                        }
-                    }
-                    Console.WriteLine($"    Done. Total: {count}");
-
-                    animatedMaterials.Add((key, new ModelMaterial(firstPacked.Value.Name, firstPacked.Value.Info, 0, tex)));
-                }
-                else
-                {
-                    tex.Add(BuildModelTexture(tri, firstPacked.Value));
-                    normalMaterials.Add((key, new ModelMaterial(firstPacked.Value.Name, firstPacked.Value.Info, 0, tex)));
-                }
-            }
-
-            // assign texture indices to normal materials
-            int textureIndex = 1; // start from 1
-            foreach (var (key, material) in normalMaterials)
-            {
-                materials.Add(key, new ModelMaterial(
-                    material.Name,
-                    material.Info,
-                    textureIndex,
-                    material.Texture
-                ));
-                textureIndex++;
-            }
-
-            // assign texture indices to animated materials
-            int animatedTextureIndex = 0;
-            foreach (var (key, material) in animatedMaterials)
-            {
-                materials.Add(key, new ModelMaterial(
-                    material.Name,
-                    material.Info,
-                    animatedTextureIndex,
-                    material.Texture
-                ));
-                animatedTextureIndex++;
-            }
-
-            return materials;
         }
 
         private static byte ClampToByte(float v)
@@ -3120,188 +3389,201 @@ namespace CrashEdit.CE
         //
         // tpages
         //
-        private static (List<TextureChunk>, List<PackedTexture>) BuildTPages(Crash2Json json, string tpageName)
+        private static List<TextureEntry> BuildTPages(List<Crash2Json> jsons)
         {
-            List<TextureEntry> textures = [];
-            List<List<Bitmap>> animTextures = [];
+            // collect all textures first to build atlases and assign texture coordinates
+            List<TextureEntry> allTextures = [];
+            Dictionary<(string filePath, string matName), int> textureIndexMap = [];
 
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine();
-            Console.WriteLine("Loading textures...");
+            Console.WriteLine("Collecting textures from all models...");
             Console.ForegroundColor = ConsoleColor.White;
 
-            int indexOffset = 0;
-
-            for (int i = 0; i < json.materials.Count; i++)
+            int globalTextureIndex = 0;
+            for (int p = 0; p < jsons.Count; p++)
             {
-                var mat = json.materials[i];
-                string filePath = mat.texture;
-                string name = mat.name;
+                Crash2Json json = jsons[p];
 
-                // skip null textures
-                if (filePath == null)
-                    continue;
-
-                try
+                for (int i = 0; i < json.materials.Count; i++)
                 {
-                    var (rawImageData, palette, width, height) = TextureConv.ProcessPng(
-                        null,
-                        filePath,
-                        isBGRA: true,
-                        oldBpp: -1,
-                        quantize: true
-                    );
+                    var mat = json.materials[i];
+                    string filePath = mat.texture;
+                    string name = mat.name;
 
-                    int bpp = palette.Length <= 0x40 ? 4 : 8;
+                    if (filePath == null)
+                        continue;
 
-                    int faceOrientation = -1;
-                    int blendMode = 3; // default
-                    int animCount = 0;
-                    (int, int) grid = (0, 0);
-                    int animDelay = 0;
-                    int animSpeed = 0;
-                    List<(int index, int repeat)> animSequence = [];
+                    var textureKey = (filePath, name);
+                    if (textureIndexMap.ContainsKey(textureKey))
+                        continue;
 
-                    var gridMatch = Regex.Match(mat.name, @"_a(\d+)x(\d+)");
-                    if (gridMatch.Success)
+                    try
                     {
-                        int cols = int.Parse(gridMatch.Groups[1].Value);
-                        int rows = int.Parse(gridMatch.Groups[2].Value);
-                        grid = (cols, rows);
-                        animCount = cols * rows;
-                    }
+                        var (rawImageData, palette, width, height) = TextureConv.ProcessPng(
+                            null,
+                            filePath,
+                            isBGRA: true,
+                            oldBpp: -1,
+                            quantize: true
+                        );
 
-                    var paramMatches = Regex.Matches(mat.name, @"_([sdrmf])(\d+|=[^_]+)");
-                    foreach (Match m in paramMatches)
-                    {
-                        string type = m.Groups[1].Value;
-                        string valueStr = m.Groups[2].Value;
+                        int bpp = palette.Length <= 0x40 ? 4 : 8;
 
-                        switch (type)
+                        int faceOrientation = -1;
+                        int blendMode = 3;
+                        int animCount = 0;
+                        (int, int) grid = (0, 0);
+                        int animDelay = 0;
+                        int animSpeed = 0;
+                        List<(int index, int repeat)> animSequence = [];
+
+                        // parse material name for parameters
+                        var gridMatch = Regex.Match(mat.name, @"_a(\d+)x(\d+)");
+                        if (gridMatch.Success)
                         {
-                            case "d":
-                                animDelay = int.Parse(valueStr);
-                                break;
-                            case "s":
-                                animSpeed = int.Parse(valueStr);
-                                break;
-                            case "r":
-                                if (valueStr.StartsWith('='))
-                                {
-                                    var sequenceStr = valueStr[1..]; // remove '='
-                                    var parts = sequenceStr.Split(',');
+                            int cols = int.Parse(gridMatch.Groups[1].Value);
+                            int rows = int.Parse(gridMatch.Groups[2].Value);
+                            grid = (cols, rows);
+                            animCount = cols * rows;
+                        }
 
-                                    foreach (var part in parts)
+                        var paramMatches = Regex.Matches(mat.name, @"_([sdrmf])(\d+|=[^_]+)");
+                        foreach (Match m in paramMatches)
+                        {
+                            string type = m.Groups[1].Value;
+                            string valueStr = m.Groups[2].Value;
+
+                            switch (type)
+                            {
+                                case "d":
+                                    animDelay = int.Parse(valueStr);
+                                    break;
+                                case "s":
+                                    animSpeed = int.Parse(valueStr);
+                                    break;
+                                case "r":
+                                    if (valueStr.StartsWith('='))
                                     {
-                                        if (part.Length >= 2)
+                                        var sequenceStr = valueStr[1..];
+                                        var parts = sequenceStr.Split(',');
+
+                                        foreach (var part in parts)
                                         {
-                                            char indexChar = part[0];
-                                            string repeatStr = part[1..];
-
-                                            int index = char.IsUpper(indexChar)
-                                                ? indexChar - 'A'
-                                                : indexChar - 'a';
-
-                                            if (int.TryParse(repeatStr, out int repeat))
+                                            if (part.Length >= 2)
                                             {
-                                                animSequence.Add((index, repeat));
+                                                char indexChar = part[0];
+                                                string repeatStr = part[1..];
+
+                                                int index = char.IsUpper(indexChar)
+                                                    ? indexChar - 'A'
+                                                    : indexChar - 'a';
+
+                                                if (int.TryParse(repeatStr, out int repeat))
+                                                {
+                                                    animSequence.Add((index, repeat));
+                                                }
                                             }
                                         }
                                     }
-                                }
-                                break;
-                            case "m":
-                                blendMode = int.Parse(valueStr);
-                                break;
-                            case "f":
-                                faceOrientation = int.Parse(valueStr);
-                                break;
-                        }
-                    }
-
-                    Console.WriteLine($"Loaded texture: {filePath} ({name}), {width,3:d}x{height,2:d}, {bpp} bpp");
-
-                    if (animCount > 0)
-                    {
-                        // If no explicit sequence is provided, default to a simple sequential animation
-                        if (animSequence.Count == 0)
-                        {
-                            for (int j = 0; j < animCount; j++)
-                                animSequence.Add((j, 1));
+                                    break;
+                                case "m":
+                                    blendMode = int.Parse(valueStr);
+                                    break;
+                                case "f":
+                                    faceOrientation = int.Parse(valueStr);
+                                    break;
+                            }
                         }
 
-                        List<Bitmap> splitTex = SplitPng(filePath, grid.Item1, grid.Item2);
+                        // use material name without parameters as base name
+                        string baseName = Regex.Replace(mat.name, @"_r=[^_]+", "").TrimEnd('_');
 
-                        int sequenceOffset = 0;
-                        foreach (var (texIndex, repeat) in animSequence)
+                        Console.WriteLine($"Loaded texture: {filePath} ({name}), {width,3:d}x{height,2:d}, {bpp} bpp");
+
+                        if (animCount > 0)
                         {
-                            if (texIndex >= splitTex.Count)
+                            if (animSequence.Count == 0)
                             {
-                                Console.WriteLine($"Warning: Texture index {texIndex} out of range for '{name}'");
-                                continue;
+                                for (int j = 0; j < animCount; j++)
+                                    animSequence.Add((j, 1));
                             }
 
-                            var image = TextureConv.ProcessPng(
-                                splitTex[texIndex],
-                                null,
-                                isBGRA: true,
-                                oldBpp: -1,
-                                quantize: true
-                            );
+                            List<Bitmap> splitTex = SplitPng(filePath, grid.Item1, grid.Item2);
 
-                            int w = bpp == 4 ? image.width : image.width * 2;
-                            int h = image.height;
-
-                            textures.Add(new TextureEntry
+                            int sequenceOffset = 0;
+                            foreach (var (texIndex, repeat) in animSequence)
                             {
-                                Index = i + indexOffset,
-                                Name = mat.name,
-                                FilePath = filePath,
-                                Data = image.rawImageData,
-                                Palette = image.palette,
-                                Bpp = bpp,
-                                Width = w,
-                                Height = h,
-                                Info = new MaterialInfo(
-                                    faceOrientation,
-                                    blendMode,
-                                    texIndex,
-                                    animCount,         // AnimCount
-                                    animSpeed,
-                                    animDelay,
-                                    repeat,            // AnimRepeat
-                                    animSequence.Sum(s => s.repeat)  // TotalAnimRepeats
-                                )
-                            });
+                                if (texIndex >= splitTex.Count)
+                                {
+                                    Console.WriteLine($"Warning: Texture index {texIndex} out of range for '{name}'");
+                                    continue;
+                                }
 
-                            Console.WriteLine($"    Sequence[{sequenceOffset}]: texture[{texIndex}] × {repeat} frames");
-                            sequenceOffset++;
+                                var image = TextureConv.ProcessPng(
+                                    splitTex[texIndex],
+                                    null,
+                                    isBGRA: true,
+                                    oldBpp: -1,
+                                    quantize: true
+                                );
+
+                                int w = bpp == 4 ? image.width : image.width * 2;
+                                int h = image.height;
+
+                                allTextures.Add(new TextureEntry
+                                {
+                                    Index = i,
+                                    Name = baseName,
+                                    FilePath = filePath,
+                                    Data = image.rawImageData,
+                                    Palette = image.palette,
+                                    Bpp = bpp,
+                                    Width = w,
+                                    Height = h,
+                                    Info = new MaterialInfo(
+                                        faceOrientation,
+                                        blendMode,
+                                        texIndex,
+                                        animCount,
+                                        animSpeed,
+                                        animDelay,
+                                        repeat,
+                                        animSequence.Sum(s => s.repeat)
+                                    )
+                                });
+
+                                Console.WriteLine($"    Sequence[{sequenceOffset}]: texture[{texIndex}] × {repeat} frames (name: '{baseName}')");
+                                sequenceOffset++;
+                            }
                         }
-                    }
-                    else
-                    {
-                        textures.Add(new TextureEntry
+                        else
                         {
-                            Index = i + indexOffset,
-                            Name = mat.name,
-                            FilePath = filePath,
-                            Data = rawImageData,
-                            Palette = palette,
-                            Bpp = bpp,
-                            Width = bpp == 4 ? width : width * 2,
-                            Height = height,
-                            Info = new MaterialInfo(faceOrientation, blendMode, 0, 0, 0, 0, 1, 1)
-                        });
+                            allTextures.Add(new TextureEntry
+                            {
+                                Index = i,
+                                Name = baseName,
+                                FilePath = filePath,
+                                Data = rawImageData,
+                                Palette = palette,
+                                Bpp = bpp,
+                                Width = bpp == 4 ? width : width * 2,
+                                Height = height,
+                                Info = new MaterialInfo(faceOrientation, blendMode, 0, 0, 0, 0, 1, 1)
+                            });
+                        }
+
+                        textureIndexMap[textureKey] = globalTextureIndex;
+                        globalTextureIndex++;
                     }
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception($"Failed to load texture '{filePath}': {ex.Message}");
+                    catch (Exception ex)
+                    {
+                        throw new Exception($"Failed to load texture '{filePath}': {ex.Message}");
+                    }
                 }
             }
 
-            var tex = AllocateTextureAtlas(textures, tpageName);
-            return (tex.Item1, tex.Item2);
+            return allTextures;
         }
 
         private static List<Bitmap> SplitPng(string path, int cols, int rows)
@@ -3337,7 +3619,6 @@ namespace CrashEdit.CE
             return frames;
         }
 
-
         //
         // run
         //
@@ -3351,110 +3632,132 @@ namespace CrashEdit.CE
             Console.ForegroundColor = ConsoleColor.White;
 
             List<Crash2Json> jsons = LoadModelJson(path);
-            bool compressed = settings.CompressionMethod >= 0;
 
             string saveDirectory = settings.ExportPath;
             string fileName = Path.GetFileNameWithoutExtension(path);
 
             Dictionary<string, List<Frame>> allFrames = [];
             Dictionary<string, ModelEntry> modelsToSave = [];
-            List<(AnimationEntry, string)> animationsToSave = [];
+            List<(string, AnimationEntry)> animationsToSave = [];
             Dictionary<int, TextureChunk> texturesToSave = [];
+
+            var allTextures = BuildTPages(jsons);
+            var (tpages, packedTextures) = AllocateTextureAtlas(allTextures, settings.BaseTPageName, debug.DebugTextures);
+
+            foreach (TextureChunk tpage in tpages)
+                _ = texturesToSave.TryAdd(tpage.EID, tpage);
+
             byte[] fileBytes;
             string savePath;
-            string modelName, animName, tpageName;
-            Dictionary<string, string> usedNames = [];
+            string modelName, animName;
 
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine();
+            Console.WriteLine($"Building models...");
+            Console.ForegroundColor = ConsoleColor.White;
+
+            // build models
             for (int p = 0; p < jsons.Count; p++)
             {
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine();
-                Console.WriteLine($"==== Object [{p}] ====");
-                Console.ForegroundColor = ConsoleColor.White;
-
                 Crash2Json json = jsons[p];
-
                 ModelObject obj = settings.ModelObjects[p];
-              
+                modelName = obj.ModelEID;
+
+                ModelItem item = settings.ModelItems.FirstOrDefault(m => m.ModelEID == modelName)
+                    ?? throw new InvalidOperationException("Model item not found for current model EID.");
+
+                int modelEID = Entry.ENameToEID(modelName);
+                int spVcount = json.markers[0].Count + json.groups[0].Count;
+                int[] modelScales = item.ModelScales;
+                bool compressed = item.CompressionMethod >= 0;
+
+                bool skipOutput = modelsToSave.ContainsKey(modelName);
+               
+                Console.Write($"Processing '{modelName}'...");
+
+                var (materials, tpageNames) = BuildMaterials(json, tpages, packedTextures, debug.DebugMaterials);
+                ModelEntry model = BuildModelEntry(json, materials, modelEID, tpageNames, modelScales, compressed, spVcount, settings, debug, skipOutput);
+
+                if (!skipOutput)
+                    modelsToSave.Add(modelName, model);
+            }
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine();
+            Console.WriteLine($"Building animations...");
+            Console.ForegroundColor = ConsoleColor.White;
+
+            // build animations
+            for (int p = 0; p < jsons.Count; p++)
+            {
+                Crash2Json json = jsons[p];
+                ModelObject obj = settings.ModelObjects[p];
                 animName = obj.AnimEID;
                 modelName = obj.ModelEID;
-                var sb = new StringBuilder(modelName);
-                sb[4] = 'T';
-                tpageName = sb.ToString();
 
-                bool skipExport = p > 0;
-                int spVcount = json.markers[0].Count + json.groups[0].Count;
-
-                ModelItem item = settings.ModelItems.FirstOrDefault(m => m.ModelEID == modelName) ?? throw new InvalidOperationException("Model item not found for current model EID.");
-
-                int[] modelScales = item.ModelScales;
-                float[] scaleFactors = item.ScaleFactor;
+                ModelItem item = settings.ModelItems.FirstOrDefault(m => m.ModelEID == modelName)
+                    ?? throw new InvalidOperationException("Model item not found for current model EID.");
 
                 int modelEID = Entry.ENameToEID(modelName);
                 int animEID = Entry.ENameToEID(animName);
+                int[] modelScales = item.ModelScales;
+                float[] scaleFactors = item.ScaleFactor;
+                bool compressed = item.CompressionMethod >= 0;
 
-                var tex = BuildTPages(json, tpageName);
-                List<TextureChunk> tpages = tex.Item1;
-                List<PackedTexture> packedTextures = tex.Item2;
-                Dictionary<TriangleKey, ModelMaterial> materials = BuildMaterials(json, packedTextures);
+                Console.WriteLine($"=== Object [{p}] ({animName}) ===");
 
-                // if the same tpage (checksum) already exists, reuse the name to avoid duplicates
-                foreach (var kvp in texturesToSave)
-                {
-                    if (kvp.Value.HashKey == tpages[0].HashKey)
-                    {
-                        tpageName = kvp.Value.EName;
-                        break;
-                    }
-                }
-
-                ModelEntry model = BuildModelEntry(json, materials, modelEID, tpageName, modelScales, compressed, spVcount, settings, debug);
                 AnimationEntry animation = BuildAnimationEntry(json, modelEID, animEID, scaleFactors, modelScales, compressed, settings, debug);
 
                 if (allFrames.TryAdd(modelName, new List<Frame>(animation.Frames)))
                 {
-                    // added new - create a copy of the frames list
+                    // first time seeing this model, added new entry
+                    Console.WriteLine($"    Added {animation.Frames.Count} frames for model '{modelName}'");
                 }
                 else
                 {
-                    // already exists, append frames
                     allFrames[modelName].AddRange(animation.Frames);
-                    Console.WriteLine($"Appended {animation.Frames.Count} frames to model '{modelName}' (total now {allFrames[modelName].Count} frames)");
+                    Console.WriteLine($"    Appended {animation.Frames.Count} frames to model '{modelName}' (total now {allFrames[modelName].Count} frames)");
                 }
+                Console.WriteLine();
 
-                // add model to list
-                _ = modelsToSave.TryAdd(modelName, model);
-
-                // add animation to list
-                animationsToSave.Add((animation, modelName));
-
-                // add tpages to list
-                foreach (TextureChunk tpage in tpages)
-                {
-                    _ = texturesToSave.TryAdd(tpage.HashKey, tpage);
-                }
+                animationsToSave.Add((modelName, animation));
             }
+
+            // compress frames
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"Compressing frames...");
+            Console.ForegroundColor = ConsoleColor.White;
 
             Dictionary<string, List<Frame>>? allCompressedFrames = [];
             Dictionary<string, List<ModelPosition>>? allPositions = [];
 
-            // compress frames if needed
-            if (compressed)
+            foreach (var kvp in allFrames)
             {
-                Console.WriteLine();
-                Console.WriteLine("[Model Compression]");
-                (List<Frame>, List<ModelPosition>) compressedItem = new();
+                modelName = kvp.Key;
+                List<Frame> frames = kvp.Value;
 
-                foreach (var kvp in allFrames)
+                // get compression method for this model
+                ModelItem? modelItem = settings.ModelItems.FirstOrDefault(m => m.ModelEID == modelName);
+                if (modelItem == null)
                 {
-                    modelName = kvp.Key;
-                    List<Frame> frames = kvp.Value;
-                    Console.WriteLine($"Compressing frames for model '{kvp.Key}'...");
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine($"Warning: Model item not found for '{modelName}', skipping compression");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    continue;
+                }
+
+                int method = modelItem.CompressionMethod;
+                if (method >= 0)
+                {
+                    (List<Frame>, List<ModelPosition>) compressedItem;
 
                     if (debug.TestCompression)
                     {
                         int bestLength = int.MaxValue;
                         int bestMethod = 0;
+                        (List<Frame>, List<ModelPosition>) bestCompressed = ([], []);
+
+                        Console.WriteLine($"Testing compression methods for '{modelName}':");
                         for (int m = 0; m < 3; m++)
                         {
                             List<Frame> copy = frames
@@ -3462,23 +3765,27 @@ namespace CrashEdit.CE
                                 .ToList();
                             var comp = CompressFrames(copy, m);
 
-                            int newLength = comp.Item1[0].Temporals.Length;
+                            int newLength = comp.Item1.Count > 0 ? comp.Item1[0].Temporals.Length : 0;
 
-                            // if better, store it
                             if (newLength < bestLength)
                             {
                                 bestLength = newLength;
                                 bestMethod = m;
-                                compressedItem = comp;
+                                bestCompressed = comp;
                             }
                             Console.WriteLine($"    Method {m}: {newLength / 8} bytes");
                         }
-                        Console.WriteLine($"    Best={bestMethod}");
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.WriteLine($"    Best method: {bestMethod} ({bestLength / 8} bytes)");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        compressedItem = bestCompressed;
                     }
                     else
                     {
-                        compressedItem = CompressFrames(frames, settings.CompressionMethod);
-                        Console.WriteLine($"    Method {settings.CompressionMethod}: {compressedItem.Item1[0].Temporals.Length / 8} bytes");
+                        Console.WriteLine($"Processing '{modelName}'...");
+                        compressedItem = CompressFrames(frames, method);
+                        int compressedLength = compressedItem.Item1.Count > 0 ? compressedItem.Item1[0].Temporals.Length : 0;
+                        Console.WriteLine($"    Compressed using method {method}: {compressedLength / 8} bytes");
                     }
 
                     allCompressedFrames.Add(modelName, compressedItem.Item1);
@@ -3486,9 +3793,12 @@ namespace CrashEdit.CE
                 }
             }
 
+            if (allCompressedFrames.Count == 0)
+                Console.WriteLine("No models had compression enabled, skipping compression step.");
+
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine();
-            Console.WriteLine($"Saving...");
+            Console.WriteLine("Saving...");
             Console.ForegroundColor = ConsoleColor.White;
 
             // save models
@@ -3497,7 +3807,9 @@ namespace CrashEdit.CE
                 ModelEntry model = kvp.Value;
                 modelName = kvp.Key;
 
-                if (compressed)
+                ModelItem modelItem = settings.ModelItems.FirstOrDefault(m => m.ModelEID == modelName)
+                    ?? throw new InvalidOperationException("Model item not found for current model EID.");
+                if (modelItem.CompressionMethod >= 0)
                 {
                     List<ModelPosition> positions = allPositions[modelName];
                     foreach (var pos in positions)
@@ -3507,23 +3819,23 @@ namespace CrashEdit.CE
                 fileBytes = model.Save();
                 savePath = Path.Combine(saveDirectory, $"{fileName}_Model_{modelName}.nsentry");
                 File.WriteAllBytes(savePath, fileBytes);
-                Console.WriteLine($"    Saved model entry: {savePath}");
+                //Console.WriteLine($"    Saved model entry: {savePath}");
             }
 
-            // save animations
+            // save animations, making sure to assign the correct compressed frames if compression is enabled
             Dictionary<string, int> modelOffsets = [];
             foreach (var item in animationsToSave)
             {
-                AnimationEntry anim = item.Item1;
+                AnimationEntry anim = item.Item2;
                 string name = Entry.EIDToEName(anim.EID);
-                modelName = item.Item2;
+                modelName = item.Item1;
 
                 if (!modelOffsets.ContainsKey(modelName))
                     modelOffsets[modelName] = 0;
 
-                //Console.WriteLine($"Processing animation entry for saving: {name}, Model: {modelName}, {anim.Frames.Count} frames (offset: {modelOffsets[modelName]})");
-
-                if (compressed)
+                ModelItem modelItem = settings.ModelItems.FirstOrDefault(m => m.ModelEID == modelName)
+                    ?? throw new InvalidOperationException("Model item not found for current model EID.");
+                if (modelItem.CompressionMethod >= 0)
                 {
                     List<Frame> frames = allCompressedFrames[modelName];
                     int frameCount = anim.Frames.Count;
@@ -3540,7 +3852,7 @@ namespace CrashEdit.CE
                 fileBytes = anim.Save();
                 savePath = Path.Combine(saveDirectory, $"{fileName}_Anim_{name}.nsentry");
                 File.WriteAllBytes(savePath, fileBytes);
-                Console.WriteLine($"    Saved animation entry: {savePath}");
+                //Console.WriteLine($"    Saved animation entry: {savePath}");
             }
 
             // save tpages
@@ -3550,8 +3862,11 @@ namespace CrashEdit.CE
                 fileBytes = tpage.Save();
                 savePath = Path.Combine(saveDirectory, $"{fileName}_Tpage_{tpage.EName}.nschunk");
                 File.WriteAllBytes(savePath, fileBytes);
-                Console.WriteLine($"    Saved texture page:    {savePath}");
+                //Console.WriteLine($"    Saved texture page:    {savePath}");
             }
+
+            Console.WriteLine($"Total: {modelsToSave.Count} models, {animationsToSave.Count} animations, {texturesToSave.Count} texture pages");
+            Console.WriteLine($"Saved to '{saveDirectory}'.");
 
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine();
@@ -3559,9 +3874,212 @@ namespace CrashEdit.CE
             Console.ForegroundColor = ConsoleColor.White;
             SystemSounds.Asterisk.Play();
         }
+
+        private static Dictionary<TriangleKey, ModelMaterial> BuildMaterialsFromPacked(
+            Crash2Json json,
+            Dictionary<int, List<PackedTexture>> materialIndexToPackedTextures,
+            Dictionary<int, int> globalToLocalPageMap)
+        {
+            //Console.ForegroundColor = ConsoleColor.Cyan;
+            //Console.WriteLine();
+            //Console.WriteLine($"Building materials from packed textures...");
+            //Console.ForegroundColor = ConsoleColor.White;
+
+            Dictionary<TriangleKey, ModelMaterial> materials = [];
+
+            var normalMaterials = new List<(TriangleKey key, ModelMaterial material)>();
+            var animatedMaterials = new List<(TriangleKey key, ModelMaterial material)>();
+
+            var processedKeys = new HashSet<TriangleKey>();
+
+            foreach (Crash2Triangle tri in json.triangles)
+            {
+                int materialIndex = tri.material;
+
+                // skip invalid material indices (notex)
+                if (materialIndex < 0 || materialIndex >= json.materials.Count)
+                {
+                    continue;
+                }
+
+                TriangleKey key = new(
+                    materialIndex,
+                    ToUVByte(tri.uv[0]),
+                    ToUVByte(tri.uv[1]),
+                    ToUVByte(tri.uv[2])
+                );
+
+                if (processedKeys.Contains(key))
+                    continue;
+
+                processedKeys.Add(key);
+
+                // get the packed textures for this material index, if any
+                if (!materialIndexToPackedTextures.TryGetValue(materialIndex, out var matchingPacked))
+                {
+                    string matName = json.materials[materialIndex].name;
+
+                    if (!matName.Contains("_r="))
+                    {
+                        string baseName = Regex.Replace(matName, @"_([dsmf])(\d+)", "");
+                        baseName = baseName.TrimEnd('_');
+
+                        bool foundByBaseName = false;
+                        for (int i = 0; i < json.materials.Count; i++)
+                        {
+                            string otherMatName = json.materials[i].name;
+                            string otherBaseName = Regex.Replace(otherMatName, @"_([dsmf])(\d+)", "");
+                            otherBaseName = otherBaseName.TrimEnd('_');
+
+                            if (otherBaseName == baseName && materialIndexToPackedTextures.TryGetValue(i, out matchingPacked))
+                            {
+                                foundByBaseName = true;
+                                //Console.WriteLine($"  Material[{materialIndex}] '{matName}' matched to base material '{otherMatName}' (index {i})");
+                                break;
+                            }
+                        }
+
+                        if (!foundByBaseName)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine($"  Warning: No packed textures found for material index {materialIndex} ('{matName}', base: '{baseName}')");
+                            Console.ForegroundColor = ConsoleColor.White;
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine($"  Warning: No packed textures found for material index {materialIndex} ('{matName}')");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        continue;
+                    }
+                }
+
+                PackedTexture firstPacked = matchingPacked[0];
+                List<ModelTexture> tex = [];
+
+                if (firstPacked.Info.AnimCount > 0)
+                {
+                    //Console.Write($"  Material[{materialIndex}] Packing animated texture '{firstPacked.Name}'...");
+                    int count = 0;
+                    foreach (PackedTexture p in matchingPacked)
+                    {
+                        if (p.Name == firstPacked.Name)
+                        {
+                            tex.Add(BuildModelTexture(tri, p, globalToLocalPageMap));
+                            count++;
+                        }
+                    }
+                    //Console.WriteLine($" {count} frames");
+
+                    animatedMaterials.Add((key, new ModelMaterial(firstPacked.Name, firstPacked.Info, 0, tex)));
+                }
+                else
+                {
+                    //Console.WriteLine($"  Material[{materialIndex}] Normal texture '{firstPacked.Name}'");
+                    tex.Add(BuildModelTexture(tri, firstPacked, globalToLocalPageMap));
+                    normalMaterials.Add((key, new ModelMaterial(firstPacked.Name, firstPacked.Info, 0, tex)));
+                }
+            }
+
+            // assign texture indices for normal materials first, then animated materials
+            int textureIndex = 1;
+            foreach (var (key, material) in normalMaterials)
+            {
+                materials.Add(key, new ModelMaterial(
+                    material.Name,
+                    material.Info,
+                    textureIndex,
+                    material.Texture
+                ));
+                //Console.WriteLine($"    Assigned texture index {textureIndex} to material '{material.Name}'");
+                textureIndex++;
+            }
+
+            int animatedTextureIndex = 0;
+            foreach (var (key, material) in animatedMaterials)
+            {
+                materials.Add(key, new ModelMaterial(
+                    material.Name,
+                    material.Info,
+                    animatedTextureIndex,
+                    material.Texture
+                ));
+                //Console.WriteLine($"    Assigned animated texture index {animatedTextureIndex} to material '{material.Name}'");
+                animatedTextureIndex++;
+            }
+
+            return materials;
+        }
+
+        private static ModelTexture BuildModelTexture(
+            Crash2Triangle tri,
+            PackedTexture packed,
+            Dictionary<int, int> globalToLocalPageMap)
+        {
+            int blendMode = packed.Info.BlendMode;
+            int colorMode = packed.Bpp == 4 ? 0 : 1;
+            int clutY2 = packed.ClutY >> 2;
+            int clutY1 = (packed.ClutY & 0x3) << 2;
+            int clutX = packed.ClutX;
+
+            int u1 = Math.Round(tri.uv[0][0]) > 0 ? packed.DestX + packed.Width - 1 : packed.DestX;
+            int v1 = Math.Round(tri.uv[0][1]) > 0 ? packed.DestY + packed.Height - 1 : packed.DestY;
+            int u2 = Math.Round(tri.uv[1][0]) > 0 ? packed.DestX + packed.Width - 1 : packed.DestX;
+            int v2 = Math.Round(tri.uv[1][1]) > 0 ? packed.DestY + packed.Height - 1 : packed.DestY;
+            int u3 = Math.Round(tri.uv[2][0]) > 0 ? packed.DestX + packed.Width - 1 : packed.DestX;
+            int v3 = Math.Round(tri.uv[2][1]) > 0 ? packed.DestY + packed.Height - 1 : packed.DestY;
+
+            // get x offset adjustments
+            GetXOff(colorMode, u1, out int segment, out int xoff);
+            u1 -= xoff;
+            GetXOff(colorMode, u2, out _, out xoff);
+            u2 -= xoff;
+            GetXOff(colorMode, u3, out _, out xoff);
+            u3 -= xoff;
+
+            // flip y
+            var minV = Math.Min(v1, Math.Min(v2, v3));
+            var maxV = Math.Max(v1, Math.Max(v2, v3));
+            v1 = v1 == minV ? maxV : minV;
+            v2 = v2 == minV ? maxV : minV;
+            v3 = v3 == minV ? maxV : minV;
+
+            // map global texture page index to local index for this model
+            if (!globalToLocalPageMap.TryGetValue(packed.TPage, out int localTPage))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"[Error] Global page {packed.TPage} not found in mapping for texture '{packed.Name}'");
+                Console.ForegroundColor = ConsoleColor.White;
+                localTPage = packed.TPage; // fallback
+            }
+
+            //Console.WriteLine($"    Texture '{packed.Name}': Global page {packed.TPage} -> Local page {localTPage}, " +
+            //    $"UV=({u1},{v1},{u2},{v2},{u3},{v3}), Seg={segment}, CLUT=({clutX},{packed.ClutY}), " +
+            //    $"Pos=({packed.DestX},{packed.DestY}), Size=({packed.Width}x{packed.Height})");
+
+            return new ModelTexture(
+                u1: (byte)u1,
+                v1: (byte)v1,
+                cluty1: (byte)clutY1,
+                clutx: (byte)clutX,
+                cluty2: (byte)clutY2,
+                u2: (byte)u2,
+                v2: (byte)v2,
+                colormode: (byte)colorMode,
+                blendmode: (byte)blendMode,
+                segment: (byte)segment,
+                textureoffset: (byte)localTPage,
+                u3: (byte)u3,
+                v3: (byte)v3,
+                u4: 0,
+                v4: 0
+            );
+        }
     }
 
-    public class TextureAtlasPacker
+    public static class TextureAtlasPacker
     {
         public struct TextureEntry
         {
@@ -3591,15 +4109,18 @@ namespace CrashEdit.CE
             Y = 128
         };
         private static readonly int SegmentWidth = 256;
+        private static readonly int MaxClutHeight = 16;
+        private static readonly int TextureStartY = 16;
 
         private static bool TryPlaceInSegment(
-         int seg,
-         int w, int h,
-         int usableHeight,
-         out int localX, out int localY)
+            Dictionary<int, List<SkylineNode>> skylines,
+            int seg,
+            int w, int h,
+            int usableHeight,
+            out int localX, out int localY)
         {
             localX = localY = 0;
-            var skyline = Skylines[seg];
+            var skyline = skylines[seg];
 
             int bestY = int.MaxValue;
             int bestX = 0;
@@ -3613,6 +4134,7 @@ namespace CrashEdit.CE
                 int x = n.X;
                 int y = n.Y;
 
+                // check if it fits within the usable texture area vertically
                 if (y + h > usableHeight) continue;
 
                 if (y < bestY || (y == bestY && x < bestX))
@@ -3628,13 +4150,518 @@ namespace CrashEdit.CE
 
             localX = bestX;
             localY = bestY;
-            AddSkyline(seg, bestIndex, localX, localY + h, w);
+            AddSkylineEx(skylines, seg, bestIndex, localX, localY + h, w);
             return true;
         }
 
-        private static void AddSkyline(int seg, int index, int x, int y, int width)
+        public static (List<TextureChunk>, List<PackedTexture>) AllocateTextureAtlas(List<TextureEntry> textures, string tpageName, bool debug)
         {
-            var skyline = Skylines[seg];
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine();
+            Console.WriteLine("Packing textures into atlas...");
+            //Console.WriteLine($"CLUT area: Y=0-{MaxClutHeight - 1}, Texture area: Y={TextureStartY}-{AtlasSize.Y - 1}");
+            Console.ForegroundColor = ConsoleColor.White;
+
+            List<int> sorted = [];
+            for (int i = 0; i < textures.Count; i++)
+                sorted.Add(i);
+
+            sorted = sorted
+                .OrderBy(i => textures[i].Info.AnimCount > 1)
+                .ThenByDescending(i => textures[i].Width * textures[i].Height)
+                .ToList();
+
+            // Pass 1: Simulate texture placement to determine page assignments and CLUT requirements without actually modifying the skyline data structures or creating texture chunks yet
+            if (debug)
+                Console.WriteLine("=== Pass 1: Simulating texture placement ===");
+
+            var pageCLUTRequirements = new Dictionary<int, (int _4bpp, int _8bpp)>();
+            var texturePlacementPlan = new List<(int texIdx, int pageIdx, bool needsNewClut, int destX, int destY)>();
+            var physicalTextureMap = new Dictionary<(int Index, int AnimOffset, string FilePath), (int texIdx, int pageIdx)>();
+            var simulatedSkylines = new Dictionary<int, Dictionary<int, List<SkylineNode>>>();
+
+            int currentPage = 0;
+            pageCLUTRequirements[0] = (0, 0);
+
+            void InitSimulatedSkyline(int pageIdx)
+            {
+                var skylines = new Dictionary<int, List<SkylineNode>>();
+                for (int i = 0; i < AtlasSize.X / SegmentWidth; i++)
+                {
+                    skylines[i] = [new SkylineNode { X = 0, Y = 0, Width = SegmentWidth }];
+                }
+                simulatedSkylines[pageIdx] = skylines;
+            }
+
+            InitSimulatedSkyline(0);
+
+            int usableTextureHeight = AtlasSize.Y - TextureStartY;
+
+            foreach (int i in sorted)
+            {
+                var tex = textures[i];
+                var info = tex.Info;
+
+                if (info.AnimDelay > 0) continue;
+
+                var physicalKey = (tex.Index, info.AnimOffset, tex.FilePath);
+
+                if (physicalTextureMap.TryGetValue(physicalKey, out var existing))
+                {
+                    continue;
+                }
+
+                bool needsNewClut = !(info.AnimCount > 0 && info.AnimOffset < info.AnimCount - 1);
+                bool assigned = false;
+                int assignedDestX = 0, assignedDestY = 0;
+
+                for (int pageIdx = 0; pageIdx <= currentPage && !assigned; pageIdx++)
+                {
+                    var (count4bpp, count8bpp) = pageCLUTRequirements[pageIdx];
+
+                    int test4bpp = count4bpp;
+                    int test8bpp = count8bpp;
+                    if (needsNewClut)
+                    {
+                        if (tex.Bpp == 4) test4bpp++;
+                        else if (tex.Bpp == 8) test8bpp++;
+                    }
+
+                    int clutYRow = Math.Max(1, (test4bpp + 15) / 16);
+                    int clutHeight = clutYRow + test8bpp;
+
+                    if (clutHeight > MaxClutHeight)
+                    {
+                        if (debug)
+                            Console.WriteLine($"    Page {pageIdx}: CLUT height {clutHeight} exceeds max {MaxClutHeight}, skipping");
+                        continue;
+                    }
+
+                    if (tex.Height > usableTextureHeight)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"    Texture '{tex.Name}' height {tex.Height} exceeds available texture area {usableTextureHeight}");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        continue;
+                    }
+
+                    var skylines = simulatedSkylines[pageIdx];
+                    bool canPlace = false;
+
+                    for (int seg = 0; seg < AtlasSize.X / SegmentWidth && !canPlace; seg++)
+                    {
+                        if (TryPlaceInSegment(skylines, seg, tex.Width, tex.Height, usableTextureHeight, out int lx, out int ly))
+                        {
+                            int destX = seg * SegmentWidth + lx;
+                            int destY = AtlasSize.Y - (ly + tex.Height);
+                            int textureTopY = destY;
+                            int textureBottomY = destY + tex.Height;
+
+                            if (textureTopY >= TextureStartY && textureBottomY <= AtlasSize.Y)
+                            {
+                                canPlace = true;
+                                assigned = true;
+                                assignedDestX = destX;
+                                assignedDestY = destY;
+
+                                texturePlacementPlan.Add((i, pageIdx, needsNewClut, destX, destY));
+                                physicalTextureMap[physicalKey] = (i, pageIdx);
+
+                                if (needsNewClut)
+                                {
+                                    pageCLUTRequirements[pageIdx] = (test4bpp, test8bpp);
+                                }
+
+                                if (debug)
+                                    Console.WriteLine($"    Texture '{tex.Name}' -> page {pageIdx} at ({destX},{destY}), size {tex.Width}x{tex.Height}, Y range: {textureTopY}-{textureBottomY - 1}");
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (!assigned)
+                {
+                    currentPage++;
+                    InitSimulatedSkyline(currentPage);
+
+                    int count4bpp = 0;
+                    int count8bpp = 0;
+
+                    if (needsNewClut)
+                    {
+                        if (tex.Bpp == 4) count4bpp = 1;
+                        else if (tex.Bpp == 8) count8bpp = 1;
+                    }
+
+                    int clutYRow = Math.Max(1, (count4bpp + 15) / 16);
+                    int clutHeight = clutYRow + count8bpp;
+
+                    if (clutHeight > MaxClutHeight)
+                    {
+                        throw new Exception($"Texture '{tex.Name}' requires CLUT height {clutHeight} which exceeds max {MaxClutHeight}");
+                    }
+
+                    pageCLUTRequirements[currentPage] = (count4bpp, count8bpp);
+
+                    var skylines = simulatedSkylines[currentPage];
+                    bool placed = false;
+
+                    for (int seg = 0; seg < AtlasSize.X / SegmentWidth && !placed; seg++)
+                    {
+                        if (TryPlaceInSegment(skylines, seg, tex.Width, tex.Height, usableTextureHeight, out int lx, out int ly))
+                        {
+                            int destX = seg * SegmentWidth + lx;
+                            int destY = AtlasSize.Y - (ly + tex.Height);
+                            int textureTopY = destY;
+                            int textureBottomY = destY + tex.Height;
+
+                            if (textureTopY >= TextureStartY && textureBottomY <= AtlasSize.Y)
+                            {
+                                placed = true;
+                                assignedDestX = destX;
+                                assignedDestY = destY;
+
+                                texturePlacementPlan.Add((i, currentPage, needsNewClut, destX, destY));
+                                physicalTextureMap[physicalKey] = (i, currentPage);
+
+                                if (debug)
+                                    Console.WriteLine($"    Texture '{tex.Name}' -> NEW page {currentPage} at ({destX},{destY}), Y range: {textureTopY}-{textureBottomY - 1}");
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!placed)
+                    {
+                        throw new Exception($"Failed to place texture '{tex.FilePath}' during Pass 1 simulation.");
+                    }
+                }
+            }
+
+            if (debug)
+            {
+                Console.WriteLine();
+                Console.WriteLine("=== Pass 1 Summary ===");
+                foreach (var kvp in pageCLUTRequirements.OrderBy(k => k.Key))
+                {
+                    var (count4bpp, count8bpp) = kvp.Value;
+                    int clutYRow = Math.Max(1, (count4bpp + 15) / 16);
+                    int clutHeight = clutYRow + count8bpp;
+                    int texCount = texturePlacementPlan.Count(t => t.pageIdx == kvp.Key);
+                    Console.WriteLine($"    Page {kvp.Key}: {texCount} textures, 4bpp={count4bpp}, 8bpp={count8bpp}, CLUT area (Y: 0-{MaxClutHeight - 1}), texture area (Y: {TextureStartY}-{AtlasSize.Y - 1})");
+                }
+            }
+
+            // Pass 2: Create actual texture chunks based on the placement plan
+            if (debug)
+            {
+                Console.WriteLine();
+                Console.WriteLine("=== Pass 2: Placing textures ===");
+            }
+
+            List<TextureChunk> tpages = [];
+            List<PackedTexture> packedTextures = [];
+            var pageClutInfo = new Dictionary<int, (int _4bppCount, int _8bppCount)>();
+            var clutPositions = new Dictionary<int, (int curClutX, int curClutY, int oldClutX, int oldClutY)>();
+            var physicalTextureResults = new Dictionary<(int Index, int AnimOffset, string FilePath), PackedTexture>();
+
+            for (int pageIdx = 0; pageIdx <= currentPage; pageIdx++)
+            {
+                string pageName = tpageName.Replace('_', Convert62(pageIdx + 1));
+                int eid = Entry.ENameToEID(pageName);
+
+                byte[] header = {
+                    0x34, 0x12, 0x01, 0x00,
+                    (byte)(eid & 0xFF), (byte)((eid >> 8) & 0xFF), (byte)((eid >> 16) & 0xFF), (byte)((eid >> 24) & 0xFF),
+                    0x05, 0x00, 0x00, 0x00,
+                    0x00, 0x00, 0x00, 0x00,
+                };
+
+                byte[] chunk = new byte[0x10000];
+                Array.Copy(header, 0, chunk, 0, header.Length);
+                tpages.Add(new TextureChunk(chunk));
+
+                pageClutInfo[pageIdx] = (0, 0);
+                clutPositions[pageIdx] = (1, 0, -1, -1);
+
+                var (finalCount4bpp, finalCount8bpp) = pageCLUTRequirements[pageIdx];
+                int finalClutYRow = Math.Max(1, (finalCount4bpp + 15) / 16);
+                int finalClutHeight = finalClutYRow + finalCount8bpp;
+                Console.WriteLine($"    Created page {pageIdx} ({pageName}): CLUT height={finalClutHeight} (Y: 0-{finalClutHeight - 1})");
+            }
+
+            foreach (int texIdx in sorted)
+            {
+                var tex = textures[texIdx];
+                var info = tex.Info;
+
+                if (info.AnimDelay > 0) continue; // later handle delayed animated textures 
+
+                var physicalKey = (tex.Index, info.AnimOffset, tex.FilePath);
+
+                // if this physical texture (index + anim offset + file path) has already been placed, reuse the same placement
+                if (physicalTextureResults.TryGetValue(physicalKey, out var existingPacked))
+                {
+                    for (int r = 0; r < info.AnimRepeat; r++)
+                    {
+                        packedTextures.Add(existingPacked);
+                    }
+                    if (debug)
+                        Console.WriteLine($"    Reused '{tex.Name}' (AnimOffset={info.AnimOffset}) × {info.AnimRepeat}");
+                    continue;
+                }
+
+                // find the placement for this texture from the plan created in Pass 1
+                var placement = texturePlacementPlan.FirstOrDefault(p => p.texIdx == texIdx);
+                if (placement == default)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"    [Error] No placement found for texture '{tex.Name}' (index {texIdx})");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    continue;
+                }
+
+                int pageIdx = placement.pageIdx;
+                bool needsNewClut = placement.needsNewClut;
+                int destX = placement.destX;
+                int destY = placement.destY;
+
+                var (curClutX, curClutY, oldClutX, oldClutY) = clutPositions[pageIdx];
+                int actualClutX = curClutX;
+                int actualClutY = curClutY;
+
+                if (tex.Bpp == 8)
+                {
+                    if (oldClutX == -1 || oldClutY == -1)
+                    {
+                        oldClutX = curClutX;
+                        oldClutY = curClutY;
+                    }
+                    actualClutX = 0;
+                    var pageInfo = pageClutInfo[pageIdx];
+                    int clutYRowFor4bpp = Math.Max(1, (pageInfo._4bppCount + 15) / 16);
+                    actualClutY = clutYRowFor4bpp + pageInfo._8bppCount;
+
+                    if (actualClutY >= MaxClutHeight)
+                    {
+                        throw new Exception($"CLUT Y position {actualClutY} exceeds max {MaxClutHeight - 1} for texture '{tex.Name}'");
+                    }
+                }
+                else // 4bpp
+                {
+                    if (oldClutX != -1 && oldClutY != -1)
+                    {
+                        actualClutX = oldClutX;
+                        actualClutY = oldClutY;
+                        oldClutX = -1;
+                        oldClutY = -1;
+                    }
+
+                    if (actualClutY == 0 && actualClutX == 0)
+                    {
+                        actualClutX = 1;
+                    }
+
+                    if (actualClutY >= MaxClutHeight)
+                    {
+                        throw new Exception($"CLUT Y position {actualClutY} exceeds max {MaxClutHeight - 1} for texture '{tex.Name}'");
+                    }
+                }
+
+                int width = tex.Bpp == 8 ? tex.Width / 2 : tex.Width;
+                int height = tex.Height;
+
+                tpages[pageIdx].Data = TextureConv.ReplaceTextureFromViewer(
+                    tpages[pageIdx].Data,
+                    tex.Data,
+                    tex.Palette,
+                    width,
+                    height,
+                    destX,
+                    destY,
+                    needsNewClut,
+                    tex.Bpp,
+                    actualClutX,
+                    actualClutY
+                );
+
+                var packedTex = new PackedTexture(
+                    index: tex.Index,
+                    name: tex.Name,
+                    filePath: tex.FilePath,
+                    bpp: tex.Bpp,
+                    clutX: actualClutX,
+                    clutY: actualClutY,
+                    destX: tex.Bpp == 8 ? destX / 2 : destX,
+                    destY: destY,
+                    w: width,
+                    h: height,
+                    tpage: pageIdx,
+                    info: info
+                );
+
+                physicalTextureResults[physicalKey] = packedTex;
+
+                for (int r = 0; r < info.AnimRepeat; r++)
+                {
+                    packedTextures.Add(packedTex);
+                }
+
+                int textureTopY = destY;
+                int textureBottomY = destY + tex.Height;
+                if (debug)
+                    Console.WriteLine($"    Placed '{tex.Name}' (AnimOffset={info.AnimOffset}) at ({destX},{destY}), size {tex.Width}x{tex.Height}, Y range: {textureTopY}-{textureBottomY - 1}, CLUT({actualClutX},{actualClutY}) × {info.AnimRepeat}");
+
+                if (needsNewClut)
+                {
+                    var pageInfo = pageClutInfo[pageIdx];
+                    if (tex.Bpp == 4) pageInfo._4bppCount++;
+                    else if (tex.Bpp == 8) pageInfo._8bppCount++;
+                    pageClutInfo[pageIdx] = pageInfo;
+
+                    if (tex.Bpp == 8)
+                    {
+                        curClutY = actualClutY + 1;
+                        curClutX = 0;
+                    }
+                    else // 4bpp
+                    {
+                        curClutX = actualClutX + 1;
+
+                        if (curClutY == 0 && curClutX == 0)
+                        {
+                            curClutX = 1;
+                        }
+
+                        if (curClutX > 15)
+                        {
+                            curClutX = 0;
+                            curClutY += 1;
+
+                            if (curClutY == 0)
+                            {
+                                curClutX = 1;
+                            }
+                        }
+                    }
+
+                    clutPositions[pageIdx] = (curClutX, curClutY, oldClutX, oldClutY);
+                }
+            }
+
+            // handle delayed animation textures by finding their base texture placements
+
+            if (debug)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Processing delayed animation textures...");
+            }
+            foreach (int i in sorted)
+            {
+                var tex = textures[i];
+                var info = tex.Info;
+
+                if (info.AnimDelay > 0)
+                {
+                    string baseName = Regex.Replace(tex.Name, @"_[d]\d+", "");
+                    bool found = false;
+
+                    foreach (var pt in packedTextures)
+                    {
+                        if (pt.Name == baseName && pt.Info.AnimOffset == info.AnimOffset)
+                        {
+                            packedTextures.Add(new PackedTexture(
+                                index: tex.Index,
+                                name: tex.Name,
+                                filePath: pt.FilePath,
+                                bpp: pt.Bpp,
+                                clutX: pt.ClutX,
+                                clutY: pt.ClutY,
+                                destX: pt.DestX,
+                                destY: pt.DestY,
+                                w: pt.Width,
+                                h: pt.Height,
+                                tpage: pt.TPage,
+                                info: info
+                            ));
+                            found = true;
+                            if (debug)
+                                Console.WriteLine($"    Delayed '{tex.Name}' reuses '{pt.Name}' (offset={info.AnimOffset})");
+                            break;
+                        }
+                    }
+
+                    if (!found)
+                    {
+                        foreach (var pt in packedTextures)
+                        {
+                            string ptBaseName = Regex.Replace(pt.Name, @"_[d]\d+", "");
+                            if (ptBaseName == baseName &&
+                                pt.FilePath == tex.FilePath &&
+                                pt.Info.AnimCount > 0)
+                            {
+                                var targetPacked = packedTextures
+                                    .Where(p => Regex.Replace(p.Name, @"_[d]\d+", "") == baseName &&
+                                               p.FilePath == tex.FilePath &&
+                                               p.Info.AnimOffset == info.AnimOffset)
+                                    .FirstOrDefault();
+
+                                if (targetPacked.Equals(default(PackedTexture)))
+                                {
+                                    targetPacked = pt;
+                                    Console.ForegroundColor = ConsoleColor.Yellow;
+                                    Console.WriteLine($"    Warning: Could not find frame at offset {info.AnimOffset} for delayed '{tex.Name}', using first frame");
+                                    Console.ForegroundColor = ConsoleColor.White;
+                                }
+
+                                packedTextures.Add(new PackedTexture(
+                                    index: tex.Index,
+                                    name: tex.Name,
+                                    filePath: targetPacked.FilePath,
+                                    bpp: targetPacked.Bpp,
+                                    clutX: targetPacked.ClutX,
+                                    clutY: targetPacked.ClutY,
+                                    destX: targetPacked.DestX,
+                                    destY: targetPacked.DestY,
+                                    w: targetPacked.Width,
+                                    h: targetPacked.Height,
+                                    tpage: targetPacked.TPage,
+                                    info: info
+                                ));
+                                found = true;
+                                if (debug)
+                                    Console.WriteLine($"    Delayed '{tex.Name}' reuses '{targetPacked.Name}'");
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!found)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"    [Error] Could not find base texture for delayed animation '{tex.Name}' (base='{baseName}', offset={info.AnimOffset})");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        throw new Exception($"Could not find base texture for delayed animation '{tex.FilePath}'.");
+                    }
+                }
+            }
+
+            foreach (var tpage in tpages)
+            {
+                int checksum = Chunk.CalculateChecksum(tpage.Data);
+                BitConv.ToInt32(tpage.Data, 12, checksum);
+            }
+
+            Console.WriteLine();
+            Console.WriteLine($"=== Texture packing complete: {tpages.Count} pages, {packedTextures.Count} packed textures ===");
+
+            return (tpages, packedTextures);
+        }
+
+        private static void AddSkylineEx(Dictionary<int, List<SkylineNode>> skylines, int seg, int index, int x, int y, int width)
+        {
+            var skyline = skylines[seg];
             var node = skyline[index];
 
             skyline[index] = new SkylineNode
@@ -3669,260 +4696,6 @@ namespace CrashEdit.CE
                     i--;
                 }
             }
-        }
-
-        public static (List<TextureChunk>, List<PackedTexture>) AllocateTextureAtlas(List<TextureEntry> textures, string tpageName)
-        {
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine();
-            Console.WriteLine("Packing textures into atlas...");
-            Console.ForegroundColor = ConsoleColor.White;
-
-            List<TextureChunk> tpages = [];
-            List<PackedTexture> packedTextures = [];
-
-            Skylines = [];
-            int segmentCount = AtlasSize.X / SegmentWidth;
-            for (int i = 0; i < segmentCount; i++)
-            {
-                Skylines[i] =
-                [
-                    new SkylineNode { X = 0, Y = 0, Width = SegmentWidth }
-                ];
-            }
-
-            // this identifies a unique physical texture regardless of how many times it's used in the animation sequence
-            var physicalTextureMap = new Dictionary<(int Index, int AnimOffset, string FilePath), PackedTexture>();
-
-            // sort textures by size
-            List<int> sorted = [];
-            for (int i = 0; i < textures.Count; i++)
-                sorted.Add(i);
-
-            sorted = sorted
-                .OrderBy(i => textures[i].Info.AnimCount > 1) // non-animated > animated
-                .ThenByDescending(i => textures[i].Width * textures[i].Height) // descending order by area
-                .ToList();
-
-            int eid = Entry.ENameToEID(tpageName);
-            byte[] header = {
-                0x34, 0x12, 0x01, 0x00,
-                (byte)(eid & 0xFF), (byte)((eid >> 8) & 0xFF), (byte)((eid >> 16) & 0xFF), (byte)((eid >> 24) & 0xFF),
-                0x05, 0x00, 0x00, 0x00,
-                0x00, 0x00, 0x00, 0x00,
-            };
-
-            byte[] newchunk = new byte[0x10000];
-            Array.Copy(header, 0, newchunk, 0, header.Length);
-            TextureChunk tpage = new(newchunk);
-            int tpageIndex = 0; // temp
-
-            int _4bppCount = 1; // reserve 1 for tpage header
-            int _8bppCount = 0;
-            HashSet<string> unique = [];
-            foreach (var tex in textures)
-            {
-                if (unique.Contains(tex.FilePath))
-                    continue;
-                unique.Add(tex.FilePath);
-
-                if (tex.Bpp == 4)
-                    _4bppCount++;
-                else if (tex.Bpp == 8)
-                    _8bppCount++;
-            }
-
-            int curClutX = 1,
-                curClutY = 0,
-                oldClutX = -1,
-                oldClutY = -1;
-            int clutYRow = (_4bppCount + 15) / 16;
-            int ClutHeight = clutYRow + _8bppCount;
-            int usableHeight = AtlasSize.Y - ClutHeight;
-
-            if (textures.Count > 0)
-            {
-                Console.WriteLine($"4bpp textures: {_4bppCount - 1}, 8bpp textures: {_8bppCount}");
-                Console.WriteLine($"CLUT Height: {ClutHeight} rows");
-            }
-
-            foreach (int i in sorted)
-            {
-                var tex = textures[i];
-                var info = tex.Info;
-
-                if (info.AnimDelay > 0)
-                {
-                    // if animated texture with delay, search for a non-delayed texture
-                    string baseName = Regex.Replace(tex.Name, @"_[d]\d+", "");
-                    bool found = false;
-                    foreach (var pt in packedTextures.ToList())
-                    {
-                        if (pt.Name == baseName &&
-                            pt.Info.AnimOffset == info.AnimOffset)
-                        {
-                            packedTextures.Add(new PackedTexture(
-                                index: tex.Index,
-                                name: tex.Name,
-                                filePath: pt.FilePath,
-                                bpp: pt.Bpp,
-                                clutX: pt.ClutX,
-                                clutY: pt.ClutY,
-                                destX: pt.DestX,
-                                destY: pt.DestY,
-                                w: pt.Width,
-                                h: pt.Height,
-                                tpage: pt.TPage,
-                                info: info
-                            ));
-
-                            found = true;
-                            break;
-                        }
-                    }
-
-                    if (!found)
-                        throw new Exception($"Could not find a non-delayed counterpart for animated texture '{tex.FilePath}'.");
-
-                    continue;
-                }
-
-                // check if an identical texture (same file and same anim offset) has already been placed, if so reuse it
-                var physicalKey = (tex.Index, info.AnimOffset, tex.FilePath);
-
-                if (physicalTextureMap.TryGetValue(physicalKey, out var existingPacked))
-                {
-                    var reusedPacked = new PackedTexture(
-                        index: tex.Index,
-                        name: tex.Name,
-                        filePath: existingPacked.FilePath,
-                        bpp: existingPacked.Bpp,
-                        clutX: existingPacked.ClutX,
-                        clutY: existingPacked.ClutY,
-                        destX: existingPacked.DestX,
-                        destY: existingPacked.DestY,
-                        w: existingPacked.Width,
-                        h: existingPacked.Height,
-                        tpage: existingPacked.TPage,
-                        info: info  // use the current texture's info, which may differ in anim count/repeat, but has the same anim offset
-                    );
-
-                    for (int r = 0; r < info.AnimRepeat; r++)
-                    {
-                        packedTextures.Add(reusedPacked);
-                    }
-
-                    Console.WriteLine($"Reused texture [{info.AnimOffset}] {Path.GetFileName(tex.FilePath)} ({tex.Name}) × {info.AnimRepeat} frames (same as offset {existingPacked.Info.AnimOffset})");
-                    continue;
-                }
-
-                // place the texture in the atlas
-                Point result = new();
-                bool placed = false;
-                for (int seg = 0; seg < segmentCount && !placed; seg++)
-                {
-                    if (TryPlaceInSegment(seg, tex.Width, tex.Height, usableHeight, out int lx, out int ly))
-                    {
-                        int worldX = seg * SegmentWidth + lx;
-                        int topY = AtlasSize.Y - (ly + tex.Height);
-
-                        result.X = worldX;
-                        result.Y = topY;
-
-                        placed = true;
-                    }
-                }
-                if (!placed)
-                    throw new Exception("Atlas overflow (all segments full)");
-
-                string filePath = tex.FilePath;
-                int bpp = tex.Bpp;
-                bool addNewClut = true;
-                if (info.AnimCount > 0)
-                {
-                    if (info.AnimOffset < info.AnimCount - 1)
-                        addNewClut = false;
-                }
-
-                if (bpp == 8)
-                {
-                    if (oldClutX == -1 || oldClutY == -1)
-                    {
-                        // save CLUT position
-                        oldClutX = curClutX;
-                        oldClutY = curClutY;
-                    }
-                    curClutX = 0;
-                    curClutY = clutYRow;
-                }
-                else
-                {
-                    if (oldClutX != -1 || oldClutY != -1)
-                    {
-                        // restore CLUT position
-                        curClutX = oldClutX;
-                        curClutY = oldClutY;
-                        oldClutX = -1;
-                        oldClutY = -1;
-                    }
-                }
-
-                int width = bpp == 8 ? tex.Width / 2 : tex.Width;
-                int height = tex.Height;
-
-                int destX = result.X;
-                int destY = result.Y;
-
-                tpage.Data = TextureConv.ReplaceTextureFromViewer(tpage.Data, tex.Data, tex.Palette, width, height, destX, destY, addNewClut, bpp, curClutX, curClutY);
-
-                var packedTex = new PackedTexture(
-                    index: tex.Index,
-                    name: tex.Name,
-                    filePath: filePath,
-                    bpp: bpp,
-                    clutX: curClutX,
-                    clutY: curClutY,
-                    destX: bpp == 8 ? result.X / 2 : result.X,
-                    destY: destY,
-                    w: width,
-                    h: height,
-                    tpage: tpageIndex,
-                    info: info
-                );
-
-                // store the physical texture info
-                physicalTextureMap[physicalKey] = packedTex;
-
-                for (int r = 0; r < info.AnimRepeat; r++)
-                {
-                    packedTextures.Add(packedTex);
-                }
-
-                Console.WriteLine($"Allocated texture [{info.AnimOffset}] {Path.GetFileName(tex.FilePath)} ({tex.Name}) at ({result.X,4:d}, {result.Y,3:d}), {width,3:d}x{height,3:d}, CLUT: Y{curClutY,2:d} - X{curClutX,2:d} × {info.AnimRepeat} frames");
-
-                if (addNewClut)
-                {
-                    if (bpp == 8)
-                    {
-                        clutYRow += 1;
-                    }
-                    else
-                    {
-                        curClutX += 1;
-                        if (curClutX > 15)
-                        {
-                            curClutX = 0;
-                            curClutY += 1;
-                        }
-                    }
-                }
-            }
-
-            int correct_checksum = Chunk.CalculateChecksum(tpage.Data);
-            BitConv.ToInt32(tpage.Data, 12, correct_checksum);
-
-            tpages.Add(tpage);
-            return (tpages, packedTextures);
         }
     }
 }
