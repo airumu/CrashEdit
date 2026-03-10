@@ -1,5 +1,4 @@
-﻿
-using AltUI.Controls;
+﻿using AltUI.Controls;
 
 namespace CrashEdit.CE
 {
@@ -35,12 +34,12 @@ namespace CrashEdit.CE
             cmbMode = new DarkComboBox();
             cmdLoad = new DarkButton();
             cmdProcess = new DarkButton();
-            chkShowFilePath = new CheckBox();
             chkSetModelEID = new CheckBox();
             cmdClear = new DarkButton();
             cmbType = new DarkComboBox();
-            lblWarning = new Label();
+            dgvModel = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)dgvAnim).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvModel).BeginInit();
             SuspendLayout();
             // 
             // dgvAnim
@@ -51,14 +50,16 @@ namespace CrashEdit.CE
             dgvAnim.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dgvAnim.ColumnHeadersHeight = 20;
             dgvAnim.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvAnim.EditMode = DataGridViewEditMode.EditOnEnter;
             dgvAnim.Location = new Point(12, 70);
             dgvAnim.Name = "dgvAnim";
             dgvAnim.RowHeadersWidth = 24;
             dgvAnim.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dgvAnim.ShowCellToolTips = false;
-            dgvAnim.Size = new Size(469, 421);
+            dgvAnim.Size = new Size(332, 420);
             dgvAnim.TabIndex = 0;
             dgvAnim.CellBeginEdit += dgvAnim_CellBeginEdit;
+            dgvAnim.CellValidating += EID_Validating;
             dgvAnim.RowsAdded += dgvAnim_RowsAdded;
             // 
             // cmbMode
@@ -92,35 +93,26 @@ namespace CrashEdit.CE
             cmdProcess.Enabled = false;
             cmdProcess.FlatBottom = false;
             cmdProcess.FlatTop = false;
-            cmdProcess.Location = new Point(406, 12);
+            cmdProcess.Location = new Point(408, 16);
             cmdProcess.Name = "cmdProcess";
             cmdProcess.Padding = new Padding(5);
-            cmdProcess.Size = new Size(75, 23);
+            cmdProcess.Size = new Size(152, 40);
             cmdProcess.TabIndex = 3;
             cmdProcess.Text = "Process";
             cmdProcess.Click += cmdProcess_Click;
             // 
-            // chkShowFilePath
-            // 
-            chkShowFilePath.AutoSize = true;
-            chkShowFilePath.Location = new Point(400, 44);
-            chkShowFilePath.Name = "chkShowFilePath";
-            chkShowFilePath.Size = new Size(103, 19);
-            chkShowFilePath.TabIndex = 4;
-            chkShowFilePath.Text = "Show File Path";
-            chkShowFilePath.UseVisualStyleBackColor = true;
-            chkShowFilePath.Visible = false;
-            chkShowFilePath.CheckedChanged += chkShowFilePath_CheckedChanged;
-            // 
             // chkSetModelEID
             // 
             chkSetModelEID.AutoSize = true;
+            chkSetModelEID.BackColor = Color.Transparent;
+            chkSetModelEID.Checked = true;
+            chkSetModelEID.CheckState = CheckState.Checked;
             chkSetModelEID.Location = new Point(220, 44);
             chkSetModelEID.Name = "chkSetModelEID";
             chkSetModelEID.Size = new Size(174, 19);
             chkSetModelEID.TabIndex = 4;
             chkSetModelEID.Text = "Set model EID automatically";
-            chkSetModelEID.UseVisualStyleBackColor = true;
+            chkSetModelEID.UseVisualStyleBackColor = false;
             // 
             // cmdClear
             // 
@@ -147,30 +139,38 @@ namespace CrashEdit.CE
             cmbType.TabIndex = 1;
             cmbType.SelectedIndexChanged += cmbType_SelectedIndexChanged;
             // 
-            // lblWarning
+            // dgvModel
             // 
-            lblWarning.AutoSize = true;
-            lblWarning.BackColor = Color.Transparent;
-            lblWarning.ForeColor = Color.Red;
-            lblWarning.Location = new Point(220, 9);
-            lblWarning.Name = "lblWarning";
-            lblWarning.Size = new Size(126, 30);
-            lblWarning.TabIndex = 6;
-            lblWarning.Text = "Model conversions are\r\nexperimental!";
+            dgvModel.AllowUserToAddRows = false;
+            dgvModel.AllowUserToResizeColumns = false;
+            dgvModel.AllowUserToResizeRows = false;
+            dgvModel.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dgvModel.ColumnHeadersHeight = 20;
+            dgvModel.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvModel.EditMode = DataGridViewEditMode.EditOnEnter;
+            dgvModel.Location = new Point(350, 70);
+            dgvModel.Name = "dgvModel";
+            dgvModel.RowHeadersWidth = 24;
+            dgvModel.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dgvModel.ShowCellToolTips = false;
+            dgvModel.Size = new Size(234, 420);
+            dgvModel.TabIndex = 0;
+            dgvModel.CellBeginEdit += dgvModel_CellBeginEdit;
+            dgvModel.CellValidating += EID_Validating;
+            dgvModel.RowsAdded += dgvModel_RowsAdded;
             // 
             // EntryConverterForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(492, 503);
-            Controls.Add(lblWarning);
+            ClientSize = new Size(596, 505);
             Controls.Add(cmdClear);
             Controls.Add(chkSetModelEID);
-            Controls.Add(chkShowFilePath);
             Controls.Add(cmdProcess);
             Controls.Add(cmdLoad);
             Controls.Add(cmbType);
             Controls.Add(cmbMode);
+            Controls.Add(dgvModel);
             Controls.Add(dgvAnim);
             CornerStyle = CornerPreference.Default;
             FormBorderStyle = FormBorderStyle.FixedSingle;
@@ -180,6 +180,7 @@ namespace CrashEdit.CE
             Text = "Entry Converter";
             TransparencyKey = Color.FromArgb(31, 31, 32);
             ((System.ComponentModel.ISupportInitialize)dgvAnim).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvModel).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -191,10 +192,9 @@ namespace CrashEdit.CE
         private DarkComboBox cmbMode;
         private DarkButton cmdLoad;
         private DarkButton cmdProcess;
-        private CheckBox chkShowFilePath;
         private CheckBox chkSetModelEID;
         private DarkButton cmdClear;
         private DarkComboBox cmbType;
-        private Label lblWarning;
+        private DataGridView dgvModel;
     }
 }

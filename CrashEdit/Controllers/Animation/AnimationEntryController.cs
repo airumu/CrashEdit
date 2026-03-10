@@ -11,6 +11,7 @@ namespace CrashEdit.CE
             AnimationEntry = animationentry;
             AddMenuSeparator();
             AddMenu("Decompress Animtaion", "Container", Menu_Decompress);
+            AddMenuSeparator();
             AddMenu(CrashUI.Properties.Resources.AnimationEntryController_AcExportAsOBJ, Menu_Export_OBJ);
         }
 
