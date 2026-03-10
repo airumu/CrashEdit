@@ -36,23 +36,25 @@ namespace CrashEdit.Exporters
                 Vector3 v1 = new Vector3(ov1.X, ov1.Y, ov1.Z);
                 Vector3 v2 = new Vector3(ov2.X, ov2.Y, ov2.Z);
                 Vector3 v3 = new Vector3(ov3.X, ov3.Y, ov3.Z);
-                Vector3 color = Vector3.Zero;
+                Vector3 c1 = new Vector3(ov1.Red, ov1.Green, ov1.Blue) / 255F;
+                Vector3 c2 = new Vector3(ov2.Red, ov2.Green, ov2.Blue) / 255F;
+                Vector3 c3 = new Vector3(ov3.Red, ov3.Green, ov3.Blue) / 255F;
 
                 if (str is OldSceneryTexture t)
                 {
                     int textureEID = scenery.GetTPAG(polygon.Page);
-                    material = exporter.AddTexture(nsf, t, textureEID, ref textureEIDs, ref objTranslate, out color, out uv1, out uv2, out uv3);
+                    material = exporter.AddTexture(nsf, t, textureEID, ref textureEIDs, ref objTranslate, out _, out uv1, out uv2, out uv3);
                 }
                 else if (str is OldSceneryColor c)
                 {
-                    color = new Vector3(c.R, c.G, c.B) / 255F;
+                    // do nothing
                 }
 
                 exporter.AddFace(
                     (v1 + offset) * scale,
                     (v2 + offset) * scale,
                     (v3 + offset) * scale,
-                    color, color, color,
+                    c1, c2, c3,
                     material,
                     uv1, uv2, uv3
                 );
