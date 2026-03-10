@@ -526,6 +526,28 @@ namespace CrashEdit.CrashUI.Properties {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Import Chunk.
+        /// </summary>
+        public static string NSFController_AcImportAndReplaceChunk
+        {
+            get
+            {
+                return ResourceManager.GetString("NSFController_AcImportAndReplaceChunk", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Import Chunk.
+        /// </summary>
+        public static string NSFController_AcImportAndReplaceEntry
+        {
+            get
+            {
+                return ResourceManager.GetString("NSFController_AcImportAndReplaceEntry", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Show All Level Scenery.
         /// </summary>
         public static string NSFController_AcShowLevel {

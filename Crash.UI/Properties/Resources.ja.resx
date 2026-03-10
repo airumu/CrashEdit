@@ -393,4 +393,10 @@
   <data name="NSFController_AcEditEntities" xml:space="preserve">
     <value>エンティティエディタを開く</value>
   </data>
+  <data name="NSFController_AcImportAndReplaceChunk" xml:space="preserve">
+    <value>チャンクのインポートと置き換え</value>
+  </data>
+  <data name="NSFController_AcImportAndReplaceEntry" xml:space="preserve">
+    <value>エントリのインポートと置き換え</value>
+  </data>
 </root>

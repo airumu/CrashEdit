@@ -1,10 +1,10 @@
-using System.Media;
-using System.Text;
 using AltUI.Forms;
 using CrashEdit.CE.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 using CrashEdit.Exporters;
+using System.Media;
+using System.Text;
 
 namespace CrashEdit.CE
 {
@@ -22,7 +22,9 @@ namespace CrashEdit.CE
             AddMenu(CrashUI.Properties.Resources.NSFController_AcAddSpeechChunk, "JournalWhite", Menu_Add_SpeechChunk);
             AddMenu(CrashUI.Properties.Resources.NSFController_AcAddTextureChunk, "Painting", Menu_Add_TextureChunk);
             AddMenu(CrashUI.Properties.Resources.NSFController_AcImportChunk, "Import", Menu_Import_Chunk);
-            AddMenu(CrashUI.Properties.Resources.NSFController_AcImportEntriesIntoChunks, "ImportPlus", Menu_Import_Entries_Into_New_Chunks);
+            AddMenu(CrashUI.Properties.Resources.NSFController_AcImportEntriesIntoChunks, "Import", Menu_Import_Entries_Into_New_Chunks);
+            AddMenu(CrashUI.Properties.Resources.NSFController_AcImportAndReplaceChunk, "ImportPlus", Menu_Import_And_Replace_Chunk);
+            AddMenu(CrashUI.Properties.Resources.NSFController_AcImportAndReplaceEntry, "ImportPlus", Menu_Import_And_Replace_Entry);
             if (GameVersion == GameVersion.Crash2 || GameVersion == GameVersion.Crash3)
             {
                 AddMenuSeparator();
@@ -729,20 +731,24 @@ namespace CrashEdit.CE
 
         private void Menu_Import_Chunk()
         {
-            byte[][] datas = FileUtil.OpenFiles(FileFilters.Any);
+            byte[][] datas = FileUtil.OpenFiles([FileFilters.NSChunk, FileFilters.Any]);
             if (datas == null)
                 return;
-            bool process = DarkMessageBox.ShowMessage("Do you want to process the imported chunks?", "Import Chunk", DarkDialogButton.YesNo) == DialogResult.Yes;
+            //bool process = DarkMessageBox.ShowMessage("Do you want to process the imported chunks?", "Import Chunk", DarkDialogButton.YesNo) == DialogResult.Yes;
+            bool process = true; // always process
+
             foreach (var data in datas)
             {
                 try
                 {
                     UnprocessedChunk chunk = Chunk.Load(data);
-                    if (chunk.Type == 1) // Texture Chunk
-                        process = true;
-                    if (process)
+
+                    // if the chunk is a texture chunk, always process
+                    if (process || chunk.Type == 1)
                     {
                         Chunk processedchunk = chunk.Process();
+                        if (processedchunk is EntryChunk)
+                            ((EntryChunk)processedchunk).ProcessAll(GameVersion);
                         NSF.Chunks.Add(processedchunk);
                     }
                     else
@@ -754,6 +760,120 @@ namespace CrashEdit.CE
                 {
                 }
             }
+        }
+
+        private void Menu_Import_And_Replace_Chunk()
+        {
+            byte[][] datas = FileUtil.OpenFiles([FileFilters.NSChunk, FileFilters.Any]);
+            if (datas == null)
+                return;
+
+            foreach (var data in datas)
+            {
+                try
+                {
+                    UnprocessedChunk chunk = Chunk.Load(data);
+
+                    int indexToReplace = -1;
+                    for (int i = 0; i < NSF.Chunks.Count; ++i)
+                    {
+                        if (NSF.Chunks[i] is TextureChunk tex)
+                        {
+                            if (tex.EID == chunk.ChunkId)
+                            {
+                                indexToReplace = i;
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            if (NSF.Chunks[i].ChunkId == chunk.ChunkId)
+                            {
+                                indexToReplace = i;
+                                break;
+                            }
+                        }
+                    }
+
+                    Chunk processedchunk = chunk.Process();
+                    if (processedchunk is EntryChunk)
+                        ((EntryChunk)processedchunk).ProcessAll(GameVersion);
+                    if (indexToReplace != -1)
+                    {
+                        NSF.Chunks[indexToReplace] = processedchunk;
+                    }
+                    else
+                    {
+                        NSF.Chunks.Add(processedchunk);
+                    }
+                }
+                catch (LoadAbortedException)
+                {
+                }
+            }
+        }
+
+        private void Menu_Import_And_Replace_Entry()
+            {
+            byte[][] datas = FileUtil.OpenFiles(FileFilters.NSEntryExt, FileFilters.Any);
+            if (datas == null)
+                return;
+            bool process = true;
+
+            NormalChunk? currentChunk = null;
+            int currentChunkSize = 0;
+
+            foreach (var data in datas)
+            {
+                if (data.Length < 4 || data.Length >= 65536)
+                    continue;
+                try
+                {
+                    UnprocessedEntry entry = Entry.Load(data);
+                    Entry entryToAdd = process ? entry.Process(GameVersion) : entry;
+
+                    bool replaced = false;
+                    foreach (Chunk chunk in NSF.Chunks)
+                    {
+                        if (chunk is EntryChunk entryChunk)
+                        {
+                            for (int i = 0; i < entryChunk.Entries.Count; ++i)
+                            {
+                                if (entryChunk.Entries[i].EID == entry.EID)
+                                {
+                                    entryChunk.Entries[i] = entryToAdd;
+                                    replaced = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (replaced)
+                            break;
+                    }
+
+                    if (!replaced)
+                    {
+                        int entrySize = entryToAdd.Save().Length + 4;
+
+                        if (currentChunk == null || currentChunkSize + entrySize > 65536)
+                        {
+                            currentChunk = new NormalChunk();
+                            currentChunk.Entries.Add(entryToAdd);
+                            NSF.Chunks.Add(currentChunk);
+                            currentChunkSize = 0x14 + entrySize;
+                        }
+                        else
+                        {
+                            currentChunk.Entries.Add(entryToAdd);
+                            currentChunkSize += entrySize;
+                        }
+                    }
+                }
+                catch (LoadAbortedException)
+                {
+                }
+            }
+            NeedsNewEditor = true;
         }
 
         private void Menu_Import_Entries_Into_New_Chunks()
