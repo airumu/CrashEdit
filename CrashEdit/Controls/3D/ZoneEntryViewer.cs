@@ -1,4 +1,5 @@
-﻿using CrashEdit.CE.Properties;
+﻿using AltUI.Forms;
+using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 using CrashEdit.Crash.GOOLIns;
 using OpenTK.Mathematics;
@@ -178,7 +179,16 @@ namespace CrashEdit.CE
             {
                 if (e.ParentGOOL == null)
                 {
-                    gools.Add(e.ID, e);
+                    if (!gools.TryAdd(e.ID, e))
+                    {
+                        List<string> duplicates = [e.EName];
+                        foreach (var kvp in gools)
+                        {
+                            if (kvp.Key == e.ID)
+                                duplicates.Add(kvp.Value.EName);
+                        }
+                        DarkMessageBox.ShowWarning($"{string.Join(", ", duplicates)} have the same GOOL Type ({e.ID}).", "Warning");
+                    }
                 }
             }
         }
