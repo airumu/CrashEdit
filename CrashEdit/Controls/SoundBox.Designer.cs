@@ -126,7 +126,7 @@ namespace CrashEdit.CE
             trkSampleRate.IsDerivedStyle = true;
             trkSampleRate.Location = new Point(291, 3);
             trkSampleRate.Maximum = 4096;
-            trkSampleRate.Minimum = 0;
+            trkSampleRate.Minimum = 1;
             trkSampleRate.Name = "trkSampleRate";
             trkSampleRate.Size = new Size(272, 16);
             trkSampleRate.Style = MetroSet_UI.Enums.Style.Dark;
@@ -168,6 +168,7 @@ namespace CrashEdit.CE
             numSampleRate.Hexadecimal = true;
             numSampleRate.Location = new Point(291, 36);
             numSampleRate.Maximum = new decimal(new int[] { 4096, 0, 0, 0 });
+            numSampleRate.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numSampleRate.Name = "numSampleRate";
             numSampleRate.Size = new Size(272, 23);
             numSampleRate.TabIndex = 5;
