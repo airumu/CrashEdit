@@ -38,7 +38,7 @@ namespace CrashEdit.CE
             foreach (var frame in OldAnimationEntry.Frames)
             {
                 Console.WriteLine($"Exporting Frames[{id}]...");
-                OldFrameController.ToOBJ_Old(path, filename + id.ToString().PadLeft(count, '0'), GetNSF(), frame);
+                OldFrameController.ToOBJ_Old(path, filename + "_" + id.ToString().PadLeft(count, '0'), GetNSF(), frame);
                 id++;
             }
 

@@ -1,5 +1,6 @@
 using CrashEdit.Crash;
 using CrashEdit.Exporters;
+using System.Media;
 
 namespace CrashEdit.CE
 {
@@ -36,7 +37,10 @@ namespace CrashEdit.CE
             if (!FileUtil.SelectSaveFile(out string filename, FileFilters.OBJ, FileFilters.Any))
                 return;
 
+            Console.WriteLine($"Exporting Frame...");
             ToOBJ(Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename), GetNSF(), Frame);
+            Console.WriteLine("Done.");
+            SystemSounds.Asterisk.Play();
         }
 
         /// <summary>

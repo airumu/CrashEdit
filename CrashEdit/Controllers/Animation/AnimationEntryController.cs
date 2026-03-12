@@ -49,7 +49,7 @@ namespace CrashEdit.CE
             foreach (var frame in AnimationEntry.Frames)
             {
                 Console.WriteLine($"Exporting Frames[{id}]...");
-                FrameController.ToOBJ(path, filename + id.ToString().PadLeft(count, '0'), GetNSF(), frame);
+                FrameController.ToOBJ(path, filename + "_" + id.ToString().PadLeft(count, '0'), GetNSF(), frame);
                 id++;
             }
 

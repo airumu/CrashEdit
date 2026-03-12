@@ -1,5 +1,6 @@
 using CrashEdit.Crash;
 using CrashEdit.Exporters;
+using System.Media;
 
 namespace CrashEdit.CE
 {
@@ -28,7 +29,10 @@ namespace CrashEdit.CE
             if (!FileUtil.SelectSaveFile(out string filename, FileFilters.OBJ, FileFilters.Any))
                 return;
 
+            Console.WriteLine($"Exporting Scenery...");
             ToOBJ(Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename), GetNSF(), OldSceneryEntry);
+            Console.WriteLine("Done.");
+            SystemSounds.Asterisk.Play();
         }
 
         public static void ToOBJ(string path, string modelname, NSF nsf, OldSceneryEntry scenery)
