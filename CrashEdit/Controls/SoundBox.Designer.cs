@@ -19,8 +19,8 @@ namespace CrashEdit.CE
             if (disposing && (components != null))
             {
                 components.Dispose();
-                spPlayer.Stop();
-                spPlayer.Dispose();
+                waveOut.Stop();
+                waveOut.Dispose();
             }
             base.Dispose(disposing);
         }

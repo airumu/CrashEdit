@@ -92,7 +92,7 @@ namespace CrashEdit.CE
             DoubleBufferedDataGridView.Initialize(dgvTones);
             dgvColumnsInit();
 
-            waveOut = new WaveOutEvent { DesiredLatency = 200 };
+            waveOut = new WaveOutEvent();
 
             timer = new Timer()
             {

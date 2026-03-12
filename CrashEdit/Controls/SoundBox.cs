@@ -6,18 +6,16 @@ namespace CrashEdit.CE
 {
     public partial class SoundBox : UserControl
     {
-        private WaveOutEvent spPlayer;
-
+        private readonly WaveOutEvent waveOut;
         private SampleSet samples;
-        private SampleSet sampleset;
         private byte[] pcm;
 
-        private SoundEntry? soundentry = null;
-        private SpeechEntry? speechentry = null;
+        private readonly SoundEntry? soundentry = null;
+        private readonly SpeechEntry? speechentry = null;
 
-        private bool isSpeech;
+        private readonly bool isSpeech;
 
-        private int samplerate
+        private int Samplerate
         {
             get
             {
@@ -33,12 +31,8 @@ namespace CrashEdit.CE
 
             InitializeComponent();
 
-            spPlayer = new WaveOutEvent()
-            {
-                DesiredLatency = 80,  // 80ms
-                NumberOfBuffers = 2
-            };
-            soundInit();
+            waveOut = new WaveOutEvent();
+            SoundInit();
 
             int defaultRate = isSpeech ? 2048 : 1024;
             numSampleRate.Value = defaultRate;
@@ -58,10 +52,9 @@ namespace CrashEdit.CE
             speechentry = entry;
         }
 
-        private void soundInit()
+        private void SoundInit()
         {
-            loadPcm(out SampleSet sampleset, out byte[] pcm);
-            this.sampleset = sampleset;
+            LoadPcm(out SampleSet sampleset, out byte[] pcm);
             this.pcm = pcm;
 
             if (sampleset.LoopStart < 0)
@@ -75,8 +68,8 @@ namespace CrashEdit.CE
         private void UpdateSampleRate()
         {
             double smpe2 = trkSampleRate.Value / 256.0;
-            cmdPlay.Text = string.Format("Play ({0}Hz)", samplerate);
-            cmdExport.Text = string.Format("Export ({0}Hz)", samplerate);
+            cmdPlay.Text = string.Format("Play ({0}Hz)", Samplerate);
+            cmdExport.Text = string.Format("Export ({0}Hz)", Samplerate);
             lblSampleRate.Text = string.Format("Sample Rate: {0:0.000}", smpe2);
         }
 
@@ -87,12 +80,12 @@ namespace CrashEdit.CE
 
         private void cmdExport_Click(object sender, EventArgs e)
         {
-            ExportWave(samplerate);
+            ExportWave(Samplerate);
         }
 
         private void tbbImport_Click(object sender, EventArgs e)
         {
-            // Todo refresh sound chunk
+            // TODO: Refresh sound chunk
             byte[] data = FileUtil.OpenFile(FileFilters.VAG + "|" + FileFilters.Any);
             if (data == null) return;
             if (data.Length < 48)
@@ -101,10 +94,10 @@ namespace CrashEdit.CE
                 return;
             }
 
-            // Check if the first 16 bytes are all 0.
+            // Check if the first 16 bytes are all 0
             if (!data.Take(16).All(b => b == 0))
             {
-                // If they are not all 0, treat the first 48 bytes as a header and remove them.
+                // If they are not all 0, treat the first 48 bytes as a header and remove them
                 data = data.Skip(48).ToArray();
             }
             samples = SampleSet.Load(data);
@@ -112,7 +105,7 @@ namespace CrashEdit.CE
                 speechentry.Samples = samples;
             else
                 soundentry.Samples = samples;
-            soundInit();
+            SoundInit();
         }
 
         private void tbbExport_Click(object sender, EventArgs e)
@@ -120,7 +113,7 @@ namespace CrashEdit.CE
             FileUtil.SaveFile(samples.Save(), FileFilters.Any);
         }
 
-        private void loadPcm(out SampleSet sampleset, out byte[] pcmdata)
+        private void LoadPcm(out SampleSet sampleset, out byte[] pcmdata)
         {
             List<byte> pcm = [];
             double s0 = 0.0;
@@ -153,40 +146,30 @@ namespace CrashEdit.CE
 
         private void Play()
         {
-            // byte[] pcm = WaveConv.ToWave(samples.ToPCM(), samplerate).Save();
-            var ms = new MemoryStream(pcm);
-
-            WaveFormat format = new(samplerate, 16, 1);  // 16bit mono
+            waveOut.Stop();
+            MemoryStream ms = new(pcm);
+            WaveFormat format = new(Samplerate, 16, 1); // 16bit mono
             RawSourceWaveStream reader = new(ms, format);
 
-            LoopStream loop = new(reader)
-            {
-                LoopStart = sampleset.LoopStart,
-                LoopEnd = sampleset.LoopEnd
-            };
-
-            spPlayer.Stop();
-            // spPlayer.Stream = new MemoryStream(wave);
             if (chkLoop.Checked)
             {
-                spPlayer.Init(loop);
+                waveOut.Init(new LoopStream(reader)
+                {
+                    LoopStart = samples.LoopStart,
+                    LoopEnd = samples.LoopEnd
+                });
             }
             else
             {
-                spPlayer.Init(reader);
+                waveOut.Init(reader);
             }
-            spPlayer.Play();
+            waveOut.Play();
         }
 
         private void ExportWave(int samplerate)
         {
             byte[] wave = WaveConv.ToWave(samples.ToPCM(), samplerate).Save();
             FileUtil.SaveFile(wave, FileFilters.Wave, FileFilters.Any);
-        }
-
-        private void cmdPlay_Leave(object sender, EventArgs e)
-        {
-            spPlayer.Stop();
         }
 
         private void trkSampleRate_ValueChanged(object sender, EventArgs e)
@@ -218,20 +201,18 @@ namespace CrashEdit.CE
                 numericUpDown.Value = newValue;
             }
         }
+
+        private void cmdPlay_Leave(object sender, EventArgs e)
+        {
+            waveOut.Stop();
+        }
     }
 
-    public class LoopStream : WaveStream
+    public class LoopStream(WaveStream sourceStream) : WaveStream
     {
-        private readonly WaveStream source;
-        public long LoopStart { get; set; }
-        public long LoopEnd { get; set; }
-
-        public LoopStream(WaveStream sourceStream)
-        {
-            source = sourceStream;
-            LoopStart = 0;
-            LoopEnd = sourceStream.Length;
-        }
+        private readonly WaveStream source = sourceStream;
+        public long LoopStart { get; set; } = 0;
+        public long LoopEnd { get; set; } = sourceStream.Length;
 
         public override WaveFormat WaveFormat => source.WaveFormat;
         public override long Length => source.Length;
