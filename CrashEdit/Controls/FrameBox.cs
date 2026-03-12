@@ -30,6 +30,8 @@ namespace CrashEdit.CE
         private const int YOffset = 1;
         private const int ZOffset = 2;
 
+        private const float center = 128f;
+
         private Timer vertexCheckTimer;
 
         public FrameBox(FrameController controller)
@@ -1145,14 +1147,21 @@ namespace CrashEdit.CE
                 for (int i = 0; i < frame.Positions.Count; i++)
                 {
                     Position pos = frame.Positions[i];
-                    var newY = -pos.Z;
-                    var newZ = pos.Y;
+
+                    float yCentered = pos.Y - center;
+                    float zCentered = pos.Z - center;
+
+                    float newY = -zCentered + center;
+                    float newZ = yCentered + center;
+
+                    newY = Math.Clamp(newY, 0, 255);
+                    newZ = Math.Clamp(newZ, 0, 255);
+
                     frame.Positions[i] = new Position(pos.X, newY, newZ);
                     UpdateTemporals(frame, YOffset, newY, i);
                     UpdateTemporals(frame, ZOffset, newZ, i);
                 }
             }
-
         }
 
         private void cmdRotateY_Click(object sender, EventArgs e)
@@ -1162,8 +1171,16 @@ namespace CrashEdit.CE
                 for (int i = 0; i < frame.Positions.Count; i++)
                 {
                     Position pos = frame.Positions[i];
-                    var newX = -pos.Y;
-                    var newY = pos.X;
+
+                    float xCentered = pos.X - center;
+                    float yCentered = pos.Y - center;
+
+                    float newX = -yCentered + center;
+                    float newY = xCentered + center;
+
+                    newX = Math.Clamp(newX, 0, 255);
+                    newY = Math.Clamp(newY, 0, 255);
+
                     frame.Positions[i] = new Position(newX, newY, pos.Z);
                     UpdateTemporals(frame, XOffset, newX, i);
                     UpdateTemporals(frame, YOffset, newY, i);
@@ -1178,8 +1195,16 @@ namespace CrashEdit.CE
                 for (int i = 0; i < frame.Positions.Count; i++)
                 {
                     Position pos = frame.Positions[i];
-                    var newX = pos.Z;
-                    var newZ = -pos.X;
+
+                    float xCentered = pos.X - center;
+                    float zCentered = pos.Z - center;
+
+                    float newX = zCentered + center;
+                    float newZ = -xCentered + center;
+
+                    newX = Math.Clamp(newX, 0, 255);
+                    newZ = Math.Clamp(newZ, 0, 255);
+
                     frame.Positions[i] = new Position(newX, pos.Y, newZ);
                     UpdateTemporals(frame, XOffset, newX, i);
                     UpdateTemporals(frame, ZOffset, newZ, i);
