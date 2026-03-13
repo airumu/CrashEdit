@@ -38,7 +38,7 @@ namespace CrashEdit.CE
                 return;
 
             Console.WriteLine($"Exporting Frame...");
-            ToOBJ(Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename), GetNSF(), Frame);
+            ToOBJ(Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename), GetNSF(), Frame, AnimationEntryController.AnimationEntry);
             Console.WriteLine("Done.");
             SystemSounds.Asterisk.Play();
         }
@@ -52,14 +52,14 @@ namespace CrashEdit.CE
         /// a good improvement might be to move this there
         /// </summary>
         /// <returns></returns>
-        public static void ToOBJ(string path, string modelname, NSF nsf, Frame frame)
+        public static void ToOBJ(string path, string modelname, NSF nsf, Frame frame, AnimationEntry anim)
         {
             Dictionary<int, int> textureEIDs = new();
             Dictionary<string, TexInfoUnpacked> objTranslate = new Dictionary<string, TexInfoUnpacked>();
 
             var exporter = new OBJExporter();
 
-            exporter.AddFrame(nsf, frame, ref textureEIDs, ref objTranslate);
+            exporter.AddFrame(nsf, frame, anim, ref textureEIDs, ref objTranslate);
             exporter.Export(path, modelname);
         }
     }

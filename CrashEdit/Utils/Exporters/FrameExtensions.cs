@@ -158,11 +158,21 @@ namespace CrashEdit.Exporters
             }
         }
 
-        public static void AddFrame(this OBJExporter exporter, NSF nsf, Frame frame, ref Dictionary<int, int> textureEIDs, ref Dictionary<string, TexInfoUnpacked> objTranslate)
+        public static void AddFrame(this OBJExporter exporter, NSF nsf, Frame frame, AnimationEntry anim, ref Dictionary<int, int> textureEIDs, ref Dictionary<string, TexInfoUnpacked> objTranslate)
         {
             // TODO: SUPPORT CRASH2 AND CRASH3 PROPER SCALING
             // offset correction is 4f in Crash2, 32f in Crash3
-            var model = nsf.GetEntry<ModelEntry>(frame.ModelEID);
+            bool modelautocycle = false;
+            int modelforceindex = 0; // TODO: Add an option for the user to choose which one to export?
+            List<int> models = [];
+            if (anim.IsNew)
+            {
+                // try to guess if this is a 'one model per frame' animation
+                models = GetCrash3ModelList(nsf, anim);
+                if (anim.Frames.Count > 1 && anim.Frames.Count == models.Count)
+                    modelautocycle = true;
+            }
+            var model = nsf.GetEntry<ModelEntry>(GetModelEID(anim, frame, models, modelautocycle, modelforceindex));
             var vertices = frame.MakeVertices(model);
             var offset = new Vector3(frame.XOffset, frame.YOffset, frame.ZOffset) / 4F;
             var scale = new Vector3(model.ScaleX, model.ScaleY, model.ScaleZ) / GameScales.ModelC1 / GameScales.AnimC1;
@@ -221,6 +231,43 @@ namespace CrashEdit.Exporters
                     uv1, uv2, uv3
                 );
             }
+        }
+
+        private static List<int> GetCrash3ModelList(NSF nsf, AnimationEntry anim)
+        {
+            List<int> models = new();
+            if (anim != null && anim.IsNew)
+            {
+                foreach (var gool in nsf.GetEntries<GOOLEntry>())
+                {
+                    foreach (var group in gool.FrameGroups)
+                    {
+                        if (group is VertexGroup3 vgroup)
+                        {
+                            if (anim.EID == vgroup.EID && !models.Contains(vgroup.ModelEID))
+                            {
+                                models.Add(vgroup.ModelEID);
+                            }
+                        }
+                    }
+                }
+            }
+            return models;
+        }
+
+        private static int GetModelEID(AnimationEntry anim, Frame frame, List<int> models, bool modelautocycle, int modelforceindex)
+        {
+            if (anim.IsNew)
+            {
+                if (models.Count == 0)
+                    return Entry.NullEID;
+
+                if (modelautocycle)
+                    return models[anim.Frames.IndexOf(frame) % models.Count];
+                else
+                    return models[modelforceindex % models.Count];
+            }
+            return frame.ModelEID;
         }
     }
 }
