@@ -400,12 +400,12 @@ namespace CrashEdit.Exporters
                     continue;
 
                 writer.WriteLine(
-                    "map_Kd {0}.bmp",
+                    "map_Kd {0}.png",
                     material.Key
                 );
 
                 // write the bitmap to a file too
-                material.Value.texture.Save(path + Path.DirectorySeparatorChar + material.Key + ".bmp");
+                material.Value.texture.Save(path + Path.DirectorySeparatorChar + material.Key + ".png");
             }
 
             writer.Flush();

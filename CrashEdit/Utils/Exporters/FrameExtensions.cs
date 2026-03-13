@@ -98,6 +98,11 @@ namespace CrashEdit.Exporters
                 {
                     color = new Vector3(t.R, t.G, t.B) / 255F * 2F;
 
+                    int left = Math.Min(t.U1, Math.Min(t.U2, t.U3));
+                    int top = Math.Min(t.V1, Math.Min(t.V2, t.V3));
+                    int width = Math.Max(t.U1, Math.Max(t.U2, t.U3)) - left;
+                    int height = Math.Max(t.V1, Math.Max(t.V2, t.V3)) - top;
+
                     // add the texture to the list too
                     var page = textureEIDs[t.EID];
                     material = objTranslate.FirstOrDefault(x =>
@@ -105,7 +110,11 @@ namespace CrashEdit.Exporters
                         x.Value.blend == t.BlendMode &&
                         x.Value.clutx == t.ClutX &&
                         x.Value.cluty == t.ClutY &&
-                        x.Value.page == page
+                        x.Value.page == page &&
+                        x.Value.left == left &&
+                        x.Value.top == top &&
+                        x.Value.width == width &&
+                        x.Value.height == height
                     ).Key;
 
                     if (material is null)
@@ -114,7 +123,8 @@ namespace CrashEdit.Exporters
                             true, color: t.ColorMode, blend: t.BlendMode,
                             clutx: t.ClutX, cluty: t.ClutY,
                             face: Convert.ToInt32(t.N),
-                            page: page
+                            page: page,
+                            left, top, width, height
                         );
 
                         var tpag = nsf.GetEntry<TextureChunk>(t.EID);
@@ -127,16 +137,10 @@ namespace CrashEdit.Exporters
                         objTranslate[material] = texinfo;
                     }
 
-                    Vector2 texsize = t.ColorMode switch
-                    {
-                        0 => new Vector2(1024, 128),
-                        1 => new Vector2(512, 128),
-                        _ => new Vector2(256, 128)
-                    };
-
-                    uv3 = new Vector2(t.U3 / texsize.X, (128 - t.V3) / texsize.Y);
-                    uv2 = new Vector2(t.U2 / texsize.X, (128 - t.V2) / texsize.Y);
-                    uv1 = new Vector2(t.U1 / texsize.X, (128 - t.V1) / texsize.Y);
+                    // normalize UVs
+                    uv3 = new Vector2((t.U3 - left) / width, 1f - (t.V3 - top) / height);
+                    uv2 = new Vector2((t.U2 - left) / width, 1f - (t.V2 - top) / height);
+                    uv1 = new Vector2((t.U1 - left) / width, 1f - (t.V1 - top) / height);
                 }
                 else if (str is OldSceneryColor c)
                 {
