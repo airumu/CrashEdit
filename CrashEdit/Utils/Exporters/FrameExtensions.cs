@@ -13,7 +13,7 @@ namespace CrashEdit.Exporters
         public static void AddFrame_Old(this OBJExporter exporter, NSF nsf, OldFrame frame, ref Dictionary<int, int> textureEIDs, ref Dictionary<string, TexInfoUnpacked> objTranslate)
         {
             var model = nsf.GetEntry<OldModelEntry>(frame.ModelEID);
-            var offset = new Vector3(frame.XOffset, frame.YOffset, frame.ZOffset);
+            var offset = new Vector3(frame.XOffset, frame.YOffset, frame.ZOffset) - new Vector3(128);
             var scale = new Vector3(model.ScaleX, model.ScaleY, model.ScaleZ) / (GameScales.ModelC1 * GameScales.AnimC1);
 
             foreach (OldModelStruct str in model.Structs)
@@ -63,7 +63,7 @@ namespace CrashEdit.Exporters
         public static void AddFrame_Colored(this OBJExporter exporter, NSF nsf, OldFrame frame, ref Dictionary<int, int> textureEIDs, ref Dictionary<string, TexInfoUnpacked> objTranslate)
         {
             var model = nsf.GetEntry<OldModelEntry>(frame.ModelEID);
-            var offset = new Vector3(frame.XOffset, frame.YOffset, frame.ZOffset);
+            var offset = new Vector3(frame.XOffset, frame.YOffset, frame.ZOffset) - new Vector3(128);
             var scale = new Vector3(model.ScaleX, model.ScaleY, model.ScaleZ) / (GameScales.ModelC1 * GameScales.AnimC1);
 
             foreach (OldModelStruct str in model.Structs)
@@ -89,11 +89,14 @@ namespace CrashEdit.Exporters
                 Vector3 v1 = new Vector3(ov1.X, ov1.Y, ov1.Z);
                 Vector3 v2 = new Vector3(ov2.X, ov2.Y, ov2.Z);
                 Vector3 v3 = new Vector3(ov3.X, ov3.Y, ov3.Z);
+                Vector3 c1 = new Vector3(ov1.R, ov1.G, ov1.B) / 255F;
+                Vector3 c2 = new Vector3(ov2.R, ov2.G, ov2.B) / 255F;
+                Vector3 c3 = new Vector3(ov3.R, ov3.G, ov3.B) / 255F;
                 Vector3 color = Vector3.Zero;
 
                 if (str is OldModelTexture t)
                 {
-                    color = new Vector3(t.R, t.G, t.B) / 255F;
+                    color = new Vector3(t.R, t.G, t.B) / 255F * 2F;
 
                     // add the texture to the list too
                     var page = textureEIDs[t.EID];
@@ -137,14 +140,14 @@ namespace CrashEdit.Exporters
                 }
                 else if (str is OldSceneryColor c)
                 {
-                    color = new Vector3(c.R, c.G, c.B) / 255F;
+                    color = new Vector3(c.R, c.G, c.B) / 255F * 2F;
                 }
 
                 exporter.AddFace(
                     (v1 + offset) * scale,
                     (v2 + offset) * scale,
                     (v3 + offset) * scale,
-                    color, color, color,
+                    c1 * color, c2 * color, c3 * color,
                     material,
                     uv1, uv2, uv3
                 );
