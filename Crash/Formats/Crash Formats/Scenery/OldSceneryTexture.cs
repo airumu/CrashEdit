@@ -21,6 +21,7 @@
             byte yoffu = (byte)(texinfo & 0x1F);
             return new OldSceneryTexture(uvindex, clutx, cluty, xoffu, yoffu, colormode, blendmode, segment, r, g, b);
         }
+
         public OldSceneryTexture(int uvindex, byte clutx, byte cluty, byte xoffu, byte yoffu, byte colormode, byte blendmode, byte segment, byte r, byte g, byte b)
         {
             UVIndex = uvindex;

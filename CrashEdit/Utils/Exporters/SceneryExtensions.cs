@@ -4,26 +4,18 @@ using OpenTK.Mathematics;
 
 namespace CrashEdit.Exporters
 {
-    // TODO: ALL SCENERY CLASSES/STRUCTS SHOULD HAVE A BASE INTERFACE WITH DATA IN COMMON
-    // TODO: THAT WOULD MAKE WORKING WITH THEM EASIER FOR THINGS LIKE THESE WHERE YOU ONLY NEED THE DATA
-    // TODO: THEY HAVE IN COMMON, BUT CHANGING THAT IS OUT OF THE SCOPE OF THESE COMMITS
-    // TODO: BUT THAT WOULD CUT DOWN THE METHODS HERE TO JUST ONE OR TWO
     public static class SceneryExtensions
     {
+        /// <summary>
+        /// Crash 1 OldScenery
+        /// </summary>
         public static void AddScenery(this OBJExporter exporter, NSF nsf, OldSceneryEntry scenery, ref Dictionary<int, int> textureEIDs, ref Dictionary<string, TexInfoUnpacked> objTranslate)
         {
             var offset = new Vector3(scenery.XOffset, scenery.YOffset, scenery.ZOffset);
             var scale = new Vector3(1 / GameScales.WorldC1);
 
             for (int i = 0; i < scenery.TPAGCount; i++)
-            {
-                int tpag_eid = scenery.GetTPAG(i);
-
-                if (textureEIDs.ContainsKey(tpag_eid))
-                    continue;
-
-                textureEIDs.Add(tpag_eid, textureEIDs.Count);
-            }
+                _ = textureEIDs.TryAdd(scenery.GetTPAG(i), textureEIDs.Count);
 
             foreach (var polygon in scenery.Polygons)
             {
@@ -40,6 +32,7 @@ namespace CrashEdit.Exporters
                 Vector3 c2 = new Vector3(ov2.Red, ov2.Green, ov2.Blue) / 255F;
                 Vector3 c3 = new Vector3(ov3.Red, ov3.Green, ov3.Blue) / 255F;
 
+                // OldScenery gets the colors from OldSceneryVertex, so colors from OldSceneryTexture or OldSceneryColor aren't necessary
                 if (str is OldSceneryTexture t)
                 {
                     int textureEID = scenery.GetTPAG(polygon.Page);
@@ -61,31 +54,27 @@ namespace CrashEdit.Exporters
             }
         }
 
+        /// <summary>
+        /// Crash 2/3 Scenery
+        /// </summary>
         public static void AddScenery(this OBJExporter exporter, NSF nsf, SceneryEntry scenery, ref Dictionary<int, int> textureEIDs, ref Dictionary<string, TexInfoUnpacked> objTranslate)
         {
             var offset = new Vector3(scenery.XOffset, scenery.YOffset, scenery.ZOffset);
             //var scale = new Vector3 (1 / GameScales.WorldC1);
 
             for (int i = 0; i < scenery.TPAGCount; i++)
-            {
-                int tpag_eid = scenery.GetTPAG(i);
-
-                if (textureEIDs.ContainsKey(tpag_eid))
-                    continue;
-
-                textureEIDs.Add(tpag_eid, textureEIDs.Count);
-            }
+                _ = textureEIDs.TryAdd(scenery.GetTPAG(i), textureEIDs.Count);
 
             foreach (var tri in scenery.Triangles)
             {
+                // ignore tris that are out of limits
                 if (tri.VertexA > scenery.Vertices.Count ||
                     tri.VertexB > scenery.Vertices.Count ||
                     tri.VertexC > scenery.Vertices.Count)
                     continue;
 
-                Vector2? uv1 = null, uv2 = null, uv3 = null;
-
-                string material = exporter.AddTexture(nsf, tri, scenery, ref textureEIDs, ref objTranslate, out uv1, out uv2, out uv3, out _, out _);
+                string material = exporter.AddTexture(nsf, tri, scenery, ref textureEIDs, ref objTranslate,
+                    out Vector2? uv1, out Vector2? uv2, out Vector2? uv3, out _, out _);
 
                 // add the face
                 SceneryVertex fv1 = scenery.Vertices[tri.VertexA];
@@ -120,8 +109,8 @@ namespace CrashEdit.Exporters
                     quad.VertexD > scenery.Vertices.Count)
                     continue;
 
-                Vector2? uv1 = null, uv2 = null, uv3 = null, uv4 = null;
-                string material = exporter.AddTexture(nsf, quad, scenery, ref textureEIDs, ref objTranslate, out uv1, out uv2, out uv3, out uv4, out _);
+                string material = exporter.AddTexture(nsf, quad, scenery, ref textureEIDs, ref objTranslate,
+                    out Vector2? uv1, out Vector2? uv2, out Vector2? uv3, out Vector2? uv4, out _);
 
                 // add the face
                 SceneryVertex fv1 = scenery.Vertices[quad.VertexA];

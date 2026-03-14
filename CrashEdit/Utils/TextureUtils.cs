@@ -62,28 +62,14 @@ namespace CrashEdit.CE
         public int blend;
         public int clutx;
         public int cluty;
-        public int face;
+        public int? face; // OldModelTexture 'N', no culling
         public int page;
         public int left;
         public int top;
         public int width;
         public int height;
 
-        public TexInfoUnpacked(bool v, int color, int blend, int clutx, int cluty, int page, int left, int top, int width, int height)
-        {
-            this.v = v;
-            this.color = color;
-            this.blend = blend;
-            this.clutx = clutx;
-            this.cluty = cluty;
-            this.page = page;
-            this.left = left;
-            this.top = top;
-            this.width = width;
-            this.height = height;
-        }
-
-        public TexInfoUnpacked(bool v, int color, int blend, int clutx, int cluty, int face, int page, int left, int top, int width, int height)
+        public TexInfoUnpacked(bool v, int color, int blend, int clutx, int cluty, int? face, int page, int left, int top, int width, int height)
         {
             this.v = v;
             this.color = color;

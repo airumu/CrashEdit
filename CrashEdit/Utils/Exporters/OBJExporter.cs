@@ -5,7 +5,7 @@ namespace CrashEdit.Exporters
 {
     public class OBJExporter
     {
-        private const string DEFAULT_MATERIAL = "default";
+        private const string DEFAULT_MATERIAL = "notex";
 
         class Material
         {
@@ -35,10 +35,10 @@ namespace CrashEdit.Exporters
             public Vector3 color;
         }
 
-        private Dictionary<string, Material> materials = new Dictionary<string, Material>();
-        private List<Vertex> vertices = new List<Vertex>();
-        private List<Face> faces = new List<Face>();
-        private List<Vector2> uvs = new List<Vector2>();
+        private readonly Dictionary<string, Material> materials = [];
+        private readonly List<Vertex> vertices = [];
+        private readonly List<Face> faces = [];
+        private readonly List<Vector2> uvs = [];
 
         public OBJExporter()
         {
@@ -322,8 +322,8 @@ namespace CrashEdit.Exporters
         {
             // first write all the textures to disk
             // then write the mtl file
-            using MemoryStream stream = new MemoryStream();
-            using StreamWriter writer = new StreamWriter(stream);
+            using MemoryStream stream = new();
+            using StreamWriter writer = new(stream);
 
             writer.WriteLine("# CrashEdit exported material");
 
@@ -377,11 +377,12 @@ namespace CrashEdit.Exporters
             // first write the material file
             ExportMaterials(path, modelname);
 
-            using MemoryStream stream = new MemoryStream();
-            using StreamWriter writer = new StreamWriter(stream);
+            using MemoryStream stream = new();
+            using StreamWriter writer = new(stream);
 
             writer.WriteLine("# CrashEdit exported model");
             writer.WriteLine("mtllib {0}.mtl", modelname);
+            writer.WriteLine();
             writer.WriteLine("# Vertices");
 
             foreach (Vertex vertex in vertices)
@@ -487,5 +488,6 @@ namespace CrashEdit.Exporters
             // obj file ready, write to the destination
             File.WriteAllBytes(path + Path.DirectorySeparatorChar + modelname + ".obj", stream.ToArray());
         }
+
     }
 }

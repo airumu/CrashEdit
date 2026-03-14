@@ -33,23 +33,11 @@ namespace CrashEdit.Exporters
             // ignore the texinfo if there's already a texture with the exact same settings stored
             if (material is null)
             {
-                TexInfoUnpacked texinfo;
-                if (tex is OldModelTexture)
-                {
-                    // add face
-                    texinfo = new(
-                        true, tex.ColorMode, tex.BlendMode, tex.ClutX, tex.ClutY,
-                        face: Convert.ToInt32(tex.N),
-                        page, tex.Left, tex.Top, tex.Width, tex.Height
-                    );
-                }
-                else
-                {
-                    texinfo = new(
-                        true, tex.ColorMode, tex.BlendMode, tex.ClutX, tex.ClutY,
-                        page, tex.Left, tex.Top, tex.Width, tex.Height
-                    );
-                }
+                int? face = tex is OldModelTexture ? Convert.ToInt32(tex.N) : null;
+                TexInfoUnpacked texinfo = new(
+                    true, tex.ColorMode, tex.BlendMode, tex.ClutX, tex.ClutY,
+                    face, page, tex.Left, tex.Top, tex.Width, tex.Height
+                );
 
                 TextureChunk? tpag = nsf.GetEntry<TextureChunk>(textureEID);
                 Bitmap texture = TextureExporter.CreateTexture(tpag.Data, texinfo);

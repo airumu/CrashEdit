@@ -6,6 +6,9 @@ namespace CrashEdit.Exporters
 {
     public static class FrameExtensions
     {
+        /// <summary>
+        /// Crash 1 OldModel
+        /// </summary>
         public static void AddFrame_Old(this OBJExporter exporter, NSF nsf, OldFrame frame, bool isColored, ref Dictionary<int, int> textureEIDs, ref Dictionary<string, TexInfoUnpacked> objTranslate)
         {
             var model = nsf.GetEntry<OldModelEntry>(frame.ModelEID);
@@ -76,6 +79,9 @@ namespace CrashEdit.Exporters
             }
         }
 
+        /// <summary>
+        /// Crash 2/3 Model
+        /// </summary>
         public static void AddFrame(this OBJExporter exporter, NSF nsf, Frame frame, AnimationEntry anim, ref Dictionary<int, int> textureEIDs, ref Dictionary<string, TexInfoUnpacked> objTranslate)
         {
             // TODO: SUPPORT CRASH2 AND CRASH3 PROPER SCALING
@@ -122,7 +128,6 @@ namespace CrashEdit.Exporters
             {
                 string material = exporter.AddTexture(nsf, tri, model, ref textureEIDs, ref objTranslate, out var uv1, out var uv2, out var uv3, out _, out bool flip);
 
-                // add the face
                 SceneryColor fc1 = model.Colors[tri.Color[!flip ? 0 : 2]];
                 SceneryColor fc2 = model.Colors[tri.Color[!flip ? 1 : 1]];
                 SceneryColor fc3 = model.Colors[tri.Color[!flip ? 2 : 0]];
