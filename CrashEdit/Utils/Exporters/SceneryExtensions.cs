@@ -85,7 +85,7 @@ namespace CrashEdit.Exporters
 
                 Vector2? uv1 = null, uv2 = null, uv3 = null;
 
-                string material = exporter.AddTexture(nsf, tri, scenery, ref textureEIDs, ref objTranslate, out uv1, out uv2, out uv3);
+                string material = exporter.AddTexture(nsf, tri, scenery, ref textureEIDs, ref objTranslate, out uv1, out uv2, out uv3, out _, out _);
 
                 // add the face
                 SceneryVertex fv1 = scenery.Vertices[tri.VertexA];
@@ -121,7 +121,7 @@ namespace CrashEdit.Exporters
                     continue;
 
                 Vector2? uv1 = null, uv2 = null, uv3 = null, uv4 = null;
-                string material = exporter.AddTexture(nsf, quad, scenery, ref textureEIDs, ref objTranslate, out uv1, out uv2, out uv3, out uv4);
+                string material = exporter.AddTexture(nsf, quad, scenery, ref textureEIDs, ref objTranslate, out uv1, out uv2, out uv3, out uv4, out _);
 
                 // add the face
                 SceneryVertex fv1 = scenery.Vertices[quad.VertexA];

@@ -39,7 +39,7 @@ namespace CrashEdit.Exporters
 
                 if (str is OldModelTexture t)
                 {
-                    material = exporter.AddTexture(nsf, t, ref textureEIDs, ref objTranslate, out color, out uv1, out uv2, out uv3);
+                    material = exporter.AddTexture(nsf, t, t.EID, ref textureEIDs, ref objTranslate, out color, out uv1, out uv2, out uv3);
                 }
                 else if (str is OldSceneryColor c)
                 {
@@ -120,11 +120,7 @@ namespace CrashEdit.Exporters
             // iterate all the triangles, get the texture modes and build information about those
             foreach (var tri in model.Triangles)
             {
-                string material = exporter.AddTexture(
-                    nsf, tri, model, ref textureEIDs, ref objTranslate,
-                    out var uv1, out var uv2, out var uv3,
-                    out bool flip
-                );
+                string material = exporter.AddTexture(nsf, tri, model, ref textureEIDs, ref objTranslate, out var uv1, out var uv2, out var uv3, out _, out bool flip);
 
                 // add the face
                 SceneryColor fc1 = model.Colors[tri.Color[!flip ? 0 : 2]];
