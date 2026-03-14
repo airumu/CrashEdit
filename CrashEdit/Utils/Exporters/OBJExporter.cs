@@ -55,9 +55,6 @@ namespace CrashEdit.Exporters
 
         /// <summary>
         /// Adds a texture with the given name to the obj
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="texture">Texture data</param>
         /// <returns>The identifier for the texture in the obj export</returns>
         public string AddTexture(string name, Bitmap texture)
         {
@@ -78,8 +75,6 @@ namespace CrashEdit.Exporters
         /// <summary>
         /// Adds a new vertex to the output
         /// </summary>
-        /// <param name="position"></param>
-        /// <param name="color"></param>
         public void AddVertex(Vector3 position, Vector3 color)
         {
             this.vertices.Add(
@@ -94,13 +89,6 @@ namespace CrashEdit.Exporters
         /// <summary>
         /// Adds a simple face using the given vertices
         /// </summary>
-        /// <param name="v1"></param>
-        /// <param name="v2"></param>
-        /// <param name="v3"></param>
-        /// <param name="material"></param>
-        /// <param name="uv1"></param>
-        /// <param name="uv2"></param>
-        /// <param name="uv3"></param>
         public void AddFace(int v1, int v2, int v3, string material = null, Vector2? uv1 = null, Vector2? uv2 = null, Vector2? uv3 = null)
         {
             // add uv coordinates to the lists first
@@ -139,13 +127,6 @@ namespace CrashEdit.Exporters
         /// <summary>
         /// Adds a simple face using the given vertices
         /// </summary>
-        /// <param name="v1"></param>
-        /// <param name="v2"></param>
-        /// <param name="v3"></param>
-        /// <param name="material"></param>
-        /// <param name="uv1"></param>
-        /// <param name="uv2"></param>
-        /// <param name="uv3"></param>
         public void AddFace(int v1, int v2, int v3, int v4, string material = null, Vector2? uv1 = null, Vector2? uv2 = null, Vector2? uv3 = null, Vector2? uv4 = null)
         {
             // add uv coordinates to the lists first
@@ -194,16 +175,6 @@ namespace CrashEdit.Exporters
         /// <summary>
         /// Creates a new face with it's own vertices and uv coordinates
         /// </summary>
-        /// <param name="v1"></param>
-        /// <param name="v2"></param>
-        /// <param name="v3"></param>
-        /// <param name="c1"></param>
-        /// <param name="c2"></param>
-        /// <param name="c3"></param>
-        /// <param name="material"></param>
-        /// <param name="uv2"></param>
-        /// <param name="uv3"></param>
-        /// <param name="uv1"></param>
         public void AddFace(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 c1, Vector3 c2, Vector3 c3, string material = null, Vector2? uv1 = null, Vector2? uv2 = null, Vector2? uv3 = null)
         {
             int v1id = this.vertices.Count;
@@ -270,19 +241,6 @@ namespace CrashEdit.Exporters
         /// <summary>
         /// Creates a new face with it's own vertices and uv coordinates
         /// </summary>
-        /// <param name="v1"></param>
-        /// <param name="v2"></param>
-        /// <param name="v3"></param>
-        /// <param name="v4"></param>
-        /// <param name="c1"></param>
-        /// <param name="c2"></param>
-        /// <param name="c3"></param>
-        /// <param name="c4"></param>
-        /// <param name="material"></param>
-        /// <param name="uv2"></param>
-        /// <param name="uv3"></param>
-        /// <param name="uv1"></param>
-        /// <param name="uv4"></param>
         public void AddFace(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4, Vector3 c1, Vector3 c2, Vector3 c3, Vector3 c4, string material = null, Vector2? uv1 = null, Vector2? uv2 = null, Vector2? uv3 = null, Vector2? uv4 = null)
         {
             int v1id = this.vertices.Count;

@@ -46,6 +46,11 @@
             V1 = h * ((0xF3CC30 >> winding) & 1) + yoff;
             V2 = h * ((0x9E7186 >> winding) & 1) + yoff;
             V3 = h * ((0x6DB249 >> winding) & 1) + yoff;
+
+            Left = Math.Min(U1, Math.Min(U2, U3));
+            Top = Math.Min(V1, Math.Min(V2, V3));
+            Width = Math.Max(U1, Math.Max(U2, U3)) - Left;
+            Height = Math.Max(V1, Math.Max(V2, V3)) - Top;
         }
 
         public byte R { get; }
@@ -66,6 +71,11 @@
         public int V2 { get; }
         public int U3 { get; }
         public int V3 { get; }
+
+        public int Left { get; set; }
+        public int Top { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
 
         public byte[] Save()
         {

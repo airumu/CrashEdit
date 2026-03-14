@@ -32,37 +32,19 @@ namespace CrashEdit.CE
                 return;
 
             Console.WriteLine($"Exporting Frame...");
-            if (IsColored)
-            {
-                ToOBJ_Colored(Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename), GetNSF(), OldFrame);
-            }
-            else
-            {
-                ToOBJ_Old(Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename), GetNSF(), OldFrame);
-            }
+            ToOBJ(Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename), GetNSF(), OldFrame, IsColored);
             Console.WriteLine("Done.");
             SystemSounds.Asterisk.Play();
         }
 
-        public static void ToOBJ_Old(string path, string modelname, NSF nsf, OldFrame oldFrame)
+        public static void ToOBJ(string path, string modelname, NSF nsf, OldFrame oldFrame, bool isColored)
         {
             Dictionary<int, int> textureEIDs = new Dictionary<int, int>();
             Dictionary<string, TexInfoUnpacked> objTranslate = new Dictionary<string, TexInfoUnpacked>();
 
             var exporter = new OBJExporter();
 
-            exporter.AddFrame_Old(nsf, oldFrame, ref textureEIDs, ref objTranslate);
-            exporter.Export(path, modelname);
-        }
-
-        public static void ToOBJ_Colored(string path, string modelname, NSF nsf, OldFrame oldFrame)
-        {
-            Dictionary<int, int> textureEIDs = new Dictionary<int, int>();
-            Dictionary<string, TexInfoUnpacked> objTranslate = new Dictionary<string, TexInfoUnpacked>();
-
-            var exporter = new OBJExporter();
-
-            exporter.AddFrame_Colored(nsf, oldFrame, ref textureEIDs, ref objTranslate);
+            exporter.AddFrame_Old(nsf, oldFrame, isColored, ref textureEIDs, ref objTranslate);
             exporter.Export(path, modelname);
         }
     }

@@ -4,16 +4,12 @@ using OpenTK.Mathematics;
 
 namespace CrashEdit.Exporters
 {
-    // TODO: ALL FRAMES CLASSES/STRUCTS SHOULD HAVE A BASE INTERFACE WITH DATA IN COMMON
-    // TODO: THAT WOULD MAKE WORKING WITH THEM EASIER FOR THINGS LIKE THESE WHERE YOU ONLY NEED THE DATA
-    // TODO: THEY HAVE IN COMMON, BUT CHANGING THAT IS OUT OF THE SCOPE OF THESE COMMITS
-    // TODO: BUT THAT WOULD CUT DOWN THE METHODS HERE TO JUST ONE OR TWO
     public static class FrameExtensions
     {
-        public static void AddFrame_Old(this OBJExporter exporter, NSF nsf, OldFrame frame, ref Dictionary<int, int> textureEIDs, ref Dictionary<string, TexInfoUnpacked> objTranslate)
+        public static void AddFrame_Old(this OBJExporter exporter, NSF nsf, OldFrame frame, bool isColored, ref Dictionary<int, int> textureEIDs, ref Dictionary<string, TexInfoUnpacked> objTranslate)
         {
             var model = nsf.GetEntry<OldModelEntry>(frame.ModelEID);
-            var offset = new Vector3(frame.XOffset, frame.YOffset, frame.ZOffset) - new Vector3(128);
+            var offset = new Vector3(frame.XOffset, frame.YOffset, frame.ZOffset) - new Vector3(GameScales.AnimC1);
             var scale = new Vector3(model.ScaleX, model.ScaleY, model.ScaleZ) / (GameScales.ModelC1 * GameScales.AnimC1);
 
             foreach (OldModelStruct str in model.Structs)
@@ -31,13 +27,14 @@ namespace CrashEdit.Exporters
             {
                 string material = null;
                 Vector2? uv1 = null, uv2 = null, uv3 = null;
+                Vector3 c1, c2, c3;
                 OldModelStruct str = model.Structs[polygon.TexInfo & 0x7FFF];
                 OldFrameVertex ov1 = frame.Vertices[polygon.VertexA / 6];
                 OldFrameVertex ov2 = frame.Vertices[polygon.VertexB / 6];
                 OldFrameVertex ov3 = frame.Vertices[polygon.VertexC / 6];
-                Vector3 v1 = new Vector3(ov1.X, ov1.Y, ov1.Z);
-                Vector3 v2 = new Vector3(ov2.X, ov2.Y, ov2.Z);
-                Vector3 v3 = new Vector3(ov3.X, ov3.Y, ov3.Z);
+                Vector3 v1 = new(ov1.X, ov1.Y, ov1.Z);
+                Vector3 v2 = new(ov2.X, ov2.Y, ov2.Z);
+                Vector3 v3 = new(ov3.X, ov3.Y, ov3.Z);
                 Vector3 color = Vector3.Zero;
 
                 if (str is OldModelTexture t)
@@ -49,109 +46,30 @@ namespace CrashEdit.Exporters
                     color = new Vector3(c.R, c.G, c.B) / 255F;
                 }
 
-                exporter.AddFace(
-                    (v1 + offset) * scale,
-                    (v2 + offset) * scale,
-                    (v3 + offset) * scale,
-                    color, color, color,
-                    material,
-                    uv1, uv2, uv3
-                );
-            }
-        }
-
-        public static void AddFrame_Colored(this OBJExporter exporter, NSF nsf, OldFrame frame, ref Dictionary<int, int> textureEIDs, ref Dictionary<string, TexInfoUnpacked> objTranslate)
-        {
-            var model = nsf.GetEntry<OldModelEntry>(frame.ModelEID);
-            var offset = new Vector3(frame.XOffset, frame.YOffset, frame.ZOffset) - new Vector3(128);
-            var scale = new Vector3(model.ScaleX, model.ScaleY, model.ScaleZ) / (GameScales.ModelC1 * GameScales.AnimC1);
-
-            foreach (OldModelStruct str in model.Structs)
-            {
-                if (str is not OldModelTexture tex)
-                    continue;
-
-                if (textureEIDs.ContainsKey(tex.EID))
-                    continue;
-
-                textureEIDs[tex.EID] = textureEIDs.Count;
-            }
-
-            foreach (OldModelPolygon polygon in model.Polygons)
-            {
-                string material = null;
-                Vector2? uv1 = null, uv2 = null, uv3 = null;
-                OldModelStruct str = model.Structs[polygon.TexInfo & 0x7FFF];
-                OldFrameVertex ov1 = frame.Vertices[polygon.VertexA / 6];
-                OldFrameVertex ov2 = frame.Vertices[polygon.VertexB / 6];
-                OldFrameVertex ov3 = frame.Vertices[polygon.VertexC / 6];
-
-                Vector3 v1 = new Vector3(ov1.X, ov1.Y, ov1.Z);
-                Vector3 v2 = new Vector3(ov2.X, ov2.Y, ov2.Z);
-                Vector3 v3 = new Vector3(ov3.X, ov3.Y, ov3.Z);
-                Vector3 c1 = new Vector3(ov1.R, ov1.G, ov1.B) / 255F;
-                Vector3 c2 = new Vector3(ov2.R, ov2.G, ov2.B) / 255F;
-                Vector3 c3 = new Vector3(ov3.R, ov3.G, ov3.B) / 255F;
-                Vector3 color = Vector3.Zero;
-
-                if (str is OldModelTexture t)
+                if (isColored)
                 {
-                    color = new Vector3(t.R, t.G, t.B) / 255F * 2F;
+                    var vc1 = new Vector3(ov1.R, ov1.G, ov1.B) / 255F;
+                    var vc2 = new Vector3(ov2.R, ov2.G, ov2.B) / 255F;
+                    var vc3 = new Vector3(ov3.R, ov3.G, ov3.B) / 255F;
 
-                    int left = Math.Min(t.U1, Math.Min(t.U2, t.U3));
-                    int top = Math.Min(t.V1, Math.Min(t.V2, t.V3));
-                    int width = Math.Max(t.U1, Math.Max(t.U2, t.U3)) - left;
-                    int height = Math.Max(t.V1, Math.Max(t.V2, t.V3)) - top;
+                    color *= 2F;
 
-                    // add the texture to the list too
-                    var page = textureEIDs[t.EID];
-                    material = objTranslate.FirstOrDefault(x =>
-                        x.Value.color == t.ColorMode &&
-                        x.Value.blend == t.BlendMode &&
-                        x.Value.clutx == t.ClutX &&
-                        x.Value.cluty == t.ClutY &&
-                        x.Value.page == page &&
-                        x.Value.left == left &&
-                        x.Value.top == top &&
-                        x.Value.width == width &&
-                        x.Value.height == height
-                    ).Key;
-
-                    if (material is null)
-                    {
-                        var texinfo = new TexInfoUnpacked(
-                            true, color: t.ColorMode, blend: t.BlendMode,
-                            clutx: t.ClutX, cluty: t.ClutY,
-                            face: Convert.ToInt32(t.N),
-                            page: page,
-                            left, top, width, height
-                        );
-
-                        var tpag = nsf.GetEntry<TextureChunk>(t.EID);
-                        Bitmap texture = TextureExporter.CreateTexture(tpag.Data, texinfo);
-
-                        // the material name changes
-                        material = exporter.AddTexture($"{texinfo.color:X8}{texinfo.blend:X8}{texinfo.clutx:X8}{texinfo.cluty:X8}{texinfo.page:X8}", texture);
-
-                        // add it to the lookup table too
-                        objTranslate[material] = texinfo;
-                    }
-
-                    // normalize UVs
-                    uv3 = new Vector2((t.U3 - left) / width, 1f - (t.V3 - top) / height);
-                    uv2 = new Vector2((t.U2 - left) / width, 1f - (t.V2 - top) / height);
-                    uv1 = new Vector2((t.U1 - left) / width, 1f - (t.V1 - top) / height);
+                    c1 = vc1 * color;
+                    c2 = vc2 * color;
+                    c3 = vc3 * color;
                 }
-                else if (str is OldSceneryColor c)
+                else
                 {
-                    color = new Vector3(c.R, c.G, c.B) / 255F * 2F;
+                    c1 = color;
+                    c2 = color;
+                    c3 = color;
                 }
 
                 exporter.AddFace(
                     (v1 + offset) * scale,
                     (v2 + offset) * scale,
                     (v3 + offset) * scale,
-                    c1 * color, c2 * color, c3 * color,
+                    c1, c2, c3,
                     material,
                     uv1, uv2, uv3
                 );
