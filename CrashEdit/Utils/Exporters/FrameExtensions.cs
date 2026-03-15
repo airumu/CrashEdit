@@ -42,7 +42,7 @@ namespace CrashEdit.Exporters
 
                 if (str is OldModelTexture t)
                 {
-                    material = exporter.AddTexture(nsf, t, t.EID, ref textureEIDs, ref objTranslate, out color, out uv1, out uv2, out uv3);
+                    material = exporter.AddTexture(nsf, model, t, t.EID, ref textureEIDs, ref objTranslate, out color, out uv1, out uv2, out uv3);
                 }
                 else if (str is OldSceneryColor c)
                 {

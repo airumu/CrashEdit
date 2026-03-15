@@ -60,5 +60,29 @@ namespace CrashEdit.Exporters
 
             return bmp;
         }
+
+        /// <summary>
+        /// Combine bitmaps horizontally
+        /// </summary>
+        public static Bitmap CombineBitmaps(List<Bitmap> bitmaps)
+        {
+            int width = bitmaps.Sum(b => b.Width);
+            int height = bitmaps.Max(b => b.Height);
+
+            Bitmap result = new(width, height);
+
+            using (Graphics g = Graphics.FromImage(result))
+            {
+                int offsetX = 0;
+
+                foreach (var bmp in bitmaps)
+                {
+                    g.DrawImage(bmp, offsetX, 0);
+                    offsetX += bmp.Width;
+                }
+            }
+
+            return result;
+        }
     }
 }

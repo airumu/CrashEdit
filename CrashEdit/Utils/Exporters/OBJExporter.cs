@@ -1,5 +1,6 @@
 ﻿using OpenTK.Mathematics;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace CrashEdit.Exporters
 {
@@ -55,6 +56,7 @@ namespace CrashEdit.Exporters
 
         /// <summary>
         /// Adds a texture with the given name to the obj
+        /// </summary>
         /// <returns>The identifier for the texture in the obj export</returns>
         public string AddTexture(string name, Bitmap texture)
         {
@@ -330,6 +332,7 @@ namespace CrashEdit.Exporters
             // write all the materials
             foreach (KeyValuePair<string, Material> material in this.materials)
             {
+                //string matName = Regex.Replace(material.Key, "_d\\d+$", "");
                 writer.WriteLine("newmtl {0}", material.Key);
                 writer.WriteLine(
                     "Ka {0} {1} {2}",

@@ -36,7 +36,7 @@ namespace CrashEdit.Exporters
                 if (str is OldSceneryTexture t)
                 {
                     int textureEID = scenery.GetTPAG(polygon.Page);
-                    material = exporter.AddTexture(nsf, t, textureEID, ref textureEIDs, ref objTranslate, out _, out uv1, out uv2, out uv3);
+                    material = exporter.AddTexture(nsf, scenery, t, textureEID, ref textureEIDs, ref objTranslate, out _, out uv1, out uv2, out uv3);
                 }
                 else if (str is OldSceneryColor c)
                 {
