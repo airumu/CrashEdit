@@ -54,12 +54,11 @@ namespace CrashEdit.CE
         /// <returns></returns>
         public static void ToOBJ(string path, string modelname, NSF nsf, Frame frame, AnimationEntry anim)
         {
-            Dictionary<int, int> textureEIDs = new();
-            Dictionary<string, TexInfoUnpacked> objTranslate = new Dictionary<string, TexInfoUnpacked>();
+            Dictionary<int, int> textureEIDs = [];
 
             var exporter = new OBJExporter();
 
-            exporter.AddFrame(nsf, frame, anim, ref textureEIDs, ref objTranslate);
+            exporter.AddFrame(nsf, frame, anim, ref textureEIDs);
             exporter.Export(path, modelname);
         }
     }

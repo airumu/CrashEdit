@@ -39,12 +39,11 @@ namespace CrashEdit.CE
 
         public static void ToOBJ(string path, string modelname, NSF nsf, OldFrame oldFrame, bool isColored)
         {
-            Dictionary<int, int> textureEIDs = new Dictionary<int, int>();
-            Dictionary<string, TexInfoUnpacked> objTranslate = new Dictionary<string, TexInfoUnpacked>();
+            Dictionary<int, int> textureEIDs = [];
 
             var exporter = new OBJExporter();
 
-            exporter.AddFrame_Old(nsf, oldFrame, isColored, ref textureEIDs, ref objTranslate);
+            exporter.AddFrame_Old(nsf, oldFrame, isColored, ref textureEIDs);
             exporter.Export(path, modelname);
         }
     }

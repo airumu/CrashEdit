@@ -1,6 +1,5 @@
 ﻿using OpenTK.Mathematics;
 using System.Globalization;
-using System.Text.RegularExpressions;
 
 namespace CrashEdit.Exporters
 {
@@ -8,13 +7,13 @@ namespace CrashEdit.Exporters
     {
         private const string DEFAULT_MATERIAL = "notex";
 
-        class Material
+        public class Material
         {
             public Vector3 ambient;
             public Vector3 diffuse;
             public Vector3 specular;
             public float highlight;
-            public Bitmap texture;
+            public Bitmap? texture;
         }
 
         class Face
@@ -23,7 +22,7 @@ namespace CrashEdit.Exporters
             public int V2;
             public int V3;
             public int? V4;
-            public string material;
+            public string? material;
             public int? UV1;
             public int? UV2;
             public int? UV3;
@@ -41,10 +40,12 @@ namespace CrashEdit.Exporters
         private readonly List<Face> faces = [];
         private readonly List<Vector2> uvs = [];
 
+        public Dictionary<string, Material> Materials => materials;
+
         public OBJExporter()
         {
             // create a default material for everything that is not textured
-            this.materials[DEFAULT_MATERIAL] = new Material
+            materials[DEFAULT_MATERIAL] = new Material
             {
                 ambient = Vector3.One,
                 diffuse = Vector3.One,
@@ -55,23 +56,20 @@ namespace CrashEdit.Exporters
         }
 
         /// <summary>
-        /// Adds a texture with the given name to the obj
+        /// Adds a material with the given name to the obj
         /// </summary>
-        /// <returns>The identifier for the texture in the obj export</returns>
-        public string AddTexture(string name, Bitmap texture)
+        public void AddMaterial(string name, Bitmap texture)
         {
-            string identifier = $"tex{name}";
-
-            this.materials[identifier] = new Material
+            Material mat = new()
             {
                 ambient = Vector3.One,
                 diffuse = Vector3.One,
-                highlight = 0.0f,
+                highlight = 0f,
                 specular = Vector3.Zero,
                 texture = texture
             };
 
-            return identifier;
+            _ = materials.TryAdd(name, mat);
         }
 
         /// <summary>
@@ -79,7 +77,7 @@ namespace CrashEdit.Exporters
         /// </summary>
         public void AddVertex(Vector3 position, Vector3 color)
         {
-            this.vertices.Add(
+            vertices.Add(
                 new Vertex
                 {
                     position = position,
@@ -103,16 +101,16 @@ namespace CrashEdit.Exporters
 
             if (uv1 is not null)
             {
-                uv1id = this.uvs.Count;
-                uv2id = this.uvs.Count + 1;
-                uv3id = this.uvs.Count + 2;
+                uv1id = uvs.Count;
+                uv2id = uvs.Count + 1;
+                uv3id = uvs.Count + 2;
 
-                this.uvs.Add(uv1.Value);
-                this.uvs.Add(uv2.Value);
-                this.uvs.Add(uv3.Value);
+                uvs.Add(uv1.Value);
+                uvs.Add(uv2.Value);
+                uvs.Add(uv3.Value);
             }
 
-            this.faces.Add(
+            faces.Add(
                 new Face
                 {
                     material = material ?? DEFAULT_MATERIAL,
@@ -147,18 +145,18 @@ namespace CrashEdit.Exporters
 
             if (uv1 is not null)
             {
-                uv1id = this.uvs.Count;
-                uv2id = this.uvs.Count + 1;
-                uv3id = this.uvs.Count + 2;
-                uv4id = this.uvs.Count + 3;
+                uv1id = uvs.Count;
+                uv2id = uvs.Count + 1;
+                uv3id = uvs.Count + 2;
+                uv4id = uvs.Count + 3;
 
-                this.uvs.Add(uv1.Value);
-                this.uvs.Add(uv2.Value);
-                this.uvs.Add(uv3.Value);
-                this.uvs.Add(uv4.Value);
+                uvs.Add(uv1.Value);
+                uvs.Add(uv2.Value);
+                uvs.Add(uv3.Value);
+                uvs.Add(uv4.Value);
             }
 
-            this.faces.Add(
+            faces.Add(
                 new Face
                 {
                     material = material ?? DEFAULT_MATERIAL,
@@ -179,9 +177,9 @@ namespace CrashEdit.Exporters
         /// </summary>
         public void AddFace(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 c1, Vector3 c2, Vector3 c3, string material = null, Vector2? uv1 = null, Vector2? uv2 = null, Vector2? uv3 = null)
         {
-            int v1id = this.vertices.Count;
-            int v2id = this.vertices.Count + 1;
-            int v3id = this.vertices.Count + 2;
+            int v1id = vertices.Count;
+            int v2id = vertices.Count + 1;
+            int v3id = vertices.Count + 2;
             int? uv1id = null;
             int? uv2id = null;
             int? uv3id = null;
@@ -195,30 +193,30 @@ namespace CrashEdit.Exporters
 
             if (uv1 is not null)
             {
-                uv1id = this.uvs.Count;
-                uv2id = this.uvs.Count + 1;
-                uv3id = this.uvs.Count + 2;
+                uv1id = uvs.Count;
+                uv2id = uvs.Count + 1;
+                uv3id = uvs.Count + 2;
 
-                this.uvs.Add(uv1.Value);
-                this.uvs.Add(uv2.Value);
-                this.uvs.Add(uv3.Value);
+                uvs.Add(uv1.Value);
+                uvs.Add(uv2.Value);
+                uvs.Add(uv3.Value);
             }
 
-            this.vertices.Add(
+            vertices.Add(
                 new Vertex
                 {
                     position = v1,
                     color = c1
                 }
             );
-            this.vertices.Add(
+            vertices.Add(
                 new Vertex
                 {
                     position = v2,
                     color = c2
                 }
             );
-            this.vertices.Add(
+            vertices.Add(
                 new Vertex
                 {
                     position = v3,
@@ -226,7 +224,7 @@ namespace CrashEdit.Exporters
                 }
             );
 
-            this.faces.Add(
+            faces.Add(
                 new Face
                 {
                     material = material,
@@ -245,10 +243,10 @@ namespace CrashEdit.Exporters
         /// </summary>
         public void AddFace(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4, Vector3 c1, Vector3 c2, Vector3 c3, Vector3 c4, string material = null, Vector2? uv1 = null, Vector2? uv2 = null, Vector2? uv3 = null, Vector2? uv4 = null)
         {
-            int v1id = this.vertices.Count;
-            int v2id = this.vertices.Count + 1;
-            int v3id = this.vertices.Count + 2;
-            int v4id = this.vertices.Count + 3;
+            int v1id = vertices.Count;
+            int v2id = vertices.Count + 1;
+            int v3id = vertices.Count + 2;
+            int v4id = vertices.Count + 3;
             int? uv1id = null;
             int? uv2id = null;
             int? uv3id = null;
@@ -264,39 +262,39 @@ namespace CrashEdit.Exporters
 
             if (uv1 is not null)
             {
-                uv1id = this.uvs.Count;
-                uv2id = this.uvs.Count + 1;
-                uv3id = this.uvs.Count + 2;
-                uv4id = this.uvs.Count + 3;
+                uv1id = uvs.Count;
+                uv2id = uvs.Count + 1;
+                uv3id = uvs.Count + 2;
+                uv4id = uvs.Count + 3;
 
-                this.uvs.Add(uv1.Value);
-                this.uvs.Add(uv2.Value);
-                this.uvs.Add(uv3.Value);
-                this.uvs.Add(uv4.Value);
+                uvs.Add(uv1.Value);
+                uvs.Add(uv2.Value);
+                uvs.Add(uv3.Value);
+                uvs.Add(uv4.Value);
             }
 
-            this.vertices.Add(
+            vertices.Add(
                 new Vertex
                 {
                     position = v1,
                     color = c1
                 }
             );
-            this.vertices.Add(
+            vertices.Add(
                 new Vertex
                 {
                     position = v2,
                     color = c2
                 }
             );
-            this.vertices.Add(
+            vertices.Add(
                 new Vertex
                 {
                     position = v3,
                     color = c3
                 }
             );
-            this.vertices.Add(
+            vertices.Add(
                 new Vertex
                 {
                     position = v4,
@@ -304,7 +302,7 @@ namespace CrashEdit.Exporters
                 }
             );
 
-            this.faces.Add(
+            faces.Add(
                 new Face
                 {
                     material = material,
@@ -330,10 +328,12 @@ namespace CrashEdit.Exporters
             writer.WriteLine("# CrashEdit exported material");
 
             // write all the materials
-            foreach (KeyValuePair<string, Material> material in this.materials)
+            foreach (KeyValuePair<string, Material> material in materials)
             {
-                //string matName = Regex.Replace(material.Key, "_d\\d+$", "");
-                writer.WriteLine("newmtl {0}", material.Key);
+                //string name = Regex.Replace(material.Key, "_d\\d+$", "");
+                string name = material.Key;
+
+                writer.WriteLine("newmtl {0}", name);
                 writer.WriteLine(
                     "Ka {0} {1} {2}",
                     material.Value.ambient.X.ToString(CultureInfo.InvariantCulture),
@@ -360,13 +360,10 @@ namespace CrashEdit.Exporters
                 if (material.Value.texture is null)
                     continue;
 
-                writer.WriteLine(
-                    "map_Kd {0}.png",
-                    material.Key
-                );
+                writer.WriteLine("map_Kd {0}.png", name);
 
                 // write the bitmap to a file too
-                material.Value.texture.Save(path + Path.DirectorySeparatorChar + material.Key + ".png");
+                material.Value.texture.Save(path + Path.DirectorySeparatorChar + name + ".png");
             }
 
             writer.Flush();

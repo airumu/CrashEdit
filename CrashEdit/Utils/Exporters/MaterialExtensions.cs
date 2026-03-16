@@ -17,50 +17,43 @@ namespace CrashEdit.Exporters
             return new(uv.X * invLen + offset, uv.Y);
         }
 
-        private static void CreateTexture(NSF nsf, dynamic tex, int textureEID, ModelExtendedTexture? animated, ref Dictionary<int, int> textureEIDs,
-            out TexInfoUnpacked texinfo, out Bitmap texture)
+        private static TexInfoUnpacked GetTexInfo(dynamic tex, int textureEID, ModelExtendedTexture? animated, ref Dictionary<int, int> textureEIDs)
         {
             int page = textureEIDs[textureEID];
             int? face = tex is OldModelTexture ? Convert.ToInt32(tex.N) : null;
             int delay = animated != null ? animated.Delay : 0;
-            texinfo = new(
-                true, tex.ColorMode, tex.BlendMode, tex.ClutX, tex.ClutY,
+            return new(
+                tex.ColorMode, tex.BlendMode, tex.ClutX, tex.ClutY,
                 face, page, tex.Left, tex.Top, tex.Width, tex.Height,
                 delay
             );
-
-            TextureChunk? tpage = nsf.GetEntry<TextureChunk>(textureEID);
-            texture = TextureExporter.CreateTexture(tpage.Data, texinfo);
         }
 
-        private static string CreateMaterial(this OBJExporter exporter, NSF nsf, dynamic model, dynamic tex, int textureEID, ModelExtendedTexture? animated, ref Dictionary<int, int> textureEIDs, ref Dictionary<string, TexInfoUnpacked> objTranslate)
+        private static Bitmap CreateTexture(TextureChunk? tpage, TexInfoUnpacked texinfo)
         {
-            string? material = null;
-            int page = textureEIDs[textureEID];
-            int delay = animated != null ? animated.Delay : 0;
+            return TextureExporter.CreateTexture(tpage.Data, texinfo);
+        }
 
-            // add the texture to the list too
-            material = objTranslate.FirstOrDefault(x =>
-                x.Value.color == tex.ColorMode &&
-                x.Value.blend == tex.BlendMode &&
-                x.Value.clutx == tex.ClutX &&
-                x.Value.cluty == tex.ClutY &&
-                x.Value.page == page &&
-                x.Value.left == tex.Left &&
-                x.Value.top == tex.Top &&
-                x.Value.width == tex.Width &&
-                x.Value.height == tex.Height &&
-                x.Value.delay == delay
-            ).Key;
+        private static string CreateMaterial(this OBJExporter exporter, NSF nsf, dynamic model, dynamic tex, int textureEID, ModelExtendedTexture? animated, ref Dictionary<int, int> textureEIDs)
+        {
+            TexInfoUnpacked texinfo = GetTexInfo(tex, textureEID, null, ref textureEIDs);
+            string material = $"tex{Entry.EIDToEName(textureEID)}x{texinfo.Left}y{texinfo.Top}cx{texinfo.ClutX}cy{texinfo.ClutY}c{texinfo.Color}b{texinfo.Blend}";
+            if (tex.BlendMode != 3)
+            {
+                material += $"_m{tex.BlendMode}";
+            }
+            if (animated != null)
+            {
+                material +=
+                    $"_a{animated.Mask + 1}x1" +
+                    (animated.Latency > 0 ? $"_s{animated.Latency}" : "") +
+                    (animated.Delay > 0 ? $"_d{animated.Delay}" : "");
+            }
 
             // ignore the texinfo if there's already a texture with the exact same settings stored
-            if (material is null)
+            if (!exporter.Materials.ContainsKey(material))
             {
-                CreateTexture(nsf, tex, textureEID, null, ref textureEIDs, out TexInfoUnpacked texinfo, out Bitmap texture);
-                string name = $"{Entry.EIDToEName(textureEID)}x{texinfo.left}y{texinfo.top}cx{texinfo.clutx}cy{texinfo.cluty}c{texinfo.color}b{texinfo.blend}";
-
-                if (tex.BlendMode != 3)
-                    name += $"_m{tex.BlendMode}";
+                Bitmap texture;
 
                 // only process ModelEntry or SceneryEntry for now
                 if (animated != null)
@@ -74,7 +67,9 @@ namespace CrashEdit.Exporters
                             ModelExtendedTexture animTex = model.AnimatedTextures[animated.Offset + i];
                             tex = model.Textures[animTex.Offset];
 
-                            CreateTexture(nsf, tex, model.GetTPAG(tex.Page), animated, ref textureEIDs, out texinfo, out texture);
+                            textureEID = model.GetTPAG(tex.Page);
+                            texinfo = GetTexInfo(tex, textureEID, animated, ref textureEIDs);
+                            texture = CreateTexture(nsf.GetEntry<TextureChunk>(textureEID), texinfo);
                             textures.Add(texture);
                         }
                     }
@@ -84,25 +79,23 @@ namespace CrashEdit.Exporters
                         {
                             tex = model.Textures[i - 1];
 
-                            CreateTexture(nsf, tex, model.GetTPAG(tex.Page), animated, ref textureEIDs, out texinfo, out texture);
+                            textureEID = model.GetTPAG(tex.Page);
+                            texinfo = GetTexInfo(tex, textureEID, animated, ref textureEIDs);
+                            texture = CreateTexture(nsf.GetEntry<TextureChunk>(textureEID), texinfo);
                             textures.Add(texture);
                         }
                     }
 
                     // TODO: Handle cases where animated textures have different sizes, the current method assumes they are the same size
                     texture = TextureExporter.CombineBitmaps(textures);
-
-                    name +=
-                        $"_a{animated.Mask + 1}x1" +
-                        (animated.Latency > 0 ? $"_s{animated.Latency}" : "") +
-                        (animated.Delay > 0 ? $"_d{animated.Delay}" : "");
+                }
+                else
+                {
+                    texture = CreateTexture(nsf.GetEntry<TextureChunk>(textureEID), texinfo);
                 }
 
                 // add it to the exporter's material list
-                material = exporter.AddTexture(name, texture);
-
-                // add it to the lookup table too
-                objTranslate[material] = texinfo;
+                exporter.AddMaterial(material, texture);
             }
 
             return material;
@@ -111,8 +104,7 @@ namespace CrashEdit.Exporters
         /// <summary>
         /// Crash 2/3 Model/Scenery
         /// </summary>
-        public static string AddTexture(this OBJExporter exporter, NSF nsf, dynamic face, dynamic model,
-            ref Dictionary<int, int> textureEIDs, ref Dictionary<string, TexInfoUnpacked> objTranslate,
+        public static string AddTexture(this OBJExporter exporter, NSF nsf, dynamic face, dynamic model, ref Dictionary<int, int> textureEIDs,
             out Vector2? uv1, out Vector2? uv2, out Vector2? uv3, out Vector2? uv4, out bool flip)
         {
             string material = null;
@@ -135,7 +127,7 @@ namespace CrashEdit.Exporters
                         animated = null;
                 }
 
-                material = CreateMaterial(exporter, nsf, model, tex, model.GetTPAG(tex.Page), animated, ref textureEIDs, ref objTranslate);
+                material = CreateMaterial(exporter, nsf, model, tex, model.GetTPAG(tex.Page), animated, ref textureEIDs);
                 bool isQuad = false;
 
                 if (face is ModelTransformedTriangle tri)
@@ -193,11 +185,10 @@ namespace CrashEdit.Exporters
         /// <summary>
         /// Crash 1 OldModel/OldScenery
         /// </summary>
-        public static string AddTexture(this OBJExporter exporter, NSF nsf, dynamic model, dynamic tex, int textureEID,
-            ref Dictionary<int, int> textureEIDs, ref Dictionary<string, TexInfoUnpacked> objTranslate,
+        public static string AddTexture(this OBJExporter exporter, NSF nsf, dynamic model, dynamic tex, int textureEID, ref Dictionary<int, int> textureEIDs,
             out Vector3 color, out Vector2? uv1, out Vector2? uv2, out Vector2? uv3)
         {
-            string material = CreateMaterial(exporter, nsf, model, tex, textureEID, null, ref textureEIDs, ref objTranslate);
+            string material = CreateMaterial(exporter, nsf, model, tex, textureEID, null, ref textureEIDs);
             color = new Vector3(tex.R, tex.G, tex.B) / 255F;
             uv1 = uv2 = uv3 = null;
 

@@ -9,7 +9,7 @@ namespace CrashEdit.Exporters
         /// <summary>
         /// Crash 1 OldModel
         /// </summary>
-        public static void AddFrame_Old(this OBJExporter exporter, NSF nsf, OldFrame frame, bool isColored, ref Dictionary<int, int> textureEIDs, ref Dictionary<string, TexInfoUnpacked> objTranslate)
+        public static void AddFrame_Old(this OBJExporter exporter, NSF nsf, OldFrame frame, bool isColored, ref Dictionary<int, int> textureEIDs)
         {
             var model = nsf.GetEntry<OldModelEntry>(frame.ModelEID);
             var offset = new Vector3(frame.XOffset, frame.YOffset, frame.ZOffset) - new Vector3(GameScales.AnimC1);
@@ -42,7 +42,7 @@ namespace CrashEdit.Exporters
 
                 if (str is OldModelTexture t)
                 {
-                    material = exporter.AddTexture(nsf, model, t, t.EID, ref textureEIDs, ref objTranslate, out color, out uv1, out uv2, out uv3);
+                    material = exporter.AddTexture(nsf, model, t, t.EID, ref textureEIDs, out color, out uv1, out uv2, out uv3);
                 }
                 else if (str is OldSceneryColor c)
                 {
@@ -82,7 +82,7 @@ namespace CrashEdit.Exporters
         /// <summary>
         /// Crash 2/3 Model
         /// </summary>
-        public static void AddFrame(this OBJExporter exporter, NSF nsf, Frame frame, AnimationEntry anim, ref Dictionary<int, int> textureEIDs, ref Dictionary<string, TexInfoUnpacked> objTranslate)
+        public static void AddFrame(this OBJExporter exporter, NSF nsf, Frame frame, AnimationEntry anim, ref Dictionary<int, int> textureEIDs)
         {
             // TODO: SUPPORT CRASH2 AND CRASH3 PROPER SCALING
             // offset correction is 4f in Crash2, 32f in Crash3
@@ -126,7 +126,7 @@ namespace CrashEdit.Exporters
             // iterate all the triangles, get the texture modes and build information about those
             foreach (var tri in model.Triangles)
             {
-                string material = exporter.AddTexture(nsf, tri, model, ref textureEIDs, ref objTranslate, out var uv1, out var uv2, out var uv3, out _, out bool flip);
+                string material = exporter.AddTexture(nsf, tri, model, ref textureEIDs, out var uv1, out var uv2, out var uv3, out _, out bool flip);
 
                 SceneryColor fc1 = model.Colors[tri.Color[!flip ? 0 : 2]];
                 SceneryColor fc2 = model.Colors[tri.Color[!flip ? 1 : 1]];

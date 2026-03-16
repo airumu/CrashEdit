@@ -3,6 +3,7 @@ using CrashEdit.CE.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 using CrashEdit.Exporters;
+using System.Diagnostics;
 using System.Media;
 using System.Text;
 
@@ -694,14 +695,13 @@ namespace CrashEdit.CE
             var exporter = new OBJExporter();
 
             // detect how many textures are used and their eids to prepare the image
-            Dictionary<int, int> textureEIDs = new();
-            Dictionary<string, TexInfoUnpacked> objTranslate = new Dictionary<string, TexInfoUnpacked>();
+            Dictionary<int, int> textureEIDs = [];
 
             // find all the scenery insde chunks
             foreach (OldSceneryEntry scenery in NSF.GetEntries<OldSceneryEntry>())
             {
                 Console.WriteLine($"Exporting {scenery.EName}...");
-                exporter.AddScenery(NSF, scenery, ref textureEIDs, ref objTranslate);
+                exporter.AddScenery(NSF, scenery, ref textureEIDs);
             }
 
             exporter.Export(path, modelname);
@@ -711,20 +711,24 @@ namespace CrashEdit.CE
 
         private void ExportSceneryC2OBJ(string path, string modelname)
         {
+            Stopwatch stopwatch = Stopwatch.StartNew();
+
             var exporter = new OBJExporter();
 
             // detect how many textures are used and their eids to prepare the image
-            Dictionary<int, int> textureEIDs = new();
-            Dictionary<string, TexInfoUnpacked> objTranslate = new Dictionary<string, TexInfoUnpacked>();
+            Dictionary<int, int> textureEIDs = [];
 
             // find all the scenery insde chunks
             foreach (SceneryEntry scenery in NSF.GetEntries<SceneryEntry>())
             {
                 Console.WriteLine($"Exporting {scenery.EName}...");
-                exporter.AddScenery(NSF, scenery, ref textureEIDs, ref objTranslate);
+                exporter.AddScenery(NSF, scenery, ref textureEIDs);
             }
 
             exporter.Export(path, modelname);
+
+            stopwatch.Stop();
+            Console.WriteLine($"Processing time: {stopwatch.Elapsed.TotalSeconds:F3} seconds");
             Console.WriteLine("Done.");
             SystemSounds.Asterisk.Play();
         }

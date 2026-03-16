@@ -40,10 +40,9 @@ namespace CrashEdit.CE
             var exporter = new OBJExporter();
 
             // detect how many textures are used and their eids to prepare the image
-            Dictionary<int, int> textureEIDs = new();
-            Dictionary<string, TexInfoUnpacked> objTranslate = new Dictionary<string, TexInfoUnpacked>();
+            Dictionary<int, int> textureEIDs = [];
 
-            exporter.AddScenery(nsf, scenery, ref textureEIDs, ref objTranslate);
+            exporter.AddScenery(nsf, scenery, ref textureEIDs);
 
             exporter.Export(path, modelname);
         }

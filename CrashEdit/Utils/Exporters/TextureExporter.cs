@@ -9,45 +9,45 @@ namespace CrashEdit.Exporters
     {
         public static Bitmap CreateTexture(byte[] data, TexInfoUnpacked info)
         {
-            Bitmap bmp = new(info.width, info.height);
+            Bitmap bmp = new(info.Width, info.Height);
             Rectangle brect = new(Point.Empty, bmp.Size);
             BitmapData bdata = bmp.LockBits(brect, ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 
             int[] palette = [];
-            int colormode = info.color;
+            int colormode = info.Color;
 
             if (colormode == 0)
             {
-                int clutx = info.clutx;
-                int cluty = info.cluty;
+                int clutx = info.ClutX;
+                int cluty = info.ClutY;
                 palette = new int[16];
                 for (int x = 0; x < 16; ++x)
-                    palette[x] = PixelConv.Convert5551_8888(BitConv.FromInt16(data, cluty * 512 + (clutx * 16 + x) * 2), info.blend);
+                    palette[x] = PixelConv.Convert5551_8888(BitConv.FromInt16(data, cluty * 512 + (clutx * 16 + x) * 2), info.Blend);
             }
             else if (colormode == 1)
             {
-                int cluty = info.cluty;
+                int cluty = info.ClutY;
                 palette = new int[256];
                 for (int x = 0; x < 256; ++x)
-                    palette[x] = PixelConv.Convert5551_8888(BitConv.FromInt16(data, cluty * 512 + x * 2), info.blend);
+                    palette[x] = PixelConv.Convert5551_8888(BitConv.FromInt16(data, cluty * 512 + x * 2), info.Blend);
             }
             else if (colormode != 2)
                 throw new Exception("invalid colormode");
 
             try
             {
-                for (int y = 0; y < info.height; y++)
+                for (int y = 0; y < info.Height; y++)
                 {
-                    int sy = info.top + y;
+                    int sy = info.Top + y;
 
-                    for (int x = 0; x < info.width; x++)
+                    for (int x = 0; x < info.Width; x++)
                     {
-                        int sx = info.left + x;
+                        int sx = info.Left + x;
 
                         int pixel =
                             colormode == 0 ? palette[data[sx / 2 + sy * 512] >> ((sx & 1) == 0 ? 0 : 4) & 0xF] :
                             colormode == 1 ? palette[data[sx + sy * 512]] :
-                            PixelConv.Convert5551_8888(BitConv.FromInt16(data, sx * 2 + sy * 512), info.blend);
+                            PixelConv.Convert5551_8888(BitConv.FromInt16(data, sx * 2 + sy * 512), info.Blend);
 
                         Marshal.WriteInt32(bdata.Scan0, x * 4 + y * bdata.Stride, pixel);
                     }
