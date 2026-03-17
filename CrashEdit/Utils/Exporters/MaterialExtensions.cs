@@ -17,14 +17,13 @@ namespace CrashEdit.Exporters
             return new(uv.X * invLen + offset, uv.Y);
         }
 
-        private static TexInfoUnpacked GetTexInfo(dynamic tex, int textureEID, ModelExtendedTexture? animated, ref Dictionary<int, int> textureEIDs)
+        private static TexInfoUnpacked GetTexInfo(dynamic tex, int textureEID, ModelExtendedTexture? animated)
         {
-            int page = textureEIDs[textureEID];
             int? face = tex is OldModelTexture ? Convert.ToInt32(tex.N) : null;
             int delay = animated != null ? animated.Delay : 0;
             return new(
                 tex.ColorMode, tex.BlendMode, tex.ClutX, tex.ClutY,
-                face, page, tex.Left, tex.Top, tex.Width, tex.Height,
+                face, textureEID, tex.Left, tex.Top, tex.Width, tex.Height,
                 delay
             );
         }
@@ -34,9 +33,9 @@ namespace CrashEdit.Exporters
             return TextureExporter.CreateTexture(tpage.Data, texinfo);
         }
 
-        private static string CreateMaterial(this OBJExporter exporter, NSF nsf, dynamic model, dynamic tex, int textureEID, ModelExtendedTexture? animated, ref Dictionary<int, int> textureEIDs)
+        private static string CreateMaterial(this OBJExporter exporter, NSF nsf, dynamic model, dynamic tex, int textureEID, ModelExtendedTexture? animated)
         {
-            TexInfoUnpacked texinfo = GetTexInfo(tex, textureEID, null, ref textureEIDs);
+            TexInfoUnpacked texinfo = GetTexInfo(tex, textureEID, null);
             string material = $"tex{Entry.EIDToEName(textureEID)}x{texinfo.Left}y{texinfo.Top}cx{texinfo.ClutX}cy{texinfo.ClutY}c{texinfo.Color}b{texinfo.Blend}";
             if (tex.BlendMode != 3)
             {
@@ -68,9 +67,7 @@ namespace CrashEdit.Exporters
                             tex = model.Textures[animTex.Offset];
 
                             textureEID = model.GetTPAG(tex.Page);
-                            texinfo = GetTexInfo(tex, textureEID, animated, ref textureEIDs);
-                            texture = CreateTexture(nsf.GetEntry<TextureChunk>(textureEID), texinfo);
-                            textures.Add(texture);
+                            textures.Add(CreateTexture(nsf.GetEntry<TextureChunk>(textureEID), GetTexInfo(tex, textureEID, animated)));
                         }
                     }
                     else
@@ -80,9 +77,7 @@ namespace CrashEdit.Exporters
                             tex = model.Textures[i - 1];
 
                             textureEID = model.GetTPAG(tex.Page);
-                            texinfo = GetTexInfo(tex, textureEID, animated, ref textureEIDs);
-                            texture = CreateTexture(nsf.GetEntry<TextureChunk>(textureEID), texinfo);
-                            textures.Add(texture);
+                            textures.Add(CreateTexture(nsf.GetEntry<TextureChunk>(textureEID), GetTexInfo(tex, textureEID, animated)));
                         }
                     }
 
@@ -104,7 +99,7 @@ namespace CrashEdit.Exporters
         /// <summary>
         /// Crash 2/3 Model/Scenery
         /// </summary>
-        public static string AddTexture(this OBJExporter exporter, NSF nsf, dynamic face, dynamic model, ref Dictionary<int, int> textureEIDs,
+        public static string AddTexture(this OBJExporter exporter, NSF nsf, dynamic face, dynamic model,
             out Vector2? uv1, out Vector2? uv2, out Vector2? uv3, out Vector2? uv4, out bool flip)
         {
             string material = null;
@@ -127,40 +122,40 @@ namespace CrashEdit.Exporters
                         animated = null;
                 }
 
-                material = CreateMaterial(exporter, nsf, model, tex, model.GetTPAG(tex.Page), animated, ref textureEIDs);
-                bool isQuad = false;
+                material = CreateMaterial(exporter, nsf, model, tex, model.GetTPAG(tex.Page), animated);
+
+                bool isQuad = face is SceneryQuad;
+                Vector2 _uv1 = GetUV(tex.X1, tex.Left, tex.Width, tex.Y1, tex.Top, tex.Height);
+                Vector2 _uv2 = GetUV(tex.X2, tex.Left, tex.Width, tex.Y2, tex.Top, tex.Height);
+                Vector2 _uv3 = GetUV(tex.X3, tex.Left, tex.Width, tex.Y3, tex.Top, tex.Height);
+                Vector2? _uv4 = isQuad ? GetUV(tex.X4, tex.Left, tex.Width, tex.Y4, tex.Top, tex.Height) : null;
 
                 if (face is ModelTransformedTriangle tri)
                 {
                     bool nocull = tri.Subtype == 0 || tri.Subtype == 2;
                     flip = (tri.Type == 2 ^ tri.Subtype == 3) && !nocull;
 
-                    uv2 = GetUV(tex.X2, tex.Left, tex.Width, tex.Y2, tex.Top, tex.Height);
-
                     if ((tri.Type != 2 && !flip) || (tri.Type == 2 && tri.Subtype == 1))
                     {
-                        uv1 = GetUV(tex.X3, tex.Left, tex.Width, tex.Y3, tex.Top, tex.Height);
-                        uv3 = GetUV(tex.X1, tex.Left, tex.Width, tex.Y1, tex.Top, tex.Height);
+                        uv1 = _uv3;
+                        uv2 = _uv2;
+                        uv3 = _uv1;
                     }
                     else
                     {
-                        uv3 = GetUV(tex.X3, tex.Left, tex.Width, tex.Y3, tex.Top, tex.Height);
-                        uv1 = GetUV(tex.X1, tex.Left, tex.Width, tex.Y1, tex.Top, tex.Height);
+                        uv1 = _uv1;
+                        uv2 = _uv2;
+                        uv3 = _uv3;
                     }
                 }
-                else if (face is SceneryTriangle)
+                else
                 {
-                    uv1 = GetUV(tex.X2, tex.Left, tex.Width, tex.Y2, tex.Top, tex.Height);
-                    uv2 = GetUV(tex.X1, tex.Left, tex.Width, tex.Y1, tex.Top, tex.Height);
-                    uv3 = GetUV(tex.X3, tex.Left, tex.Width, tex.Y3, tex.Top, tex.Height);
-                }
-                else if (face is SceneryQuad)
-                {
-                    uv1 = GetUV(tex.X2, tex.Left, tex.Width, tex.Y2, tex.Top, tex.Height);
-                    uv2 = GetUV(tex.X1, tex.Left, tex.Width, tex.Y1, tex.Top, tex.Height);
-                    uv3 = GetUV(tex.X3, tex.Left, tex.Width, tex.Y3, tex.Top, tex.Height);
-                    uv4 = GetUV(tex.X4, tex.Left, tex.Width, tex.Y4, tex.Top, tex.Height);
-                    isQuad = true;
+                    // face is SceneryTriangle or SceneryQuad
+                    uv1 = _uv2;
+                    uv2 = _uv1;
+                    uv3 = _uv3;
+                    if (isQuad)
+                        uv4 = _uv4;
                 }
 
                 // if animated, adjust UVs
@@ -185,24 +180,27 @@ namespace CrashEdit.Exporters
         /// <summary>
         /// Crash 1 OldModel/OldScenery
         /// </summary>
-        public static string AddTexture(this OBJExporter exporter, NSF nsf, dynamic model, dynamic tex, int textureEID, ref Dictionary<int, int> textureEIDs,
+        public static string AddTexture(this OBJExporter exporter, NSF nsf, dynamic model, dynamic tex, int textureEID,
             out Vector3 color, out Vector2? uv1, out Vector2? uv2, out Vector2? uv3)
         {
-            string material = CreateMaterial(exporter, nsf, model, tex, textureEID, null, ref textureEIDs);
+            string material = CreateMaterial(exporter, nsf, model, tex, textureEID, null);
             color = new Vector3(tex.R, tex.G, tex.B) / 255F;
             uv1 = uv2 = uv3 = null;
+            Vector2 _uv1 = GetUV(tex.U1, tex.Left, tex.Width, tex.V1, tex.Top, tex.Height);
+            Vector2 _uv2 = GetUV(tex.U2, tex.Left, tex.Width, tex.V2, tex.Top, tex.Height);
+            Vector2 _uv3 = GetUV(tex.U3, tex.Left, tex.Width, tex.V3, tex.Top, tex.Height);
 
             if (tex is OldModelTexture)
             {
-                uv1 = GetUV(tex.U1, tex.Left, tex.Width, tex.V1, tex.Top, tex.Height);
-                uv2 = GetUV(tex.U2, tex.Left, tex.Width, tex.V2, tex.Top, tex.Height);
-                uv3 = GetUV(tex.U3, tex.Left, tex.Width, tex.V3, tex.Top, tex.Height);
+                uv1 = _uv1;
+                uv2 = _uv2;
+                uv3 = _uv3;
             }
             else if (tex is OldSceneryTexture)
             {
-                uv1 = GetUV(tex.U3, tex.Left, tex.Width, tex.V3, tex.Top, tex.Height);
-                uv2 = GetUV(tex.U2, tex.Left, tex.Width, tex.V2, tex.Top, tex.Height);
-                uv3 = GetUV(tex.U1, tex.Left, tex.Width, tex.V1, tex.Top, tex.Height);
+                uv1 = _uv3;
+                uv2 = _uv2;
+                uv3 = _uv1;
             }
 
             return material;

@@ -9,13 +9,13 @@ namespace CrashEdit.Exporters
         /// <summary>
         /// Crash 1 OldModel
         /// </summary>
-        public static void AddFrame_Old(this OBJExporter exporter, NSF nsf, OldFrame frame, bool isColored, ref Dictionary<int, int> textureEIDs)
+        public static void AddFrame_Old(this OBJExporter exporter, NSF nsf, OldFrame frame, bool isColored)
         {
             var model = nsf.GetEntry<OldModelEntry>(frame.ModelEID);
             var offset = new Vector3(frame.XOffset, frame.YOffset, frame.ZOffset) - new Vector3(GameScales.AnimC1);
             var scale = new Vector3(model.ScaleX, model.ScaleY, model.ScaleZ) / (GameScales.ModelC1 * GameScales.AnimC1);
 
-            foreach (OldModelStruct str in model.Structs)
+            /*foreach (OldModelStruct str in model.Structs)
             {
                 if (str is not OldModelTexture tex)
                     continue;
@@ -24,7 +24,7 @@ namespace CrashEdit.Exporters
                     continue;
 
                 textureEIDs[tex.EID] = textureEIDs.Count;
-            }
+            }*/
 
             foreach (OldModelPolygon polygon in model.Polygons)
             {
@@ -42,7 +42,7 @@ namespace CrashEdit.Exporters
 
                 if (str is OldModelTexture t)
                 {
-                    material = exporter.AddTexture(nsf, model, t, t.EID, ref textureEIDs, out color, out uv1, out uv2, out uv3);
+                    material = exporter.AddTexture(nsf, model, t, t.EID, out color, out uv1, out uv2, out uv3);
                 }
                 else if (str is OldSceneryColor c)
                 {
@@ -82,7 +82,7 @@ namespace CrashEdit.Exporters
         /// <summary>
         /// Crash 2/3 Model
         /// </summary>
-        public static void AddFrame(this OBJExporter exporter, NSF nsf, Frame frame, AnimationEntry anim, ref Dictionary<int, int> textureEIDs)
+        public static void AddFrame(this OBJExporter exporter, NSF nsf, Frame frame, AnimationEntry anim)
         {
             // TODO: SUPPORT CRASH2 AND CRASH3 PROPER SCALING
             // offset correction is 4f in Crash2, 32f in Crash3
@@ -101,9 +101,7 @@ namespace CrashEdit.Exporters
             var offset = new Vector3(frame.XOffset, frame.YOffset, frame.ZOffset) / 4F;
             var scale = new Vector3(model.ScaleX, model.ScaleY, model.ScaleZ) / GameScales.ModelC1 / GameScales.AnimC1;
 
-            // detect how many textures are used and their eids to prepare the image
-
-            for (int i = 0; i < model.TPAGCount; i++)
+            /*for (int i = 0; i < model.TPAGCount; i++)
             {
                 int tpag_eid = model.GetTPAG(i);
 
@@ -111,22 +109,12 @@ namespace CrashEdit.Exporters
                     continue;
 
                 textureEIDs.Add(tpag_eid, textureEIDs.Count);
-            }
-
-            // once we have the textureEIDs we know what has to be loaded where
-            // these textures are 128 pixels of height
-            // and the game loads every texture used and keeps a lookup table of the texture "index"
-
-            // depending on where in the model it's going to be drawn, the texture is treated differently
-            // (4 bits per pixel, 8 bits per pixel, 16 bits per pixel)
-            // that information is inside each triangle of the frame
-            // so the same texture can be treated differently
-            // try to build an atlas of sorts with all the information
+            }*/
 
             // iterate all the triangles, get the texture modes and build information about those
             foreach (var tri in model.Triangles)
             {
-                string material = exporter.AddTexture(nsf, tri, model, ref textureEIDs, out var uv1, out var uv2, out var uv3, out _, out bool flip);
+                string material = exporter.AddTexture(nsf, tri, model, out var uv1, out var uv2, out var uv3, out _, out bool flip);
 
                 SceneryColor fc1 = model.Colors[tri.Color[!flip ? 0 : 2]];
                 SceneryColor fc2 = model.Colors[tri.Color[!flip ? 1 : 1]];
@@ -154,7 +142,7 @@ namespace CrashEdit.Exporters
 
         private static List<int> GetCrash3ModelList(NSF nsf, AnimationEntry anim)
         {
-            List<int> models = new();
+            List<int> models = [];
             if (anim != null && anim.IsNew)
             {
                 foreach (var gool in nsf.GetEntries<GOOLEntry>())

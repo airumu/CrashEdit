@@ -9,13 +9,13 @@ namespace CrashEdit.Exporters
         /// <summary>
         /// Crash 1 OldScenery
         /// </summary>
-        public static void AddScenery(this OBJExporter exporter, NSF nsf, OldSceneryEntry scenery, ref Dictionary<int, int> textureEIDs)
+        public static void AddScenery(this OBJExporter exporter, NSF nsf, OldSceneryEntry scenery)
         {
             var offset = new Vector3(scenery.XOffset, scenery.YOffset, scenery.ZOffset);
             var scale = new Vector3(1 / GameScales.WorldC1);
 
-            for (int i = 0; i < scenery.TPAGCount; i++)
-                _ = textureEIDs.TryAdd(scenery.GetTPAG(i), textureEIDs.Count);
+            //for (int i = 0; i < scenery.TPAGCount; i++)
+            //    _ = textureEIDs.TryAdd(scenery.GetTPAG(i), textureEIDs.Count);
 
             foreach (var polygon in scenery.Polygons)
             {
@@ -36,12 +36,12 @@ namespace CrashEdit.Exporters
                 if (str is OldSceneryTexture t)
                 {
                     int textureEID = scenery.GetTPAG(polygon.Page);
-                    material = exporter.AddTexture(nsf, scenery, t, textureEID, ref textureEIDs, out _, out uv1, out uv2, out uv3);
+                    material = exporter.AddTexture(nsf, scenery, t, textureEID, out _, out uv1, out uv2, out uv3);
                 }
-                else if (str is OldSceneryColor c)
-                {
-                    // do nothing
-                }
+                //else if (str is OldSceneryColor)
+                //{
+                //    // do nothing
+                //}
 
                 exporter.AddFace(
                     (v1 + offset) * scale,
@@ -57,13 +57,13 @@ namespace CrashEdit.Exporters
         /// <summary>
         /// Crash 2/3 Scenery
         /// </summary>
-        public static void AddScenery(this OBJExporter exporter, NSF nsf, SceneryEntry scenery, ref Dictionary<int, int> textureEIDs)
+        public static void AddScenery(this OBJExporter exporter, NSF nsf, SceneryEntry scenery)
         {
             var offset = new Vector3(scenery.XOffset, scenery.YOffset, scenery.ZOffset);
             //var scale = new Vector3 (1 / GameScales.WorldC1);
 
-            for (int i = 0; i < scenery.TPAGCount; i++)
-                _ = textureEIDs.TryAdd(scenery.GetTPAG(i), textureEIDs.Count);
+            //for (int i = 0; i < scenery.TPAGCount; i++)
+            //    _ = textureEIDs.TryAdd(scenery.GetTPAG(i), textureEIDs.Count);
 
             foreach (var tri in scenery.Triangles)
             {
@@ -73,8 +73,7 @@ namespace CrashEdit.Exporters
                     tri.VertexC > scenery.Vertices.Count)
                     continue;
 
-                string material = exporter.AddTexture(nsf, tri, scenery, ref textureEIDs,
-                    out Vector2? uv1, out Vector2? uv2, out Vector2? uv3, out _, out _);
+                string material = exporter.AddTexture(nsf, tri, scenery, out Vector2? uv1, out Vector2? uv2, out Vector2? uv3, out _, out _);
 
                 // add the face
                 SceneryVertex fv1 = scenery.Vertices[tri.VertexA];
@@ -109,8 +108,7 @@ namespace CrashEdit.Exporters
                     quad.VertexD > scenery.Vertices.Count)
                     continue;
 
-                string material = exporter.AddTexture(nsf, quad, scenery, ref textureEIDs,
-                    out Vector2? uv1, out Vector2? uv2, out Vector2? uv3, out Vector2? uv4, out _);
+                string material = exporter.AddTexture(nsf, quad, scenery, out Vector2? uv1, out Vector2? uv2, out Vector2? uv3, out Vector2? uv4, out _);
 
                 // add the face
                 SceneryVertex fv1 = scenery.Vertices[quad.VertexA];

@@ -12,7 +12,6 @@ namespace CrashEdit.CE
             OldSceneryEntry = oldsceneryentry;
             AddMenuSeparator();
             AddMenu(CrashUI.Properties.Resources.AnimationEntryController_AcExportAsOBJ, Menu_Export_OBJ);
-            //AddMenu("Export as COLLADA", Menu_Export_COLLADA);
         }
 
         public override bool EditorAvailable => true;
@@ -39,21 +38,8 @@ namespace CrashEdit.CE
         {
             var exporter = new OBJExporter();
 
-            // detect how many textures are used and their eids to prepare the image
-            Dictionary<int, int> textureEIDs = [];
-
-            exporter.AddScenery(nsf, scenery, ref textureEIDs);
-
+            exporter.AddScenery(nsf, scenery);
             exporter.Export(path, modelname);
         }
-
-        /*private void Menu_Export_COLLADA()
-        {
-            if (DarkMessageBox.ShowWarning(Resources.Scenery_ExportCOLLADA, Resources.Scenery_ExportCOLLADA_Title, DarkDialogButton.YesNo) != DialogResult.Yes)
-            {
-                return;
-            }
-            FileUtil.SaveFile(OldSceneryEntry.ToCOLLADA(), FileFilters.COLLADA, FileFilters.Any);
-        }*/
     }
 }

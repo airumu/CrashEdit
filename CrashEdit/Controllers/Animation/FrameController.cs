@@ -43,22 +43,11 @@ namespace CrashEdit.CE
             SystemSounds.Asterisk.Play();
         }
 
-        /// <summary>
-        /// Exports the model to the OBJ file format ready to be used with other software
-        ///
-        /// TODO: MAYBE IMPLEMENT AN FBX EXPORT OR SOMETHING ELSE THAT IS A BIT MORE FLEXIBLE?
-        ///
-        /// This function resides here because access to GameScales is required, and the Frame object does not have access to it
-        /// a good improvement might be to move this there
-        /// </summary>
-        /// <returns></returns>
         public static void ToOBJ(string path, string modelname, NSF nsf, Frame frame, AnimationEntry anim)
         {
-            Dictionary<int, int> textureEIDs = [];
-
             var exporter = new OBJExporter();
 
-            exporter.AddFrame(nsf, frame, anim, ref textureEIDs);
+            exporter.AddFrame(nsf, frame, anim);
             exporter.Export(path, modelname);
         }
     }

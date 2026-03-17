@@ -12,8 +12,6 @@ namespace CrashEdit.CE
             SceneryEntry = sceneryentry;
             AddMenuSeparator();
             AddMenu(CrashUI.Properties.Resources.AnimationEntryController_AcExportAsOBJ, Menu_Export_OBJ);
-            //AddMenu("Export as Stanford PLY", Menu_Export_PLY);
-            //AddMenu("Export as COLLADA",Menu_Export_COLLADA);
             AddMenuSeparator();
             AddMenu(CrashUI.Properties.Resources.SceneryEntryController_AcFixWGEOv3, "Calculator", Menu_Fix_WGEOv3);
         }
@@ -42,31 +40,9 @@ namespace CrashEdit.CE
         {
             var exporter = new OBJExporter();
 
-            // detect how many textures are used and their eids to prepare the image
-            Dictionary<int, int> textureEIDs = [];
-
-            exporter.AddScenery(nsf, scenery, ref textureEIDs);
-
+            exporter.AddScenery(nsf, scenery);
             exporter.Export(path, modelname);
         }
-
-        /*private void Menu_Export_PLY()
-        {
-            if (DarkMessageBox.ShowWarning(Resources.Scenery_ExportPLY, Resources.Scenery_ExportPLY_Title, DarkDialogButton.YesNo) != DialogResult.Yes)
-            {
-                return;
-            }
-            FileUtil.SaveFile(SceneryEntry.ToPLY(), FileFilters.PLY, FileFilters.Any);
-        }*/
-
-        /*private void Menu_Export_COLLADA()
-        {
-            if (MessageBox.Show("Exporting to COLLADA (.dae) is experimental.\nTexture and quad information will not be exported.\n\nContinue anyway?", "Export as OBJ", MessageBoxButtons.YesNo) != DialogResult.Yes)
-            {
-                return;
-            }
-            FileUtil.SaveFile(sceneryentry.ToCOLLADA(), FileFilters.COLLADA, FileFilters.Any);
-        }*/
 
         private void Menu_Fix_WGEOv3()
         {
