@@ -81,8 +81,7 @@ namespace CrashEdit.Exporters
                         }
                     }
 
-                    // TODO: Handle cases where animated textures have different sizes, the current method assumes they are the same size
-                    texture = TextureExporter.CombineBitmaps(textures);
+                    texture = TextureExporter.CombineBitmaps(TextureExporter.NormalizeBitmaps(textures));
                 }
                 else
                 {

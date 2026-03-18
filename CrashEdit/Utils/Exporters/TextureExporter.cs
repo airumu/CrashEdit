@@ -1,5 +1,6 @@
 ﻿using CrashEdit.CE;
 using CrashEdit.Crash;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
@@ -62,7 +63,36 @@ namespace CrashEdit.Exporters
         }
 
         /// <summary>
-        /// Combine bitmaps horizontally
+        /// Resizes bitmaps to normalize them.
+        /// </summary>
+        public static List<Bitmap> NormalizeBitmaps(List<Bitmap> bitmaps)
+        {
+            int targetWidth = bitmaps.Max(b => b.Width);
+            int targetHeight = bitmaps.Max(b => b.Height);
+
+            return bitmaps.Select(b =>
+            {
+                if (b.Width == targetWidth && b.Height == targetHeight)
+                    return b;
+
+                Bitmap resized = new(targetWidth, targetHeight);
+
+                using (Graphics g = Graphics.FromImage(resized))
+                {
+                    g.Clear(Color.Transparent);
+
+                    g.InterpolationMode = InterpolationMode.NearestNeighbor;
+                    g.PixelOffsetMode = PixelOffsetMode.Half;
+
+                    g.DrawImage(b, 0, 0, targetWidth, targetHeight);
+                }
+
+                return resized;
+            }).ToList();
+        }
+
+        /// <summary>
+        /// Combines bitmaps horizontally.
         /// </summary>
         public static Bitmap CombineBitmaps(List<Bitmap> bitmaps)
         {
