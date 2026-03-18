@@ -36,7 +36,7 @@ namespace CrashEdit.Exporters
         private static string CreateMaterial(this OBJExporter exporter, NSF nsf, dynamic model, dynamic tex, int textureEID, ModelExtendedTexture? animated)
         {
             TexInfoUnpacked texinfo = GetTexInfo(tex, textureEID, null);
-            string material = $"tex{Entry.EIDToEName(textureEID)}x{texinfo.Left}y{texinfo.Top}w{texinfo.Width}h{texinfo.Height}cx{texinfo.ClutX}cy{texinfo.ClutY}c{texinfo.Color}b{texinfo.Blend}";
+            string material = $"tex{Entry.EIDToEName(textureEID)}_x{texinfo.Left}y{texinfo.Top}_w{texinfo.Width}h{texinfo.Height}_cx{texinfo.ClutX}cy{texinfo.ClutY}_c{texinfo.Color}b{texinfo.Blend}";
             if (tex.BlendMode != 3)
             {
                 material += $"_m{tex.BlendMode}";
