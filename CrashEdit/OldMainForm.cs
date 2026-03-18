@@ -266,6 +266,12 @@ namespace CrashEdit.CE
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
+        private bool TabIsNSF()
+        {
+            TabPage tab = tbcTabs.SelectedTab;
+            return tab != null && tab.Tag is NSFBox;
+        }
+
         private void tbcTabs_SelectedIndexChanged(object sender, EventArgs e)
         {
             TabPage tab = tbcTabs.SelectedTab;
@@ -275,7 +281,7 @@ namespace CrashEdit.CE
             tbbUndock.Enabled =
             tbbReload.Enabled =
             // tbbRebuild.Enabled =
-            tbbPlay.Enabled = tab != null && tab.Tag is NSFBox;
+            tbbPlay.Enabled = TabIsNSF();
         }
 
         void tbbPAL_Click(object sender, EventArgs e)
@@ -288,7 +294,7 @@ namespace CrashEdit.CE
         void tbbPlay_Click(object sender, EventArgs e)
         {
             var tab = tbcTabs.SelectedTab;
-            if (tab == null || !(tab.Tag is NSFBox))
+            if (!TabIsNSF())
                 return;
 
             var nsfBox = (NSFBox)tab.Tag;
@@ -1363,9 +1369,20 @@ namespace CrashEdit.CE
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
+                HashSet<string> allowed = TabIsNSF() ?
+                    new(StringComparer.OrdinalIgnoreCase)
+                    {
+                        ".nsf",
+                        ".nschunk",
+                        ".nsentry"
+                    } :
+                    new(StringComparer.OrdinalIgnoreCase)
+                    {
+                        ".nsf"
+                    };
+
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-                // Only accept .nsf files
-                if (files.Any(f => Path.GetExtension(f).ToLower() == ".nsf"))
+                if (files.Any(file => allowed.Contains(Path.GetExtension(file))))
                 {
                     e.Effect = DragDropEffects.Copy;
                 }
@@ -1385,17 +1402,55 @@ namespace CrashEdit.CE
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+                List<string> nsfFiles = [];
+                List<string> chunkFiles = [];
+                List<string> entryFiles = [];
+
+                foreach (var file in files)
+                {
+                    var ext = Path.GetExtension(file);
+
+                    if (ext.Equals(".nsf", StringComparison.OrdinalIgnoreCase))
+                        nsfFiles.Add(file);
+                    else if (ext.Equals(".nschunk", StringComparison.OrdinalIgnoreCase))
+                        chunkFiles.Add(file);
+                    else if (ext.Equals(".nsentry", StringComparison.OrdinalIgnoreCase))
+                        entryFiles.Add(file);
+                }
+
+                if (TabIsNSF())
+                {
+                    NSFBox nsfbox = (NSFBox)tbcTabs.SelectedTab.Tag;
+                    NSFController nsfc = nsfbox.NSFController;
+
+                    if (chunkFiles.Count > 0)
+                        nsfc.Import_And_Replace_Chunk(ReadBytes(chunkFiles.ToArray()));
+
+                    if (entryFiles.Count > 0)
+                        nsfc.Import_And_Replace_Entry(ReadBytes(entryFiles.ToArray()));
+
+                    nsfbox.Sync();
+                }
+
+                foreach (string nsf in nsfFiles)
+                {
+                    OpenNSF(nsf);
+                }
+
                 BringToFront();
                 Activate();
-                foreach (string file in files)
-                {
-                    if (Path.GetExtension(file).ToLower() == ".nsf")
-                    {
-                        OpenNSF(file);
-                    }
-                }
             }
         }
-    }
 
+        private static byte[][] ReadBytes(string[] files)
+        {
+            byte[][] result = new byte[files.Length][];
+            for (int i = 0; i < files.Length; i++)
+            {
+                result[i] = File.ReadAllBytes(files[i]);
+            }
+            return result;
+        }
+    }
 }
