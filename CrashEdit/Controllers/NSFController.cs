@@ -693,14 +693,15 @@ namespace CrashEdit.CE
         private void ExportSceneryC1OBJ(string path, string modelname)
         {
             var exporter = new OBJExporter();
+            exporter.AddObject();
 
             foreach (OldSceneryEntry scenery in NSF.GetEntries<OldSceneryEntry>())
             {
                 Console.WriteLine($"Exporting {scenery.EName}...");
                 exporter.AddScenery(NSF, scenery);
             }
+            exporter.Export(path, modelname, false);
 
-            exporter.Export(path, modelname);
             Console.WriteLine("Done.");
             SystemSounds.Asterisk.Play();
         }
@@ -708,14 +709,15 @@ namespace CrashEdit.CE
         private void ExportSceneryC2OBJ(string path, string modelname)
         {
             var exporter = new OBJExporter();
+            exporter.AddObject();
 
             foreach (SceneryEntry scenery in NSF.GetEntries<SceneryEntry>())
             {
                 Console.WriteLine($"Exporting {scenery.EName}...");
                 exporter.AddScenery(NSF, scenery);
             }
+            exporter.Export(path, modelname, false);
 
-            exporter.Export(path, modelname);
             Console.WriteLine("Done.");
             SystemSounds.Asterisk.Play();
         }

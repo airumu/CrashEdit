@@ -1,4 +1,5 @@
-﻿using OpenTK.Mathematics;
+﻿using CrashEdit.Crash;
+using OpenTK.Mathematics;
 using System.Globalization;
 
 namespace CrashEdit.Exporters
@@ -16,7 +17,7 @@ namespace CrashEdit.Exporters
             public Bitmap? texture;
         }
 
-        class Face
+        public class Face
         {
             public int V1;
             public int V2;
@@ -29,16 +30,23 @@ namespace CrashEdit.Exporters
             public int? UV4;
         }
 
-        class Vertex
+        public class Vertex
         {
             public Vector3 position;
             public Vector3 color;
         }
 
-        private readonly Dictionary<string, Material> materials = [];
-        private readonly List<Vertex> vertices = [];
-        private readonly List<Face> faces = [];
-        private readonly List<Vector2> uvs = [];
+        public class ConvObject
+        {
+            public readonly List<Vertex> vertices = [];
+            public readonly List<Face> faces = [];
+            public readonly List<Vector2> uvs = [];
+        }
+
+        public readonly Dictionary<string, Material> materials = [];
+
+        private readonly List<ConvObject> convObjects = [];
+        private int currentIdx;
 
         public Dictionary<string, Material> Materials => materials;
 
@@ -56,6 +64,15 @@ namespace CrashEdit.Exporters
         }
 
         /// <summary>
+        /// Adds an object
+        /// </summary>
+        public void AddObject()
+        {
+            convObjects.Add(new());
+            currentIdx = convObjects.Count - 1;
+        }
+
+        /// <summary>
         /// Adds a material with the given name to the obj
         /// </summary>
         public void AddMaterial(string name, Bitmap texture)
@@ -69,7 +86,7 @@ namespace CrashEdit.Exporters
                 texture = texture
             };
 
-            _ = materials.TryAdd(name, mat);
+            materials.TryAdd(name, mat);
         }
 
         /// <summary>
@@ -77,7 +94,7 @@ namespace CrashEdit.Exporters
         /// </summary>
         public void AddVertex(Vector3 position, Vector3 color)
         {
-            vertices.Add(
+            convObjects[currentIdx].vertices.Add(
                 new Vertex
                 {
                     position = position,
@@ -101,16 +118,16 @@ namespace CrashEdit.Exporters
 
             if (uv1 is not null)
             {
-                uv1id = uvs.Count;
-                uv2id = uvs.Count + 1;
-                uv3id = uvs.Count + 2;
+                uv1id = convObjects[currentIdx].uvs.Count;
+                uv2id = convObjects[currentIdx].uvs.Count + 1;
+                uv3id = convObjects[currentIdx].uvs.Count + 2;
 
-                uvs.Add(uv1.Value);
-                uvs.Add(uv2.Value);
-                uvs.Add(uv3.Value);
+                convObjects[currentIdx].uvs.Add(uv1.Value);
+                convObjects[currentIdx].uvs.Add(uv2.Value);
+                convObjects[currentIdx].uvs.Add(uv3.Value);
             }
 
-            faces.Add(
+            convObjects[currentIdx].faces.Add(
                 new Face
                 {
                     material = material ?? DEFAULT_MATERIAL,
@@ -145,18 +162,18 @@ namespace CrashEdit.Exporters
 
             if (uv1 is not null)
             {
-                uv1id = uvs.Count;
-                uv2id = uvs.Count + 1;
-                uv3id = uvs.Count + 2;
-                uv4id = uvs.Count + 3;
+                uv1id = convObjects[currentIdx].uvs.Count;
+                uv2id = convObjects[currentIdx].uvs.Count + 1;
+                uv3id = convObjects[currentIdx].uvs.Count + 2;
+                uv4id = convObjects[currentIdx].uvs.Count + 3;
 
-                uvs.Add(uv1.Value);
-                uvs.Add(uv2.Value);
-                uvs.Add(uv3.Value);
-                uvs.Add(uv4.Value);
+                convObjects[currentIdx].uvs.Add(uv1.Value);
+                convObjects[currentIdx].uvs.Add(uv2.Value);
+                convObjects[currentIdx].uvs.Add(uv3.Value);
+                convObjects[currentIdx].uvs.Add(uv4.Value);
             }
 
-            faces.Add(
+            convObjects[currentIdx].faces.Add(
                 new Face
                 {
                     material = material ?? DEFAULT_MATERIAL,
@@ -177,9 +194,9 @@ namespace CrashEdit.Exporters
         /// </summary>
         public void AddFace(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 c1, Vector3 c2, Vector3 c3, string material = null, Vector2? uv1 = null, Vector2? uv2 = null, Vector2? uv3 = null)
         {
-            int v1id = vertices.Count;
-            int v2id = vertices.Count + 1;
-            int v3id = vertices.Count + 2;
+            int v1id = convObjects[currentIdx].vertices.Count;
+            int v2id = convObjects[currentIdx].vertices.Count + 1;
+            int v3id = convObjects[currentIdx].vertices.Count + 2;
             int? uv1id = null;
             int? uv2id = null;
             int? uv3id = null;
@@ -193,30 +210,30 @@ namespace CrashEdit.Exporters
 
             if (uv1 is not null)
             {
-                uv1id = uvs.Count;
-                uv2id = uvs.Count + 1;
-                uv3id = uvs.Count + 2;
+                uv1id = convObjects[currentIdx].uvs.Count;
+                uv2id = convObjects[currentIdx].uvs.Count + 1;
+                uv3id = convObjects[currentIdx].uvs.Count + 2;
 
-                uvs.Add(uv1.Value);
-                uvs.Add(uv2.Value);
-                uvs.Add(uv3.Value);
+                convObjects[currentIdx].uvs.Add(uv1.Value);
+                convObjects[currentIdx].uvs.Add(uv2.Value);
+                convObjects[currentIdx].uvs.Add(uv3.Value);
             }
 
-            vertices.Add(
+            convObjects[currentIdx].vertices.Add(
                 new Vertex
                 {
                     position = v1,
                     color = c1
                 }
             );
-            vertices.Add(
+            convObjects[currentIdx].vertices.Add(
                 new Vertex
                 {
                     position = v2,
                     color = c2
                 }
             );
-            vertices.Add(
+            convObjects[currentIdx].vertices.Add(
                 new Vertex
                 {
                     position = v3,
@@ -224,7 +241,7 @@ namespace CrashEdit.Exporters
                 }
             );
 
-            faces.Add(
+            convObjects[currentIdx].faces.Add(
                 new Face
                 {
                     material = material,
@@ -243,10 +260,10 @@ namespace CrashEdit.Exporters
         /// </summary>
         public void AddFace(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4, Vector3 c1, Vector3 c2, Vector3 c3, Vector3 c4, string material = null, Vector2? uv1 = null, Vector2? uv2 = null, Vector2? uv3 = null, Vector2? uv4 = null)
         {
-            int v1id = vertices.Count;
-            int v2id = vertices.Count + 1;
-            int v3id = vertices.Count + 2;
-            int v4id = vertices.Count + 3;
+            int v1id = convObjects[currentIdx].vertices.Count;
+            int v2id = convObjects[currentIdx].vertices.Count + 1;
+            int v3id = convObjects[currentIdx].vertices.Count + 2;
+            int v4id = convObjects[currentIdx].vertices.Count + 3;
             int? uv1id = null;
             int? uv2id = null;
             int? uv3id = null;
@@ -262,39 +279,39 @@ namespace CrashEdit.Exporters
 
             if (uv1 is not null)
             {
-                uv1id = uvs.Count;
-                uv2id = uvs.Count + 1;
-                uv3id = uvs.Count + 2;
-                uv4id = uvs.Count + 3;
+                uv1id = convObjects[currentIdx].uvs.Count;
+                uv2id = convObjects[currentIdx].uvs.Count + 1;
+                uv3id = convObjects[currentIdx].uvs.Count + 2;
+                uv4id = convObjects[currentIdx].uvs.Count + 3;
 
-                uvs.Add(uv1.Value);
-                uvs.Add(uv2.Value);
-                uvs.Add(uv3.Value);
-                uvs.Add(uv4.Value);
+                convObjects[currentIdx].uvs.Add(uv1.Value);
+                convObjects[currentIdx].uvs.Add(uv2.Value);
+                convObjects[currentIdx].uvs.Add(uv3.Value);
+                convObjects[currentIdx].uvs.Add(uv4.Value);
             }
 
-            vertices.Add(
+            convObjects[currentIdx].vertices.Add(
                 new Vertex
                 {
                     position = v1,
                     color = c1
                 }
             );
-            vertices.Add(
+            convObjects[currentIdx].vertices.Add(
                 new Vertex
                 {
                     position = v2,
                     color = c2
                 }
             );
-            vertices.Add(
+            convObjects[currentIdx].vertices.Add(
                 new Vertex
                 {
                     position = v3,
                     color = c3
                 }
             );
-            vertices.Add(
+            convObjects[currentIdx].vertices.Add(
                 new Vertex
                 {
                     position = v4,
@@ -302,7 +319,7 @@ namespace CrashEdit.Exporters
                 }
             );
 
-            faces.Add(
+            convObjects[currentIdx].faces.Add(
                 new Face
                 {
                     material = material,
@@ -372,122 +389,129 @@ namespace CrashEdit.Exporters
             File.WriteAllBytes(path + Path.DirectorySeparatorChar + modelname + ".mtl", stream.ToArray());
         }
 
-        public void Export(string path, string modelname)
+        public void Export(string path, string filename, bool appendIndex)
         {
             // first write the material file
-            ExportMaterials(path, modelname);
+            ExportMaterials(path, filename);
 
-            using MemoryStream stream = new();
-            using StreamWriter writer = new(stream);
+            int count = convObjects.Count.ToString().Length;
 
-            writer.WriteLine("# CrashEdit exported model");
-            writer.WriteLine("mtllib {0}.mtl", modelname);
-            writer.WriteLine();
-            writer.WriteLine("# Vertices");
-
-            foreach (Vertex vertex in vertices)
+            for (int i = 0; i < convObjects.Count; i++)
             {
-                writer.WriteLine(
-                    "v {0} {1} {2} {3} {4} {5}",
-                    vertex.position.X.ToString(CultureInfo.InvariantCulture),
-                    vertex.position.Y.ToString(CultureInfo.InvariantCulture),
-                    vertex.position.Z.ToString(CultureInfo.InvariantCulture),
-                    vertex.color.X.ToString(CultureInfo.InvariantCulture),
-                    vertex.color.Y.ToString(CultureInfo.InvariantCulture),
-                    vertex.color.Z.ToString(CultureInfo.InvariantCulture)
-                );
-            }
+                using MemoryStream stream = new();
+                using StreamWriter writer = new(stream);
 
-            // write any uvs we have
-            writer.WriteLine();
-            writer.WriteLine("# UVs");
+                string modelname = appendIndex ? filename + "_" + i.ToString($"D{count}") : filename;
+                var modelObj = convObjects[i];
 
-            foreach (Vector2 uv in uvs)
-            {
-                writer.WriteLine(
-                    "vt {0} {1}",
-                    uv.X.ToString(CultureInfo.InvariantCulture), uv.Y.ToString(CultureInfo.InvariantCulture)
-                );
-            }
+                writer.WriteLine("# CrashEdit exported model");
+                writer.WriteLine("mtllib {0}.mtl", filename);
+                writer.WriteLine();
+                writer.WriteLine("# Vertices");
 
-            // finally write the faces
-            writer.WriteLine();
-            writer.WriteLine("# Faces with textures");
-
-            string lastmaterial = null;
-
-            // by default use the default material
-            writer.WriteLine("usemtl {0}", DEFAULT_MATERIAL);
-
-            foreach (Face face in faces.OrderBy(x => x.material))
-            {
-                if (lastmaterial != face.material)
+                foreach (Vertex vertex in modelObj.vertices)
                 {
-                    writer.WriteLine("usemtl {0}", face.material);
-
-                    lastmaterial = face.material;
+                    writer.WriteLine(
+                        "v {0} {1} {2} {3} {4} {5}",
+                        vertex.position.X.ToString(CultureInfo.InvariantCulture),
+                        vertex.position.Y.ToString(CultureInfo.InvariantCulture),
+                        vertex.position.Z.ToString(CultureInfo.InvariantCulture),
+                        vertex.color.X.ToString(CultureInfo.InvariantCulture),
+                        vertex.color.Y.ToString(CultureInfo.InvariantCulture),
+                        vertex.color.Z.ToString(CultureInfo.InvariantCulture)
+                    );
                 }
 
-                // write face information, UVs must all be null or have value
-                // at the same time, so this check is safe
-                if (face.UV1 is null)
+                // write any uvs we have
+                writer.WriteLine();
+                writer.WriteLine("# UVs");
+
+                foreach (Vector2 uv in modelObj.uvs)
                 {
-                    if (face.V4 is null)
+                    writer.WriteLine(
+                        "vt {0} {1}",
+                        uv.X.ToString(CultureInfo.InvariantCulture), uv.Y.ToString(CultureInfo.InvariantCulture)
+                    );
+                }
+
+                // finally write the faces
+                writer.WriteLine();
+                writer.WriteLine("# Faces with textures");
+
+                string lastmaterial = null;
+
+                // by default use the default material
+                writer.WriteLine("usemtl {0}", DEFAULT_MATERIAL);
+
+                foreach (Face face in modelObj.faces.OrderBy(x => x.material))
+                {
+                    if (lastmaterial != face.material)
                     {
-                        writer.WriteLine(
-                            "f {0} {1} {2}",
-                            face.V1 + 1,
-                            face.V2 + 1,
-                            face.V3 + 1
-                        );
+                        writer.WriteLine("usemtl {0}", face.material);
+
+                        lastmaterial = face.material;
+                    }
+
+                    // write face information, UVs must all be null or have value
+                    // at the same time, so this check is safe
+                    if (face.UV1 is null)
+                    {
+                        if (face.V4 is null)
+                        {
+                            writer.WriteLine(
+                                "f {0} {1} {2}",
+                                face.V1 + 1,
+                                face.V2 + 1,
+                                face.V3 + 1
+                            );
+                        }
+                        else
+                        {
+                            writer.WriteLine(
+                                "f {0} {1} {2} {3}",
+                                face.V1 + 1,
+                                face.V2 + 1,
+                                face.V3 + 1,
+                                face.V4 + 1
+                            );
+                        }
                     }
                     else
                     {
-                        writer.WriteLine(
-                            "f {0} {1} {2} {3}",
-                            face.V1 + 1,
-                            face.V2 + 1,
-                            face.V3 + 1,
-                            face.V4 + 1
-                        );
+                        if (face.V4 is null)
+                        {
+                            writer.WriteLine(
+                                "f {0}/{3} {1}/{4} {2}/{5}",
+                                face.V1 + 1,
+                                face.V2 + 1,
+                                face.V3 + 1,
+                                face.UV1 + 1,
+                                face.UV2 + 1,
+                                face.UV3 + 1
+                            );
+                        }
+                        else
+                        {
+                            writer.WriteLine(
+                                "f {0}/{4} {1}/{5} {2}/{6} {3}/{7}",
+                                face.V1 + 1,
+                                face.V2 + 1,
+                                face.V3 + 1,
+                                face.V4 + 1,
+                                face.UV1 + 1,
+                                face.UV2 + 1,
+                                face.UV3 + 1,
+                                face.UV4 + 1
+                            );
+                        }
                     }
                 }
-                else
-                {
-                    if (face.V4 is null)
-                    {
-                        writer.WriteLine(
-                            "f {0}/{3} {1}/{4} {2}/{5}",
-                            face.V1 + 1,
-                            face.V2 + 1,
-                            face.V3 + 1,
-                            face.UV1 + 1,
-                            face.UV2 + 1,
-                            face.UV3 + 1
-                        );
-                    }
-                    else
-                    {
-                        writer.WriteLine(
-                            "f {0}/{4} {1}/{5} {2}/{6} {3}/{7}",
-                            face.V1 + 1,
-                            face.V2 + 1,
-                            face.V3 + 1,
-                            face.V4 + 1,
-                            face.UV1 + 1,
-                            face.UV2 + 1,
-                            face.UV3 + 1,
-                            face.UV4 + 1
-                        );
-                    }
-                }
+
+                writer.Flush();
+
+                // obj file ready, write to the destination
+                File.WriteAllBytes(path + Path.DirectorySeparatorChar + modelname + ".obj", stream.ToArray());
             }
-
-            writer.Flush();
-
-            // obj file ready, write to the destination
-            File.WriteAllBytes(path + Path.DirectorySeparatorChar + modelname + ".obj", stream.ToArray());
         }
-
     }
 }

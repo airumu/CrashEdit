@@ -1,5 +1,6 @@
-using System.Media;
 using CrashEdit.Crash;
+using CrashEdit.Exporters;
+using System.Media;
 
 namespace CrashEdit.CE
 {
@@ -32,15 +33,16 @@ namespace CrashEdit.CE
             string filename = Path.GetFileNameWithoutExtension(output);
             string path = Path.GetDirectoryName(output);
 
-            int id = 0;
-            int count = ColoredAnimationEntry.Frames.Count.ToString().Length;
-
-            foreach (var frame in ColoredAnimationEntry.Frames)
+            OBJExporter exporter = new();
+            for (int i = 0; i < ColoredAnimationEntry.Frames.Count; i++)
             {
-                Console.WriteLine($"Exporting Frames[{id}]...");
-                OldFrameController.ToOBJ(path, filename + "_" + id.ToString().PadLeft(count, '0'), GetNSF(), frame, true);
-                id++;
+                exporter.AddObject();
+                OldFrame frame = ColoredAnimationEntry.Frames[i];
+                Console.WriteLine($"Exporting Frames[{i}]...");
+
+                OldFrameController.ToOBJ(exporter, GetNSF(), frame, true);
             }
+            exporter.Export(path, filename, true);
 
             Console.WriteLine("Done.");
             SystemSounds.Asterisk.Play();

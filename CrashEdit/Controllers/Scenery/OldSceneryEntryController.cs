@@ -28,18 +28,23 @@ namespace CrashEdit.CE
             if (!FileUtil.SelectSaveFile(out string filename, FileFilters.OBJ, FileFilters.Any))
                 return;
 
+            string path = Path.GetDirectoryName(filename);
+            string modelname = Path.GetFileNameWithoutExtension(filename);
+
             Console.WriteLine($"Exporting Scenery...");
-            ToOBJ(Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename), GetNSF(), OldSceneryEntry);
+
+            var exporter = new OBJExporter();
+            exporter.AddObject();
+            ToOBJ(exporter, GetNSF(), OldSceneryEntry);
+            exporter.Export(path, modelname, false);
+
             Console.WriteLine("Done.");
             SystemSounds.Asterisk.Play();
         }
 
-        public static void ToOBJ(string path, string modelname, NSF nsf, OldSceneryEntry scenery)
+        public static void ToOBJ(OBJExporter exporter, NSF nsf, OldSceneryEntry scenery)
         {
-            var exporter = new OBJExporter();
-
             exporter.AddScenery(nsf, scenery);
-            exporter.Export(path, modelname);
         }
     }
 }

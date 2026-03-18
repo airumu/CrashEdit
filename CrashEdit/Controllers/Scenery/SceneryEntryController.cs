@@ -30,18 +30,23 @@ namespace CrashEdit.CE
             if (!FileUtil.SelectSaveFile(out string filename, FileFilters.OBJ, FileFilters.Any))
                 return;
 
+            string path = Path.GetDirectoryName(filename);
+            string modelname = Path.GetFileNameWithoutExtension(filename);
+
             Console.WriteLine($"Exporting Scenery...");
-            ToOBJ(Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename), GetNSF(), SceneryEntry);
+
+            var exporter = new OBJExporter();
+            exporter.AddObject();
+            ToOBJ(exporter, GetNSF(), SceneryEntry);
+            exporter.Export(path, modelname, false);
+
             Console.WriteLine("Done.");
             SystemSounds.Asterisk.Play();
         }
 
-        public static void ToOBJ(string path, string modelname, NSF nsf, SceneryEntry scenery)
+        public static void ToOBJ(OBJExporter exporter, NSF nsf, SceneryEntry scenery)
         {
-            var exporter = new OBJExporter();
-
             exporter.AddScenery(nsf, scenery);
-            exporter.Export(path, modelname);
         }
 
         private void Menu_Fix_WGEOv3()
