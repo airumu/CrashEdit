@@ -168,7 +168,7 @@ namespace CrashEdit.CE
             fraSettings.Enabled = false;
             fraSettings.Location = new Point(8, 61);
             fraSettings.Name = "fraSettings";
-            fraSettings.Size = new Size(703, 526);
+            fraSettings.Size = new Size(704, 526);
             fraSettings.TabIndex = 2;
             fraSettings.TabStop = false;
             // 
@@ -178,7 +178,7 @@ namespace CrashEdit.CE
             darkGroupBox5.Controls.Add(label2);
             darkGroupBox5.Controls.Add(lblExportPath);
             darkGroupBox5.Controls.Add(cmdSetExportPath);
-            darkGroupBox5.Location = new Point(280, 446);
+            darkGroupBox5.Location = new Point(282, 446);
             darkGroupBox5.Name = "darkGroupBox5";
             darkGroupBox5.Size = new Size(414, 70);
             darkGroupBox5.TabIndex = 15;
@@ -223,7 +223,7 @@ namespace CrashEdit.CE
             darkGroupBox4.Controls.Add(label5);
             darkGroupBox4.Controls.Add(lblModelPath);
             darkGroupBox4.Controls.Add(cmdSetModelPath);
-            darkGroupBox4.Location = new Point(280, 377);
+            darkGroupBox4.Location = new Point(282, 377);
             darkGroupBox4.Name = "darkGroupBox4";
             darkGroupBox4.Size = new Size(414, 70);
             darkGroupBox4.TabIndex = 15;
@@ -271,7 +271,7 @@ namespace CrashEdit.CE
             fraModel.Controls.Add(fraScaleFactor);
             fraModel.Controls.Add(darkGroupBox1);
             fraModel.Controls.Add(pnScaleDiffs);
-            fraModel.Location = new Point(280, 10);
+            fraModel.Location = new Point(282, 10);
             fraModel.Name = "fraModel";
             fraModel.Size = new Size(414, 300);
             fraModel.TabIndex = 13;
@@ -648,7 +648,7 @@ namespace CrashEdit.CE
             // 
             fraObjectList.Controls.Add(lblObject);
             fraObjectList.Controls.Add(dgvBatch);
-            fraObjectList.Location = new Point(6, 10);
+            fraObjectList.Location = new Point(8, 10);
             fraObjectList.Name = "fraObjectList";
             fraObjectList.Size = new Size(268, 466);
             fraObjectList.TabIndex = 13;
@@ -695,7 +695,7 @@ namespace CrashEdit.CE
             fraGeneral.Controls.Add(txtBaseTpage);
             fraGeneral.Controls.Add(chkSkipOddFrames);
             fraGeneral.Controls.Add(lblBaseTpage);
-            fraGeneral.Location = new Point(280, 316);
+            fraGeneral.Location = new Point(282, 316);
             fraGeneral.Name = "fraGeneral";
             fraGeneral.Size = new Size(414, 55);
             fraGeneral.TabIndex = 6;
