@@ -57,6 +57,7 @@ namespace CrashEdit.CE
                 AddMenu(CrashUI.Properties.Resources.NSFController_AcShowLevelZones, "ThingViolet", Menu_ShowLevelZonesC2);
                 AddMenuSeparator();
                 AddMenu(CrashUI.Properties.Resources.NSFController_AcExportScenery, Menu_ExportSceneryC2OBJ);
+                AddMenu(CrashUI.Properties.Resources.NSFController_AcExportZones, Menu_ExportZones);
             }
         }
 
@@ -718,6 +719,29 @@ namespace CrashEdit.CE
             }
             exporter.Export(path, modelname, false);
 
+            Console.WriteLine("Done.");
+            SystemSounds.Asterisk.Play();
+        }
+
+        private void Menu_ExportZones()
+        {
+            if (!FileUtil.SelectSaveFile(out string filename, FileFilters.OBJ, FileFilters.Any))
+                return;
+
+            ExportZones(Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename));
+        }
+
+        private void ExportZones(string path, string modelname)
+        {
+            var exporter = new ZoneExporter();
+
+            foreach (ZoneEntry zone in NSF.GetEntries<ZoneEntry>())
+            {
+                //Console.WriteLine($"Exporting {zone.EName}...");
+                exporter.AddZone(zone);
+            }
+
+            exporter.ExportZones(path, modelname);
             Console.WriteLine("Done.");
             SystemSounds.Asterisk.Play();
         }

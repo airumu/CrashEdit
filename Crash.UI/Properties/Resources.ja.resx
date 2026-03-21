@@ -399,4 +399,7 @@
   <data name="NSFController_AcImportAndReplaceEntry" xml:space="preserve">
     <value>エントリのインポートと置き換え</value>
   </data>
+  <data name="NSFController_AcExportZones" xml:space="preserve">
+    <value>全てのゾーンをOBJとして保存</value>
+  </data>
 </root>

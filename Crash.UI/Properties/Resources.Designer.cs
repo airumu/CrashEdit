@@ -471,7 +471,7 @@ namespace CrashEdit.CrashUI.Properties {
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Fix Box Count.
+        ///   Looks up a localized string similar to Export All Scenery as OBJ.
         /// </summary>
         public static string NSFController_AcExportScenery
         {
@@ -482,7 +482,18 @@ namespace CrashEdit.CrashUI.Properties {
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Fix Box Count.
+        ///   Looks up a localized string similar to Export All Zones as OBJ.
+        /// </summary>
+        public static string NSFController_AcExportZones
+        {
+            get
+            {
+                return ResourceManager.GetString("NSFController_AcExportZones", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Find Entities.
         /// </summary>
         public static string NSFController_AcFindEntities
         {

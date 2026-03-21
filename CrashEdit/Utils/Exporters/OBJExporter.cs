@@ -1,4 +1,5 @@
-﻿using CrashEdit.Crash;
+﻿using CrashEdit.CE;
+using CrashEdit.Crash;
 using OpenTK.Mathematics;
 using System.Globalization;
 
@@ -43,7 +44,7 @@ namespace CrashEdit.Exporters
             public readonly List<Vector2> uvs = [];
         }
 
-        public readonly Dictionary<string, Material> materials = [];
+        private readonly Dictionary<string, Material> materials = [];
 
         private readonly List<ConvObject> convObjects = [];
         private int currentIdx;
@@ -335,7 +336,7 @@ namespace CrashEdit.Exporters
             );
         }
 
-        private void ExportMaterials(string path, string modelname)
+        private void ExportMaterials(string path, string filename)
         {
             // first write all the textures to disk
             // then write the mtl file
@@ -380,13 +381,13 @@ namespace CrashEdit.Exporters
                 writer.WriteLine("map_Kd {0}.png", name);
 
                 // write the bitmap to a file too
-                material.Value.texture.Save(path + Path.DirectorySeparatorChar + name + ".png");
+                material.Value.texture.Save(Path.Combine(path, name + ".png"));
             }
 
             writer.Flush();
 
             // material file finally written, save it to disk too
-            File.WriteAllBytes(path + Path.DirectorySeparatorChar + modelname + ".mtl", stream.ToArray());
+            File.WriteAllBytes(Path.Combine(path, filename + ".mtl"), stream.ToArray());
         }
 
         public void Export(string path, string filename, bool appendIndex)
@@ -401,15 +402,16 @@ namespace CrashEdit.Exporters
                 using MemoryStream stream = new();
                 using StreamWriter writer = new(stream);
 
-                string modelname = appendIndex ? filename + "_" + i.ToString($"D{count}") : filename;
-                var modelObj = convObjects[i];
+                if (appendIndex)
+                    filename = $"{filename}_{i.ToString($"D{count}")}";
+                ConvObject obj = convObjects[i];
 
                 writer.WriteLine("# CrashEdit exported model");
                 writer.WriteLine("mtllib {0}.mtl", filename);
                 writer.WriteLine();
                 writer.WriteLine("# Vertices");
 
-                foreach (Vertex vertex in modelObj.vertices)
+                foreach (Vertex vertex in obj.vertices)
                 {
                     writer.WriteLine(
                         "v {0} {1} {2} {3} {4} {5}",
@@ -426,7 +428,7 @@ namespace CrashEdit.Exporters
                 writer.WriteLine();
                 writer.WriteLine("# UVs");
 
-                foreach (Vector2 uv in modelObj.uvs)
+                foreach (Vector2 uv in obj.uvs)
                 {
                     writer.WriteLine(
                         "vt {0} {1}",
@@ -443,7 +445,7 @@ namespace CrashEdit.Exporters
                 // by default use the default material
                 writer.WriteLine("usemtl {0}", DEFAULT_MATERIAL);
 
-                foreach (Face face in modelObj.faces.OrderBy(x => x.material))
+                foreach (Face face in obj.faces.OrderBy(x => x.material))
                 {
                     if (lastmaterial != face.material)
                     {
@@ -510,8 +512,228 @@ namespace CrashEdit.Exporters
                 writer.Flush();
 
                 // obj file ready, write to the destination
-                File.WriteAllBytes(path + Path.DirectorySeparatorChar + modelname + ".obj", stream.ToArray());
+                File.WriteAllBytes(Path.Combine(path, filename + ".obj"), stream.ToArray());
             }
         }
+    }
+
+    public class ZoneExporter
+    {
+        public class CameraInfo
+        {
+            public Vector3 Pos;
+            public (Vector3 Ang1, Vector3 Ang2) Angles;
+        }
+
+        public class ZoneInfo
+        {
+            public Vector3 Min;
+            public Vector3 Max;
+            public List<List<CameraInfo>> Cameras = [];
+        }
+
+        public Dictionary<string, ZoneInfo> Zones = [];
+
+        public ZoneExporter()
+        {
+        }
+
+        public void AddZone(ZoneEntry zone)
+        {
+            Vector3 min = new Vector3(zone.X, zone.Y, zone.Z) / GameScales.ZoneC1;
+            Vector3 max = new Vector3(zone.Width, zone.Height, zone.Depth) / GameScales.ZoneC1 + min;
+            ZoneInfo zoneinfo = new()
+            {
+                Min = min,
+                Max = max
+            };
+
+            List<List<CameraInfo>> cameraList = [];
+            for (int i = 0; i < zone.CameraCount; i++)
+            {
+                List<CameraInfo> cameras = [];
+                for (int e = 0; e < zone.Entities.Count; e++)
+                {
+                    Entity entity = zone.Entities[e];
+                    if (entity.CameraIndex == i && entity.CameraSubIndex == 0)
+                    {
+                        Entity entity1 = zone.Entities[e + 1];
+                        for (int j = 0; j < entity.Positions.Count; j++)
+                        {
+                            Vector3 pos = new(entity.Positions[j].X, entity.Positions[j].Y, entity.Positions[j].Z);
+                            pos = pos / GameScales.ZoneCameraC1 + min; // min == zonetrans
+                            Vector3 angle1 = new(entity1.Positions[j * 2].X, entity1.Positions[j * 2].Y, entity1.Positions[j * 2].Z);
+                            Vector3 angle2 = new(entity1.Positions[j * 2 + 1].X, entity1.Positions[j * 2 + 1].Y, entity1.Positions[j * 2 + 1].Z);
+                            CameraInfo camerainfo = new()
+                            {
+                                Pos = pos,
+                                Angles = (angle1, angle2)
+                            };
+                            cameras.Add(camerainfo);
+                        }
+                    }
+                }
+
+                cameraList.Add(cameras);
+            }
+
+            zoneinfo.Cameras = cameraList;
+
+            Zones.TryAdd(zone.EName, zoneinfo);
+        }
+
+        public void ExportZones(string path, string filename)
+        {
+            using MemoryStream stream = new();
+            using MemoryStream streamCam = new();
+            using var writer = new StreamWriter(stream);
+            using var writerCam = new StreamWriter(streamCam);
+            int vertexOffset = 0;
+            int camVertexOffset = 0;
+
+            foreach (KeyValuePair<string, ZoneInfo> zoneinfo in Zones)
+            {
+                writer.WriteLine($"o {zoneinfo.Key}");
+
+                var zone = zoneinfo.Value;
+                var min = zone.Min;
+                var max = zone.Max;
+
+                Vector3[] v =
+                [
+                    new Vector3(min.X, min.Y, min.Z),
+                    new Vector3(max.X, min.Y, min.Z),
+                    new Vector3(max.X, max.Y, min.Z),
+                    new Vector3(min.X, max.Y, min.Z),
+
+                    new Vector3(min.X, min.Y, max.Z),
+                    new Vector3(max.X, min.Y, max.Z),
+                    new Vector3(max.X, max.Y, max.Z),
+                    new Vector3(min.X, max.Y, max.Z),
+                ];
+
+                foreach (var p in v)
+                {
+                    writer.WriteLine($"v {p.X} {p.Y} {p.Z}");
+                }
+
+                int[,] edges =
+                {
+                    {1,2},{2,3},{3,4},{4,1},
+                    {5,6},{6,7},{7,8},{8,5},
+                    {1,5},{2,6},{3,7},{4,8}
+                };
+
+                for (int i = 0; i < edges.GetLength(0); i++)
+                {
+                    int a = edges[i, 0] + vertexOffset;
+                    int b = edges[i, 1] + vertexOffset;
+                    writer.WriteLine($"l {a} {b}");
+                }
+
+                for (int i = 0; i < zone.Cameras.Count; i++)
+                {
+                    ExportCameraPath2(writerCam, zone.Cameras[i], zoneinfo.Key, i, ref camVertexOffset);
+                }
+
+                vertexOffset += 8;
+            }
+
+            writer.Flush();
+            writerCam.Flush();
+
+            File.WriteAllBytes(Path.Combine(path, filename + ".obj"), stream.ToArray());
+            File.WriteAllBytes(Path.Combine(path, filename + "_Cameras.obj"), streamCam.ToArray());
+        }
+
+        private const float ANG2RAD = MathF.PI / 2048f;
+
+        public static void ExportCameraPath(StreamWriter writer, List<CameraInfo> cameras, string zoneName, int index, ref int vertexOffset)
+        {
+            writer.WriteLine($"o {zoneName}_Camera_{index}");
+
+            for (int i = 0; i < cameras.Count; i++)
+            {
+                var trans = cameras[i].Pos;
+                var angles = cameras[i].Angles;
+
+                // dir 1
+                var dir1 = GetDir(angles.Ang1, ANG2RAD);
+                var tip1 = trans + dir1;
+
+                writer.WriteLine($"v {trans.X} {trans.Y} {trans.Z}");
+                writer.WriteLine($"v {tip1.X} {tip1.Y} {tip1.Z}");
+
+                int baseIndex = vertexOffset + 1;
+                writer.WriteLine($"l {baseIndex} {baseIndex + 1}");
+
+                vertexOffset += 2;
+            }
+        }
+
+        public static void ExportCameraPath2(StreamWriter writer, List<CameraInfo> cameras, string zoneName, int index, ref int vertexOffset)
+        {
+            writer.WriteLine($"o {zoneName}_Camera_{index}");
+
+            for (int i = 0; i < cameras.Count; i++)
+            {
+                var trans = cameras[i].Pos;
+                var angles = cameras[i].Angles;
+
+                // dir 1
+                var dir1 = GetDir(angles.Ang1, ANG2RAD);
+                var tip1 = trans + dir1;
+
+                // dir 2
+                var dir2 = GetDir(angles.Ang2, ANG2RAD);
+                var tip2 = trans + dir2;
+
+                writer.WriteLine($"v {trans.X} {trans.Y} {trans.Z}");
+                writer.WriteLine($"v {tip1.X} {tip1.Y} {tip1.Z}");
+                writer.WriteLine($"v {tip2.X} {tip2.Y} {tip2.Z}");
+
+                int baseIndex = vertexOffset + 1;
+                writer.WriteLine($"l {baseIndex} {baseIndex + 1}");
+                writer.WriteLine($"l {baseIndex} {baseIndex + 2}");
+
+                vertexOffset += 3;
+            }
+        }
+
+        public static void ExportCameraObjects(StreamWriter writer, List<CameraInfo> cameras, string zoneName, int index, ref int vertexOffset)
+        {
+            for (int i = 0; i < cameras.Count; i++)
+            {
+                var trans = cameras[i].Pos;
+                var angles = cameras[i].Angles;
+
+                // dir 1
+                var dir = GetDir(angles.Ang1, ANG2RAD);
+                var tip = trans + dir;
+
+                writer.WriteLine($"o {zoneName}_Camera_{index}_{i}");
+
+                writer.WriteLine($"v {trans.X} {trans.Y} {trans.Z}");
+                writer.WriteLine($"v {tip.X} {tip.Y} {tip.Z}");
+
+                writer.WriteLine($"l {vertexOffset + 1} {vertexOffset + 2}");
+
+                vertexOffset += 2;
+            }
+        }
+
+        private static Vector3 GetDir(Vector3 ang, float ang2rad)
+        {
+            var quat = Quaternion.FromEulerAngles(
+                -ang.X * ang2rad,
+                -ang.Y * ang2rad,
+                -ang.Z * ang2rad
+            );
+
+            var mat = Matrix4.CreateFromQuaternion(quat);
+            var forward = (mat * new Vector4(0, 0, -1, 1)).Xyz;
+            return Vector3.Normalize(forward) * 0.5f;
+        }
+
     }
 }

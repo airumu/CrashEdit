@@ -399,4 +399,7 @@
   <data name="NSFController_AcImportAndReplaceEntry" xml:space="preserve">
     <value>Import and Replace Entry</value>
   </data>
+  <data name="NSFController_AcExportZones" xml:space="preserve">
+    <value>Export All Zones as OBJ</value>
+  </data>
 </root>
