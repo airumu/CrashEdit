@@ -183,6 +183,13 @@ namespace CrashEdit.CE
             Console.WriteLine();
             Console.WriteLine($"Opening file: {path}");
 
+            if (Path.GetFileNameWithoutExtension(path) == "export_zones")
+            {
+                Console.WriteLine("  Converting zones...");
+                OBJImporter.Import(path);
+                return;
+            }
+
             try
             {
                 // try to load settings file
