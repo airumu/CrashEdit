@@ -81,7 +81,7 @@ namespace CrashEdit.Crash
         public int Height
         {
             get => BitConv.FromInt32(Layout, 16);
-            set => BitConv.ToInt32(Layout, 0, value);
+            set => BitConv.ToInt32(Layout, 16, value);
         }
         public int Depth
         {
@@ -106,6 +106,7 @@ namespace CrashEdit.Crash
             get => BitConv.FromUInt16(Layout, 0x22);
             set => BitConv.ToInt16(Layout, 0x22, (short)value);
         }
+
         public override UnprocessedEntry Unprocess()
         {
             byte[][] items = new byte[2 + Entities.Count][];
