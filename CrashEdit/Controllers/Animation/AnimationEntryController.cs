@@ -30,7 +30,7 @@ namespace CrashEdit.CE
         {
             int modelEID = AnimationEntry.Frames[0].ModelEID;
             ModelEntry? model = GetEntry<ModelEntry>(modelEID) ?? throw new InvalidOperationException("Linked model not found.");
-            var animodel = BlenderModelConverter.CompressFrames(AnimationEntry.Frames, 0);
+            var animodel = ModelConverter.CompressFrames(AnimationEntry.Frames, 0);
 
             AnimationEntry newAnim = new(animodel.Item1, AnimationEntry.IsNew, AnimationEntry.EID);
             ModelEntry newModel = new(model.Info, model.PolyData, model.Colors, model.Textures, model.AnimatedTextures, animodel.Item2, model.EID);
