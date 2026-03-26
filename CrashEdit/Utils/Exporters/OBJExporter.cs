@@ -402,8 +402,9 @@ namespace CrashEdit.Exporters
                 using MemoryStream stream = new();
                 using StreamWriter writer = new(stream);
 
+                string modelname = filename;
                 if (appendIndex)
-                    filename = $"{filename}_{i.ToString($"D{count}")}";
+                    modelname = $"{filename}_{i.ToString($"D{count}")}";
                 ConvObject obj = convObjects[i];
 
                 writer.WriteLine("# CrashEdit exported model");
@@ -512,7 +513,7 @@ namespace CrashEdit.Exporters
                 writer.Flush();
 
                 // obj file ready, write to the destination
-                File.WriteAllBytes(Path.Combine(path, filename + ".obj"), stream.ToArray());
+                File.WriteAllBytes(Path.Combine(path,  $"{modelname}.obj"), stream.ToArray());
             }
         }
     }
