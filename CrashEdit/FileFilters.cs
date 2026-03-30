@@ -9,6 +9,7 @@ namespace CrashEdit.CE
         public const string NSChunk = "Naughty Dog Software Chunk (*.nschunk)|*.nschunk";
         public const string Wave = "Wave Files (*.wav)|*.wav";
         public const string VAG = "Voice Audio Generator Files (*.vag)|*.vag";
+        public const string SupportedAudio = "Supported Audio Files (*.wav;*.vag)|*.wav;*.vag";
         public const string OBJ = "Wavefront OBJ Files (*.obj)|*.obj";
         public const string COLLADA = "COLLADA Files (*.dae)|*.dae";
         public const string PLY = "Stanford PLY Files (*.ply)|*.ply";

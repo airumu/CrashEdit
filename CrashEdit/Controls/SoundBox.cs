@@ -1,6 +1,8 @@
 using AltUI.Forms;
 using CrashEdit.Crash;
 using NAudio.Wave;
+using System.Runtime.InteropServices;
+using System.Text;
 
 namespace CrashEdit.CE
 {
@@ -86,7 +88,23 @@ namespace CrashEdit.CE
         private void tbbImport_Click(object sender, EventArgs e)
         {
             // TODO: Refresh sound chunk
-            byte[] data = FileUtil.OpenFile(FileFilters.VAG + "|" + FileFilters.Any);
+
+            byte[]? data = null;
+
+            using OpenFileDialog ofd = new();
+            ofd.Filter = FileFilters.SupportedAudio + "|" + FileFilters.Wave + "|" + FileFilters.VAG;
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                if (ofd.FileName.EndsWith(".wav", StringComparison.OrdinalIgnoreCase))
+                {
+                    data = ToVAG(ofd.FileName);
+                }
+                else
+                {
+                    data = File.ReadAllBytes(ofd.FileName);
+                }
+            }
+
             if (data == null) return;
             if (data.Length < 48)
             {
@@ -101,16 +119,77 @@ namespace CrashEdit.CE
                 data = data.Skip(48).ToArray();
             }
             samples = SampleSet.Load(data);
+
             if (isSpeech)
                 speechentry.Samples = samples;
             else
                 soundentry.Samples = samples;
+
             SoundInit();
         }
 
+        private static byte[] ToVAG(string path)
+        {
+            using Stream inStream = File.OpenRead(path);
+            using var wavReader = new WaveFileReader(inStream);
+
+            double duration = wavReader.SampleCount / (double)wavReader.WaveFormat.SampleRate;
+
+            bool debug = false;
+            if (debug)
+            {
+                Console.WriteLine($"SAMPLERATE: {wavReader.WaveFormat.SampleRate}");
+                Console.WriteLine($"CHANNELS: {wavReader.WaveFormat.Channels}");
+                Console.WriteLine($"DURATION: {duration}");
+                Console.WriteLine($"BIT DEPTH: {wavReader.WaveFormat.BitsPerSample}");
+            }
+
+            float[] sampleData = new float[wavReader.SampleCount * wavReader.WaveFormat.Channels];
+            wavReader.ToSampleProvider().Read(sampleData, 0, sampleData.Length);
+
+            short[] sampleData16 = new short[sampleData.Length];
+            for (int i = 0; i < sampleData.Length; i++)
+            {
+                sampleData16[i] = (short)(sampleData[i] * short.MaxValue);
+            }
+
+            using MemoryStream stream = new();
+            using BinaryWriter writer = new(stream);
+            using VAGConv vagConv = new(wavReader.WaveFormat.SampleRate, wavReader.WaveFormat.Channels, sampleData16, writer);
+            vagConv.WriteHeader();
+            vagConv.Finish();
+
+            writer.Flush();
+            //string outPath = Path.ChangeExtension(path, "vag");
+            //File.WriteAllBytes(outPath, stream.ToArray());
+            return stream.ToArray();
+        }
+
+        /// <summary>
+        /// Generate and save a VAG audio file from the current sample data.
+        /// </summary>
         private void tbbExport_Click(object sender, EventArgs e)
         {
-            FileUtil.SaveFile(samples.Save(), FileFilters.Any);
+            // create PCM data
+            byte[] sampleData = samples.Save();
+            // add 16 byte header
+            byte[] pcm = new byte[sampleData.Length + 16]; 
+            sampleData.CopyTo(pcm, 16);
+
+            // create VAG header
+            using MemoryStream stream = new();
+            using BinaryWriter writer = new(stream);
+            using VAGConv vagConv = new(11025, 1, [], writer);
+            vagConv.WriteHeader();
+            vagConv.WriteSampleLength((uint)sampleData.Length);
+            writer.Flush();
+            byte[] header = stream.ToArray();
+
+            byte[] result = new byte[header.Length + pcm.Length];
+            header.CopyTo(result, 0);
+            pcm.CopyTo(result, header.Length);
+
+            FileUtil.SaveFile(result, FileFilters.VAG + "|" + FileFilters.Any);
         }
 
         private void LoadPcm(out SampleSet sampleset, out byte[] pcmdata)
