@@ -25,7 +25,7 @@ namespace CrashEdit.Crash
             this.data = data;
         }
 
-        public SampleLineFlags Flags { get; }
+        public SampleLineFlags Flags { get; set; }
 
         public byte[] Save()
         {

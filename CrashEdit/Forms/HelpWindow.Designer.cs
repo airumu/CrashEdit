@@ -53,6 +53,8 @@ namespace CrashEdit.CE
             flowLayoutPanel2 = new FlowLayoutPanel();
             fraGOOL = new DarkGroupBox();
             lbGOOL = new Label();
+            fraSoundBox = new DarkGroupBox();
+            label1 = new Label();
             fraHexViewer.SuspendLayout();
             fraNSDBox.SuspendLayout();
             fraSpawns.SuspendLayout();
@@ -67,6 +69,7 @@ namespace CrashEdit.CE
             tableLayoutPanel1.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
             fraGOOL.SuspendLayout();
+            fraSoundBox.SuspendLayout();
             SuspendLayout();
             // 
             // fraHexViewer
@@ -104,7 +107,7 @@ namespace CrashEdit.CE
             fraNSDBox.BackColor = Color.Transparent;
             fraNSDBox.Controls.Add(fraSpawns);
             fraNSDBox.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            fraNSDBox.Location = new Point(6, 273);
+            fraNSDBox.Location = new Point(6, 352);
             fraNSDBox.Name = "fraNSDBox";
             fraNSDBox.Size = new Size(279, 162);
             fraNSDBox.TabIndex = 15;
@@ -145,7 +148,7 @@ namespace CrashEdit.CE
             fraTextureViewer.BackColor = Color.Transparent;
             fraTextureViewer.Controls.Add(lbTextureViewer);
             fraTextureViewer.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            fraTextureViewer.Location = new Point(6, 70);
+            fraTextureViewer.Location = new Point(6, 149);
             fraTextureViewer.Name = "fraTextureViewer";
             fraTextureViewer.Size = new Size(267, 88);
             fraTextureViewer.TabIndex = 15;
@@ -298,7 +301,7 @@ namespace CrashEdit.CE
             fraTextureChunk.BackColor = Color.Transparent;
             fraTextureChunk.Controls.Add(lbTextureChunk);
             fraTextureChunk.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            fraTextureChunk.Location = new Point(6, 6);
+            fraTextureChunk.Location = new Point(6, 85);
             fraTextureChunk.Name = "fraTextureChunk";
             fraTextureChunk.Size = new Size(122, 58);
             fraTextureChunk.TabIndex = 15;
@@ -341,6 +344,7 @@ namespace CrashEdit.CE
             // 
             flowLayoutPanel2.AutoSize = true;
             flowLayoutPanel2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowLayoutPanel2.Controls.Add(fraSoundBox);
             flowLayoutPanel2.Controls.Add(fraTextureChunk);
             flowLayoutPanel2.Controls.Add(fraTextureViewer);
             flowLayoutPanel2.Controls.Add(fraGOOL);
@@ -360,7 +364,7 @@ namespace CrashEdit.CE
             fraGOOL.BackColor = Color.Transparent;
             fraGOOL.Controls.Add(lbGOOL);
             fraGOOL.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            fraGOOL.Location = new Point(6, 164);
+            fraGOOL.Location = new Point(6, 243);
             fraGOOL.Name = "fraGOOL";
             fraGOOL.Size = new Size(193, 103);
             fraGOOL.TabIndex = 15;
@@ -380,6 +384,34 @@ namespace CrashEdit.CE
             lbGOOL.Size = new Size(187, 81);
             lbGOOL.TabIndex = 0;
             lbGOOL.Text = "[Right-click] Show context menu\r\n[F2] Edit instruction\r\n[Ctrl+C] Copy line\r\n[Ctrl+G] Goto\r\n[Ctrl+R] Reload";
+            // 
+            // fraSoundBox
+            // 
+            fraSoundBox.AutoSize = true;
+            fraSoundBox.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraSoundBox.BackColor = Color.Transparent;
+            fraSoundBox.Controls.Add(label1);
+            fraSoundBox.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            fraSoundBox.Location = new Point(6, 6);
+            fraSoundBox.Name = "fraSoundBox";
+            fraSoundBox.Size = new Size(128, 73);
+            fraSoundBox.TabIndex = 16;
+            fraSoundBox.TabStop = false;
+            fraSoundBox.Text = "SoundBox";
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Dock = DockStyle.Fill;
+            label1.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label1.ForeColor = SystemColors.ControlText;
+            label1.Location = new Point(3, 19);
+            label1.Margin = new Padding(3);
+            label1.Name = "label1";
+            label1.Padding = new Padding(3);
+            label1.Size = new Size(122, 51);
+            label1.TabIndex = 0;
+            label1.Text = "[Space] Play\r\n[S] Set loop points\r\n[D] Clear loop points";
             // 
             // HelpWindow
             // 
@@ -426,6 +458,8 @@ namespace CrashEdit.CE
             flowLayoutPanel2.PerformLayout();
             fraGOOL.ResumeLayout(false);
             fraGOOL.PerformLayout();
+            fraSoundBox.ResumeLayout(false);
+            fraSoundBox.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -453,5 +487,7 @@ namespace CrashEdit.CE
         private FlowLayoutPanel flowLayoutPanel2;
         private DarkGroupBox fraGOOL;
         private Label lbGOOL;
+        private DarkGroupBox fraSoundBox;
+        private Label label1;
     }
 }

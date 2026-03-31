@@ -1,12 +1,11 @@
-﻿using System.Reflection;
-using System.Text;
+﻿using System.Text;
 
+// Based on code from VGMTrans
+// https://github.com/vgmtrans/vgmtrans/blob/master/src/main/conversion/SF2File.h
 namespace CrashEdit.Crash
 {
     public static class SF2Conv
     {
-        // values from VGMTrans
-        // https://github.com/vgmtrans/vgmtrans/blob/master/src/main/conversion/SF2File.h
         public enum Op : ushort
         {
             // Oscillator

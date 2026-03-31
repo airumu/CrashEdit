@@ -1,8 +1,6 @@
 using AltUI.Forms;
 using CrashEdit.Crash;
 using NAudio.Wave;
-using System.Runtime.InteropServices;
-using System.Text;
 
 namespace CrashEdit.CE
 {
@@ -11,11 +9,15 @@ namespace CrashEdit.CE
         private readonly WaveOutEvent waveOut;
         private SampleSet samples;
         private byte[] pcm;
+        private readonly List<float> waveform = [];
 
         private readonly SoundEntry? soundentry = null;
         private readonly SpeechEntry? speechentry = null;
 
         private readonly bool isSpeech;
+
+        internal Stack<bool> dirty = new Stack<bool>();
+        internal bool Dirty => dirty.Count > 0 && dirty.Peek();
 
         private int Samplerate
         {
@@ -41,7 +43,9 @@ namespace CrashEdit.CE
             trkSampleRate.Value = defaultRate;
             UpdateSampleRate();
 
-            numSampleRate.MouseWheel += ScrollHandlerFunction2;
+            CreateWaveform();
+
+            numSampleRate.MouseWheel += ScrollHandlerFunction;
         }
 
         public SoundBox(SoundEntry entry) : this(entry.Samples, entry.Title)
@@ -75,6 +79,17 @@ namespace CrashEdit.CE
             lblSampleRate.Text = string.Format("Sample Rate: {0:0.000}", smpe2);
         }
 
+        private void UpdateSamples()
+        {
+            if (isSpeech)
+                speechentry.Samples = samples;
+            else
+                soundentry.Samples = samples;
+
+            SoundInit();
+            CreateWaveform();
+        }
+
         private void cmdPlay_Click(object sender, EventArgs e)
         {
             Play();
@@ -87,8 +102,6 @@ namespace CrashEdit.CE
 
         private void tbbImport_Click(object sender, EventArgs e)
         {
-            // TODO: Refresh sound chunk
-
             byte[]? data = null;
 
             using OpenFileDialog ofd = new();
@@ -112,20 +125,15 @@ namespace CrashEdit.CE
                 return;
             }
 
-            // Check if the first 16 bytes are all 0
+            // check if the first 16 bytes are all 0
+            // if not, assume it's a VAG file with a header, and we need to skip the first 48 bytes
             if (!data.Take(16).All(b => b == 0))
             {
-                // If they are not all 0, treat the first 48 bytes as a header and remove them
                 data = data.Skip(48).ToArray();
             }
             samples = SampleSet.Load(data);
 
-            if (isSpeech)
-                speechentry.Samples = samples;
-            else
-                soundentry.Samples = samples;
-
-            SoundInit();
+            UpdateSamples();
         }
 
         private static byte[] ToVAG(string path)
@@ -135,13 +143,12 @@ namespace CrashEdit.CE
 
             double duration = wavReader.SampleCount / (double)wavReader.WaveFormat.SampleRate;
 
-            bool debug = false;
-            if (debug)
             {
-                Console.WriteLine($"SAMPLERATE: {wavReader.WaveFormat.SampleRate}");
-                Console.WriteLine($"CHANNELS: {wavReader.WaveFormat.Channels}");
-                Console.WriteLine($"DURATION: {duration}");
-                Console.WriteLine($"BIT DEPTH: {wavReader.WaveFormat.BitsPerSample}");
+                Console.WriteLine($"File: {path}");
+                Console.WriteLine($"SampleRate: {wavReader.WaveFormat.SampleRate}");
+                Console.WriteLine($"Channels: {wavReader.WaveFormat.Channels}");
+                Console.WriteLine($"Duration: {duration}");
+                Console.WriteLine($"Bit Depth: {wavReader.WaveFormat.BitsPerSample}");
             }
 
             float[] sampleData = new float[wavReader.SampleCount * wavReader.WaveFormat.Channels];
@@ -173,7 +180,7 @@ namespace CrashEdit.CE
             // create PCM data
             byte[] sampleData = samples.Save();
             // add 16 byte header
-            byte[] pcm = new byte[sampleData.Length + 16]; 
+            byte[] pcm = new byte[sampleData.Length + 16];
             sampleData.CopyTo(pcm, 16);
 
             // create VAG header
@@ -245,6 +252,11 @@ namespace CrashEdit.CE
             waveOut.Play();
         }
 
+        private void Stop()
+        {
+            waveOut.Stop();
+        }
+
         private void ExportWave(int samplerate)
         {
             byte[] wave = WaveConv.ToWave(samples.ToPCM(), samplerate).Save();
@@ -263,7 +275,7 @@ namespace CrashEdit.CE
             UpdateSampleRate();
         }
 
-        private void ScrollHandlerFunction2(object sender, MouseEventArgs e)
+        private void ScrollHandlerFunction(object sender, MouseEventArgs e)
         {
             if (sender is NumericUpDown numericUpDown)
             {
@@ -281,10 +293,228 @@ namespace CrashEdit.CE
             }
         }
 
+        private void ResetFlags()
+        {
+            for (int i = 1; i < samples.SampleLines.Count - 2; i++)
+            {
+                samples.SampleLines[i].Flags = SampleLineFlags.None;
+            }
+            samples.SampleLines[samples.SampleLines.Count - 2].Flags = SampleLineFlags.StopEnvelope;
+        }
+
+        private void ClampSelection()
+        {
+            numSelStart.Value = Math.Clamp(numSelStart.Value, 0, waveform.Count - (56 * 2));
+        }
+
+        private void cmdSetLoop_Click(object sender, EventArgs e)
+        {
+            ResetFlags();
+
+            ClampSelection();
+
+            int start = ((int)numSelStart.Value * 2 / 56) + 1;
+            int end = samples.SampleLines.Count - 2;
+            samples.SampleLines[start].Flags = SampleLineFlags.LoopStartAlt;
+            samples.SampleLines[end].Flags = SampleLineFlags.LoopEnd;
+            for (int i = start + 1; i < end; i++)
+            {
+                samples.SampleLines[i].Flags = SampleLineFlags.NoForceStopEnvelope;
+            }
+
+            UpdateSamples();
+
+            chkLoop.Checked =
+            chkLoop.Enabled = true;
+            panel2.Invalidate();
+        }
+
+        private void cmdClearLoop_Click(object sender, EventArgs e)
+        {
+            ResetFlags();
+
+            UpdateSamples();
+
+            chkLoop.Checked =
+            chkLoop.Enabled = false;
+            panel2.Invalidate();
+        }
+
+        private void numSelStart_ValueChanged(object sender, EventArgs e)
+        {
+            if (waveform.Count == 0) return;
+            if (Dirty || panel2.isDragging) return;
+
+            dirty.Push(true);
+
+            ClampSelection();
+
+            double pixelsPerSample = (double)panel2.Width / waveform.Count;
+            int x = (int)((double)numSelStart.Value * pixelsPerSample);
+            panel2.dragStartX = x;
+            panel2.dragEndX = x;
+            panel2.Invalidate();
+
+            dirty.Pop();
+        }
+
+        private void panel2_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if (e.KeyCode == Keys.Space)
+            {
+                e.IsInputKey = true;
+            }
+        }
+
+        private void panel2_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Space)
+            {
+                cmdPlay.PerformClick();
+                e.SuppressKeyPress = true;
+            }
+            else if(e.KeyCode == Keys.S)
+            {
+                Stop();
+                cmdSetLoop.PerformClick();
+                e.SuppressKeyPress = true;
+            }
+            else if (e.KeyCode == Keys.D)
+            {
+                Stop();
+                cmdClearLoop.PerformClick();
+                e.SuppressKeyPress = true;
+            }
+        }
+
+        private void panel2_Paint(object sender, PaintEventArgs e)
+        {
+            if (waveform.Count == 0) return;
+
+            var g = e.Graphics;
+
+            int width = panel2.Width;
+            int height = panel2.Height;
+
+            double samplesPerPixel = (double)waveform.Count / width;
+            double pixelsPerSample = (double)width / waveform.Count;
+
+            using Pen pen = new(Color.FromArgb(0xFF, 0x10, 0x30, 0x80));
+            using Pen penAlt = new(Color.FromArgb(0xFF, 0x00, 0x80, 0x80));
+
+            // change logic to handle both cases: when there are more samples than pixels, and when there are fewer samples than pixels
+            if (waveform.Count >= width)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    int start = (int)(x * samplesPerPixel);
+                    int end = (int)((x + 1) * samplesPerPixel);
+                    end = Math.Min(end, waveform.Count);
+
+                    float min = 1f, max = -1f;
+
+                    for (int i = start; i < end; i++)
+                    {
+                        float s = waveform[i];
+                        if (s < min) min = s;
+                        if (s > max) max = s;
+                    }
+
+                    int y1 = (int)((min + 1) * height / 2);
+                    int y2 = (int)((max + 1) * height / 2);
+
+                    int loopStartPixel = (int)(samples.LoopStart / 2 * pixelsPerSample);
+
+                    g.DrawLine(x > loopStartPixel && chkLoop.Checked ? penAlt : pen, x, y1, x, y2);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < waveform.Count - 1; i++)
+                {
+                    int x1 = (int)(i * pixelsPerSample);
+                    int x2 = (int)((i + 1) * pixelsPerSample);
+
+                    int y1 = (int)((waveform[i] + 1) * height / 2);
+                    int y2 = (int)((waveform[i + 1] + 1) * height / 2);
+
+                    int loopStartPixel = (int)(samples.LoopStart / 2 * pixelsPerSample);
+
+                    g.DrawLine(x1 > loopStartPixel - 40 && chkLoop.Checked ? penAlt : pen, x1, y1, x2, y2);
+                }
+            }
+
+            int dragX1 = Math.Clamp(Math.Min(panel2.dragStartX, panel2.dragEndX), 0, width);
+            int dragX2 = Math.Clamp(Math.Max(panel2.dragStartX, panel2.dragEndX), 0, width);
+
+            int startSample = (int)(dragX1 * samplesPerPixel);
+            int endSample = (int)((dragX2 + 1) * samplesPerPixel);
+            startSample = Math.Clamp(startSample, 0, waveform.Count);
+            endSample = Math.Clamp(endSample, 0, waveform.Count);
+
+            int drawX1 = (int)(startSample * pixelsPerSample);
+            int drawX2 = (int)(endSample * pixelsPerSample);
+            drawX1 = Math.Clamp(drawX1, 0, width);
+            drawX2 = Math.Clamp(drawX2, 0, width);
+
+            int left = Math.Min(drawX1, drawX2);
+            int right = Math.Max(drawX1, drawX2);
+
+            if (right == left)
+                right = left + 1;
+
+            // draw selection
+            using SolidBrush brush = new(Color.FromArgb(40, Color.LightBlue));
+            g.FillRectangle(brush, left, 0, right - left, height);
+
+            // draw selection borders
+            using Pen pen2 = new(Color.DeepSkyBlue, 2);
+            g.DrawLine(pen2, left, 0, left, height);
+            g.DrawLine(pen2, right, 0, right, height);
+
+            if (!Dirty && panel2.isDragging)
+            {
+                dirty.Push(true);
+                numSelStart.Value = startSample;
+                numSelSize.Value = endSample - startSample;
+                dirty.Pop();
+            }
+        }
+
+        private void CreateWaveform()
+        {
+            MemoryStream ms = new(pcm);
+            WaveFormat format = new(Samplerate, 16, 1); // 16bit mono
+            using RawSourceWaveStream reader = new(ms, format);
+
+            byte[] buffer = new byte[reader.WaveFormat.SampleRate * 2]; // 2 bytes per sample
+            int read;
+
+            waveform.Clear();
+
+            while ((read = reader.Read(buffer, 0, buffer.Length)) > 0)
+            {
+                for (int i = 0; i < read; i += 2)
+                {
+                    short sample = BitConverter.ToInt16(buffer, i);
+                    float normalized = sample / 32768f;
+                    waveform.Add(normalized);
+                }
+            }
+            
+            panel2.Invalidate();
+        }
+
         private void cmdPlay_Leave(object sender, EventArgs e)
         {
-            waveOut.Stop();
+            Stop();
         }
+
+        private void panel2_Leave(object sender, EventArgs e)
+        {
+            Stop();
+        }
+
     }
 
     public class LoopStream(WaveStream sourceStream) : WaveStream

@@ -26,7 +26,7 @@ namespace CrashEdit.Crash
             SampleLines = new List<SampleLine>(samplelines);
         }
 
-        public List<SampleLine> SampleLines { get; }
+        public List<SampleLine> SampleLines { get; set; }
         public int LoopStart { get; set; }
         public int LoopEnd { get; set; }
 

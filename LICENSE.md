@@ -13,6 +13,10 @@ Some images are from the FatCow free icon set, CC-BY 3.0 US.
 directly off of some code from nextvolume's psxsdk (vag2wav.c), which claims
 it's "Based on VAG-Depack 0.1 by bITmASTER".
 
+`CrashEdit.Crash.VAGConv` is based on some code from GlaireDaggers's PSX-VAG-.NET (VAGWriter.cs).
+
+`CrashEdit.Crash.SF2Conv` is based on some code from VGMTrans (SF2File.h).
+
 This program is sometimes packaged with OpenTK, in which case the license for OpenTK will be included in a separate file.
 
 Aside from that, whatever.

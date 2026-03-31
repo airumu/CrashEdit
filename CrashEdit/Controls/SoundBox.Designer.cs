@@ -43,10 +43,21 @@ namespace CrashEdit.CE
             lblSampleRate = new Label();
             chkLoop = new CheckBox();
             numSampleRate = new DarkNumericUpDown();
-            panel1 = new Panel();
+            panel1 = new WaveformPanel();
+            panel2 = new WaveformPanel();
+            numSelStart = new DarkNumericUpDown();
+            numSelSize = new DarkNumericUpDown();
+            cmdSetLoop = new DarkButton();
+            cmdClearLoop = new DarkButton();
+            fraWaveform = new DarkGroupBox();
+            darkGroupBox1 = new DarkGroupBox();
             tsToolbar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numSampleRate).BeginInit();
             panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numSelStart).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numSelSize).BeginInit();
+            fraWaveform.SuspendLayout();
+            darkGroupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // tsToolbar
@@ -183,12 +194,97 @@ namespace CrashEdit.CE
             panel1.Controls.Add(lblSampleRate);
             panel1.Location = new Point(3, 317);
             panel1.Name = "panel1";
-            panel1.Size = new Size(566, 141);
+            panel1.Size = new Size(566, 87);
             panel1.TabIndex = 6;
+            panel1.TabStop = true;
+            // 
+            // panel2
+            // 
+            panel2.Location = new Point(6, 22);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(554, 121);
+            panel2.TabIndex = 7;
+            panel2.TabStop = true;
+            panel2.KeyDown += panel2_KeyDown;
+            panel2.Paint += panel2_Paint;
+            panel2.Leave += panel2_Leave;
+            panel2.PreviewKeyDown += panel2_PreviewKeyDown;
+            // 
+            // numSelStart
+            // 
+            numSelStart.Location = new Point(6, 149);
+            numSelStart.Maximum = new decimal(new int[] { -1, 0, 0, 0 });
+            numSelStart.Name = "numSelStart";
+            numSelStart.Size = new Size(74, 23);
+            numSelStart.TabIndex = 0;
+            numSelStart.ValueChanged += numSelStart_ValueChanged;
+            // 
+            // numSelSize
+            // 
+            numSelSize.Location = new Point(6, 182);
+            numSelSize.Maximum = new decimal(new int[] { -1, 0, 0, 0 });
+            numSelSize.Name = "numSelSize";
+            numSelSize.Size = new Size(74, 23);
+            numSelSize.TabIndex = 8;
+            numSelSize.Visible = false;
+            // 
+            // cmdSetLoop
+            // 
+            cmdSetLoop.BorderColour = Color.Empty;
+            cmdSetLoop.CustomColour = false;
+            cmdSetLoop.FlatBottom = false;
+            cmdSetLoop.FlatTop = false;
+            cmdSetLoop.Location = new Point(6, 22);
+            cmdSetLoop.Name = "cmdSetLoop";
+            cmdSetLoop.Padding = new Padding(5);
+            cmdSetLoop.Size = new Size(52, 34);
+            cmdSetLoop.TabIndex = 9;
+            cmdSetLoop.Text = "Set";
+            cmdSetLoop.Click += cmdSetLoop_Click;
+            // 
+            // cmdClearLoop
+            // 
+            cmdClearLoop.BorderColour = Color.Empty;
+            cmdClearLoop.CustomColour = false;
+            cmdClearLoop.FlatBottom = false;
+            cmdClearLoop.FlatTop = false;
+            cmdClearLoop.Location = new Point(64, 22);
+            cmdClearLoop.Name = "cmdClearLoop";
+            cmdClearLoop.Padding = new Padding(5);
+            cmdClearLoop.Size = new Size(52, 34);
+            cmdClearLoop.TabIndex = 9;
+            cmdClearLoop.Text = "Clear";
+            cmdClearLoop.Click += cmdClearLoop_Click;
+            // 
+            // fraWaveform
+            // 
+            fraWaveform.BackColor = Color.Transparent;
+            fraWaveform.Controls.Add(darkGroupBox1);
+            fraWaveform.Controls.Add(panel2);
+            fraWaveform.Controls.Add(numSelStart);
+            fraWaveform.Controls.Add(numSelSize);
+            fraWaveform.Location = new Point(3, 410);
+            fraWaveform.Name = "fraWaveform";
+            fraWaveform.Size = new Size(566, 232);
+            fraWaveform.TabIndex = 10;
+            fraWaveform.TabStop = false;
+            fraWaveform.Text = "Waveform";
+            // 
+            // darkGroupBox1
+            // 
+            darkGroupBox1.Controls.Add(cmdSetLoop);
+            darkGroupBox1.Controls.Add(cmdClearLoop);
+            darkGroupBox1.Location = new Point(86, 149);
+            darkGroupBox1.Name = "darkGroupBox1";
+            darkGroupBox1.Size = new Size(122, 64);
+            darkGroupBox1.TabIndex = 10;
+            darkGroupBox1.TabStop = false;
+            darkGroupBox1.Text = "Loops";
             // 
             // SoundBox
             // 
             BackColor = Color.FromArgb(31, 31, 32);
+            Controls.Add(fraWaveform);
             Controls.Add(panel1);
             Controls.Add(cmdExport);
             Controls.Add(cmdPlay);
@@ -200,6 +296,10 @@ namespace CrashEdit.CE
             ((System.ComponentModel.ISupportInitialize)numSampleRate).EndInit();
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numSelStart).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numSelSize).EndInit();
+            fraWaveform.ResumeLayout(false);
+            darkGroupBox1.ResumeLayout(false);
             ResumeLayout(false);
 
         }
@@ -215,6 +315,61 @@ namespace CrashEdit.CE
         private Label lblSampleRate;
         private CheckBox chkLoop;
         private DarkNumericUpDown numSampleRate;
-        private Panel panel1;
+        private WaveformPanel panel1;
+        private WaveformPanel panel2;
+        private DarkNumericUpDown numSelStart;
+        private DarkNumericUpDown numSelSize;
+        private DarkButton cmdSetLoop;
+        private DarkButton cmdClearLoop;
+        private DarkGroupBox fraWaveform;
+        private DarkGroupBox darkGroupBox1;
+    }
+
+    public class WaveformPanel : Panel
+    {
+        public bool isDragging = false;
+        public int dragStartX = 0;
+        public int dragEndX = 0;
+
+        public WaveformPanel()
+        {
+            this.SetStyle(ControlStyles.AllPaintingInWmPaint |
+                          ControlStyles.UserPaint |
+                          ControlStyles.OptimizedDoubleBuffer, true);
+
+            this.UpdateStyles();
+            TabStop = true;
+        }
+
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            Focus();
+            Capture = true;
+            isDragging = true;
+            dragStartX = Math.Clamp(e.X, 0, this.Width - 1);
+            dragEndX = dragStartX;
+            Invalidate();
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            if (isDragging)
+            {
+                dragEndX = Math.Clamp(e.X, 0, this.Width - 1);
+
+                // Range selection is disabled for now
+                dragStartX = dragEndX;
+
+                Invalidate();
+            }
+        }
+
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+            Capture = false;
+            isDragging = false;
+            dragEndX = Math.Clamp(e.X, 0, this.Width - 1);
+            Invalidate();
+        }
     }
 }

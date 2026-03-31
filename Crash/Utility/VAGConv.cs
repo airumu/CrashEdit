@@ -1,10 +1,10 @@
 ﻿using System.Runtime.InteropServices;
 using System.Text;
 
+// Based on code by GlaireDaggers
+// https://github.com/GlaireDaggers/PSX-VAG-.NET/blob/main/src/VAGWriter.cs
 namespace CrashEdit.Crash
 {
-    // from PSX-VAG-.NET
-    // https://github.com/GlaireDaggers/PSX-VAG-.NET/blob/main/src/VAGWriter.cs
     public class VAGConv : IDisposable
     {
         private const int BYTES_PER_FRAME = 0x10;
