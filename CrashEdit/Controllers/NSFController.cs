@@ -751,10 +751,10 @@ namespace CrashEdit.CE
             byte[][] datas = FileUtil.OpenFiles([FileFilters.NSChunk, FileFilters.Any]);
             if (datas == null)
                 return;
-            Import_Chunk(datas);
+            ImportChunk(datas);
         }
 
-        public void Import_Chunk(byte[][] datas)
+        public void ImportChunk(byte[][] datas)
         {
             //bool process = DarkMessageBox.ShowMessage("Do you want to process the imported chunks?", "Import Chunk", DarkDialogButton.YesNo) == DialogResult.Yes;
             bool process = true; // always process
@@ -789,10 +789,10 @@ namespace CrashEdit.CE
             byte[][] datas = FileUtil.OpenFiles([FileFilters.NSChunk, FileFilters.Any]);
             if (datas == null)
                 return;
-            Import_And_Replace_Chunk(datas);
+            ImportAndReplaceChunk(datas);
         }
 
-        public void Import_And_Replace_Chunk(byte[][] datas)
+        public void ImportAndReplaceChunk(byte[][] datas)
         {
             foreach (var data in datas)
             {
@@ -844,10 +844,10 @@ namespace CrashEdit.CE
             byte[][] datas = FileUtil.OpenFiles(FileFilters.NSEntryExt, FileFilters.Any);
             if (datas == null)
                 return;
-            Import_Entries_Into_New_Chunks(datas);
+            ImportEntriesIntoNewChunks(datas);
         }
 
-        public void Import_Entries_Into_New_Chunks(byte[][] datas)
+        public void ImportEntriesIntoNewChunks(byte[][] datas)
         {
             bool process = DarkMessageBox.ShowMessage("Do you want to process the imported entries?", "Import Entry", DarkDialogButton.YesNo) == DialogResult.Yes;
 
@@ -912,10 +912,10 @@ namespace CrashEdit.CE
             byte[][] datas = FileUtil.OpenFiles(FileFilters.NSEntryExt, FileFilters.Any);
             if (datas == null)
                 return;
-            Import_And_Replace_Entry(datas);
+            ImportAndReplaceEntry(datas);
         }
 
-        public void Import_And_Replace_Entry(byte[][] datas)
+        public void ImportAndReplaceEntry(byte[][] datas)
         {
             bool process = true;
 
@@ -932,6 +932,7 @@ namespace CrashEdit.CE
                     Entry entryToAdd = process ? entry.Process(GameVersion) : entry;
 
                     bool replaced = false;
+                    bool found = false;
                     foreach (Chunk chunk in NSF.Chunks)
                     {
                         if (chunk is EntryChunk entryChunk)
@@ -941,15 +942,35 @@ namespace CrashEdit.CE
                                 if (entryChunk.Entries[i].EID == entry.EID)
                                 {
                                     entryChunk.Entries[i] = entryToAdd;
-                                    replaced = true;
-                                    break;
+
+                                    // check if the chunk is now too big, and if so, remove the entry again and add it to a new chunk instead
+                                    int totalSize = 0;
+                                    for (int j = 0; j < entryChunk.Entries.Count; ++j)
+                                    {
+                                        totalSize += entryChunk.Entries[j].Save().Length + 4;
+                                    }
+
+                                    if (totalSize + 0x14 > Chunk.Length)
+                                    {
+                                        entryChunk.Entries.RemoveAt(i);
+                                        found = true;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        replaced = true;
+                                        found = true;
+                                        break;
+                                    }
                                 }
                             }
                         }
-                        if (replaced)
+
+                        if (found)
                             break;
                     }
 
+                    // if it wasn't found, or it was found but couldn't be replaced, add it to a new chunk
                     if (!replaced)
                     {
                         int entrySize = entryToAdd.Save().Length + 4;

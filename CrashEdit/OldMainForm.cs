@@ -1425,10 +1425,10 @@ namespace CrashEdit.CE
                     NSFController nsfc = nsfbox.NSFController;
 
                     if (chunkFiles.Count > 0)
-                        nsfc.Import_And_Replace_Chunk(ReadBytes(chunkFiles.ToArray()));
+                        nsfc.ImportAndReplaceChunk(ReadBytes(chunkFiles.ToArray()));
 
                     if (entryFiles.Count > 0)
-                        nsfc.Import_And_Replace_Entry(ReadBytes(entryFiles.ToArray()));
+                        nsfc.ImportAndReplaceEntry(ReadBytes(entryFiles.ToArray()));
 
                     nsfbox.Sync();
                 }
