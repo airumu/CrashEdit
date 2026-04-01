@@ -392,6 +392,7 @@ namespace CrashEdit.CE
             if (waveform.Count == 0) return;
 
             var g = e.Graphics;
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
             int width = panel2.Width;
             int height = panel2.Height;
@@ -405,6 +406,9 @@ namespace CrashEdit.CE
             // change logic to handle both cases: when there are more samples than pixels, and when there are fewer samples than pixels
             if (waveform.Count >= width)
             {
+                Point? prevTop = null;
+                Point? prevBottom = null;
+
                 for (int x = 0; x < width; x++)
                 {
                     int start = (int)(x * samplesPerPixel);
@@ -425,7 +429,18 @@ namespace CrashEdit.CE
 
                     int loopStartPixel = (int)(samples.LoopStart / 2 * pixelsPerSample);
 
-                    g.DrawLine(x > loopStartPixel && chkLoop.Checked ? penAlt : pen, x, y1, x, y2);
+                    var currentPen = (x > loopStartPixel && chkLoop.Checked) ? penAlt : pen;
+
+                    g.DrawLine(currentPen, x, y1, x, y2);
+
+                    if (prevTop.HasValue)
+                        g.DrawLine(currentPen, prevTop.Value, new Point(x, y1));
+
+                    if (prevBottom.HasValue)
+                        g.DrawLine(currentPen, prevBottom.Value, new Point(x, y2));
+
+                    prevTop = new Point(x, y1);
+                    prevBottom = new Point(x, y2);
                 }
             }
             else
@@ -440,7 +455,9 @@ namespace CrashEdit.CE
 
                     int loopStartPixel = (int)(samples.LoopStart / 2 * pixelsPerSample);
 
-                    g.DrawLine(x1 > loopStartPixel - 40 && chkLoop.Checked ? penAlt : pen, x1, y1, x2, y2);
+                    var currentPen = (x1 > loopStartPixel - 40 && chkLoop.Checked) ? penAlt : pen;
+
+                    g.DrawLine(currentPen, x1, y1, x2, y2);
                 }
             }
 
