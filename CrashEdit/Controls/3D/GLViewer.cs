@@ -3,7 +3,7 @@ using CrashEdit.Crash;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
-using OpenTK.WinForms;
+using OpenTK.GLControl;
 using SharpFont;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
