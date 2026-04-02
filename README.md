@@ -2,47 +2,53 @@
 
 This is a fork of [CrashEdit](https://github.com/cbhacks/CrashEdit) with some extra features and improvements.
 
-## Improvements
+## Changes
 
 * **Old Model**
   
-  * Added polygon editor.
-  * Added texture editor.
+  * Added Polygon Editor.
+  * Added Texture Editor.
 
 * **Model / Compressed Model**
   
-  * Added polygon editor.
-  * Added color editor.
-  * Added texture editor.
-  * (Compressed Model) Added extended texture editor.
-  * (Compressed Model) Added position editor.
-  * Scales are editable in the General tab.
+  * Added Polygon Editor.
+  * Added Color Editor.
+  * Added Texture Editor.
+  * (Compressed Model) Added Extended Texture Editor.
+  * (Compressed Model) Added Position Editor.
+  * Made scales editable in the General tab.
+  * Added support for decompressing compressed models.
 
 * **Animation**
   
-  * Supports synchronized editing, which applies edits in sync with other frames when enabled.
-  * Added frame editor; vertices for compressed ones are read-only.
+  * Added sync editing, which applies edits in sync with other frames when enabled.
+  * Added Frame Editor; vertices for compressed ones are read-only.
+  * Added vertex picking.
+  * Added ability to toggle animation in the viewer.
+  * Added support for rotating animations.
 
 * **Scenery**
   
-  - Added color editor.
-  - Added texture editor.
-  - Added extended texture editor.
-  * Scenery now has a node, to enter the editor.
+  - Added Color Editor.
+  - Added Texture Editor.
+  - Added Extended Texture Editor.
+  - Added vertex picking.
+  * Added a node to Scenery for entering the editor.
 
 * **Zone**
   
-  * Added header editor.
-  * Added a menu "Change Collision Type".
+  * Added Header Editor.
+  * Added a "Change Collision Type" menu.
   * Camera entities are labeled as Camera[0], Camera[1], Camera[2], etc.
-  * Entity editor now hides unnecessary tabs (e.g., Camera tab in non-camera entities).
+  * Entity editor now hides unnecessary tabs (e.g., the Camera tab for non-camera entities).
   * Renamed "Interpolate" to "Edit Path", added more features.
   * Added "Sync" to positions.
   * Added "Sync Entities" to positions.
   * Setting property can be copied and pasted.
   * Victims, load lists, and draw lists use list views; copy and paste are supported with shortcut keys.
-  * Added 'Verify draw lists' feature.
-  * Added property fields editor; properties can be saved to an external file and read from it (saved to `CrashEdit.exe.savedentityproperties.json`).
+  * Added a "Verify draw lists" feature.
+  * Added Property Field Editor; properties can be saved to an external file and read from it (saved to `CrashEdit.exe.savedentityproperties.json`).
+  * Added highlighting of the selected entity in the viewer.
 
 * **GOOL**
   
@@ -50,7 +56,7 @@ This is a fork of [CrashEdit](https://github.com/cbhacks/CrashEdit) with some ex
   * Double-clicking on a specific line jumps to a specific line (e.g., go to state #, call subroutine #, move # instructions, [Code|Trans|Event]: #).
   * Right-click to copy the selected line’s offset as hex.
   * Ctrl + G to go to the specified line.
-  * Added frame groups editor.
+  * Added Frame Groups Editor.
   * Tries to patch frame groups when GOOL is imported from Crash 3 to Crash 2.
 
 * **Texture**
@@ -59,21 +65,25 @@ This is a fork of [CrashEdit](https://github.com/cbhacks/CrashEdit) with some ex
   * Supports copying and pasting textures using a buffer, with shortcut keys available.
   * Allows moving or resizing the selection area by clicking or using drag-and-drop on the picture box.
   * Added a label to assist with CLUT calculations.
-  * Added CLUT editor.
+  * Added CLUT Editor.
   * Recalculates the checksum whenever changes are made.
 
 * **Sound**
   
   * Can use a text box to set the frequency.
   * Sound and voice entries now use different default frequencies.
+  * Supports loop audio playback.
   * Supports importing .VAG files (automatically detects and removes headers).
+  * Supports importing .WAV files.
 
 * **Music**
   
-  * Added music entry editor.
-  * Added SEQ player.
-  * Added a button to open VABTool with the current VAB.
-  * Fixed exporting SEQ as MIDI.
+  * Added Music Entry Editor.
+  * Added a SEQ player.
+  * Added SEQTool.
+  * Added VABTool.
+  * Supports importing .MID files.
+  * Fixed SEQ to MIDI export.
 
 * **3D Viewer**
   
@@ -95,23 +105,49 @@ This is a fork of [CrashEdit](https://github.com/cbhacks/CrashEdit) with some ex
 
 * **MainForm / OldMainForm**
   
+  * Added a "Rebuild" (c2export) button.
+  * Added a "Reload" button.
   * Added search filters.
-  * Added node list viewer.
+  * Added Node List Viewer.
   * Added a "Default game version" setting; use it to skip the game version select form.
   * Added a "Make BIN" form; settings are saved for next use.
-  * Added EntryConverterForm.
-  * Added VABTool.
+  * Added "Entry Converter".
   * Added a "Generate EID" menu.
+  * Supports drag&drap .NSF, .nsentry, and .nschunk files.
   * Patch NSD now shows fewer confirmation dialogs.
 
-## Other Changes
+* **NSF Controller**
+  
+  * Added a "Add Texture Chunk" menu.
+  * Added a "Import Entries Into New Chunks" menu.
+  * Added a "Import and Replace Chunk" menu.
+  * Added a "Import and Replace Entry" menu.
+  * Added a "Analyze level" menu.
+  * Added a "Search entities" menu.
+  * Added a "Entity Editor" menu.
+  * Added a "Scenery Editor" menu.
+  * "Fix Nitro Detonators" and "Fix Box Count" can use an external list for calculations (saved to `CrashEdit.exe.externaldata.json`).
 
-* Supports Dark mode.
-* Merged PR [Support exporting animation frames and scenery to OBJ with textures](https://github.com/cbhacks/CrashEdit/pull/158).
-* Added NSDBox; added "Show GOOL Map" and "Generate Spawn Point" menus.
-* Added a "Add Texture Chunk" menu to NSFController.
-* Added a "Analyze level" menu to NSFController.
-* Added a "Search entities" menu to NSFController.
-* Added a "Edit Scenery" menu to NSFController.
-* "Fix Nitro Detonators" and "Fix Box Count" can use an external list for calculations (saved to `CrashEdit.exe.externaldata.json`).
-* Added more icons.
+* **Chunk Controller**
+  
+  * Added a "Reload" menu.
+  * Added a "Import and Replace Entry" menu.
+
+* **Entry Controller**
+  
+  * Added a "Duplicate Entry" menu.
+  * Added a "Reload" menu.
+  * Added a "Replace Entry" menu.
+
+* **Others**
+  
+  * Supports Dark mode.
+  * Merged PR [Support exporting animation frames and scenery to OBJ with textures](https://github.com/cbhacks/CrashEdit/pull/158).
+  * Added T21 Entry Editor.
+  * Added NSDBox; added "Show GOOL Map" and "Generate Spawn Point" menus.
+  * Added more icons.
+
+## Third-Party Libraries
+
+This project uses third-party libraries.
+See THIRD_PARTY_LICENSES.txt for details.

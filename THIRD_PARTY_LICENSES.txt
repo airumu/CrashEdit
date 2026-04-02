@@ -1,0 +1,52 @@
+This project uses third-party libraries:
+
+- AltUI — Licensed under the MIT License  
+  https://github.com/kran27/AltUI
+
+- Cyotek.Windows.Forms.ColorPicker — Licensed under the MIT License
+  https://github.com/cyotek/Cyotek.Windows.Forms.ColorPicker
+
+- DiscUtils.Iso9660 — Licensed under the MIT License
+  https://github.com/DiscUtils/DiscUtils
+
+- MeltySynth — Licensed under the MIT License
+  https://github.com/sinshu/meltysynth
+
+- MetroSetUI — Licensed under the MIT License
+  https://github.com/N-a-r-w-i-n/MetroSet-UI
+
+- NAudio — Licensed under the MIT License
+  https://github.com/naudio/NAudio
+
+- OpenTK.GLControl — Licensed under the MIT License
+  https://github.com/opentk/GLControl
+
+- SpaceWizards.SharpFont — Licensed under the MIT License
+  https://github.com/space-wizards/SharpFont
+
+==================================================
+
+Some files include code from other open-source projects:
+
+- Crash.Audio.SampleLine::ToPCM
+- Crash.Audio.ADPCMConv
+  Based directly off of some code from nextvolume's psxsdk (vag2wav.c), which claims it's "Based on VAG-Depack 0.1 by bITmASTER".
+
+- CrashEdit.Crash.VAGConv
+  Contains code from GlaireDaggers's PSX-VAG-.NET (VAGWriter.cs), licensed under the MIT License.
+
+- CrashEdit.Crash.SF2Conv
+  Contains code from VGMTrans (SF2File.h), licensed under the Zlib License.
+
+==================================================
+
+- Some images were obtained from "free icons web", with no license information provided other than "free": 
+  http://freeiconsweb.com/gif_icons.htm 
+  (Link is dead, can't find a replacement, sorry)
+
+- Some images are part of various free icon packages from Aha-Soft, licensed under CC-BY 3.0 US.
+  https://www.aha-soft.com
+  https://www.small-icons.com
+
+- Some images are from the FatCow free icon set, licensed under CC-BY 3.0 US.
+  https://www.fatcow.com/free-icons
