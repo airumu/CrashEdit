@@ -73,9 +73,9 @@
     <PackageReference Include="DiscUtils.Iso9660" Version="0.16.13" />
     <PackageReference Include="MeltySynth" Version="2.4.11" />
     <PackageReference Include="MetroSetUI" Version="1.0.11" />
-    <PackageReference Include="NAudio" Version="2.3.0" />
-    <PackageReference Include="OpenTK.GLControl" Version="4.0.2" />
-    <PackageReference Include="SpaceWizards.SharpFont" Version="1.1.0" />
+    <PackageReference Include="NAudio" Version="2.2.1" />
+    <PackageReference Include="OpenTK.WinForms" Version="4.0.0-pre.7" />
+    <PackageReference Include="SpaceWizards.SharpFont" Version="1.0.2" />
   </ItemGroup>
 
   <ItemGroup>
