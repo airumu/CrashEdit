@@ -541,6 +541,7 @@ namespace CrashEdit.CE.Controls
             dgvStructs.Size = new Size(642, 347);
             dgvStructs.TabIndex = 0;
             dgvStructs.CellBeginEdit += dgvStructs_CellBeginEdit;
+            dgvStructs.CellFormatting += dgvStructs_CellFormatting;
             dgvStructs.CellParsing += dgv_CellParsing;
             dgvStructs.CellValidating += dgvStructs_CellValidating;
             dgvStructs.CellValueChanged += dgvStructs_CellValueChanged;

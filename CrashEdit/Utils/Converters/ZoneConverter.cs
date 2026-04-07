@@ -109,8 +109,9 @@ namespace CrashEdit.CE
                             );
 
                             const float rad2ang = 2048f / MathF.PI;
+                            // TODO: verify
                             float corrected = euler.X - MathF.PI / 2f; // -90deg
-                            short rx = (short)(4096f - (-corrected * rad2ang)); // ?
+                            short rx = (short)(4096f - (-corrected * rad2ang));
                             short ry = (short)(-euler.Y * rad2ang);
                             short rz = (short)(-euler.Z * rad2ang);
 

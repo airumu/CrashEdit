@@ -93,5 +93,11 @@
             structure |= (uint)(Color2 & 0x7F) << 9;
             return structure;
         }
+
+        public uint SaveHeader()
+        {
+            uint structure = Color1;
+            return structure;
+        }
     }
 }

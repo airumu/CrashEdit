@@ -28,6 +28,7 @@ namespace CrashEdit.CE
         private ToolStripMenuItem tbxMakeBIN = new();
         private ToolStripMenuItem tbxConvertVHVB = new();
         private ToolStripMenuItem tbxConvertVAB = new();
+        private ToolStripMenuItem tbxModelConverter = new();
         private ToolStripMenuItem tbxEntryConverter = new();
         private ToolStripMenuItem tbxGenerateEID = new();
         private ToolStripMenuItem tbxVABTool = new();
@@ -39,6 +40,7 @@ namespace CrashEdit.CE
         private BackgroundWorker bgwMakeBIN;
         private ProgressBarForm dlgProgress;
 
+        private ModelConverterForm? frmModelConverter;
         private EntryConverterForm? frmEntryConverter;
         private MakeBin? frmMakebin;
         private RebuildForm? frmRebuild;
@@ -116,6 +118,9 @@ namespace CrashEdit.CE
             tbxConvertVAB.Text = Resources.OldMainForm_tbxConvertVAB;
             tbxConvertVAB.Click += new EventHandler(tbxConvertVAB_Click);
 
+            tbxModelConverter.Text = Resources.OldMainForm_tbxModelConverter;
+            tbxModelConverter.Click += new EventHandler(tbxModelConverter_Click);
+
             tbxEntryConverter.Text = Resources.OldMainForm_tbxEntryConverter;
             tbxEntryConverter.Click += new EventHandler(tbxEntryConverter_Click);
 
@@ -141,6 +146,7 @@ namespace CrashEdit.CE
             //tbbExtra.DropDown.Items.Add(tbxConvertVHVB);
             //tbbExtra.DropDown.Items.Add(tbxConvertVAB);
             //tbbExtra.DropDown.Items.Add("-");
+            tbbExtra.DropDown.Items.Add(tbxModelConverter);
             tbbExtra.DropDown.Items.Add(tbxEntryConverter);
             tbbExtra.DropDown.Items.Add(tbxVABTool);
             tbbExtra.DropDown.Items.Add(tbxSEQTool);
@@ -190,6 +196,7 @@ namespace CrashEdit.CE
             dlgProgress = null!;
 
             frmEntryConverter = null;
+            frmModelConverter = null;
             frmMakebin = null;
             frmRebuild = null;
             frmVABTool = null;
@@ -1137,6 +1144,21 @@ namespace CrashEdit.CE
             catch (LoadAbortedException)
             {
             }
+        }
+
+        void tbxModelConverter_Click(object sender, EventArgs e)
+        {
+            if (frmModelConverter != null)
+            {
+                frmModelConverter.Focus();
+                return;
+            }
+            frmModelConverter = new ModelConverterForm();
+            frmModelConverter.FormClosing += (object? sender, FormClosingEventArgs e) =>
+            {
+                frmModelConverter = null;
+            };
+            frmModelConverter.Show();
         }
 
         void tbxEntryConverter_Click(object sender, EventArgs e)

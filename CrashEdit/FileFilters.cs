@@ -23,5 +23,6 @@ namespace CrashEdit.CE
         public const string MIDI = "MIDI Files (*.mid)|*.mid";
         public const string SVTX = "Vertex Animation Files (*.svtx)|*.svtx";
         public const string PNG = "Portable Network Graphics (*.png)|*.png";
+        public const string JSON = "JSON Files (*.json)|*.json";
     }
 }
