@@ -827,6 +827,21 @@ namespace CrashEdit.CE.Controls
             {
                 ModelStruct s = ModelEntry.ConvertPolyItem(model.PolyData[i]);
                 DataGridViewRow row = new DataGridViewRow();
+
+                if (i == 0)
+                {
+                    // header?
+                    if (s is ModelColor c)
+                    {
+                        uint structure = model.PolyData[i];
+                        structs.Add(c);
+                        row.DefaultCellStyle.ForeColor = Color.Orange;
+                        row.CreateCells(dgvStructs, structure);
+                        dgvStructs.Rows.Add(row);
+                        continue;
+                    }
+                }
+
                 if (s == null) // footer
                 {
                     structs.Add(null!);
@@ -893,8 +908,16 @@ namespace CrashEdit.CE.Controls
             }
             else if (string.IsNullOrEmpty(Convert.ToString(row.Cells[ColType].Value)))
             {
-                lblStruct.ForeColor = Color.Turquoise;
-                lblStruct.Text = "[ModelColor]";
+                if (row.Index == 0)
+                {
+                    lblStruct.ForeColor = Color.Orange;
+                    lblStruct.Text = "[HEADER]";
+                }
+                else
+                {
+                    lblStruct.ForeColor = Color.Turquoise;
+                    lblStruct.Text = "[ModelColor]";
+                }
             }
             else
             {
@@ -904,6 +927,22 @@ namespace CrashEdit.CE.Controls
             lblStruct.Visible = true;
 
 
+        }
+
+        private void dgvStructs_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (dgvStructs.Columns[e.ColumnIndex].Name == "PositionKey" && e.Value != null)
+            {
+                if (int.TryParse(e.Value.ToString(), out int key))
+                {
+                    if (key > 87)
+                        e.CellStyle.ForeColor = Color.Red;
+                    else if (key == 87)
+                        e.CellStyle.ForeColor = Color.Orange;
+                    else
+                        e.CellStyle.ForeColor = Color.Gainsboro;
+                }
+            }
         }
 
         private void dgvStructs_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
@@ -1039,8 +1078,17 @@ namespace CrashEdit.CE.Controls
                         str.Color2 = Convert.ToByte(cell);
                         break;
                 }
-                model.PolyData[e.RowIndex] = str.Save();
-                Console.WriteLine($"New: {str.Save():X}");
+
+                if (e.RowIndex == 0)
+                {
+                    model.PolyData[e.RowIndex] = str.SaveHeader();
+                    Console.WriteLine($"New: {str.SaveHeader():X}");
+                }
+                else
+                {
+                    model.PolyData[e.RowIndex] = str.Save();
+                    Console.WriteLine($"New: {str.Save():X}");
+                }
             }
             else
             {
@@ -1124,8 +1172,12 @@ namespace CrashEdit.CE.Controls
             {
                 if (!(inputValue.Equals("True", StringComparison.InvariantCultureIgnoreCase) || inputValue.Equals("False", StringComparison.InvariantCultureIgnoreCase)))
                 {
-                    DarkMessageBox.ShowError("The value must be 'True' or 'False'.", Resources.Title_InputError);
-                    e.Cancel = true;
+                    inputValue = NormalizeBoolText(inputValue);
+                    if (!(inputValue == "True" || inputValue == "False"))
+                    {
+                        DarkMessageBox.ShowError("Invalid input.", Resources.Title_InputError);
+                        e.Cancel = true;
+                    }
                 }
             }
             else
@@ -1189,7 +1241,7 @@ namespace CrashEdit.CE.Controls
                     tri.Subtype = Convert.ToInt32(row.Cells[e.ColumnIndex].Value);
                     break;
                 case 9: // Animated
-                    tri.Animated = Convert.ToBoolean(row.Cells[e.ColumnIndex].Value);
+                    tri.Animated = Convert.ToBoolean(NormalizeBoolText(row.Cells[e.ColumnIndex].Value.ToString()));
                     break;
 
             }
@@ -1384,20 +1436,20 @@ namespace CrashEdit.CE.Controls
                 int rowIndex = i * 4;
 
                 byte[] item1 = (rowIndex < colorCount)
-                    ? new byte[] { model.Colors[rowIndex].Red, model.Colors[rowIndex].Green, model.Colors[rowIndex].Blue }
-                    : new byte[] { 0, 0, 0 };
+                    ? [model.Colors[rowIndex].Red, model.Colors[rowIndex].Green, model.Colors[rowIndex].Blue]
+                    : [0, 0, 0];
 
                 byte[] item2 = (rowIndex + 1 < colorCount)
-                    ? new byte[] { model.Colors[rowIndex + 1].Red, model.Colors[rowIndex + 1].Green, model.Colors[rowIndex + 1].Blue }
-                    : new byte[] { 0, 0, 0 };
+                    ? [model.Colors[rowIndex + 1].Red, model.Colors[rowIndex + 1].Green, model.Colors[rowIndex + 1].Blue]
+                    : [0, 0, 0];
 
                 byte[] item3 = (rowIndex + 2 < colorCount)
-                    ? new byte[] { model.Colors[rowIndex + 2].Red, model.Colors[rowIndex + 2].Green, model.Colors[rowIndex + 2].Blue }
-                    : new byte[] { 0, 0, 0 };
+                    ? [model.Colors[rowIndex + 2].Red, model.Colors[rowIndex + 2].Green, model.Colors[rowIndex + 2].Blue]
+                    : [0, 0, 0];
 
                 byte[] item4 = (rowIndex + 3 < colorCount)
-                    ? new byte[] { model.Colors[rowIndex + 3].Red, model.Colors[rowIndex + 3].Green, model.Colors[rowIndex + 3].Blue }
-                    : new byte[] { 0, 0, 0 };
+                    ? [model.Colors[rowIndex + 3].Red, model.Colors[rowIndex + 3].Green, model.Colors[rowIndex + 3].Blue]
+                    : [0, 0, 0];
 
                 string hex1 = Convert.ToHexString(item1);
                 string hex2 = Convert.ToHexString(item2);
