@@ -13,7 +13,7 @@ namespace CrashEdit.CE
         private int _modelforceindex = 0;
         private bool _playAnimation = true;
         private int _frameIndex = 0;
-        private int _tickCount = 0;
+        private long _tickCount = 0;
 
         public AnimationEntryViewer(NSF nsf, int anim_eid, int frame = -1) : base(nsf, anim_eid, frame)
         {
@@ -325,6 +325,8 @@ namespace CrashEdit.CE
                     var models = GetCrash3ModelList(anim);
                     if (models.Count > 1)
                     {
+                        if (render.ShowVertices || !_playAnimation)
+                            con_help += "\n";
                         if (models.Count == anim.Frames.Count)
                             con_help += KeyboardControls.ToggleModelCycle.Print(OnOffName(_modelautocycle));
                         if (!_modelautocycle)
@@ -369,10 +371,10 @@ namespace CrashEdit.CE
                 {
                     if (KDown(Keys.Left))
                     {
-                        if (Environment.TickCount - _tickCount > 200)
+                        if (Environment.TickCount64 - _tickCount > 200)
                         {
                             anim.SelectedVertex = Math.Max(-1, anim.SelectedVertex - 1);
-                            _tickCount = Environment.TickCount;
+                            _tickCount = Environment.TickCount64;
                         }
                     }
                     else if (KDown(Keys.Right))
@@ -380,10 +382,10 @@ namespace CrashEdit.CE
                         var vertices = animation_renderer.GetAllVerts();
                         if (vertices != null)
                         {
-                            if (Environment.TickCount - _tickCount > 200)
+                            if (Environment.TickCount64 - _tickCount > 200)
                             {
                                 anim.SelectedVertex = Math.Min(vertices.Length - 1, anim.SelectedVertex + 1);
-                                _tickCount = Environment.TickCount;
+                                _tickCount = Environment.TickCount64;
                             }
                         }
                     }
@@ -393,18 +395,18 @@ namespace CrashEdit.CE
                 {
                     if (KDown(Keys.F))
                     {
-                        if (Environment.TickCount - _tickCount > 200)
+                        if (Environment.TickCount64 - _tickCount > 200)
                         {
                             _frameIndex = Math.Max(0, _frameIndex - 1);
-                            _tickCount = Environment.TickCount;
+                            _tickCount = Environment.TickCount64;
                         }
                     }
                     else if (KDown(Keys.G))
                     {
-                        if (Environment.TickCount - _tickCount > 200)
+                        if (Environment.TickCount64 - _tickCount > 200)
                         {
                             _frameIndex = Math.Min(anim.Frames.Count - 1, _frameIndex + 1);
-                            _tickCount = Environment.TickCount;
+                            _tickCount = Environment.TickCount64;
                         }
                     }
                 }
