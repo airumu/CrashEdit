@@ -58,8 +58,13 @@ namespace CrashEdit.CE
             groupBox1 = new DarkGroupBox();
             C1dpdColor = new DarkComboBox();
             tabC2 = new TabPage();
+            fraMove = new DarkGroupBox();
+            fraTpage = new DarkGroupBox();
+            dpdTPages = new DarkComboBox();
+            dpdMoveTexture = new DarkComboBox();
+            cmdOK = new DarkButton();
             chkClearCLUT = new CheckBox();
-            darkGroupBox2 = new DarkGroupBox();
+            fraReplaceTexture = new DarkGroupBox();
             chkBGRA = new CheckBox();
             chkReplaceCLUT = new CheckBox();
             cmdReplace = new DarkButton();
@@ -116,7 +121,9 @@ namespace CrashEdit.CE
             groupBox2.SuspendLayout();
             groupBox1.SuspendLayout();
             tabC2.SuspendLayout();
-            darkGroupBox2.SuspendLayout();
+            fraMove.SuspendLayout();
+            fraTpage.SuspendLayout();
+            fraReplaceTexture.SuspendLayout();
             darkGroupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)C2numSelectionSize).BeginInit();
             groupBox6.SuspendLayout();
@@ -434,8 +441,9 @@ namespace CrashEdit.CE
             // tabC2
             // 
             tabC2.BackColor = Color.Transparent;
+            tabC2.Controls.Add(fraMove);
             tabC2.Controls.Add(chkClearCLUT);
-            tabC2.Controls.Add(darkGroupBox2);
+            tabC2.Controls.Add(fraReplaceTexture);
             tabC2.Controls.Add(darkGroupBox1);
             tabC2.Controls.Add(groupBox6);
             tabC2.Controls.Add(groupBox7);
@@ -451,27 +459,89 @@ namespace CrashEdit.CE
             tabC2.TabIndex = 1;
             tabC2.Text = "Crash 2";
             // 
+            // fraMove
+            // 
+            fraMove.Controls.Add(fraTpage);
+            fraMove.Controls.Add(dpdMoveTexture);
+            fraMove.Controls.Add(cmdOK);
+            fraMove.Location = new Point(854, 8);
+            fraMove.Name = "fraMove";
+            fraMove.Size = new Size(122, 165);
+            fraMove.TabIndex = 19;
+            fraMove.TabStop = false;
+            fraMove.Visible = false;
+            // 
+            // fraTpage
+            // 
+            fraTpage.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            fraTpage.Controls.Add(dpdTPages);
+            fraTpage.Location = new Point(7, 4);
+            fraTpage.Margin = new Padding(4);
+            fraTpage.Name = "fraTpage";
+            fraTpage.Padding = new Padding(4);
+            fraTpage.Size = new Size(108, 62);
+            fraTpage.TabIndex = 5;
+            fraTpage.TabStop = false;
+            fraTpage.Text = "Texture Page";
+            // 
+            // dpdTPages
+            // 
+            dpdTPages.DrawMode = DrawMode.OwnerDrawVariable;
+            dpdTPages.FormattingEnabled = true;
+            dpdTPages.Location = new Point(8, 22);
+            dpdTPages.Margin = new Padding(4);
+            dpdTPages.Name = "dpdTPages";
+            dpdTPages.Size = new Size(93, 24);
+            dpdTPages.TabIndex = 0;
+            dpdTPages.SelectedIndexChanged += dpdTPages_SelectedIndexChanged;
+            // 
+            // dpdMoveTexture
+            // 
+            dpdMoveTexture.DrawMode = DrawMode.OwnerDrawVariable;
+            dpdMoveTexture.FormattingEnabled = true;
+            dpdMoveTexture.Items.AddRange(new object[] { "Do nothing", "Move texture", "Copy texture" });
+            dpdMoveTexture.Location = new Point(7, 80);
+            dpdMoveTexture.Margin = new Padding(4);
+            dpdMoveTexture.Name = "dpdMoveTexture";
+            dpdMoveTexture.Size = new Size(108, 24);
+            dpdMoveTexture.TabIndex = 0;
+            dpdMoveTexture.SelectedIndexChanged += dpdTPages_SelectedIndexChanged;
+            // 
+            // cmdOK
+            // 
+            cmdOK.BorderColour = Color.Empty;
+            cmdOK.CustomColour = false;
+            cmdOK.FlatBottom = false;
+            cmdOK.FlatTop = false;
+            cmdOK.Location = new Point(15, 120);
+            cmdOK.Name = "cmdOK";
+            cmdOK.Padding = new Padding(5);
+            cmdOK.Size = new Size(93, 29);
+            cmdOK.TabIndex = 0;
+            cmdOK.Text = "OK";
+            cmdOK.Click += cmdOK_Click;
+            // 
             // chkClearCLUT
             // 
             chkClearCLUT.AutoSize = true;
             chkClearCLUT.Location = new Point(691, 124);
             chkClearCLUT.Name = "chkClearCLUT";
-            chkClearCLUT.Size = new Size(161, 19);
+            chkClearCLUT.Size = new Size(157, 19);
             chkClearCLUT.TabIndex = 18;
             chkClearCLUT.Text = "Clear CLUT when cutting";
             chkClearCLUT.UseVisualStyleBackColor = true;
             // 
-            // darkGroupBox2
+            // fraReplaceTexture
             // 
-            darkGroupBox2.Controls.Add(chkBGRA);
-            darkGroupBox2.Controls.Add(chkReplaceCLUT);
-            darkGroupBox2.Controls.Add(cmdReplace);
-            darkGroupBox2.Location = new Point(691, 8);
-            darkGroupBox2.Name = "darkGroupBox2";
-            darkGroupBox2.Size = new Size(113, 110);
-            darkGroupBox2.TabIndex = 17;
-            darkGroupBox2.TabStop = false;
-            darkGroupBox2.Text = "Replace Texture";
+            fraReplaceTexture.Controls.Add(chkBGRA);
+            fraReplaceTexture.Controls.Add(chkReplaceCLUT);
+            fraReplaceTexture.Controls.Add(cmdReplace);
+            fraReplaceTexture.Location = new Point(691, 8);
+            fraReplaceTexture.Name = "fraReplaceTexture";
+            fraReplaceTexture.Size = new Size(113, 110);
+            fraReplaceTexture.TabIndex = 17;
+            fraReplaceTexture.TabStop = false;
+            fraReplaceTexture.Text = "Replace Texture";
             // 
             // chkBGRA
             // 
@@ -995,8 +1065,10 @@ namespace CrashEdit.CE
             groupBox1.ResumeLayout(false);
             tabC2.ResumeLayout(false);
             tabC2.PerformLayout();
-            darkGroupBox2.ResumeLayout(false);
-            darkGroupBox2.PerformLayout();
+            fraMove.ResumeLayout(false);
+            fraTpage.ResumeLayout(false);
+            fraReplaceTexture.ResumeLayout(false);
+            fraReplaceTexture.PerformLayout();
             darkGroupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)C2numSelectionSize).EndInit();
             groupBox6.ResumeLayout(false);
@@ -1081,7 +1153,7 @@ namespace CrashEdit.CE
         private DarkNumericUpDown C2numShiftX;
         private DarkNumericUpDown C2numShiftY;
         private DarkGroupBox darkGroupBox1;
-        private DarkGroupBox darkGroupBox2;
+        private DarkGroupBox fraReplaceTexture;
         private DarkButton cmdReplace;
         private CheckBox chkReplaceCLUT;
         private CheckBox chkBGRA;
@@ -1089,5 +1161,10 @@ namespace CrashEdit.CE
         private Label label15;
         private Label label16;
         private CheckBox chkClearCLUT;
+        private DarkButton cmdOK;
+        private DarkGroupBox fraTpage;
+        private DarkComboBox dpdTPages;
+        private DarkComboBox dpdMoveTexture;
+        private DarkGroupBox fraMove;
     }
 }

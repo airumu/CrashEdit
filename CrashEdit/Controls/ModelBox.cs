@@ -2283,6 +2283,158 @@ namespace CrashEdit.CE.Controls
             }
         }
 
+        private async void cmdMoveTexture_Click(object sender, EventArgs e)
+        {
+            int rowIndex = dgvTextures.SelectedCells[0].RowIndex;
+            int columnIndex = dgvTextures.SelectedCells[0].ColumnIndex;
+            var row = dgvTextures.Rows[rowIndex];
+
+            int x = Convert.ToInt32(row.Cells[ColLeft].Value);
+            int y = Convert.ToInt32(row.Cells[ColTop].Value);
+            int w = Convert.ToInt32(row.Cells[ColWidth].Value);
+            int h = Convert.ToInt32(row.Cells[ColHeight].Value);
+            int cx = Convert.ToInt32(row.Cells[ColClutX].Value);
+            int cy = Convert.ToInt32(row.Cells[ColClutY].Value);
+            int blend = Convert.ToInt32(row.Cells[ColBlendMode].Value);
+            int color = Convert.ToInt32(row.Cells[ColColorMode].Value);
+
+            List<TextureChunk> tpages = [];
+            foreach (Chunk c in controller.GetNSF().Chunks)
+            {
+                if (c is TextureChunk t)
+                {
+                    tpages.Add(t);
+                }
+            }
+
+            using TextureViewer frmViewer = new(chunk);
+            frmViewer.MoveInit(x, y, w, h, cx, cy, blend, color, tpages, dpdTPages.Text);
+
+            if (frmViewer.ShowDialog() == DialogResult.OK)
+            {
+                if (frmViewer.TexColorMode == 2)
+                {
+                    DarkMessageBox.ShowError("Unsupported color depth.", Resources.Title_TextureReplacement);
+                    return;
+                }
+                if (x + w > (256 << (2 - color)) || y + h > 128)
+                {
+                    DarkMessageBox.ShowError("Textures cannot be copied outside the bounds.", Resources.Title_TextureReplacement);
+                    return;
+                }
+
+                // copy the original texture
+                int currentBpp = (int)Math.Pow(2, frmViewer.TexColorMode + 2);
+                var temp = TextureConv.CopyTexture(chunk.Data, currentBpp, x, y, w, h);
+                var tempTexture = temp.tempTexture;
+                var tempWidth = temp.tempWidth;
+                var tempHeight = temp.tempHeight;
+                var tempBpp = temp.tempBpp;
+
+                int length, offset;
+                if (frmViewer.TexColorMode == 0)
+                {
+                    length = 0x20;
+                    offset = cx * 0x20 + cy * 0x200;
+                }
+                else
+                {
+                    length = 0x200;
+                    offset = cy * 0x200;
+                }
+                var tempCLUT = new byte[length];
+                Array.Copy(chunk.Data, offset, tempCLUT, 0, length);
+
+                // paste the texture to new position
+                int newX = frmViewer.X;
+                int newY = frmViewer.Y;
+
+                bool failed = false;
+                if (newX < 32 && newY == 0)
+                {
+                    DarkMessageBox.ShowError("Textures cannot be replaced in the header.", Resources.Title_TextureReplacement);
+                    failed = true;
+                }
+                else if (newX + tempWidth > (256 << (2 - frmViewer.TexColorMode)) || newY + tempHeight > 128)
+                {
+                    DarkMessageBox.ShowError("Textures cannot be pasted outside the bounds.", Resources.Title_TextureReplacement);
+                    failed = true;
+                }
+
+                if (failed)
+                {
+                    Console.WriteLine("Failed to paste texture.");
+                    return;
+                }
+
+                // update texture refs
+                var editedRow = dgvTextures.Rows[rowIndex];
+                string? editedCellTag = editedRow.Cells[columnIndex].Tag?.ToString();
+                if (editedCellTag != null)
+                {
+                    int page = -1;
+                    for (int i = 0; i < lstTPages.Items.Count; i++)
+                    {
+                        string cid = lstTPages.Items[i].SubItems[1].Text;
+                        if (cid == frmViewer.SelectedTPage)
+                        {
+                            page = i;
+                            break;
+                        }
+                    }
+                    if (page == -1)
+                    {
+                        if (lstTPages.Items.Count >= 8)
+                        {
+                            DarkMessageBox.ShowError("Failed to add new texture page. Maximum number of texture pages reached.", "Error");
+                            return;
+                        }
+                        page = lstTPages.Items.Count;
+                        lstTPages.Items.Add(new ListViewItem([page.ToString(), frmViewer.SelectedTPage]));
+
+                        model.TPAGCount++;
+                    }
+                    lstTPages.SelectedItems.Clear();
+                    lstTPages.Items[page].Selected = true;
+
+                    // page
+                    await UpdateCellsByTagAsync(ColPage, ColPage, page, editedCellTag);
+
+                    // clut
+                    await UpdateCellsByTagAsync(ColClutX, ColClutX, frmViewer.CLUTX, editedCellTag);
+                    await UpdateCellsByTagAsync(ColClutY, ColClutY, frmViewer.CLUTY, editedCellTag);
+                    // xy
+                    await UpdateRowsXYAsync(rowIndex, newX, newX + tempWidth, true, editedCellTag);
+                    await UpdateRowsXYAsync(rowIndex, newY, newY + tempHeight, false, editedCellTag);
+                }
+
+                if (frmViewer.moveMode == 1)
+                {
+                    // clear the original texture
+                    byte[] emptyChunk = new byte[0x10000];
+                    TextureConv.ReplaceTexture(emptyChunk, chunk.Data, tempWidth, tempHeight, currentBpp, 0, 0, tempWidth, tempHeight, x, y, false);
+
+                    byte[] clearCLUTData = new byte[length];
+                    Array.Copy(clearCLUTData, 0, chunk.Data, offset, length);
+                }
+
+                if (frmViewer.moveMode > 0)
+                {
+                    // find the corresponding texture chunk
+                    int eid = Entry.ENameToEID(frmViewer.SelectedTPage);
+                    chunk = tpages.FirstOrDefault(t => t.EID == eid) ?? chunk;
+
+                    // replace texture and CLUT
+                    TextureConv.ReplaceTexture(tempTexture, chunk.Data, tempWidth, tempHeight, tempBpp, 0, 0, tempWidth, tempHeight, newX, newY, false);
+                    chunk.Data = TextureConv.ReplaceClut(tempCLUT, chunk.Data, currentBpp, tempBpp, frmViewer.CLUTX, frmViewer.CLUTY);
+                }
+
+                // calculate checksum and update
+                BitConv.ToInt32(chunk.Data, 12, Chunk.CalculateChecksum(chunk.Data));
+                UpdatePicture();
+            }
+        }
+
         private void dgvTexturesGetMaxValue(int rowIndex, int columnIndex, int newValue, out int minValue, out int maxValue, out bool isMaxCell)
         {
             isMaxCell = dgvTextures.Rows[rowIndex].Cells[columnIndex].Style == styleRegionEnd;

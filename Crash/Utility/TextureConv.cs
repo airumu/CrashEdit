@@ -402,7 +402,7 @@ namespace CrashEdit.Crash
             Bitmap bitmap = image ?? new(filePath);
 
             if (bitmap.Width <= 0 || bitmap.Height <= 0)
-                throw new InvalidOperationException("Invalid image dimensions.");
+                throw new InvalidOperationException("Invalid image dimensions");
 
             // check if the pixel format is supported
             if (bitmap.PixelFormat != PixelFormat.Format4bppIndexed &&

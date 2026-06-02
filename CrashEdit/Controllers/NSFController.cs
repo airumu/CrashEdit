@@ -118,10 +118,27 @@ namespace CrashEdit.CE
 
         private void Menu_Add_TextureChunk()
         {
-            byte[] header = { 0x34, 0x12, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0xAE, 0x5B, 0x34, 0x56};
+            int i = -1;
+
+            while (NSF.Chunks
+                .OfType<TextureChunk>()
+                .Any(t => t.EName == ModelConverterForm.GetDefaultEID('T', i)))
+            {
+                i++;
+            }
+
+            int eid = Entry.ENameToEID(ModelConverterForm.GetDefaultEID('T', i));
+
+            byte[] header = {
+                0x34, 0x12, 0x01, 0x00,
+                (byte)(eid & 0xFF), (byte)((eid >> 8) & 0xFF), (byte)((eid >> 16) & 0xFF), (byte)((eid >> 24) & 0xFF),
+                0x05, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00, 0x00
+            };
             byte[] newchunk = new byte[65536];
             Array.Copy(header, 0, newchunk, 0, header.Length);
-            TextureChunk chunk = new TextureChunk(newchunk);
+            TextureChunk chunk = new(newchunk);
+            BitConv.ToInt32(chunk.Data, 12, Chunk.CalculateChecksum(chunk.Data));
             NSF.Chunks.Add(chunk);
         }
 

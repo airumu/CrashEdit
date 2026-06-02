@@ -2,6 +2,7 @@
 using AltUI.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
+using MetroSet_UI.Enums;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
@@ -31,7 +32,20 @@ namespace CrashEdit.CE
         private bool isBGRA;
         private bool replaceCLUT;
 
+        private List<TextureChunk> tpages = [];
+        private bool isMoving = false;
+        private bool dirty = true;
+
+        public int moveMode = 0;
+
         private bool clearCLUT => chkClearCLUT.Checked;
+
+        public int X => (int)C2numX.Value;
+        public int Y => (int)C2numY.Value;
+        public int CLUTX => (int)C2numCX.Value;
+        public int CLUTY => (int)C2numCY.Value;
+        public int CLUTOffset => TexColorMode == 0 ? (int)C2numCX.Value * 0x20 + (int)C2numCY.Value * 0x200 : (int)C2numCY.Value * 0x200;
+        public string SelectedTPage => dpdTPages.Text;
 
         private DarkToolTip tipViewer;
 
@@ -64,12 +78,14 @@ namespace CrashEdit.CE
             C2dpdBlend.SelectedIndex = 3;
             selectionSize = 32;
 
+            dpdMoveTexture.SelectedIndex = 0;
+
             isBGRA = true;
             replaceCLUT = true;
 
             pictureBox1.MouseClick += delegate (object? sender, MouseEventArgs e)
             {
-                if (e.Button == MouseButtons.Right && pictureBox1.Image != null && pictureBox1.Image is Bitmap bmp)
+                if (e.Button == MouseButtons.Right && pictureBox1.Image != null && pictureBox1.Image is Bitmap bmp && !isMoving)
                 {
                     if (TexX + TexW > (256 << (2 - TexColorMode)) || TexY + TexH > 128)
                     {
@@ -149,11 +165,6 @@ namespace CrashEdit.CE
                 }
             };
 
-            foreach (ComboBox dpd in this.GetAll(typeof(ComboBox)))
-            {
-                dpd.SelectedIndex = 0;
-            }
-
             tipViewer = new DarkToolTip();
             tipViewer.SetToolTip(pictureBox1, Resources.TextureViewer_tipViewer);
 
@@ -204,6 +215,37 @@ namespace CrashEdit.CE
             groupBox10.Text = Properties.Resources.TextureViewer_groupBox1;
 
             MakeArgAsText();
+        }
+
+        public void MoveInit(int x, int y, int w, int h, int cx, int cy, int blend, int color, List<TextureChunk> tpages, string selectedTPages)
+        {
+            isMoving = true;
+            fraMove.Visible = true;
+
+            C2numX.Value = x;
+            C2numY.Value = y;
+            C2numW.Value = w;
+            C2numH.Value = h;
+            C2numCX.Value = cx;
+            C2numCY.Value = cy;
+            C2dpdBlend.SelectedIndex = blend;
+            C2dpdColor.SelectedIndex = color;
+
+            // populate tpage list
+            this.tpages = tpages;
+            dirty = true;
+            foreach (var t in tpages)
+            {
+                dpdTPages.Items.Add(Entry.EIDToEName(t.EID));
+            }
+            dirty = false;
+            dpdTPages.Text = selectedTPages;
+
+            // hide stuff
+            fraReplaceTexture.Visible = false;
+            tabControl1.Controls.Remove(tabC1);
+            tabControl1.ItemSize = new Size(0, 1);
+            tabControl1.Controls[0].Text = "";
         }
 
         internal int TexColorMode => textype == TextureType.Crash1 ? C1dpdColor.SelectedIndex : C2dpdColor.SelectedIndex;
@@ -461,6 +503,8 @@ namespace CrashEdit.CE
 
         private void tabControl1_KeyDown(object sender, KeyEventArgs e)
         {
+            if (isMoving) return;
+
             string basePath = basePath = Path.Combine(Path.GetTempPath(), "CrashEdit");
             int currentBpp = (int)Math.Pow(2, TexColorMode + 2);
 
@@ -668,5 +712,18 @@ namespace CrashEdit.CE
             }
         }
 
+        private void cmdOK_Click(object sender, EventArgs e)
+        {
+            moveMode = dpdMoveTexture.SelectedIndex;
+            DialogResult = DialogResult.OK;
+        }
+
+        private void dpdTPages_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (dirty) return;
+
+            chunk = tpages[dpdTPages.SelectedIndex];
+            UpdatePicture();
+        }
     }
 }
