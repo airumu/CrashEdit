@@ -1,6 +1,7 @@
 namespace CrashEdit.Crash
 {
     [EntryType(3, GameVersion.Crash2)]
+    [EntryType(3, GameVersion.Crash3BetaMAY14)]
     public sealed class SceneryEntryLoader : EntryLoader
     {
         public override Entry Load(byte[][] items, int eid)

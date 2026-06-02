@@ -61,6 +61,12 @@ namespace CrashEdit.CrashUI
             DialogResult = DialogResult.OK;
         }
 
+        private void cmdCrash3BetaMAY14_Click(object sender, EventArgs e)
+        {
+            SelectedVersion = GameVersion.Crash3BetaMAY14;
+            DialogResult = DialogResult.OK;
+        }
+
         private void cmdCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;

@@ -8,6 +8,7 @@ namespace CrashEdit.Crash
         Crash1BetaMAY11,
         Crash1,
         Crash2,
+        Crash3BetaMAY14,
         Crash3
     }
 }

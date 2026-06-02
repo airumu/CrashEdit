@@ -16,6 +16,7 @@ namespace CrashEdit.Crash
     }
 
     [EntryType(1, GameVersion.Crash3)]
+    [EntryType(1, GameVersion.Crash3BetaMAY14)]
     public sealed class NewAnimationEntryLoader : EntryLoader
     {
         public override Entry Load(byte[][] items, int eid)

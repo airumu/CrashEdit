@@ -2,6 +2,7 @@ namespace CrashEdit.Crash
 {
     [EntryType(2, GameVersion.Crash2)]
     [EntryType(2, GameVersion.Crash3)]
+    [EntryType(2, GameVersion.Crash3BetaMAY14)]
     public sealed class ModelEntryLoader : EntryLoader
     {
         public override Entry Load(byte[][] items, int eid)

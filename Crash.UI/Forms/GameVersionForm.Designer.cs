@@ -37,6 +37,7 @@ namespace CrashEdit.CrashUI
             cmdCrash2 = new DarkButton();
             cmdCrash1 = new DarkButton();
             fraPrerelease = new DarkGroupBox();
+            darkButton1 = new DarkButton();
             cmdCrash1Beta1995 = new DarkButton();
             cmdCrash2Beta = new DarkButton();
             cmdCrash1BetaMAY11 = new DarkButton();
@@ -130,6 +131,7 @@ namespace CrashEdit.CrashUI
             // fraPrerelease
             // 
             fraPrerelease.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            fraPrerelease.Controls.Add(darkButton1);
             fraPrerelease.Controls.Add(cmdCrash1Beta1995);
             fraPrerelease.Controls.Add(cmdCrash2Beta);
             fraPrerelease.Controls.Add(cmdCrash1BetaMAY11);
@@ -138,10 +140,26 @@ namespace CrashEdit.CrashUI
             fraPrerelease.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             fraPrerelease.Name = "fraPrerelease";
             fraPrerelease.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            fraPrerelease.Size = new System.Drawing.Size(438, 264);
+            fraPrerelease.Size = new System.Drawing.Size(438, 325);
             fraPrerelease.TabIndex = 5;
             fraPrerelease.TabStop = false;
             fraPrerelease.Text = "<PRERELEASE>";
+            // 
+            // darkButton1
+            // 
+            darkButton1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            darkButton1.BorderColour = System.Drawing.Color.Empty;
+            darkButton1.CustomColour = false;
+            darkButton1.FlatBottom = false;
+            darkButton1.FlatTop = false;
+            darkButton1.Location = new System.Drawing.Point(7, 261);
+            darkButton1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            darkButton1.Name = "darkButton1";
+            darkButton1.Padding = new System.Windows.Forms.Padding(5);
+            darkButton1.Size = new System.Drawing.Size(424, 53);
+            darkButton1.TabIndex = 10;
+            darkButton1.Text = "Crash Bandicoot: Warped\r\n\"E3 Demo\" (May 14, 1998)";
+            darkButton1.Click += cmdCrash3BetaMAY14_Click;
             // 
             // cmdCrash1Beta1995
             // 
@@ -215,7 +233,7 @@ namespace CrashEdit.CrashUI
             cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             cmdCancel.FlatBottom = false;
             cmdCancel.FlatTop = false;
-            cmdCancel.Location = new System.Drawing.Point(364, 576);
+            cmdCancel.Location = new System.Drawing.Point(364, 631);
             cmdCancel.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             cmdCancel.Name = "cmdCancel";
             cmdCancel.Padding = new System.Windows.Forms.Padding(5);
@@ -229,7 +247,7 @@ namespace CrashEdit.CrashUI
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             BackColor = System.Drawing.Color.FromArgb(31, 31, 32);
             CancelButton = cmdCancel;
-            ClientSize = new System.Drawing.Size(465, 616);
+            ClientSize = new System.Drawing.Size(465, 671);
             Controls.Add(cmdCancel);
             Controls.Add(fraPrerelease);
             Controls.Add(fraRelease);
@@ -260,5 +278,6 @@ namespace CrashEdit.CrashUI
         private DarkButton cmdCrash2Beta;
         private DarkButton cmdCancel;
         private DarkButton cmdCrash1Beta1995;
+        private DarkButton darkButton1;
     }
 }

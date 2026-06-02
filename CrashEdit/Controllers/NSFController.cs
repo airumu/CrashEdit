@@ -3,8 +3,10 @@ using CrashEdit.CE.Forms;
 using CrashEdit.CE.Properties;
 using CrashEdit.Crash;
 using CrashEdit.Exporters;
+using MetroSet_UI.Animates;
 using System.Diagnostics;
 using System.Media;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace CrashEdit.CE
@@ -16,7 +18,7 @@ namespace CrashEdit.CE
         {
             NSF = nsf;
             AddMenu(CrashUI.Properties.Resources.NSFController_AcAddNormalChunk, "JournalOrange", Menu_Add_NormalChunk);
-            if (GameVersion != GameVersion.Crash2 && GameVersion != GameVersion.Crash3 && GameVersion != GameVersion.Crash1)
+            if (GameVersion != GameVersion.Crash2 && GameVersion != GameVersion.Crash3 && GameVersion != GameVersion.Crash1 && GameVersion != GameVersion.Crash3BetaMAY14)
                 AddMenu(CrashUI.Properties.Resources.NSFController_AcAddOldSoundChunk, "JournalBlue", Menu_Add_OldSoundChunk);
             AddMenu(CrashUI.Properties.Resources.NSFController_AcAddSoundChunk, "JournalBlue", Menu_Add_SoundChunk);
             AddMenu(CrashUI.Properties.Resources.NSFController_AcAddWavebankChunk, "JournalRed",Menu_Add_WavebankChunk);
@@ -26,7 +28,7 @@ namespace CrashEdit.CE
             AddMenu(CrashUI.Properties.Resources.NSFController_AcImportEntriesIntoChunks, "Import", Menu_Import_Entries_Into_New_Chunks);
             AddMenu(CrashUI.Properties.Resources.NSFController_AcImportAndReplaceChunk, "ImportPlus", Menu_Import_And_Replace_Chunk);
             AddMenu(CrashUI.Properties.Resources.NSFController_AcImportAndReplaceEntry, "ImportPlus", Menu_Import_And_Replace_Entry);
-            if (GameVersion == GameVersion.Crash2 || GameVersion == GameVersion.Crash3)
+            if (GameVersion == GameVersion.Crash2 || GameVersion == GameVersion.Crash3 || GameVersion == GameVersion.Crash3BetaMAY14)
             {
                 AddMenuSeparator();
                 AddMenu(CrashUI.Properties.Resources.NSFController_AcAnalyzeLevel, "HardDisk", Menu_AnalyzeLevel);
@@ -48,7 +50,7 @@ namespace CrashEdit.CE
                 AddMenu(CrashUI.Properties.Resources.NSFController_AcShowLevel, "ThingBlue", Menu_ShowLevelC1Proto);
                 AddMenu(CrashUI.Properties.Resources.NSFController_AcShowLevelZones, "ThingViolet", Menu_ShowLevelZonesC1Proto);
             }
-            else if (GameVersion == GameVersion.Crash2 || GameVersion == GameVersion.Crash3)
+            else if (GameVersion == GameVersion.Crash2 || GameVersion == GameVersion.Crash3 || GameVersion == GameVersion.Crash3BetaMAY14)
             {
                 AddMenu(CrashUI.Properties.Resources.NSFController_AcEditEntities, "Modify", Menu_EditEntitiesC2);
                 AddMenu(CrashUI.Properties.Resources.NSFController_AcEditScenery, "Wrench", Menu_EditSceneryC2);
@@ -408,7 +410,7 @@ namespace CrashEdit.CE
                                 
                             if (entity.Type == 34 && entity.ID.HasValue)
                             {
-                                if (GameVersion != GameVersion.Crash2 && GameVersion != GameVersion.Crash3)
+                                if (GameVersion != GameVersion.Crash2 && GameVersion != GameVersion.Crash3 && GameVersion != GameVersion.Crash3BetaMAY14)
                                 {
                                     switch (entity.Subtype)
                                     {
@@ -424,7 +426,7 @@ namespace CrashEdit.CE
                                             break;
                                     }
                                 }
-                                else if (GameVersion == GameVersion.Crash3)
+                                else if (GameVersion == GameVersion.Crash3 || GameVersion == GameVersion.Crash3BetaMAY14)
                                 {
                                     switch (entity.Subtype)
                                     {

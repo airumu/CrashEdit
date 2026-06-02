@@ -5,6 +5,7 @@ namespace CrashEdit.Crash
     [EntryType(14, GameVersion.Crash1)]
     [EntryType(14, GameVersion.Crash2)]
     [EntryType(14, GameVersion.Crash3)]
+    [EntryType(14, GameVersion.Crash3BetaMAY14)]
     public sealed class WavebankEntryLoader : EntryLoader
     {
         public override Entry Load(byte[][] items, int eid)

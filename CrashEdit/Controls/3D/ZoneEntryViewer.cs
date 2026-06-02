@@ -106,7 +106,7 @@ namespace CrashEdit.CE
                     {
                         Entity entity = zone.Entities[i];
                         float scale = GameScales.ZoneEntityC1;
-                        if (entity.Scaling.HasValue && nsf.Version == GameVersion.Crash3)
+                        if (entity.Scaling.HasValue && (nsf.Version == GameVersion.Crash3 || nsf.Version == GameVersion.Crash3BetaMAY14))
                         {
                             scale *= 4;
                             scale /= 1 << entity.Scaling.Value;
@@ -534,7 +534,7 @@ namespace CrashEdit.CE
             float text_size = 0.65f;
             bool draw_type = entity.Type.HasValue && entity.Subtype.HasValue;
             float scale = GameScales.ZoneEntityC1;
-            if (entity.Scaling.HasValue && nsf.Version == GameVersion.Crash3)
+            if (entity.Scaling.HasValue && (nsf.Version == GameVersion.Crash3 || nsf.Version == GameVersion.Crash3BetaMAY14))
             {
                 scale *= 4;
                 scale /= 1 << entity.Scaling.Value;
@@ -575,7 +575,7 @@ namespace CrashEdit.CE
                             timetrialcontents = entity.C2TTType.HasValue ? entity.C2TTType.Value >> 8 : 0;
                         else
                             timetrialcontents = entity.TimeTrialReward.HasValue ? entity.TimeTrialReward.Value >> 8 : 0;
-                        if (entity.Subtype.Value == 29 && nsf.Version == GameVersion.Crash3)
+                        if (entity.Subtype.Value == 29 && (nsf.Version == GameVersion.Crash3 || nsf.Version == GameVersion.Crash3BetaMAY14))
                         {
                             float size_x = 1, size_y = 1, size_z = 1;
                             if (entity.Settings.Count > 2)

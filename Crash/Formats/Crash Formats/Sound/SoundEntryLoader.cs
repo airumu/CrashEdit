@@ -6,6 +6,7 @@ namespace CrashEdit.Crash
     [EntryType(12, GameVersion.Crash1)]
     [EntryType(12, GameVersion.Crash2)]
     [EntryType(12, GameVersion.Crash3)]
+    [EntryType(12, GameVersion.Crash3BetaMAY14)]
     public sealed class SoundEntryLoader : EntryLoader
     {
         public override Entry Load(byte[][] items, int eid)
