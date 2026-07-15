@@ -659,5 +659,77 @@ namespace CrashEdit.CE.Properties {
                 this["ShowAnimTex0"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("15")]
+        public byte DefaultFogValue {
+            get {
+                return ((byte)(this["DefaultFogValue"]));
+            }
+            set {
+                this["DefaultFogValue"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DefaultFogIsActive {
+            get {
+                return ((bool)(this["DefaultFogIsActive"]));
+            }
+            set {
+                this["DefaultFogIsActive"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DefaultParticleIsActive {
+            get {
+                return ((bool)(this["DefaultParticleIsActive"]));
+            }
+            set {
+                this["DefaultParticleIsActive"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DefaultPreset {
+            get {
+                return ((string)(this["DefaultPreset"]));
+            }
+            set {
+                this["DefaultPreset"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int DefaultpictureBoxBackgroundTextureGapColor {
+            get {
+                return ((int)(this["DefaultpictureBoxBackgroundTextureGapColor"]));
+            }
+            set {
+                this["DefaultpictureBoxBackgroundTextureGapColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DefaultRecolorGapIsActive {
+            get {
+                return ((bool)(this["DefaultRecolorGapIsActive"]));
+            }
+            set {
+                this["DefaultRecolorGapIsActive"] = value;
+            }
+        }
     }
 }
