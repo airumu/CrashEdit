@@ -288,6 +288,8 @@ namespace CrashEdit.CE
             List<PackedTexture> packedTextures = [];
             var pageClutInfo = new Dictionary<int, (int _4bppCount, int _8bppCount)>();
             var clutPositions = new Dictionary<int, (int curClutX, int curClutY, int oldClutX, int oldClutY)>();
+            // number of 4bpp rows reserved per page (computed from Pass 1 results)
+            var pageReserved4bppRows = new Dictionary<int, int>();
             var physicalTextureResults = new Dictionary<(int Index, int AnimOffset, string FilePath), PackedTexture>();
 
             for (int pageIdx = 0; pageIdx <= currentPage; pageIdx++)
@@ -308,10 +310,11 @@ namespace CrashEdit.CE
 
                 pageClutInfo[pageIdx] = (0, 0);
                 clutPositions[pageIdx] = (1, 0, -1, -1);
-
                 var (finalCount4bpp, finalCount8bpp) = pageCLUTRequirements[pageIdx];
                 int finalClutYRow = Math.Max(1, (finalCount4bpp + 15) / 16);
                 int finalClutHeight = finalClutYRow + finalCount8bpp;
+                // record reserved 4bpp rows so 8bpp placements can start after them
+                pageReserved4bppRows[pageIdx] = finalClutYRow;
                 Console.WriteLine($"    Created page {pageIdx} ({pageName}): CLUT height={finalClutHeight} (Y: 0-{finalClutHeight - 1})");
             }
 
@@ -355,17 +358,19 @@ namespace CrashEdit.CE
                 int actualClutX = curClutX;
                 int actualClutY = curClutY;
 
+                var pageInfo = pageClutInfo[pageIdx];
+                int reserved4bppRows = pageReserved4bppRows.ContainsKey(pageIdx) ? pageReserved4bppRows[pageIdx] : Math.Max(1, (pageInfo._4bppCount + 15) / 16);
+
                 if (tex.Bpp == 8)
                 {
+                    // ensure we place 8bpp CLUTs after all reserved 4bpp rows
                     if (oldClutX == -1 || oldClutY == -1)
                     {
                         oldClutX = curClutX;
                         oldClutY = curClutY;
                     }
                     actualClutX = 0;
-                    var pageInfo = pageClutInfo[pageIdx];
-                    int clutYRowFor4bpp = Math.Max(1, (pageInfo._4bppCount + 15) / 16);
-                    actualClutY = clutYRowFor4bpp + pageInfo._8bppCount;
+                    actualClutY = reserved4bppRows + pageInfo._8bppCount;
 
                     if (actualClutY >= MaxClutHeight)
                     {
@@ -374,6 +379,7 @@ namespace CrashEdit.CE
                 }
                 else // 4bpp
                 {
+                    // prefer to reuse old CLUT position if available
                     if (oldClutX != -1 && oldClutY != -1)
                     {
                         actualClutX = oldClutX;
@@ -387,9 +393,10 @@ namespace CrashEdit.CE
                         actualClutX = 1;
                     }
 
-                    if (actualClutY >= MaxClutHeight)
+                    // ensure 4bpp stays within its reserved rows
+                    if (actualClutY >= reserved4bppRows)
                     {
-                        throw new Exception($"CLUT Y position {actualClutY} exceeds max {MaxClutHeight - 1} for texture '{tex.Name}'");
+                        throw new Exception($"CLUT Y position {actualClutY} exceeds reserved 4bpp rows ({reserved4bppRows - 1}) for texture '{tex.Name}'");
                     }
                 }
 
@@ -439,15 +446,10 @@ namespace CrashEdit.CE
 
                 if (needsNewClut)
                 {
-                    var pageInfo = pageClutInfo[pageIdx];
-                    if (tex.Bpp == 4) pageInfo._4bppCount++;
-                    else if (tex.Bpp == 8) pageInfo._8bppCount++;
-                    pageClutInfo[pageIdx] = pageInfo;
-
                     if (tex.Bpp == 8)
                     {
-                        curClutY = actualClutY + 1;
-                        curClutX = 0;
+                        // 8bpp uses its own rows after reserved 4bpp rows
+                        // do not modify the 4bpp curClutX/curClutY here to avoid overlap with 4bpp placement
                     }
                     else // 4bpp
                     {
@@ -471,6 +473,17 @@ namespace CrashEdit.CE
                     }
 
                     clutPositions[pageIdx] = (curClutX, curClutY, oldClutX, oldClutY);
+
+                    // finally, update the page CLUT counters
+                    if (tex.Bpp == 8)
+                    {
+                        pageInfo._8bppCount++;
+                    }
+                    else
+                    {
+                        pageInfo._4bppCount++;
+                    }
+                    pageClutInfo[pageIdx] = pageInfo;
                 }
             }
 
