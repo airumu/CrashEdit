@@ -402,4 +402,7 @@
   <data name="NSFController_AcExportZones" xml:space="preserve">
     <value>全てのゾーンをOBJとして保存</value>
   </data>
+  <data name="ZoneEntryController_AcChangeEnvironmentType" xml:space="preserve">
+    <value>環境タイプを変更する</value>
+  </data>
 </root>

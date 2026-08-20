@@ -402,4 +402,7 @@
   <data name="NSFController_AcExportZones" xml:space="preserve">
     <value>Export All Zones as OBJ</value>
   </data>
+  <data name="ZoneEntryController_AcChangeEnvironmentType" xml:space="preserve">
+    <value>Change Environment Type</value>
+  </data>
 </root>
